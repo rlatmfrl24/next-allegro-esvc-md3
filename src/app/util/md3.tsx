@@ -7,6 +7,7 @@ import { MdFilledButton as MdFilledButtonWebComponent } from "@material/web/butt
 import { MdElevatedButton as MdElevatedButtonWebComponent } from "@material/web/button/elevated-button.js";
 import { MdOutlinedButton as MdOutlinedButtonWebComponent } from "@material/web/button/outlined-button.js";
 import { MdTextButton as MdTextButtonWebComponent } from "@material/web/button/text-button.js";
+import { MdOutlinedTextField as MdOutlinedTextFieldWebComponent } from "@material/web/textfield/outlined-text-field.js";
 
 import {
   applyTheme,
@@ -41,6 +42,12 @@ export const MdOutlinedButton = createComponent({
 export const MdTextButton = createComponent({
   tagName: "md-text-button",
   elementClass: MdTextButtonWebComponent,
+  react: React,
+});
+
+export const MdOutlinedTextField = createComponent({
+  tagName: "md-outlined-text-field",
+  elementClass: MdOutlinedTextFieldWebComponent,
   react: React,
 });
 
