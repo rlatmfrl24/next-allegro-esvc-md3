@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@lit/react": "^1.0.2",
+    "@material/material-color-utilities": "^0.2.7",
     "@material/web": "^1.1.1",
     "next": "14.1.0",
     "react": "^18",

@@ -8,6 +8,9 @@ dependencies:
   '@lit/react':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.48)
+  '@material/material-color-utilities':
+    specifier: ^0.2.7
+    version: 0.2.7
   '@material/web':
     specifier: ^1.1.1
     version: 1.1.1
@@ -184,6 +187,10 @@ packages:
     resolution: {integrity: sha512-e067EuTNNgOHm1tZcc0Ia7TCzD/9ZpoPegHKgesrGK6pSDRGkGDAQbYuQclqLPIoJ9eC8Kb9mYtGryWcM5AywA==}
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.1.2
+    dev: false
+
+  /@material/material-color-utilities@0.2.7:
+    resolution: {integrity: sha512-0FCeqG6WvK4/Cc06F/xXMd/pv4FeisI0c1tUpBbfhA2n9Y8eZEv4Karjbmf2ZqQCPUWMrGp8A571tCjizxoTiQ==}
     dev: false
 
   /@material/web@1.1.1:
