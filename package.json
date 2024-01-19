@@ -13,6 +13,7 @@
     "@material/material-color-utilities": "^0.2.7",
     "@material/web": "^1.1.1",
     "next": "14.1.0",
+    "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18"
   },
