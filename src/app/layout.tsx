@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${suit.className} ${pretendard.className}`}>
+      <body className={`${suit.variable} ${pretendard.variable}`}>
         {children}
       </body>
     </html>
