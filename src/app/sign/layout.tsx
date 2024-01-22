@@ -1,3 +1,4 @@
+import Footer from "../components/footer";
 import Header from "./header";
 
 export default function SignLayout({
@@ -9,6 +10,7 @@ export default function SignLayout({
     <div className="min-h-screen flex flex-col">
       <Header />
       {children}
+      <Footer />
     </div>
   );
 }

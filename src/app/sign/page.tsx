@@ -11,5 +11,5 @@ export default function Sign() {
     setIsSigning(false);
   }, [setIsSigning]);
 
-  return <div>11</div>;
+  return <div className="flex-1">11</div>;
 }
