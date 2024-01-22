@@ -8,6 +8,10 @@ import { MdElevatedButton as MdElevatedButtonWebComponent } from "@material/web/
 import { MdOutlinedButton as MdOutlinedButtonWebComponent } from "@material/web/button/outlined-button.js";
 import { MdTextButton as MdTextButtonWebComponent } from "@material/web/button/text-button.js";
 import { MdOutlinedTextField as MdOutlinedTextFieldWebComponent } from "@material/web/textfield/outlined-text-field.js";
+import { MdIcon as MdIconWebComponent } from "@material/web/icon/icon";
+import { MdIconButton as MdIconButtonWebComponent } from "@material/web/iconbutton/icon-button";
+import { MdElevation as MdElevationWebComponent } from "@material/web/elevation/elevation";
+import { MdCheckbox as MdCheckboxWebComponent } from "@material/web/checkbox/checkbox";
 
 import {
   applyTheme,
@@ -48,6 +52,38 @@ export const MdTextButton = createComponent({
 export const MdOutlinedTextField = createComponent({
   tagName: "md-outlined-text-field",
   elementClass: MdOutlinedTextFieldWebComponent,
+  react: React,
+  // events: {
+  //   onChange: "change",
+  //   onInput: "input",
+  //   onClose: "close",
+  //   onClosed: "closed",
+  //   onOpen: "open",
+  //   onOpened: "opened",
+  // },
+});
+
+export const MdCheckbox = createComponent({
+  tagName: "md-checkbox",
+  elementClass: MdCheckboxWebComponent,
+  react: React,
+});
+
+export const MdIcon = createComponent({
+  tagName: "md-icon",
+  elementClass: MdIconWebComponent,
+  react: React,
+});
+
+export const MdIconButton = createComponent({
+  tagName: "md-icon-button",
+  elementClass: MdIconButtonWebComponent,
+  react: React,
+});
+
+export const MdElevation = createComponent({
+  tagName: "md-elevation",
+  elementClass: MdElevationWebComponent,
   react: React,
 });
 

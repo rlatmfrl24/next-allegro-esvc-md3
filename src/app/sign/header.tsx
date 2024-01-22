@@ -21,12 +21,7 @@ export default function Header() {
       <NavButtonGroup />
       {isSigning ? (
         <Link href={"/sign"}>
-          <MdOutlinedButton
-            className="w-32 font-pretendard font-medium"
-            onClick={() => {
-              setIsSigning(false);
-            }}
-          >
+          <MdOutlinedButton className="w-32 font-pretendard font-medium">
             Cancel
           </MdOutlinedButton>
         </Link>

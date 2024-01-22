@@ -15,3 +15,5 @@
 - Material Web
 - Material Icons
 - Material Color Utilities
+- React Hook Form
+- SVGR
