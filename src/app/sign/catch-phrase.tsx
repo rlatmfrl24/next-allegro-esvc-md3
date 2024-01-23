@@ -4,7 +4,7 @@ const CatchPhrase = () => {
       <h1 className="text-5xl font-semibold mb-8">
         The Best Choice is TS Line!
       </h1>
-      <p>
+      <p className="text-xl font-normal">
         Register on our website for enjoying a variety of e-service <br />
         Cargo Tracking service is available without registration
       </p>

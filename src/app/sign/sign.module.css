@@ -6,5 +6,5 @@
 
 .card {
   --md-elevation-level: 4;
-  @apply relative flex flex-col p-12 rounded-xl;
+  @apply relative flex flex-col rounded-xl bg-white;
 }

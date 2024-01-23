@@ -8,7 +8,7 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import Link from "next/link";
-import style from "./signin.module.css";
+import style from "../sign.module.css";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { useState } from "react";
 
@@ -35,7 +35,7 @@ export default function SignIn() {
 
   return (
     <div className="flex-1 flex justify-center items-center">
-      <div className={style.card + ` w-[483px]`}>
+      <div className={style.card + ` w-[483px] p-12`}>
         <MdElevation />
         <span className="font-suit text-xl">Welcome!</span>
         <span
