@@ -16,7 +16,7 @@ export default function Header() {
   const [isSigning, setIsSigning] = useRecoilState(isSigningState);
 
   return (
-    <div className="h-[4.5rem] flex items-center px-6 shadow-md gap-6">
+    <div className="h-[4.5rem] flex items-center px-6 shadow-md gap-6 z-10">
       <Logo />
       <NavButtonGroup />
       {isSigning ? (
