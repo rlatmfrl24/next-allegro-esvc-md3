@@ -16,7 +16,7 @@ export const MdTypography = ({
       typeScale = "font-suit ";
       switch (size) {
         case "large":
-          typeScale += "text-[57px] leading-[64px] tracking-[-0.02em]";
+          typeScale += "text-[57px] leading-[64px] tracking-[-0.25px ]";
           break;
         case "medium":
           typeScale += "text-[45px] leading-[52px]";
@@ -48,11 +48,11 @@ export const MdTypography = ({
           break;
         case "medium":
           typeScale +=
-            "text-[16px] leading-[24px] tracking-[0.015em] font-medium";
+            "text-[16px] leading-[24px] tracking-[0.15px] font-medium";
           break;
         case "small":
           typeScale +=
-            "text-[14px] leading-[20px] tracking-[0.01em] font-medium";
+            "text-[14px] leading-[20px] tracking-[0.1px] font-medium";
           break;
       }
       break;
@@ -61,15 +61,15 @@ export const MdTypography = ({
       switch (size) {
         case "large":
           typeScale +=
-            "text-[14px] leading-[20px] tracking-[0.01em] font-medium";
+            "text-[14px] leading-[20px] tracking-[0.1px] font-medium";
           break;
         case "medium":
           typeScale +=
-            "text-[12px] leading-[16px] tracking-[0.05em] font-medium";
+            "text-[12px] leading-[16px] tracking-[0.5px] font-medium";
           break;
         case "small":
           typeScale +=
-            "text-[11px] leading-[16px] tracking-[0.05em] font-medium";
+            "text-[11px] leading-[16px] tracking-[0.5px] font-medium";
           break;
       }
       break;
@@ -77,13 +77,14 @@ export const MdTypography = ({
       typeScale = "font-pretendard ";
       switch (size) {
         case "large":
-          typeScale += "text-[16px] leading-[24px] tracking-[0.015em] ";
+          typeScale += "text-[16px] leading-[24px] tracking-[0.5px] ";
           break;
+          0;
         case "medium":
-          typeScale += "text-[14px] leading-[20px] tracking-[0.025em] ";
+          typeScale += "text-[14px] leading-[20px] tracking-[0.25px] ";
           break;
         case "small":
-          typeScale += "text-[12px] leading-[16px] tracking-[0.04em] ";
+          typeScale += "text-[12px] leading-[16px] tracking-[0.4px] ";
           break;
       }
       break;

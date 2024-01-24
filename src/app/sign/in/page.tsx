@@ -65,7 +65,6 @@ export default function SignIn() {
         <MdOutlinedTextField
           className={style.textfield + ` mt-12`}
           label="ID"
-          defaultValue={""}
           value={id}
           onInput={(event) => {
             setId((event.target as HTMLInputElement).value);
@@ -88,7 +87,6 @@ export default function SignIn() {
           className={style.textfield + ` mt-8`}
           label="PW"
           type="password"
-          defaultValue={""}
           value={pw}
           onInput={(event) => {
             setPw((event.target as HTMLInputElement).value);
@@ -120,7 +118,7 @@ export default function SignIn() {
           </Link>
         </div>
         <MdFilledButton
-          className="mt-12 font-pretendard font-medium"
+          className="mt-12"
           type="submit"
           disabled={id.length === 0 || pw.length === 0}
           onClick={() => {
@@ -129,15 +127,16 @@ export default function SignIn() {
         >
           Sign In
         </MdFilledButton>
-        <span className="text-center font-pretendard mt-12 text-sm">
-          {"Don't have an account?"}
-          <Link
-            href={`/sign/up`}
-            className="cursor-pointer text-primary font-medium p-3"
-          >
-            Sign Up
+        <div className="flex items-center justify-center mt-12">
+          <MdTypography target="body" size="medium">
+            {"Don't have an account?"}
+          </MdTypography>
+          <Link href={`/sign/up`} className="cursor-pointer text-primary px-3">
+            <MdTypography target="label" size="large">
+              Sign Up Here
+            </MdTypography>
           </Link>
-        </span>
+        </div>
       </div>
     </div>
   );

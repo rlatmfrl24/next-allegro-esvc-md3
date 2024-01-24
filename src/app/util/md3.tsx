@@ -13,6 +13,8 @@ import { MdCheckbox as MdCheckboxWebComponent } from "@material/web/checkbox/che
 import { MdTabs as MdTabsWebComponent } from "@material/web/tabs/tabs";
 import { MdPrimaryTab as MdPrimaryTabWebComponent } from "@material/web/tabs/primary-tab";
 import { MdSecondaryTab as MdSecondaryTabWebComponent } from "@material/web/tabs/secondary-tab";
+import { MdOutlinedSelect as MdOutlinedSelectWebComponent } from "@material/web/select/outlined-select";
+import { MdSelectOption as MdSelectOptionWebComponent } from "@material/web/select/select-option";
 
 import {
   applyTheme,
@@ -95,6 +97,18 @@ export const MdPrimaryTab = createComponent({
 export const MdSecondaryTab = createComponent({
   tagName: "md-secondary-tab",
   elementClass: MdSecondaryTabWebComponent,
+  react: React,
+});
+
+export const MdOutlinedSelect = createComponent({
+  tagName: "md-outlined-select",
+  elementClass: MdOutlinedSelectWebComponent,
+  react: React,
+});
+
+export const MdSelectOption = createComponent({
+  tagName: "md-select-option",
+  elementClass: MdSelectOptionWebComponent,
   react: React,
 });
 

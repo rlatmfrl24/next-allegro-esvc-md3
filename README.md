@@ -20,3 +20,4 @@
 - Swiper
 - Framer Motion
 - Luxon
+- Classnames
