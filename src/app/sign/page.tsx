@@ -12,6 +12,9 @@ export default function Sign() {
 
   useEffect(() => {
     setIsSigning(false);
+    return () => {
+      setIsSigning(false);
+    };
   }, [setIsSigning]);
 
   return (

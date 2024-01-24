@@ -1,19 +1,19 @@
 "use client";
 
-import Logo from "../components/logo";
+import Link from "next/link";
 import {
   EditCalendarOutlined as ScheduleIcon,
   DesktopWindowsOutlined as SurchargeIcon,
 } from "@mui/icons-material";
+import Logo from "../components/logo";
 import TariffIcon from "@/../public/icon_tariff_outlined.svg";
 import TrackingIcon from "@/../public/icon_tracking_outlined.svg";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { isSigningState } from "./store";
-import Link from "next/link";
 import { MdFilledButton, MdOutlinedButton } from "../util/md3";
 
 export default function Header() {
-  const [isSigning, setIsSigning] = useRecoilState(isSigningState);
+  const isSigning = useRecoilValue(isSigningState);
 
   return (
     <div className="h-[4.5rem] flex items-center px-6 shadow-md gap-6 z-10">
@@ -28,22 +28,12 @@ export default function Header() {
       ) : (
         <>
           <Link href={"/sign/up"}>
-            <MdOutlinedButton
-              className="w-32 font-pretendard font-medium"
-              onClick={() => {
-                setIsSigning(true);
-              }}
-            >
+            <MdOutlinedButton className="w-32 font-pretendard font-medium">
               Sign Up
             </MdOutlinedButton>
           </Link>
           <Link href={"/sign/in"}>
-            <MdFilledButton
-              className="w-32 font-pretendard font-medium"
-              onClick={() => {
-                setIsSigning(true);
-              }}
-            >
+            <MdFilledButton className="w-32 font-pretendard font-medium">
               Sign In
             </MdFilledButton>
           </Link>

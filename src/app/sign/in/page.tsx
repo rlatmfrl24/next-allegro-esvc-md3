@@ -10,11 +10,23 @@ import {
 import Link from "next/link";
 import style from "../sign.module.css";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MdTypography } from "@/app/components/typography";
+import { useSetRecoilState } from "recoil";
+import { isSigningState } from "../store";
 
 export default function SignIn() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+
+  const setIsSigning = useSetRecoilState<boolean>(isSigningState);
+
+  useEffect(() => {
+    setIsSigning(true);
+    return () => {
+      setIsSigning(false);
+    };
+  }, [setIsSigning]);
 
   type errorType = {
     key: string;
@@ -100,11 +112,11 @@ export default function SignIn() {
             <MdCheckbox touch-target="wrapper"></MdCheckbox>
             Remember me
           </label>
-          <Link
-            href={`/sign`}
-            className="cursor-pointer text-primary text-sm font-pretendard font-medium flex items-center"
-          >
-            Forgot Password?
+
+          <Link href={`/sign`} className="cursor-pointer flex items-center">
+            <MdTypography target="label" size="large" className="text-primary">
+              Forgot Password?
+            </MdTypography>
           </Link>
         </div>
         <MdFilledButton

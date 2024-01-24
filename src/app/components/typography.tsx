@@ -51,7 +51,7 @@ export const MdTypography = ({
   size,
   className,
 }: {
-  children: string;
+  children: string | React.ReactNode;
   target: "display" | "headline" | "title" | "label" | "body";
   size: "small" | "medium" | "large";
   className?: string;
