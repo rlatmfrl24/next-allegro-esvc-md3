@@ -3,6 +3,10 @@ import style from "../sign.module.css";
 import { MdTypography } from "../../components/typography";
 import { MdElevation, MdPrimaryTab, MdTabs } from "../../util/md3";
 import { useState } from "react";
+import {
+  MdSegmentedButton,
+  MdSegmentedButtons,
+} from "@/app/components/segmented-button";
 
 export default function QuickMenu() {
   return (
@@ -56,7 +60,20 @@ const QuickSearch = () => {
         aria-labelledby="tab-schedule"
         hidden={tabItemId !== "tab-schedule"}
       >
-        Schedule panel
+        <MdSegmentedButtons
+          value="segment-schedule"
+          onChange={(value) => {
+            console.log(value);
+          }}
+        >
+          <MdSegmentedButton id="segment-schedule">Schedule</MdSegmentedButton>
+          <MdSegmentedButton disabled id="segment-port">
+            Port Schedule
+          </MdSegmentedButton>
+          <MdSegmentedButton id="segment-long-range">
+            Long Range Schedule
+          </MdSegmentedButton>
+        </MdSegmentedButtons>
       </div>
       <div
         id="quick-tracking-panel"
