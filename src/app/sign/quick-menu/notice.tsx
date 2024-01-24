@@ -1,25 +1,7 @@
+import { MdTypography } from "@/app/components/typography";
+import { MdElevation } from "@/app/util/md3";
 import { DateTime } from "luxon";
-import { MdTypography, Typography } from "../components/typography";
-import { MdElevation } from "../util/md3";
-import style from "./sign.module.css";
-
-export default function QuickMenu() {
-  return (
-    <div className="flex flex-col gap-6 h-full absolute z-10 right-0 p-16 w-[848px]">
-      <QuickSearch />
-      <Notice />
-    </div>
-  );
-}
-
-const QuickSearch = () => {
-  return (
-    <div className={style.card + ` p-12`}>
-      <MdElevation />
-      Quick Search
-    </div>
-  );
-};
+import style from "../sign.module.css";
 
 const Notice = () => {
   const NoticeItem = ({
@@ -59,6 +41,9 @@ const Notice = () => {
         Notice
       </MdTypography>
 
+      {/*
+       * TODO: this is a dummy data, replace it with real data
+       */}
       <NoticeItem
         category="BULK"
         date="2021-09-27"
@@ -84,3 +69,5 @@ const Notice = () => {
     </div>
   );
 };
+
+export default Notice;
