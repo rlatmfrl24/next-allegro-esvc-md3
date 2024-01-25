@@ -1,5 +1,4 @@
 import Notice from "./notice";
-import style from "../sign.module.css";
 import { MdTypography } from "../../components/typography";
 import {
   MdElevation,
@@ -13,11 +12,11 @@ import {
   MdTextButton,
 } from "../../util/md3";
 import { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   MdSegmentedButton,
   MdSegmentedButtons,
 } from "@/app/components/segmented-button";
+import styles from "@/app/components/components.module.css";
 
 export default function QuickMenu() {
   return (
@@ -38,7 +37,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <div className={style.card}>
+    <div className={styles.card}>
       <MdElevation />
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab

@@ -40,31 +40,11 @@ export default function Test() {
         <MdTextButton className="font-suit">Click me</MdTextButton>
       </div>
       <div className="flex gap-2 font-pretendard font-bold">
-        <MdOutlinedTextField
-          className={styles.outlinedTextField}
-          label="Label"
-        />
-        <MdOutlinedTextField
-          className={styles.outlinedTextField}
-          label="Label"
-          disabled
-        />
-        <MdOutlinedTextField
-          className={styles.outlinedTextField}
-          label="Label"
-          error
-        />
-        <MdOutlinedTextField
-          className={styles.outlinedTextField}
-          label="Label"
-          supportingText="Required"
-        />
-        <MdOutlinedTextField
-          className={styles.outlinedTextField}
-          label="Label"
-          prefixText="US"
-          suffixText="USD"
-        />
+        <MdOutlinedTextField label="Label" />
+        <MdOutlinedTextField label="Label" disabled />
+        <MdOutlinedTextField label="Label" error />
+        <MdOutlinedTextField label="Label" supportingText="Required" />
+        <MdOutlinedTextField label="Label" prefixText="US" suffixText="USD" />
       </div>
     </div>
   );

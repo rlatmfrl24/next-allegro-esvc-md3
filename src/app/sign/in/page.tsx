@@ -8,16 +8,18 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import Link from "next/link";
-import style from "../sign.module.css";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
 import { isSigningState } from "../store";
+import styles from "@/app/components/components.module.css";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const router = useRouter();
 
   const setIsSigning = useSetRecoilState<boolean>(isSigningState);
 
@@ -47,7 +49,7 @@ export default function SignIn() {
 
   return (
     <div className="flex-1 flex justify-center items-center">
-      <div className={style.card + ` w-[483px] p-12`}>
+      <div className={styles.card + ` w-[483px] p-12`}>
         <MdElevation />
         <span className="font-suit text-xl">Welcome!</span>
         <span
@@ -63,7 +65,7 @@ export default function SignIn() {
           Login to your Account
         </span>
         <MdOutlinedTextField
-          className={style.textfield + ` mt-12`}
+          className={`mt-12`}
           label="ID"
           value={id}
           onInput={(event) => {
@@ -84,7 +86,7 @@ export default function SignIn() {
           )}
         </MdOutlinedTextField>
         <MdOutlinedTextField
-          className={style.textfield + ` mt-8`}
+          className={`mt-8`}
           label="PW"
           type="password"
           value={pw}
@@ -122,7 +124,7 @@ export default function SignIn() {
           type="submit"
           disabled={id.length === 0 || pw.length === 0}
           onClick={() => {
-            console.log(id, pw);
+            router.push("/main");
           }}
         >
           Sign In

@@ -1,7 +1,7 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdElevation } from "@/app/util/md3";
 import { DateTime } from "luxon";
-import style from "../sign.module.css";
+import styles from "@/app/components/components.module.css";
 
 const Notice = () => {
   const NoticeItem = ({
@@ -39,7 +39,7 @@ const Notice = () => {
     );
   };
   return (
-    <div className={style.card + ` p-12`}>
+    <div className={styles.card + ` p-12`}>
       <MdElevation />
       <MdTypography target="title" size="large" className="mb-4">
         Notice

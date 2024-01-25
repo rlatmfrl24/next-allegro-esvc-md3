@@ -31,3 +31,8 @@
   opacity: 0.38;
   border: 1px solid var(--md-sys-color-outline) opacity(0.12);
 }
+
+.card {
+  --md-elevation-level: 4;
+  @apply relative flex flex-col rounded-xl bg-white;
+}
