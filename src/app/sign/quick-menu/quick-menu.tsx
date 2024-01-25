@@ -4,13 +4,16 @@ import { MdTypography } from "../../components/typography";
 import {
   MdElevation,
   MdFilledButton,
+  MdIcon,
   MdOutlinedSelect,
+  MdOutlinedTextField,
   MdPrimaryTab,
   MdSelectOption,
   MdTabs,
   MdTextButton,
 } from "../../util/md3";
 import { useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   MdSegmentedButton,
   MdSegmentedButtons,
@@ -115,14 +118,23 @@ const QuickSearch = () => {
       </div>
       <div
         id="quick-tracking-panel"
-        className="p-4 text-center"
+        className={`px-12 py-6 flex-col ${
+          tabItemId === "tab-quick-tracking" ? "flex" : "hidden"
+        }`}
         role="tabpanel"
         aria-labelledby="tab-quick-tracking"
-        hidden={tabItemId !== "tab-quick-tracking"}
       >
-        <MdTypography target="title" size="small">
-          Quick Tracking panel
+        <MdTypography target="body" size="medium">
+          {`It's fast and easy to track your shipment.`}
         </MdTypography>
+        <MdOutlinedTextField
+          label=""
+          placeholder="B/Ls, Bookings and/or Container numbers"
+          supportingText="Enter up to 10 numbers, separately by a space or comma."
+          type="textarea"
+          className="resize-none"
+          rows={5}
+        ></MdOutlinedTextField>
       </div>
       <div
         aria-label="quick-search-button"
