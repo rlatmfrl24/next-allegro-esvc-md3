@@ -8,7 +8,7 @@ export default function MainLayout({
 }>) {
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex-none flex h-[60px] px-6 shadow-md">
+      <header className="flex-none flex h-[60px] px-6 shadow-md items-center">
         <Header />
       </header>
       <main className="flex-1 flex flex-row">
