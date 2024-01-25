@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     router.push("/sign");
-  }, []);
+  }, [router]);
 
   return (
     <main className="flex min-h-screen flex-col justify-center items-center">

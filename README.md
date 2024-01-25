@@ -17,3 +17,7 @@
 - Material Color Utilities
 - React Hook Form
 - SVGR
+- Swiper
+- Framer Motion
+- Luxon
+- Classnames

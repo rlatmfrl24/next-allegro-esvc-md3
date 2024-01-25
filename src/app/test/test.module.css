@@ -1,5 +1,0 @@
-.outlinedTextField {
-  --md-outlined-text-field-label-text-font: var(--font-pretendard);
-  --md-outlined-text-field-supporting-text-font: var(--font-pretendard);
-  @apply h-fit font-pretendard;
-}

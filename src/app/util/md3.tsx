@@ -1,5 +1,3 @@
-"use clinet";
-
 import React from "react";
 import { createComponent } from "@lit/react";
 import { MdRipple } from "@material/web/ripple/ripple.js";
@@ -12,7 +10,11 @@ import { MdIcon as MdIconWebComponent } from "@material/web/icon/icon";
 import { MdIconButton as MdIconButtonWebComponent } from "@material/web/iconbutton/icon-button";
 import { MdElevation as MdElevationWebComponent } from "@material/web/elevation/elevation";
 import { MdCheckbox as MdCheckboxWebComponent } from "@material/web/checkbox/checkbox";
-
+import { MdTabs as MdTabsWebComponent } from "@material/web/tabs/tabs";
+import { MdPrimaryTab as MdPrimaryTabWebComponent } from "@material/web/tabs/primary-tab";
+import { MdSecondaryTab as MdSecondaryTabWebComponent } from "@material/web/tabs/secondary-tab";
+import { MdOutlinedSelect as MdOutlinedSelectWebComponent } from "@material/web/select/outlined-select";
+import { MdSelectOption as MdSelectOptionWebComponent } from "@material/web/select/select-option";
 import {
   applyTheme,
   argbFromHex,
@@ -53,14 +55,6 @@ export const MdOutlinedTextField = createComponent({
   tagName: "md-outlined-text-field",
   elementClass: MdOutlinedTextFieldWebComponent,
   react: React,
-  // events: {
-  //   onChange: "change",
-  //   onInput: "input",
-  //   onClose: "close",
-  //   onClosed: "closed",
-  //   onOpen: "open",
-  //   onOpened: "opened",
-  // },
 });
 
 export const MdCheckbox = createComponent({
@@ -87,6 +81,36 @@ export const MdElevation = createComponent({
   react: React,
 });
 
+export const MdTabs = createComponent({
+  tagName: "md-tabs",
+  elementClass: MdTabsWebComponent,
+  react: React,
+});
+
+export const MdPrimaryTab = createComponent({
+  tagName: "md-primary-tab",
+  elementClass: MdPrimaryTabWebComponent,
+  react: React,
+});
+
+export const MdSecondaryTab = createComponent({
+  tagName: "md-secondary-tab",
+  elementClass: MdSecondaryTabWebComponent,
+  react: React,
+});
+
+export const MdOutlinedSelect = createComponent({
+  tagName: "md-outlined-select",
+  elementClass: MdOutlinedSelectWebComponent,
+  react: React,
+});
+
+export const MdSelectOption = createComponent({
+  tagName: "md-select-option",
+  elementClass: MdSelectOptionWebComponent,
+  react: React,
+});
+
 export function createMDTheme(
   sourceColor: string,
   pointColor: string,
@@ -94,9 +118,9 @@ export function createMDTheme(
 ) {
   const theme = themeFromSourceColor(argbFromHex(sourceColor), [
     {
-      name: "point",
+      name: "custom",
       value: argbFromHex(pointColor),
-      blend: true,
+      blend: false,
     },
   ]);
   console.log(JSON.stringify(theme, null, 2));
