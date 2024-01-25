@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@lit/react": "^1.0.2",
     "@material/material-color-utilities": "^0.2.7",
     "@material/web": "^1.1.1",
     "@mui/icons-material": "^5.15.5",
+    "@mui/material": "^5.15.6",
     "classnames": "^2.5.1",
     "framer-motion": "^10.18.0",
     "next": "14.1.0",
@@ -21,6 +24,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",
     "recoil": "^0.7.7",
+    "sharp": "^0.33.2",
     "swiper": "^11.0.5"
   },
   "devDependencies": {
