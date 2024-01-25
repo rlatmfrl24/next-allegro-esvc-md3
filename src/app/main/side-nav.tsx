@@ -1,13 +1,15 @@
 "use client";
 
-import classNames from "classnames";
 import { MdTypography } from "../components/typography";
 import { MdRippleEffect } from "../util/md3";
 import { MenuItemType } from "../util/typeDef";
-import styles from "@/app/components/components.module.css";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import classNames from "classnames";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-
-const currentPath = ["Schedule", "Point to Point Schedule"];
+import { useRecoilState } from "recoil";
+import { currentPathState } from "./store";
+import styles from "./main.module.css";
 
 // TODO: 추후에 API로 받아올 예정
 const meunItems: MenuItemType[] = [
@@ -33,7 +35,7 @@ const meunItems: MenuItemType[] = [
             isLeaf: true,
           },
         ],
-        isLeaf: true,
+        isLeaf: false,
       },
       {
         name: "Vessel Schedule",
@@ -86,42 +88,37 @@ export default function SideNav() {
             depth={1}
             key={index}
             variant="primary"
+            path={[item.name]}
             label={item.name}
             childs={item.children}
             isLeaf={item.isLeaf}
           />
         );
       })}
-
-      {/* <NavItem variant="primary" selected>
-        Primary Selected
-      </NavItem>
-      <NavItem variant="primary">Primary</NavItem>
-      <NavItem variant="secondary" selected>
-        Secondary Selected
-      </NavItem>
-      <NavItem variant="secondary">Secondary</NavItem> */}
     </>
   );
 }
 
 const NavItem = ({
   variant,
-  selected,
   label,
+  depth,
+  path,
   childs,
   isLeaf,
   className,
 }: Readonly<{
   variant: "primary" | "secondary";
-  selected?: boolean;
   depth: number;
-  isLeaf?: boolean;
   label: string;
+  path: string[];
   childs: MenuItemType[];
+  isLeaf?: boolean;
   className?: string;
 }>) => {
   const cx = classNames.bind(styles);
+  const [open, setOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useRecoilState(currentPathState);
 
   return (
     <>
@@ -130,8 +127,16 @@ const NavItem = ({
           styles["navItem"],
           variant === "primary" && styles["primary"],
           variant === "secondary" && styles["secondary"],
-          selected && styles["selected"]
+          currentPath[depth - 1] === label && styles["selected"],
+          className
         )}
+        onClick={() => {
+          if (isLeaf) {
+            setCurrentPath(path);
+          } else {
+            setOpen(!open);
+          }
+        }}
       >
         <MdRippleEffect />
         <MdTypography
@@ -141,8 +146,42 @@ const NavItem = ({
         >
           {label}
         </MdTypography>
-        <ArrowDropDownOutlinedIcon className="text-primary" />
+        {!isLeaf && (
+          <ArrowDropDownOutlinedIcon
+            className={`text-primary ${open ? "rotate-180" : ""}`}
+          />
+        )}
       </div>
+      {
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              className="pl-5 overflow-hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{
+                duration: 0.2,
+                ease: "easeInOut",
+              }}
+            >
+              {childs.map((item, index) => {
+                return (
+                  <NavItem
+                    depth={depth + 1}
+                    key={index}
+                    variant="secondary"
+                    path={[...path, item.name]}
+                    label={item.name}
+                    childs={item.children}
+                    isLeaf={item.isLeaf}
+                  />
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      }
     </>
   );
 };

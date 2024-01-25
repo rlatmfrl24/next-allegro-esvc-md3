@@ -57,8 +57,6 @@ const config: Config = {
         surfaceContainerHigh: "var(--md-sys-color-surface-container-high)",
         surfaceContainerHighest:
           "var(--md-sys-color-surface-container-highest)",
-
-        custom: "var(--md-sys-color-custom)",
       },
     },
   },

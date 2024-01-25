@@ -16,8 +16,8 @@ export default function MainLayout({
         <aside className="flex-none flex flex-col w-[290px] p-3 bg-surfaceContainer rounded-tr-3xl">
           <SideNav />
         </aside>
-        <section className="flex-1 flex flex-col">
-          <div className="flex-auto h-0 overflow-auto flex flex-col">
+        <section className="flex-1 flex flex-col items-center">
+          <div className="flex-auto h-0 overflow-auto container">
             {children}
           </div>
           <Footer />

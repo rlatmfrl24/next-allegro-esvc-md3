@@ -7,12 +7,16 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import UnknownAvatar from "@/../public/avatar_unknown.svg";
+import { useRecoilValue } from "recoil";
+import { currentPathState } from "./store";
 
 export default function Header() {
+  const currentPath = useRecoilValue(currentPathState);
+
   return (
     <>
       <Logo />
-      <BreadCrumbs list={["Outbound", "Booking", "Booking Status"]} />
+      <BreadCrumbs list={currentPath} />
       <div className="w-px h-4 bg-gray-200 mx-2.5"> </div>
       <MdIconButton>
         <MdIcon>

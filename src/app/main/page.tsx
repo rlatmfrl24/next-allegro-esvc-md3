@@ -1,7 +1,5 @@
+import styles from "./main.module.css";
+
 export default function MainPage() {
-  return (
-    <div className="flex-1">
-      <h1>Main Page</h1>
-    </div>
-  );
+  return <h1>Main Page</h1>;
 }
