@@ -74,13 +74,6 @@ export default function Test() {
           suffixText="USD"
         />
       </div>
-      <div>
-        {/* <MdSegmentedButtons>
-          <MdSegmentedButton>Button 1</MdSegmentedButton>
-          <MdSegmentedButton>Button 1</MdSegmentedButton>
-          <MdSegmentedButton>Button 1</MdSegmentedButton>
-        </MdSegmentedButtons> */}
-      </div>
     </div>
   );
 }
