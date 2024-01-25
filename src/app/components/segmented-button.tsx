@@ -73,7 +73,7 @@ export const MdSegmentedButton = ({
       <>
         {!disabled && <MdRippleEffect />}
         <MdTypography
-          target="label"
+          variant="label"
           size="large"
           className="flex items-center justify-center"
         >

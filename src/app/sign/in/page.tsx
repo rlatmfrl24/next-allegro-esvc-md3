@@ -114,7 +114,7 @@ export default function SignIn() {
           </label>
 
           <Link href={`/sign`} className="cursor-pointer flex items-center">
-            <MdTypography target="label" size="large" className="text-primary">
+            <MdTypography variant="label" size="large" className="text-primary">
               Forgot Password?
             </MdTypography>
           </Link>
@@ -130,11 +130,11 @@ export default function SignIn() {
           Sign In
         </MdFilledButton>
         <div className="flex items-center justify-center mt-12">
-          <MdTypography target="body" size="medium">
+          <MdTypography variant="body" size="medium">
             {"Don't have an account?"}
           </MdTypography>
           <Link href={`/sign/up`} className="cursor-pointer text-primary px-3">
-            <MdTypography target="label" size="large">
+            <MdTypography variant="label" size="large">
               Sign Up Here
             </MdTypography>
           </Link>

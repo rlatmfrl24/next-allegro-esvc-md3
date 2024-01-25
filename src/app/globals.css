@@ -89,6 +89,14 @@ body {
   --md-sys-typescale-body-small-size: 12px;
   --md-sys-typescale-body-small-line-height: 16px;
   --md-sys-typescale-body-small-weight: 400;
+
+  --md-sys-color-surface-dim: #181c20;
+  --md-sys-color-surface-bright: #f7f9ff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f1f4f9;
+  --md-sys-color-surface-container: #ebeef3;
+  --md-sys-color-surface-container-high: #e5e8ed;
+  --md-sys-color-surface-container-highest: #e0e3e8;
 }
 
 @layer utilities {

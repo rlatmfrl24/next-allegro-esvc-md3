@@ -15,7 +15,6 @@ import { MdPrimaryTab as MdPrimaryTabWebComponent } from "@material/web/tabs/pri
 import { MdSecondaryTab as MdSecondaryTabWebComponent } from "@material/web/tabs/secondary-tab";
 import { MdOutlinedSelect as MdOutlinedSelectWebComponent } from "@material/web/select/outlined-select";
 import { MdSelectOption as MdSelectOptionWebComponent } from "@material/web/select/select-option";
-
 import {
   applyTheme,
   argbFromHex,
@@ -119,9 +118,9 @@ export function createMDTheme(
 ) {
   const theme = themeFromSourceColor(argbFromHex(sourceColor), [
     {
-      name: "point",
+      name: "custom",
       value: argbFromHex(pointColor),
-      blend: true,
+      blend: false,
     },
   ]);
   console.log(JSON.stringify(theme, null, 2));

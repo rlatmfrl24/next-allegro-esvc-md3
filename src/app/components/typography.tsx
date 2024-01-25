@@ -1,17 +1,17 @@
 export const MdTypography = ({
   children,
-  target,
+  variant,
   size,
   className,
 }: {
   children: string | React.ReactNode;
-  target: "display" | "headline" | "title" | "label" | "body";
+  variant: "display" | "headline" | "title" | "label" | "body";
   size: "small" | "medium" | "large";
   className?: string;
 }) => {
   let typeScale = "";
 
-  switch (target) {
+  switch (variant) {
     case "display":
       typeScale = "font-suit ";
       switch (size) {

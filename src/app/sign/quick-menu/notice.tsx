@@ -18,18 +18,18 @@ const Notice = () => {
     return (
       <div className="flex items-center gap-2">
         <MdTypography
-          target="label"
+          variant="label"
           size="large"
           className="text-primary font-semibold"
         >
           {category}
         </MdTypography>
         <div className="w-px h-4 bg-gray-200">&nbsp;</div>
-        <MdTypography target="label" size="large" className="flex-1">
+        <MdTypography variant="label" size="large" className="flex-1">
           {content}
         </MdTypography>
         <MdTypography
-          target="label"
+          variant="label"
           size="medium"
           className="text-onSurface opacity-35"
         >
@@ -41,7 +41,7 @@ const Notice = () => {
   return (
     <div className={styles.card + ` p-12`}>
       <MdElevation />
-      <MdTypography target="title" size="large" className="mb-4">
+      <MdTypography variant="title" size="large" className="mb-4">
         Notice
       </MdTypography>
 

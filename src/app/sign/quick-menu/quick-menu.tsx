@@ -47,7 +47,7 @@ const QuickSearch = () => {
             handleTabChange("tab-schedule");
           }}
         >
-          <MdTypography target="title" size="small">
+          <MdTypography variant="title" size="small">
             Schedule
           </MdTypography>
         </MdPrimaryTab>
@@ -58,7 +58,7 @@ const QuickSearch = () => {
             handleTabChange("tab-quick-tracking");
           }}
         >
-          <MdTypography target="title" size="small">
+          <MdTypography variant="title" size="small">
             Quick Tracking
           </MdTypography>
         </MdPrimaryTab>
@@ -123,7 +123,7 @@ const QuickSearch = () => {
         role="tabpanel"
         aria-labelledby="tab-quick-tracking"
       >
-        <MdTypography target="body" size="medium">
+        <MdTypography variant="body" size="medium">
           {`It's fast and easy to track your shipment.`}
         </MdTypography>
         <MdOutlinedTextField
@@ -133,7 +133,7 @@ const QuickSearch = () => {
           type="textarea"
           className="resize-none"
           rows={5}
-        ></MdOutlinedTextField>
+        />
       </div>
       <div
         aria-label="quick-search-button"
