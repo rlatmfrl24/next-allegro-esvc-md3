@@ -17,7 +17,7 @@ export default function MainLayout({
           <SideNav />
         </aside>
         <section className="flex-1 flex flex-col items-center">
-          <div className="flex-auto h-0 overflow-auto container">
+          <div className="flex-auto h-0 overflow-auto max-w-[1400px] w-full">
             {children}
           </div>
           <Footer />

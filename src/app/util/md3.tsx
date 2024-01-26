@@ -1,4 +1,9 @@
 import React from "react";
+import {
+  applyTheme,
+  argbFromHex,
+  themeFromSourceColor,
+} from "@material/material-color-utilities";
 import { createComponent } from "@lit/react";
 import { MdRipple } from "@material/web/ripple/ripple.js";
 import { MdFilledButton as MdFilledButtonWebComponent } from "@material/web/button/filled-button.js";
@@ -15,11 +20,11 @@ import { MdPrimaryTab as MdPrimaryTabWebComponent } from "@material/web/tabs/pri
 import { MdSecondaryTab as MdSecondaryTabWebComponent } from "@material/web/tabs/secondary-tab";
 import { MdOutlinedSelect as MdOutlinedSelectWebComponent } from "@material/web/select/outlined-select";
 import { MdSelectOption as MdSelectOptionWebComponent } from "@material/web/select/select-option";
-import {
-  applyTheme,
-  argbFromHex,
-  themeFromSourceColor,
-} from "@material/material-color-utilities";
+import { MdChipSet as MdChipSetWebComponent } from "@material/web/chips/chip-set";
+import { MdAssistChip as MdAssistChipWebComponent } from "@material/web/chips/assist-chip";
+import { MdFilterChip as MdFilterChipWebComponent } from "@material/web/chips/filter-chip";
+import { MdInputChip as MdInputChipWebComponent } from "@material/web/chips/input-chip";
+import { MdSuggestionChip as MdSuggestionChipWebComponent } from "@material/web/chips/suggestion-chip";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -108,6 +113,36 @@ export const MdOutlinedSelect = createComponent({
 export const MdSelectOption = createComponent({
   tagName: "md-select-option",
   elementClass: MdSelectOptionWebComponent,
+  react: React,
+});
+
+export const MdChipSet = createComponent({
+  tagName: "md-chip-set",
+  elementClass: MdChipSetWebComponent,
+  react: React,
+});
+
+export const MdAssistChip = createComponent({
+  tagName: "md-assist-chip",
+  elementClass: MdAssistChipWebComponent,
+  react: React,
+});
+
+export const MdFilterChip = createComponent({
+  tagName: "md-filter-chip",
+  elementClass: MdFilterChipWebComponent,
+  react: React,
+});
+
+export const MdInputChip = createComponent({
+  tagName: "md-input-chip",
+  elementClass: MdInputChipWebComponent,
+  react: React,
+});
+
+export const MdSuggestionChip = createComponent({
+  tagName: "md-suggestion-chip",
+  elementClass: MdSuggestionChipWebComponent,
   react: React,
 });
 
