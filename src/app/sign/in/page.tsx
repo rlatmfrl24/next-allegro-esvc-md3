@@ -51,9 +51,9 @@ export default function SignIn() {
     <div className="flex-1 flex justify-center items-center">
       <div className={styles.card + ` w-[483px] p-12`}>
         <MdElevation />
-        <span className="font-suit text-xl">Welcome!</span>
+        <span className="font-pretendard text-xl">Welcome!</span>
         <span
-          className="font-suit text-3xl"
+          className="font-pretendard text-3xl"
           onClick={() => {
             // Test Function
             errorTest(

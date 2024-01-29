@@ -54,7 +54,7 @@ export default function Test() {
 
       <HexTest />
       <div className="flex gap-4">
-        <p className="flex flex-col font-suit text-4xl">
+        <p className="flex flex-col font-pretendard text-4xl">
           <span className="font-thin">Booking</span>
           <span className="font-light">Booking</span>
           <span>Booking</span>
@@ -75,10 +75,14 @@ export default function Test() {
       </div>
 
       <div className="flex gap-2">
-        <MdFilledButton className="font-suit">Click me</MdFilledButton>
-        <MdElevationButton className="font-suit">Click me</MdElevationButton>
-        <MdOutlinedButton className="font-suit">Click me</MdOutlinedButton>
-        <MdTextButton className="font-suit">Click me</MdTextButton>
+        <MdFilledButton className="font-pretendard">Click me</MdFilledButton>
+        <MdElevationButton className="font-pretendard">
+          Click me
+        </MdElevationButton>
+        <MdOutlinedButton className="font-pretendard">
+          Click me
+        </MdOutlinedButton>
+        <MdTextButton className="font-pretendard">Click me</MdTextButton>
       </div>
       <div className="flex gap-2 font-pretendard font-bold">
         <MdOutlinedTextField label="Label" className="h-fit" />
@@ -99,7 +103,7 @@ export default function Test() {
 
       <div className="flex gap-2">
         <button
-          className="bg-[#004aae] px-4 py-2 text-white font-suit rounded-xl"
+          className="bg-[#004aae] px-4 py-2 text-white font-pretendard rounded-xl"
           onClick={() => {
             applyPresetTheme("preset_1");
           }}
@@ -107,7 +111,7 @@ export default function Test() {
           Preset 1
         </button>
         <button
-          className="bg-[#2a6c00] px-4 py-2 text-white font-suit rounded-xl"
+          className="bg-[#2a6c00] px-4 py-2 text-white font-pretendard rounded-xl"
           onClick={() => {
             applyPresetTheme("preset_2");
           }}
@@ -115,7 +119,7 @@ export default function Test() {
           Preset 2
         </button>
         <button
-          className="bg-[#8b4a61] px-4 py-2 text-white font-suit rounded-xl"
+          className="bg-[#8b4a61] px-4 py-2 text-white font-pretendard rounded-xl"
           onClick={() => {
             applyPresetTheme("preset_3");
           }}

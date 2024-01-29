@@ -13,7 +13,7 @@ export const MdTypography = ({
 
   switch (variant) {
     case "display":
-      typeScale = "font-suit ";
+      typeScale = "font-pretendard ";
       switch (size) {
         case "large":
           typeScale += "text-[57px] leading-[64px] tracking-[-0.25px ]";
@@ -27,7 +27,7 @@ export const MdTypography = ({
       }
       break;
     case "headline":
-      typeScale = "font-suit ";
+      typeScale = "font-pretendard ";
       switch (size) {
         case "large":
           typeScale += "text-[32px] leading-[40px]";
@@ -41,7 +41,7 @@ export const MdTypography = ({
       }
       break;
     case "title":
-      typeScale = "font-suit ";
+      typeScale = "font-pretendard ";
       switch (size) {
         case "large":
           typeScale += "text-[22px] leading-[28px]";
