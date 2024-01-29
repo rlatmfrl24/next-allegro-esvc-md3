@@ -10,35 +10,14 @@ import "react-grid-layout/css/styles.css";
 import { useSetRecoilState } from "recoil";
 import { currentPathState } from "./store";
 import { useEffect, useState } from "react";
-import InputCard from "./dashboard/input-card";
+import { InputCard, StatisticCard } from "./dashboard/card";
+import { cardList, makeCardLayout } from "./util";
 
 export default function MainPage() {
   const setCurrentPath = useSetRecoilState(currentPathState);
   const [customizabled, setCustomizabled] = useState(false);
 
-  const layout = [
-    {
-      i: "bl-status",
-      x: 0,
-      y: 0,
-      w: 1,
-      h: 12,
-      minW: 1,
-      maxW: 2,
-      isResizable: false,
-    },
-    {
-      i: "surrender-bl",
-      x: 1,
-      y: 0,
-      w: 1,
-      h: 12,
-      minW: 1,
-      maxW: 2,
-      isResizable: false,
-    },
-    { i: "c", x: 4, y: 0, w: 1, h: 12, minW: 1, maxW: 2, isResizable: false },
-  ];
+  const layout = makeCardLayout(cardList);
 
   useEffect(() => {
     setCurrentPath(["Dashboard"]);
@@ -79,7 +58,7 @@ export default function MainPage() {
           console.log(layout);
         }}
       >
-        <div key="bl-status" className="flex items-center">
+        <div key="bl_status" className="flex items-center">
           <InputCard
             title="B/L Status"
             description="Enter a B/L number to inquiry the B/L status"
@@ -87,12 +66,39 @@ export default function MainPage() {
             buttonText="Inquiry"
           />
         </div>
-        <div key="surrender-bl" className="flex items-center">
+        <div key="surrender_bl" className="flex items-center">
           <InputCard
             title="Surrender B/L"
             description="Enter a B/L number to inquiry the B/L status"
             placeholder="B/L number"
             buttonText="Inquiry"
+          />
+        </div>
+        <div key="demurrage_and_detention" className="flex items-center">
+          <InputCard
+            title="Demurrage & Detention"
+            description="Enter a B/L number to inquiry the B/L status"
+            placeholder="B/L number"
+            buttonText="Inquiry"
+          />
+        </div>
+        <div key="delivery_order" className="flex items-center">
+          <InputCard
+            title="Demurrage & Detention"
+            description="Enter a B/L number to inquiry the B/L status"
+            placeholder="B/L number"
+            buttonText="Inquiry"
+          />
+        </div>
+        <div key="booking" className="flex items-center">
+          <StatisticCard
+            title="Booking"
+            data={[
+              { key: "Booked", value: 10 },
+              { key: "Rejected", value: 10 },
+              { key: "Processing", value: 10 },
+              { key: "Cancelled", value: 10 },
+            ]}
           />
         </div>
       </GridLayout>
