@@ -7,10 +7,12 @@ import {
   MdOutlinedTextField,
   MdTextButton,
   createMDTheme,
+  applyPresetTheme,
 } from "../util/md3";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import { dynamicColorTest } from "../util/color";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -19,6 +21,26 @@ export default function Test() {
   useEffect(() => {
     createMDTheme(color, color);
   }, [color]);
+
+  function HexTest() {
+    const [color, setColor] = useState("#009FE8");
+
+    return (
+      <div>
+        <input
+          type="text"
+          value={color}
+          onChange={(e) => {
+            setColor(e.target.value);
+          }}
+          className="border"
+        />
+        <button className="border" onClick={() => createMDTheme(color, color)}>
+          Apply
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2 p-2">
@@ -31,6 +53,8 @@ export default function Test() {
       </MdFilledButton>
 
       <HexColorPicker color={color} onChange={setColor} />
+
+      <HexTest />
       <div className="flex gap-4">
         <p className="flex flex-col font-suit text-4xl">
           <span className="font-thin">Booking</span>
@@ -73,6 +97,40 @@ export default function Test() {
           prefixText="US"
           suffixText="USD"
         />
+      </div>
+
+      <div className="flex gap-2">
+        <button
+          className="bg-[#004aae] px-4 py-2 text-white font-suit rounded-xl"
+          onClick={() => {
+            applyPresetTheme("preset_1");
+          }}
+        >
+          Preset 1
+        </button>
+        <button
+          className="bg-[#2a6c00] px-4 py-2 text-white font-suit rounded-xl"
+          onClick={() => {
+            applyPresetTheme("preset_2");
+          }}
+        >
+          Preset 2
+        </button>
+        <button
+          className="bg-[#8b4a61] px-4 py-2 text-white font-suit rounded-xl"
+          onClick={() => {
+            applyPresetTheme("preset_3");
+          }}
+        >
+          Preset 3
+        </button>
+        <MdElevationButton
+          onClick={() => {
+            dynamicColorTest();
+          }}
+        >
+          Dynamic Test
+        </MdElevationButton>
       </div>
     </div>
   );
