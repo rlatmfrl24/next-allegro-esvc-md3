@@ -164,7 +164,7 @@ export function createMDTheme(
       blend: false,
     },
   ]);
-  console.log(JSON.stringify(theme, null, 2));
+  // console.log(JSON.stringify(theme, null, 2));
 
   // Check if the user has dark mode turned on
   const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -176,6 +176,8 @@ export function createMDTheme(
     applyTheme(theme, { target: document.body });
   }
 }
+
+export function themeTest(sourceColor: string) {}
 
 export function applyPresetTheme(presetName: string) {
   let css = {};

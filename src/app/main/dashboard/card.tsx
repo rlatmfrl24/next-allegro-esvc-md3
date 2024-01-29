@@ -5,6 +5,7 @@ import {
   DashboardStatisticCardDataType,
 } from "@/app/util/typeDef";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 enum ChartColorEnum {
   BOOKED = "#77777A",
@@ -43,8 +44,39 @@ export function StatisticCard(props: DashboardStatisticCardDataType) {
             Confirmed
           </MdTypography>
         </div>
-        <div>
-          <div aria-label="chart"></div>
+        <div className="flex">
+          <div aria-label="chart" className="flex-1 justify-center flex">
+            <ResponsiveContainer width={100} height={100}>
+              <PieChart>
+                <Pie
+                  data={props.data}
+                  dataKey="value"
+                  nameKey="key"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={50}
+                  innerRadius={20}
+                >
+                  {props.data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={
+                        entry.key === "Booked"
+                          ? ChartColorEnum.BOOKED
+                          : entry.key === "Rejected"
+                          ? ChartColorEnum.REJECTED
+                          : entry.key === "Processing"
+                          ? ChartColorEnum.PROCESSING
+                          : entry.key === "Cancelled"
+                          ? ChartColorEnum.CANCELLED
+                          : ChartColorEnum.BOOKED
+                      }
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
           <div aria-label="data" className="flex justify-center pb-9 ">
             <div>
               {props.data.map((data, index) => {

@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import { dynamicColorTest } from "../util/color";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -20,6 +21,26 @@ export default function Test() {
   useEffect(() => {
     createMDTheme(color, color);
   }, [color]);
+
+  function HexTest() {
+    const [color, setColor] = useState("#009FE8");
+
+    return (
+      <div>
+        <input
+          type="text"
+          value={color}
+          onChange={(e) => {
+            setColor(e.target.value);
+          }}
+          className="border"
+        />
+        <button className="border" onClick={() => createMDTheme(color, color)}>
+          Apply
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2 p-2">
@@ -32,6 +53,8 @@ export default function Test() {
       </MdFilledButton>
 
       <HexColorPicker color={color} onChange={setColor} />
+
+      <HexTest />
       <div className="flex gap-4">
         <p className="flex flex-col font-suit text-4xl">
           <span className="font-thin">Booking</span>
@@ -101,6 +124,13 @@ export default function Test() {
         >
           Preset 3
         </button>
+        <MdElevationButton
+          onClick={() => {
+            dynamicColorTest();
+          }}
+        >
+          Dynamic Test
+        </MdElevationButton>
       </div>
     </div>
   );

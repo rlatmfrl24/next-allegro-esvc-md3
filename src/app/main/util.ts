@@ -38,8 +38,8 @@ export const cardList: DashboardCardInfoType[] = [
     type: "chart",
   },
   {
-    id: "shipping_information",
-    title: "Shipping Information",
+    id: "shipping_instruction",
+    title: "Shipping Instruction",
     size: 1,
     type: "chart",
   },

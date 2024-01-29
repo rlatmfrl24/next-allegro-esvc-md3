@@ -5,13 +5,12 @@ import { MdFilterChip, MdIcon, MdIconButton } from "../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import GridLayout from "react-grid-layout";
 import styles from "./main.module.css";
-
-import "react-grid-layout/css/styles.css";
 import { useSetRecoilState } from "recoil";
 import { currentPathState } from "./store";
 import { useEffect, useState } from "react";
 import { InputCard, StatisticCard } from "./dashboard/card";
 import { cardList, makeCardLayout } from "./util";
+//override react grid placeholder background color
 
 export default function MainPage() {
   const setCurrentPath = useSetRecoilState(currentPathState);
@@ -19,8 +18,17 @@ export default function MainPage() {
 
   const layout = makeCardLayout(cardList);
 
+  //set react grid placeholder background color
+
   useEffect(() => {
     setCurrentPath(["Dashboard"]);
+    const placeholder = document.querySelector(".react-grid-placeholder");
+    if (placeholder) {
+      placeholder.setAttribute(
+        "style",
+        "background-color: #F7F2FA; border-radius: 8px; border: 1px solid #E5E5E5"
+      );
+    }
   }, [setCurrentPath]);
 
   return (
@@ -93,6 +101,28 @@ export default function MainPage() {
         <div key="booking" className="flex items-center">
           <StatisticCard
             title="Booking"
+            data={[
+              { key: "Booked", value: 10 },
+              { key: "Rejected", value: 10 },
+              { key: "Processing", value: 10 },
+              { key: "Cancelled", value: 10 },
+            ]}
+          />
+        </div>
+        <div key="bl_information" className="flex items-center">
+          <StatisticCard
+            title="B/L Information"
+            data={[
+              { key: "Booked", value: 10 },
+              { key: "Rejected", value: 10 },
+              { key: "Processing", value: 10 },
+              { key: "Cancelled", value: 10 },
+            ]}
+          />
+        </div>
+        <div key="shipping_instruction" className="flex items-center">
+          <StatisticCard
+            title="Shipping Instruction"
             data={[
               { key: "Booked", value: 10 },
               { key: "Rejected", value: 10 },
