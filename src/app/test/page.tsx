@@ -7,6 +7,7 @@ import {
   MdOutlinedTextField,
   MdTextButton,
   createMDTheme,
+  applyPresetTheme,
 } from "../util/md3";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -73,6 +74,33 @@ export default function Test() {
           prefixText="US"
           suffixText="USD"
         />
+      </div>
+
+      <div className="flex gap-2">
+        <button
+          className="bg-[#004aae] px-4 py-2 text-white font-suit rounded-xl"
+          onClick={() => {
+            applyPresetTheme("preset_1");
+          }}
+        >
+          Preset 1
+        </button>
+        <button
+          className="bg-[#2a6c00] px-4 py-2 text-white font-suit rounded-xl"
+          onClick={() => {
+            applyPresetTheme("preset_2");
+          }}
+        >
+          Preset 2
+        </button>
+        <button
+          className="bg-[#8b4a61] px-4 py-2 text-white font-suit rounded-xl"
+          onClick={() => {
+            applyPresetTheme("preset_3");
+          }}
+        >
+          Preset 3
+        </button>
       </div>
     </div>
   );
