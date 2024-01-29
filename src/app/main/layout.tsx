@@ -12,12 +12,12 @@ export default function MainLayout({
       <header className="flex-none flex h-[60px] px-6 shadow-md items-center z-10">
         <Header />
       </header>
-      <main className="flex-1 flex flex-row bg-surfaceBright">
+      <main className="flex-1 flex flex-row ">
         <aside className="flex-none flex flex-col w-[290px] p-3 bg-surfaceContainer rounded-tr-3xl">
           <SideNav />
         </aside>
-        <section className="flex-1 flex flex-col">
-          <div className="flex-auto h-0 overflow-auto flex flex-col">
+        <section className="flex-1 flex flex-col items-center">
+          <div className="flex-auto h-0 overflow-auto w-full flex flex-col items-center">
             {children}
           </div>
           <Footer />

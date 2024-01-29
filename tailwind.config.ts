@@ -45,6 +45,20 @@ const config: Config = {
         inverseOnSurface: "var(--md-sys-color-inverse-on-surface)",
         inversePrimary: "var(--md-sys-color-inverse-primary)",
 
+        primaryFixed: "var(--md-sys-color-primary-fixed)",
+        onPrimaryFixed: "var(--md-sys-color-on-primary-fixed)",
+        primaryFixedDim: "var(--md-sys-color-primary-fixed-dim)",
+        onPrimaryFixedVariant: "var(--md-sys-color-on-primary-fixed-variant)",
+        secondaryFixed: "var(--md-sys-color-secondary-fixed)",
+        onSecondaryFixed: "var(--m3-sys-light-on-secondary-fixed)",
+        secondaryFixedDim: "var(--md-sys-color-secondary-fixed-dim)",
+        onSecondaryFixedVariant:
+          "var(--md-sys-color-on-secondary-fixed-variant)",
+        tertiaryFixed: "var(--md-sys-color-tertiary-fixed)",
+        onTertiaryFixed: "var(--md-sys-color-on-tertiary-fixed)",
+        tertiaryFixedDim: "var(--md-sys-color-tertiary-fixed-dim)",
+        onTertiaryFixedVariant: "var(--md-sys-color-on-tertiary-fixed-variant)",
+
         surface: "var(--md-sys-color-surface)",
         onSurface: "var(--md-sys-color-on-surface)",
         surfaceVariant: "var(--md-sys-color-surface-variant)",
@@ -57,8 +71,6 @@ const config: Config = {
         surfaceContainerHigh: "var(--md-sys-color-surface-container-high)",
         surfaceContainerHighest:
           "var(--md-sys-color-surface-container-highest)",
-
-        custom: "var(--md-sys-color-custom)",
       },
     },
   },

@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  applyTheme,
+  argbFromHex,
+  hexFromArgb,
+  themeFromSourceColor,
+} from "@material/material-color-utilities";
 import { createComponent } from "@lit/react";
 import { MdRipple } from "@material/web/ripple/ripple.js";
 import { MdFilledButton as MdFilledButtonWebComponent } from "@material/web/button/filled-button.js";
@@ -15,11 +21,16 @@ import { MdPrimaryTab as MdPrimaryTabWebComponent } from "@material/web/tabs/pri
 import { MdSecondaryTab as MdSecondaryTabWebComponent } from "@material/web/tabs/secondary-tab";
 import { MdOutlinedSelect as MdOutlinedSelectWebComponent } from "@material/web/select/outlined-select";
 import { MdSelectOption as MdSelectOptionWebComponent } from "@material/web/select/select-option";
-import {
-  applyTheme,
-  argbFromHex,
-  themeFromSourceColor,
-} from "@material/material-color-utilities";
+import { MdChipSet as MdChipSetWebComponent } from "@material/web/chips/chip-set";
+import { MdAssistChip as MdAssistChipWebComponent } from "@material/web/chips/assist-chip";
+import { MdFilterChip as MdFilterChipWebComponent } from "@material/web/chips/filter-chip";
+import { MdInputChip as MdInputChipWebComponent } from "@material/web/chips/input-chip";
+import { MdSuggestionChip as MdSuggestionChipWebComponent } from "@material/web/chips/suggestion-chip";
+
+// custom theme
+import preset_1 from "@/../public/css/preset_1.json";
+import preset_2 from "@/../public/css/preset_2.json";
+import preset_3 from "@/../public/css/preset_3.json";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -111,6 +122,36 @@ export const MdSelectOption = createComponent({
   react: React,
 });
 
+export const MdChipSet = createComponent({
+  tagName: "md-chip-set",
+  elementClass: MdChipSetWebComponent,
+  react: React,
+});
+
+export const MdAssistChip = createComponent({
+  tagName: "md-assist-chip",
+  elementClass: MdAssistChipWebComponent,
+  react: React,
+});
+
+export const MdFilterChip = createComponent({
+  tagName: "md-filter-chip",
+  elementClass: MdFilterChipWebComponent,
+  react: React,
+});
+
+export const MdInputChip = createComponent({
+  tagName: "md-input-chip",
+  elementClass: MdInputChipWebComponent,
+  react: React,
+});
+
+export const MdSuggestionChip = createComponent({
+  tagName: "md-suggestion-chip",
+  elementClass: MdSuggestionChipWebComponent,
+  react: React,
+});
+
 export function createMDTheme(
   sourceColor: string,
   pointColor: string,
@@ -123,7 +164,7 @@ export function createMDTheme(
       blend: false,
     },
   ]);
-  console.log(JSON.stringify(theme, null, 2));
+  // console.log(JSON.stringify(theme, null, 2));
 
   // Check if the user has dark mode turned on
   const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -134,4 +175,35 @@ export function createMDTheme(
   } else {
     applyTheme(theme, { target: document.body });
   }
+}
+
+export function themeTest(sourceColor: string) {}
+
+export function applyPresetTheme(presetName: string) {
+  let css = {};
+  switch (presetName) {
+    case "preset_1":
+      css = preset_1;
+      break;
+    case "preset_2":
+      css = preset_2;
+      break;
+    case "preset_3":
+      css = preset_3;
+      break;
+    default:
+      css = preset_1;
+      break;
+  }
+  const target = document.body;
+  const theme = JSON.parse(JSON.stringify(css));
+
+  Object.keys(theme).forEach((key) => {
+    console.log(key, theme[key]);
+    target.style.setProperty(key, theme[key]);
+    if (key.includes("--m3-sys-light-")) {
+      const token = key.replace("--m3-sys-light-", "").toLowerCase();
+      target.style.setProperty(`--md-sys-color-${token}`, theme[key]);
+    }
+  });
 }

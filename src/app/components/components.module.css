@@ -36,15 +36,3 @@
   --md-elevation-level: 4;
   @apply relative flex flex-col rounded-xl bg-white;
 }
-
-.navItem {
-  @apply relative flex h-14 px-6 py-4 rounded-full cursor-pointer;
-}
-
-.navItem.primary.selected {
-  @apply bg-secondaryContainer;
-}
-
-.navItem.secondary.selected {
-  @apply bg-slate-300;
-}
