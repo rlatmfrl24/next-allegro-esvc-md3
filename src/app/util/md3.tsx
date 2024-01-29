@@ -1,10 +1,4 @@
 import React from "react";
-import {
-  applyTheme,
-  argbFromHex,
-  hexFromArgb,
-  themeFromSourceColor,
-} from "@material/material-color-utilities";
 import { createComponent } from "@lit/react";
 import { MdRipple } from "@material/web/ripple/ripple.js";
 import { MdFilledButton as MdFilledButtonWebComponent } from "@material/web/button/filled-button.js";
@@ -26,11 +20,6 @@ import { MdAssistChip as MdAssistChipWebComponent } from "@material/web/chips/as
 import { MdFilterChip as MdFilterChipWebComponent } from "@material/web/chips/filter-chip";
 import { MdInputChip as MdInputChipWebComponent } from "@material/web/chips/input-chip";
 import { MdSuggestionChip as MdSuggestionChipWebComponent } from "@material/web/chips/suggestion-chip";
-
-// custom theme
-import preset_1 from "@/../public/css/preset_1.json";
-import preset_2 from "@/../public/css/preset_2.json";
-import preset_3 from "@/../public/css/preset_3.json";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -151,59 +140,3 @@ export const MdSuggestionChip = createComponent({
   elementClass: MdSuggestionChipWebComponent,
   react: React,
 });
-
-export function createMDTheme(
-  sourceColor: string,
-  pointColor: string,
-  isContainDarkMode?: boolean
-) {
-  const theme = themeFromSourceColor(argbFromHex(sourceColor), [
-    {
-      name: "custom",
-      value: argbFromHex(pointColor),
-      blend: false,
-    },
-  ]);
-  // console.log(JSON.stringify(theme, null, 2));
-
-  // Check if the user has dark mode turned on
-  const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  // Apply the theme to the body by updating custom properties for material tokens
-  if (isContainDarkMode !== undefined && isContainDarkMode === true) {
-    applyTheme(theme, { target: document.body, dark: systemDark });
-  } else {
-    applyTheme(theme, { target: document.body });
-  }
-}
-
-export function themeTest(sourceColor: string) {}
-
-export function applyPresetTheme(presetName: string) {
-  let css = {};
-  switch (presetName) {
-    case "preset_1":
-      css = preset_1;
-      break;
-    case "preset_2":
-      css = preset_2;
-      break;
-    case "preset_3":
-      css = preset_3;
-      break;
-    default:
-      css = preset_1;
-      break;
-  }
-  const target = document.body;
-  const theme = JSON.parse(JSON.stringify(css));
-
-  Object.keys(theme).forEach((key) => {
-    console.log(key, theme[key]);
-    target.style.setProperty(key, theme[key]);
-    if (key.includes("--m3-sys-light-")) {
-      const token = key.replace("--m3-sys-light-", "").toLowerCase();
-      target.style.setProperty(`--md-sys-color-${token}`, theme[key]);
-    }
-  });
-}

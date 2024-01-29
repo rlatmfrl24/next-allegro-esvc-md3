@@ -6,20 +6,18 @@ import {
   MdOutlinedButton,
   MdOutlinedTextField,
   MdTextButton,
-  createMDTheme,
-  applyPresetTheme,
 } from "../util/md3";
+import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
-import { dynamicColorTest } from "../util/color";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
   const router = useRouter();
 
   useEffect(() => {
-    createMDTheme(color, color);
+    createMDTheme(color);
   }, [color]);
 
   function HexTest() {
@@ -35,7 +33,7 @@ export default function Test() {
           }}
           className="border"
         />
-        <button className="border" onClick={() => createMDTheme(color, color)}>
+        <button className="border" onClick={() => createMDTheme(color)}>
           Apply
         </button>
       </div>
@@ -124,13 +122,6 @@ export default function Test() {
         >
           Preset 3
         </button>
-        <MdElevationButton
-          onClick={() => {
-            dynamicColorTest();
-          }}
-        >
-          Dynamic Test
-        </MdElevationButton>
       </div>
     </div>
   );
