@@ -13,6 +13,7 @@ import {
 import {
   SortableContext,
   arrayMove,
+  arraySwap,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { useState } from "react";
@@ -26,10 +27,7 @@ import {
   DashboardCard,
   DashboardCardConstructor,
   DashboardCardPlaceholder,
-  InputCard,
-  StatisticCard,
 } from "./card";
-import { AnimatePresence, motion } from "framer-motion";
 
 export default function Dashboard() {
   const [items, setItems] = useState(cardList);
@@ -56,7 +54,7 @@ export default function Dashboard() {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over!.id);
 
-        return arrayMove(items, oldIndex, newIndex);
+        return arraySwap(items, oldIndex, newIndex);
       });
     }
   }

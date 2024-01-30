@@ -31,7 +31,10 @@ const Sortable = ({ item, ...props }: Props) => {
       style={styles}
       {...props}
       {...attributes}
-      {...listeners}
+      {
+        //add listeners to the element if it is draggable
+        ...(draggable ? listeners : {})
+      }
     >
       {props.children}
     </Item>
