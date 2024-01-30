@@ -8,7 +8,7 @@ import React, {
 import classNames from "classnames/bind";
 import styles from "./components.module.css";
 import { MdTypography } from "./typography";
-import { MdIcon, MdRippleEffect } from "../util/md3";
+import { MdRippleEffect } from "../util/md3";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 
 export function MdSegmentedButtons({

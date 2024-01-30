@@ -1,20 +1,13 @@
 "use client";
 
 import { MdTypography } from "../components/typography";
-import {
-  MdFilterChip,
-  MdIcon,
-  MdIconButton,
-  MdOutlinedTextField,
-} from "../util/md3";
+import { MdFilterChip, MdIcon, MdIconButton } from "../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { currentPathState, draggableState } from "./store";
 import { useEffect, useState } from "react";
 import Dashboard from "./dashboard/dashboard";
-import Portal from "../components/portal";
 import TitleIndicator from "@/../public/title_indicator.svg";
-import { AnimatePresence, motion } from "framer-motion";
 import SetDashboard from "./dashboard/set-dashboard";
 
 export default function MainPage() {

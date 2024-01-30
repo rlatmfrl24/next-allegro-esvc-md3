@@ -8,7 +8,7 @@ import Item, { TItem } from "./item";
 type Props = {
   item: TItem;
   className?: string;
-  isDraggable?: boolean;
+  draggable?: boolean;
   children?: React.ReactNode;
 } & HTMLAttributes<HTMLDivElement>;
 
@@ -17,7 +17,7 @@ const Sortable = ({ item, ...props }: Props) => {
     useSortable({
       id: item.id,
     });
-  const draggable = props.isDraggable === undefined ? true : props.isDraggable;
+  const draggable = props.draggable === undefined ? true : props.draggable;
 
   const styles = {
     transform: CSS.Translate.toString(transform),
@@ -31,7 +31,10 @@ const Sortable = ({ item, ...props }: Props) => {
       style={styles}
       {...props}
       {...attributes}
-      {...listeners}
+      {
+        //add listeners to the element if it is draggable
+        ...(draggable ? listeners : {})
+      }
     >
       {props.children}
     </Item>
