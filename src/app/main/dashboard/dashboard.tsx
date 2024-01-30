@@ -22,7 +22,13 @@ import { useRecoilValue } from "recoil";
 import { dashboardCardState, draggableState } from "../store";
 import { customCollisionDetectionAlgorithm } from "@/app/components/dnd/util";
 import { cardList } from "../util";
-import { DashboardCard, DashboardCardPlaceholder } from "./card";
+import {
+  DashboardCard,
+  DashboardCardConstructor,
+  DashboardCardPlaceholder,
+  InputCard,
+  StatisticCard,
+} from "./card";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Dashboard() {
@@ -93,7 +99,7 @@ export default function Dashboard() {
                   className={item.size ? `col-span-${item.size}` : ""}
                   isDraggable={isDraggable}
                 >
-                  <DashboardCard title={item.title}>{item.title}</DashboardCard>
+                  <DashboardCardConstructor item={item} />
                 </Sortable>
               )
             )}

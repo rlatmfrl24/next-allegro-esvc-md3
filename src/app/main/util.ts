@@ -187,31 +187,3 @@ export const cardList: DashboardCardInfoType[] = [
     type: "etc",
   },
 ];
-
-export function makeCardLayout(cardList: DashboardCardInfoType[]) {
-  const cardLayout = [];
-  let currentX = 0;
-  let currentY = 0;
-  for (let i = 0; i < cardList.length; i++) {
-    const card = cardList[i];
-    if (currentX + card.size > 4) {
-      currentX = 0;
-      currentY += 1;
-    }
-
-    const layout = {
-      i: card.id,
-      x: currentX,
-      y: currentY,
-      w: card.size,
-      h: 12,
-      minW: 1,
-      maxW: 2,
-      isResizable: false,
-    };
-    currentX += card.size;
-
-    cardLayout.push(layout);
-  }
-  return cardLayout;
-}
