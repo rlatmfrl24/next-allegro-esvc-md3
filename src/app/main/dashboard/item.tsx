@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { draggableState } from "../store";
 
 export type TItem = {
-  id: number;
+  id: number | string;
   title?: string;
   tooltip?: string;
   className?: string;
@@ -30,7 +30,7 @@ const Item = forwardRef<HTMLDivElement, Props>(function Item(
 
   return (
     <div ref={ref} style={styles} {...props}>
-      {item.id}
+      {props.children}
     </div>
   );
 });
