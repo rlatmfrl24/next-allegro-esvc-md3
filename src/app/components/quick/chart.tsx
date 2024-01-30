@@ -25,37 +25,35 @@ export default function QuickChart(props: {
       </div>
       <div className="flex">
         <div aria-label="chart" className="flex-1 justify-center flex">
-          <ResponsiveContainer width={100} height={100}>
-            <PieChart>
-              <Pie
-                isAnimationActive={false}
-                data={props.data}
-                dataKey="value"
-                nameKey="key"
-                cx="50%"
-                cy="50%"
-                outerRadius={50}
-                innerRadius={20}
-              >
-                {props.data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={
-                      entry.key === "Booked"
-                        ? ChartColorEnum.BOOKED
-                        : entry.key === "Rejected"
-                        ? ChartColorEnum.REJECTED
-                        : entry.key === "Processing"
-                        ? ChartColorEnum.PROCESSING
-                        : entry.key === "Cancelled"
-                        ? ChartColorEnum.CANCELLED
-                        : ChartColorEnum.BOOKED
-                    }
-                  />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
+          <PieChart width={100} height={100}>
+            <Pie
+              isAnimationActive={false}
+              data={props.data}
+              dataKey="value"
+              nameKey="key"
+              cx="50%"
+              cy="50%"
+              outerRadius={50}
+              innerRadius={20}
+            >
+              {props.data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    entry.key === "Booked"
+                      ? ChartColorEnum.BOOKED
+                      : entry.key === "Rejected"
+                      ? ChartColorEnum.REJECTED
+                      : entry.key === "Processing"
+                      ? ChartColorEnum.PROCESSING
+                      : entry.key === "Cancelled"
+                      ? ChartColorEnum.CANCELLED
+                      : ChartColorEnum.BOOKED
+                  }
+                />
+              ))}
+            </Pie>
+          </PieChart>
         </div>
         <div aria-label="data" className="flex justify-center pb-9 ">
           <div>

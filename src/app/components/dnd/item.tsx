@@ -9,7 +9,7 @@ export type TItem = {
 type Props = {
   item: TItem;
   isDragging?: boolean;
-  isDraggable?: boolean;
+  draggable?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Item = forwardRef<HTMLDivElement, Props>(function Item(
@@ -17,7 +17,7 @@ const Item = forwardRef<HTMLDivElement, Props>(function Item(
   ref
 ) {
   const styles: CSSProperties = {
-    cursor: props.isDraggable ? (isDragging ? "grabbing" : "grab") : "default",
+    cursor: props.draggable ? (isDragging ? "grabbing" : "grab") : "default",
     lineHeight: "0.5",
     transform: isDragging ? "scale(1.05)" : "scale(1)",
     ...style,

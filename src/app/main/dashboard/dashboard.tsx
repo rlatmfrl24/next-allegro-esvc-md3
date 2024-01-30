@@ -12,7 +12,6 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  arrayMove,
   arraySwap,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
@@ -28,6 +27,7 @@ import {
   DashboardCardConstructor,
   DashboardCardPlaceholder,
 } from "./card";
+import styles from "../main.module.css";
 
 export default function Dashboard() {
   const [items, setItems] = useState(cardList);
@@ -86,7 +86,12 @@ export default function Dashboard() {
               isDraggable && item.id === activeId ? (
                 <div
                   key={item.id}
-                  className={`${item.size ? `col-span-${item.size}` : ""}`}
+                  className={
+                    {
+                      1: styles["sortable"],
+                      2: styles["sortable-wide"],
+                    }[item.size]
+                  }
                 >
                   <DashboardCardPlaceholder />
                 </div>
@@ -94,8 +99,13 @@ export default function Dashboard() {
                 <Sortable
                   key={item.id}
                   item={{ id: item.id }}
-                  className={item.size ? `col-span-${item.size}` : ""}
-                  isDraggable={isDraggable}
+                  className={
+                    {
+                      1: styles["sortable"],
+                      2: styles["sortable-wide"],
+                    }[item.size]
+                  }
+                  draggable={isDraggable}
                 >
                   <DashboardCardConstructor item={item} />
                 </Sortable>
@@ -107,15 +117,11 @@ export default function Dashboard() {
         {activeId ? (
           // Active item is rendered here
           <Item item={{ id: parseInt(activeId) }}>
-            <div
-              className={`h-60 shadow flex items-center justify-center bg-gray-100 rounded-md opacity-80`}
-            >
+            <div className="opacity-80">
               {items.find((item) => item.id === activeId) ? (
-                <DashboardCard
-                  title={items.find((item) => item.id === activeId)!.title}
-                >
-                  {items.find((item) => item.id === activeId)!.title}
-                </DashboardCard>
+                <DashboardCardConstructor
+                  item={items.find((item) => item.id === activeId)!}
+                />
               ) : null}
             </div>
           </Item>

@@ -22,10 +22,6 @@ export default function SetDashboard(props: {
   const [enabledCardIds, setEnabledCardIds] =
     useRecoilState(dashboardCardState);
 
-  useEffect(() => {
-    console.log(enabledCardIds);
-  }, [enabledCardIds]);
-
   return (
     <Portal selector="#main-container">
       <AnimatePresence>

@@ -53,7 +53,7 @@ export function DashboardCard(props: {
       transition={{ duration: 0.2 }}
       className="border-primaryFixed border rounded-xl flex-1 bg-white select-none h-64 flex flex-col"
     >
-      <div className="flex items-center text-primary bg-surfaceContainerLow h-16 px-4 rounded-t-xl border-b border-primaryFixed">
+      <div className="flex items-center text-primary bg-surfaceContainerLow h-16 min-h-[4rem] px-4 rounded-t-xl border-b border-primaryFixed">
         <MdTypography variant="title" size="medium" className="flex-1">
           {props.title}
         </MdTypography>
