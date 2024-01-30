@@ -1,16 +1,8 @@
-import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import {
-  MdIcon,
-  MdIconButton,
-  MdOutlinedTextField,
-  MdSwitch,
-} from "@/app/util/md3";
+import { MdIcon, MdIconButton, MdSwitch } from "@/app/util/md3";
 import { cardList } from "../util";
 import { useRecoilState } from "recoil";
 import { dashboardCardState } from "../store";
