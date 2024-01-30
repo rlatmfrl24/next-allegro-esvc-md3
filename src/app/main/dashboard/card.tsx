@@ -6,6 +6,7 @@ import {
 } from "@/app/util/typeDef";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { motion } from "framer-motion";
 
 enum ChartColorEnum {
   BOOKED = "#77777A",
@@ -128,7 +129,10 @@ export function DashboardCard(props: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-primaryFixed border rounded-xl flex-1 bg-white select-none h-64 flex flex-col">
+    <motion.div
+      layout
+      className="border-primaryFixed border rounded-xl flex-1 bg-white select-none h-64 flex flex-col"
+    >
       <div className="flex items-center text-primary bg-surfaceContainerLow h-16 px-4 rounded-t-xl border-b border-primaryFixed">
         <MdTypography variant="title" size="medium" className="flex-1">
           {props.title}
@@ -140,6 +144,6 @@ export function DashboardCard(props: {
         )}
       </div>
       {props.children}
-    </div>
+    </motion.div>
   );
 }
