@@ -13,7 +13,7 @@ export default function MainLayout({
         <Header />
       </header>
       <main className="flex-1 flex flex-row ">
-        <aside className="flex-none flex flex-col w-[290px] p-3 bg-surfaceContainer rounded-tr-3xl">
+        <aside className="flex-none flex flex-col w-[290px] bg-surfaceContainer rounded-tr-3xl">
           <SideNav />
         </aside>
         <section className="flex-1 flex flex-col items-center">

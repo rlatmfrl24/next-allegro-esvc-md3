@@ -97,11 +97,4 @@ body {
   }
 }
 
-@import "react-grid-layout/css/styles.css";
-
-.react-grid-item.react-grid-placeholder {
-  background: var(--md-sys-color-surface-container-low);
-  opacity: 1;
-  border-radius: 12px;
-  border: 3px solid var(--md-sys-color-secondary-container);
-}
+@import "overlayscrollbars/overlayscrollbars.css";

@@ -1,4 +1,123 @@
-import { DashboardCardInfoType } from "../util/typeDef";
+import { DashboardCardInfoType, MenuItemType } from "../util/typeDef";
+
+// TODO: 추후에 API로 받아올 예정
+export const meunItems: MenuItemType[] = [
+  {
+    name: "Dashboard",
+    children: [],
+    isLeaf: true,
+  },
+  {
+    name: "Schedule",
+    children: [
+      {
+        name: "Point to Point Schedule",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "Vessel Schedule",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "Port Schedule",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "Long Range Schedule",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "My Schedule",
+        children: [],
+        isLeaf: true,
+      },
+    ],
+  },
+  {
+    name: "Booking",
+    children: [
+      {
+        name: "Booking Request",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "Booking Status",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "Booking Template",
+        children: [],
+        isLeaf: true,
+      },
+    ],
+  },
+  {
+    name: "Documentation",
+    children: [
+      {
+        name: "Shipping Instruction",
+        children: [
+          {
+            name: "SI Submission & Amendment",
+            children: [],
+            isLeaf: true,
+          },
+          {
+            name: "SI Template",
+            children: [],
+            isLeaf: true,
+          },
+        ],
+        isLeaf: false,
+      },
+      {
+        name: "B/L Processing",
+        children: [
+          {
+            name: "Draft N/N B/L",
+            children: [],
+            isLeaf: true,
+          },
+          {
+            name: "Sea Waybill Print",
+            children: [],
+            isLeaf: true,
+          },
+        ],
+        isLeaf: false,
+      },
+    ],
+    isLeaf: false,
+  },
+  {
+    name: "Tracking",
+    children: [
+      {
+        name: "Cargo Tracking",
+        children: [],
+        isLeaf: true,
+      },
+    ],
+    isLeaf: false,
+  },
+  {
+    name: "Manage Shipment",
+    children: [
+      {
+        name: "Shipment Overview",
+        children: [],
+        isLeaf: true,
+      },
+    ],
+    isLeaf: false,
+  },
+];
 
 export const cardList: DashboardCardInfoType[] = [
   {

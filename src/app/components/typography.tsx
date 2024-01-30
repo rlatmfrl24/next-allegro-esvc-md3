@@ -90,5 +90,5 @@ export const MdTypography = ({
       break;
   }
 
-  return <span className={typeScale + ` ` + className}>{children}</span>;
+  return <div className={typeScale + ` ` + className}>{children}</div>;
 };
