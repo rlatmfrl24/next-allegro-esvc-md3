@@ -4,12 +4,12 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { HTMLAttributes } from "react";
 import Item, { TItem } from "./item";
-import { useRecoilValue } from "recoil";
-import { draggableState } from "../store";
 
 type Props = {
   item: TItem;
   className?: string;
+  isDraggable?: boolean;
+  children?: React.ReactNode;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Sortable = ({ item, ...props }: Props) => {
@@ -17,8 +17,7 @@ const Sortable = ({ item, ...props }: Props) => {
     useSortable({
       id: item.id,
     });
-
-  const isDraggable = useRecoilValue(draggableState);
+  const draggable = props.isDraggable === undefined ? true : props.isDraggable;
 
   const styles = {
     transform: CSS.Translate.toString(transform),
@@ -28,12 +27,14 @@ const Sortable = ({ item, ...props }: Props) => {
   return (
     <Item
       item={item}
-      ref={isDraggable ? setNodeRef : undefined}
+      ref={draggable ? setNodeRef : undefined}
       style={styles}
       {...props}
       {...attributes}
       {...listeners}
-    />
+    >
+      {props.children}
+    </Item>
   );
 };
 

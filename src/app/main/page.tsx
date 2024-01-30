@@ -31,7 +31,7 @@ export default function MainPage() {
 
   return (
     <div className="w-full p-6 relative">
-      <div className="flex py-6 items-center gap-3">
+      <div className="flex items-center gap-3 pb-6">
         <TitleIndicator className="mr-1" />
         <MdTypography
           variant="title"

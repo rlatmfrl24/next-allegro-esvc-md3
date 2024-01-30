@@ -21,7 +21,7 @@ import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton, MdOutlinedTextField } from "@/app/util/md3";
 import { cardList } from "../util";
-import Sortable from "./sortable";
+import Sortable from "../../components/dnd/sortable";
 
 export default function SetDashboard(props: {
   isDrawerOpen: boolean;
@@ -48,11 +48,6 @@ export default function SetDashboard(props: {
       setItems((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over!.id);
-
-        console.log(oldIndex, newIndex);
-
-        // const oldIndex = items.indexOf((active.id.toString()));
-        // const newIndex = items.indexOf((over!.id.toString()));
 
         return arrayMove(items, oldIndex, newIndex);
       });
@@ -115,26 +110,15 @@ export default function SetDashboard(props: {
                 On/Off
               </MdTypography>
             </div>
-            <DndContext
-              sensors={sensors}
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext items={items}>
-                <div className="flex flex-col">
-                  {items.map((item) => (
-                    <Sortable
-                      key={item.id}
-                      item={{ id: item.id }}
-                      className="h-32"
-                    >
-                      {item.title}
-                    </Sortable>
-                  ))}
+            <div className="flex flex-col">
+              {items.map((item) => (
+                <div key={item.id} className="h-12 flex items-center px-6">
+                  <MdTypography variant="body" size="large">
+                    {item.title}
+                  </MdTypography>
                 </div>
-              </SortableContext>
-            </DndContext>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
