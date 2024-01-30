@@ -23,6 +23,7 @@ import { dashboardCardState, draggableState } from "../store";
 import { customCollisionDetectionAlgorithm } from "@/app/components/dnd/util";
 import { cardList } from "../util";
 import { DashboardCard, DashboardCardPlaceholder } from "./card";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Dashboard() {
   const [items, setItems] = useState(cardList);

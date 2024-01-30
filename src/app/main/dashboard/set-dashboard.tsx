@@ -52,27 +52,6 @@ export default function SetDashboard(props: {
               </MdIconButton>
             </div>
 
-            <MdOutlinedTextField placeholder="Search">
-              <MdIcon slot="leading-icon">
-                <SearchIcon />
-              </MdIcon>
-            </MdOutlinedTextField>
-
-            <div className="flex items-center">
-              <MdIcon className="h-12 w-12 flex items-center justify-center">
-                <ArrowDropDownIcon />
-              </MdIcon>
-              <MdTypography variant="label" size="medium" className="flex-1">
-                Dashboard Item
-              </MdTypography>
-              <MdTypography
-                variant="label"
-                size="medium"
-                className="text-primary mx-8"
-              >
-                On/Off
-              </MdTypography>
-            </div>
             <div className="flex flex-col">
               {cardList.map((item) => (
                 <div key={item.id} className="h-12 flex items-center px-6">

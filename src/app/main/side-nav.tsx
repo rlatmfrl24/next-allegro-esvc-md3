@@ -16,7 +16,11 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 export default function SideNav() {
   return (
     <>
-      <MdTypography variant="title" size="small" className="px-7 pt-5 mb-5">
+      <MdTypography
+        variant="title"
+        size="small"
+        className="px-7 pt-5 mb-5 text-primary"
+      >
         Menu
       </MdTypography>
       <OverlayScrollbarsComponent

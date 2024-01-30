@@ -32,7 +32,7 @@ export default function MainPage() {
   return (
     <div className="w-full p-6 relative">
       <div className="flex items-center gap-3 pb-6">
-        <TitleIndicator className="mr-1" />
+        <TitleIndicator className="mr-1 text-primary" />
         <MdTypography
           variant="title"
           size="large"
