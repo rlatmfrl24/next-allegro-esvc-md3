@@ -6,6 +6,7 @@ export type TItem = {
   id: number;
   title?: string;
   tooltip?: string;
+  className?: string;
   children?: React.ReactNode;
 };
 
@@ -28,14 +29,7 @@ const Item = forwardRef<HTMLDivElement, Props>(function Item(
   };
 
   return (
-    <div
-      ref={ref}
-      style={styles}
-      {...props}
-      className={`h-60 shadow flex items-center justify-center bg-gray-100 rounded-md ${
-        item.id % 2 === 0 ? "col-span-2" : ""
-      }`}
-    >
+    <div ref={ref} style={styles} {...props}>
       {item.id}
     </div>
   );

@@ -7,13 +7,15 @@ import {
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
+  closestCorners,
+  pointerWithin,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
-  arraySwap,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { useState } from "react";
@@ -30,10 +32,6 @@ export default function Dashboard() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  function handleDragStart({ active }: DragStartEvent) {
-    setActiveId(active.id.toString());
-  }
 
   function handleDragOver(event: DragEndEvent) {
     const { active, over } = event;
@@ -52,8 +50,30 @@ export default function Dashboard() {
     }
   }
 
+  // Drag Handlers for DragOverlay
+  function handleDragStart({ active }: DragStartEvent) {
+    setActiveId(active.id.toString());
+  }
+
   function handleDragEnd(event: DragEndEvent) {
     setActiveId("");
+  }
+
+  // Custom collision detection algorithm for Maximum update depth exceeded error
+  function customCollisionDetectionAlgorithm(args: any) {
+    const closestCornersCollisions = closestCorners(args);
+    const closestCenterCollisions = closestCenter(args);
+    const pointerWithinCollisions = pointerWithin(args);
+
+    if (
+      closestCornersCollisions.length > 0 &&
+      closestCenterCollisions.length > 0 &&
+      pointerWithinCollisions.length > 0
+    ) {
+      return pointerWithinCollisions;
+    }
+
+    return [];
   }
 
   return (
@@ -62,16 +82,31 @@ export default function Dashboard() {
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      collisionDetection={customCollisionDetectionAlgorithm}
     >
       <SortableContext items={items} strategy={() => null}>
         <div className="grid grid-cols-4 gap-4">
           {items.map((id) => (
-            <Sortable key={id} item={{ id }} />
+            <Sortable
+              key={id}
+              item={{ id }}
+              className={`h-60 shadow flex items-center justify-center bg-gray-100 rounded-md ${
+                id % 2 === 0 ? "col-span-2" : ""
+              }`}
+            />
           ))}
         </div>
       </SortableContext>
       <DragOverlay>
-        {activeId ? <Item item={{ id: parseInt(activeId) }} /> : null}
+        {activeId ? (
+          // Active item is rendered here
+          <Item
+            item={{ id: parseInt(activeId) }}
+            className={`h-60 shadow flex items-center justify-center bg-gray-100 rounded-md ${
+              parseInt(activeId) % 2 === 0 ? "col-span-2" : ""
+            }`}
+          />
+        ) : null}
       </DragOverlay>
     </DndContext>
   );

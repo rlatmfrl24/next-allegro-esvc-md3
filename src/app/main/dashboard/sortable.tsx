@@ -9,6 +9,7 @@ import { draggableState } from "../store";
 
 type Props = {
   item: TItem;
+  className?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Sortable = ({ item, ...props }: Props) => {
