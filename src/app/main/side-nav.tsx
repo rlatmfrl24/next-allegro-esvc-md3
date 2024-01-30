@@ -23,19 +23,8 @@ const meunItems: MenuItemType[] = [
     children: [
       {
         name: "Point to Point Schedule",
-        children: [
-          {
-            name: "Bulk Schedule",
-            children: [],
-            isLeaf: true,
-          },
-          {
-            name: "Initial Schedule",
-            children: [],
-            isLeaf: true,
-          },
-        ],
-        isLeaf: false,
+        children: [],
+        isLeaf: true,
       },
       {
         name: "Vessel Schedule",
@@ -49,6 +38,11 @@ const meunItems: MenuItemType[] = [
       },
       {
         name: "Long Range Schedule",
+        children: [],
+        isLeaf: true,
+      },
+      {
+        name: "My Schedule",
         children: [],
         isLeaf: true,
       },
@@ -73,6 +67,66 @@ const meunItems: MenuItemType[] = [
         isLeaf: true,
       },
     ],
+  },
+  {
+    name: "Documentation",
+    children: [
+      {
+        name: "Shipping Instruction",
+        children: [
+          {
+            name: "SI Submission & Amendment",
+            children: [],
+            isLeaf: true,
+          },
+          {
+            name: "SI Template",
+            children: [],
+            isLeaf: true,
+          },
+        ],
+        isLeaf: false,
+      },
+      {
+        name: "B/L Processing",
+        children: [
+          {
+            name: "Draft N/N B/L",
+            children: [],
+            isLeaf: true,
+          },
+          {
+            name: "Sea Waybill Print",
+            children: [],
+            isLeaf: true,
+          },
+        ],
+        isLeaf: false,
+      },
+    ],
+    isLeaf: false,
+  },
+  {
+    name: "Tracking",
+    children: [
+      {
+        name: "Cargo Tracking",
+        children: [],
+        isLeaf: true,
+      },
+    ],
+    isLeaf: false,
+  },
+  {
+    name: "Manage Shipment",
+    children: [
+      {
+        name: "Shipment Overview",
+        children: [],
+        isLeaf: true,
+      },
+    ],
+    isLeaf: false,
   },
 ];
 

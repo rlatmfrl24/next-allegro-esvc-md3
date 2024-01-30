@@ -5,7 +5,7 @@ export const currentPathState = atom<string[]>({
   default: [],
 });
 
-export const dashboardState = atom({
-  key: "dashboardState",
-  default: {},
+export const draggableState = atom<boolean>({
+  key: "draggable",
+  default: false,
 });
