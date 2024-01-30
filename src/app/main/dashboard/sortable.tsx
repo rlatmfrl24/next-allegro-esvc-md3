@@ -1,7 +1,11 @@
+"use client";
+
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { HTMLAttributes } from "react";
 import Item, { TItem } from "./item";
+import { useRecoilValue } from "recoil";
+import { draggableState } from "../store";
 
 type Props = {
   item: TItem;
@@ -13,6 +17,8 @@ const Sortable = ({ item, ...props }: Props) => {
       id: item.id,
     });
 
+  const isDraggable = useRecoilValue(draggableState);
+
   const styles = {
     transform: CSS.Translate.toString(transform),
     transition: transition || undefined,
@@ -21,7 +27,7 @@ const Sortable = ({ item, ...props }: Props) => {
   return (
     <Item
       item={item}
-      ref={setNodeRef}
+      ref={isDraggable ? setNodeRef : undefined}
       style={styles}
       {...props}
       {...attributes}

@@ -3,15 +3,15 @@
 import { MdTypography } from "../components/typography";
 import { MdFilterChip, MdIcon, MdIconButton } from "../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { useSetRecoilState } from "recoil";
-import { currentPathState } from "./store";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { currentPathState, draggableState } from "./store";
 import { useEffect, useState } from "react";
-import { DndContext } from "@dnd-kit/core";
 import Dashboard from "./dashboard/dashboard";
+import TitleIndicator from "@/../public/title_indicator.svg";
 
 export default function MainPage() {
   const setCurrentPath = useSetRecoilState(currentPathState);
-  const [customizabled, setCustomizabled] = useState(false);
+  const [customizabled, setCustomizabled] = useRecoilState(draggableState);
 
   useEffect(() => {
     setCurrentPath(["Dashboard"]);
@@ -26,7 +26,8 @@ export default function MainPage() {
 
   return (
     <div className="max-w-[1400px] w-full">
-      <div className="flex p-6 pb-0 items-center gap-1">
+      <div className="flex py-6 items-center gap-3">
+        <TitleIndicator className="mr-1" />
         <MdTypography
           variant="title"
           size="large"
@@ -48,6 +49,7 @@ export default function MainPage() {
         </MdIconButton>
       </div>
       <Dashboard />
+      <div className="h-6"></div>
     </div>
   );
 }

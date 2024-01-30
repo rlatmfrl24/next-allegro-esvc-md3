@@ -12,6 +12,7 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
+  arrayMove,
   arraySwap,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
@@ -46,7 +47,7 @@ export default function Dashboard() {
         const oldIndex = items.indexOf(parseInt(active.id.toString()));
         const newIndex = items.indexOf(parseInt(over!.id.toString()));
 
-        return arraySwap(items, oldIndex, newIndex);
+        return arrayMove(items, oldIndex, newIndex);
       });
     }
   }
