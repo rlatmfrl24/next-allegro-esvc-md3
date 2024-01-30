@@ -1,67 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import {
-  DndContext,
-  DragEndEvent,
-  DragStartEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import { MdIcon, MdIconButton, MdOutlinedTextField } from "@/app/util/md3";
+import {
+  MdIcon,
+  MdIconButton,
+  MdOutlinedTextField,
+  MdSwitch,
+} from "@/app/util/md3";
 import { cardList } from "../util";
-import Sortable from "../../components/dnd/sortable";
+import { useRecoilState } from "recoil";
+import { dashboardCardState } from "../store";
 
 export default function SetDashboard(props: {
   isDrawerOpen: boolean;
   toggleDrawer: () => void;
 }) {
-  const [items, setItems] = useState(cardList);
-  const [activeId, setActiveId] = useState<string>("");
+  const [enabledCardIds, setEnabledCardIds] =
+    useRecoilState(dashboardCardState);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  function handleDragOver(event: DragEndEvent) {
-    const { active, over } = event;
-
-    if (!over) {
-      return;
-    }
-
-    if (active.id !== over!.id) {
-      setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over!.id);
-
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  }
-
-  // Drag Handlers for DragOverlay
-  function handleDragStart({ active }: DragStartEvent) {
-    setActiveId(active.id.toString());
-  }
-
-  function handleDragEnd(event: DragEndEvent) {
-    setActiveId("");
-  }
+  useEffect(() => {
+    console.log(enabledCardIds);
+  }, [enabledCardIds]);
 
   return (
     <Portal selector="#main-container">
@@ -111,11 +74,23 @@ export default function SetDashboard(props: {
               </MdTypography>
             </div>
             <div className="flex flex-col">
-              {items.map((item) => (
+              {cardList.map((item) => (
                 <div key={item.id} className="h-12 flex items-center px-6">
-                  <MdTypography variant="body" size="large">
+                  <MdTypography variant="body" size="large" className="flex-1">
                     {item.title}
                   </MdTypography>
+                  <MdSwitch
+                    selected={enabledCardIds.includes(item.id)}
+                    onClick={() => {
+                      if (enabledCardIds.includes(item.id)) {
+                        setEnabledCardIds(
+                          enabledCardIds.filter((id) => id !== item.id)
+                        );
+                      } else {
+                        setEnabledCardIds([...enabledCardIds, item.id]);
+                      }
+                    }}
+                  />
                 </div>
               ))}
             </div>

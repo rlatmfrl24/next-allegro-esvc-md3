@@ -114,13 +114,21 @@ export function StatisticCard(props: DashboardStatisticCardDataType) {
   );
 }
 
+export function DashboardCardPlaceholder() {
+  return (
+    <div
+      className={`bg-surfaceContainerHighest h-64 rounded-md shadow flex items-center justify-center border-[3px] border-primaryContainer`}
+    ></div>
+  );
+}
+
 export function DashboardCard(props: {
   title: string;
   hasTooltip?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-primaryFixed border rounded-xl flex-1 bg-white select-none">
+    <div className="border-primaryFixed border rounded-xl flex-1 bg-white select-none h-64 flex flex-col">
       <div className="flex items-center text-primary bg-surfaceContainerLow h-16 px-4 rounded-xl border-b border-primaryFixed">
         <MdTypography variant="title" size="medium" className="flex-1">
           {props.title}

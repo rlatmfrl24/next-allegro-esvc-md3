@@ -20,6 +20,7 @@ import { MdAssistChip as MdAssistChipWebComponent } from "@material/web/chips/as
 import { MdFilterChip as MdFilterChipWebComponent } from "@material/web/chips/filter-chip";
 import { MdInputChip as MdInputChipWebComponent } from "@material/web/chips/input-chip";
 import { MdSuggestionChip as MdSuggestionChipWebComponent } from "@material/web/chips/suggestion-chip";
+import { MdSwitch as MdSwitchWebComponent } from "@material/web/switch/switch";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -138,5 +139,11 @@ export const MdInputChip = createComponent({
 export const MdSuggestionChip = createComponent({
   tagName: "md-suggestion-chip",
   elementClass: MdSuggestionChipWebComponent,
+  react: React,
+});
+
+export const MdSwitch = createComponent({
+  tagName: "md-switch",
+  elementClass: MdSwitchWebComponent,
   react: React,
 });
