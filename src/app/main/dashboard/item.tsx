@@ -21,7 +21,14 @@ const Item = forwardRef<HTMLDivElement, Props>(function Item(
   };
 
   return (
-    <div ref={ref} style={styles} {...props}>
+    <div
+      ref={ref}
+      style={styles}
+      {...props}
+      className={`h-24 shadow flex items-center justify-center bg-gray-100 rounded-md ${
+        item.id % 2 === 0 ? "col-span-2" : ""
+      }`}
+    >
       {item.id}
     </div>
   );

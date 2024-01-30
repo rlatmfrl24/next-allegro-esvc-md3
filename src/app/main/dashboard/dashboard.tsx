@@ -7,20 +7,16 @@ import {
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  arrayMove,
+  arraySwap,
   sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useState } from "react";
-import { CSS } from "@dnd-kit/utilities";
-import SortableItem from "./sortable-item";
+import Sortable from "./sortable";
 import Item from "./item";
 
 export default function Dashboard() {
@@ -34,38 +30,44 @@ export default function Dashboard() {
     })
   );
 
-  function handleDragStart(event: DragStartEvent) {
-    const { active } = event;
-
+  function handleDragStart({ active }: DragStartEvent) {
     setActiveId(active.id.toString());
   }
 
-  function handleDragEnd(event: DragEndEvent) {
+  function handleDragOver(event: DragEndEvent) {
     const { active, over } = event;
+
+    if (!over) {
+      return;
+    }
 
     if (active.id !== over!.id) {
       setItems((items) => {
         const oldIndex = items.indexOf(parseInt(active.id.toString()));
         const newIndex = items.indexOf(parseInt(over!.id.toString()));
 
-        return arrayMove(items, oldIndex, newIndex);
+        return arraySwap(items, oldIndex, newIndex);
       });
     }
+  }
 
+  function handleDragEnd(event: DragEndEvent) {
     setActiveId("");
   }
 
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {items.map((id) => (
-          <SortableItem key={id} item={{ id }} />
-        ))}
+      <SortableContext items={items} strategy={() => null}>
+        <div className="grid grid-cols-4 gap-4">
+          {items.map((id) => (
+            <Sortable key={id} item={{ id }} />
+          ))}
+        </div>
       </SortableContext>
       <DragOverlay>
         {activeId ? <Item item={{ id: parseInt(activeId) }} /> : null}

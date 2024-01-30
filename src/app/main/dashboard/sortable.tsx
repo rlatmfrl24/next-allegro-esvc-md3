@@ -7,18 +7,16 @@ type Props = {
   item: TItem;
 } & HTMLAttributes<HTMLDivElement>;
 
-const SortableItem = ({ item, ...props }: Props) => {
+const Sortable = ({ item, ...props }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: item.id,
     });
 
   const styles = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition: transition || undefined,
   };
-
-  console.log(styles);
 
   return (
     <Item
@@ -28,9 +26,8 @@ const SortableItem = ({ item, ...props }: Props) => {
       {...props}
       {...attributes}
       {...listeners}
-      className="h-12"
     />
   );
 };
 
-export default SortableItem;
+export default Sortable;
