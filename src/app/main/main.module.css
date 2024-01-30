@@ -1,5 +1,5 @@
 .navItem {
-  @apply relative flex w-full items-center h-14 px-6 py-4 rounded-full cursor-pointer bg-surfaceContainer select-none my-px;
+  @apply relative flex w-full items-center h-14 px-6 py-4 rounded-full cursor-pointer bg-surfaceContainerLow select-none my-px;
 }
 
 .navItem.primary.selected {
@@ -8,4 +8,12 @@
 
 .navItem.secondary.selected {
   @apply bg-neutral-300;
+}
+
+.sortable {
+  @apply min-w-[326px];
+}
+
+.sortable-wide {
+  @apply col-span-2 min-w-[668px];
 }

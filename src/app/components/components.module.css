@@ -1,11 +1,10 @@
 .segmented-buttons {
-  @apply flex rounded-full border h-10 overflow-hidden;
+  @apply flex rounded-full border h-10 overflow-hidden min-h-[40px];
 }
 
 .segmented-button {
-  @apply flex-1 relative;
+  @apply flex-1 relative text-onSurface h-full;
   border: 1px solid var(--md-sys-color-outline);
-  color: var(--md-sys-color-on-surface);
 }
 
 .segmented-button:first-child {

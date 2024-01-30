@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { createMDTheme } from "./util/md3";
 import { RecoilRoot } from "recoil";
+import { createMDTheme } from "./util/theme";
 
 export default function Providers({
   children,
@@ -10,7 +10,7 @@ export default function Providers({
   children: React.ReactNode;
 }>) {
   useEffect(() => {
-    createMDTheme("#004AAE", "#004AAE");
+    createMDTheme("#29638A");
   }, []);
 
   return <RecoilRoot>{children}</RecoilRoot>;

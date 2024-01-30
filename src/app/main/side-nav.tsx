@@ -10,91 +10,37 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import { useRecoilState } from "recoil";
 import { currentPathState } from "./store";
 import styles from "./main.module.css";
-
-// TODO: 추후에 API로 받아올 예정
-const meunItems: MenuItemType[] = [
-  {
-    name: "Dashboard",
-    children: [],
-    isLeaf: true,
-  },
-  {
-    name: "Schedule",
-    children: [
-      {
-        name: "Point to Point Schedule",
-        children: [
-          {
-            name: "Bulk Schedule",
-            children: [],
-            isLeaf: true,
-          },
-          {
-            name: "Initial Schedule",
-            children: [],
-            isLeaf: true,
-          },
-        ],
-        isLeaf: false,
-      },
-      {
-        name: "Vessel Schedule",
-        children: [],
-        isLeaf: true,
-      },
-      {
-        name: "Port Schedule",
-        children: [],
-        isLeaf: true,
-      },
-      {
-        name: "Long Range Schedule",
-        children: [],
-        isLeaf: true,
-      },
-    ],
-  },
-  {
-    name: "Booking",
-    children: [
-      {
-        name: "Booking Request",
-        children: [],
-        isLeaf: true,
-      },
-      {
-        name: "Booking Status",
-        children: [],
-        isLeaf: true,
-      },
-      {
-        name: "Booking Template",
-        children: [],
-        isLeaf: true,
-      },
-    ],
-  },
-];
+import { meunItems } from "./util";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 export default function SideNav() {
   return (
     <>
-      <MdTypography variant="title" size="small" className="px-4 py-2 mb-5">
+      <MdTypography
+        variant="title"
+        size="small"
+        className="px-7 pt-5 mb-5 text-primary"
+      >
         Menu
       </MdTypography>
-      {meunItems.map((item, index) => {
-        return (
-          <NavItem
-            depth={1}
-            key={index}
-            variant="primary"
-            path={[item.name]}
-            label={item.name}
-            childs={item.children}
-            isLeaf={item.isLeaf}
-          />
-        );
-      })}
+      <OverlayScrollbarsComponent
+        className="flex-auto h-0 overflow-auto p-3 flex flex-col"
+        defer
+      >
+        {meunItems.map((item, index) => {
+          return (
+            <NavItem
+              depth={1}
+              key={index}
+              variant="primary"
+              path={[item.name]}
+              label={item.name}
+              childs={item.children}
+              isLeaf={item.isLeaf}
+            />
+          );
+        })}
+      </OverlayScrollbarsComponent>
     </>
   );
 }

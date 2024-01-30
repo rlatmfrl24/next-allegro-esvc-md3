@@ -1,6 +1,6 @@
 export default function BreadCrumbs({ list }: { list: string[] }) {
   return (
-    <div className="flex items-center text-sm font-suit">
+    <div className="flex items-center text-sm font-pretendard">
       {list.map((item, index) => (
         <div
           key={`breadcrumb-` + index}
