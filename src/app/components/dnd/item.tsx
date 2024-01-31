@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef, HTMLAttributes } from "react";
+import { CSSProperties, HTMLAttributes, forwardRef } from "react";
 
 export type TItem = {
   id: number | string;

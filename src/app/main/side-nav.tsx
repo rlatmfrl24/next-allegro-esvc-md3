@@ -1,16 +1,21 @@
 "use client";
 
+// External modules
 import { MdTypography } from "../components/typography";
 import { MdRippleEffect } from "../util/md3";
 import { MenuItemType } from "../util/typeDef";
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import classNames from "classnames";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import styles from "./main.module.css";
 import { meunItems } from "./constants";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import classNames from "classnames";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+
+// Internal modules
+import styles from "./main.module.css";
 
 export default function SideNav() {
   return (
