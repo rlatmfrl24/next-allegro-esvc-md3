@@ -49,7 +49,7 @@ export default function SignIn() {
 
   return (
     <div className="flex-1 flex justify-center items-center">
-      <div className={styles.card + ` w-[483px] p-12`}>
+      <div className={styles["sign-card"] + ` w-[483px] p-12`}>
         <MdElevation />
         <span className="font-pretendard text-xl">Welcome!</span>
         <span
@@ -124,7 +124,7 @@ export default function SignIn() {
           type="submit"
           disabled={id.length === 0 || pw.length === 0}
           onClick={() => {
-            router.push("/main");
+            router.push("/main/dashboard");
           }}
         >
           Sign In

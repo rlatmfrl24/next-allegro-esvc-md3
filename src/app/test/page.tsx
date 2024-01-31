@@ -11,6 +11,11 @@ import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import {
+  MdElevatedCard,
+  MdFilledCard,
+  MdOutlinedCard,
+} from "../components/card";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -126,6 +131,35 @@ export default function Test() {
         >
           Preset 3
         </button>
+      </div>
+      <div className="flex gap-2 mt-4">
+        <MdElevatedCard className="w-48 h-24 flex justify-center items-center">
+          Elevated Card
+        </MdElevatedCard>
+        <MdFilledCard className="w-48 h-24 flex justify-center items-center">
+          Filled Card
+        </MdFilledCard>
+        <MdOutlinedCard className="w-48 h-24 flex justify-center items-center">
+          Outlined Card
+        </MdOutlinedCard>
+        <MdElevatedCard
+          className="w-48 h-24 flex justify-center items-center"
+          noElevation
+        >
+          Elevated Card with no Elevation
+        </MdElevatedCard>
+        <MdFilledCard
+          className="w-48 h-24 flex justify-center items-center"
+          noElevation
+        >
+          Filled Card with no Elevation
+        </MdFilledCard>
+        <MdOutlinedCard
+          className="w-48 h-24 flex justify-center items-center"
+          noElevation
+        >
+          Outlined Card with no Elevation
+        </MdOutlinedCard>
       </div>
     </div>
   );
