@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <>
       <Logo />
-      <BreadCrumbs list={currentPath} />
+      <BreadCrumbs />
       <div className="w-px h-4 bg-gray-200 mx-2.5"> </div>
       <MdIconButton>
         <MdIcon>

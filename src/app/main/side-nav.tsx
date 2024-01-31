@@ -7,11 +7,10 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import classNames from "classnames";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import { useRecoilState } from "recoil";
-import { currentPathState } from "./store";
 import styles from "./main.module.css";
 import { meunItems } from "./constants";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function SideNav() {
   return (
@@ -33,7 +32,7 @@ export default function SideNav() {
               depth={1}
               key={index}
               variant="primary"
-              path={[item.name]}
+              path={[item.path]}
               label={item.name}
               childs={item.children}
               isLeaf={item.isLeaf}
@@ -64,7 +63,8 @@ const NavItem = ({
 }>) => {
   const cx = classNames.bind(styles);
   const [open, setOpen] = useState(false);
-  const [currentPath, setCurrentPath] = useRecoilState(currentPathState);
+  const currentPath = usePathname().split("/");
+  const router = useRouter();
 
   return (
     <>
@@ -73,12 +73,12 @@ const NavItem = ({
           styles["navItem"],
           variant === "primary" && styles["primary"],
           variant === "secondary" && styles["secondary"],
-          currentPath[depth - 1] === label && styles["selected"],
+          currentPath.includes(path[depth - 1]) && styles["selected"],
           className
         )}
         onClick={() => {
           if (isLeaf) {
-            setCurrentPath(path);
+            router.push("/main/" + path.join("/"));
           } else {
             setOpen(!open);
           }
@@ -117,7 +117,7 @@ const NavItem = ({
                     depth={depth + 1}
                     key={index}
                     variant="secondary"
-                    path={[...path, item.name]}
+                    path={[...path, item.path]}
                     label={item.name}
                     childs={item.children}
                     isLeaf={item.isLeaf}

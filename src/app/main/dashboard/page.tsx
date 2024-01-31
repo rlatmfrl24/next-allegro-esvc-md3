@@ -1,14 +1,14 @@
 "use client";
 
-import { MdTypography } from "../components/typography";
-import { MdFilterChip, MdIcon, MdIconButton } from "../util/md3";
+import { MdTypography } from "../../components/typography";
+import { MdFilterChip, MdIcon, MdIconButton } from "../../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { currentPathState, draggableState } from "./store";
+import { currentPathState, draggableState } from "../store";
 import { useEffect, useState } from "react";
-import Dashboard from "./dashboard/dashboard";
+import Dashboard from "./dashboard";
 import TitleIndicator from "@/../public/title_indicator.svg";
-import SetDashboard from "./dashboard/set-dashboard";
+import SetDashboard from "./set-dashboard";
 
 export default function MainPage() {
   const setCurrentPath = useSetRecoilState(currentPathState);

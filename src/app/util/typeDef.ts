@@ -1,5 +1,6 @@
 export type MenuItemType = {
   name: string;
+  path: string;
   children: MenuItemType[];
   isLeaf?: boolean;
 };

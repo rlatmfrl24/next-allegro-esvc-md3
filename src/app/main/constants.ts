@@ -4,34 +4,41 @@ import { DashboardCardInfoType, MenuItemType } from "../util/typeDef";
 export const meunItems: MenuItemType[] = [
   {
     name: "Dashboard",
+    path: "dashboard",
     children: [],
     isLeaf: true,
   },
   {
     name: "Schedule",
+    path: "schedule",
     children: [
       {
         name: "Point to Point Schedule",
+        path: "ptp",
         children: [],
         isLeaf: true,
       },
       {
         name: "Vessel Schedule",
+        path: "vessel",
         children: [],
         isLeaf: true,
       },
       {
         name: "Port Schedule",
+        path: "port",
         children: [],
         isLeaf: true,
       },
       {
         name: "Long Range Schedule",
+        path: "long-range",
         children: [],
         isLeaf: true,
       },
       {
         name: "My Schedule",
+        path: "my-schedule",
         children: [],
         isLeaf: true,
       },
@@ -39,19 +46,23 @@ export const meunItems: MenuItemType[] = [
   },
   {
     name: "Booking",
+    path: "booking",
     children: [
       {
         name: "Booking Request",
+        path: "request",
         children: [],
         isLeaf: true,
       },
       {
         name: "Booking Status",
+        path: "status",
         children: [],
         isLeaf: true,
       },
       {
         name: "Booking Template",
+        path: "template",
         children: [],
         isLeaf: true,
       },
@@ -59,17 +70,21 @@ export const meunItems: MenuItemType[] = [
   },
   {
     name: "Documentation",
+    path: "documentation",
     children: [
       {
         name: "Shipping Instruction",
+        path: "si",
         children: [
           {
             name: "SI Submission & Amendment",
+            path: "submission",
             children: [],
             isLeaf: true,
           },
           {
             name: "SI Template",
+            path: "template",
             children: [],
             isLeaf: true,
           },
@@ -78,14 +93,17 @@ export const meunItems: MenuItemType[] = [
       },
       {
         name: "B/L Processing",
+        path: "bl-processing",
         children: [
           {
             name: "Draft N/N B/L",
+            path: "draft",
             children: [],
             isLeaf: true,
           },
           {
             name: "Sea Waybill Print",
+            path: "sea-waybill",
             children: [],
             isLeaf: true,
           },
@@ -97,9 +115,11 @@ export const meunItems: MenuItemType[] = [
   },
   {
     name: "Tracking",
+    path: "tracking",
     children: [
       {
         name: "Cargo Tracking",
+        path: "cargo",
         children: [],
         isLeaf: true,
       },
@@ -108,9 +128,11 @@ export const meunItems: MenuItemType[] = [
   },
   {
     name: "Manage Shipment",
+    path: "shipment",
     children: [
       {
         name: "Shipment Overview",
+        path: "overview",
         children: [],
         isLeaf: true,
       },
