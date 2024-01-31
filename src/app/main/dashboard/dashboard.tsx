@@ -21,7 +21,7 @@ import Item from "../../components/dnd/item";
 import { useRecoilValue } from "recoil";
 import { dashboardCardState, draggableState } from "../store";
 import { customCollisionDetectionAlgorithm } from "@/app/components/dnd/util";
-import { cardList } from "../util";
+import { cardList } from "../constants";
 import { DashboardCardConstructor, DashboardCardPlaceholder } from "./card";
 import styles from "../main.module.css";
 

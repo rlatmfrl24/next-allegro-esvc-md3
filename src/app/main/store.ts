@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { cardList } from "./util";
+import { cardList } from "./constants";
 
 export const currentPathState = atom<string[]>({
   key: "currentPath",

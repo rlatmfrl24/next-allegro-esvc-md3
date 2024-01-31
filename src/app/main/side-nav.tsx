@@ -10,7 +10,7 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import { useRecoilState } from "recoil";
 import { currentPathState } from "./store";
 import styles from "./main.module.css";
-import { meunItems } from "./util";
+import { meunItems } from "./constants";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 export default function SideNav() {
