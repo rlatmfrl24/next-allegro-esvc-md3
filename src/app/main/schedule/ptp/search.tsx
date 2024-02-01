@@ -14,7 +14,7 @@ export default function PointToPointSearchPanel() {
   }
 
   return (
-    <div className="flex-1 w-full max-w-[1400px] mx-6">
+    <div className="flex-1  max-w-[1400px] mx-6">
       <div className="flex py-6 gap-4 items-center text-primary">
         <TitleIndicator title="Point to Point Search" />
         <MdTypography variant="title" size="large">

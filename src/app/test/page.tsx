@@ -15,6 +15,7 @@ import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import MdDatePicker from "../components/datepicker";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -141,6 +142,9 @@ export default function Test() {
         <MdOutlinedCard className="w-48 h-24 flex justify-center items-center">
           Outlined Card
         </MdOutlinedCard>
+      </div>
+      <div>
+        <MdDatePicker />
       </div>
     </div>
   );
