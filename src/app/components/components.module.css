@@ -94,3 +94,10 @@
 .card.outlined.dragged {
   --md-elevation-level: 3;
 }
+
+.datepicker-container {
+  --md-elevation-level: 3;
+  width: 360px;
+  min-height: 360px;
+  @apply bg-surfaceContainerHigh rounded-2xl p-3 flex flex-col justify-between;
+}

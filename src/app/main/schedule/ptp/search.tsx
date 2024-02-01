@@ -1,6 +1,7 @@
 "use client";
 
 import TitleIndicator from "@/../public/title_indicator.svg";
+import MdDatePicker from "@/app/components/datepicker";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdOutlinedCard,
@@ -19,7 +20,7 @@ export default function PointToPointSearchPanel() {
   }
 
   return (
-    <div className="flex-1  max-w-[1400px] mx-6">
+    <div className="relative mx-6 z-10">
       <div className="flex py-6 gap-4 items-center text-primary">
         <TitleIndicator title="Point to Point Search" />
         <MdTypography variant="title" size="large">
@@ -36,7 +37,7 @@ export default function PointToPointSearchPanel() {
             }}
           >
             <MdTypography variant="title" size="small">
-              List
+              Schedule List
             </MdTypography>
           </MdPrimaryTab>
           <MdPrimaryTab
@@ -47,19 +48,21 @@ export default function PointToPointSearchPanel() {
             }}
           >
             <MdTypography variant="title" size="small">
-              Calendar
+              Schedule Calendar
             </MdTypography>
           </MdPrimaryTab>
         </MdTabs>
         <div
           id="list-search-panel"
-          hidden={tabItemId !== "tab-list-search"}
           role="tabpanel"
           aria-labelledby="tab-list-search"
-          className="p-6"
+          className={`p-6 flex flex-col gap-4 ${
+            tabItemId === "tab-list-search" ? "flex" : "hidden"
+          }`}
         >
           <MdOutlinedTextField></MdOutlinedTextField>
           <MdOutlinedTextField></MdOutlinedTextField>
+          <MdDatePicker />
         </div>
         <div
           id="calendar-search-panel"
