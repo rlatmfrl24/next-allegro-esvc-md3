@@ -16,7 +16,7 @@ export default function QuickMenu() {
   return (
     <div className="flex flex-col justify-center gap-6 h-full absolute z-10 right-0 p-16 w-[848px]">
       <QuickSearch />
-      <div className={styles.card + ` p-12`}>
+      <div className={styles["sign-card"] + ` p-12`}>
         <MdElevation />
         <MdTypography variant="title" size="large" className="mb-4">
           Notice
@@ -37,7 +37,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <div className={styles.card}>
+    <div className={styles["sign-card"]}>
       <MdElevation />
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab

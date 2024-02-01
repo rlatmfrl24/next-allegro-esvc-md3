@@ -31,7 +31,66 @@
   border: 1px solid var(--md-sys-color-outline) opacity(0.12);
 }
 
-.card {
+.sign-card {
   --md-elevation-level: 4;
   @apply relative flex flex-col rounded-xl bg-white;
+}
+
+.card {
+  @apply relative rounded-xl px-4;
+}
+
+.card.elevated {
+  --md-elevation-level: 1;
+  @apply bg-surfaceContainerLow;
+}
+
+.card.elevated.hovered {
+  --md-elevation-level: 2;
+}
+
+.card.elevated.pressed {
+  --md-elevation-level: 1;
+}
+
+.card.elevated.dragged {
+  --md-elevation-level: 4;
+}
+
+.card.elevated.disabled {
+  @apply opacity-40;
+}
+
+.card.filled {
+  --md-elevation-level: 0;
+  @apply bg-surfaceContainerHighest;
+}
+
+.card.filled.hovered {
+  --md-elevation-level: 1;
+}
+
+.card.filled.pressed {
+  --md-elevation-level: 0;
+}
+
+.card.filled.dragged {
+  --md-elevation-level: 3;
+}
+
+.card.outlined {
+  --md-elevation-level: 0;
+  @apply border border-outlineVariant bg-surface;
+}
+
+.card.outlined.hovered {
+  --md-elevation-level: 1;
+}
+
+.card.outlined.pressed {
+  --md-elevation-level: 0;
+}
+
+.card.outlined.dragged {
+  --md-elevation-level: 3;
 }

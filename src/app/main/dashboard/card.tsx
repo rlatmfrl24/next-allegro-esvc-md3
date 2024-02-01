@@ -77,7 +77,7 @@ export function DashboardCardConstructor({
   if (item.type === "input") {
     return (
       <InputCard
-        title="BL Inquiry"
+        title={item.title}
         buttonText="Inquiry"
         description="Enter a B/L number to inquiry the B/L status"
         placeholder="B/L Number"

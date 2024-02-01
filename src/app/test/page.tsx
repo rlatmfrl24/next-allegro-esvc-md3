@@ -1,16 +1,21 @@
 "use client";
 
 import {
+  MdElevatedCard,
   MdElevationButton,
   MdFilledButton,
+  MdFilledCard,
   MdOutlinedButton,
+  MdOutlinedCard,
   MdOutlinedTextField,
+  MdRippleEffect,
   MdTextButton,
 } from "../util/md3";
 import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import MdDatePicker from "../components/datepicker";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -126,6 +131,20 @@ export default function Test() {
         >
           Preset 3
         </button>
+      </div>
+      <div className="flex gap-2 mt-4">
+        <MdElevatedCard className=" w-48 h-24 flex justify-center items-center">
+          Elevated Card
+        </MdElevatedCard>
+        <MdFilledCard className="w-48 h-24 flex justify-center items-center">
+          Filled Card
+        </MdFilledCard>
+        <MdOutlinedCard className="w-48 h-24 flex justify-center items-center">
+          Outlined Card
+        </MdOutlinedCard>
+      </div>
+      <div>
+        <MdDatePicker />
       </div>
     </div>
   );
