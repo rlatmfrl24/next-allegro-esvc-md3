@@ -2,7 +2,12 @@
 
 import TitleIndicator from "@/../public/title_indicator.svg";
 import { MdTypography } from "@/app/components/typography";
-import { MdOutlinedCard, MdPrimaryTab, MdTabs } from "@/app/util/md3";
+import {
+  MdOutlinedCard,
+  MdOutlinedTextField,
+  MdPrimaryTab,
+  MdTabs,
+} from "@/app/util/md3";
 import { useState } from "react";
 
 export default function PointToPointSearchPanel() {
@@ -53,7 +58,8 @@ export default function PointToPointSearchPanel() {
           aria-labelledby="tab-list-search"
           className="p-6"
         >
-          List Search Panel
+          <MdOutlinedTextField></MdOutlinedTextField>
+          <MdOutlinedTextField></MdOutlinedTextField>
         </div>
         <div
           id="calendar-search-panel"

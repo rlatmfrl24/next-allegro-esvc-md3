@@ -9,6 +9,11 @@ import {
   flip,
   shift,
   autoUpdate,
+  useClick,
+  useDismiss,
+  useRole,
+  useInteractions,
+  FloatingFocusManager,
 } from "@floating-ui/react";
 
 export default function MdDatePicker(props: { defaultValue?: string }) {
@@ -27,9 +32,20 @@ export default function MdDatePicker(props: { defaultValue?: string }) {
     whileElementsMounted: autoUpdate,
   });
 
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context);
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+    role,
+  ]);
+
   return (
     <>
       <MdOutlinedTextField
+        ref={refs.setReference}
         supportingText="MM/DD/YYYY"
         errorText="Invalid date format"
         defaultValue={props.defaultValue}
@@ -47,12 +63,24 @@ export default function MdDatePicker(props: { defaultValue?: string }) {
         }}
         error={invalid}
       >
-        <MdIconButton slot="trailing-icon">
+        <MdIconButton slot="trailing-icon" {...getReferenceProps()}>
           <MdIcon>
             <CalendarTodayIcon />
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
+      {isCalendarOpen && (
+        <FloatingFocusManager context={context} modal={false}>
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
+            className="bg-white border rounded-xl p-4"
+          >
+            Popover element
+          </div>
+        </FloatingFocusManager>
+      )}
     </>
   );
 }

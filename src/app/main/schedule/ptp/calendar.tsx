@@ -75,7 +75,7 @@ export default function PointToPointCalendarResult() {
         </div>
         <div className="grid grid-cols-7 mt-0 m-px pt-px bg-surfaceContainerHighest gap-px overflow-hidden rounded-b-xl">
           {body.value.map((week) => {
-            return week.value.map((day) => {
+            return week.value.map((day, idx) => {
               const { key, date, isCurrentDate, isCurrentMonth, value } = day;
 
               const dayText = DateTime.fromISO(value.toISOString()).toFormat(
@@ -104,24 +104,31 @@ export default function PointToPointCalendarResult() {
                   >
                     {dayText}
                   </MdTypography>
-
-                  <MdTypography
-                    variant="body"
-                    size="small"
-                    className="py-1 px-2 rounded-lg border inline-block overflow-hidden whitespace-nowrap text-ellipsis"
-                  >
-                    DONGJIN VOYAGER (DONGJIN VOYAGER)
-                  </MdTypography>
-                  <MdTypography
-                    variant="body"
-                    size="small"
-                    className="py-1  px-2 rounded-lg border inline-block overflow-hidden whitespace-nowrap text-ellipsis"
-                  >
-                    DONGJIN VOYAGER (DONGJIN VOYAGER)
-                  </MdTypography>
-                  <MdTypography variant="label" size="large" className="px-2">
-                    {`View 4 More >`}
-                  </MdTypography>
+                  {idx % 5 === 0 && (
+                    <>
+                      <MdTypography
+                        variant="body"
+                        size="small"
+                        className="py-1 px-2 rounded-lg border inline-block overflow-hidden whitespace-nowrap text-ellipsis"
+                      >
+                        DONGJIN VOYAGER (DONGJIN VOYAGER)
+                      </MdTypography>
+                      <MdTypography
+                        variant="body"
+                        size="small"
+                        className="py-1  px-2 rounded-lg border inline-block overflow-hidden whitespace-nowrap text-ellipsis"
+                      >
+                        DONGJIN VOYAGER (DONGJIN VOYAGER)
+                      </MdTypography>
+                      <MdTypography
+                        variant="label"
+                        size="large"
+                        className="px-2"
+                      >
+                        {`View 4 More >`}
+                      </MdTypography>
+                    </>
+                  )}
                 </div>
               );
             });
