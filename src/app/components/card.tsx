@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+/*
+ * Note: This components are not used in the project currently.
+ * but it is still here for future use.
+ */
+
+import { useState } from "react";
 import { MdElevation, MdRippleEffect } from "../util/md3";
 import styles from "./components.module.css";
 import classNames from "classnames/bind";

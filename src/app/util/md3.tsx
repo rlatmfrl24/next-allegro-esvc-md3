@@ -24,6 +24,9 @@ import { MdSwitch as MdSwitchWebComponent } from "@material/web/switch/switch";
 import { MdRadio as MdRadioWebComponent } from "@material/web/radio/radio";
 import { MdMenu as MdMenuWebComponent } from "@material/web/menu/menu";
 import { MdMenuItem as MdMenuItemWebComponent } from "@material/web/menu/menu-item";
+import { MdElevatedCard as MdElevatedCardWebComponent } from "@material/web/labs/card/elevated-card";
+import { MdOutlinedCard as MdOutlinedCardWebComponent } from "@material/web/labs/card/outlined-card";
+import { MdFilledCard as MdFilledCardWebComponent } from "@material/web/labs/card/filled-card";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -166,5 +169,23 @@ export const MdMenu = createComponent({
 export const MdMenuItem = createComponent({
   tagName: "md-menu-item",
   elementClass: MdMenuItemWebComponent,
+  react: React,
+});
+
+export const MdElevatedCard = createComponent({
+  tagName: "md-elevated-card",
+  elementClass: MdElevatedCardWebComponent,
+  react: React,
+});
+
+export const MdOutlinedCard = createComponent({
+  tagName: "md-outlined-card",
+  elementClass: MdOutlinedCardWebComponent,
+  react: React,
+});
+
+export const MdFilledCard = createComponent({
+  tagName: "md-filled-card",
+  elementClass: MdFilledCardWebComponent,
   react: React,
 });
