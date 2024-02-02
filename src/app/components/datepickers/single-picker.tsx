@@ -23,8 +23,13 @@ import {
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import styles from "../components.module.css";
 import { useCalendar } from "@h6s/calendar";
-import { MonthList } from "@/app/main/constants";
-import { FocusOnInput, getModifiedCursorDate, validateDate } from "./util";
+import {
+  FocusOnInput,
+  MonthList,
+  YearList,
+  getModifiedCursorDate,
+  validateDate,
+} from "./util";
 import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
 
@@ -97,10 +102,6 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
     }
   }, [isCalendarOpen]);
 
-  const yearList = Array.from({ length: 100 }, (_, i) => {
-    return (defaultDate.year - 50 + i).toString();
-  });
-
   return (
     <div className="relative flex z-10" ref={refs.setReference}>
       <MdOutlinedTextField
@@ -144,7 +145,7 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
             )}
             {mode === "year" && (
               <ListSelector
-                list={yearList}
+                list={YearList}
                 selectedValue={DateTime.fromJSDate(cursorDate).year.toString()}
                 selectionHandler={handleListSelection}
               />

@@ -1,4 +1,3 @@
-import { MonthList } from "@/app/main/constants";
 import { DateTime } from "luxon";
 import { MutableRefObject } from "react";
 
@@ -30,3 +29,22 @@ export function getModifiedCursorDate(
   }
   return modifiedDate;
 }
+
+export const MonthList = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+export const YearList = Array.from({ length: 100 }, (_, i) => {
+  return (DateTime.now().year - 50 + i).toString();
+});
