@@ -32,6 +32,7 @@ import {
 } from "./util";
 import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
+import { MdTypography } from "../typography";
 
 export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -99,8 +100,9 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
     if (!isCalendarOpen) {
       setMode("date");
       FocusOnInput(inputEl);
+      navigation.setDate(defaultDate.toJSDate());
     }
-  }, [isCalendarOpen]);
+  }, [defaultDate, isCalendarOpen, navigation]);
 
   return (
     <div className="relative flex z-10" ref={refs.setReference}>
@@ -150,7 +152,66 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
                 selectionHandler={handleListSelection}
               />
             )}
-            {mode === "date" && <div></div>}
+            {mode === "date" && (
+              <div className="p-3">
+                <div className="grid grid-cols-7">
+                  {headers.weekDays.map(({ key, value }) => {
+                    const weekHead = DateTime.fromJSDate(value)
+                      .toFormat("EEE")
+                      .charAt(0);
+                    return (
+                      <div
+                        key={key}
+                        className="flex items-center justify-center w-12 h-12"
+                      >
+                        <MdTypography variant="body" size="large">
+                          {weekHead.toUpperCase()}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex flex-1 items-start">
+                  <div className="h-fit flex-1 grid grid-cols-7">
+                    {body.value.map((week) => {
+                      return week.value.map((day, idx) => {
+                        const {
+                          key,
+                          date,
+                          isCurrentDate,
+                          isCurrentMonth,
+                          value,
+                        } = day;
+                        const dayText = DateTime.fromISO(
+                          value.toISOString()
+                        ).toFormat("dd");
+
+                        return (
+                          <div
+                            key={key}
+                            className={`flex items-center justify-center w-12 h-12`}
+                          >
+                            <MdIconButton
+                              className={`${
+                                // today
+                                value.toDateString() ===
+                                  new Date().toDateString() &&
+                                `border border-primary rounded-full`
+                              } `}
+                              onClick={() => {}}
+                            >
+                              <MdTypography variant="body" size="large">
+                                {dayText}
+                              </MdTypography>
+                            </MdIconButton>
+                          </div>
+                        );
+                      });
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </FloatingFocusManager>
       )}
