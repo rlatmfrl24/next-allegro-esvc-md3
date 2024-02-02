@@ -30,21 +30,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-export default function MdDatePicker(props: { defaultValue?: string }) {
+export default function MdDatePicker(props: {}) {
   const [invalid, setInvalid] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const { headers, body, navigation, cursorDate } = useCalendar();
-  const [selectedDate, setSelectedDate] = useState<DateTime>(
-    DateTime.fromJSDate(new Date())
+  const [calendarCursor, setCalendarCursor] = useState<DateTime>(
+    DateTime.now()
   );
-
-  useEffect(() => {
-    if (props.defaultValue) {
-      if (validateDate(props.defaultValue)) {
-        setSelectedDate(DateTime.fromISO(props.defaultValue));
-      }
-    }
-  }, [props.defaultValue, isCalendarOpen]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [defaultDate, setDefaultDate] = useState<DateTime>(DateTime.now());
 
   function validateDate(date: string) {
     const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
@@ -94,7 +88,6 @@ export default function MdDatePicker(props: { defaultValue?: string }) {
             {body.value.map((week) => {
               return week.value.map((day, idx) => {
                 const { key, date, isCurrentDate, isCurrentMonth, value } = day;
-
                 const dayText = DateTime.fromISO(value.toISOString()).toFormat(
                   "dd"
                 );
@@ -106,24 +99,28 @@ export default function MdDatePicker(props: { defaultValue?: string }) {
                   >
                     <MdIconButton
                       className={`${
-                        //today
+                        // today
                         value.toDateString() === new Date().toDateString() &&
                         `border border-primary rounded-full`
                       } ${
-                        selectedDate.toMillis() ===
+                        // selected date
+                        calendarCursor.toMillis() ===
                           DateTime.fromJSDate(value).toMillis() &&
                         `bg-primary rounded-full`
                       }
                       `}
                       onClick={() => {
-                        setSelectedDate(DateTime.fromISO(value.toISOString()));
+                        setCalendarCursor(
+                          DateTime.fromISO(value.toISOString())
+                        );
                       }}
                     >
                       <MdTypography
                         variant="body"
                         size="large"
                         className={
-                          selectedDate.toMillis() ===
+                          // Check if the date is current month
+                          calendarCursor.toMillis() ===
                           DateTime.fromJSDate(value).toMillis()
                             ? "text-white"
                             : isCurrentMonth
@@ -148,25 +145,18 @@ export default function MdDatePicker(props: { defaultValue?: string }) {
     <>
       <MdOutlinedTextField
         ref={refs.setReference}
-        {...getReferenceProps()}
         supportingText="MM/DD/YYYY"
         errorText="Invalid date format"
-        defaultValue={props.defaultValue}
+        value={selectedDate}
+        error={invalid}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
-          if (targetValue.length > 4) {
-            if (!validateDate(targetValue)) {
-              setInvalid(true);
-            } else {
-              setInvalid(false);
-            }
-          } else if (targetValue.length === 0) {
-            setInvalid(false);
-          }
         }}
-        error={invalid}
+        onBlur={(e) => {
+          const targetValue = e.target.value;
+        }}
       >
-        <MdIconButton slot="trailing-icon">
+        <MdIconButton slot="trailing-icon" {...getReferenceProps()}>
           <MdIcon>
             <CalendarTodayIcon />
           </MdIcon>
@@ -239,8 +229,20 @@ export default function MdDatePicker(props: { defaultValue?: string }) {
             </div>
             <DateSelector />
             <div className="flex justify-end mt-2">
-              <MdTextButton>Cancel</MdTextButton>
-              <MdTextButton>OK</MdTextButton>
+              <MdTextButton
+                onClick={() => {
+                  setIsCalendarOpen(false);
+                }}
+              >
+                Cancel
+              </MdTextButton>
+              <MdTextButton
+                onClick={() => {
+                  setIsCalendarOpen(false);
+                }}
+              >
+                OK
+              </MdTextButton>
             </div>
           </div>
         </FloatingFocusManager>
