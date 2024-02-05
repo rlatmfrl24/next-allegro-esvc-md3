@@ -1,11 +1,6 @@
 import { DateTime } from "luxon";
 import { MutableRefObject } from "react";
 
-export function validateDate(date: string) {
-  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-  return dateRegex.test(date);
-}
-
 export function FocusOnInput(inputEl: MutableRefObject<any>) {
   // focus on text field without use ref
   if (inputEl.current?.shadowRoot) {

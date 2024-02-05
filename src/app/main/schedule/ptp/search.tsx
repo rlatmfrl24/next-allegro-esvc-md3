@@ -9,6 +9,7 @@ import {
   MdPrimaryTab,
   MdTabs,
 } from "@/app/util/md3";
+import { DateTime } from "luxon";
 import { useState } from "react";
 
 export default function PointToPointSearchPanel() {
@@ -60,8 +61,10 @@ export default function PointToPointSearchPanel() {
             tabItemId === "tab-list-search" ? "flex" : "hidden"
           }`}
         >
-          <SingleDatePicker />
           <MdOutlinedTextField></MdOutlinedTextField>
+          <SingleDatePicker
+            defaultDate={DateTime.fromFormat("11/21/1990", "MM/dd/yyyy")}
+          />
           <MdOutlinedTextField></MdOutlinedTextField>
         </div>
         <div

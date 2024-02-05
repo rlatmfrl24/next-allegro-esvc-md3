@@ -13,7 +13,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect as useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -28,7 +28,6 @@ import {
   MonthList,
   YearList,
   getModifiedCursorDate,
-  validateDate,
 } from "./util";
 import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
@@ -81,14 +80,16 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
 
     // validate date
     if (targetValue !== "") {
-      if (!validateDate(targetValue)) {
-        console.log("invalid::->", targetValue);
+      const inputDate = DateTime.fromFormat(targetValue, "MM/dd/yyyy");
+
+      if (inputDate.isValid) {
+        setDefaultDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
+        setFocusDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
+        navigation.setDate(inputDate.toJSDate());
+        setInvalid(false);
+      } else {
         e.target.value = defaultDate.toFormat("MM/dd/yyyy");
         setInvalid(true);
-      } else {
-        console.log("set to date::->", targetValue);
-        setDefaultDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
-        setInvalid(false);
       }
     }
   }
@@ -104,18 +105,18 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
     if (!isCalendarOpen) {
       setMode("date");
       FocusOnInput(inputEl);
-      navigation.setDate(defaultDate.toJSDate());
     }
-  }, [defaultDate, isCalendarOpen, navigation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCalendarOpen]);
 
   return (
     <div className="relative flex z-10" ref={refs.setReference}>
       <MdOutlinedTextField
         ref={inputEl}
         className="flex-1"
+        value={defaultDate.toFormat("MM/dd/yyyy")}
         supportingText="MM/DD/YYYY"
         errorText="Invalid date format"
-        value={defaultDate.toFormat("MM/dd/yyyy")}
         error={invalid}
         onBlur={(e) => {
           handleDateChange(e);
@@ -168,6 +169,7 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
                 headers={headers}
                 body={body}
                 focusDate={focusDate}
+                cursorDate={cursorDate}
                 setFocusDate={setFocusDate}
                 setIsCalendarOpen={setIsCalendarOpen}
                 setDefaultDate={setDefaultDate}
