@@ -1,5 +1,3 @@
-"use client";
-
 import { DateTime } from "luxon";
 import { motion } from "framer-motion";
 import { MdTypography } from "../typography";

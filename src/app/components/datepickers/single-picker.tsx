@@ -13,7 +13,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { useCallback, useEffect as useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
