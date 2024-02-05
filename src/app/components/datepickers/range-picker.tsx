@@ -23,16 +23,10 @@ import {
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import styles from "../components.module.css";
 import { useCalendar } from "@h6s/calendar";
-import {
-  FocusOnInput,
-  MonthList,
-  YearList,
-  getModifiedCursorDate,
-} from "./util";
+import { MonthList, YearList, getModifiedCursorDate } from "./util";
 import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
-import { DateSelector } from "./date-selector";
 import { RangeDateSelector } from "./range-selector";
 
 export const RangeDatePicker = (props: {
@@ -74,8 +68,6 @@ export const RangeDatePicker = (props: {
   ]);
 
   const { headers, body, navigation, cursorDate } = useCalendar();
-
-  function validateDefaultDateRange() {}
 
   function handleDateChange(e: any, target: "start" | "end") {
     let targetValue = e.target.value;
@@ -159,7 +151,10 @@ export const RangeDatePicker = (props: {
   }, [isCalendarOpen]);
 
   return (
-    <div className={`relative flex ${props.className}`} ref={refs.setReference}>
+    <div
+      className={`relative flex ${props.className} gap-2`}
+      ref={refs.setReference}
+    >
       <MdOutlinedTextField
         ref={inputEl}
         label="From"
