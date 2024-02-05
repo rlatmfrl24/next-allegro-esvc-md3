@@ -5,6 +5,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { MdIcon, MdIconButton, MdTextButton } from "@/app/util/md3";
 import { DateTime } from "luxon";
 import { SetStateAction } from "react";
+import { motion } from "framer-motion";
 
 export const NavigationContainer = ({
   mode,
@@ -23,7 +24,10 @@ export const NavigationContainer = ({
   cursorDate: Date;
 }) => {
   return (
-    <div className="flex justify-around p-3 border-b border-b-outlineVariant">
+    <motion.div
+      layout
+      className="flex justify-around p-3 border-b border-b-outlineVariant z-10 bg-surfaceContainerHigh rounded-t-2xl"
+    >
       <div className="flex justify-between items-center">
         <MdIconButton
           className={`${mode === "date" ? "opacity-100" : "opacity-0"}`}
@@ -39,11 +43,17 @@ export const NavigationContainer = ({
           disabled={mode === "year"}
           className="pl-5"
           onClick={() => {
-            setMode("month");
+            if (mode === "date") {
+              setMode("month");
+            } else {
+              setMode("date");
+            }
           }}
         >
           {DateTime.fromJSDate(cursorDate).toFormat("MMM")}
-          <ArrowDropDownIcon className="ml-2" />
+          <ArrowDropDownIcon
+            className={`ml-2 ${mode === "month" ? "rotate-180" : ""}`}
+          />
         </MdTextButton>
         <MdIconButton
           className={`${mode === "date" ? "opacity-100" : "opacity-0"}`}
@@ -74,11 +84,17 @@ export const NavigationContainer = ({
           disabled={mode === "month"}
           className="pl-5"
           onClick={() => {
-            setMode("year");
+            if (mode === "year") {
+              setMode("date");
+            } else {
+              setMode("year");
+            }
           }}
         >
           {DateTime.fromJSDate(cursorDate).toFormat("yyyy")}
-          <ArrowDropDownIcon className="ml-2" />
+          <ArrowDropDownIcon
+            className={`ml-2 ${mode === "year" ? "rotate-180" : ""}`}
+          />
         </MdTextButton>
         <MdIconButton
           className={`${mode === "date" ? "opacity-100" : "opacity-0"}`}
@@ -94,7 +110,7 @@ export const NavigationContainer = ({
           </MdIcon>
         </MdIconButton>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -19,6 +19,7 @@ import {
   MdIcon,
   MdIconButton,
   MdOutlinedTextField,
+  MdTextButton,
 } from "@/app/util/md3";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import styles from "../components.module.css";
@@ -33,6 +34,8 @@ import {
 import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
 import { MdTypography } from "../typography";
+import { motion } from "framer-motion";
+import { DateSelector } from "./date-selector";
 
 export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -61,6 +64,9 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
 
   const [invalid, setInvalid] = useState(false);
   const [defaultDate, setDefaultDate] = useState<DateTime>(
+    props.defaultDate || DateTime.now()
+  );
+  const [focusDate, setFocusDate] = useState<DateTime>(
     props.defaultDate || DateTime.now()
   );
 
@@ -123,13 +129,20 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
-      {isCalendarOpen && (
-        <FloatingFocusManager context={context} modal={true}>
-          <div
+      <FloatingFocusManager context={context} modal={false}>
+        <div
+          className={isCalendarOpen ? "visible" : "invisible"}
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+        >
+          <motion.div
+            layout
+            animate={{ scale: 1, opacity: 1 }}
+            initial={{ scale: 0, opacity: 0 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ duration: 0.2, type: "tween", ease: "easeInOut" }}
             className={styles["datepicker-container"]}
-            ref={refs.setFloating}
-            style={floatingStyles}
-            {...getFloatingProps()}
           >
             <MdElevation />
             <NavigationContainer
@@ -153,68 +166,18 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
               />
             )}
             {mode === "date" && (
-              <div className="p-3">
-                <div className="grid grid-cols-7">
-                  {headers.weekDays.map(({ key, value }) => {
-                    const weekHead = DateTime.fromJSDate(value)
-                      .toFormat("EEE")
-                      .charAt(0);
-                    return (
-                      <div
-                        key={key}
-                        className="flex items-center justify-center w-12 h-12"
-                      >
-                        <MdTypography variant="body" size="large">
-                          {weekHead.toUpperCase()}
-                        </MdTypography>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="flex flex-1 items-start">
-                  <div className="h-fit flex-1 grid grid-cols-7">
-                    {body.value.map((week) => {
-                      return week.value.map((day, idx) => {
-                        const {
-                          key,
-                          date,
-                          isCurrentDate,
-                          isCurrentMonth,
-                          value,
-                        } = day;
-                        const dayText = DateTime.fromISO(
-                          value.toISOString()
-                        ).toFormat("dd");
-
-                        return (
-                          <div
-                            key={key}
-                            className={`flex items-center justify-center w-12 h-12`}
-                          >
-                            <MdIconButton
-                              className={`${
-                                // today
-                                value.toDateString() ===
-                                  new Date().toDateString() &&
-                                `border border-primary rounded-full`
-                              } `}
-                              onClick={() => {}}
-                            >
-                              <MdTypography variant="body" size="large">
-                                {dayText}
-                              </MdTypography>
-                            </MdIconButton>
-                          </div>
-                        );
-                      });
-                    })}
-                  </div>
-                </div>
-              </div>
+              <DateSelector
+                headers={headers}
+                body={body}
+                focusDate={focusDate}
+                setFocusDate={setFocusDate}
+                setIsCalendarOpen={setIsCalendarOpen}
+                setDefaultDate={setDefaultDate}
+              />
             )}
-          </div>
-        </FloatingFocusManager>
-      )}
+          </motion.div>
+        </div>
+      </FloatingFocusManager>
     </div>
   );
 };

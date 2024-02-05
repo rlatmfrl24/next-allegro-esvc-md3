@@ -2,6 +2,7 @@ import { MdIcon, MdRippleEffect } from "@/app/util/md3";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { MdTypography } from "../typography";
 import CheckIcon from "@mui/icons-material/Check";
+import { motion } from "framer-motion";
 
 export const ListSelector = ({
   list,
@@ -24,12 +25,20 @@ export const ListSelector = ({
           if (!selected) return;
           instance.elements().viewport.scroll({
             top: (selected as HTMLElement).offsetTop - 100,
-            behavior: "smooth",
           });
         },
       }}
     >
-      <div className="overflow-auto">
+      <motion.div
+        layout
+        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: -10 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{
+          duration: 0.3,
+        }}
+        className="overflow-auto"
+      >
         {list.map((value, index) => {
           return (
             <div
@@ -54,7 +63,7 @@ export const ListSelector = ({
             </div>
           );
         })}
-      </div>
+      </motion.div>
     </OverlayScrollbarsComponent>
   );
 };
