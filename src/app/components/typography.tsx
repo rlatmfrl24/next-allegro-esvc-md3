@@ -2,11 +2,13 @@ export const MdTypography = ({
   children,
   variant,
   size,
+  prominent,
   className,
 }: {
   children: string | React.ReactNode;
   variant: "display" | "headline" | "title" | "label" | "body";
   size: "small" | "medium" | "large";
+  prominent?: boolean;
   className?: string;
 }) => {
   let typeScale = "";

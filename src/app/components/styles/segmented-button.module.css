@@ -1,0 +1,32 @@
+.segmented-buttons {
+  @apply flex rounded-full border h-10 overflow-hidden min-h-[40px];
+}
+
+.segmented-button {
+  @apply flex-1 relative text-onSurface h-full;
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.segmented-button:first-child {
+  @apply rounded-l-full;
+}
+
+.segmented-button:last-child {
+  @apply rounded-r-full;
+}
+
+.segmented-button:not(:last-child) {
+  @apply -mr-px;
+}
+
+.segmented-button.selected {
+  @apply flex-1;
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.segmented-button.disabled {
+  @apply flex-1;
+  opacity: 0.38;
+  border: 1px solid var(--md-sys-color-outline) opacity(0.12);
+}

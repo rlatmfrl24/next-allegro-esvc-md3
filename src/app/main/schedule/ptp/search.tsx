@@ -1,6 +1,8 @@
 "use client";
 
 import TitleIndicator from "@/../public/title_indicator.svg";
+import { RangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { SingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdOutlinedCard,
@@ -8,6 +10,7 @@ import {
   MdPrimaryTab,
   MdTabs,
 } from "@/app/util/md3";
+import { DateTime } from "luxon";
 import { useState } from "react";
 
 export default function PointToPointSearchPanel() {
@@ -19,7 +22,7 @@ export default function PointToPointSearchPanel() {
   }
 
   return (
-    <div className="flex-1  max-w-[1400px] mx-6">
+    <div className="relative mx-6 z-10">
       <div className="flex py-6 gap-4 items-center text-primary">
         <TitleIndicator title="Point to Point Search" />
         <MdTypography variant="title" size="large">
@@ -36,7 +39,7 @@ export default function PointToPointSearchPanel() {
             }}
           >
             <MdTypography variant="title" size="small">
-              List
+              Schedule List
             </MdTypography>
           </MdPrimaryTab>
           <MdPrimaryTab
@@ -47,18 +50,24 @@ export default function PointToPointSearchPanel() {
             }}
           >
             <MdTypography variant="title" size="small">
-              Calendar
+              Schedule Calendar
             </MdTypography>
           </MdPrimaryTab>
         </MdTabs>
         <div
           id="list-search-panel"
-          hidden={tabItemId !== "tab-list-search"}
           role="tabpanel"
           aria-labelledby="tab-list-search"
-          className="p-6"
+          className={`relative p-6 flex flex-col gap-4 ${
+            tabItemId === "tab-list-search" ? "flex" : "hidden"
+          }`}
         >
           <MdOutlinedTextField></MdOutlinedTextField>
+          <SingleDatePicker
+            defaultDate={DateTime.fromFormat("11/21/1990", "MM/dd/yyyy")}
+            className="z-20"
+          />
+          <RangeDatePicker className="z-10" />
           <MdOutlinedTextField></MdOutlinedTextField>
         </div>
         <div
