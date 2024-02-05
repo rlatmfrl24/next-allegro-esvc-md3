@@ -33,11 +33,27 @@ import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { DateSelector } from "./date-selector";
+import { RangeDateSelector } from "./range-selector";
 
-export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
+export const RangeDatePicker = (props: {
+  defaultDate?: DateTime;
+  className?: string;
+}) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
+  const [focusStartDate, setFocusStartDate] = useState<DateTime>(
+    DateTime.now()
+  );
+  const [focusEndDate, setFocusEndDate] = useState<DateTime>(DateTime.now());
+  const [defaultDateRange, setDefaultDateRange] = useState<DateTime[]>([
+    focusStartDate,
+    focusEndDate,
+  ]);
+  const [startInvalid, setStartInvalid] = useState(false);
+  const [endInvalid, setEndInvalid] = useState(false);
+
   const inputEl = useRef<any>(null);
+  const [errorSupportText, setErrorSupportText] = useState("");
 
   const { refs, floatingStyles, context } = useFloating({
     open: isCalendarOpen,
@@ -59,15 +75,9 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
 
   const { headers, body, navigation, cursorDate } = useCalendar();
 
-  const [invalid, setInvalid] = useState(false);
-  const [defaultDate, setDefaultDate] = useState<DateTime>(
-    props.defaultDate || DateTime.now()
-  );
-  const [focusDate, setFocusDate] = useState<DateTime>(
-    props.defaultDate || DateTime.now()
-  );
+  function validateDefaultDateRange() {}
 
-  function handleDateChange(e: any) {
+  function handleDateChange(e: any, target: "start" | "end") {
     let targetValue = e.target.value;
 
     // pre-processing if value is 8 digits
@@ -83,13 +93,47 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
       const inputDate = DateTime.fromFormat(targetValue, "MM/dd/yyyy");
 
       if (inputDate.isValid) {
-        setDefaultDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
-        setFocusDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
-        navigation.setDate(inputDate.toJSDate());
-        setInvalid(false);
+        if (target === "start") {
+          // target is start
+          if (inputDate > defaultDateRange[1]) {
+            // error: start date is greater than end date
+            setDefaultDateRange([defaultDateRange[0], defaultDateRange[1]]);
+            setStartInvalid(true);
+            setErrorSupportText("Invalid date range");
+          } else {
+            // Date range is valid
+            setDefaultDateRange([inputDate, defaultDateRange[1]]);
+            setStartInvalid(false);
+            setEndInvalid(false);
+            navigation.setDate(inputDate.toJSDate());
+          }
+        } else {
+          // target is end
+          if (inputDate < defaultDateRange[0]) {
+            // error: end date is less than start date
+            setDefaultDateRange([defaultDateRange[0], defaultDateRange[1]]);
+            setEndInvalid(true);
+            setErrorSupportText("Invalid date range");
+          } else {
+            // Date range is valid
+            setDefaultDateRange([defaultDateRange[0], inputDate]);
+            setStartInvalid(false);
+            setEndInvalid(false);
+            navigation.setDate(inputDate.toJSDate());
+          }
+        }
       } else {
-        e.target.value = defaultDate.toFormat("MM/dd/yyyy");
-        setInvalid(true);
+        if (target === "start") {
+          e.target.value = defaultDateRange[0].toFormat("MM/dd/yyyy");
+        } else {
+          e.target.value = defaultDateRange[1].toFormat("MM/dd/yyyy");
+        }
+        setErrorSupportText("Invalid date format");
+        if (target === "start") {
+          setStartInvalid(true);
+        } else {
+          setEndInvalid(true);
+        }
       }
     }
   }
@@ -104,25 +148,61 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
   useEffect(() => {
     if (!isCalendarOpen) {
       setMode("date");
-      FocusOnInput(inputEl);
+    }
+    setFocusStartDate(defaultDateRange[0]);
+    setFocusEndDate(defaultDateRange[1]);
+    if (defaultDateRange[0] < defaultDateRange[1]) {
+      setStartInvalid(false);
+      setEndInvalid(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
 
   return (
-    <div className="relative flex z-10" ref={refs.setReference}>
+    <div className={`relative flex ${props.className}`} ref={refs.setReference}>
       <MdOutlinedTextField
         ref={inputEl}
+        label="From"
         className="flex-1"
-        value={defaultDate.toFormat("MM/dd/yyyy")}
+        value={defaultDateRange[0].toFormat("MM/dd/yyyy")}
         supportingText="MM/DD/YYYY"
-        errorText="Invalid date format"
-        error={invalid}
+        errorText={errorSupportText}
+        error={startInvalid}
         onBlur={(e) => {
-          handleDateChange(e);
+          handleDateChange(e, "start");
         }}
       >
-        <MdIconButton slot="trailing-icon" {...getReferenceProps()}>
+        <MdIconButton
+          slot="trailing-icon"
+          {...getReferenceProps()}
+          onClick={() => {
+            setIsCalendarOpen(true);
+          }}
+        >
+          <MdIcon>
+            <CalendarTodayIcon />
+          </MdIcon>
+        </MdIconButton>
+      </MdOutlinedTextField>
+      <MdOutlinedTextField
+        ref={inputEl}
+        label="To"
+        className="flex-1"
+        value={defaultDateRange[1].toFormat("MM/dd/yyyy")}
+        supportingText="MM/DD/YYYY"
+        errorText={errorSupportText}
+        error={endInvalid}
+        onBlur={(e) => {
+          handleDateChange(e, "end");
+        }}
+      >
+        <MdIconButton
+          slot="trailing-icon"
+          {...getReferenceProps()}
+          onClick={() => {
+            setIsCalendarOpen(true);
+          }}
+        >
           <MdIcon>
             <CalendarTodayIcon />
           </MdIcon>
@@ -165,14 +245,16 @@ export const SingleDatePicker = (props: { defaultDate?: DateTime }) => {
               />
             )}
             {mode === "date" && (
-              <DateSelector
+              <RangeDateSelector
                 headers={headers}
                 body={body}
-                focusDate={focusDate}
                 cursorDate={cursorDate}
-                setFocusDate={setFocusDate}
+                focusStartDate={focusStartDate}
+                focusEndDate={focusEndDate}
+                setFocusStartDate={setFocusStartDate}
+                setFocusEndDate={setFocusEndDate}
                 setIsCalendarOpen={setIsCalendarOpen}
-                setDefaultDate={setDefaultDate}
+                setDefaultDateRange={setDefaultDateRange}
               />
             )}
           </motion.div>

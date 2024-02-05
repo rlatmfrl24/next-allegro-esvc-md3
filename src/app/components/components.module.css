@@ -8,5 +8,5 @@
   width: 360px;
   min-height: 360px;
   max-height: 480px;
-  @apply bg-surfaceContainerHigh rounded-2xl flex flex-col z-10;
+  @apply bg-surfaceContainerHigh rounded-2xl flex flex-col;
 }

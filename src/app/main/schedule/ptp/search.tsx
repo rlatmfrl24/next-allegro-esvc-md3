@@ -1,7 +1,8 @@
 "use client";
 
 import TitleIndicator from "@/../public/title_indicator.svg";
-import { SingleDatePicker } from "@/app/components/datepickers/single-picker";
+import { RangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { SingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdOutlinedCard,
@@ -57,14 +58,16 @@ export default function PointToPointSearchPanel() {
           id="list-search-panel"
           role="tabpanel"
           aria-labelledby="tab-list-search"
-          className={`p-6 flex flex-col gap-4 ${
+          className={`relative p-6 flex flex-col gap-4 ${
             tabItemId === "tab-list-search" ? "flex" : "hidden"
           }`}
         >
           <MdOutlinedTextField></MdOutlinedTextField>
           <SingleDatePicker
             defaultDate={DateTime.fromFormat("11/21/1990", "MM/dd/yyyy")}
+            className="z-20"
           />
+          <RangeDatePicker className="z-10" />
           <MdOutlinedTextField></MdOutlinedTextField>
         </div>
         <div

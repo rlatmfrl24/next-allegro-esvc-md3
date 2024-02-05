@@ -26,7 +26,7 @@ export const NavigationContainer = ({
   return (
     <motion.div
       layout
-      className="flex justify-around p-3 border-b border-b-outlineVariant z-10 bg-surfaceContainerHigh rounded-t-2xl"
+      className="flex justify-around p-3 border-b border-b-outlineVariant bg-surfaceContainerHigh rounded-t-2xl z-20"
     >
       <div className="flex justify-between items-center">
         <MdIconButton
