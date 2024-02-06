@@ -38,7 +38,7 @@ export default function VesselSchedule() {
           <motion.div
             className={`overflow-hidden `}
             animate={{ height: isScrollTop ? "auto" : 0 }}
-            transition={{ duration: 2 }}
+            transition={{ duration: 0.3 }}
           >
             <MdOutlinedCard className="p-5 my-5 z-10">
               <MdSingleDatePicker
