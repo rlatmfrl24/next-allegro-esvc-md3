@@ -13,7 +13,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -34,9 +34,10 @@ import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { DateSelector } from "./date-selector";
 
-export const SingleDatePicker = (props: {
+export const MdSingleDatePicker = (props: {
   defaultDate?: DateTime;
   className?: string;
+  handleDateChange?: (date: DateTime) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
@@ -103,6 +104,10 @@ export const SingleDatePicker = (props: {
     );
     setMode("date");
   }
+
+  useEffect(() => {
+    props.handleDateChange?.(defaultDate);
+  }, [defaultDate]);
 
   useEffect(() => {
     if (!isCalendarOpen) {

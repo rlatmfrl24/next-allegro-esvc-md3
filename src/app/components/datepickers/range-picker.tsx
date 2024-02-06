@@ -29,7 +29,7 @@ import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { RangeDateSelector } from "./range-selector";
 
-export const RangeDatePicker = (props: {
+export const MdRangeDatePicker = (props: {
   className?: string;
   defautStartDate?: DateTime;
   defaultEndDate?: DateTime;
