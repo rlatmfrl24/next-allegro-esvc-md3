@@ -30,15 +30,18 @@ import { motion } from "framer-motion";
 import { RangeDateSelector } from "./range-selector";
 
 export const RangeDatePicker = (props: {
-  defaultDate?: DateTime;
   className?: string;
+  defautStartDate?: DateTime;
+  defaultEndDate?: DateTime;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
   const [focusStartDate, setFocusStartDate] = useState<DateTime>(
-    DateTime.now()
+    props.defautStartDate || DateTime.now()
   );
-  const [focusEndDate, setFocusEndDate] = useState<DateTime>(DateTime.now());
+  const [focusEndDate, setFocusEndDate] = useState<DateTime>(
+    props.defaultEndDate || DateTime.now()
+  );
   const [defaultDateRange, setDefaultDateRange] = useState<DateTime[]>([
     focusStartDate,
     focusEndDate,
@@ -67,7 +70,9 @@ export const RangeDatePicker = (props: {
     role,
   ]);
 
-  const { headers, body, navigation, cursorDate } = useCalendar();
+  const { headers, body, navigation, cursorDate } = useCalendar({
+    defaultDate: props.defautStartDate?.toJSDate() || DateTime.now().toJSDate(),
+  });
 
   function handleDateChange(e: any, target: "start" | "end") {
     let targetValue = e.target.value;

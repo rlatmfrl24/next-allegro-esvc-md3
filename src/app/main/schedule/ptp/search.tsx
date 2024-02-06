@@ -67,7 +67,11 @@ export default function PointToPointSearchPanel() {
             defaultDate={DateTime.fromFormat("11/21/1990", "MM/dd/yyyy")}
             className="z-20"
           />
-          <RangeDatePicker className="z-10" />
+          <RangeDatePicker
+            className="z-10"
+            defautStartDate={DateTime.fromFormat("11/21/2024", "MM/dd/yyyy")}
+            defaultEndDate={DateTime.fromFormat("12/21/2024", "MM/dd/yyyy")}
+          />
           <MdOutlinedTextField></MdOutlinedTextField>
         </div>
         <div
