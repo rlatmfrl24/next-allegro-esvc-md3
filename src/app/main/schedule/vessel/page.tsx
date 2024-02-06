@@ -33,21 +33,25 @@ export default function VesselSchedule() {
       ref={scrollContainerRef}
       className="relative overflow-auto items-center flex flex-col gap-3 flex-1 w-full"
     >
-      <div className="w-full max-w-[1400px] p-6">
+      <div className="relative w-full max-w-[1400px] p-6">
         <div className="sticky top-0 z-50 h-96 ">
-          <motion.div
-            className={`overflow-hidden `}
-            animate={{ height: isScrollTop ? "auto" : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <MdOutlinedCard className="p-5 my-5 z-10">
-              <MdSingleDatePicker
-                className="z-20"
-                handleDateChange={setFirstDate}
-              />
-              <MdSingleDatePicker className="z-10" />
-              <MdRangeDatePicker />
-            </MdOutlinedCard>
+          <motion.div layout>
+            {isScrollTop ? (
+              <MdOutlinedCard className="p-5 my-5 z-10">
+                <MdSingleDatePicker
+                  className="z-20"
+                  handleDateChange={setFirstDate}
+                />
+                <MdSingleDatePicker className="z-10" />
+                <MdRangeDatePicker />
+              </MdOutlinedCard>
+            ) : (
+              <div className="border">
+                <MdTypography variant="title" size="large">
+                  {firstDate ? firstDate.toISODate() : "No date selected"}
+                </MdTypography>
+              </div>
+            )}
           </motion.div>
         </div>
 
