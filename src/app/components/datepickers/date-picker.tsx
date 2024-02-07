@@ -107,6 +107,7 @@ export const MdSingleDatePicker = (props: {
 
   useEffect(() => {
     props.handleDateChange?.(defaultDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultDate]);
 
   useEffect(() => {
@@ -145,10 +146,10 @@ export const MdSingleDatePicker = (props: {
         >
           <motion.div
             layout
-            animate={{ scale: 1, opacity: 1 }}
-            initial={{ scale: 0, opacity: 0 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.2, type: "tween", ease: "easeInOut" }}
+            animate={{
+              opacity: isCalendarOpen ? 1 : 0,
+              y: isCalendarOpen ? 0 : -10,
+            }}
             className={styles["datepicker-container"]}
           >
             <MdElevation />

@@ -3,7 +3,7 @@
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
-import { MdOutlinedCard } from "@/app/util/md3";
+import { MdFilledButton, MdOutlinedCard } from "@/app/util/md3";
 import {
   AnimatePresence,
   motion,
@@ -42,9 +42,9 @@ export default function VesselSchedule() {
               duration: 0.5,
               type: "spring",
             }}
-            className="absolute top-0 w-full h-48 bg-red-300 z-20"
+            className="absolute top-0 w-full h-48 border-b border-surfaceVariant p-6 bg-surfaceContainer z-20"
           >
-            1
+            <MdFilledButton>Create Schedule</MdFilledButton>
           </motion.div>
         )}
       </AnimatePresence>

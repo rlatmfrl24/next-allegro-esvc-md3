@@ -217,10 +217,11 @@ export const MdRangeDatePicker = (props: {
         >
           <motion.div
             layout
-            animate={{ scale: 1, opacity: 1 }}
-            initial={{ scale: 0, opacity: 0 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.2, type: "tween", ease: "easeInOut" }}
+            animate={{
+              opacity: isCalendarOpen ? 1 : 0,
+              y: isCalendarOpen ? 0 : -10,
+            }}
+            transition={{ type: "spring", duration: 0.3 }}
             className={styles["datepicker-container"]}
           >
             <MdElevation />
