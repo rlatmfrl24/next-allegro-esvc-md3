@@ -7,14 +7,12 @@ import {
   MdFilledCard,
   MdIcon,
   MdNavigationBar,
-  MdNavigationDrawer,
   MdNavigationTab,
   MdOutlinedButton,
   MdOutlinedCard,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdOutlinedTextField,
-  MdRippleEffect,
   MdTextButton,
 } from "../util/md3";
 import { createMDTheme, applyPresetTheme } from "../util/theme";
@@ -61,7 +59,7 @@ export default function Test() {
   }
 
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="flex flex-1 flex-col gap-2 p-2">
       <MdFilledButton
         onClick={() => {
           router.push("/");
@@ -69,8 +67,9 @@ export default function Test() {
       >
         Go to Main
       </MdFilledButton>
-
-      <HexColorPicker color={color} onChange={setColor} />
+      <div className="h-fit">
+        <HexColorPicker color={color} onChange={setColor} />
+      </div>
 
       <HexTest />
       <div className="flex gap-4">
