@@ -5,8 +5,14 @@ import {
   MdElevationButton,
   MdFilledButton,
   MdFilledCard,
+  MdIcon,
+  MdNavigationBar,
+  MdNavigationDrawer,
+  MdNavigationTab,
   MdOutlinedButton,
   MdOutlinedCard,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdOutlinedTextField,
   MdRippleEffect,
   MdTextButton,
@@ -15,6 +21,16 @@ import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import SettingsIcon from "@mui/icons-material/Settings";
+import {
+  MdSegmentedButton,
+  MdSegmentedButtons,
+} from "../components/segmented-button";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -138,6 +154,55 @@ export default function Test() {
         <MdOutlinedCard className="w-48 h-24 flex justify-center items-center">
           Outlined Card
         </MdOutlinedCard>
+      </div>
+      <div className="flex gap-2 mt-4">
+        <MdNavigationBar activeIndex={1} hideInactiveLabels>
+          <MdNavigationTab label="Calendar" showBadge badgeValue="4">
+            <MdIcon slot="active-icon">
+              <CalendarTodayIcon />
+            </MdIcon>
+            <MdIcon slot="inactive-icon">
+              <CalendarTodayOutlinedIcon />
+            </MdIcon>
+          </MdNavigationTab>
+          <MdNavigationTab label="User" showBadge>
+            <MdIcon slot="active-icon">
+              <AccountCircleIcon />
+            </MdIcon>
+            <MdIcon slot="inactive-icon">
+              <AccountCircleOutlinedIcon />
+            </MdIcon>
+          </MdNavigationTab>
+          <MdNavigationTab label="Setting">
+            <MdIcon slot="active-icon">
+              <SettingsIcon />
+            </MdIcon>
+            <MdIcon slot="inactive-icon">
+              <SettingsOutlinedIcon />
+            </MdIcon>
+          </MdNavigationTab>
+        </MdNavigationBar>
+      </div>
+      <div className="flex gap-2 mt-4">
+        <MdOutlinedSegmentedButtonSet className="flex-1">
+          <MdOutlinedSegmentedButton label="111"></MdOutlinedSegmentedButton>
+          <MdOutlinedSegmentedButton label="222"></MdOutlinedSegmentedButton>
+          <MdOutlinedSegmentedButton label="333"></MdOutlinedSegmentedButton>
+          <MdOutlinedSegmentedButton
+            label="444"
+            disabled
+          ></MdOutlinedSegmentedButton>
+        </MdOutlinedSegmentedButtonSet>
+      </div>
+      <div className="flex gap-2 mt-4 ">
+        <MdSegmentedButtons value="111" className="flex-1">
+          <MdSegmentedButton id="111">111</MdSegmentedButton>
+          <MdSegmentedButton id="222">222</MdSegmentedButton>
+          <MdSegmentedButton id="333">333</MdSegmentedButton>
+          <MdSegmentedButton id="444" disabled>
+            444
+          </MdSegmentedButton>
+        </MdSegmentedButtons>
       </div>
     </div>
   );

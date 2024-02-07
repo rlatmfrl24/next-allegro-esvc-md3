@@ -27,6 +27,14 @@ import { MdMenuItem as MdMenuItemWebComponent } from "@material/web/menu/menu-it
 import { MdElevatedCard as MdElevatedCardWebComponent } from "@material/web/labs/card/elevated-card";
 import { MdOutlinedCard as MdOutlinedCardWebComponent } from "@material/web/labs/card/outlined-card";
 import { MdFilledCard as MdFilledCardWebComponent } from "@material/web/labs/card/filled-card";
+import { MdOutlinedSegmentedButtonSet as MdOutlinedSegmentedButtonSetWebComponent } from "@material/web/labs/segmentedbuttonset/outlined-segmented-button-set";
+import { MdOutlinedSegmentedButton as MdOutlinedSegmentedButtonWebComponent } from "@material/web/labs/segmentedbutton/outlined-segmented-button";
+import { MdBadge as MdBadgeWebComponent } from "@material/web/labs/badge/badge";
+import { MdNavigationBar as MdNavigationBarWebComponent } from "@material/web/labs/navigationbar/navigation-bar";
+import { MdNavigationDrawer as MdNavigationDrawerWebComponent } from "@material/web/labs/navigationdrawer/navigation-drawer";
+import { MdNavigationTab as MdNavigationTabWebComponent } from "@material/web/labs/navigationtab/navigation-tab";
+import { MdCircularProgress as MdCircularProgressWebComponent } from "@material/web/progress/circular-progress";
+import { MdLinearProgress as MdLinearProgressWebComponent } from "@material/web/progress/linear-progress";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -187,5 +195,53 @@ export const MdOutlinedCard = createComponent({
 export const MdFilledCard = createComponent({
   tagName: "md-filled-card",
   elementClass: MdFilledCardWebComponent,
+  react: React,
+});
+
+export const MdOutlinedSegmentedButtonSet = createComponent({
+  tagName: "md-outlined-segmented-button-set",
+  elementClass: MdOutlinedSegmentedButtonSetWebComponent,
+  react: React,
+});
+
+export const MdOutlinedSegmentedButton = createComponent({
+  tagName: "md-outlined-segmented-button",
+  elementClass: MdOutlinedSegmentedButtonWebComponent,
+  react: React,
+});
+
+export const MdBadge = createComponent({
+  tagName: "md-badge",
+  elementClass: MdBadgeWebComponent,
+  react: React,
+});
+
+export const MdNavigationBar = createComponent({
+  tagName: "md-navigation-bar",
+  elementClass: MdNavigationBarWebComponent,
+  react: React,
+});
+
+export const MdNavigationDrawer = createComponent({
+  tagName: "md-navigation-drawer",
+  elementClass: MdNavigationDrawerWebComponent,
+  react: React,
+});
+
+export const MdNavigationTab = createComponent({
+  tagName: "md-navigation-tab",
+  elementClass: MdNavigationTabWebComponent,
+  react: React,
+});
+
+export const MdCircularProgress = createComponent({
+  tagName: "md-circular-progress",
+  elementClass: MdCircularProgressWebComponent,
+  react: React,
+});
+
+export const MdLinearProgress = createComponent({
+  tagName: "md-linear-progress",
+  elementClass: MdLinearProgressWebComponent,
   react: React,
 });

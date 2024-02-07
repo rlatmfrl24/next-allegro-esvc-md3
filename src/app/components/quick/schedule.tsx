@@ -1,4 +1,9 @@
-import { MdOutlinedSelect, MdSelectOption } from "@/app/util/md3";
+import {
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
+  MdOutlinedSelect,
+  MdSelectOption,
+} from "@/app/util/md3";
 import { MdSegmentedButton, MdSegmentedButtons } from "../segmented-button";
 
 const continents = [
@@ -13,18 +18,11 @@ const continents = [
 export default function QuickSchedule() {
   return (
     <>
-      <MdSegmentedButtons
-        value="segment-schedule"
-        onChange={(value) => {
-          console.log(value);
-        }}
-      >
-        <MdSegmentedButton id="segment-schedule">Schedule</MdSegmentedButton>
-        <MdSegmentedButton id="segment-port">Port Schedule</MdSegmentedButton>
-        <MdSegmentedButton id="segment-long-range">
-          Long Range Schedule
-        </MdSegmentedButton>
-      </MdSegmentedButtons>
+      <MdOutlinedSegmentedButtonSet className="flex-1">
+        <MdOutlinedSegmentedButton label="Schedule"></MdOutlinedSegmentedButton>
+        <MdOutlinedSegmentedButton label="Port Schedule"></MdOutlinedSegmentedButton>
+        <MdOutlinedSegmentedButton label="Long Range Schedule"></MdOutlinedSegmentedButton>
+      </MdOutlinedSegmentedButtonSet>
       <div className="grid grid-cols-2 my-6 gap-4">
         <MdOutlinedSelect label="Origin">
           {continents.map((continent) => (
