@@ -3,7 +3,7 @@
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
-import { MdFilledButton, MdOutlinedCard } from "@/app/util/md3";
+import { MdOutlinedCard } from "@/app/util/md3";
 import {
   AnimatePresence,
   motion,
@@ -21,8 +21,6 @@ export default function VesselSchedule() {
   const [isScrollTop, setIsScrollTop] = useState(true);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    console.log(latest);
-
     if (latest < 100) {
       setIsScrollTop(true);
     } else {
@@ -35,7 +33,7 @@ export default function VesselSchedule() {
       <AnimatePresence>
         {!isScrollTop && (
           <motion.div
-            initial={{ y: -190 }}
+            initial={{ y: -200 }}
             animate={{ y: 0 }}
             exit={{ y: -200 }}
             transition={{
@@ -43,9 +41,7 @@ export default function VesselSchedule() {
               type: "spring",
             }}
             className="absolute top-0 w-full h-48 border-b border-surfaceVariant p-6 bg-surfaceContainer z-20"
-          >
-            <MdFilledButton>Create Schedule</MdFilledButton>
-          </motion.div>
+          ></motion.div>
         )}
       </AnimatePresence>
       <div

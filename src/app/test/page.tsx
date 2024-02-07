@@ -79,15 +79,12 @@ export default function Test() {
       </div>
 
       <div className="flex gap-2">
-        <MdFilledButton className="font-pretendard">Click me</MdFilledButton>
-        <MdElevationButton className="font-pretendard">
-          Click me
-        </MdElevationButton>
-        <MdOutlinedButton className="font-pretendard">
-          Click me
-        </MdOutlinedButton>
-        <MdTextButton className="font-pretendard">Click me</MdTextButton>
+        <MdFilledButton>Click me</MdFilledButton>
+        <MdElevationButton>Click me</MdElevationButton>
+        <MdOutlinedButton>Click me</MdOutlinedButton>
+        <MdTextButton>Click me</MdTextButton>
       </div>
+
       <div className="flex gap-2 font-pretendard font-bold">
         <MdOutlinedTextField label="Label" className="h-fit" />
         <MdOutlinedTextField label="Label" className="h-fit" disabled />
