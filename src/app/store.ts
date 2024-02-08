@@ -4,7 +4,7 @@ const UserState = atom({
   key: "UserState",
   default: {
     isAuthenticated: false,
-    name: "John Doe",
+    name: "",
     email: "",
   },
 });

@@ -15,7 +15,7 @@ export default function BackgroundSwiper() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <>
+    <div className="h-full flex">
       <SwipeIndicator activeIndex={activeIndex} total={images.length} />
       <Swiper
         slidesPerView={1}
@@ -43,7 +43,7 @@ export default function BackgroundSwiper() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 }
 

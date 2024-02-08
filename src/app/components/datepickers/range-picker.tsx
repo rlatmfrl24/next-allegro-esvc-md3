@@ -56,7 +56,7 @@ export const MdRangeDatePicker = (props: {
     open: isCalendarOpen,
     onOpenChange: setIsCalendarOpen,
     middleware: [offset(10), flip(), shift()],
-    placement: "bottom-start",
+    placement: "bottom-end",
     whileElementsMounted: autoUpdate,
   });
 

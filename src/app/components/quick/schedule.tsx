@@ -19,7 +19,10 @@ export default function QuickSchedule() {
   return (
     <>
       <MdOutlinedSegmentedButtonSet className="flex-1">
-        <MdOutlinedSegmentedButton label="Schedule"></MdOutlinedSegmentedButton>
+        <MdOutlinedSegmentedButton
+          selected
+          label="Schedule"
+        ></MdOutlinedSegmentedButton>
         <MdOutlinedSegmentedButton label="Port Schedule"></MdOutlinedSegmentedButton>
         <MdOutlinedSegmentedButton label="Long Range Schedule"></MdOutlinedSegmentedButton>
       </MdOutlinedSegmentedButtonSet>

@@ -14,7 +14,7 @@ import QuickNotice from "@/app/components/quick/notice";
 
 export default function QuickMenu() {
   return (
-    <div className="flex flex-col justify-center gap-6 h-full absolute z-10 right-0 p-16 w-[848px]">
+    <div className="flex flex-col justify-center gap-6 h-full absolute z-10 right-16 w-[848px] px-16">
       <QuickSearch />
       <div className={styles["sign-card"] + ` p-12`}>
         <MdElevation />

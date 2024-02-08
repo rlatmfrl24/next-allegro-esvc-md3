@@ -1,16 +1,16 @@
 "use client";
 
 import { useRecoilValue } from "recoil";
-import Logo from "../components/logo";
+import Logo from "./logo";
 import { UserState } from "../store";
 import Link from "next/link";
 import { MdFilledButton, MdOutlinedButton } from "../util/md3";
 
-export const TestHeader = () => {
+export const Header = () => {
   const userData = useRecoilValue(UserState);
 
   return (
-    <header className="relative bg-surfaceContainer h-16 flex items-center px-4">
+    <header className="relative h-16 flex items-center px-4">
       <Logo />
       <div className="mx-6 flex-1"></div>
       {userData.isAuthenticated ? (
@@ -42,4 +42,4 @@ const HeaderMainComponent = () => {
   return <div></div>;
 };
 
-export default TestHeader;
+export default Header;
