@@ -18,6 +18,7 @@ export default function Header() {
   return (
     <div className="h-[4.5rem] flex items-center px-6 shadow-md gap-6 z-20">
       <Logo />
+      <div className="flex-1"></div>
       <NavButtonGroup />
       {isSigning ? (
         <Link href={"/sign"}>
