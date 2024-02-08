@@ -1,11 +1,6 @@
 import { atom } from "recoil";
 import { cardList } from "./constants";
 
-export const currentPathState = atom<string[]>({
-  key: "currentPath",
-  default: [],
-});
-
 export const draggableState = atom<boolean>({
   key: "draggable",
   default: false,

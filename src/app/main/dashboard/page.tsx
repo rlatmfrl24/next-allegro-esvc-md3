@@ -4,23 +4,18 @@ import { MdTypography } from "../../components/typography";
 import { MdFilterChip, MdIcon, MdIconButton } from "../../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { currentPathState, draggableState } from "../store";
+import { draggableState } from "../store";
 import { useEffect, useState } from "react";
 import Dashboard from "./dashboard";
 import TitleIndicator from "@/../public/title_indicator.svg";
 import SetDashboard from "./set-dashboard";
 
 export default function MainPage() {
-  const setCurrentPath = useSetRecoilState(currentPathState);
   const [customizabled, setCustomizabled] = useRecoilState(draggableState);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   function toggleDrawer() {
     setIsDrawerOpen((prev) => !prev);
   }
-
-  useEffect(() => {
-    setCurrentPath(["Dashboard"]);
-  }, [setCurrentPath]);
 
   return (
     <div className="w-full p-6 relative ">
