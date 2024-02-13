@@ -9,6 +9,8 @@ import NavOverlay from "./nav-overlay";
 import { DrawerState } from "@/app/store";
 import MenuIcon from "@mui/icons-material/Menu";
 import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
+import { FloatingNode, FloatingTree } from "@floating-ui/react";
+import { Menu, MenuItem } from "./dropdown-menu";
 
 export default function SideNavigation() {
   const pathname = usePathname();
@@ -28,15 +30,18 @@ export default function SideNavigation() {
         pathname.split("/").includes("main") ? "w-20 visible" : "w-0 invisible"
       }`}
       >
-        <MdIconButton onClick={() => handleDrawer()}>
+        <MdIconButton
+          aria-label="drawer-toggler"
+          onClick={() => handleDrawer()}
+        >
           <MdIcon>
             <MenuIcon />
           </MdIcon>
         </MdIconButton>
         <div className="flex flex-col mt-10 gap-5">
-          {meunItems.map((item) => (
+          {/* {meunItems.map((item) => (
             <MdIconButton
-              key={item.name}
+              key={item.id}
               className={
                 item.link && pathname.split("/").includes(item.link)
                   ? "bg-secondaryContainer rounded-full"
@@ -47,7 +52,7 @@ export default function SideNavigation() {
                 <PlaceholdeIcon />
               </MdIcon>
             </MdIconButton>
-          ))}
+          ))} */}
         </div>
       </aside>
       <AnimatePresence>
