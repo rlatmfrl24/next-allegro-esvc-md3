@@ -2,10 +2,11 @@
 
 import CatchPhrase from "./catch-phrase";
 import QuickMenu from "./quick-menu";
+import BackgroundSwiper from "./background-swiper";
+import Footer from "../components/footer";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import BackgroundSwiper from "./background-swiper";
 
 export default function Sign() {
   return (
@@ -13,6 +14,7 @@ export default function Sign() {
       <QuickMenu />
       <CatchPhrase />
       <BackgroundSwiper />
+      <Footer />
     </div>
   );
 }

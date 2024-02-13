@@ -89,12 +89,12 @@ export const MdRangeDatePicker = (props: {
     }
 
     const startDate = DateTime.fromFormat(
-      targetValue.split("-")[0].trim(),
+      (targetValue.split("-")[0] as string).trim(),
       "MM/dd/yyyy"
     );
 
     const endDate = DateTime.fromFormat(
-      targetValue.split(" - ")[1].trim(),
+      (targetValue.split("-")[1] as string).trim(),
       "MM/dd/yyyy"
     );
 

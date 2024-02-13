@@ -1,4 +1,3 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { meunItems } from "./constants";
 
 export function getRoutePath(paths: string[]) {

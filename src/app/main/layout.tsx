@@ -1,6 +1,7 @@
 "use client";
 
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import Portal from "../components/portal";
 
 export default function MainLayout({
   children,
