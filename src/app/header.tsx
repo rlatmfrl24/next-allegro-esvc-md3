@@ -1,8 +1,6 @@
 "use client";
 
-import { useRecoilValue } from "recoil";
 import Logo from "./components/logo";
-import { UserState } from "./store";
 import Link from "next/link";
 import {
   MdFilledButton,
@@ -18,15 +16,16 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import UnknownAvatar from "@/../public/avatar_unknown.svg";
 import CheckIcon from "@mui/icons-material/Check";
+import { usePathname } from "next/navigation";
 
 export const Header = () => {
-  const userData = useRecoilValue(UserState);
+  const pathname = usePathname();
 
   return (
     <header className="relative h-16 flex items-center px-4">
       <Logo />
       <div className="mx-6 flex-1"></div>
-      {userData.isAuthenticated ? (
+      {pathname.split("/").includes("main") ? (
         <HeaderMainComponent />
       ) : (
         <HeaderSignComponent />
