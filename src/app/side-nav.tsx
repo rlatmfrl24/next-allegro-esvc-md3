@@ -160,7 +160,34 @@ export default function SideNavigation() {
           ></motion.div>
         )}
       </AnimatePresence>
-
+      <AnimatePresence>
+        {drawer.open && (
+          <motion.div
+            animate={{ x: drawer.open ? 0 : -360 }}
+            transition={{ type: "spring", bounce: 0, duration: 0.25 }}
+            className="fixed h-screen w-[360px] bg-surfaceContainerLow p-3 z-50 rounded-r-2xl flex flex-col overflow-y-auto"
+          >
+            <OverlayScrollbarsComponent defer>
+              <MdTypography
+                variant="title"
+                size="small"
+                className="h-14 px-3.5 items-center w-full flex text-onSurfaceVariant"
+              >
+                Menu
+              </MdTypography>
+              {meunItems.map((item) => (
+                <NavItem
+                  item={item}
+                  key={item.id}
+                  depth={1}
+                  path={[item.link || ""]}
+                />
+              ))}
+            </OverlayScrollbarsComponent>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* 
       <motion.div
         animate={{ x: drawer.open ? 0 : -360 }}
         transition={{ type: "spring", bounce: 0, duration: 0.25 }}
@@ -183,7 +210,7 @@ export default function SideNavigation() {
             />
           ))}
         </OverlayScrollbarsComponent>
-      </motion.div>
+      </motion.div> */}
     </>
   );
 }

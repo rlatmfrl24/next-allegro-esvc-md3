@@ -29,7 +29,7 @@ export default function VesselSchedule() {
   });
 
   return (
-    <div className="relative flex-1 flex flex-col w-full">
+    <div className="relative flex-1 w-full max-w-[1400px]">
       <AnimatePresence>
         {!isScrollTop && (
           <motion.div
@@ -46,7 +46,7 @@ export default function VesselSchedule() {
       </AnimatePresence>
       <div
         ref={scrollContainerRef}
-        className="relative flex justify-center flex-auto h-0 overflow-auto w-full p-6"
+        className="relative flex justify-center flex-1 overflow-auto w-full p-6"
       >
         <div className="max-w-[1400px] w-full">
           <MdOutlinedCard className={`flex-1 flex flex-col gap-3 z-10 p-6`}>

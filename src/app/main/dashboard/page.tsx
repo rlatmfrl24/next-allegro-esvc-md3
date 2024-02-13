@@ -18,7 +18,7 @@ export default function MainPage() {
   }
 
   return (
-    <div id="main-container" className="w-full p-6 relative">
+    <div id="main-container" className="w-full p-4 relative">
       <div className="flex items-center gap-3 pb-6">
         <TitleIndicator className="mr-1 text-primary" />
         <MdTypography
