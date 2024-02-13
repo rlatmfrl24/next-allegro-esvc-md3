@@ -127,7 +127,6 @@ const HeaderMainComponent = () => {
           </MdMenuItem>
         </MdMenu>
       </div>
-      <div className="w-px h-4 bg-gray-200 mx-2.5"> </div>
       <UnknownAvatar />
     </div>
   );

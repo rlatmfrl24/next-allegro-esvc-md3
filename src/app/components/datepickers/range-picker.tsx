@@ -46,8 +46,8 @@ export const MdRangeDatePicker = (props: {
     focusStartDate,
     focusEndDate,
   ]);
-  const [startInvalid, setStartInvalid] = useState(false);
-  const [endInvalid, setEndInvalid] = useState(false);
+
+  const [isDateRangeValid, setIsDateRangeValid] = useState(true);
 
   const inputEl = useRef<any>(null);
   const [errorSupportText, setErrorSupportText] = useState("");
@@ -56,7 +56,7 @@ export const MdRangeDatePicker = (props: {
     open: isCalendarOpen,
     onOpenChange: setIsCalendarOpen,
     middleware: [offset(10), flip(), shift()],
-    placement: "bottom-end",
+    placement: "bottom-start",
     whileElementsMounted: autoUpdate,
   });
 
@@ -74,64 +74,47 @@ export const MdRangeDatePicker = (props: {
     defaultDate: props.defautStartDate?.toJSDate() || DateTime.now().toJSDate(),
   });
 
-  function handleDateChange(e: any, target: "start" | "end") {
-    let targetValue = e.target.value;
-
-    // pre-processing if value is 8 digits
-    if (e.target.value.length === 8) {
-      const month = targetValue.substring(0, 2);
-      const day = targetValue.substring(2, 4);
-      const year = targetValue.substring(4, 8);
-      targetValue = `${month}/${day}/${year}`;
+  function handleDateChange(e: any) {
+    // ignore if target is md-icon-button
+    if (e.target.tagName === "MD-ICON-BUTTON") {
+      return;
     }
 
-    // validate date
-    if (targetValue !== "") {
-      const inputDate = DateTime.fromFormat(targetValue, "MM/dd/yyyy");
+    let targetValue = e.target.value;
 
-      if (inputDate.isValid) {
-        if (target === "start") {
-          // target is start
-          if (inputDate > defaultDateRange[1]) {
-            // error: start date is greater than end date
-            setDefaultDateRange([defaultDateRange[0], defaultDateRange[1]]);
-            setStartInvalid(true);
-            setErrorSupportText("Invalid date range");
-          } else {
-            // Date range is valid
-            setDefaultDateRange([inputDate, defaultDateRange[1]]);
-            setStartInvalid(false);
-            setEndInvalid(false);
-            navigation.setDate(inputDate.toJSDate());
-          }
-        } else {
-          // target is end
-          if (inputDate < defaultDateRange[0]) {
-            // error: end date is less than start date
-            setDefaultDateRange([defaultDateRange[0], defaultDateRange[1]]);
-            setEndInvalid(true);
-            setErrorSupportText("Invalid date range");
-          } else {
-            // Date range is valid
-            setDefaultDateRange([defaultDateRange[0], inputDate]);
-            setStartInvalid(false);
-            setEndInvalid(false);
-            navigation.setDate(inputDate.toJSDate());
-          }
-        }
+    if (targetValue === "") {
+      setIsDateRangeValid(false);
+      setErrorSupportText("Date range cannot be empty");
+      return;
+    }
+
+    console.log("targetValue", targetValue);
+    console.log("targetValue.split", targetValue.split("-"));
+
+    const startDate = DateTime.fromFormat(
+      targetValue.split("-")[0].trim(),
+      "MM/dd/yyyy"
+    );
+
+    const endDate = DateTime.fromFormat(
+      targetValue.split(" - ")[1].trim(),
+      "MM/dd/yyyy"
+    );
+
+    if (startDate.isValid && endDate.isValid) {
+      if (startDate > endDate) {
+        setIsDateRangeValid(false);
+        setErrorSupportText("Start date cannot be greater than end date");
       } else {
-        if (target === "start") {
-          e.target.value = defaultDateRange[0].toFormat("MM/dd/yyyy");
-        } else {
-          e.target.value = defaultDateRange[1].toFormat("MM/dd/yyyy");
-        }
-        setErrorSupportText("Invalid date format");
-        if (target === "start") {
-          setStartInvalid(true);
-        } else {
-          setEndInvalid(true);
-        }
+        setIsDateRangeValid(true);
+        setErrorSupportText("");
+        setDefaultDateRange([startDate, endDate]);
+        setFocusStartDate(startDate);
+        setFocusEndDate(endDate);
       }
+    } else {
+      setIsDateRangeValid(false);
+      setErrorSupportText("Invalid date format");
     }
   }
 
@@ -149,8 +132,8 @@ export const MdRangeDatePicker = (props: {
     setFocusStartDate(defaultDateRange[0]);
     setFocusEndDate(defaultDateRange[1]);
     if (defaultDateRange[0] < defaultDateRange[1]) {
-      setStartInvalid(false);
-      setEndInvalid(false);
+      setIsDateRangeValid(true);
+      setErrorSupportText("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
@@ -164,36 +147,21 @@ export const MdRangeDatePicker = (props: {
         ref={inputEl}
         label="From"
         className="flex-1"
-        value={defaultDateRange[0].toFormat("MM/dd/yyyy")}
-        supportingText="MM/DD/YYYY"
+        value={
+          defaultDateRange[0].toFormat("MM/dd/yyyy") +
+          " - " +
+          defaultDateRange[1].toFormat("MM/dd/yyyy")
+        }
+        supportingText="MM/DD/YYYY - MM/DD/YYYY"
         errorText={errorSupportText}
-        error={startInvalid}
+        error={
+          !isDateRangeValid ||
+          errorSupportText.length > 0 ||
+          !defaultDateRange[0].isValid ||
+          !defaultDateRange[1].isValid
+        }
         onBlur={(e) => {
-          handleDateChange(e, "start");
-        }}
-      >
-        <MdIconButton
-          slot="trailing-icon"
-          {...getReferenceProps()}
-          onClick={() => {
-            setIsCalendarOpen(true);
-          }}
-        >
-          <MdIcon>
-            <CalendarTodayIcon />
-          </MdIcon>
-        </MdIconButton>
-      </MdOutlinedTextField>
-      <MdOutlinedTextField
-        ref={inputEl}
-        label="To"
-        className="flex-1"
-        value={defaultDateRange[1].toFormat("MM/dd/yyyy")}
-        supportingText="MM/DD/YYYY"
-        errorText={errorSupportText}
-        error={endInvalid}
-        onBlur={(e) => {
-          handleDateChange(e, "end");
+          handleDateChange(e);
         }}
       >
         <MdIconButton
