@@ -126,7 +126,7 @@ const HeaderMainComponent = () => {
           </MdMenuItem>
         </MdMenu>
       </div>
-      <Link href={"/sign/out"}>
+      <Link href={"/sign"}>
         <UnknownAvatar />
       </Link>
     </div>

@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { suit, pretendard } from "./util/font";
 import Providers from "./providers";
 import Header from "./header";
-import Footer from "./sign/footer";
 import "./globals.css";
-import { usePathname, useRouter } from "next/navigation";
-import SideNavigation from "./side-nav";
+import SideNavigation from "./components/side-nav/side-nav";
 
 export const metadata: Metadata = {
   title: "Next Allegro E-Service",
