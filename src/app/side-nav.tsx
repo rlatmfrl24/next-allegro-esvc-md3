@@ -25,16 +25,20 @@ export default function SideNavigation() {
     depth,
     path,
     className,
+    initialOpen,
   }: Readonly<{
     item: MenuItemType;
     depth: number;
     path: string[];
     className?: string;
+    initialOpen?: boolean;
   }>) => {
     const cx = classNames.bind(styles);
     const router = useRouter();
     const currentPath = usePathname().split("/");
-    const [open, setOpen] = useState(currentPath.includes(path[depth - 1]));
+    const [open, setOpen] = useState(
+      currentPath.includes(path[depth - 1]) || initialOpen || false
+    );
 
     return (
       <>
@@ -124,7 +128,14 @@ export default function SideNavigation() {
         </MdIconButton>
         <div className="flex flex-col mt-10 gap-5">
           {meunItems.map((item) => (
-            <MdIconButton key={item.name}>
+            <MdIconButton
+              key={item.name}
+              className={
+                item.link && pathname.split("/").includes(item.link)
+                  ? "bg-secondaryContainer rounded-full"
+                  : ""
+              }
+            >
               <MdIcon>
                 <PlaceholdeIcon />
               </MdIcon>
