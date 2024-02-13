@@ -1,4 +1,4 @@
-import { meunItems } from "./constants";
+import { meunItems } from "../util/constants";
 
 export function getRoutePath(paths: string[]) {
   let itemTree = meunItems;

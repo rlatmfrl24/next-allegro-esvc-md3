@@ -4,7 +4,7 @@
 import { MdTypography } from "../components/typography";
 import { MdRippleEffect } from "../util/md3";
 import { MenuItemType } from "../util/typeDef";
-import { meunItems } from "./constants";
+import { meunItems } from "../util/constants";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import classNames from "classnames";
 import { AnimatePresence } from "framer-motion";

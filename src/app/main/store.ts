@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { cardList } from "./constants";
+import { cardList } from "../util/constants";
 
 export const draggableState = atom<boolean>({
   key: "draggable",

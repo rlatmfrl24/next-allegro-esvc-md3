@@ -21,7 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${suit.variable} ${pretendard.variable}`}>
         <Providers>
-          <div className="flex h-screen overflow-hidden bg-surfaceDim">
+          <div
+            id="nav-container"
+            className="flex h-screen overflow-hidden bg-surfaceDim"
+          >
             <SideNavigation />
             <main className="flex-1 flex flex-col overflow-hidden bg-surfaceContainerHighest rounded-l-3xl">
               <Header />

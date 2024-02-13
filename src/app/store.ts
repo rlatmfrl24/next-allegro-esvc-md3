@@ -9,4 +9,11 @@ const UserState = atom({
   },
 });
 
-export { UserState };
+const DrawerState = atom({
+  key: "DrawerState",
+  default: {
+    open: true,
+  },
+});
+
+export { UserState, DrawerState };

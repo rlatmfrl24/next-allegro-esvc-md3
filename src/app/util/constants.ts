@@ -1,4 +1,4 @@
-import { DashboardCardInfoType, MenuItemType } from "../util/typeDef";
+import { DashboardCardInfoType, MenuItemType } from "./typeDef";
 
 // TODO: 추후에 API로 받아올 예정
 export const meunItems: MenuItemType[] = [
