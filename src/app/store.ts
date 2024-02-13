@@ -12,7 +12,7 @@ const UserState = atom({
 const DrawerState = atom({
   key: "DrawerState",
   default: {
-    open: true,
+    open: false,
   },
 });
 

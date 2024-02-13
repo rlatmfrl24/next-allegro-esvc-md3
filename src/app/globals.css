@@ -98,9 +98,3 @@ body {
 }
 
 @import "overlayscrollbars/overlayscrollbars.css";
-
-.os-scrollbar {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin-right: 8px;
-}
