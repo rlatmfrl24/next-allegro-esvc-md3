@@ -126,7 +126,9 @@ const HeaderMainComponent = () => {
           </MdMenuItem>
         </MdMenu>
       </div>
-      <UnknownAvatar />
+      <Link href={"/sign/out"}>
+        <UnknownAvatar />
+      </Link>
     </div>
   );
 };

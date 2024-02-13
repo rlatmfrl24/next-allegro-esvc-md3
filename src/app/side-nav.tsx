@@ -163,7 +163,9 @@ export default function SideNavigation() {
       <AnimatePresence>
         {drawer.open && (
           <motion.div
-            animate={{ x: drawer.open ? 0 : -360 }}
+            initial={{ x: -360 }}
+            animate={{ x: 0 }}
+            exit={{ x: -360 }}
             transition={{ type: "spring", bounce: 0, duration: 0.25 }}
             className="fixed h-screen w-[360px] bg-surfaceContainerLow p-3 z-50 rounded-r-2xl flex flex-col overflow-y-auto"
           >
