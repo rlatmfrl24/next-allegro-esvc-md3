@@ -1,8 +1,8 @@
 "use client";
 
 import { useRecoilValue } from "recoil";
-import Logo from "./logo";
-import { UserState } from "../store";
+import Logo from "./components/logo";
+import { UserState } from "./store";
 import Link from "next/link";
 import {
   MdFilledButton,
@@ -11,7 +11,7 @@ import {
   MdMenu,
   MdMenuItem,
   MdOutlinedButton,
-} from "../util/md3";
+} from "./util/md3";
 import { useState } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";

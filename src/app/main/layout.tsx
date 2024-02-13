@@ -9,7 +9,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-full flex overflow-auto p-2">
+    <div className="h-full flex p-2">
       <OverlayScrollbarsComponent defer className="flex-1">
         {children}
       </OverlayScrollbarsComponent>
