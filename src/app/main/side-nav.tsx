@@ -37,9 +37,9 @@ export default function SideNav() {
               depth={1}
               key={index}
               variant="primary"
-              path={[item.path]}
+              path={[item.link]}
               label={item.name}
-              childs={item.children}
+              childs={item.subMenu}
               isLeaf={item.isLeaf}
             />
           );
@@ -122,9 +122,9 @@ const NavItem = ({
                     depth={depth + 1}
                     key={index}
                     variant="secondary"
-                    path={[...path, item.path]}
+                    path={[...path, item.link]}
                     label={item.name}
-                    childs={item.children}
+                    childs={item.subMenu}
                     isLeaf={item.isLeaf}
                   />
                 );
