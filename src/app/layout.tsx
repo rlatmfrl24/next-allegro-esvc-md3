@@ -19,11 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${suit.variable} ${pretendard.variable}`}>
         <Providers>
-          <div className="flex h-screen overflow-hidden bg-slate-300">
+          <div className="flex h-screen overflow-hidden bg-surfaceDim">
             <aside className="w-20">side</aside>
-            <main className="flex-1 flex flex-col overflow-hidden bg-[#DFE3E7] rounded-l-3xl">
+            <main className="flex-1 flex flex-col overflow-hidden bg-surfaceContainerHighest rounded-l-3xl">
               <Header />
-              <section className="flex-1 overflow-hidden rounded-3xl bg-[#EAEEF2]">
+              <section className="flex-1 overflow-hidden rounded-3xl bg-surfaceContainer">
                 {children}
               </section>
               <Footer />
