@@ -1,7 +1,7 @@
 import { DashboardCardInfoType, MenuItemType } from "./typeDef";
 
 // TODO: 추후에 API로 받아올 예정
-export const meunItems: MenuItemType[] = [
+export const menuItems: MenuItemType[] = [
   {
     id: "dashboard",
     name: "Dashboard",

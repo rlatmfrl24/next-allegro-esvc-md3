@@ -1,4 +1,4 @@
-import { MdIcon, MdIconButton } from "@/app/util/md3";
+import { MdIcon, MdIconButton, MdTextButton } from "@/app/util/md3";
 import { MenuItemType } from "@/app/util/typeDef";
 import {
   FloatingFocusManager,
@@ -87,7 +87,6 @@ export const MenuItem = React.forwardRef<
 
 export const MenuComponent = ({ item }: { item: MenuItemType }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-
   const tree = useFloatingTree();
   const parentId = useFloatingParentNodeId();
   const nodeId = useFloatingNodeId();
@@ -120,19 +119,70 @@ export const MenuComponent = ({ item }: { item: MenuItemType }) => {
     [hover, click, role, dismiss]
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!tree) return;
-  }, []);
 
+    function handleTreeClick() {
+      setIsOpen(false);
+    }
+
+    function onSubMenuOpen(event: { nodeId: string; parentId: string }) {
+      if (event.nodeId !== nodeId && event.parentId === parentId) {
+        setIsOpen(false);
+      }
+    }
+
+    tree.events.on("click", handleTreeClick);
+    tree.events.on("menuopen", onSubMenuOpen);
+
+    return () => {
+      tree.events.off("click", handleTreeClick);
+      tree.events.off("menuopen", onSubMenuOpen);
+    };
+  }, [tree, nodeId, parentId]);
   // Placeholder Icon
   const itemIcon = <PlaceholdeIcon />;
 
   return (
     <FloatingTree>
       <FloatingNode id={nodeId}>
-        <MdIconButton>
-          <MdIcon>{itemIcon}</MdIcon>
-        </MdIconButton>
+        {isNested ? (
+          <MdTextButton ref={refs.setReference} {...getReferenceProps()}>
+            {item.name}
+          </MdTextButton>
+        ) : (
+          <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
+            <MdIcon>{itemIcon}</MdIcon>
+          </MdIconButton>
+        )}
+        {item.subMenu && item.subMenu.length > 0 && isOpen && (
+          <FloatingPortal>
+            <FloatingFocusManager
+              context={context}
+              modal={false}
+              initialFocus={isNested ? -1 : 0}
+              returnFocus={!isNested}
+            >
+              <div
+                ref={refs.setFloating}
+                style={floatingStyles}
+                {...getFloatingProps()}
+              >
+                {item.subMenu.map((subItem, index) =>
+                  subItem.subMenu && subItem.subMenu.length > 0 ? (
+                    <MenuComponent key={subItem.id} item={subItem} />
+                  ) : (
+                    <MenuItem
+                      key={subItem.id}
+                      label={subItem.name}
+                      {...getItemProps()}
+                    />
+                  )
+                )}
+              </div>
+            </FloatingFocusManager>
+          </FloatingPortal>
+        )}
       </FloatingNode>
     </FloatingTree>
   );

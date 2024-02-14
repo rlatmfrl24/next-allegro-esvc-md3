@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { MdTypography } from "../typography";
-import { meunItems } from "@/app/util/constants";
+import { menuItems } from "@/app/util/constants";
 import NavItem from "./nav-item";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
@@ -31,7 +31,7 @@ const NavOverlay = ({ handleDrawer }: { handleDrawer: () => void }) => {
           >
             Menu
           </MdTypography>
-          {meunItems.map((item) => (
+          {menuItems.map((item) => (
             <NavItem
               item={item}
               key={item.id}

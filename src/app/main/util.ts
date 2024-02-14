@@ -1,7 +1,7 @@
-import { meunItems } from "../util/constants";
+import { menuItems } from "../util/constants";
 
 export function getRoutePath(paths: string[]) {
-  let itemTree = meunItems;
+  let itemTree = menuItems;
   let pathList = Object.assign([], paths).slice(2);
   const routes: string[] = [];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { meunItems } from "@/app/util/constants";
+import { menuItems } from "@/app/util/constants";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -8,9 +8,7 @@ import { useRecoilState } from "recoil";
 import NavOverlay from "./nav-overlay";
 import { DrawerState } from "@/app/store";
 import MenuIcon from "@mui/icons-material/Menu";
-import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
-import { FloatingNode, FloatingTree } from "@floating-ui/react";
-import { Menu, MenuItem } from "./dropdown-example";
+import { MenuComponent } from "./nav-dropdown";
 
 export default function SideNavigation() {
   const pathname = usePathname();
@@ -53,6 +51,10 @@ export default function SideNavigation() {
               </MdIcon>
             </MdIconButton>
           ))} */}
+
+          {menuItems.map((item) => (
+            <MenuComponent key={item.id} item={item} />
+          ))}
         </div>
       </aside>
       <AnimatePresence>

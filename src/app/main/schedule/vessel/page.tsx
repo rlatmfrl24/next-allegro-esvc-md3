@@ -3,7 +3,7 @@
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
-import { MdOutlinedCard } from "@/app/util/md3";
+import { MdOutlinedCard, MdOutlinedTextField } from "@/app/util/md3";
 import {
   AnimatePresence,
   motion,
@@ -51,12 +51,10 @@ export default function VesselSchedule() {
         <div className="max-w-[1400px] w-full">
           <MdOutlinedCard className={`flex-1 flex flex-col gap-3 z-10 p-6`}>
             <>
-              <MdSingleDatePicker
-                className="z-20"
-                handleDateChange={setFirstDate}
-              />
-              <MdSingleDatePicker className="z-10" />
+              <MdSingleDatePicker handleDateChange={setFirstDate} />
+              <MdSingleDatePicker />
               <MdRangeDatePicker />
+              <MdOutlinedTextField required></MdOutlinedTextField>
             </>
           </MdOutlinedCard>
           <MdOutlinedCard className="flex flex-col gap-3 p-5 my-5 ">

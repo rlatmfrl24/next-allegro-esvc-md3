@@ -137,9 +137,9 @@ export const MdSingleDatePicker = (props: {
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
-      <FloatingFocusManager context={context} modal={false}>
+      <FloatingFocusManager context={context} modal={true}>
         <div
-          className={isCalendarOpen ? "visible" : "invisible"}
+          className={isCalendarOpen ? "visible z-20" : "invisible"}
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
