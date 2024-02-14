@@ -10,7 +10,7 @@ import { DrawerState } from "@/app/store";
 import MenuIcon from "@mui/icons-material/Menu";
 import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
 import { FloatingNode, FloatingTree } from "@floating-ui/react";
-import { Menu, MenuItem } from "./dropdown-menu";
+import { Menu, MenuItem } from "./dropdown-example";
 
 export default function SideNavigation() {
   const pathname = usePathname();
