@@ -3,7 +3,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton, MdSwitch } from "@/app/util/md3";
-import { cardList } from "../constants";
+import { cardList } from "../../util/constants";
 import { useRecoilState } from "recoil";
 import { dashboardCardState } from "../store";
 

@@ -1,143 +1,145 @@
-import { DashboardCardInfoType, MenuItemType } from "../util/typeDef";
+import { DashboardCardInfoType, MenuItemType } from "./typeDef";
 
 // TODO: 추후에 API로 받아올 예정
-export const meunItems: MenuItemType[] = [
+export const menuItems: MenuItemType[] = [
   {
+    id: "dashboard",
     name: "Dashboard",
-    path: "dashboard",
-    children: [],
-    isLeaf: true,
+    link: "dashboard",
+    subMenu: [],
   },
   {
+    id: "schedule",
     name: "Schedule",
-    path: "schedule",
-    children: [
+    link: "schedule",
+    subMenu: [
       {
+        id: "ptp",
         name: "Point to Point Schedule",
-        path: "ptp",
-        children: [],
-        isLeaf: true,
+        link: "ptp",
+        subMenu: [],
       },
       {
+        id: "vessel",
         name: "Vessel Schedule",
-        path: "vessel",
-        children: [],
-        isLeaf: true,
+        link: "vessel",
+        subMenu: [],
       },
       {
+        id: "port",
         name: "Port Schedule",
-        path: "port",
-        children: [],
-        isLeaf: true,
+        link: "port",
+        subMenu: [],
       },
       {
+        id: "long_range",
         name: "Long Range Schedule",
-        path: "long-range",
-        children: [],
-        isLeaf: true,
+        link: "long-range",
+        subMenu: [],
       },
       {
+        id: "my_schedule",
         name: "My Schedule",
-        path: "my-schedule",
-        children: [],
-        isLeaf: true,
+        link: "my-schedule",
+        subMenu: [],
       },
     ],
   },
   {
+    id: "booking",
     name: "Booking",
-    path: "booking",
-    children: [
+    link: "booking",
+    subMenu: [
       {
+        id: "request",
         name: "Booking Request",
-        path: "request",
-        children: [],
-        isLeaf: true,
+        link: "request",
+        subMenu: [],
       },
       {
+        id: "status",
         name: "Booking Status",
-        path: "status",
-        children: [],
-        isLeaf: true,
+        link: "status",
+        subMenu: [],
       },
       {
+        id: "template",
         name: "Booking Template",
-        path: "template",
-        children: [],
-        isLeaf: true,
+        link: "template",
+        subMenu: [],
       },
     ],
   },
   {
+    id: "documentation",
     name: "Documentation",
-    path: "documentation",
-    children: [
+    link: "documentation",
+    subMenu: [
       {
+        id: "si",
         name: "Shipping Instruction",
-        path: "si",
-        children: [
+        link: "si",
+        subMenu: [
           {
+            id: "submission",
             name: "SI Submission & Amendment",
-            path: "submission",
-            children: [],
-            isLeaf: true,
+            link: "submission",
+            subMenu: [],
           },
           {
+            id: "template",
             name: "SI Template",
-            path: "template",
-            children: [],
-            isLeaf: true,
+            link: "template",
+            subMenu: [],
           },
         ],
-        isLeaf: false,
       },
       {
+        id: "bl",
         name: "B/L Processing",
-        path: "bl-processing",
-        children: [
+        link: "bl-processing",
+        subMenu: [
           {
+            id: "draft",
             name: "Draft N/N B/L",
-            path: "draft",
-            children: [],
-            isLeaf: true,
+            link: "draft",
+            subMenu: [],
           },
           {
+            id: "sea_waybill",
             name: "Sea Waybill Print",
-            path: "sea-waybill",
-            children: [],
-            isLeaf: true,
+            link: "sea-waybill",
+            subMenu: [],
           },
         ],
-        isLeaf: false,
       },
     ],
-    isLeaf: false,
   },
   {
+    id: "tracking",
     name: "Tracking",
-    path: "tracking",
-    children: [
+    link: "tracking",
+    subMenu: [
       {
+        id: "cargo",
         name: "Cargo Tracking",
-        path: "cargo",
-        children: [],
-        isLeaf: true,
+        link: "cargo",
+        subMenu: [],
       },
     ],
-    isLeaf: false,
   },
   {
+    id: "shipment",
     name: "Manage Shipment",
-    path: "shipment",
-    children: [
+    link: "shipment",
+    subMenu: [
       {
+        id: "overview",
         name: "Shipment Overview",
-        path: "overview",
-        children: [],
-        isLeaf: true,
+        link: "overview",
+        subMenu: [],
       },
     ],
-    isLeaf: false,
   },
 ];
 

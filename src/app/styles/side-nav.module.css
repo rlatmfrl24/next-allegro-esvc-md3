@@ -1,0 +1,7 @@
+.navItem {
+  @apply relative min-h-[3.5rem] h-14 px-4 rounded-full flex items-center cursor-pointer gap-3 my-px select-none text-onSurfaceVariant;
+}
+
+.navItem.selected {
+  @apply bg-secondaryContainer text-onSecondaryContainer;
+}

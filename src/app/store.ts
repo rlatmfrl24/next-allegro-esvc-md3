@@ -4,9 +4,16 @@ const UserState = atom({
   key: "UserState",
   default: {
     isAuthenticated: false,
-    name: "John Doe",
+    name: "",
     email: "",
   },
 });
 
-export { UserState };
+const DrawerState = atom({
+  key: "DrawerState",
+  default: {
+    open: false,
+  },
+});
+
+export { UserState, DrawerState };

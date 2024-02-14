@@ -7,9 +7,9 @@ import {
 } from "@material/material-color-utilities";
 
 // custom theme
-import preset_1 from "@/../public/css/preset_1.json";
-import preset_2 from "@/../public/css/preset_2.json";
-import preset_3 from "@/../public/css/preset_3.json";
+import preset_1 from "@/../public/preset/preset_1.json";
+import preset_2 from "@/../public/preset/preset_2.json";
+import preset_3 from "@/../public/preset/preset_3.json";
 
 export function createMDTheme(
   sourceColor: string,

@@ -1,17 +1,16 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { meunItems } from "./constants";
+import { menuItems } from "../util/constants";
 
 export function getRoutePath(paths: string[]) {
-  let itemTree = meunItems;
+  let itemTree = menuItems;
   let pathList = Object.assign([], paths).slice(2);
   const routes: string[] = [];
 
   while (pathList.length > 0) {
     let currentPath = pathList.shift();
-    let currentItem = itemTree.find((item) => item.path === currentPath);
+    let currentItem = itemTree.find((item) => item.link === currentPath);
     if (currentItem) {
       routes.push(currentItem.name);
-      itemTree = currentItem.children;
+      itemTree = currentItem.subMenu;
     }
   }
 
