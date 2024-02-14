@@ -2,8 +2,9 @@
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
-import { MdOutlinedCard, MdOutlinedTextField } from "@/app/util/md3";
+import { MdOutlinedCard } from "@/app/util/md3";
 import {
   AnimatePresence,
   motion,
@@ -54,7 +55,7 @@ export default function VesselSchedule() {
               <MdSingleDatePicker handleDateChange={setFirstDate} />
               <MdSingleDatePicker />
               <MdRangeDatePicker />
-              <MdOutlinedTextField required></MdOutlinedTextField>
+              <NAOutlinedTextField label="test" required />
             </>
           </MdOutlinedCard>
           <MdOutlinedCard className="flex flex-col gap-3 p-5 my-5 ">

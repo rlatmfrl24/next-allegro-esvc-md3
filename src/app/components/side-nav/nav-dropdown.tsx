@@ -1,16 +1,18 @@
-import { MdIcon, MdIconButton, MdTextButton } from "@/app/util/md3";
+import {
+  MdElevation,
+  MdIcon,
+  MdIconButton,
+  MdRippleEffect,
+  MdTextButton,
+} from "@/app/util/md3";
 import { MenuItemType } from "@/app/util/typeDef";
 import {
   FloatingFocusManager,
-  FloatingList,
   FloatingNode,
   FloatingPortal,
   FloatingTree,
   autoUpdate,
-  flip,
-  offset,
   safePolygon,
-  shift,
   useClick,
   useDismiss,
   useFloatingNodeId,
@@ -18,87 +20,51 @@ import {
   useFloatingTree,
   useHover,
   useInteractions,
-  useListItem,
-  useListNavigation,
-  useMergeRefs,
   useRole,
-  useTypeahead,
   useFloating,
+  offset,
+  flip,
+  shift,
+  arrow,
 } from "@floating-ui/react";
-import React, { useEffect } from "react";
+import React, { CSSProperties, useRef } from "react";
+import { menuItems } from "@/app/util/constants";
+import { MdTypography } from "../typography";
 import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
+import DropDownArrow from "@/../public/img_dropdown_arrow.svg";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useRouter } from "next/navigation";
 
-const MenuContext = React.createContext<{
-  getItemProps: (
-    userProps?: React.HTMLProps<HTMLElement>
-  ) => Record<string, unknown>;
-  activeIndex: number | null;
-  setActiveIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setHasFocusInside: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpen: boolean;
-}>({
-  getItemProps: () => ({}),
-  activeIndex: null,
-  setActiveIndex: () => {},
-  setHasFocusInside: () => {},
-  isOpen: false,
-});
+export const DropdownMenu = () => {
+  return menuItems.map((item) => (
+    <FloatingTree key={item.id}>
+      <MenuComponent item={item} path={[item.link || ""]} />
+    </FloatingTree>
+  ));
+};
 
-interface MenuProps {
-  label: string;
-  nested?: boolean;
-  children?: React.ReactNode;
-}
-
-interface MenuItemProps {
-  label: string;
-  disabled?: boolean;
-}
-
-export const MenuItem = React.forwardRef<
-  HTMLButtonElement,
-  MenuItemProps & React.ButtonHTMLAttributes<HTMLButtonElement>
->(function MenuItem({ label, disabled, ...props }, forwardedRef) {
-  const menu = React.useContext(MenuContext);
-  const tree = useFloatingTree();
-
-  return (
-    <button
-      {...props}
-      ref={useMergeRefs([forwardedRef])}
-      type="button"
-      role="menuitem"
-      disabled={disabled}
-      {...menu.getItemProps({
-        onClick(event: React.MouseEvent<HTMLButtonElement>) {
-          props.onClick?.(event);
-          tree?.events.emit("click");
-        },
-        onFocus(event: React.FocusEvent<HTMLButtonElement>) {
-          props.onFocus?.(event);
-          menu.setHasFocusInside(true);
-        },
-      })}
-    >
-      {label}
-    </button>
-  );
-});
-
-export const MenuComponent = ({ item }: { item: MenuItemType }) => {
+const MenuComponent = ({
+  item,
+  path,
+}: {
+  item: MenuItemType;
+  path: string[];
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const tree = useFloatingTree();
   const parentId = useFloatingParentNodeId();
   const nodeId = useFloatingNodeId();
+  const arrowRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const isNested = parentId != null;
 
-  const { floatingStyles, refs, context } = useFloating({
+  const { floatingStyles, refs, context, middlewareData } = useFloating({
     nodeId,
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: "right-start",
-    middleware: [],
+    middleware: [offset(15), flip(), shift(), arrow({ element: arrowRef })],
     whileElementsMounted: autoUpdate,
   });
 
@@ -144,46 +110,115 @@ export const MenuComponent = ({ item }: { item: MenuItemType }) => {
   const itemIcon = <PlaceholdeIcon />;
 
   return (
-    <FloatingTree>
-      <FloatingNode id={nodeId}>
-        {isNested ? (
-          <MdTextButton ref={refs.setReference} {...getReferenceProps()}>
+    <FloatingNode id={nodeId}>
+      {isNested ? (
+        <div
+          className="relative h-10 flex items-center pl-4 pr-2.5 cursor-pointer rounded-lg"
+          ref={refs.setReference}
+          {...getReferenceProps()}
+        >
+          <MdRippleEffect />
+          <MdTypography variant="label" size="large" className="flex-1">
             {item.name}
-          </MdTextButton>
-        ) : (
-          <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
-            <MdIcon>{itemIcon}</MdIcon>
-          </MdIconButton>
-        )}
-        {item.subMenu && item.subMenu.length > 0 && isOpen && (
-          <FloatingPortal>
-            <FloatingFocusManager
-              context={context}
-              modal={false}
-              initialFocus={isNested ? -1 : 0}
-              returnFocus={!isNested}
+          </MdTypography>
+          <MdIcon className="w-5 h-5 ml-8">
+            <ChevronRightIcon className="w-5 h-5" />
+          </MdIcon>
+        </div>
+      ) : (
+        <MdIconButton
+          className={`rounded-full ${isOpen && "bg-secondaryContainer"}`}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+          onClick={() => {
+            (item.subMenu === undefined || item.subMenu.length === 0) &&
+              item.link &&
+              router.push("/main/" + path.join("/"));
+          }}
+        >
+          <MdIcon>{itemIcon}</MdIcon>
+        </MdIconButton>
+      )}
+      {item.subMenu && item.subMenu.length > 0 && isOpen && (
+        <FloatingPortal>
+          <FloatingFocusManager
+            context={context}
+            modal={false}
+            initialFocus={-1}
+            returnFocus={false}
+          >
+            <div
+              ref={refs.setFloating}
+              className="flex flex-col bg-white rounded-lg p-1 relative z-10"
+              style={
+                {
+                  "--md-elevation-level": 4,
+                  ...floatingStyles,
+                } as CSSProperties
+              }
+              {...getFloatingProps()}
             >
-              <div
-                ref={refs.setFloating}
-                style={floatingStyles}
-                {...getFloatingProps()}
-              >
-                {item.subMenu.map((subItem, index) =>
+              <MdElevation />
+              {!isNested && (
+                <>
+                  <div className="h-10 flex items-center">
+                    <MdTypography
+                      variant="label"
+                      size="large"
+                      className="flex-1 px-4"
+                    >
+                      {item.name}
+                    </MdTypography>
+                  </div>
+                  <div className="w-full h-px bg-surfaceVariant"></div>
+                </>
+              )}
+              <div className="flex flex-col my-1">
+                {item.subMenu.map((subItem) =>
                   subItem.subMenu && subItem.subMenu.length > 0 ? (
-                    <MenuComponent key={subItem.id} item={subItem} />
-                  ) : (
-                    <MenuItem
+                    <MenuComponent
                       key={subItem.id}
-                      label={subItem.name}
-                      {...getItemProps()}
+                      item={subItem}
+                      path={[...path, subItem.link || ""]}
                     />
+                  ) : (
+                    <div
+                      key={subItem.id}
+                      className="relative h-10 flex items-center pl-4 pr-2.5 cursor-pointer rounded-lg"
+                      role="menuitem"
+                      {...getItemProps({
+                        onClick(event) {
+                          router.push(
+                            "/main/" + [...path, subItem.link || ""].join("/")
+                          );
+                          tree?.events.emit("click");
+                        },
+                      })}
+                    >
+                      <MdRippleEffect />
+                      <MdTypography
+                        variant="label"
+                        size="large"
+                        className="flex-1"
+                      >
+                        {subItem.name}
+                      </MdTypography>
+                      <MdIcon className="w-1 h-1 ml-8 rounded-full bg-surfaceVariant"></MdIcon>
+                    </div>
                   )
                 )}
               </div>
-            </FloatingFocusManager>
-          </FloatingPortal>
-        )}
-      </FloatingNode>
-    </FloatingTree>
+
+              <div
+                ref={arrowRef}
+                className={`absolute left-${middlewareData.arrow?.x} top-${middlewareData.arrow?.y} w-4 h-4 -ml-7 -mt-1`}
+              >
+                <DropDownArrow />
+              </div>
+            </div>
+          </FloatingFocusManager>
+        </FloatingPortal>
+      )}
+    </FloatingNode>
   );
 };

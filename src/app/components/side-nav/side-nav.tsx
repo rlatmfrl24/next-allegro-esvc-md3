@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import NavOverlay from "./nav-overlay";
 import { DrawerState } from "@/app/store";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MenuComponent } from "./nav-dropdown";
+import { DropdownMenu } from "./nav-dropdown";
 
 export default function SideNavigation() {
   const pathname = usePathname();
@@ -52,9 +52,10 @@ export default function SideNavigation() {
             </MdIconButton>
           ))} */}
 
-          {menuItems.map((item) => (
+          <DropdownMenu />
+          {/* {menuItems.map((item) => (
             <MenuComponent key={item.id} item={item} />
-          ))}
+          ))} */}
         </div>
       </aside>
       <AnimatePresence>

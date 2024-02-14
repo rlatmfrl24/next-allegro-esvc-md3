@@ -107,6 +107,7 @@ export const MdSingleDatePicker = (props: {
 
   useEffect(() => {
     props.handleDateChange?.(defaultDate);
+    setFocusDate(defaultDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultDate]);
 
