@@ -12,30 +12,25 @@ import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
-import { isSigningState } from "../store";
 import styles from "@/app/components/components.module.css";
 import { useRouter } from "next/navigation";
+import { UserState } from "@/app/store";
 
 export default function SignIn() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const router = useRouter();
+  const setUserData = useSetRecoilState(UserState);
 
-  const setIsSigning = useSetRecoilState<boolean>(isSigningState);
+  function DemoSignIn() {
+    setUserData({
+      isAuthenticated: true,
+      name: "Demo User",
+      email: "test@mail.kr",
+    });
+  }
 
-  useEffect(() => {
-    setIsSigning(true);
-    return () => {
-      setIsSigning(false);
-    };
-  }, [setIsSigning]);
-
-  type errorType = {
-    key: string;
-    errorText: string;
-  };
-
-  const [errors, setErrors] = useState<errorType>({
+  const [errors, setErrors] = useState<Record<string, string>>({
     key: "",
     errorText: "",
   });
@@ -48,7 +43,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex-1 flex justify-center items-center">
+    <div className="h-full flex justify-center items-center">
       <div className={styles["sign-card"] + ` w-[483px] p-12`}>
         <MdElevation />
         <span className="font-pretendard text-xl">Welcome!</span>
@@ -124,6 +119,7 @@ export default function SignIn() {
           type="submit"
           disabled={id.length === 0 || pw.length === 0}
           onClick={() => {
+            DemoSignIn();
             router.push("/main/dashboard");
           }}
         >

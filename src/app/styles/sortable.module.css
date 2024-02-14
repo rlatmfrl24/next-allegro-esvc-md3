@@ -1,0 +1,7 @@
+.sortable {
+  @apply min-w-[326px];
+}
+
+.sortable-wide {
+  @apply col-span-2 min-w-[668px];
+}

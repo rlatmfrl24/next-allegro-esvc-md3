@@ -1,8 +1,8 @@
 "use client";
 
 import TitleIndicator from "@/../public/title_indicator.svg";
-import { RangeDatePicker } from "@/app/components/datepickers/range-picker";
-import { SingleDatePicker } from "@/app/components/datepickers/date-picker";
+import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdOutlinedCard,
@@ -63,11 +63,11 @@ export default function PointToPointSearchPanel() {
           }`}
         >
           <MdOutlinedTextField></MdOutlinedTextField>
-          <SingleDatePicker
+          <MdSingleDatePicker
             defaultDate={DateTime.fromFormat("11/21/1990", "MM/dd/yyyy")}
             className="z-20"
           />
-          <RangeDatePicker
+          <MdRangeDatePicker
             className="z-10"
             defautStartDate={DateTime.fromFormat("11/21/2024", "MM/dd/yyyy")}
             defaultEndDate={DateTime.fromFormat("12/21/2024", "MM/dd/yyyy")}

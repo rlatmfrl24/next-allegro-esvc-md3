@@ -6,7 +6,7 @@ import React, {
   cloneElement,
 } from "react";
 import classNames from "classnames/bind";
-import styles from "./styles/segmented-button.module.css";
+import styles from "../styles/segmented-button.module.css";
 import { MdTypography } from "./typography";
 import { MdRippleEffect } from "../util/md3";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
@@ -15,11 +15,14 @@ export function MdSegmentedButtons({
   children,
   value,
   onChange,
+  className,
 }: {
   children: React.ReactNode;
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  className?: string;
 } & Attributes) {
+  const cx = classNames.bind(styles);
   const [selected, setSelected] = useState(value);
 
   useEffect(() => {
@@ -27,7 +30,7 @@ export function MdSegmentedButtons({
   }, [value]);
 
   return (
-    <div className={styles["segmented-buttons"]}>
+    <div className={cx(styles["segmented-buttons"], className)}>
       {React.Children.map(children, (child) => {
         return cloneElement(child as ReactElement, {
           selected: selected === (child as ReactElement).props.id,
@@ -37,7 +40,7 @@ export function MdSegmentedButtons({
               return;
             }
             setSelected((child as ReactElement).props.id);
-            onChange((child as ReactElement).props.id);
+            onChange && onChange((child as ReactElement).props.id);
           },
         });
       })}

@@ -6,10 +6,12 @@ import PointToPointSearchPanel from "./search";
 
 export default function PointToPointSchedule() {
   return (
-    <div className="relative flex-1 w-full max-w-[1400px] ">
-      <PointToPointSearchPanel />
-      <PointToPointListResult />
-      <PointToPointCalendarResult />
+    <div className="relative flex-1 flex justify-center">
+      <div aria-label="container" className="max-w-[1400px]">
+        <PointToPointSearchPanel />
+        <PointToPointListResult />
+        <PointToPointCalendarResult />
+      </div>
     </div>
   );
 }

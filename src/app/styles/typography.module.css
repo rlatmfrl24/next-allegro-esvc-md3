@@ -1,0 +1,103 @@
+.display {
+  @apply font-pretendard;
+}
+
+.display.large {
+  @apply text-[57px] leading-[64px] tracking-[-0.25px];
+}
+
+.display.medium {
+  @apply text-[45px] leading-[52px];
+}
+
+.display.small {
+  @apply text-[36px] leading-[44px];
+}
+
+.headline {
+  @apply font-pretendard;
+}
+
+.headline.large {
+  @apply text-[32px] leading-[40px];
+}
+
+.headline.medium {
+  @apply text-[28px] leading-[36px];
+}
+
+.headline.small {
+  @apply text-[24px] leading-[32px];
+}
+
+.title {
+  @apply font-pretendard;
+}
+
+.title.large {
+  @apply text-[22px] leading-[28px];
+}
+
+.title.medium {
+  @apply text-[16px] leading-[24px] tracking-[0.15px] font-medium;
+}
+
+.title.small {
+  @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium;
+}
+
+.body {
+  @apply font-pretendard;
+}
+
+.body.large {
+  @apply text-[16px] leading-[24px] tracking-[0.5px];
+}
+
+.body.large.prominent {
+  @apply font-semibold;
+}
+
+.body.medium {
+  @apply text-[14px] leading-[20px] tracking-[0.25px];
+}
+
+.body.medium.prominent {
+  @apply font-semibold;
+}
+
+.body.small {
+  @apply text-[12px] leading-[16px] tracking-[0.4px];
+}
+
+.body.small.prominent {
+  @apply font-semibold;
+}
+
+.label {
+  @apply font-pretendard;
+}
+
+.label.large {
+  @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium;
+}
+
+.label.large.prominent {
+  @apply font-semibold;
+}
+
+.label.medium {
+  @apply text-[12px] leading-[16px] tracking-[0.5px] font-medium;
+}
+
+.label.medium.prominent {
+  @apply font-semibold;
+}
+
+.label.small {
+  @apply text-[11px] leading-[16px] tracking-[0.5px] font-medium;
+}
+
+.label.small.prominent {
+  @apply font-semibold;
+}

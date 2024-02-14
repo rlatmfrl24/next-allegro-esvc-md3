@@ -13,7 +13,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -34,9 +34,10 @@ import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { DateSelector } from "./date-selector";
 
-export const SingleDatePicker = (props: {
+export const MdSingleDatePicker = (props: {
   defaultDate?: DateTime;
   className?: string;
+  handleDateChange?: (date: DateTime) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
@@ -105,6 +106,12 @@ export const SingleDatePicker = (props: {
   }
 
   useEffect(() => {
+    props.handleDateChange?.(defaultDate);
+    setFocusDate(defaultDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultDate]);
+
+  useEffect(() => {
     if (!isCalendarOpen) {
       setMode("date");
       FocusOnInput(inputEl);
@@ -131,19 +138,19 @@ export const SingleDatePicker = (props: {
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
-      <FloatingFocusManager context={context} modal={false}>
+      <FloatingFocusManager context={context} modal={true}>
         <div
-          className={isCalendarOpen ? "visible" : "invisible"}
+          className={isCalendarOpen ? "visible z-20" : "invisible"}
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
         >
           <motion.div
             layout
-            animate={{ scale: 1, opacity: 1 }}
-            initial={{ scale: 0, opacity: 0 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.2, type: "tween", ease: "easeInOut" }}
+            animate={{
+              opacity: isCalendarOpen ? 1 : 0,
+              y: isCalendarOpen ? 0 : -10,
+            }}
             className={styles["datepicker-container"]}
           >
             <MdElevation />

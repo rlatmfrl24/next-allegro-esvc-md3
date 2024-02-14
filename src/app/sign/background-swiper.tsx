@@ -15,7 +15,7 @@ export default function BackgroundSwiper() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <>
+    <div className="h-[calc(100%-40px)] flex">
       <SwipeIndicator activeIndex={activeIndex} total={images.length} />
       <Swiper
         slidesPerView={1}
@@ -43,7 +43,7 @@ export default function BackgroundSwiper() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 }
 
@@ -64,7 +64,7 @@ const SwipeIndicator = ({
 
   return (
     <div
-      className={`absolute bottom-8 gap-4 left-1/2 transform -translate-x-1/2 z-10 flex`}
+      className={`absolute bottom-12 gap-4 left-1/2 transform -translate-x-1/2 z-10 flex`}
     >
       {[...Array(total)].map((_, index) =>
         index === activeIndex ? (

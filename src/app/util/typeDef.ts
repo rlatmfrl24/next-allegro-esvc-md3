@@ -1,8 +1,8 @@
 export type MenuItemType = {
+  id: string;
   name: string;
-  path: string;
-  children: MenuItemType[];
-  isLeaf?: boolean;
+  link?: string;
+  subMenu?: MenuItemType[];
 };
 
 export type DashboardCardInfoType = {

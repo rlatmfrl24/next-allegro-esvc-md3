@@ -1,8 +1,14 @@
 import Image from "next/image";
 
-export default function Logo() {
+export default function Logo({
+  className,
+  ...props
+}: Readonly<{
+  className?: string;
+  [key: string]: any;
+}> & { children?: React.ReactNode }) {
   return (
-    <div className="flex flex-1 items-center">
+    <div className="flex items-center" {...props}>
       <div className="flex items-center h-8">
         <Image
           aria-label="company logo"

@@ -10,7 +10,7 @@ export default function Providers({
   children: React.ReactNode;
 }>) {
   useEffect(() => {
-    createMDTheme("#29638A");
+    createMDTheme("#008E86");
   }, []);
 
   return <RecoilRoot>{children}</RecoilRoot>;
