@@ -37,25 +37,7 @@ export default function SideNavigation() {
           </MdIcon>
         </MdIconButton>
         <div className="flex flex-col mt-10 gap-5">
-          {/* {meunItems.map((item) => (
-            <MdIconButton
-              key={item.id}
-              className={
-                item.link && pathname.split("/").includes(item.link)
-                  ? "bg-secondaryContainer rounded-full"
-                  : ""
-              }
-            >
-              <MdIcon>
-                <PlaceholdeIcon />
-              </MdIcon>
-            </MdIconButton>
-          ))} */}
-
           <DropdownMenu />
-          {/* {menuItems.map((item) => (
-            <MenuComponent key={item.id} item={item} />
-          ))} */}
         </div>
       </aside>
       <AnimatePresence>
