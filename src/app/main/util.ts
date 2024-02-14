@@ -8,7 +8,7 @@ export function getRoutePath(paths: string[]) {
   while (pathList.length > 0) {
     let currentPath = pathList.shift();
     let currentItem = itemTree.find((item) => item.link === currentPath);
-    if (currentItem) {
+    if (currentItem && currentItem.subMenu) {
       routes.push(currentItem.name);
       itemTree = currentItem.subMenu;
     }
