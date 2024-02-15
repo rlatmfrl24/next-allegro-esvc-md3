@@ -2,13 +2,12 @@ import {
   MdElevation,
   MdIcon,
   MdIconButton,
-  MdMenuItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
   MdRippleEffect,
 } from "../util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { MdTypography } from "./typography";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, useRef, useState } from "react";
 import {
   FloatingFocusManager,
   autoUpdate,
@@ -17,7 +16,6 @@ import {
   size,
   useDismiss,
   useFloating,
-  useFocus,
   useInteractions,
   useListNavigation,
   useRole,
