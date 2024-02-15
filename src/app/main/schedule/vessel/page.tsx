@@ -32,7 +32,7 @@ export default function VesselSchedule() {
   });
 
   return (
-    <div className="relative flex-1 w-full max-w-[1400px]">
+    <div className="relative flex-1 w-full max-w-[1400px] overflow-auto">
       <AnimatePresence>
         {!isScrollTop && (
           <motion.div
