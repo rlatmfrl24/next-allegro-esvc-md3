@@ -37,6 +37,7 @@
     "swiper": "^11.0.5"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@svgr/webpack": "^8.1.0",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20",

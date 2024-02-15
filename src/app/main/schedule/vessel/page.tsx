@@ -5,6 +5,7 @@ import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
+import { autocompleteItemList } from "@/app/util/constants";
 import { MdOutlinedCard } from "@/app/util/md3";
 import {
   AnimatePresence,
@@ -61,9 +62,12 @@ export default function VesselSchedule() {
                 <NAOutlinedAutoComplete
                   id="test-1"
                   className="flex-1"
-                  itemList={["tttt"]}
+                  itemList={autocompleteItemList}
                 />
-                <NAOutlinedAutoComplete id="test-2" itemList={["dddd"]} />
+                <NAOutlinedAutoComplete
+                  id="test-2"
+                  itemList={autocompleteItemList}
+                />
               </div>
             </>
           </MdOutlinedCard>
