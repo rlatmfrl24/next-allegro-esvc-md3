@@ -1,6 +1,5 @@
 "use client";
 
-import { menuItems } from "@/app/util/constants";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -28,34 +27,13 @@ export default function SideNavigation() {
         pathname.split("/").includes("main") ? "w-20 visible" : "w-0 invisible"
       }`}
       >
-        <MdIconButton
-          aria-label="drawer-toggler"
-          onClick={() => handleDrawer()}
-        >
+        <MdIconButton aria-label="drawer-toggler" onClick={handleDrawer}>
           <MdIcon>
             <MenuIcon />
           </MdIcon>
         </MdIconButton>
         <div className="flex flex-col mt-10 gap-5">
-          {/* {meunItems.map((item) => (
-            <MdIconButton
-              key={item.id}
-              className={
-                item.link && pathname.split("/").includes(item.link)
-                  ? "bg-secondaryContainer rounded-full"
-                  : ""
-              }
-            >
-              <MdIcon>
-                <PlaceholdeIcon />
-              </MdIcon>
-            </MdIconButton>
-          ))} */}
-
           <DropdownMenu />
-          {/* {menuItems.map((item) => (
-            <MenuComponent key={item.id} item={item} />
-          ))} */}
         </div>
       </aside>
       <AnimatePresence>
