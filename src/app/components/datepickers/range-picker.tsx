@@ -31,6 +31,7 @@ import { RangeDateSelector } from "./range-selector";
 
 export const MdRangeDatePicker = (props: {
   className?: string;
+  label?: string;
   defautStartDate?: DateTime;
   defaultEndDate?: DateTime;
 }) => {
@@ -142,7 +143,7 @@ export const MdRangeDatePicker = (props: {
     >
       <MdOutlinedTextField
         ref={inputEl}
-        label="From"
+        label={props.label}
         className="flex-1"
         value={
           defaultDateRange[0].toFormat("MM/dd/yyyy") +
