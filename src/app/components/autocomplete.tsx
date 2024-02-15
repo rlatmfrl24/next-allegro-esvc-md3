@@ -4,6 +4,7 @@ import {
   MdIconButton,
   MdMenuItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
+  MdRippleEffect,
 } from "../util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { MdTypography } from "./typography";
@@ -13,8 +14,10 @@ import {
   autoUpdate,
   offset,
   shift,
+  size,
   useDismiss,
   useFloating,
+  useFocus,
   useInteractions,
   useListNavigation,
   useRole,
@@ -34,7 +37,6 @@ export const NAOutlinedAutoComplete = ({
   itemList: string[];
   className?: string;
 } & MdOutlinedTextFieldProps) => {
-  const [width, setWidth] = useState<number | undefined>(0);
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
@@ -46,7 +48,17 @@ export const NAOutlinedAutoComplete = ({
   const { refs, floatingStyles, context } = useFloating({
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
-    middleware: [offset(), shift()],
+    middleware: [
+      offset(),
+      shift(),
+      size({
+        apply({ rects, elements }) {
+          Object.assign(elements.floating.style, {
+            width: `${rects.reference.width}px`,
+          });
+        },
+      }),
+    ],
     whileElementsMounted: autoUpdate,
   });
 
@@ -66,28 +78,24 @@ export const NAOutlinedAutoComplete = ({
   function highlightText(text: string, highlight: string) {
     const parts = text.split(new RegExp(`(${highlight})`, "gi"));
     return (
-      <span>
-        {parts.map((part, i) => (
-          <span
-            key={i}
-            className={
-              part.toLowerCase() === highlight.toLowerCase()
-                ? "text-error"
-                : "text-onSurface"
-            }
-          >
-            {part}
-          </span>
-        ))}
-      </span>
+      <MdTypography variant="body" size="large" className="flex-1">
+        <span>
+          {parts.map((part, i) => (
+            <span
+              key={i}
+              className={
+                part.toLowerCase() === highlight.toLowerCase()
+                  ? "text-error"
+                  : "text-onSurface"
+              }
+            >
+              {part}
+            </span>
+          ))}
+        </span>
+      </MdTypography>
     );
   }
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setWidth(containerRef.current.offsetWidth);
-    }
-  }, [setWidth, containerRef.current?.offsetWidth]);
 
   return (
     <div ref={containerRef} className={className + " relative flex"}>
@@ -139,37 +147,40 @@ export const NAOutlinedAutoComplete = ({
             ref={refs.setFloating}
             style={
               {
-                width: width,
                 "--md-elevation-level": 2,
                 ...floatingStyles,
               } as CSSProperties
             }
             {...getFloatingProps()}
-            className="relative z-50 bg-surfaceContainer rounded py-1"
+            className="relative z-50 bg-surfaceContainer rounded py-2 focus:outline-none"
           >
             <MdElevation />
-            {recommandedItems.map((item, index) => (
-              <MdMenuItem
-                tabIndex={activeIndex === index ? 0 : -1}
-                ref={(node) => {
-                  listRef.current[index] = node;
-                }}
-                {...getItemProps()}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+            <div className="max-h-[600px] overflow-auto">
+              {recommandedItems.map((item, index) => (
+                <div
+                  key={item + "_" + index}
+                  className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+                  tabIndex={activeIndex === index ? 0 : -1}
+                  ref={(node) => {
+                    listRef.current[index] = node;
+                  }}
+                  {...getItemProps()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setValue(item);
+                      setIsMenuOpen(false);
+                    }
+                  }}
+                  onClick={() => {
                     setValue(item);
                     setIsMenuOpen(false);
-                  }
-                }}
-                key={index}
-                onClick={() => {
-                  setValue(item);
-                  setIsMenuOpen(false);
-                }}
-              >
-                {highlightText(item, value)}
-              </MdMenuItem>
-            ))}
+                  }}
+                >
+                  <MdRippleEffect />
+                  {highlightText(item, value)}
+                </div>
+              ))}
+            </div>
           </div>
         </FloatingFocusManager>
       )}
