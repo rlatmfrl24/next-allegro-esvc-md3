@@ -1,14 +1,24 @@
 import {
+  MdElevation,
   MdIcon,
   MdIconButton,
-  MdMenu,
   MdMenuItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
 } from "../util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { MdTypography } from "./typography";
-import { useEffect, useRef, useState } from "react";
-import { Corner } from "@material/web/menu/menu";
+import { CSSProperties, useEffect, useRef, useState } from "react";
+import {
+  FloatingFocusManager,
+  autoUpdate,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useListNavigation,
+  useRole,
+} from "@floating-ui/react";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -27,26 +37,63 @@ export const NAOutlinedAutoComplete = ({
   const [width, setWidth] = useState<number | undefined>(0);
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const listRef = useRef<any[]>([]);
 
-  console.log(itemList);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isMenuOpen,
+    onOpenChange: setIsMenuOpen,
+    middleware: [offset(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const listNavigation = useListNavigation(context, {
+    listRef,
+    activeIndex,
+    onNavigate: setActiveIndex,
+  });
+
+  const dismiss = useDismiss(context);
+  const role = useRole(context);
+
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [dismiss, role, listNavigation]
+  );
+
+  function highlightText(text: string, highlight: string) {
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    return (
+      <span>
+        {parts.map((part, i) => (
+          <span
+            key={i}
+            className={
+              part.toLowerCase() === highlight.toLowerCase()
+                ? "text-error"
+                : "text-onSurface"
+            }
+          >
+            {part}
+          </span>
+        ))}
+      </span>
+    );
+  }
 
   useEffect(() => {
-    if (ref.current) {
-      setWidth(ref.current.offsetWidth);
+    if (containerRef.current) {
+      setWidth(containerRef.current.offsetWidth);
     }
-  }, [setWidth, ref.current?.offsetWidth]);
+  }, [setWidth, containerRef.current?.offsetWidth]);
 
   return (
-    <div ref={ref} className={className + " relative flex"}>
+    <div ref={containerRef} className={className + " relative flex"}>
       <MdOutlinedTextFieldBase
         {...props}
-        id={id + "-anchor"}
-        aria-controls={id + "-menu"}
-        aria-autocomplete="list"
-        aria-expanded={isMenuOpen}
-        aria-activedescendant={id + "-menu-item-0"}
+        ref={refs.setReference}
         className="flex-1"
         required={false}
         onInput={(e) => {
@@ -71,6 +118,7 @@ export const NAOutlinedAutoComplete = ({
           setValue(targetValue);
         }}
         value={value}
+        {...getReferenceProps()}
       >
         {value !== "" && props.label && (
           <MdIconButton
@@ -85,35 +133,47 @@ export const NAOutlinedAutoComplete = ({
           </MdIconButton>
         )}
       </MdOutlinedTextFieldBase>
-      <MdMenu
-        defaultFocus={undefined}
-        stayOpenOnFocusout
-        skipRestoreFocus
-        id={id + "-menu"}
-        anchor={id + "-anchor"}
-        role="listbox"
-        open={isMenuOpen}
-        close={() => {
-          setIsMenuOpen(false);
-        }}
-        className="contents max-h-[600px] overflow-y-auto w-full"
-      >
-        {recommandedItems.map((item, index) => (
-          <MdMenuItem
-            key={index}
-            style={{
-              width: width ? width + "px" : "auto",
-            }}
-            id={id + "-menu-item-" + index}
-            onClick={() => {
-              setValue(item);
-              setIsMenuOpen(false);
-            }}
+      {isMenuOpen && (
+        <FloatingFocusManager context={context} modal={false} initialFocus={-1}>
+          <div
+            ref={refs.setFloating}
+            style={
+              {
+                width: width,
+                "--md-elevation-level": 2,
+                ...floatingStyles,
+              } as CSSProperties
+            }
+            {...getFloatingProps()}
+            className="relative z-50 bg-surfaceContainer rounded py-1"
           >
-            <div slot="headline">{item}</div>
-          </MdMenuItem>
-        ))}
-      </MdMenu>
+            <MdElevation />
+            {recommandedItems.map((item, index) => (
+              <MdMenuItem
+                tabIndex={activeIndex === index ? 0 : -1}
+                ref={(node) => {
+                  listRef.current[index] = node;
+                }}
+                {...getItemProps()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setValue(item);
+                    setIsMenuOpen(false);
+                  }
+                }}
+                key={index}
+                onClick={() => {
+                  setValue(item);
+                  setIsMenuOpen(false);
+                }}
+              >
+                {highlightText(item, value)}
+              </MdMenuItem>
+            ))}
+          </div>
+        </FloatingFocusManager>
+      )}
+
       {props.required && (
         <MdTypography
           variant="label"
