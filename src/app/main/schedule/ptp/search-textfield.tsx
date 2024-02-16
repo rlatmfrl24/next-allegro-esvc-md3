@@ -9,7 +9,7 @@ import {
   MdOutlinedTextField as MdOutlinedTextFieldBase,
   MdRippleEffect,
 } from "@/app/util/md3";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, use, useEffect, useRef, useState } from "react";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import {
@@ -38,8 +38,12 @@ const itemList = Array.from({ length: 900 }, (_, i) => {
 
 export const SearchTextField = ({
   maxSelectionCount,
+  handleItemSelection,
   ...props
-}: { maxSelectionCount: number } & MdOutlinedTextFieldProps) => {
+}: {
+  maxSelectionCount: number;
+  handleItemSelection?: (item: string) => void;
+} & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -86,8 +90,9 @@ export const SearchTextField = ({
   }
 
   useEffect(() => {
-    console.log("selectionItems", selectionItems);
-  }, [selectionItems]);
+    if (handleItemSelection)
+      handleItemSelection(selectionItems[selectionItems.length - 1]);
+  }, [handleItemSelection, selectionItems]);
 
   return (
     <div ref={containerRef} className="relative flex flex-1 flex-col gap-4">
@@ -98,6 +103,7 @@ export const SearchTextField = ({
         className=""
         value={value}
         disabled={selectionItems.length >= maxSelectionCount}
+        placeholder={`Input Up to ${maxSelectionCount} Locations`}
         required={false}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;

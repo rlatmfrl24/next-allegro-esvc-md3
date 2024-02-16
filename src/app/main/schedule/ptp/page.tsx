@@ -3,6 +3,7 @@
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
 import {
+  MdElevationButton,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
@@ -22,6 +23,8 @@ import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import ListItem from "./listItem";
+import { DateTime } from "luxon";
 
 export default function PointToPointSchedule() {
   const [listSort, setListSort] = useState<
@@ -127,6 +130,19 @@ export default function PointToPointSchedule() {
               </div>
               Download
             </MdTextButton>
+          </div>
+          <div className="flex flex-col gap-4">
+            <ListItem
+              item={{
+                origin: "Bangkok, Thailand",
+                destination: "Busan, South Korea",
+                departure: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
+                arrival: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
+                vesselName: "Sawasdee thailand 2204S",
+                transitTime: 12,
+                serviceLane: "EC1",
+              }}
+            />
           </div>
           <div
             aria-label="empty-container"
