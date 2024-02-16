@@ -1,13 +1,17 @@
+"use client";
+
 import {
+  MdChipSet,
   MdElevation,
   MdIcon,
   MdIconButton,
+  MdInputChip,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
   MdRippleEffect,
-} from "../util/md3";
+} from "@/app/util/md3";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
-import { MdTypography } from "./typography";
-import { CSSProperties, useRef, useState } from "react";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import {
   FloatingFocusManager,
   autoUpdate,
@@ -20,28 +24,29 @@ import {
   useListNavigation,
   useRole,
 } from "@floating-ui/react";
+import { MdTypography } from "@/app/components/typography";
+import { faker } from "@faker-js/faker";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
 >;
 
-export const NAOutlinedAutoComplete = ({
-  id,
-  itemList,
-  className,
+const itemList = Array.from({ length: 900 }, (_, i) => {
+  const fakeCity = faker.location;
+  return `${fakeCity.city()}, ${fakeCity.country()}`;
+});
+
+export const SearchTextField = ({
+  maxSelectionCount,
   ...props
-}: {
-  id: string;
-  itemList: string[];
-  className?: string;
-} & MdOutlinedTextFieldProps) => {
+}: { maxSelectionCount: number } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const listRef = useRef<any[]>([]);
-
   const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<any[]>([]);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
+  const [selectionItems, setSelectionItems] = useState<string[]>([]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isMenuOpen,
@@ -60,25 +65,39 @@ export const NAOutlinedAutoComplete = ({
     whileElementsMounted: autoUpdate,
   });
 
+  const dismiss = useDismiss(context);
+  const role = useRole(context);
   const listNavigation = useListNavigation(context, {
     listRef,
     activeIndex,
     onNavigate: setActiveIndex,
   });
 
-  const dismiss = useDismiss(context);
-  const role = useRole(context);
-
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
     [dismiss, role, listNavigation]
   );
 
+  function handleSelection(item: string) {
+    if (selectionItems.length < maxSelectionCount) {
+      setSelectionItems([...selectionItems, item]);
+      setValue("");
+      setIsMenuOpen(false);
+    }
+  }
+
+  useEffect(() => {
+    console.log("selectionItems", selectionItems);
+  }, [selectionItems]);
+
   return (
-    <div ref={containerRef} className={className + " relative flex"}>
+    <div ref={containerRef} className="relative flex flex-1 flex-col gap-4">
       <MdOutlinedTextFieldBase
         {...props}
+        {...getReferenceProps()}
         ref={refs.setReference}
-        className="flex-1"
+        className=""
+        value={value}
+        disabled={selectionItems.length >= maxSelectionCount}
         required={false}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
@@ -101,9 +120,10 @@ export const NAOutlinedAutoComplete = ({
 
           setValue(targetValue);
         }}
-        value={value}
-        {...getReferenceProps()}
       >
+        <MdIcon slot="leading-icon">
+          <PlaceOutlinedIcon />
+        </MdIcon>
         {value !== "" && (
           <MdIconButton
             slot="trailing-icon"
@@ -143,13 +163,11 @@ export const NAOutlinedAutoComplete = ({
                   {...getItemProps()}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setValue(item);
-                      setIsMenuOpen(false);
+                      handleSelection(item);
                     }
                   }}
                   onClick={() => {
-                    setValue(item);
-                    setIsMenuOpen(false);
+                    handleSelection(item);
                   }}
                 >
                   <MdRippleEffect />
@@ -161,15 +179,27 @@ export const NAOutlinedAutoComplete = ({
         </FloatingFocusManager>
       )}
 
-      {props.required && (
-        <MdTypography
-          variant="label"
-          size="large"
-          className="text-error absolute top-0.5 left-1.5"
-        >
-          *
-        </MdTypography>
-      )}
+      <MdTypography
+        variant="label"
+        size="large"
+        className="text-error absolute top-0.5 left-1.5"
+      >
+        *
+      </MdTypography>
+      <div>
+        <MdChipSet>
+          {selectionItems.map((item, index) => (
+            <MdInputChip
+              key={item + "_" + index}
+              selected
+              label={item}
+              handleTrailingActionFocus={() => {
+                setSelectionItems(selectionItems.filter((_, i) => i !== index));
+              }}
+            />
+          ))}
+        </MdChipSet>
+      </div>
     </div>
   );
 };
