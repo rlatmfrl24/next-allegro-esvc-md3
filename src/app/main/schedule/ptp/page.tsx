@@ -3,8 +3,6 @@
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
 import {
-  MdCheckbox,
-  MdElevationButton,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
@@ -13,6 +11,7 @@ import {
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdOutlinedSelect,
+  MdRadio,
   MdSelectOption,
   MdSwitch,
   MdTextButton,
@@ -38,9 +37,14 @@ export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
+  const [searchCondition, setSearchCondition] = useState<
+    "single" | "multi-origin" | "multi-destination"
+  >("single");
 
   const [originList, setOriginList] = useState<string[]>([]);
   const [destinationList, setDestinationList] = useState<string[]>([]);
+  const [originLimit, setOriginLimit] = useState<number>(1);
+  const [destinationLimit, setDestinationLimit] = useState<number>(1);
 
   useEffect(() => {
     console.log("originList", originList);
@@ -51,6 +55,31 @@ export default function PointToPointSchedule() {
     const temp = originList;
     setOriginList(destinationList);
     setDestinationList(temp);
+    setSearchCondition(
+      searchCondition === "multi-origin"
+        ? "multi-destination"
+        : searchCondition === "multi-destination"
+        ? "multi-origin"
+        : "single"
+    );
+  }
+
+  useEffect(() => {
+    if (searchCondition === "single") {
+      setOriginLimit(1);
+      setDestinationLimit(1);
+    } else if (searchCondition === "multi-origin") {
+      setOriginLimit(5);
+      setDestinationLimit(1);
+    } else if (searchCondition === "multi-destination") {
+      setOriginLimit(1);
+      setDestinationLimit(5);
+    }
+  }, [searchCondition]);
+
+  function clearAllSelection() {
+    setOriginList([]);
+    setDestinationList([]);
   }
 
   return (
@@ -76,10 +105,64 @@ export default function PointToPointSchedule() {
           aria-label="search-panel"
           className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
         >
+          <div className="flex gap-6">
+            <MdTypography
+              tag="label"
+              variant="label"
+              size="large"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <MdRadio
+                name="route-condition"
+                value="single"
+                checked={searchCondition === "single"}
+                onClick={() => {
+                  setSearchCondition("single");
+                  clearAllSelection();
+                }}
+              />
+              One to One
+            </MdTypography>
+            <MdTypography
+              tag="label"
+              variant="label"
+              size="large"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <MdRadio
+                name="route-condition"
+                value="multi-origin"
+                checked={searchCondition === "multi-origin"}
+                onClick={() => {
+                  setSearchCondition("multi-origin");
+                  clearAllSelection();
+                }}
+              />
+              Multi Origin
+            </MdTypography>
+            <MdTypography
+              tag="label"
+              variant="label"
+              size="large"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <MdRadio
+                name="route-condition"
+                value="multi-destination"
+                checked={searchCondition === "multi-destination"}
+                onClick={() => {
+                  setSearchCondition("multi-destination");
+                  clearAllSelection();
+                }}
+              />
+              Multi Destination
+            </MdTypography>
+          </div>
+
           <div className="flex gap-4 ">
             <div className="flex flex-1 gap-4">
               <SearchTextField
-                maxSelectionCount={3}
+                maxSelectionCount={originLimit}
                 selectionItems={originList}
                 handleItemSelection={setOriginList}
               />
@@ -89,7 +172,7 @@ export default function PointToPointSchedule() {
                 </MdIcon>
               </MdIconButton>
               <SearchTextField
-                maxSelectionCount={3}
+                maxSelectionCount={destinationLimit}
                 selectionItems={destinationList}
                 handleItemSelection={setDestinationList}
               />
@@ -155,7 +238,7 @@ export default function PointToPointSchedule() {
             <MdOutlinedSelect
               label="Sort By"
               value={listSort}
-              onChange={(e) => setListSort((e.target as any).value)}
+              onClick={(e) => setListSort((e.target as any).value)}
             >
               <MdSelectOption value="earliest_departure">
                 Earliest Departure

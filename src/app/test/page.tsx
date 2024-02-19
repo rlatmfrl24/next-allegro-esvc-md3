@@ -46,7 +46,7 @@ export default function Test() {
         <input
           type="text"
           value={color}
-          onChange={(e) => {
+          onClick={(e) => {
             setColor(e.target.value);
           }}
           className="border"
