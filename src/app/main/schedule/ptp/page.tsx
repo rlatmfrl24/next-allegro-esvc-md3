@@ -3,6 +3,7 @@
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
 import {
+  MdCheckbox,
   MdElevationButton,
   MdFilledButton,
   MdFilledTonalButton,
@@ -15,7 +16,7 @@ import {
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { SearchTextField } from "./search-textfield";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -33,6 +34,17 @@ export default function PointToPointSchedule() {
     | "earliest_arrival"
     | "latest_arrival"
   >("earliest_departure");
+  const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
+    "unsearch"
+  );
+
+  const [originList, setOriginList] = useState<string[]>([]);
+  const [destinationList, setDestinationList] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log("originList", originList);
+    console.log("destinationList", destinationList);
+  }, [originList, destinationList]);
 
   return (
     <div className="relative flex-1 flex justify-center">
@@ -59,13 +71,19 @@ export default function PointToPointSchedule() {
         >
           <div className="flex gap-4 ">
             <div className="flex flex-1 gap-4">
-              <SearchTextField maxSelectionCount={3} />
+              <SearchTextField
+                maxSelectionCount={3}
+                handleItemSelection={setOriginList}
+              />
               <MdIconButton className="mt-2">
                 <MdIcon>
                   <SwapHorizOutlinedIcon />
                 </MdIcon>
               </MdIconButton>
-              <SearchTextField maxSelectionCount={3} />
+              <SearchTextField
+                maxSelectionCount={3}
+                handleItemSelection={setDestinationList}
+              />
             </div>
             <MdOutlinedButton className="h-fit mt-2">
               <div slot="icon">
@@ -90,7 +108,13 @@ export default function PointToPointSchedule() {
           </div>
           <div className="flex justify-end gap-2">
             <MdTextButton>Reset</MdTextButton>
-            <MdFilledButton>Search</MdFilledButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("list");
+              }}
+            >
+              Search
+            </MdFilledButton>
           </div>
         </div>
         <div
@@ -100,12 +124,18 @@ export default function PointToPointSchedule() {
           <MdOutlinedSegmentedButtonSet>
             <MdOutlinedSegmentedButton
               label="List"
-              selected
+              selected={pageState === "list"}
+              onClick={() => setPageState("list")}
             ></MdOutlinedSegmentedButton>
-            <MdOutlinedSegmentedButton label="Calendar"></MdOutlinedSegmentedButton>
+            <MdOutlinedSegmentedButton
+              label="Calendar"
+              selected={pageState === "calendar"}
+              onClick={() => setPageState("calendar")}
+            ></MdOutlinedSegmentedButton>
           </MdOutlinedSegmentedButtonSet>
           <div className="flex items-center gap-4">
             <MdOutlinedSelect
+              label="Sort By"
               value={listSort}
               onChange={(e) => setListSort((e.target as any).value)}
             >
@@ -123,6 +153,7 @@ export default function PointToPointSchedule() {
               </MdSelectOption>
             </MdOutlinedSelect>
             <NaToggleButton label="Earliest arrival only" state="checked" />
+
             <div className="flex-1"></div>
             <MdTextButton>
               <div slot="icon">
@@ -131,23 +162,40 @@ export default function PointToPointSchedule() {
               Download
             </MdTextButton>
           </div>
-          <div className="flex flex-col gap-4">
-            <ListItem
-              item={{
-                origin: "Bangkok, Thailand",
-                destination: "Busan, South Korea",
-                departure: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
-                arrival: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
-                vesselName: "Sawasdee thailand 2204S",
-                transitTime: 12,
-                serviceLane: "EC1",
-              }}
-            />
-          </div>
-          <div
-            aria-label="empty-container"
-            className="h-96 border-outlineVariant border rounded-xl"
-          ></div>
+          {
+            {
+              unsearch: (
+                <div
+                  aria-label="empty-container"
+                  className="h-96 border-outlineVariant border rounded-xl"
+                ></div>
+              ),
+              list: (
+                <div className="flex flex-col gap-4">
+                  <ListItem
+                    item={{
+                      origin: "Bangkok, Thailand",
+                      destination: "Busan, South Korea",
+                      departure: DateTime.fromFormat(
+                        "2024-02-01",
+                        "yyyy-MM-dd"
+                      ),
+                      arrival: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
+                      vesselName: "Sawasdee thailand 2204S",
+                      transitTime: 12,
+                      serviceLane: "EC1",
+                    }}
+                  />
+                </div>
+              ),
+              calendar: (
+                <div
+                  aria-label="empty-container"
+                  className="h-96 border-outlineVariant border rounded-xl"
+                ></div>
+              ),
+            }[pageState]
+          }
         </div>
       </div>
     </div>

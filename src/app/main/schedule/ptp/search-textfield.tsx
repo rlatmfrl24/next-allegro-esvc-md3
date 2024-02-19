@@ -9,7 +9,14 @@ import {
   MdOutlinedTextField as MdOutlinedTextFieldBase,
   MdRippleEffect,
 } from "@/app/util/md3";
-import { CSSProperties, use, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  use,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import {
@@ -42,7 +49,7 @@ export const SearchTextField = ({
   ...props
 }: {
   maxSelectionCount: number;
-  handleItemSelection?: (item: string) => void;
+  handleItemSelection?: (item: string[]) => void;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -90,8 +97,7 @@ export const SearchTextField = ({
   }
 
   useEffect(() => {
-    if (handleItemSelection)
-      handleItemSelection(selectionItems[selectionItems.length - 1]);
+    if (handleItemSelection) handleItemSelection(selectionItems);
   }, [handleItemSelection, selectionItems]);
 
   return (
@@ -194,16 +200,20 @@ export const SearchTextField = ({
       </MdTypography>
       <div>
         <MdChipSet>
-          {selectionItems.map((item, index) => (
-            <MdInputChip
-              key={item + "_" + index}
-              selected
-              label={item}
-              handleTrailingActionFocus={() => {
-                setSelectionItems(selectionItems.filter((_, i) => i !== index));
-              }}
-            />
-          ))}
+          {selectionItems.map((item, index) => {
+            return (
+              <MdInputChip
+                key={item + "_" + index}
+                selected
+                label={item}
+                handleTrailingActionFocus={() => {
+                  setSelectionItems((previousState) =>
+                    previousState.filter((_, i) => i !== index)
+                  );
+                }}
+              />
+            );
+          })}
         </MdChipSet>
       </div>
     </div>
