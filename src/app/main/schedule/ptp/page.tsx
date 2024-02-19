@@ -10,7 +10,7 @@ import { useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SearchCondition from "./search-condition";
-import PointToPointCalendarResult from "./calendar";
+import PointToPointCalendarResult from "./list-calendar";
 import PointToPointListResult from "./list-result";
 
 export default function PointToPointSchedule() {
@@ -45,9 +45,9 @@ export default function PointToPointSchedule() {
         />
         <div
           aria-label="result-panel"
-          className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
+          className="bg-surface rounded-2xl flex flex-col"
         >
-          <MdOutlinedSegmentedButtonSet>
+          <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
             <MdOutlinedSegmentedButton
               label="List"
               selected={pageState === "list"}

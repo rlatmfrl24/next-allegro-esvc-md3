@@ -14,19 +14,11 @@ import {
 import { useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
-import AddIcon from "@mui/icons-material/Add";
-import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
-import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import { DateTime } from "luxon";
-
-type SearchConditionProps = {
-  origins: string[];
-  destinations: string[];
-  searchOn: "departure" | "arrival";
-  startDate: DateTime;
-  endDate: DateTime;
-  directOnly: boolean;
-};
+import { SearchConditionProps } from "./typeDef";
+import AddIcon from "@mui/icons-material/Add";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 
 export default function SearchCondition({
   searchAction,
@@ -176,7 +168,7 @@ export default function SearchCondition({
         </MdFilledTonalButton>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-4">
         <MdOutlinedSelect label="Search On" value={searchOn}>
           <MdSelectOption
             value="departure"

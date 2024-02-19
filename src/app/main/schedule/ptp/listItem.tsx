@@ -1,22 +1,12 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdElevationButton, MdFilledButton } from "@/app/util/md3";
+import { VariableElavatedButton } from "@/app/components/variable-buttons";
+import { ListItemProps } from "./typeDef";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import VesselIcon from "@/../public/icon_vessel.svg";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import VesselIcon from "@/../public/icon_vessel.svg";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { DateTime } from "luxon";
-import { VariableElavatedButton } from "@/app/components/variable-buttons";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-
-type ListItemProps = {
-  origin: string;
-  departure: DateTime;
-  destination: string;
-  arrival: DateTime;
-  vesselName: string;
-  transitTime: number;
-  serviceLane: string;
-};
 
 export default function ListItem({ item }: { item: ListItemProps }) {
   return (
