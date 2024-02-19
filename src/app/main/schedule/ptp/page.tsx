@@ -14,6 +14,7 @@ import {
   MdOutlinedSegmentedButtonSet,
   MdOutlinedSelect,
   MdSelectOption,
+  MdSwitch,
   MdTextButton,
 } from "@/app/util/md3";
 import { useEffect, useState } from "react";
@@ -112,7 +113,16 @@ export default function PointToPointSchedule() {
               <MdSelectOption value="departure">Departure</MdSelectOption>
               <MdSelectOption value="arrival">Arrival</MdSelectOption>
             </MdOutlinedSelect>
-            <MdRangeDatePicker label="Date" />
+            <MdRangeDatePicker label="Date" supportingText=" " />
+
+            <MdTypography
+              variant="body"
+              size="large"
+              className="flex items-center gap-2"
+            >
+              <MdSwitch />
+              Direct
+            </MdTypography>
           </div>
           <div className="flex justify-end gap-2">
             <MdTextButton>Reset</MdTextButton>
@@ -160,7 +170,7 @@ export default function PointToPointSchedule() {
                 Latest Arrival
               </MdSelectOption>
             </MdOutlinedSelect>
-            <NaToggleButton label="Earliest arrival only" state="checked" />
+            <NaToggleButton label="Direct Only" state="checked" />
 
             <div className="flex-1"></div>
             <MdTextButton>
@@ -180,20 +190,26 @@ export default function PointToPointSchedule() {
               ),
               list: (
                 <div className="flex flex-col gap-4">
-                  <ListItem
-                    item={{
-                      origin: "Bangkok, Thailand",
-                      destination: "Busan, South Korea",
-                      departure: DateTime.fromFormat(
-                        "2024-02-01",
-                        "yyyy-MM-dd"
-                      ),
-                      arrival: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
-                      vesselName: "Sawasdee thailand 2204S",
-                      transitTime: 12,
-                      serviceLane: "EC1",
-                    }}
-                  />
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <ListItem
+                      key={index}
+                      item={{
+                        origin: "Bangkok, Thailand",
+                        destination: "Busan, South Korea",
+                        departure: DateTime.fromFormat(
+                          "2024-02-01",
+                          "yyyy-MM-dd"
+                        ),
+                        arrival: DateTime.fromFormat(
+                          "2024-02-01",
+                          "yyyy-MM-dd"
+                        ),
+                        vesselName: "Sawasdee thailand 2204S",
+                        transitTime: 12,
+                        serviceLane: "EC1",
+                      }}
+                    />
+                  ))}
                 </div>
               ),
               calendar: (

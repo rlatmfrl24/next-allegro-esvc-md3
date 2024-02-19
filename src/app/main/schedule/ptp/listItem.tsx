@@ -5,8 +5,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import VesselIcon from "@/../public/icon_vessel.svg";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { DateTime } from "luxon";
-import { de } from "@faker-js/faker";
-import { CSSProperties } from "react";
+import { VariableElavatedButton } from "@/app/components/variable-buttons";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 type ListItemProps = {
   origin: string;
@@ -44,7 +44,13 @@ export default function ListItem({ item }: { item: ListItemProps }) {
             >
               {item.departure.toFormat("yyyy-MM-dd")}
             </MdTypography>
-            <MdElevationButton>Cut Off</MdElevationButton>
+            <VariableElavatedButton
+              className="mt-1"
+              size="x-small"
+              icon={<AccessTimeIcon className="w-4 h-4" />}
+            >
+              Cut Off
+            </VariableElavatedButton>
           </div>
           <div className="flex flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">
