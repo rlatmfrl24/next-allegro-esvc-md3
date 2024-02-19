@@ -13,7 +13,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -35,6 +35,7 @@ export const MdRangeDatePicker = (props: {
   defautStartDate?: DateTime;
   defaultEndDate?: DateTime;
   supportingText?: string;
+  handleDateRangeSelected?: Dispatch<SetStateAction<[DateTime, DateTime]>>;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
@@ -134,6 +135,9 @@ export const MdRangeDatePicker = (props: {
       setIsDateRangeValid(true);
       setErrorSupportText("");
     }
+    props.handleDateRangeSelected &&
+      props.handleDateRangeSelected([defaultDateRange[0], defaultDateRange[1]]);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
 

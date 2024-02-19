@@ -13,8 +13,6 @@ import {
   CSSProperties,
   Dispatch,
   SetStateAction,
-  use,
-  useCallback,
   useEffect,
   useRef,
   useState,

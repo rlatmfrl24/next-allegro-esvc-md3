@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  MdAssistChip,
-  MdIcon,
-  MdIconButton,
-  MdOutlinedCard,
-} from "@/app/util/md3";
-import TitleIndicator from "@/../public/title_indicator.svg";
+import { MdIcon, MdIconButton, MdOutlinedCard } from "@/app/util/md3";
+
 import { MdTypography } from "@/app/components/typography";
 import { useCalendar } from "@h6s/calendar";
 import { DateTime } from "luxon";

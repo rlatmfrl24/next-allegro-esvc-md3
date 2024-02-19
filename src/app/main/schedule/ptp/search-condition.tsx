@@ -17,8 +17,22 @@ import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import AddIcon from "@mui/icons-material/Add";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import { DateTime } from "luxon";
 
-export default function SearchCondition() {
+type SearchConditionProps = {
+  origins: string[];
+  destinations: string[];
+  searchOn: "departure" | "arrival";
+  startDate: DateTime;
+  endDate: DateTime;
+  directOnly: boolean;
+};
+
+export default function SearchCondition({
+  searchAction,
+}: {
+  searchAction: (condition: SearchConditionProps) => void;
+}) {
   const [searchCondition, setSearchCondition] = useState<
     "single" | "multi-origin" | "multi-destination"
   >("single");
@@ -27,6 +41,14 @@ export default function SearchCondition() {
   const [destinationList, setDestinationList] = useState<string[]>([]);
   const [originLimit, setOriginLimit] = useState<number>(1);
   const [destinationLimit, setDestinationLimit] = useState<number>(1);
+  const [searchOn, setSearchOn] = useState<"departure" | "arrival">(
+    "departure"
+  );
+  const [isDirectOnly, setIsDirectOnly] = useState<boolean>(true);
+  const [dateRange, setDateRange] = useState<[DateTime, DateTime]>([
+    DateTime.now(),
+    DateTime.now(),
+  ]);
 
   function switchOriginDestination() {
     const temp = originList;
@@ -40,6 +62,10 @@ export default function SearchCondition() {
         : "single"
     );
   }
+
+  useEffect(() => {
+    console.log("dateRange", dateRange);
+  }, [dateRange]);
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -151,18 +177,41 @@ export default function SearchCondition() {
       </div>
 
       <div className="flex gap-4">
-        <MdOutlinedSelect label="Search On">
-          <MdSelectOption value="departure">Departure</MdSelectOption>
-          <MdSelectOption value="arrival">Arrival</MdSelectOption>
+        <MdOutlinedSelect label="Search On" value={searchOn}>
+          <MdSelectOption
+            value="departure"
+            onClick={() => {
+              setSearchOn("departure");
+            }}
+          >
+            Departure
+          </MdSelectOption>
+          <MdSelectOption
+            value="arrival"
+            onClick={() => {
+              setSearchOn("arrival");
+            }}
+          >
+            Arrival
+          </MdSelectOption>
         </MdOutlinedSelect>
-        <MdRangeDatePicker label="Date" supportingText=" " />
+        <MdRangeDatePicker
+          label="Date"
+          supportingText=" "
+          handleDateRangeSelected={setDateRange}
+        />
 
         <MdTypography
           variant="body"
           size="large"
           className="flex items-center gap-2"
         >
-          <MdSwitch />
+          <MdSwitch
+            selected={isDirectOnly}
+            onClick={() => {
+              setIsDirectOnly(!isDirectOnly);
+            }}
+          />
           Direct
         </MdTypography>
       </div>
@@ -170,7 +219,14 @@ export default function SearchCondition() {
         <MdTextButton>Reset</MdTextButton>
         <MdFilledButton
           onClick={() => {
-            // setPageState("list");
+            searchAction({
+              origins: originList,
+              destinations: destinationList,
+              searchOn: searchOn,
+              startDate: dateRange[0],
+              endDate: dateRange[1],
+              directOnly: isDirectOnly,
+            });
           }}
         >
           Search
