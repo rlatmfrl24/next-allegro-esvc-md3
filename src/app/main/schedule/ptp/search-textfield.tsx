@@ -11,6 +11,8 @@ import {
 } from "@/app/util/md3";
 import {
   CSSProperties,
+  Dispatch,
+  SetStateAction,
   use,
   useCallback,
   useEffect,
@@ -45,11 +47,13 @@ const itemList = Array.from({ length: 900 }, (_, i) => {
 
 export const SearchTextField = ({
   maxSelectionCount,
+  selectionItems,
   handleItemSelection,
   ...props
 }: {
   maxSelectionCount: number;
-  handleItemSelection?: (item: string[]) => void;
+  selectionItems: string[];
+  handleItemSelection: Dispatch<SetStateAction<string[]>>;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,7 +61,6 @@ export const SearchTextField = ({
   const listRef = useRef<any[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
-  const [selectionItems, setSelectionItems] = useState<string[]>([]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isMenuOpen,
@@ -90,7 +93,7 @@ export const SearchTextField = ({
 
   function handleSelection(item: string) {
     if (selectionItems.length < maxSelectionCount) {
-      setSelectionItems([...selectionItems, item]);
+      handleItemSelection && handleItemSelection([...selectionItems, item]);
       setValue("");
       setIsMenuOpen(false);
     }
@@ -207,9 +210,10 @@ export const SearchTextField = ({
                 selected
                 label={item}
                 handleTrailingActionFocus={() => {
-                  setSelectionItems((previousState) =>
-                    previousState.filter((_, i) => i !== index)
-                  );
+                  handleItemSelection &&
+                    handleItemSelection((previousState) =>
+                      previousState.filter((_, i) => i !== index)
+                    );
                 }}
               />
             );

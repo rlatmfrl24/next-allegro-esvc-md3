@@ -6,6 +6,7 @@ import VesselIcon from "@/../public/icon_vessel.svg";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { DateTime } from "luxon";
 import { de } from "@faker-js/faker";
+import { CSSProperties } from "react";
 
 type ListItemProps = {
   origin: string;
@@ -43,6 +44,7 @@ export default function ListItem({ item }: { item: ListItemProps }) {
             >
               {item.departure.toFormat("yyyy-MM-dd")}
             </MdTypography>
+            <MdElevationButton>Cut Off</MdElevationButton>
           </div>
           <div className="flex flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">

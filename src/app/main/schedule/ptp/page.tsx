@@ -46,6 +46,12 @@ export default function PointToPointSchedule() {
     console.log("destinationList", destinationList);
   }, [originList, destinationList]);
 
+  function switchOriginDestination() {
+    const temp = originList;
+    setOriginList(destinationList);
+    setDestinationList(temp);
+  }
+
   return (
     <div className="relative flex-1 flex justify-center">
       <div
@@ -73,15 +79,17 @@ export default function PointToPointSchedule() {
             <div className="flex flex-1 gap-4">
               <SearchTextField
                 maxSelectionCount={3}
+                selectionItems={originList}
                 handleItemSelection={setOriginList}
               />
-              <MdIconButton className="mt-2">
+              <MdIconButton className="mt-2" onClick={switchOriginDestination}>
                 <MdIcon>
                   <SwapHorizOutlinedIcon />
                 </MdIcon>
               </MdIconButton>
               <SearchTextField
                 maxSelectionCount={3}
+                selectionItems={destinationList}
                 handleItemSelection={setDestinationList}
               />
             </div>
