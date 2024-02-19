@@ -21,7 +21,7 @@ export default function ListItem({ item }: { item: ListItemProps }) {
           <ArrowForwardIosIcon className="absolute h-4 w-4 right-7 text-outlineVariant" />
         </div>
         <div className="flex justify-between">
-          <div className="flex flex-col items-start gap-1">
+          <div className="flex flex-1 flex-col items-start gap-1">
             <MdTypography variant="title" size="medium">
               <span className="border-b border-onSurface uppercase">
                 {item.origin}
@@ -42,7 +42,7 @@ export default function ListItem({ item }: { item: ListItemProps }) {
               Cut Off
             </VariableElavatedButton>
           </div>
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-1 flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">
               <span className="border-b border-onSurface">
                 {item.vesselName}
@@ -65,7 +65,7 @@ export default function ListItem({ item }: { item: ListItemProps }) {
               </MdTypography>
             </MdTypography>
           </div>
-          <div className="flex flex-col items-end gap-1">
+          <div className="flex flex-1 flex-col items-end gap-1">
             <MdTypography variant="title" size="medium">
               <span className="border-b border-onSurface uppercase">
                 {item.destination}

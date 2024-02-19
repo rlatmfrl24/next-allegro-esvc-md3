@@ -6,17 +6,19 @@ import {
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
 } from "@/app/util/md3";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SearchCondition from "./search-condition";
 import PointToPointCalendarResult from "./list-calendar";
 import PointToPointListResult from "./list-result";
-
+import { createDummyScheduleData } from "./util";
+import { ListItemProps } from "./typeDef";
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
+  const [resultList, setResultList] = useState<ListItemProps[]>([]);
 
   return (
     <div className="relative flex-1 flex justify-center">
@@ -39,7 +41,8 @@ export default function PointToPointSchedule() {
         </div>
         <SearchCondition
           searchAction={(condition) => {
-            console.log(condition);
+            const list = createDummyScheduleData(condition);
+            setResultList(list);
             setPageState("list");
           }}
         />
@@ -64,10 +67,10 @@ export default function PointToPointSchedule() {
               unsearch: (
                 <div
                   aria-label="empty-container"
-                  className="h-96 border-outlineVariant border rounded-xl"
+                  className="h-96 border-outlineVariant border rounded-xl m-6"
                 ></div>
               ),
-              list: <PointToPointListResult />,
+              list: <PointToPointListResult list={resultList} />,
               calendar: <PointToPointCalendarResult />,
             }[pageState]
           }

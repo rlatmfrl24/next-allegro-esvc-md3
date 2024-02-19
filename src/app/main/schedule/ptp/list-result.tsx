@@ -1,11 +1,16 @@
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdOutlinedSelect, MdSelectOption, MdTextButton } from "@/app/util/md3";
 import DownloadIcon from "@mui/icons-material/Download";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListItem from "./listItem";
 import { DateTime } from "luxon";
+import { ListItemProps } from "./typeDef";
 
-export default function PointToPointListResult() {
+export default function PointToPointListResult({
+  list,
+}: {
+  list: ListItemProps[];
+}) {
   const [listSort, setListSort] = useState<
     | "earliest_departure"
     | "latest_departure"
@@ -43,7 +48,10 @@ export default function PointToPointListResult() {
         </MdTextButton>
       </div>
       <div className="flex flex-col gap-4">
-        {Array.from({ length: 10 }).map((_, index) => (
+        {list.map((item, index) => (
+          <ListItem key={index} item={item} />
+        ))}
+        {/* {Array.from({ length: 10 }).map((_, index) => (
           <ListItem
             key={index}
             item={{
@@ -56,7 +64,7 @@ export default function PointToPointListResult() {
               serviceLane: "EC1",
             }}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );
