@@ -18,12 +18,6 @@ export default function PointToPointCalendarResult() {
 
   return (
     <div className="mx-6">
-      <div className="flex py-6 gap-4 items-center text-primary">
-        <TitleIndicator title="Point to Point Search" />
-        <MdTypography variant="title" size="large">
-          Result
-        </MdTypography>
-      </div>
       <MdOutlinedCard className="mb-4">
         <div className="flex p-6 items-center gap-2">
           <MdIconButton
