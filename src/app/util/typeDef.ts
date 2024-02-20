@@ -47,3 +47,10 @@ export type SearchConditionProps = {
   endDate: DateTime;
   directOnly: boolean;
 };
+
+export type PresetType = {
+  id: string;
+  name: string;
+  useMailingService: boolean;
+  condition: SearchConditionProps;
+};

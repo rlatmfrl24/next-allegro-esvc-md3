@@ -22,6 +22,7 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
 import { SearchConditionProps } from "@/app/util/typeDef";
+import PresetScheduleDialog from "./popup/preset-schedule";
 
 export default function SearchCondition({
   searchAction,
@@ -48,6 +49,7 @@ export default function SearchCondition({
   const [isOriginError, setIsOriginError] = useState<boolean>(false);
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
   const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
+  const [isPresetScheduleOpen, setIsPresetScheduleOpen] = useState(false);
 
   const [currentCondition, setCurrentCondition] =
     useState<SearchConditionProps>({
@@ -134,6 +136,11 @@ export default function SearchCondition({
         handleOpen={setIsSavePrestOpen}
         condition={currentCondition}
       />
+      <PresetScheduleDialog
+        open={isPresetScheduleOpen}
+        handleOpen={setIsPresetScheduleOpen}
+      />
+
       <div className="flex gap-6 h-10">
         <MdTypography
           tag="label"
@@ -218,7 +225,12 @@ export default function SearchCondition({
           </div>
           Save Preset
         </MdOutlinedButton>
-        <MdFilledTonalButton className="h-fit mt-2">
+        <MdFilledTonalButton
+          className="h-fit mt-2"
+          onClick={() => {
+            setIsPresetScheduleOpen(true);
+          }}
+        >
           <div slot="icon">
             <InboxOutlinedIcon className="w-5 h-5" />
           </div>

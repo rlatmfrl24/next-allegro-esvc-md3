@@ -3,6 +3,9 @@ import { MdDialog, MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { useEffect, useState } from "react";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { SearchConditionProps } from "@/app/util/typeDef";
+import { useRecoilState } from "recoil";
+import { PresetListState } from "@/app/store/ptp.store";
+import { faker } from "@faker-js/faker";
 
 export default function SavePresetDialog({
   open,
@@ -15,6 +18,7 @@ export default function SavePresetDialog({
 }) {
   const [isMailingServiceToggled, setIsMailingServiceToggled] = useState(false);
   const [presetName, setPresetName] = useState("");
+  const [presetList, setPresetList] = useRecoilState(PresetListState);
 
   useEffect(() => {
     if (open) {
@@ -67,7 +71,22 @@ export default function SavePresetDialog({
         >
           Close
         </MdTextButton>
-        <MdFilledButton>Save</MdFilledButton>
+        <MdFilledButton
+          onClick={() => {
+            setPresetList([
+              ...presetList,
+              {
+                id: faker.string.uuid(),
+                name: presetName,
+                condition: condition,
+                useMailingService: isMailingServiceToggled,
+              },
+            ]);
+            handleOpen(false);
+          }}
+        >
+          Save
+        </MdFilledButton>
       </div>
     </MdDialog>
   );
