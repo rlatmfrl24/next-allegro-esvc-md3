@@ -14,10 +14,10 @@ import SearchCondition from "./search-condition";
 import PointToPointCalendarResult from "./list-calendar";
 import PointToPointListResult from "./list-result";
 import { createDummyScheduleData } from "./util";
-import { ListItemProps, SearchConditionProps } from "./typeDef";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
+import { ListItemProps, SearchConditionProps } from "@/app/util/typeDef";
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"

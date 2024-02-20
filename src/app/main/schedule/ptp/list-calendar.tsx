@@ -7,7 +7,7 @@ import { useCalendar } from "@h6s/calendar";
 import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ListItemProps } from "./typeDef";
+import { ListItemProps } from "@/app/util/typeDef";
 
 const LabelChip = ({
   label,

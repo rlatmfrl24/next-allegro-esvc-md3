@@ -1,9 +1,9 @@
 import { MdOutlinedSelect, MdSelectOption, MdTextButton } from "@/app/util/md3";
 import { useState } from "react";
-import { ListItemProps } from "./typeDef";
 import ListItem from "./listItem";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import DownloadIcon from "@mui/icons-material/Download";
+import { ListItemProps } from "@/app/util/typeDef";
 
 export default function PointToPointListResult({
   list,

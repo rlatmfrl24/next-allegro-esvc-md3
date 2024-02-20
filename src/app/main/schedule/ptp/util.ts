@@ -1,5 +1,5 @@
+import { ListItemProps, SearchConditionProps } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
-import { ListItemProps, SearchConditionProps } from "./typeDef";
 import { DateTime } from "luxon";
 
 export function createDummyScheduleData(

@@ -17,11 +17,11 @@ import { use, useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
-import { SearchConditionProps } from "./typeDef";
 import AddIcon from "@mui/icons-material/Add";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
+import { SearchConditionProps } from "@/app/util/typeDef";
 
 export default function SearchCondition({
   searchAction,

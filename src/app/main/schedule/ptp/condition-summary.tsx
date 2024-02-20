@@ -7,9 +7,9 @@ import {
 } from "@/app/util/md3";
 import { AnimatePresence, motion } from "framer-motion";
 import { CSSProperties } from "react";
-import { SearchConditionProps } from "./typeDef";
 import { MdTypography } from "@/app/components/typography";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import { SearchConditionProps } from "@/app/util/typeDef";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (

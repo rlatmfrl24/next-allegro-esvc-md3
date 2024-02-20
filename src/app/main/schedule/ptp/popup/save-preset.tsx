@@ -2,7 +2,7 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdDialog, MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { useEffect, useState } from "react";
 import NaToggleButton from "@/app/components/na-toggle-button";
-import { SearchConditionProps } from "../typeDef";
+import { SearchConditionProps } from "@/app/util/typeDef";
 
 export default function SavePresetDialog({
   open,
