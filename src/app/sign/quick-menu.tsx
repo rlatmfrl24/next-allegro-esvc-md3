@@ -1,5 +1,6 @@
 import { MdTypography } from "../components/typography";
 import {
+  MdElevatedCard,
   MdElevation,
   MdFilledButton,
   MdPrimaryTab,
@@ -16,13 +17,13 @@ export default function QuickMenu() {
   return (
     <div className="flex flex-col justify-center gap-6 h-full absolute z-10 right-16 w-[848px] px-16">
       <QuickSearch />
-      <div className={styles["sign-card"] + ` p-12`}>
+      <MdElevatedCard className="p-12">
         <MdElevation />
         <MdTypography variant="title" size="large" className="mb-4">
           Notice
         </MdTypography>
         <QuickNotice />
-      </div>
+      </MdElevatedCard>
     </div>
   );
 }
@@ -37,8 +38,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <div className={styles["sign-card"]}>
-      <MdElevation />
+    <MdElevatedCard>
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab
           id="tab-schedule"
@@ -89,6 +89,6 @@ const QuickSearch = () => {
         <MdTextButton>Clear</MdTextButton>
         <MdFilledButton>Search</MdFilledButton>
       </div>
-    </div>
+    </MdElevatedCard>
   );
 };

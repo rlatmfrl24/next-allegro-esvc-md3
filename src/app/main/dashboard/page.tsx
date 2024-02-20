@@ -4,7 +4,7 @@ import { MdTypography } from "../../components/typography";
 import { MdFilterChip, MdIcon, MdIconButton } from "../../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useRecoilState } from "recoil";
-import { draggableState } from "../store";
+import { draggableState } from "../../store/dashboard.store";
 import { useState } from "react";
 import Dashboard from "./dashboard";
 import TitleIndicator from "@/../public/title_indicator.svg";

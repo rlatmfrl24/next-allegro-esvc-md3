@@ -1,7 +1,7 @@
 "use client";
 
 import { useRecoilValue } from "recoil";
-import { UserState } from "../store";
+import { UserState } from "../store/global.store";
 
 export default function Footer() {
   const isAuthenticated = useRecoilValue(UserState).isAuthenticated;

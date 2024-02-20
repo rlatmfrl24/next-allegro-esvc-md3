@@ -5,7 +5,7 @@ import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton, MdSwitch } from "@/app/util/md3";
 import { cardList } from "../../util/constants";
 import { useRecoilState } from "recoil";
-import { dashboardCardState } from "../store";
+import { dashboardCardState } from "../../store/dashboard.store";
 
 export default function SetDashboard(props: {
   isDrawerOpen: boolean;
