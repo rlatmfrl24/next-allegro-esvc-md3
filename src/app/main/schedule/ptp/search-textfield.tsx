@@ -40,7 +40,7 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 
 const itemList = Array.from({ length: 900 }, (_, i) => {
   const fakeCity = faker.location;
-  return `${fakeCity.city()}, ${fakeCity.country()}`;
+  return `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase();
 });
 
 export const SearchTextField = ({
@@ -105,7 +105,7 @@ export const SearchTextField = ({
   }, [handleItemSelection, selectionItems]);
 
   return (
-    <div ref={containerRef} className="relative flex flex-1 flex-col gap-4">
+    <div ref={containerRef} className="relative flex flex-1 flex-col gap-2">
       <MdOutlinedTextFieldBase
         {...props}
         error={selectionItems.length > 0 ? false : props.error}
@@ -203,25 +203,23 @@ export const SearchTextField = ({
       >
         *
       </MdTypography>
-      <div>
-        <MdChipSet>
-          {selectionItems.map((item, index) => {
-            return (
-              <MdInputChip
-                key={item + "_" + index}
-                selected
-                label={item}
-                handleTrailingActionFocus={() => {
-                  handleItemSelection &&
-                    handleItemSelection((previousState) =>
-                      previousState.filter((_, i) => i !== index)
-                    );
-                }}
-              />
-            );
-          })}
-        </MdChipSet>
-      </div>
+      <MdChipSet>
+        {selectionItems.map((item, index) => {
+          return (
+            <MdInputChip
+              key={item + "_" + index}
+              selected
+              label={item}
+              handleTrailingActionFocus={() => {
+                handleItemSelection &&
+                  handleItemSelection((previousState) =>
+                    previousState.filter((_, i) => i !== index)
+                  );
+              }}
+            />
+          );
+        })}
+      </MdChipSet>
     </div>
   );
 };

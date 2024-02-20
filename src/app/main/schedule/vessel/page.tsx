@@ -57,7 +57,6 @@ export default function VesselSchedule() {
               <MdSingleDatePicker handleDateChange={setFirstDate} />
               <MdSingleDatePicker />
               <MdRangeDatePicker />
-              <NAOutlinedTextField label="test" required />
               <div className="flex">
                 <NAOutlinedAutoComplete
                   id="test-1"

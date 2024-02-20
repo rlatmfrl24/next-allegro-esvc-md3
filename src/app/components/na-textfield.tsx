@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MdIcon,
   MdIconButton,
@@ -13,23 +13,25 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
 >;
 
-export const NAOutlinedTextField = ({ ...props }: MdOutlinedTextFieldProps) => {
-  const [value, setValue] = useState(props.value || "");
-
+export const NAOutlinedTextField = ({
+  handleValueChange,
+  ...props
+}: {
+  handleValueChange: (value: string) => void;
+} & MdOutlinedTextFieldProps) => {
   return (
     <div className="relative flex">
       <MdOutlinedTextFieldBase
         {...props}
-        value={value}
         className="flex-1"
-        onInput={(e) => setValue((e.target as HTMLInputElement).value)}
+        onInput={(e) => handleValueChange((e.target as HTMLInputElement).value)}
         required={false}
       >
-        {value !== "" && props.label && (
+        {props.value !== "" && props.label && (
           <MdIconButton
             slot="trailing-icon"
             onClick={() => {
-              setValue("");
+              handleValueChange("");
             }}
           >
             <MdIcon>

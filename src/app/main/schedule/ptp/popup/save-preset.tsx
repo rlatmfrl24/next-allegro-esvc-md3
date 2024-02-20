@@ -1,16 +1,37 @@
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdDialog, MdFilledButton, MdTextButton } from "@/app/util/md3";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NaToggleButton from "@/app/components/na-toggle-button";
+import { SearchConditionProps } from "../typeDef";
 
-export default function SavePreset({
+export default function SavePresetDialog({
   open,
   handleOpen,
+  condition,
 }: {
   open: boolean;
   handleOpen: (open: boolean) => void;
+  condition: SearchConditionProps;
 }) {
   const [isMailingServiceToggled, setIsMailingServiceToggled] = useState(false);
+  const [presetName, setPresetName] = useState("");
+
+  useEffect(() => {
+    if (open) {
+      const defaultName = `${condition.origins
+        .map((origin) => {
+          return origin.split(",")[0];
+        })
+        .join(", ")} / ${condition.destinations
+        .map((destination) => {
+          return destination.split(",")[0];
+        })
+        .join(", ")}`;
+
+      setPresetName(defaultName);
+      setIsMailingServiceToggled(false);
+    }
+  }, [open, condition]);
 
   return (
     <MdDialog
@@ -22,7 +43,14 @@ export default function SavePreset({
     >
       <div slot="headline">Save Preset</div>
       <div slot="content" className="flex flex-1 flex-col gap-2">
-        <NAOutlinedTextField label="Preset Name" className="flex-1 my-2" />
+        <NAOutlinedTextField
+          label="Preset Name"
+          className="flex-1 my-2"
+          value={presetName}
+          handleValueChange={(value) => {
+            setPresetName(value);
+          }}
+        />
         <NaToggleButton
           label="Mailing Service"
           state={isMailingServiceToggled ? "checked" : "unchecked"}

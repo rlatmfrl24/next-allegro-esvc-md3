@@ -13,7 +13,7 @@ import {
   MdSwitch,
   MdTextButton,
 } from "@/app/util/md3";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
@@ -21,8 +21,7 @@ import { SearchConditionProps } from "./typeDef";
 import AddIcon from "@mui/icons-material/Add";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
-import NaToggleButton from "@/app/components/na-toggle-button";
-import SavePreset from "./popup/save-preset";
+import SavePresetDialog from "./popup/save-preset";
 
 export default function SearchCondition({
   searchAction,
@@ -50,6 +49,16 @@ export default function SearchCondition({
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
   const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
 
+  const [currentCondition, setCurrentCondition] =
+    useState<SearchConditionProps>({
+      origins: originList,
+      destinations: destinationList,
+      directOnly: isDirectOnly,
+      startDate: dateRange[0],
+      endDate: dateRange[1],
+      searchOn: searchOn,
+    });
+
   useEffect(() => {
     if (searchCondition === "single") {
       setOriginLimit(1);
@@ -62,6 +71,17 @@ export default function SearchCondition({
       setDestinationLimit(5);
     }
   }, [searchCondition]);
+
+  useEffect(() => {
+    setCurrentCondition({
+      origins: originList,
+      destinations: destinationList,
+      directOnly: isDirectOnly,
+      startDate: dateRange[0],
+      endDate: dateRange[1],
+      searchOn: searchOn,
+    });
+  }, [originList, destinationList, isDirectOnly, dateRange, searchOn]);
 
   function clearAllSelection() {
     setOriginList([]);
@@ -109,8 +129,12 @@ export default function SearchCondition({
       aria-label="search-panel"
       className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
     >
-      <SavePreset open={isSavePrestOpen} handleOpen={setIsSavePrestOpen} />
-      <div className="flex gap-6">
+      <SavePresetDialog
+        open={isSavePrestOpen}
+        handleOpen={setIsSavePrestOpen}
+        condition={currentCondition}
+      />
+      <div className="flex gap-6 h-10">
         <MdTypography
           tag="label"
           variant="label"
@@ -202,7 +226,7 @@ export default function SearchCondition({
         </MdFilledTonalButton>
       </div>
 
-      <div className="flex gap-4 mt-4">
+      <div className="flex gap-4">
         <MdOutlinedSelect label="Search On" value={searchOn}>
           <MdSelectOption
             value="departure"
