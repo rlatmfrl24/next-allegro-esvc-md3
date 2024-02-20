@@ -7,6 +7,8 @@ import { useCalendar } from "@h6s/calendar";
 import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { ListItemProps } from "./typeDef";
+import { useEffect } from "react";
 
 const LabelChip = ({ label }: { label: string }) => {
   return (
@@ -25,15 +27,35 @@ const ViewMoreButton = ({ cnt }: { cnt: number }) => {
     <MdTypography
       variant="label"
       size="medium"
-      className="bg-surfaceContainerHigh px-2 py-0.5 rounded-lg"
+      className="bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center"
     >
       {`View ${cnt} More >`}
     </MdTypography>
   );
 };
 
-export default function PointToPointCalendarResult() {
+function classifyByDate(list: ListItemProps[]) {
+  const result: Record<string, ListItemProps[]> = {};
+  list.forEach((item) => {
+    const date = item.departure;
+    const key = date.toISO()?.split("T")[0];
+    if (key) {
+      if (!result[key]) {
+        result[key] = [];
+      }
+      result[key].push(item);
+    }
+  });
+  return result;
+}
+
+export default function PointToPointCalendarResult({
+  list,
+}: {
+  list: ListItemProps[];
+}) {
   const { headers, body, navigation, cursorDate } = useCalendar();
+  const classified = classifyByDate(list);
 
   return (
     <div className="">
@@ -94,6 +116,9 @@ export default function PointToPointCalendarResult() {
               "dd"
             );
 
+            const dateKey = value.toISOString().split("T")[0];
+            const list = classified[dateKey] || [];
+
             return (
               <div
                 key={key}
@@ -116,13 +141,9 @@ export default function PointToPointCalendarResult() {
                 >
                   {dayText}
                 </MdTypography>
-                {idx % 5 === 0 && (
-                  <>
-                    <LabelChip label="DONGJIN VOYAGER (DONGJIN VOYAGER)" />
-                    <LabelChip label="DONGJIN VOYAGER (DONGJIN VOYAGER)" />
-                    <ViewMoreButton cnt={2} />
-                  </>
-                )}
+                {list[0] && <LabelChip label={list[0].vesselName} />}
+                {list[1] && <LabelChip label={list[1].vesselName} />}
+                {list.length > 2 && <ViewMoreButton cnt={list.length - 2} />}
               </div>
             );
           });

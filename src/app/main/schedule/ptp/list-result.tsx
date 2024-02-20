@@ -1,10 +1,9 @@
-import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdOutlinedSelect, MdSelectOption, MdTextButton } from "@/app/util/md3";
-import DownloadIcon from "@mui/icons-material/Download";
-import { useEffect, useState } from "react";
-import ListItem from "./listItem";
-import { DateTime } from "luxon";
+import { useState } from "react";
 import { ListItemProps } from "./typeDef";
+import ListItem from "./listItem";
+import NaToggleButton from "@/app/components/na-toggle-button";
+import DownloadIcon from "@mui/icons-material/Download";
 
 export default function PointToPointListResult({
   list,
@@ -51,20 +50,6 @@ export default function PointToPointListResult({
         {list.map((item, index) => (
           <ListItem key={index} item={item} />
         ))}
-        {/* {Array.from({ length: 10 }).map((_, index) => (
-          <ListItem
-            key={index}
-            item={{
-              origin: "Bangkok, Thailand",
-              destination: "Busan, South Korea",
-              departure: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
-              arrival: DateTime.fromFormat("2024-02-01", "yyyy-MM-dd"),
-              vesselName: "Sawasdee thailand 2204S",
-              transitTime: 12,
-              serviceLane: "EC1",
-            }}
-          />
-        ))} */}
       </div>
     </div>
   );

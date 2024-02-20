@@ -71,7 +71,7 @@ export default function PointToPointSchedule() {
                 ></div>
               ),
               list: <PointToPointListResult list={resultList} />,
-              calendar: <PointToPointCalendarResult />,
+              calendar: <PointToPointCalendarResult list={resultList} />,
             }[pageState]
           }
         </div>
