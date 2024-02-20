@@ -1,11 +1,13 @@
 import { MdTypography } from "@/app/components/typography";
 import {
+  MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
   MdOutlinedSelect,
+  MdOutlinedTextField,
   MdRadio,
   MdSelectOption,
   MdSwitch,
@@ -19,6 +21,8 @@ import { SearchConditionProps } from "./typeDef";
 import AddIcon from "@mui/icons-material/Add";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
+import NaToggleButton from "@/app/components/na-toggle-button";
+import SavePreset from "./popup/save-preset";
 
 export default function SearchCondition({
   searchAction,
@@ -44,6 +48,7 @@ export default function SearchCondition({
 
   const [isOriginError, setIsOriginError] = useState<boolean>(false);
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
+  const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -104,6 +109,7 @@ export default function SearchCondition({
       aria-label="search-panel"
       className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
     >
+      <SavePreset open={isSavePrestOpen} handleOpen={setIsSavePrestOpen} />
       <div className="flex gap-6">
         <MdTypography
           tag="label"
@@ -177,7 +183,12 @@ export default function SearchCondition({
             error={isDestinationError}
           />
         </div>
-        <MdOutlinedButton className="h-fit mt-2">
+        <MdOutlinedButton
+          className="h-fit mt-2"
+          onClick={() => {
+            setIsSavePrestOpen(true);
+          }}
+        >
           <div slot="icon">
             <AddIcon className="w-5 h-5" />
           </div>

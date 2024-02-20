@@ -1,9 +1,11 @@
 import { MdTypography } from "./typography";
 import { MdCheckbox } from "../util/md3";
+import { on } from "events";
 
 export default function NaToggleButton({
   label,
   state,
+  onChange,
 }: {
   label?: string;
   state:
@@ -12,13 +14,14 @@ export default function NaToggleButton({
     | "indetermine"
     | "disabled"
     | "disabled-checked";
+  onChange?: (state: "checked" | "unchecked" | "indetermine") => void;
 }) {
   return (
     <MdTypography
       tag="label"
       variant="label"
       size="large"
-      className="text-primary flex items-center cursor-pointer gap-2"
+      className="text-primary flex items-center cursor-pointer gap-2 my-1.5"
     >
       <MdCheckbox
         checked={
@@ -26,6 +29,18 @@ export default function NaToggleButton({
         }
         indeterminate={state === "indetermine"}
         disabled={state === "disabled" || state === "disabled-checked"}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onChange &&
+            onChange(
+              state === "checked"
+                ? "unchecked"
+                : state === "unchecked"
+                ? "checked"
+                : "indetermine"
+            );
+        }}
       />
       {label}
     </MdTypography>

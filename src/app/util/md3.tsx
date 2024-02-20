@@ -36,6 +36,7 @@ import { MdNavigationDrawer as MdNavigationDrawerWebComponent } from "@material/
 import { MdNavigationTab as MdNavigationTabWebComponent } from "@material/web/labs/navigationtab/navigation-tab";
 import { MdCircularProgress as MdCircularProgressWebComponent } from "@material/web/progress/circular-progress";
 import { MdLinearProgress as MdLinearProgressWebComponent } from "@material/web/progress/linear-progress";
+import { MdDialog as MdDialogWebComponent } from "@material/web/dialog/dialog";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -263,4 +264,15 @@ export const MdLinearProgress = createComponent({
   tagName: "md-linear-progress",
   elementClass: MdLinearProgressWebComponent,
   react: React,
+});
+
+export const MdDialog = createComponent({
+  tagName: "md-dialog",
+  elementClass: MdDialogWebComponent,
+  react: React,
+  events: {
+    opened: "opened",
+    closed: "closed",
+    cancel: "cancel",
+  },
 });

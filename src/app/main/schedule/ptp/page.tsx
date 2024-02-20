@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  MdDialog,
   MdIcon,
   MdIconButton,
   MdOutlinedSegmentedButton,
@@ -14,10 +15,7 @@ import PointToPointCalendarResult from "./list-calendar";
 import PointToPointListResult from "./list-result";
 import { createDummyScheduleData } from "./util";
 import { ListItemProps, SearchConditionProps } from "./typeDef";
-import {
-  OverlayScrollbarsComponent,
-  useOverlayScrollbars,
-} from "overlayscrollbars-react";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
 import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
 export default function PointToPointSchedule() {
