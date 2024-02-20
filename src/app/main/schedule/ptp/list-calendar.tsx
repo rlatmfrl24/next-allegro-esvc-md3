@@ -10,24 +10,40 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ListItemProps } from "./typeDef";
 import { useEffect } from "react";
 
-const LabelChip = ({ label }: { label: string }) => {
+const LabelChip = ({
+  label,
+  isCurrentMonth = true,
+}: {
+  label: string;
+  isCurrentMonth?: boolean;
+}) => {
   return (
     <MdTypography
       variant="label"
       size="large"
-      className="py-1.5 px-4 h-fit min-h-fit bg-primaryContainer text-onPrimaryContainer rounded-lg inline-block overflow-hidden whitespace-nowrap text-ellipsis"
+      className={`py-1.5 px-4 h-fit min-h-fit bg-primaryContainer text-onPrimaryContainer rounded-lg inline-block overflow-hidden whitespace-nowrap text-ellipsis ${
+        !isCurrentMonth && "opacity-30"
+      }`}
     >
       {label}
     </MdTypography>
   );
 };
 
-const ViewMoreButton = ({ cnt }: { cnt: number }) => {
+const ViewMoreButton = ({
+  cnt,
+  isCurrentMonth = true,
+}: {
+  cnt: number;
+  isCurrentMonth?: boolean;
+}) => {
   return (
     <MdTypography
       variant="label"
       size="medium"
-      className="bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center"
+      className={`bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center ${
+        !isCurrentMonth && "opacity-30"
+      }`}
     >
       {`View ${cnt} More >`}
     </MdTypography>
@@ -136,14 +152,29 @@ export default function PointToPointCalendarResult({
                           Sat: "text-blue-500",
                           else: "text-black",
                         }[DateTime.fromJSDate(value).toFormat("EEE")]
-                      : "text-gray-400"
+                      : "opacity-30"
                   }`}
                 >
                   {dayText}
                 </MdTypography>
-                {list[0] && <LabelChip label={list[0].vesselName} />}
-                {list[1] && <LabelChip label={list[1].vesselName} />}
-                {list.length > 2 && <ViewMoreButton cnt={list.length - 2} />}
+                {list[0] && (
+                  <LabelChip
+                    label={list[0].vesselName}
+                    isCurrentMonth={isCurrentMonth}
+                  />
+                )}
+                {list[1] && (
+                  <LabelChip
+                    label={list[1].vesselName}
+                    isCurrentMonth={isCurrentMonth}
+                  />
+                )}
+                {list.length > 2 && (
+                  <ViewMoreButton
+                    cnt={list.length - 2}
+                    isCurrentMonth={isCurrentMonth}
+                  />
+                )}
               </div>
             );
           });
