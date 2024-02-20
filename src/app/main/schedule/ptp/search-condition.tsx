@@ -56,10 +56,6 @@ export default function SearchCondition({
   }
 
   useEffect(() => {
-    console.log("dateRange", dateRange);
-  }, [dateRange]);
-
-  useEffect(() => {
     if (searchCondition === "single") {
       setOriginLimit(1);
       setDestinationLimit(1);

@@ -1,6 +1,6 @@
 "use client";
 
-import { MdIcon, MdIconButton, MdOutlinedCard } from "@/app/util/md3";
+import { MdIcon, MdIconButton } from "@/app/util/md3";
 
 import { MdTypography } from "@/app/components/typography";
 import { useCalendar } from "@h6s/calendar";
@@ -8,7 +8,6 @@ import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ListItemProps } from "./typeDef";
-import { useEffect } from "react";
 
 const LabelChip = ({
   label,

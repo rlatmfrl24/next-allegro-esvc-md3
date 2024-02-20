@@ -1,5 +1,6 @@
 "use client";
 
+import { useMotionValueEvent, useScroll } from "framer-motion";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 export default function MainLayout({
@@ -7,11 +8,5 @@ export default function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className="h-full flex p-2">
-      <OverlayScrollbarsComponent className="flex-1">
-        {children}
-      </OverlayScrollbarsComponent>
-    </div>
-  );
+  return <div className="h-full flex px-1 py-2">{children}</div>;
 }

@@ -23,7 +23,7 @@ export default function SetDashboard(props: {
             animate={{ x: 0 }}
             exit={{ x: 360 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-            className="absolute right-0 top-0 w-[360px] h-[calc(100%-2.5rem)] bg-white z-10 flex flex-col p-3 border-l border-surfaceVariant"
+            className="absolute right-0 top-0 w-[360px] h-full bg-white z-10 flex flex-col p-3 border-l border-surfaceVariant"
           >
             <div className="flex py-3 items-center">
               <MdTypography

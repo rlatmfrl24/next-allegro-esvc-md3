@@ -1,12 +1,13 @@
 "use client";
 
 import {
+  MdElevation,
   MdIcon,
   MdIconButton,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
 } from "@/app/util/md3";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SearchCondition from "./search-condition";
@@ -14,18 +15,48 @@ import PointToPointCalendarResult from "./list-calendar";
 import PointToPointListResult from "./list-result";
 import { createDummyScheduleData } from "./util";
 import { ListItemProps } from "./typeDef";
+import Portal from "@/app/components/portal";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
   const [resultList, setResultList] = useState<ListItemProps[]>([]);
+  const ref = useRef<any>(null);
+
+  const [initialize, instance] = useOverlayScrollbars({
+    events: {
+      scroll: (instance) => {
+        const viewport = instance.elements();
+        console.log(viewport.scrollOffsetElement.scrollTop);
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (!ref.current) return;
+    initialize(ref.current);
+  }, [initialize]);
 
   return (
-    <div className="relative flex-1 flex justify-center">
+    <div ref={ref} className="relative flex-1 flex h-full justify-center">
       <div
         aria-label="container"
-        className="max-w-[1400px] w-full p-6 flex flex-col gap-4"
+        className="max-w-[1400px] w-full p-6 flex flex-col gap-4 "
       >
+        <Portal selector="#main-container">
+          <div
+            style={
+              {
+                "--md-elevation-level": 1,
+              } as CSSProperties
+            }
+            className="absolute w-full top-0 left-0 h-40 bg-surfaceBright z-10"
+          >
+            <MdElevation />
+            ww
+          </div>
+        </Portal>
         <div
           aria-label="page-title"
           className="flex justify-start items-center gap-3"
