@@ -42,18 +42,8 @@ export default function SearchCondition({
     DateTime.now(),
   ]);
 
-  function switchOriginDestination() {
-    const temp = originList;
-    setOriginList(destinationList);
-    setDestinationList(temp);
-    setSearchCondition(
-      searchCondition === "multi-origin"
-        ? "multi-destination"
-        : searchCondition === "multi-destination"
-        ? "multi-origin"
-        : "single"
-    );
-  }
+  const [isOriginError, setIsOriginError] = useState<boolean>(false);
+  const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -73,6 +63,42 @@ export default function SearchCondition({
     setDestinationList([]);
   }
 
+  function switchOriginDestination() {
+    const temp = originList;
+    setIsOriginError(false);
+    setIsDestinationError(false);
+    setOriginList(destinationList);
+    setDestinationList(temp);
+    setSearchCondition(
+      searchCondition === "multi-origin"
+        ? "multi-destination"
+        : searchCondition === "multi-destination"
+        ? "multi-origin"
+        : "single"
+    );
+  }
+
+  function Validation() {
+    if (originList.length === 0) {
+      setIsOriginError(true);
+      return false;
+    }
+    if (destinationList.length === 0) {
+      setIsDestinationError(true);
+      return false;
+    }
+    return true;
+  }
+
+  function handleModeSelection(
+    mode: "single" | "multi-origin" | "multi-destination"
+  ) {
+    setSearchCondition(mode);
+    clearAllSelection();
+    setIsOriginError(false);
+    setIsDestinationError(false);
+  }
+
   return (
     <div
       aria-label="search-panel"
@@ -90,8 +116,7 @@ export default function SearchCondition({
             value="single"
             checked={searchCondition === "single"}
             onClick={() => {
-              setSearchCondition("single");
-              clearAllSelection();
+              handleModeSelection("single");
             }}
           />
           One to One
@@ -107,8 +132,7 @@ export default function SearchCondition({
             value="multi-origin"
             checked={searchCondition === "multi-origin"}
             onClick={() => {
-              setSearchCondition("multi-origin");
-              clearAllSelection();
+              handleModeSelection("multi-origin");
             }}
           />
           Multi Origin
@@ -124,8 +148,7 @@ export default function SearchCondition({
             value="multi-destination"
             checked={searchCondition === "multi-destination"}
             onClick={() => {
-              setSearchCondition("multi-destination");
-              clearAllSelection();
+              handleModeSelection("multi-destination");
             }}
           />
           Multi Destination
@@ -138,6 +161,8 @@ export default function SearchCondition({
             maxSelectionCount={originLimit}
             selectionItems={originList}
             handleItemSelection={setOriginList}
+            errorText="Please select origin"
+            error={isOriginError}
           />
           <MdIconButton className="mt-2" onClick={switchOriginDestination}>
             <MdIcon>
@@ -148,6 +173,8 @@ export default function SearchCondition({
             maxSelectionCount={destinationLimit}
             selectionItems={destinationList}
             handleItemSelection={setDestinationList}
+            errorText="Please select destination"
+            error={isDestinationError}
           />
         </div>
         <MdOutlinedButton className="h-fit mt-2">
@@ -207,14 +234,15 @@ export default function SearchCondition({
         <MdTextButton>Reset</MdTextButton>
         <MdFilledButton
           onClick={() => {
-            searchAction({
-              origins: originList,
-              destinations: destinationList,
-              searchOn: searchOn,
-              startDate: dateRange[0],
-              endDate: dateRange[1],
-              directOnly: isDirectOnly,
-            });
+            Validation() &&
+              searchAction({
+                origins: originList,
+                destinations: destinationList,
+                searchOn: searchOn,
+                startDate: dateRange[0],
+                endDate: dateRange[1],
+                directOnly: isDirectOnly,
+              });
           }}
         >
           Search

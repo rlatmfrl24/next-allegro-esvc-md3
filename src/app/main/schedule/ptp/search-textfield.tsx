@@ -90,11 +90,14 @@ export const SearchTextField = ({
   );
 
   function handleSelection(item: string) {
-    if (selectionItems.length < maxSelectionCount) {
+    if (
+      selectionItems.length < maxSelectionCount &&
+      !selectionItems.includes(item)
+    ) {
       handleItemSelection && handleItemSelection([...selectionItems, item]);
-      setValue("");
-      setIsMenuOpen(false);
     }
+    setValue("");
+    setIsMenuOpen(false);
   }
 
   useEffect(() => {
@@ -105,6 +108,7 @@ export const SearchTextField = ({
     <div ref={containerRef} className="relative flex flex-1 flex-col gap-4">
       <MdOutlinedTextFieldBase
         {...props}
+        error={selectionItems.length > 0 ? false : props.error}
         {...getReferenceProps()}
         ref={refs.setReference}
         className=""

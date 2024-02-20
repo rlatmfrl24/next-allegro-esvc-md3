@@ -1,73 +1,78 @@
 "use client";
 
 import {
-  MdElevation,
   MdIcon,
   MdIconButton,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
 } from "@/app/util/md3";
-import { CSSProperties, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SearchCondition from "./search-condition";
 import PointToPointCalendarResult from "./list-calendar";
 import PointToPointListResult from "./list-result";
 import { createDummyScheduleData } from "./util";
-import { ListItemProps } from "./typeDef";
-import Portal from "@/app/components/portal";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { ListItemProps, SearchConditionProps } from "./typeDef";
+import {
+  OverlayScrollbarsComponent,
+  useOverlayScrollbars,
+} from "overlayscrollbars-react";
+import ConditionSummary from "./condition-summary";
+import { DateTime } from "luxon";
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
+  const [searchCondition, setSearchCondition] = useState<SearchConditionProps>({
+    origins: [],
+    destinations: [],
+    directOnly: true,
+    startDate: DateTime.now(),
+    endDate: DateTime.now(),
+    searchOn: "departure",
+  });
   const [resultList, setResultList] = useState<ListItemProps[]>([]);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
 
-  return (
-    <OverlayScrollbarsComponent
-      element="div"
-      className="flex-1"
-      events={{
-        scroll: (instance) => {
-          const viewport = instance.elements().viewport;
+  const scrollRef = useRef<any>();
+  const [initialize, instance] = useOverlayScrollbars({
+    events: {
+      scroll: (instance) => {
+        const viewport = instance.elements().viewport;
+        if (viewport.scrollTop > 150) {
+          setIsSearchConditionSummaryOpen(true);
+        } else {
+          setIsSearchConditionSummaryOpen(false);
+        }
+      },
+    },
+  });
 
-          if (viewport.scrollTop > 150) {
-            setIsSearchConditionSummaryOpen(true);
-          } else {
-            setIsSearchConditionSummaryOpen(false);
-          }
-        },
-      }}
-    >
+  useEffect(() => {
+    if (scrollRef.current) initialize(scrollRef.current);
+  }, [initialize]);
+
+  function ScrollToTop() {
+    instance()?.elements().viewport.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  return (
+    <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
         <div
           aria-label="container"
-          className="max-w-[1400px] w-full p-6 flex flex-col gap-4 "
+          className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "
         >
-          <Portal selector="#main-container">
-            <AnimatePresence>
-              {isSearchConditionSummaryOpen && (
-                <motion.div
-                  initial={{ y: -200 }}
-                  animate={{ y: 0 }}
-                  exit={{ y: -200 }}
-                  transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-                  style={
-                    {
-                      "--md-elevation-level": 1,
-                    } as CSSProperties
-                  }
-                  className="absolute w-full top-0 left-0 h-40 bg-surfaceBright z-10"
-                >
-                  <MdElevation />
-                  ww
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </Portal>
+          <ConditionSummary
+            open={isSearchConditionSummaryOpen && resultList.length > 0}
+            condition={searchCondition}
+            scrollTop={ScrollToTop}
+          />
           <div
             aria-label="page-title"
             className="flex justify-start items-center gap-3"
@@ -83,6 +88,7 @@ export default function PointToPointSchedule() {
           </div>
           <SearchCondition
             searchAction={(condition) => {
+              setSearchCondition(condition);
               const list = createDummyScheduleData(condition);
               setResultList(list);
               setPageState("list");
@@ -92,18 +98,21 @@ export default function PointToPointSchedule() {
             aria-label="result-panel"
             className="bg-surface rounded-2xl flex flex-col"
           >
-            <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
-              <MdOutlinedSegmentedButton
-                label="List"
-                selected={pageState === "list"}
-                onClick={() => setPageState("list")}
-              ></MdOutlinedSegmentedButton>
-              <MdOutlinedSegmentedButton
-                label="Calendar"
-                selected={pageState === "calendar"}
-                onClick={() => setPageState("calendar")}
-              ></MdOutlinedSegmentedButton>
-            </MdOutlinedSegmentedButtonSet>
+            {resultList.length > 0 && (
+              <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
+                <MdOutlinedSegmentedButton
+                  label="List"
+                  selected={pageState === "list"}
+                  onClick={() => setPageState("list")}
+                ></MdOutlinedSegmentedButton>
+                <MdOutlinedSegmentedButton
+                  label="Calendar"
+                  selected={pageState === "calendar"}
+                  onClick={() => setPageState("calendar")}
+                ></MdOutlinedSegmentedButton>
+              </MdOutlinedSegmentedButtonSet>
+            )}
+
             {
               {
                 unsearch: (
@@ -119,6 +128,6 @@ export default function PointToPointSchedule() {
           </div>
         </div>
       </div>
-    </OverlayScrollbarsComponent>
+    </div>
   );
 }

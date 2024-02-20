@@ -25,7 +25,11 @@ export function createDummyScheduleData(
           destination,
           departure: DateTime.fromJSDate(dateRange[0]),
           arrival: DateTime.fromJSDate(dateRange[1]),
-          vesselName: faker.lorem.words(3),
+          vesselName: faker.lorem
+            .words(3)
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" "),
           transitTime: Math.round(
             DateTime.fromJSDate(dateRange[1]).diff(
               DateTime.fromJSDate(dateRange[0]),

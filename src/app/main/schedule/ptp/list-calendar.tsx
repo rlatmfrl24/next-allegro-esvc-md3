@@ -131,8 +131,8 @@ export default function PointToPointCalendarResult({
               "dd"
             );
 
-            const dateKey = value.toISOString().split("T")[0];
-            const list = classified[dateKey] || [];
+            const dateKey = DateTime.fromJSDate(value).toISO()?.split("T")[0];
+            const list = dateKey ? classified[dateKey] || [] : [];
 
             return (
               <div
