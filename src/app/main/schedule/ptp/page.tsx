@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  MdDialog,
   MdIcon,
   MdIconButton,
   MdOutlinedSegmentedButton,
@@ -19,7 +18,6 @@ import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
 import { ListItemType, SearchConditionType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
-import Image from "next/image";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
