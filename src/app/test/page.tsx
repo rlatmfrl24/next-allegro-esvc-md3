@@ -28,7 +28,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import {
   MdSegmentedButton,
   MdSegmentedButtons,
-} from "../components/segmented-button";
+} from "../components/unused/segmented-button";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -46,8 +46,8 @@ export default function Test() {
         <input
           type="text"
           value={color}
-          onChange={(e) => {
-            setColor(e.target.value);
+          onClick={(e) => {
+            setColor((e.target as HTMLInputElement).value);
           }}
           className="border"
         />

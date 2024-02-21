@@ -13,7 +13,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -21,18 +21,21 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import styles from "../components.module.css";
 import { useCalendar } from "@h6s/calendar";
 import { MonthList, YearList, getModifiedCursorDate } from "./util";
 import NavigationContainer from "./navigation-container";
 import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { RangeDateSelector } from "./range-selector";
+import styles from "@/app/styles/datepicker.module.css";
 
 export const MdRangeDatePicker = (props: {
   className?: string;
+  label?: string;
   defautStartDate?: DateTime;
   defaultEndDate?: DateTime;
+  supportingText?: string;
+  handleDateRangeSelected?: Dispatch<SetStateAction<[DateTime, DateTime]>>;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
@@ -132,6 +135,9 @@ export const MdRangeDatePicker = (props: {
       setIsDateRangeValid(true);
       setErrorSupportText("");
     }
+    props.handleDateRangeSelected &&
+      props.handleDateRangeSelected([defaultDateRange[0], defaultDateRange[1]]);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
 
@@ -142,14 +148,14 @@ export const MdRangeDatePicker = (props: {
     >
       <MdOutlinedTextField
         ref={inputEl}
-        label="From"
+        label={props.label}
         className="flex-1"
         value={
           defaultDateRange[0].toFormat("MM/dd/yyyy") +
           " - " +
           defaultDateRange[1].toFormat("MM/dd/yyyy")
         }
-        supportingText="MM/DD/YYYY - MM/DD/YYYY"
+        supportingText={props.supportingText || "MM/DD/YYYY - MM/DD/YYYY"}
         errorText={errorSupportText}
         error={
           !isDateRangeValid ||

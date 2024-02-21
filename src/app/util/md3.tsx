@@ -2,6 +2,7 @@ import React from "react";
 import { createComponent } from "@lit/react";
 import { MdRipple } from "@material/web/ripple/ripple.js";
 import { MdFilledButton as MdFilledButtonWebComponent } from "@material/web/button/filled-button.js";
+import { MdFilledTonalButton as MdFilledTonalButtonWebComponent } from "@material/web/button/filled-tonal-button.js";
 import { MdElevatedButton as MdElevatedButtonWebComponent } from "@material/web/button/elevated-button.js";
 import { MdOutlinedButton as MdOutlinedButtonWebComponent } from "@material/web/button/outlined-button.js";
 import { MdTextButton as MdTextButtonWebComponent } from "@material/web/button/text-button.js";
@@ -35,6 +36,9 @@ import { MdNavigationDrawer as MdNavigationDrawerWebComponent } from "@material/
 import { MdNavigationTab as MdNavigationTabWebComponent } from "@material/web/labs/navigationtab/navigation-tab";
 import { MdCircularProgress as MdCircularProgressWebComponent } from "@material/web/progress/circular-progress";
 import { MdLinearProgress as MdLinearProgressWebComponent } from "@material/web/progress/linear-progress";
+import { MdDialog as MdDialogWebComponent } from "@material/web/dialog/dialog";
+import { MdList as MdListWebComponent } from "@material/web/list/list";
+import { MdListItem as MdListItemWebComponent } from "@material/web/list/list-item";
 
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
@@ -45,6 +49,12 @@ export const MdRippleEffect = createComponent({
 export const MdFilledButton = createComponent({
   tagName: "md-filled-button",
   elementClass: MdFilledButtonWebComponent,
+  react: React,
+});
+
+export const MdFilledTonalButton = createComponent({
+  tagName: "md-filled-tonal-button",
+  elementClass: MdFilledTonalButtonWebComponent,
   react: React,
 });
 
@@ -136,24 +146,36 @@ export const MdAssistChip = createComponent({
   tagName: "md-assist-chip",
   elementClass: MdAssistChipWebComponent,
   react: React,
+  events: {
+    handleTrailingActionFocus: "handleTrailingActionFocus",
+  },
 });
 
 export const MdFilterChip = createComponent({
   tagName: "md-filter-chip",
   elementClass: MdFilterChipWebComponent,
   react: React,
+  events: {
+    handleTrailingActionFocus: "handleTrailingActionFocus",
+  },
 });
 
 export const MdInputChip = createComponent({
   tagName: "md-input-chip",
   elementClass: MdInputChipWebComponent,
   react: React,
+  events: {
+    handleTrailingActionFocus: "handleTrailingActionFocus",
+  },
 });
 
 export const MdSuggestionChip = createComponent({
   tagName: "md-suggestion-chip",
   elementClass: MdSuggestionChipWebComponent,
   react: React,
+  events: {
+    handleTrailingActionFocus: "handleTrailingActionFocus",
+  },
 });
 
 export const MdSwitch = createComponent({
@@ -243,5 +265,28 @@ export const MdCircularProgress = createComponent({
 export const MdLinearProgress = createComponent({
   tagName: "md-linear-progress",
   elementClass: MdLinearProgressWebComponent,
+  react: React,
+});
+
+export const MdDialog = createComponent({
+  tagName: "md-dialog",
+  elementClass: MdDialogWebComponent,
+  react: React,
+  events: {
+    opened: "opened",
+    closed: "closed",
+    cancel: "cancel",
+  },
+});
+
+export const MdList = createComponent({
+  tagName: "md-list",
+  elementClass: MdListWebComponent,
+  react: React,
+});
+
+export const MdListItem = createComponent({
+  tagName: "md-list-item",
+  elementClass: MdListItemWebComponent,
   react: React,
 });

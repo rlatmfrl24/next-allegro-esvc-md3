@@ -4,7 +4,6 @@ import {
   MdOutlinedSelect,
   MdSelectOption,
 } from "@/app/util/md3";
-import { MdSegmentedButton, MdSegmentedButtons } from "../segmented-button";
 
 const continents = [
   { key: "north-us", value: "North America" },

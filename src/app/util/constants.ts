@@ -1,4 +1,9 @@
 import { DashboardCardInfoType, MenuItemType } from "./typeDef";
+import { faker } from "@faker-js/faker";
+
+export const autocompleteItemList = Array.from({ length: 100 }, (_, i) =>
+  faker.location.city()
+);
 
 // TODO: 추후에 API로 받아올 예정
 export const menuItems: MenuItemType[] = [

@@ -4,7 +4,7 @@
  */
 
 import { useState } from "react";
-import { MdElevation, MdRippleEffect } from "../util/md3";
+import { MdElevation, MdRippleEffect } from "../../util/md3";
 import styles from "./styles/card.module.css";
 import classNames from "classnames/bind";
 

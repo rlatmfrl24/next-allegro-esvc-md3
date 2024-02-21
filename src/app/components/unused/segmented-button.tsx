@@ -1,3 +1,8 @@
+/*
+ * Note: This components are not used in the project currently.
+ * but it is still here for future use.
+ */
+
 import React, {
   useState,
   useEffect,
@@ -6,9 +11,9 @@ import React, {
   cloneElement,
 } from "react";
 import classNames from "classnames/bind";
-import styles from "../styles/segmented-button.module.css";
-import { MdTypography } from "./typography";
-import { MdRippleEffect } from "../util/md3";
+import styles from "@/app/styles/segmented-button.module.css";
+import { MdTypography } from "../typography";
+import { MdRippleEffect } from "../../util/md3";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 
 export function MdSegmentedButtons({

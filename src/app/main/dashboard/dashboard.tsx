@@ -19,7 +19,10 @@ import { useState } from "react";
 import Sortable from "../../components/dnd/sortable";
 import Item from "../../components/dnd/item";
 import { useRecoilValue } from "recoil";
-import { dashboardCardState, draggableState } from "../store";
+import {
+  dashboardCardState,
+  draggableState,
+} from "../../store/dashboard.store";
 import { customCollisionDetectionAlgorithm } from "@/app/components/dnd/util";
 import { cardList } from "../../util/constants";
 import { DashboardCardConstructor, DashboardCardPlaceholder } from "./card";

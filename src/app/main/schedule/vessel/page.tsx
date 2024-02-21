@@ -1,9 +1,11 @@
 "use client";
 
+import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
+import { autocompleteItemList } from "@/app/util/constants";
 import { MdOutlinedCard } from "@/app/util/md3";
 import {
   AnimatePresence,
@@ -30,7 +32,7 @@ export default function VesselSchedule() {
   });
 
   return (
-    <div className="relative flex-1 w-full max-w-[1400px]">
+    <div className="relative flex-1 w-full max-w-[1400px] overflow-auto">
       <AnimatePresence>
         {!isScrollTop && (
           <motion.div
@@ -55,7 +57,17 @@ export default function VesselSchedule() {
               <MdSingleDatePicker handleDateChange={setFirstDate} />
               <MdSingleDatePicker />
               <MdRangeDatePicker />
-              <NAOutlinedTextField label="test" required />
+              <div className="flex">
+                <NAOutlinedAutoComplete
+                  id="test-1"
+                  className="flex-1"
+                  itemList={autocompleteItemList}
+                />
+                <NAOutlinedAutoComplete
+                  id="test-2"
+                  itemList={autocompleteItemList}
+                />
+              </div>
             </>
           </MdOutlinedCard>
           <MdOutlinedCard className="flex flex-col gap-3 p-5 my-5 ">
