@@ -73,7 +73,7 @@ export default function PointToPointCalendarResult({
   const classified = classifyByDate(list);
 
   return (
-    <div className="">
+    <div>
       <div className="flex p-6 justify-center items-center gap-2">
         <MdIconButton
           onClick={() => {
