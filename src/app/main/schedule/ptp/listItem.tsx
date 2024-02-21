@@ -24,13 +24,18 @@ import {
   RichTooltipContainer,
   RichTooltipItem,
 } from "@/app/components/tooltip";
+import { AnimatePresence, motion } from "framer-motion";
+import PlaceInformationDialog from "./popup/place-information";
+import Portal from "@/app/components/portal";
 
 export default function ListItem({ item }: { item: ListItemProps }) {
   const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
+  const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isCutOffTooltipOpen,
     onOpenChange: setIsCutOffTooltipOpen,
+    placement: "bottom-start",
     middleware: [flip(), shift(), offset(8)],
     whileElementsMounted: autoUpdate,
   });
@@ -59,10 +64,22 @@ export default function ListItem({ item }: { item: ListItemProps }) {
         <div className="flex justify-between">
           <div className="flex flex-1 flex-col items-start gap-1">
             <MdTypography variant="title" size="medium">
-              <span className="border-b border-onSurface uppercase">
+              <span
+                className="border-b border-onSurface uppercase"
+                onClick={() => {
+                  setIsPlaceInformationOpen(!isPlaceInformationOpen);
+                }}
+              >
                 {item.origin}
               </span>
             </MdTypography>
+            <Portal selector="#main-container">
+              <PlaceInformationDialog
+                open={isPlaceInformationOpen}
+                handleOpen={setIsPlaceInformationOpen}
+              />
+            </Portal>
+
             <MdTypography
               variant="body"
               size="medium"
@@ -84,32 +101,38 @@ export default function ListItem({ item }: { item: ListItemProps }) {
               >
                 Cut Off
               </VariableElavatedButton>
-              {isCutOffTooltipOpen && (
-                <div
-                  ref={refs.setFloating}
-                  style={floatingStyles}
-                  {...getFloatingProps}
-                  className="z-10"
-                >
-                  <RichTooltipContainer>
-                    <div slot="content">
+              <AnimatePresence>
+                {isCutOffTooltipOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.1 }}
+                    ref={refs.setFloating}
+                    style={floatingStyles}
+                    {...getFloatingProps}
+                    className="z-10"
+                  >
+                    <RichTooltipContainer>
                       <RichTooltipItem
-                        title="Cut Off"
+                        slot="content"
+                        title="Documentation"
                         supportingText="2021-09-01 12:00"
                       />
                       <RichTooltipItem
-                        title="Cut Off"
+                        slot="content"
+                        title="EDI"
                         supportingText="2021-09-01 12:00"
                       />
                       <RichTooltipItem
-                        title="Cut Off"
+                        slot="content"
+                        title="Cargo"
                         supportingText="2021-09-01 12:00"
                       />
-                    </div>
-                    <div slot="actions">actions</div>
-                  </RichTooltipContainer>
-                </div>
-              )}
+                    </RichTooltipContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
           <div className="flex flex-1 flex-col items-center gap-1">

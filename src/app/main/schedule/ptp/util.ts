@@ -15,10 +15,10 @@ export function createDummyScheduleData(
     for (const origin of origins) {
       for (const destination of destinations) {
         // Create a new list item using the condition properties
-        const dateRange = faker.date.betweens(
-          startDate.toJSDate(),
-          endDate.toJSDate()
-        );
+        const dateRange = faker.date.betweens({
+          from: startDate.toJSDate(),
+          to: endDate.toJSDate(),
+        });
 
         const listItem: ListItemProps = {
           origin,

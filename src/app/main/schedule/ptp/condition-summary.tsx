@@ -59,7 +59,7 @@ export default function ConditionSummary({
                 "--md-elevation-level": 1,
               } as CSSProperties
             }
-            className="absolute w-full top-0 left-0 h-fit bg-surfaceBright z-10 flex justify-center"
+            className="absolute w-full top-0 left-0 h-fit bg-surfaceBright flex justify-center"
           >
             <MdElevation />
             <div className="max-w-[1400px] w-full py-6 flex mx-6">

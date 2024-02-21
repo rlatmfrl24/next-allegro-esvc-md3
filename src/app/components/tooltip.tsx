@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, HTMLAttributes } from "react";
 import { MdElevation } from "../util/md3";
 import { MdTypography } from "./typography";
 import React from "react";
@@ -22,12 +22,12 @@ export const RichTooltipContainer = ({
 }) => {
   const childrenList = React.Children.toArray(children);
 
-  const content = childrenList.find(
-    (child) => (child as React.ReactElement).props.slot === "content"
+  const content = childrenList.filter(
+    (child) => (child as React.ReactElement).props?.slot === "content"
   );
 
-  const actions = childrenList.find(
-    (child) => (child as React.ReactElement).props.slot === "actions"
+  const actions = childrenList.filter(
+    (child) => (child as React.ReactElement).props?.slot === "actions"
   );
 
   return (
@@ -37,12 +37,12 @@ export const RichTooltipContainer = ({
           "--md-elevation-level": 2,
         } as CSSProperties
       }
-      className="relative bg-surfaceContainer pt-3 pb-2 px-4 rounded-xl"
+      className="relative bg-surfaceContainer pt-3 pb-2 px-4 rounded-xl min-w-80"
     >
       <MdElevation />
       <div
         aria-label="tooltip-content-container"
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-2 mb-2"
       >
         {content && content}
       </div>
@@ -54,12 +54,13 @@ export const RichTooltipContainer = ({
 export const RichTooltipItem = ({
   title,
   supportingText,
+  ...props
 }: {
   title: string;
   supportingText: string;
-}) => {
+} & HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className="flex flex-col gap-1">
+    <div {...props} className="flex flex-col gap-1">
       <MdTypography
         variant="title"
         size="small"

@@ -30,8 +30,6 @@ export default function NaToggleButton({
         indeterminate={state === "indetermine"}
         disabled={state === "disabled" || state === "disabled-checked"}
         onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
           onChange &&
             onChange(
               state === "checked"

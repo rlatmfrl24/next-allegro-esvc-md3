@@ -6,11 +6,9 @@ import {
   MdIconButton,
   MdList,
   MdListItem,
-  MdRippleEffect,
   MdTextButton,
 } from "@/app/util/md3";
-import { AnimatePresence, motion } from "framer-motion";
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
