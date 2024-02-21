@@ -6,6 +6,7 @@ import { SearchConditionProps } from "@/app/util/typeDef";
 import { useRecoilState } from "recoil";
 import { PresetListState } from "@/app/store/ptp.store";
 import { faker } from "@faker-js/faker";
+import { DateTime } from "luxon";
 
 export default function SavePresetDialog({
   open,
@@ -80,6 +81,7 @@ export default function SavePresetDialog({
                 name: presetName,
                 condition: condition,
                 useMailingService: isMailingServiceToggled,
+                createDateTime: DateTime.now(),
               },
             ]);
             handleOpen(false);

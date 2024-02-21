@@ -52,5 +52,6 @@ export type PresetType = {
   id: string;
   name: string;
   useMailingService: boolean;
+  createDateTime: DateTime;
   condition: SearchConditionProps;
 };
