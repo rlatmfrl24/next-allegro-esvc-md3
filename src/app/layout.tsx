@@ -26,7 +26,10 @@ export default function RootLayout({
             <SideNavigation />
             <main className="flex-1 flex flex-col overflow-hidden bg-surfaceContainerHighest rounded-l-3xl">
               <Header />
-              <section className="flex-1 overflow-hidden rounded-3xl bg-surfaceContainer">
+              <section
+                id="main-container"
+                className="relative flex-1 overflow-hidden rounded-3xl bg-surfaceContainer"
+              >
                 {children}
               </section>
             </main>

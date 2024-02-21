@@ -1,0 +1,20 @@
+.elevated-button {
+  --md-elevation-level: 2;
+  @apply relative cursor-pointer rounded-full bg-surfaceContainerLow flex items-center select-none;
+}
+
+.elevated-button.large {
+  @apply h-10 px-6 gap-2;
+}
+
+.elevated-button.medium {
+  @apply h-8 px-4 gap-1;
+}
+
+.elevated-button.small {
+  @apply h-5 px-3 gap-0.5;
+}
+
+.elevated-button.x-small {
+  @apply h-5 px-2 gap-0.5;
+}

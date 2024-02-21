@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useRecoilState } from "recoil";
 import NavOverlay from "./nav-overlay";
-import { DrawerState } from "@/app/store";
+import { DrawerState } from "@/app/store/global.store";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DropdownMenu } from "./nav-dropdown";
 

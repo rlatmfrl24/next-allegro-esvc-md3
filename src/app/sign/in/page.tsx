@@ -2,19 +2,18 @@
 
 import {
   MdCheckbox,
-  MdElevation,
+  MdElevatedCard,
   MdFilledButton,
   MdIconButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import Link from "next/link";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
-import styles from "@/app/components/components.module.css";
 import { useRouter } from "next/navigation";
-import { UserState } from "@/app/store";
+import { UserState } from "@/app/store/global.store";
 
 export default function SignIn() {
   const [id, setId] = useState("");
@@ -44,8 +43,7 @@ export default function SignIn() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <div className={styles["sign-card"] + ` w-[483px] p-12`}>
-        <MdElevation />
+      <MdElevatedCard className="w-[483px] p-12">
         <span className="font-pretendard text-xl">Welcome!</span>
         <span
           className="font-pretendard text-3xl"
@@ -135,7 +133,7 @@ export default function SignIn() {
             </MdTypography>
           </Link>
         </div>
-      </div>
+      </MdElevatedCard>
     </div>
   );
 }
