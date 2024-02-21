@@ -41,7 +41,7 @@ const config: Config = {
         outlineVariant: "var(--md-sys-color-outline-variant)",
         shadow: "var(--md-sys-color-shadow)",
         scrim: "var(--md-sys-color-scrim)",
-        inverserSurface: "var(--md-sys-color-inverser-surface)",
+        inverserSurface: "var(--md-sys-color-inverse-surface)",
         inverseOnSurface: "var(--md-sys-color-inverse-on-surface)",
         inversePrimary: "var(--md-sys-color-inverse-primary)",
 

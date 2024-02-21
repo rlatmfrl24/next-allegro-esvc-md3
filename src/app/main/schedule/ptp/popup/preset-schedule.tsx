@@ -49,12 +49,12 @@ export default function PresetScheduleDialog({
         {
           {
             view: (
-              <MdList className="bg-surfaceContainer">
+              <MdList className="bg-surfaceContainerHigh">
                 {presetList.map((preset) => {
                   return (
                     <MdListItem
                       key={preset.id}
-                      className="relative hover:bg-surfaceDim cursor-pointer"
+                      className="relative hover:bg-surfaceDim cursor-pointer "
                       onClick={() => {
                         console.log(preset);
                         handleOpen(false);
@@ -69,10 +69,7 @@ export default function PresetScheduleDialog({
                       <div slot="headline">
                         {preset.name}
                         {activeIndex === presetList.indexOf(preset) && (
-                          <div
-                            className="absolute top-1/2 right-4 
-                  transform -translate-y-1/2 flex gap-1"
-                          >
+                          <div className="absolute top-1/2 right-4 transform -translate-y-1/2 flex gap-1">
                             <MdIconButton
                               className="bg-secondaryContainer rounded-full"
                               onClick={(e) => {

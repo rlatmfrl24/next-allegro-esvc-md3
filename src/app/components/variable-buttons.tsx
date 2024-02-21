@@ -7,15 +7,14 @@ export const VariableElavatedButton = ({
   children,
   size,
   icon,
-  onClick,
   className,
+  ...props
 }: {
   children: React.ReactNode;
   size: "x-small" | "small" | "medium" | "large";
   icon?: React.ReactNode;
-  onClick?: () => void;
   className?: string;
-}) => {
+} & React.HTMLAttributes<HTMLElement>) => {
   const cx = classNames.bind(styles);
   const labelSize: any = {
     "x-small": "small",
@@ -26,8 +25,8 @@ export const VariableElavatedButton = ({
 
   return (
     <div
+      {...props}
       className={cx(className, styles["elevated-button"], styles[size])}
-      onClick={onClick}
     >
       <MdRippleEffect />
       <MdElevation />

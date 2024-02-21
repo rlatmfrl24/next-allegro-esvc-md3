@@ -18,6 +18,9 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
 import { ListItemProps, SearchConditionProps } from "@/app/util/typeDef";
+import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
+import Image from "next/image";
+
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
@@ -116,8 +119,17 @@ export default function PointToPointSchedule() {
                 unsearch: (
                   <div
                     aria-label="empty-container"
-                    className="h-96 border-outlineVariant border rounded-xl m-6"
-                  ></div>
+                    className="h-96 border-outlineVariant border rounded-xl m-6 flex flex-col justify-center items-center"
+                  >
+                    <EmptyResultPlaceHolder className="mb-8" />
+                    <MdTypography
+                      variant="headline"
+                      size="medium"
+                      className="text-outlineVariant"
+                    >
+                      Please search for the schedule
+                    </MdTypography>
+                  </div>
                 ),
                 list: <PointToPointListResult list={resultList} />,
                 calendar: <PointToPointCalendarResult list={resultList} />,

@@ -7,8 +7,44 @@ import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ListItemProps } from "@/app/util/typeDef";
+import { useState } from "react";
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+} from "@floating-ui/react";
+import {
+  PlainTooltip,
+  RichTooltipContainer,
+  RichTooltipItem,
+} from "@/app/components/tooltip";
 
 export default function ListItem({ item }: { item: ListItemProps }) {
+  const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isCutOffTooltipOpen,
+    onOpenChange: setIsCutOffTooltipOpen,
+    middleware: [flip(), shift(), offset(8)],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context);
+
+  const { getFloatingProps, getReferenceProps } = useInteractions([
+    click,
+    dismiss,
+    role,
+  ]);
+
   return (
     <div className="relative border-outlineVariant border rounded-xl p-6 flex gap-12">
       <div className="flex-1 flex flex-col gap-4">
@@ -34,13 +70,47 @@ export default function ListItem({ item }: { item: ListItemProps }) {
             >
               {item.departure.toFormat("yyyy-MM-dd")}
             </MdTypography>
-            <VariableElavatedButton
-              className="mt-1"
-              size="x-small"
-              icon={<AccessTimeIcon className="w-4 h-4" />}
+            <div
+              ref={refs.setReference}
+              {...getReferenceProps}
+              onClick={() => {
+                setIsCutOffTooltipOpen(!isCutOffTooltipOpen);
+              }}
             >
-              Cut Off
-            </VariableElavatedButton>
+              <VariableElavatedButton
+                className="mt-1"
+                size="x-small"
+                icon={<AccessTimeIcon className="w-4 h-4" />}
+              >
+                Cut Off
+              </VariableElavatedButton>
+              {isCutOffTooltipOpen && (
+                <div
+                  ref={refs.setFloating}
+                  style={floatingStyles}
+                  {...getFloatingProps}
+                  className="z-10"
+                >
+                  <RichTooltipContainer>
+                    <div slot="content">
+                      <RichTooltipItem
+                        title="Cut Off"
+                        supportingText="2021-09-01 12:00"
+                      />
+                      <RichTooltipItem
+                        title="Cut Off"
+                        supportingText="2021-09-01 12:00"
+                      />
+                      <RichTooltipItem
+                        title="Cut Off"
+                        supportingText="2021-09-01 12:00"
+                      />
+                    </div>
+                    <div slot="actions">actions</div>
+                  </RichTooltipContainer>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex flex-1 flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">

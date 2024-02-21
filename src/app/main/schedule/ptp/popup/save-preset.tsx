@@ -20,6 +20,7 @@ export default function SavePresetDialog({
   const [isMailingServiceToggled, setIsMailingServiceToggled] = useState(false);
   const [presetName, setPresetName] = useState("");
   const [presetList, setPresetList] = useRecoilState(PresetListState);
+  const [childDialogOpen, setChildDialogOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
