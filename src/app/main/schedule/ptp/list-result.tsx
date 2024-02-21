@@ -41,7 +41,7 @@ export default function PointToPointListResult({
         <div className="flex-1"></div>
         <MdTextButton>
           <div slot="icon">
-            <DownloadIcon className="w-5 h-5" />
+            <DownloadIcon fontSize="small" />
           </div>
           Download
         </MdTextButton>

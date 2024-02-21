@@ -23,6 +23,7 @@ import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
 import { SearchConditionProps } from "@/app/util/typeDef";
 import PresetScheduleDialog from "./popup/preset-schedule";
+import Image from "next/image";
 
 export default function SearchCondition({
   searchAction,
@@ -221,7 +222,7 @@ export default function SearchCondition({
           }}
         >
           <div slot="icon">
-            <AddIcon className="w-5 h-5" />
+            <AddIcon fontSize="small" />
           </div>
           Save Preset
         </MdOutlinedButton>
@@ -232,7 +233,7 @@ export default function SearchCondition({
           }}
         >
           <div slot="icon">
-            <InboxOutlinedIcon className="w-5 h-5" />
+            <InboxOutlinedIcon fontSize="small" />
           </div>
           Preset
         </MdFilledTonalButton>

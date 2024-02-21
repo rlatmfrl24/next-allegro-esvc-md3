@@ -59,7 +59,12 @@ export default function ListItem({ item }: { item: ListItemProps }) {
           <VesselIcon />
           <div className="flex-1 border-dashed h-px border border-outlineVariant"></div>
           <LocationOnIcon />
-          <ArrowForwardIosIcon className="absolute h-4 w-4 right-7 text-outlineVariant" />
+          <ArrowForwardIosIcon
+            sx={{
+              fontSize: "16px",
+            }}
+            className="absolute right-7 text-outlineVariant"
+          />
         </div>
         <div className="flex justify-between">
           <div className="flex flex-1 flex-col items-start gap-1">
@@ -97,7 +102,14 @@ export default function ListItem({ item }: { item: ListItemProps }) {
               <VariableElavatedButton
                 className="mt-1"
                 size="x-small"
-                icon={<AccessTimeIcon className="w-4 h-4" />}
+                icon={
+                  <AccessTimeIcon
+                    sx={{
+                      width: "16px",
+                      height: "16px",
+                    }}
+                  />
+                }
               >
                 Cut Off
               </VariableElavatedButton>
@@ -178,7 +190,7 @@ export default function ListItem({ item }: { item: ListItemProps }) {
         <MdFilledButton>Booking</MdFilledButton>
         <MdElevationButton>
           <div slot="icon">
-            <ExpandMoreOutlinedIcon className="w-5 h-5" />
+            <ExpandMoreOutlinedIcon fontSize="small" />
           </div>
           Details
         </MdElevationButton>
