@@ -17,7 +17,7 @@ import { createDummyScheduleData } from "./util";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
-import { ListItemProps, SearchConditionProps } from "@/app/util/typeDef";
+import { ListItemType, SearchConditionType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
 import Image from "next/image";
 
@@ -25,7 +25,7 @@ export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
-  const [searchCondition, setSearchCondition] = useState<SearchConditionProps>({
+  const [searchCondition, setSearchCondition] = useState<SearchConditionType>({
     origins: [],
     destinations: [],
     directOnly: true,
@@ -33,7 +33,7 @@ export default function PointToPointSchedule() {
     endDate: DateTime.now(),
     searchOn: "departure",
   });
-  const [resultList, setResultList] = useState<ListItemProps[]>([]);
+  const [resultList, setResultList] = useState<ListItemType[]>([]);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
 

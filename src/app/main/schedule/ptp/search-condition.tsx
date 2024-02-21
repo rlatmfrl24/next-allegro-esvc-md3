@@ -21,14 +21,14 @@ import AddIcon from "@mui/icons-material/Add";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
-import { SearchConditionProps } from "@/app/util/typeDef";
+import { SearchConditionType } from "@/app/util/typeDef";
 import PresetScheduleDialog from "./popup/preset-schedule";
 import Image from "next/image";
 
 export default function SearchCondition({
   searchAction,
 }: {
-  searchAction: (condition: SearchConditionProps) => void;
+  searchAction: (condition: SearchConditionType) => void;
 }) {
   const [searchCondition, setSearchCondition] = useState<
     "single" | "multi-origin" | "multi-destination"
@@ -52,15 +52,16 @@ export default function SearchCondition({
   const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
   const [isPresetScheduleOpen, setIsPresetScheduleOpen] = useState(false);
 
-  const [currentCondition, setCurrentCondition] =
-    useState<SearchConditionProps>({
+  const [currentCondition, setCurrentCondition] = useState<SearchConditionType>(
+    {
       origins: originList,
       destinations: destinationList,
       directOnly: isDirectOnly,
       startDate: dateRange[0],
       endDate: dateRange[1],
       searchOn: searchOn,
-    });
+    }
+  );
 
   useEffect(() => {
     if (searchCondition === "single") {

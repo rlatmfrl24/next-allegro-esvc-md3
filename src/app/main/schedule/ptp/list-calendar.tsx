@@ -7,7 +7,7 @@ import { useCalendar } from "@h6s/calendar";
 import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ListItemProps } from "@/app/util/typeDef";
+import { ListItemType } from "@/app/util/typeDef";
 
 const LabelChip = ({
   label,
@@ -49,8 +49,8 @@ const ViewMoreButton = ({
   );
 };
 
-function classifyByDate(list: ListItemProps[]) {
-  const result: Record<string, ListItemProps[]> = {};
+function classifyByDate(list: ListItemType[]) {
+  const result: Record<string, ListItemType[]> = {};
   list.forEach((item) => {
     const date = item.departure;
     const key = date.toISO()?.split("T")[0];
@@ -67,7 +67,7 @@ function classifyByDate(list: ListItemProps[]) {
 export default function PointToPointCalendarResult({
   list,
 }: {
-  list: ListItemProps[];
+  list: ListItemType[];
 }) {
   const { headers, body, navigation, cursorDate } = useCalendar();
   const classified = classifyByDate(list);

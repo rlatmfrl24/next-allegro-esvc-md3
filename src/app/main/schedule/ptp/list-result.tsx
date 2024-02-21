@@ -3,12 +3,12 @@ import { useState } from "react";
 import ListItem from "./listItem";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import DownloadIcon from "@mui/icons-material/Download";
-import { ListItemProps } from "@/app/util/typeDef";
+import { ListItemType } from "@/app/util/typeDef";
 
 export default function PointToPointListResult({
   list,
 }: {
-  list: ListItemProps[];
+  list: ListItemType[];
 }) {
   const [listSort, setListSort] = useState<
     | "earliest_departure"

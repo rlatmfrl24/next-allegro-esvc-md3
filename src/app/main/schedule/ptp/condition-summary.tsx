@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CSSProperties } from "react";
 import { MdTypography } from "@/app/components/typography";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
-import { SearchConditionProps } from "@/app/util/typeDef";
+import { SearchConditionType } from "@/app/util/typeDef";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -42,7 +42,7 @@ export default function ConditionSummary({
   scrollTop,
 }: {
   open: boolean;
-  condition: SearchConditionProps;
+  condition: SearchConditionType;
   scrollTop?: () => void;
 }) {
   return (

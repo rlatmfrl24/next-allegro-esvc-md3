@@ -6,7 +6,7 @@ import VesselIcon from "@/../public/icon_vessel.svg";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { ListItemProps } from "@/app/util/typeDef";
+import { ListItemType } from "@/app/util/typeDef";
 import { useState } from "react";
 import {
   autoUpdate,
@@ -20,17 +20,18 @@ import {
   useRole,
 } from "@floating-ui/react";
 import {
-  PlainTooltip,
   RichTooltipContainer,
   RichTooltipItem,
 } from "@/app/components/tooltip";
 import { AnimatePresence, motion } from "framer-motion";
 import PlaceInformationDialog from "./popup/place-information";
 import Portal from "@/app/components/portal";
+import { faker } from "@faker-js/faker";
 
-export default function ListItem({ item }: { item: ListItemProps }) {
+export default function ListItem({ item }: { item: ListItemType }) {
   const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState("");
 
   const { refs, floatingStyles, context } = useFloating({
     open: isCutOffTooltipOpen,
@@ -70,21 +71,15 @@ export default function ListItem({ item }: { item: ListItemProps }) {
           <div className="flex flex-1 flex-col items-start gap-1">
             <MdTypography variant="title" size="medium">
               <span
-                className="border-b border-onSurface uppercase"
+                className="border-b border-onSurface uppercase cursor-pointer"
                 onClick={() => {
+                  setSelectedPlace(item.origin);
                   setIsPlaceInformationOpen(!isPlaceInformationOpen);
                 }}
               >
                 {item.origin}
               </span>
             </MdTypography>
-            <Portal selector="#main-container">
-              <PlaceInformationDialog
-                open={isPlaceInformationOpen}
-                handleOpen={setIsPlaceInformationOpen}
-              />
-            </Portal>
-
             <MdTypography
               variant="body"
               size="medium"
@@ -172,7 +167,13 @@ export default function ListItem({ item }: { item: ListItemProps }) {
           </div>
           <div className="flex flex-1 flex-col items-end gap-1">
             <MdTypography variant="title" size="medium">
-              <span className="border-b border-onSurface uppercase">
+              <span
+                className="border-b border-onSurface uppercase cursor-pointer"
+                onClick={() => {
+                  setSelectedPlace(item.destination);
+                  setIsPlaceInformationOpen(!isPlaceInformationOpen);
+                }}
+              >
                 {item.destination}
               </span>
             </MdTypography>
@@ -195,6 +196,20 @@ export default function ListItem({ item }: { item: ListItemProps }) {
           Details
         </MdElevationButton>
       </div>
+      <Portal selector="#main-container">
+        <PlaceInformationDialog
+          open={isPlaceInformationOpen}
+          handleOpen={setIsPlaceInformationOpen}
+          data={{
+            yardName: selectedPlace,
+            address: faker.location.streetAddress(),
+            phoneNo: faker.phone.imei(),
+            faxNo: faker.phone.number(),
+            customerNo: faker.string.uuid(),
+            emailAddress: faker.internet.email(),
+          }}
+        />
+      </Portal>
     </div>
   );
 }
