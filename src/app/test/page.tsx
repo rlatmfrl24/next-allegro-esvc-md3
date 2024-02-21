@@ -47,7 +47,7 @@ export default function Test() {
           type="text"
           value={color}
           onClick={(e) => {
-            setColor(e.target.value);
+            setColor((e.target as HTMLInputElement).value);
           }}
           className="border"
         />
