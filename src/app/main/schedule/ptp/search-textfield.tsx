@@ -32,6 +32,7 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { MdTypography } from "@/app/components/typography";
+import ClearIcon from "@mui/icons-material/Clear";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -39,14 +40,14 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 
 export const SearchTextField = ({
   itemList,
-  maxSelectionCount,
   selectionItems,
+  maxSelectionCount,
   handleItemSelection,
   ...props
 }: {
   itemList: string[];
-  maxSelectionCount: number;
   selectionItems: string[];
+  maxSelectionCount: number;
   handleItemSelection: Dispatch<SetStateAction<string[]>>;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
@@ -90,14 +91,15 @@ export const SearchTextField = ({
       selectionItems.length < maxSelectionCount &&
       !selectionItems.includes(item)
     ) {
-      handleItemSelection && handleItemSelection([...selectionItems, item]);
+      // setSelectionItems([...selectionItems, item]);
+      handleItemSelection([...selectionItems, item]);
     }
     setValue("");
     setIsMenuOpen(false);
   }
 
   useEffect(() => {
-    if (handleItemSelection) handleItemSelection(selectionItems);
+    handleItemSelection(selectionItems);
   }, [handleItemSelection, selectionItems]);
 
   return (
@@ -202,15 +204,16 @@ export const SearchTextField = ({
       <MdChipSet>
         {selectionItems.map((item, index) => {
           return (
-            <MdInputChip
+            <CustomChip
               key={item + "_" + index}
-              selected
               label={item}
-              handleTrailingActionFocus={() => {
-                handleItemSelection &&
-                  handleItemSelection((previousState) =>
-                    previousState.filter((_, i) => i !== index)
-                  );
+              onDelete={() => {
+                // setSelectionItems((previous) =>
+                //   previous.filter((value) => value !== item)
+                // );
+                handleItemSelection((previous) =>
+                  previous.filter((value) => value !== item)
+                );
               }}
             />
           );
@@ -241,3 +244,36 @@ function highlightText(text: string, highlight: string) {
     </MdTypography>
   );
 }
+
+const CustomChip = ({
+  label,
+  onDelete,
+}: {
+  label: string;
+  onDelete?: Dispatch<SetStateAction<string>>;
+}) => {
+  return (
+    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2">
+      <MdTypography
+        variant="label"
+        size="large"
+        className="text-onSecondaryContainer"
+      >
+        {label}
+      </MdTypography>
+      <div
+        className="relative w-6 h-6 rounded-full flex items-center justify-center"
+        onClick={() => {
+          onDelete?.(label);
+        }}
+      >
+        <MdRippleEffect />
+        <ClearIcon
+          sx={{
+            fontSize: 18,
+          }}
+        />
+      </div>
+    </div>
+  );
+};

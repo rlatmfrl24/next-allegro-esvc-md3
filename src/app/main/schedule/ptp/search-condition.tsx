@@ -126,6 +126,11 @@ export default function SearchCondition({
     setIsDestinationError(false);
   }
 
+  useEffect(() => {
+    console.log(currentCondition.origins);
+    console.log(currentCondition.destinations);
+  }, [currentCondition]);
+
   return (
     <div
       aria-label="search-panel"
@@ -196,8 +201,8 @@ export default function SearchCondition({
         <div className="flex flex-1 gap-4">
           <SearchTextField
             itemList={createDummyPortData()}
-            maxSelectionCount={originLimit}
             selectionItems={originList}
+            maxSelectionCount={originLimit}
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
@@ -209,8 +214,8 @@ export default function SearchCondition({
           </MdIconButton>
           <SearchTextField
             itemList={createDummyPortData()}
-            maxSelectionCount={destinationLimit}
             selectionItems={destinationList}
+            maxSelectionCount={destinationLimit}
             handleItemSelection={setDestinationList}
             errorText="Please select destination"
             error={isDestinationError}
