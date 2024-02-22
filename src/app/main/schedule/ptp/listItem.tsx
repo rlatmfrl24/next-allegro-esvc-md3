@@ -24,13 +24,15 @@ import {
   RichTooltipItem,
 } from "@/app/components/tooltip";
 import { AnimatePresence, motion } from "framer-motion";
-import PlaceInformationDialog from "./popup/place-information";
+import PlaceInformationDialog from "../popup/place-information";
 import Portal from "@/app/components/portal";
 import { faker } from "@faker-js/faker";
+import DetailScheduleDialog from "./popup/detail-schedule";
 
 export default function ListItem({ item }: { item: ListItemType }) {
   const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  const [isDetailScheduleOpen, setIsDetailScheduleOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState("");
 
   const { refs, floatingStyles, context } = useFloating({
@@ -189,7 +191,11 @@ export default function ListItem({ item }: { item: ListItemType }) {
       </div>
       <div className="flex flex-col gap-2">
         <MdFilledButton>Booking</MdFilledButton>
-        <MdElevationButton>
+        <MdElevationButton
+          onClick={() => {
+            setIsDetailScheduleOpen(!isDetailScheduleOpen);
+          }}
+        >
           <div slot="icon">
             <ExpandMoreOutlinedIcon fontSize="small" />
           </div>
@@ -208,6 +214,11 @@ export default function ListItem({ item }: { item: ListItemType }) {
             customerNo: faker.string.uuid(),
             emailAddress: faker.internet.email(),
           }}
+        />
+        <DetailScheduleDialog
+          open={isDetailScheduleOpen}
+          handleOpen={setIsDetailScheduleOpen}
+          item={item}
         />
       </Portal>
     </div>
