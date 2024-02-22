@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { RecoilRoot } from "recoil";
-import { createMDTheme } from "./util/theme";
+import { applyPresetTheme, createMDTheme } from "./util/theme";
 
 export default function Providers({
   children,
@@ -10,7 +10,8 @@ export default function Providers({
   children: React.ReactNode;
 }>) {
   useEffect(() => {
-    createMDTheme("#008E86");
+    // createMDTheme("#008E86");
+    applyPresetTheme("default");
   }, []);
 
   return <RecoilRoot>{children}</RecoilRoot>;

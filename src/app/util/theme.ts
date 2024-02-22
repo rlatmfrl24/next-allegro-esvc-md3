@@ -7,6 +7,7 @@ import {
 } from "@material/material-color-utilities";
 
 // custom theme
+import defaultTheme from "@/../public/preset/default.json";
 import preset_1 from "@/../public/preset/preset_1.json";
 import preset_2 from "@/../public/preset/preset_2.json";
 import preset_3 from "@/../public/preset/preset_3.json";
@@ -107,7 +108,7 @@ export function applyPresetTheme(presetName: string, isDarkMode?: boolean) {
       css = preset_3;
       break;
     default:
-      css = preset_1;
+      css = defaultTheme;
       break;
   }
   const target = document.body;
