@@ -74,9 +74,9 @@ export const NAOutlinedAutoComplete = ({
   );
 
   function handleItemSelect(value: string) {
+    handleSelect?.(value);
     setValue(value);
     setIsMenuOpen(false);
-    handleSelect?.(value);
   }
 
   return (
