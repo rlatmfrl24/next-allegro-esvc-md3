@@ -1,19 +1,17 @@
 import { MdTypography } from "@/app/components/typography";
 import {
-  MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
   MdOutlinedSelect,
-  MdOutlinedTextField,
   MdRadio,
   MdSelectOption,
   MdSwitch,
   MdTextButton,
 } from "@/app/util/md3";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
@@ -21,13 +19,14 @@ import AddIcon from "@mui/icons-material/Add";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
-import { SearchConditionProps } from "@/app/util/typeDef";
+import { SearchConditionType } from "@/app/util/typeDef";
 import PresetScheduleDialog from "./popup/preset-schedule";
+import { createDummyPortData } from "./util";
 
 export default function SearchCondition({
   searchAction,
 }: {
-  searchAction: (condition: SearchConditionProps) => void;
+  searchAction: (condition: SearchConditionType) => void;
 }) {
   const [searchCondition, setSearchCondition] = useState<
     "single" | "multi-origin" | "multi-destination"
@@ -51,15 +50,16 @@ export default function SearchCondition({
   const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
   const [isPresetScheduleOpen, setIsPresetScheduleOpen] = useState(false);
 
-  const [currentCondition, setCurrentCondition] =
-    useState<SearchConditionProps>({
+  const [currentCondition, setCurrentCondition] = useState<SearchConditionType>(
+    {
       origins: originList,
       destinations: destinationList,
       directOnly: isDirectOnly,
       startDate: dateRange[0],
       endDate: dateRange[1],
       searchOn: searchOn,
-    });
+    }
+  );
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -125,6 +125,11 @@ export default function SearchCondition({
     setIsOriginError(false);
     setIsDestinationError(false);
   }
+
+  useEffect(() => {
+    console.log(currentCondition.origins);
+    console.log(currentCondition.destinations);
+  }, [currentCondition]);
 
   return (
     <div
@@ -195,8 +200,9 @@ export default function SearchCondition({
       <div className="flex gap-4 ">
         <div className="flex flex-1 gap-4">
           <SearchTextField
-            maxSelectionCount={originLimit}
+            itemList={createDummyPortData()}
             selectionItems={originList}
+            maxSelectionCount={originLimit}
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
@@ -207,8 +213,9 @@ export default function SearchCondition({
             </MdIcon>
           </MdIconButton>
           <SearchTextField
-            maxSelectionCount={destinationLimit}
+            itemList={createDummyPortData()}
             selectionItems={destinationList}
+            maxSelectionCount={destinationLimit}
             handleItemSelection={setDestinationList}
             errorText="Please select destination"
             error={isDestinationError}
@@ -221,7 +228,7 @@ export default function SearchCondition({
           }}
         >
           <div slot="icon">
-            <AddIcon className="w-5 h-5" />
+            <AddIcon fontSize="small" />
           </div>
           Save Preset
         </MdOutlinedButton>
@@ -232,7 +239,7 @@ export default function SearchCondition({
           }}
         >
           <div slot="icon">
-            <InboxOutlinedIcon className="w-5 h-5" />
+            <InboxOutlinedIcon fontSize="small" />
           </div>
           Preset
         </MdFilledTonalButton>

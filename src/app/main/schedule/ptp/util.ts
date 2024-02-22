@@ -1,15 +1,22 @@
-import { ListItemProps, SearchConditionProps } from "@/app/util/typeDef";
+import { ListItemType, SearchConditionType } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 
+export function createDummyPortData(): string[] {
+  return Array.from({ length: 900 }, (_, i) => {
+    const fakeCity = faker.location;
+    return `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase();
+  });
+}
+
 export function createDummyScheduleData(
-  condition: SearchConditionProps
-): ListItemProps[] {
+  condition: SearchConditionType
+): ListItemType[] {
   const { origins, destinations, searchOn, startDate, endDate, directOnly } =
     condition;
 
   // This function is a dummy function that returns an empty array.
-  const dummyData: ListItemProps[] = [];
+  const dummyData: ListItemType[] = [];
 
   Array.from({ length: 10 }).map((_, index) => {
     for (const origin of origins) {
@@ -20,7 +27,7 @@ export function createDummyScheduleData(
           to: endDate.toJSDate(),
         });
 
-        const listItem: ListItemProps = {
+        const listItem: ListItemType = {
           origin,
           destination,
           departure: DateTime.fromJSDate(dateRange[0]),

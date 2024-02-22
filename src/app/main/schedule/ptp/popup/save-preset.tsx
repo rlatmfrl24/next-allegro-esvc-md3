@@ -2,7 +2,7 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdDialog, MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { useEffect, useState } from "react";
 import NaToggleButton from "@/app/components/na-toggle-button";
-import { SearchConditionProps } from "@/app/util/typeDef";
+import { SearchConditionType } from "@/app/util/typeDef";
 import { useRecoilState } from "recoil";
 import { PresetListState } from "@/app/store/ptp.store";
 import { faker } from "@faker-js/faker";
@@ -15,12 +15,11 @@ export default function SavePresetDialog({
 }: {
   open: boolean;
   handleOpen: (open: boolean) => void;
-  condition: SearchConditionProps;
+  condition: SearchConditionType;
 }) {
   const [isMailingServiceToggled, setIsMailingServiceToggled] = useState(false);
   const [presetName, setPresetName] = useState("");
   const [presetList, setPresetList] = useRecoilState(PresetListState);
-  const [childDialogOpen, setChildDialogOpen] = useState(false);
 
   useEffect(() => {
     if (open) {

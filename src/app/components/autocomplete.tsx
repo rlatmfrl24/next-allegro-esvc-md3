@@ -7,7 +7,7 @@ import {
 } from "../util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { MdTypography } from "./typography";
-import { CSSProperties, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import {
   FloatingFocusManager,
   autoUpdate,
@@ -26,14 +26,14 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 >;
 
 export const NAOutlinedAutoComplete = ({
-  id,
   itemList,
   className,
+  handleSelect,
   ...props
 }: {
-  id: string;
   itemList: string[];
   className?: string;
+  handleSelect?: (value: string) => void;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,6 +72,12 @@ export const NAOutlinedAutoComplete = ({
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
     [dismiss, role, listNavigation]
   );
+
+  function handleItemSelect(value: string) {
+    handleSelect?.(value);
+    setValue(value);
+    setIsMenuOpen(false);
+  }
 
   return (
     <div ref={containerRef} className={className + " relative flex"}>
@@ -143,13 +149,11 @@ export const NAOutlinedAutoComplete = ({
                   {...getItemProps()}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setValue(item);
-                      setIsMenuOpen(false);
+                      handleItemSelect(item);
                     }
                   }}
                   onClick={() => {
-                    setValue(item);
-                    setIsMenuOpen(false);
+                    handleItemSelect(item);
                   }}
                 >
                   <MdRippleEffect />
