@@ -2,6 +2,13 @@ import { ListItemType, SearchConditionType } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 
+export function createDummyPortData(): string[] {
+  return Array.from({ length: 900 }, (_, i) => {
+    const fakeCity = faker.location;
+    return `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase();
+  });
+}
+
 export function createDummyScheduleData(
   condition: SearchConditionType
 ): ListItemType[] {

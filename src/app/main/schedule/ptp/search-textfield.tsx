@@ -32,23 +32,19 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { MdTypography } from "@/app/components/typography";
-import { faker } from "@faker-js/faker";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
 >;
 
-const itemList = Array.from({ length: 900 }, (_, i) => {
-  const fakeCity = faker.location;
-  return `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase();
-});
-
 export const SearchTextField = ({
+  itemList,
   maxSelectionCount,
   selectionItems,
   handleItemSelection,
   ...props
 }: {
+  itemList: string[];
   maxSelectionCount: number;
   selectionItems: string[];
   handleItemSelection: Dispatch<SetStateAction<string[]>>;

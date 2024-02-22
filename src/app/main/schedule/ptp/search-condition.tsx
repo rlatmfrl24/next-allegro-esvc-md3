@@ -1,19 +1,17 @@
 import { MdTypography } from "@/app/components/typography";
 import {
-  MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
   MdOutlinedSelect,
-  MdOutlinedTextField,
   MdRadio,
   MdSelectOption,
   MdSwitch,
   MdTextButton,
 } from "@/app/util/md3";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
@@ -23,7 +21,7 @@ import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
 import { SearchConditionType } from "@/app/util/typeDef";
 import PresetScheduleDialog from "./popup/preset-schedule";
-import Image from "next/image";
+import { createDummyPortData } from "./util";
 
 export default function SearchCondition({
   searchAction,
@@ -197,6 +195,7 @@ export default function SearchCondition({
       <div className="flex gap-4 ">
         <div className="flex flex-1 gap-4">
           <SearchTextField
+            itemList={createDummyPortData()}
             maxSelectionCount={originLimit}
             selectionItems={originList}
             handleItemSelection={setOriginList}
@@ -209,6 +208,7 @@ export default function SearchCondition({
             </MdIcon>
           </MdIconButton>
           <SearchTextField
+            itemList={createDummyPortData()}
             maxSelectionCount={destinationLimit}
             selectionItems={destinationList}
             handleItemSelection={setDestinationList}

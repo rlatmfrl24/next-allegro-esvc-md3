@@ -64,3 +64,9 @@ export type PlaceInformationType = {
   customerNo: string;
   emailAddress: string;
 };
+
+export type VesselInfoType = {
+  vesselName: string;
+  serviceLane: string;
+  consortiumVoyage: string;
+};
