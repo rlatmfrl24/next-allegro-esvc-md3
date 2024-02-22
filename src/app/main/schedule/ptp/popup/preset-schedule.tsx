@@ -95,12 +95,9 @@ export default function PresetScheduleDialog({
                           </div>
                         )}
                       </div>
-                      <div slot="trailing-supporting-text">
-                        {preset.createDateTime.toLocaleString()}
-                      </div>
 
                       <MdIcon slot="end">
-                        {preset.useMailingService && <FavoriteBorderIcon />}
+                        {/* {preset.useMailingService && <FavoriteBorderIcon />} */}
                       </MdIcon>
                     </MdListItem>
                   );

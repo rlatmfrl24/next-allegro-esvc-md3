@@ -2,6 +2,7 @@ import { MdTypography } from "@/app/components/typography";
 import {
   MdFilledButton,
   MdFilledTonalButton,
+  MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
@@ -15,13 +16,16 @@ import { useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
-import AddIcon from "@mui/icons-material/Add";
-import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
 import SavePresetDialog from "./popup/save-preset";
 import { SearchConditionType } from "@/app/util/typeDef";
 import PresetScheduleDialog from "./popup/preset-schedule";
 import { createDummyPortData } from "./util";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useRecoilState } from "recoil";
+import { PresetListState } from "@/app/store/ptp.store";
 
 export default function SearchCondition({
   searchAction,
@@ -60,6 +64,8 @@ export default function SearchCondition({
       searchOn: searchOn,
     }
   );
+
+  const [presetList, setPresetList] = useRecoilState(PresetListState);
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -105,6 +111,46 @@ export default function SearchCondition({
     );
   }
 
+  function isCurrentRouteFavourite() {
+    if (originList.length === 0 || destinationList.length === 0) return false;
+
+    return presetList.some((preset) => {
+      return (
+        preset.origin.toString() === originList.toString() &&
+        preset.destination.toString() === destinationList.toString()
+      );
+    });
+  }
+
+  function toggleFavourite() {
+    if (originList.length === 0 || destinationList.length === 0) return;
+
+    if (isCurrentRouteFavourite()) {
+      setPresetList(
+        presetList.filter((preset) => {
+          return (
+            preset.origin.toString() !== originList.toString() ||
+            preset.destination.toString() !== destinationList.toString()
+          );
+        })
+      );
+    } else {
+      setPresetList([
+        ...presetList,
+        {
+          id: "preset-" + presetList.length,
+          name: "Preset " + (presetList.length + 1),
+          origin: originList,
+          destination: destinationList,
+        },
+      ]);
+    }
+  }
+
+  useEffect(() => {
+    console.log(presetList);
+  }, [presetList]);
+
   function Validation() {
     if (originList.length === 0) {
       setIsOriginError(true);
@@ -125,11 +171,6 @@ export default function SearchCondition({
     setIsOriginError(false);
     setIsDestinationError(false);
   }
-
-  useEffect(() => {
-    console.log(currentCondition.origins);
-    console.log(currentCondition.destinations);
-  }, [currentCondition]);
 
   return (
     <div
@@ -221,17 +262,20 @@ export default function SearchCondition({
             error={isDestinationError}
           />
         </div>
-        <MdOutlinedButton
-          className="h-fit mt-2"
+        <MdFilledTonalIconButton
+          className="mt-2"
           onClick={() => {
-            setIsSavePrestOpen(true);
+            toggleFavourite();
           }}
         >
-          <div slot="icon">
-            <AddIcon fontSize="small" />
-          </div>
-          Save Preset
-        </MdOutlinedButton>
+          <MdIcon>
+            {isCurrentRouteFavourite() ? (
+              <FavoriteIcon />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
+          </MdIcon>
+        </MdFilledTonalIconButton>
         <MdFilledTonalButton
           className="h-fit mt-2"
           onClick={() => {

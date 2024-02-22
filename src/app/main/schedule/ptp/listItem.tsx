@@ -54,7 +54,6 @@ export default function ListItem({ item }: { item: ListItemType }) {
   ]);
 
   function ScrolltoItemOnViewPort() {
-    console.log(document.getElementById(`list-item-` + item.serviceLane));
     document.getElementById(`list-item-` + item.serviceLane)?.scrollIntoView({
       behavior: "smooth",
       block: "start",

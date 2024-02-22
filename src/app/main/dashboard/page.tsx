@@ -1,7 +1,13 @@
 "use client";
 
 import { MdTypography } from "../../components/typography";
-import { MdFilterChip, MdIcon, MdIconButton } from "../../util/md3";
+import {
+  MdFilledTonalButton,
+  MdFilledTonalIconButton,
+  MdFilterChip,
+  MdIcon,
+  MdIconButton,
+} from "../../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useRecoilState } from "recoil";
 import { draggableState } from "../../store/dashboard.store";
@@ -37,14 +43,11 @@ export default function MainPage() {
               setCustomizabled(!customizabled);
             }}
           />
-          <MdIconButton
-            className="bg-secondaryContainer rounded-full"
-            onClick={toggleDrawer}
-          >
+          <MdFilledTonalIconButton onClick={toggleDrawer}>
             <MdIcon>
               <SettingsOutlinedIcon />
             </MdIcon>
-          </MdIconButton>
+          </MdFilledTonalIconButton>
         </div>
         <Dashboard />
         <SetDashboard isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />

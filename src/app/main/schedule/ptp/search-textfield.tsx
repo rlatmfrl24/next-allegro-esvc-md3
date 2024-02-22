@@ -253,7 +253,7 @@ const CustomChip = ({
   onDelete?: Dispatch<SetStateAction<string>>;
 }) => {
   return (
-    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2">
+    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2 whitespace-nowrap">
       <MdTypography
         variant="label"
         size="large"
