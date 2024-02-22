@@ -3,20 +3,23 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
+  const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
+    useState(false);
+
   const [initialize, instance] = useOverlayScrollbars({
     events: {
       scroll: (instance) => {
         const viewport = instance.elements().viewport;
-        // if (viewport.scrollTop > 150) {
-        //   setIsSearchConditionSummaryOpen(true);
-        // } else {
-        //   setIsSearchConditionSummaryOpen(false);
-        // }
+        if (viewport.scrollTop > 150) {
+          setIsSearchConditionSummaryOpen(true);
+        } else {
+          setIsSearchConditionSummaryOpen(false);
+        }
       },
     },
   });
@@ -27,7 +30,7 @@ export default function PortSchedule() {
 
   return (
     <div ref={scrollRef} className="flex-1">
-      <div ref={scrollRef} className="flex justify-center">
+      <div className="flex justify-center">
         <div
           aria-label="container"
           className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "

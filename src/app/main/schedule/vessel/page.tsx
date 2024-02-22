@@ -8,7 +8,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { use, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
 import { createDummyVesselData } from "./util";
@@ -27,7 +27,6 @@ export default function VesselSchedule() {
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
-  const [isQueryValid, setIsQueryValid] = useState<boolean>(true);
   const [vesselData, setVesselData] = useState<VesselInfoType>({
     vesselName: "-",
     serviceLane: "-",

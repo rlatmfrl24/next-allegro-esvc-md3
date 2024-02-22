@@ -53,8 +53,20 @@ export default function ListItem({ item }: { item: ListItemType }) {
     role,
   ]);
 
+  function ScrolltoItemOnViewPort() {
+    console.log(document.getElementById(`list-item-` + item.serviceLane));
+    document.getElementById(`list-item-` + item.serviceLane)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
+  }
+
   return (
-    <div className="relative border-outlineVariant border rounded-xl p-6 flex gap-12">
+    <div
+      id={`list-item-` + item.serviceLane}
+      className="relative border-outlineVariant border rounded-xl p-6 flex gap-12"
+    >
       <div className="flex-1 flex flex-col gap-4">
         <div className="text-primary flex items-center relative gap-4">
           <LocationOnIcon />
@@ -190,7 +202,13 @@ export default function ListItem({ item }: { item: ListItemType }) {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <MdFilledButton>Booking</MdFilledButton>
+        <MdFilledButton
+          onClick={() => {
+            ScrolltoItemOnViewPort();
+          }}
+        >
+          Booking
+        </MdFilledButton>
         <MdElevationButton
           onClick={() => {
             setIsDetailScheduleOpen(!isDetailScheduleOpen);
