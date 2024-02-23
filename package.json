@@ -22,6 +22,7 @@
     "@material/web": "^1.1.1",
     "@mui/icons-material": "^5.15.5",
     "@mui/material": "^5.15.6",
+    "@tanstack/react-table": "^8.12.0",
     "classnames": "^2.5.1",
     "framer-motion": "^10.18.0",
     "next": "14.1.0",

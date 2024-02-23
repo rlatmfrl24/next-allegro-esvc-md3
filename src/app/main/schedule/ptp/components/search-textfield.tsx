@@ -114,6 +114,7 @@ export const SearchTextField = ({
         disabled={selectionItems.length >= maxSelectionCount}
         placeholder={`Input Up to ${maxSelectionCount} Locations`}
         required={false}
+        onFocus={() => {}}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
           if (

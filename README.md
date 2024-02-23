@@ -21,3 +21,6 @@
 - Framer Motion
 - Luxon
 - Classnames
+- OverlayScrollbars-React
+- Tanstack Table
+- h6s/calendar
