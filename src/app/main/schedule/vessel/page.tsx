@@ -20,6 +20,7 @@ import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
+import OutlinedAutoComplete from "@/app/components/na-autocomplete";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -74,21 +75,23 @@ export default function VesselSchedule() {
             </MdIconButton>
           </div>
           <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
-            <NAOutlinedAutoComplete
+            <OutlinedAutoComplete
               label="Vessel Name"
               recentItems={recentVesselQueries}
-              required
               itemList={vesselList.map((vessel) => vessel.vesselName)}
-              handleSelect={(value) => {
+              className="w-full"
+              onSelection={(value) => {
                 setVesselQuery(value === "" ? "" : value);
-                setRecentVesselQueries((previous) => {
-                  if (previous.includes(value)) {
-                    const index = previous.indexOf(value);
-                    previous.splice(index, 1);
-                    return [value, ...previous];
-                  }
-                  return [value, ...previous].slice(0, 5);
-                });
+                if (value !== "") {
+                  setRecentVesselQueries((previous) => {
+                    if (previous.includes(value)) {
+                      const index = previous.indexOf(value);
+                      previous.splice(index, 1);
+                      return [value, ...previous];
+                    }
+                    return [value, ...previous].slice(0, 5);
+                  });
+                }
               }}
             />
             <div className="flex justify-end gap-2">
@@ -103,10 +106,15 @@ export default function VesselSchedule() {
               <MdFilledButton
                 onClick={() => {
                   setPageState("search");
+                  console.log(vesselQuery);
                   setVesselData(
                     vesselList.find(
                       (vessel) => vessel.vesselName === vesselQuery
-                    ) || vesselData
+                    ) || {
+                      vesselName: "-",
+                      serviceLane: "-",
+                      consortiumVoyage: "-",
+                    }
                   );
                 }}
               >
@@ -147,7 +155,7 @@ export default function VesselSchedule() {
                             className={`text-primary ${
                               vesselData.vesselName === "-"
                                 ? ""
-                                : "underline cursor-pointer"
+                                : "underline cursor-pointer w-fit"
                             }`}
                           >
                             {vesselData.vesselName}

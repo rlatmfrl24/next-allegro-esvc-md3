@@ -43,7 +43,6 @@ export const NAOutlinedAutoComplete = ({
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<any[]>([]);
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { refs, floatingStyles, context } = useFloating({
