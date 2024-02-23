@@ -2,14 +2,19 @@ import Portal from "@/app/components/portal";
 import {
   MdChipSet,
   MdElevation,
+  MdFilledTonalIconButton,
   MdIcon,
   MdOutlinedButton,
 } from "@/app/util/md3";
 import { AnimatePresence, motion } from "framer-motion";
 import { CSSProperties } from "react";
 import { MdTypography } from "@/app/components/typography";
-import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import { SearchConditionType } from "@/app/util/typeDef";
+import { useRecoilState } from "recoil";
+import { PresetListState } from "@/app/store/ptp.store";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -45,6 +50,40 @@ export default function ConditionSummary({
   condition: SearchConditionType;
   scrollTop?: () => void;
 }) {
+  const [presetList, setPresetList] = useRecoilState(PresetListState);
+
+  function isCurrentRouteFavourite() {
+    return presetList.some((preset) => {
+      return (
+        preset.origin.toString() === condition.origins.toString() &&
+        preset.destination.toString() === condition.destinations.toString()
+      );
+    });
+  }
+
+  function toggleFavourite() {
+    if (isCurrentRouteFavourite()) {
+      setPresetList(
+        presetList.filter((preset) => {
+          return (
+            preset.origin.toString() !== condition.origins.toString() ||
+            preset.destination.toString() !== condition.destinations.toString()
+          );
+        })
+      );
+    } else {
+      setPresetList([
+        ...presetList,
+        {
+          id: "preset-" + presetList.length,
+          name: "Preset " + (presetList.length + 1),
+          origin: condition.origins,
+          destination: condition.destinations,
+        },
+      ]);
+    }
+  }
+
   return (
     <Portal selector="#main-container">
       <AnimatePresence>
@@ -127,7 +166,21 @@ export default function ConditionSummary({
                   />
                 </div>
               </div>
-              <div className="flex h-full justify-end items-end gap-4">
+              <div className="flex flex-col h-full justify-between items-end">
+                <MdFilledTonalIconButton
+                  onClick={() => {
+                    toggleFavourite();
+                  }}
+                >
+                  <MdIcon>
+                    {isCurrentRouteFavourite() ? (
+                      <FavoriteIcon />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}
+                  </MdIcon>
+                </MdFilledTonalIconButton>
+
                 <MdOutlinedButton onClick={scrollTop}>
                   Re-Search
                 </MdOutlinedButton>

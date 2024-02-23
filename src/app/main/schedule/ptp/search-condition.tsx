@@ -47,7 +47,6 @@ export default function SearchCondition({
 
   const [isOriginError, setIsOriginError] = useState<boolean>(false);
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
-
   const [currentCondition, setCurrentCondition] = useState<SearchConditionType>(
     {
       origins: originList,
@@ -322,15 +321,7 @@ export default function SearchCondition({
         </MdTextButton>
         <MdFilledButton
           onClick={() => {
-            Validation() &&
-              searchAction({
-                origins: originList,
-                destinations: destinationList,
-                searchOn: searchOn,
-                startDate: dateRange[0],
-                endDate: dateRange[1],
-                directOnly: isDirectOnly,
-              });
+            Validation() && searchAction(currentCondition);
           }}
         >
           Search
