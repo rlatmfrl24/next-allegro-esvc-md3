@@ -262,7 +262,7 @@ const CustomChip = ({
         {label}
       </MdTypography>
       <div
-        className="relative w-6 h-6 rounded-full flex items-center justify-center"
+        className="relative w-6 h-6 rounded-full flex items-center justify-center cursor-pointer"
         onClick={() => {
           onDelete?.(label);
         }}

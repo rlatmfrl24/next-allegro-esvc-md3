@@ -1,9 +1,9 @@
 import { atom } from "recoil";
-import { PresetType } from "../util/typeDef";
+import { FavoriteRouteType } from "../util/typeDef";
 
-const PresetListState = atom<PresetType[]>({
-  key: "PresetListState",
+const FavoriteRouteListState = atom<FavoriteRouteType[]>({
+  key: "FavoriteRouteListState",
   default: [],
 });
 
-export { PresetListState };
+export { FavoriteRouteListState };

@@ -11,10 +11,10 @@ import { CSSProperties } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { SearchConditionType } from "@/app/util/typeDef";
 import { useRecoilState } from "recoil";
-import { PresetListState } from "@/app/store/ptp.store";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { FavoriteRouteListState } from "@/app/store/ptp.store";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -50,7 +50,7 @@ export default function ConditionSummary({
   condition: SearchConditionType;
   scrollTop?: () => void;
 }) {
-  const [presetList, setPresetList] = useRecoilState(PresetListState);
+  const [presetList, setPresetList] = useRecoilState(FavoriteRouteListState);
 
   function isCurrentRouteFavourite() {
     return presetList.some((preset) => {

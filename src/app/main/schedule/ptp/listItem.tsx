@@ -9,7 +9,6 @@ import { useState } from "react";
 import PlaceInformationDialog from "../popup/place-information";
 import Portal from "@/app/components/portal";
 import { faker } from "@faker-js/faker";
-import DetailScheduleDialog from "./popup/detail-schedule";
 import CutOffTooltip from "./components/cut-off-tooltip";
 
 export default function ListItem({ item }: { item: ListItemType }) {
@@ -142,11 +141,6 @@ export default function ListItem({ item }: { item: ListItemType }) {
             customerNo: faker.string.uuid(),
             emailAddress: faker.internet.email(),
           }}
-        />
-        <DetailScheduleDialog
-          open={isDetailScheduleOpen}
-          handleOpen={setIsDetailScheduleOpen}
-          item={item}
         />
       </Portal>
     </div>

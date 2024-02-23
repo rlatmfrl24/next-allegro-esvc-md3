@@ -21,8 +21,8 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRecoilState } from "recoil";
-import { PresetListState } from "@/app/store/ptp.store";
 import MyFavorite from "./components/my-favorite";
+import { FavoriteRouteListState } from "@/app/store/ptp.store";
 
 export default function SearchCondition({
   searchAction,
@@ -59,7 +59,9 @@ export default function SearchCondition({
     }
   );
 
-  const [presetList, setPresetList] = useRecoilState(PresetListState);
+  const [favoriteList, setFavoriteList] = useRecoilState(
+    FavoriteRouteListState
+  );
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -113,7 +115,7 @@ export default function SearchCondition({
   function isCurrentRouteFavourite() {
     if (originList.length === 0 || destinationList.length === 0) return false;
 
-    return presetList.some((preset) => {
+    return favoriteList.some((preset) => {
       return (
         preset.origin.toString() === originList.toString() &&
         preset.destination.toString() === destinationList.toString()
@@ -125,8 +127,8 @@ export default function SearchCondition({
     if (originList.length === 0 || destinationList.length === 0) return;
 
     if (isCurrentRouteFavourite()) {
-      setPresetList(
-        presetList.filter((preset) => {
+      setFavoriteList(
+        favoriteList.filter((preset) => {
           return (
             preset.origin.toString() !== originList.toString() ||
             preset.destination.toString() !== destinationList.toString()
@@ -134,11 +136,11 @@ export default function SearchCondition({
         })
       );
     } else {
-      setPresetList([
-        ...presetList,
+      setFavoriteList([
+        ...favoriteList,
         {
-          id: "preset-" + presetList.length,
-          name: "Preset " + (presetList.length + 1),
+          id: "preset-" + favoriteList.length,
+          name: "Preset " + (favoriteList.length + 1),
           origin: originList,
           destination: destinationList,
         },

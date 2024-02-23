@@ -48,7 +48,7 @@ export type SearchConditionType = {
   directOnly: boolean;
 };
 
-export type PresetType = {
+export type FavoriteRouteType = {
   id: string;
   name: string;
   origin: string[];
