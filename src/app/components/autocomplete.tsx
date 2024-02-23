@@ -28,11 +28,13 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 export const NAOutlinedAutoComplete = ({
   itemList,
   className,
+  recentItems,
   handleSelect,
   ...props
 }: {
   itemList: string[];
   className?: string;
+  recentItems?: string[];
   handleSelect?: (value: string) => void;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
@@ -138,6 +140,36 @@ export const NAOutlinedAutoComplete = ({
           >
             <MdElevation />
             <div className="max-h-[600px] overflow-auto">
+              <div>
+                {recentItems &&
+                  recentItems.length > 0 &&
+                  recentItems.map((item, index) => (
+                    <div
+                      key={item + "_" + index}
+                      className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+                      tabIndex={activeIndex === index ? 0 : -1}
+                      ref={(node) => {
+                        listRef.current[index] = node;
+                      }}
+                      {...getItemProps()}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleItemSelect(item);
+                        }
+                      }}
+                      onClick={() => {
+                        handleItemSelect(item);
+                      }}
+                    >
+                      <MdRippleEffect />
+                      {highlightText(item, value)}
+                    </div>
+                  ))}
+              </div>
+              <div
+                aria-label="recent-divider"
+                className="h-px w-full bg-outlineVariant"
+              ></div>
               {recommandedItems.map((item, index) => (
                 <div
                   key={item + "_" + index}
@@ -179,7 +211,9 @@ export const NAOutlinedAutoComplete = ({
 };
 
 function highlightText(text: string, highlight: string) {
-  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = text.split(new RegExp(`(${escapedHighlight})`, "gi"));
+
   return (
     <MdTypography variant="body" size="large" className="flex-1">
       <span>

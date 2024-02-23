@@ -28,6 +28,7 @@ export default function VesselSchedule() {
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
+  const [recentVesselQueries, setRecentVesselQueries] = useState<string[]>([]);
   const [vesselData, setVesselData] = useState<VesselInfoType>({
     vesselName: "-",
     serviceLane: "-",
@@ -52,6 +53,11 @@ export default function VesselSchedule() {
     if (scrollRef.current) initialize(scrollRef.current);
   }, [initialize]);
 
+  useEffect(() => {
+    console.log("vesselQuery", vesselQuery);
+    console.log("recentVesselQueries", recentVesselQueries);
+  }, [vesselQuery, recentVesselQueries]);
+
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -75,10 +81,15 @@ export default function VesselSchedule() {
           <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
             <NAOutlinedAutoComplete
               label="Vessel Name"
+              recentItems={recentVesselQueries}
               required
               itemList={vesselList.map((vessel) => vessel.vesselName)}
               handleSelect={(value) => {
                 setVesselQuery(value === "" ? "" : value);
+                setRecentVesselQueries((previous) => {
+                  if (previous.includes(value)) return previous;
+                  return [value, ...previous];
+                });
               }}
             />
             <div className="flex justify-end gap-2">
