@@ -12,7 +12,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { useEffect, useState } from "react";
-import { SearchTextField } from "./search-textfield";
+import { SearchTextField } from "./components/search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
 import { SearchConditionType } from "@/app/util/typeDef";
@@ -22,6 +22,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRecoilState } from "recoil";
 import { PresetListState } from "@/app/store/ptp.store";
+import MyFavorite from "./components/my-favorite";
 
 export default function SearchCondition({
   searchAction,
@@ -265,9 +266,10 @@ export default function SearchCondition({
             )}
           </MdIcon>
         </MdFilledTonalIconButton>
-        <MdFilledTonalButton className="h-fit mt-2" onClick={() => {}}>
+        {/* <MdFilledTonalButton className="h-fit mt-2" onClick={() => {}}>
           My Favorite
-        </MdFilledTonalButton>
+        </MdFilledTonalButton> */}
+        <MyFavorite />
       </div>
 
       <div className="flex gap-4">

@@ -1,57 +1,21 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdElevationButton, MdFilledButton } from "@/app/util/md3";
-import { VariableElavatedButton } from "@/app/components/variable-buttons";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import VesselIcon from "@/../public/icon_vessel.svg";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ListItemType } from "@/app/util/typeDef";
 import { useState } from "react";
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from "@floating-ui/react";
-import {
-  RichTooltipContainer,
-  RichTooltipItem,
-} from "@/app/components/tooltip";
-import { AnimatePresence, motion } from "framer-motion";
 import PlaceInformationDialog from "../popup/place-information";
 import Portal from "@/app/components/portal";
 import { faker } from "@faker-js/faker";
 import DetailScheduleDialog from "./popup/detail-schedule";
+import CutOffTooltip from "./components/cut-off-tooltip";
 
 export default function ListItem({ item }: { item: ListItemType }) {
-  const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
   const [isDetailScheduleOpen, setIsDetailScheduleOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState("");
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: isCutOffTooltipOpen,
-    onOpenChange: setIsCutOffTooltipOpen,
-    placement: "bottom-start",
-    middleware: [flip(), shift(), offset(8)],
-    whileElementsMounted: autoUpdate,
-  });
-
-  const click = useClick(context);
-  const dismiss = useDismiss(context);
-  const role = useRole(context);
-
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    click,
-    dismiss,
-    role,
-  ]);
 
   function ScrolltoItemOnViewPort() {
     document.getElementById(`list-item-` + item.serviceLane)?.scrollIntoView({
@@ -100,60 +64,7 @@ export default function ListItem({ item }: { item: ListItemType }) {
             >
               {item.departure.toFormat("yyyy-MM-dd")}
             </MdTypography>
-            <div
-              ref={refs.setReference}
-              {...getReferenceProps}
-              onClick={() => {
-                setIsCutOffTooltipOpen(!isCutOffTooltipOpen);
-              }}
-            >
-              <VariableElavatedButton
-                className="mt-1"
-                size="x-small"
-                icon={
-                  <AccessTimeIcon
-                    sx={{
-                      width: "16px",
-                      height: "16px",
-                    }}
-                  />
-                }
-              >
-                Cut Off
-              </VariableElavatedButton>
-              <AnimatePresence>
-                {isCutOffTooltipOpen && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.1 }}
-                    ref={refs.setFloating}
-                    style={floatingStyles}
-                    {...getFloatingProps}
-                    className="z-10"
-                  >
-                    <RichTooltipContainer>
-                      <RichTooltipItem
-                        slot="content"
-                        title="Documentation"
-                        supportingText="2021-09-01 12:00"
-                      />
-                      <RichTooltipItem
-                        slot="content"
-                        title="EDI"
-                        supportingText="2021-09-01 12:00"
-                      />
-                      <RichTooltipItem
-                        slot="content"
-                        title="Cargo"
-                        supportingText="2021-09-01 12:00"
-                      />
-                    </RichTooltipContainer>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <CutOffTooltip />
           </div>
           <div className="flex flex-1 flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">
