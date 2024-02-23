@@ -19,6 +19,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
+import VesselResultTable from "./result-table";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -239,6 +240,7 @@ export default function VesselSchedule() {
                         </MdTextButton>
                       </div>
                     </div>
+                    <VesselResultTable />
                   </>
                 ),
               }[pageState]

@@ -48,12 +48,11 @@ export type SearchConditionType = {
   directOnly: boolean;
 };
 
-export type PresetType = {
+export type FavoriteRouteType = {
   id: string;
   name: string;
-  useMailingService: boolean;
-  createDateTime: DateTime;
-  condition: SearchConditionType;
+  origin: string[];
+  destination: string[];
 };
 
 export type PlaceInformationType = {

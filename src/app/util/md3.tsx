@@ -9,6 +9,9 @@ import { MdTextButton as MdTextButtonWebComponent } from "@material/web/button/t
 import { MdOutlinedTextField as MdOutlinedTextFieldWebComponent } from "@material/web/textfield/outlined-text-field.js";
 import { MdIcon as MdIconWebComponent } from "@material/web/icon/icon";
 import { MdIconButton as MdIconButtonWebComponent } from "@material/web/iconbutton/icon-button";
+import { MdFilledIconButton as MdFilledIconButtonWebComponent } from "@material/web/iconbutton/filled-icon-button";
+import { MdFilledTonalIconButton as MdFilledTonalIconButtonWebComponent } from "@material/web/iconbutton/filled-tonal-icon-button";
+import { MdOutlinedIconButton as MdOutlinedIconButtonWebComponent } from "@material/web/iconbutton/outlined-icon-button";
 import { MdElevation as MdElevationWebComponent } from "@material/web/elevation/elevation";
 import { MdCheckbox as MdCheckboxWebComponent } from "@material/web/checkbox/checkbox";
 import { MdTabs as MdTabsWebComponent } from "@material/web/tabs/tabs";
@@ -97,6 +100,24 @@ export const MdIcon = createComponent({
 export const MdIconButton = createComponent({
   tagName: "md-icon-button",
   elementClass: MdIconButtonWebComponent,
+  react: React,
+});
+
+export const MdFilledIconButton = createComponent({
+  tagName: "md-filled-icon-button",
+  elementClass: MdFilledIconButtonWebComponent,
+  react: React,
+});
+
+export const MdFilledTonalIconButton = createComponent({
+  tagName: "md-filled-tonal-icon-button",
+  elementClass: MdFilledTonalIconButtonWebComponent,
+  react: React,
+});
+
+export const MdOutlinedIconButton = createComponent({
+  tagName: "md-outlined-icon-button",
+  elementClass: MdOutlinedIconButtonWebComponent,
   react: React,
 });
 

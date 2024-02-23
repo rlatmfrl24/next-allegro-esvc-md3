@@ -114,6 +114,7 @@ export const SearchTextField = ({
         disabled={selectionItems.length >= maxSelectionCount}
         placeholder={`Input Up to ${maxSelectionCount} Locations`}
         required={false}
+        onFocus={() => {}}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
           if (
@@ -253,7 +254,7 @@ const CustomChip = ({
   onDelete?: Dispatch<SetStateAction<string>>;
 }) => {
   return (
-    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2">
+    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2 whitespace-nowrap">
       <MdTypography
         variant="label"
         size="large"
@@ -262,7 +263,7 @@ const CustomChip = ({
         {label}
       </MdTypography>
       <div
-        className="relative w-6 h-6 rounded-full flex items-center justify-center"
+        className="relative w-6 h-6 rounded-full flex items-center justify-center cursor-pointer"
         onClick={() => {
           onDelete?.(label);
         }}
