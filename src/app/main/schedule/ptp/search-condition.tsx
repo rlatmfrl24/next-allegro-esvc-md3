@@ -268,10 +268,19 @@ export default function SearchCondition({
             )}
           </MdIcon>
         </MdFilledTonalIconButton>
-        {/* <MdFilledTonalButton className="h-fit mt-2" onClick={() => {}}>
-          My Favorite
-        </MdFilledTonalButton> */}
-        <MyFavorite />
+        <MyFavorite
+          onSelection={(origin, destination) => {
+            if (origin.length > 1) {
+              handleModeSelection("multi-origin");
+            } else if (destination.length > 1) {
+              handleModeSelection("multi-destination");
+            } else {
+              handleModeSelection("single");
+            }
+            setOriginList(origin);
+            setDestinationList(destination);
+          }}
+        />
       </div>
 
       <div className="flex gap-4">

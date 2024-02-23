@@ -24,7 +24,11 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-export default function MyFavorite() {
+export default function MyFavorite({
+  onSelection,
+}: {
+  onSelection?: (origin: string[], destination: string[]) => void;
+}) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [favoriteList, setFavoriteList] = useRecoilState(
     FavoriteRouteListState
@@ -89,6 +93,10 @@ export default function MyFavorite() {
                           key={favorite.id}
                           className="hover:bg-surfaceDim cursor-pointer"
                           onClick={() => {
+                            onSelection?.(
+                              favorite.origin,
+                              favorite.destination
+                            );
                             setIsPopoverOpen(false);
                           }}
                         >
