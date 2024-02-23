@@ -20,6 +20,7 @@ import {
   useListNavigation,
   useRole,
 } from "@floating-ui/react";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -88,6 +89,11 @@ export const NAOutlinedAutoComplete = ({
         ref={refs.setReference}
         className="flex-1"
         required={false}
+        focus={() => {
+          if (recentItems && recentItems?.length > 0 && value === "") {
+            setIsMenuOpen(true);
+          }
+        }}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
           if (
@@ -162,36 +168,49 @@ export const NAOutlinedAutoComplete = ({
                       }}
                     >
                       <MdRippleEffect />
+                      <RestoreIcon className="mr-2 text-onSurfaceVariant" />
                       {highlightText(item, value)}
                     </div>
                   ))}
               </div>
-              <div
-                aria-label="recent-divider"
-                className="h-px w-full bg-outlineVariant"
-              ></div>
-              {recommandedItems.map((item, index) => (
-                <div
-                  key={item + "_" + index}
-                  className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
-                  tabIndex={activeIndex === index ? 0 : -1}
-                  ref={(node) => {
-                    listRef.current[index] = node;
-                  }}
-                  {...getItemProps()}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleItemSelect(item);
+              {recentItems &&
+                recentItems.length > 0 &&
+                recommandedItems.length > 0 &&
+                value.length > 2 && (
+                  <div
+                    aria-label="recent-divider"
+                    className="h-px w-full bg-outlineVariant"
+                  ></div>
+                )}
+
+              {value.length > 2 &&
+                recommandedItems.map((item, index) => (
+                  <div
+                    key={item + "_" + index}
+                    className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+                    tabIndex={
+                      activeIndex === index + (recentItems?.length || 0)
+                        ? 0
+                        : -1
                     }
-                  }}
-                  onClick={() => {
-                    handleItemSelect(item);
-                  }}
-                >
-                  <MdRippleEffect />
-                  {highlightText(item, value)}
-                </div>
-              ))}
+                    ref={(node) => {
+                      listRef.current[index + (recentItems?.length || 0)] =
+                        node;
+                    }}
+                    {...getItemProps()}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleItemSelect(item);
+                      }
+                    }}
+                    onClick={() => {
+                      handleItemSelect(item);
+                    }}
+                  >
+                    <MdRippleEffect />
+                    {highlightText(item, value)}
+                  </div>
+                ))}
             </div>
           </div>
         </FloatingFocusManager>

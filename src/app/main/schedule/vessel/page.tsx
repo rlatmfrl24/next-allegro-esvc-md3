@@ -53,11 +53,6 @@ export default function VesselSchedule() {
     if (scrollRef.current) initialize(scrollRef.current);
   }, [initialize]);
 
-  useEffect(() => {
-    console.log("vesselQuery", vesselQuery);
-    console.log("recentVesselQueries", recentVesselQueries);
-  }, [vesselQuery, recentVesselQueries]);
-
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -87,8 +82,12 @@ export default function VesselSchedule() {
               handleSelect={(value) => {
                 setVesselQuery(value === "" ? "" : value);
                 setRecentVesselQueries((previous) => {
-                  if (previous.includes(value)) return previous;
-                  return [value, ...previous];
+                  if (previous.includes(value)) {
+                    const index = previous.indexOf(value);
+                    previous.splice(index, 1);
+                    return [value, ...previous];
+                  }
+                  return [value, ...previous].slice(0, 5);
                 });
               }}
             />
