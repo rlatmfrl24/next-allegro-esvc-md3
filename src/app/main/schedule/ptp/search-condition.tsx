@@ -1,33 +1,33 @@
 import { MdTypography } from "@/app/components/typography";
 import {
-  MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
+  MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
-  MdOutlinedButton,
   MdOutlinedSelect,
-  MdOutlinedTextField,
   MdRadio,
   MdSelectOption,
   MdSwitch,
   MdTextButton,
 } from "@/app/util/md3";
-import { use, useEffect, useState } from "react";
-import { SearchTextField } from "./search-textfield";
+import { useEffect, useState } from "react";
+import { SearchTextField } from "./components/search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
-import AddIcon from "@mui/icons-material/Add";
+import { SearchConditionType } from "@/app/util/typeDef";
+import { createDummyPortData } from "./util";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
-import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
-import SavePresetDialog from "./popup/save-preset";
-import { SearchConditionProps } from "@/app/util/typeDef";
-import PresetScheduleDialog from "./popup/preset-schedule";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useRecoilState } from "recoil";
+import MyFavorite from "./components/my-favorite";
+import { FavoriteRouteListState } from "@/app/store/ptp.store";
 
 export default function SearchCondition({
   searchAction,
 }: {
-  searchAction: (condition: SearchConditionProps) => void;
+  searchAction: (condition: SearchConditionType) => void;
 }) {
   const [searchCondition, setSearchCondition] = useState<
     "single" | "multi-origin" | "multi-destination"
@@ -48,18 +48,20 @@ export default function SearchCondition({
 
   const [isOriginError, setIsOriginError] = useState<boolean>(false);
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
-  const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
-  const [isPresetScheduleOpen, setIsPresetScheduleOpen] = useState(false);
-
-  const [currentCondition, setCurrentCondition] =
-    useState<SearchConditionProps>({
+  const [currentCondition, setCurrentCondition] = useState<SearchConditionType>(
+    {
       origins: originList,
       destinations: destinationList,
       directOnly: isDirectOnly,
       startDate: dateRange[0],
       endDate: dateRange[1],
       searchOn: searchOn,
-    });
+    }
+  );
+
+  const [favoriteList, setFavoriteList] = useRecoilState(
+    FavoriteRouteListState
+  );
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -88,6 +90,11 @@ export default function SearchCondition({
   function clearAllSelection() {
     setOriginList([]);
     setDestinationList([]);
+    setIsOriginError(false);
+    setIsDestinationError(false);
+    setSearchOn("departure");
+    setIsDirectOnly(true);
+    setDateRange([DateTime.now(), DateTime.now()]);
   }
 
   function switchOriginDestination() {
@@ -103,6 +110,42 @@ export default function SearchCondition({
         ? "multi-origin"
         : "single"
     );
+  }
+
+  function isCurrentRouteFavourite() {
+    if (originList.length === 0 || destinationList.length === 0) return false;
+
+    return favoriteList.some((preset) => {
+      return (
+        preset.origin.toString() === originList.toString() &&
+        preset.destination.toString() === destinationList.toString()
+      );
+    });
+  }
+
+  function toggleFavourite() {
+    if (originList.length === 0 || destinationList.length === 0) return;
+
+    if (isCurrentRouteFavourite()) {
+      setFavoriteList(
+        favoriteList.filter((preset) => {
+          return (
+            preset.origin.toString() !== originList.toString() ||
+            preset.destination.toString() !== destinationList.toString()
+          );
+        })
+      );
+    } else {
+      setFavoriteList([
+        ...favoriteList,
+        {
+          id: "preset-" + favoriteList.length,
+          name: "Preset " + (favoriteList.length + 1),
+          origin: originList,
+          destination: destinationList,
+        },
+      ]);
+    }
   }
 
   function Validation() {
@@ -131,15 +174,10 @@ export default function SearchCondition({
       aria-label="search-panel"
       className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
     >
-      <SavePresetDialog
-        open={isSavePrestOpen}
-        handleOpen={setIsSavePrestOpen}
-        condition={currentCondition}
-      />
-      <PresetScheduleDialog
+      {/* <PresetScheduleDialog
         open={isPresetScheduleOpen}
         handleOpen={setIsPresetScheduleOpen}
-      />
+      /> */}
 
       <div className="flex gap-6 h-10">
         <MdTypography
@@ -195,8 +233,9 @@ export default function SearchCondition({
       <div className="flex gap-4 ">
         <div className="flex flex-1 gap-4">
           <SearchTextField
-            maxSelectionCount={originLimit}
+            itemList={createDummyPortData()}
             selectionItems={originList}
+            maxSelectionCount={originLimit}
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
@@ -207,35 +246,41 @@ export default function SearchCondition({
             </MdIcon>
           </MdIconButton>
           <SearchTextField
-            maxSelectionCount={destinationLimit}
+            itemList={createDummyPortData()}
             selectionItems={destinationList}
+            maxSelectionCount={destinationLimit}
             handleItemSelection={setDestinationList}
             errorText="Please select destination"
             error={isDestinationError}
           />
         </div>
-        <MdOutlinedButton
-          className="h-fit mt-2"
+        <MdFilledTonalIconButton
+          className="mt-2"
           onClick={() => {
-            setIsSavePrestOpen(true);
+            toggleFavourite();
           }}
         >
-          <div slot="icon">
-            <AddIcon className="w-5 h-5" />
-          </div>
-          Save Preset
-        </MdOutlinedButton>
-        <MdFilledTonalButton
-          className="h-fit mt-2"
-          onClick={() => {
-            setIsPresetScheduleOpen(true);
+          <MdIcon>
+            {isCurrentRouteFavourite() ? (
+              <FavoriteIcon />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
+          </MdIcon>
+        </MdFilledTonalIconButton>
+        <MyFavorite
+          onSelection={(origin, destination) => {
+            if (origin.length > 1) {
+              handleModeSelection("multi-origin");
+            } else if (destination.length > 1) {
+              handleModeSelection("multi-destination");
+            } else {
+              handleModeSelection("single");
+            }
+            setOriginList(origin);
+            setDestinationList(destination);
           }}
-        >
-          <div slot="icon">
-            <InboxOutlinedIcon className="w-5 h-5" />
-          </div>
-          Preset
-        </MdFilledTonalButton>
+        />
       </div>
 
       <div className="flex gap-4">
@@ -260,6 +305,8 @@ export default function SearchCondition({
         <MdRangeDatePicker
           label="Date"
           supportingText=" "
+          defaultStartDate={dateRange[0]}
+          defaultEndDate={dateRange[1]}
           handleDateRangeSelected={setDateRange}
         />
 
@@ -278,18 +325,16 @@ export default function SearchCondition({
         </MdTypography>
       </div>
       <div className="flex justify-end gap-2">
-        <MdTextButton>Reset</MdTextButton>
+        <MdTextButton
+          onClick={() => {
+            clearAllSelection();
+          }}
+        >
+          Reset
+        </MdTextButton>
         <MdFilledButton
           onClick={() => {
-            Validation() &&
-              searchAction({
-                origins: originList,
-                destinations: destinationList,
-                searchOn: searchOn,
-                startDate: dateRange[0],
-                endDate: dateRange[1],
-                directOnly: isDirectOnly,
-              });
+            Validation() && searchAction(currentCondition);
           }}
         >
           Search

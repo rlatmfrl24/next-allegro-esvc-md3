@@ -32,25 +32,22 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { MdTypography } from "@/app/components/typography";
-import { faker } from "@faker-js/faker";
+import ClearIcon from "@mui/icons-material/Clear";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
 >;
 
-const itemList = Array.from({ length: 900 }, (_, i) => {
-  const fakeCity = faker.location;
-  return `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase();
-});
-
 export const SearchTextField = ({
-  maxSelectionCount,
+  itemList,
   selectionItems,
+  maxSelectionCount,
   handleItemSelection,
   ...props
 }: {
-  maxSelectionCount: number;
+  itemList: string[];
   selectionItems: string[];
+  maxSelectionCount: number;
   handleItemSelection: Dispatch<SetStateAction<string[]>>;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
@@ -94,14 +91,15 @@ export const SearchTextField = ({
       selectionItems.length < maxSelectionCount &&
       !selectionItems.includes(item)
     ) {
-      handleItemSelection && handleItemSelection([...selectionItems, item]);
+      // setSelectionItems([...selectionItems, item]);
+      handleItemSelection([...selectionItems, item]);
     }
     setValue("");
     setIsMenuOpen(false);
   }
 
   useEffect(() => {
-    if (handleItemSelection) handleItemSelection(selectionItems);
+    handleItemSelection(selectionItems);
   }, [handleItemSelection, selectionItems]);
 
   return (
@@ -116,6 +114,7 @@ export const SearchTextField = ({
         disabled={selectionItems.length >= maxSelectionCount}
         placeholder={`Input Up to ${maxSelectionCount} Locations`}
         required={false}
+        onFocus={() => {}}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
           if (
@@ -206,15 +205,16 @@ export const SearchTextField = ({
       <MdChipSet>
         {selectionItems.map((item, index) => {
           return (
-            <MdInputChip
+            <CustomChip
               key={item + "_" + index}
-              selected
               label={item}
-              handleTrailingActionFocus={() => {
-                handleItemSelection &&
-                  handleItemSelection((previousState) =>
-                    previousState.filter((_, i) => i !== index)
-                  );
+              onDelete={() => {
+                // setSelectionItems((previous) =>
+                //   previous.filter((value) => value !== item)
+                // );
+                handleItemSelection((previous) =>
+                  previous.filter((value) => value !== item)
+                );
               }}
             />
           );
@@ -245,3 +245,36 @@ function highlightText(text: string, highlight: string) {
     </MdTypography>
   );
 }
+
+const CustomChip = ({
+  label,
+  onDelete,
+}: {
+  label: string;
+  onDelete?: Dispatch<SetStateAction<string>>;
+}) => {
+  return (
+    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2 whitespace-nowrap">
+      <MdTypography
+        variant="label"
+        size="large"
+        className="text-onSecondaryContainer"
+      >
+        {label}
+      </MdTypography>
+      <div
+        className="relative w-6 h-6 rounded-full flex items-center justify-center cursor-pointer"
+        onClick={() => {
+          onDelete?.(label);
+        }}
+      >
+        <MdRippleEffect />
+        <ClearIcon
+          sx={{
+            fontSize: 18,
+          }}
+        />
+      </div>
+    </div>
+  );
+};

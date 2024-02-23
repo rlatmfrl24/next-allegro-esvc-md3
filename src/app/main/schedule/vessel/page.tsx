@@ -1,143 +1,251 @@
 "use client";
 
-import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
-import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
-import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
-import { autocompleteItemList } from "@/app/util/constants";
-import { MdOutlinedCard } from "@/app/util/md3";
 import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "framer-motion";
-import { DateTime } from "luxon";
-import { useRef, useState } from "react";
-export default function VesselSchedule() {
-  const [firstDate, setFirstDate] = useState<DateTime | null>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({
-    container: scrollContainerRef,
-  });
-  const [isScrollTop, setIsScrollTop] = useState(true);
+  MdFilledButton,
+  MdIcon,
+  MdIconButton,
+  MdTextButton,
+} from "@/app/util/md3";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
+import { useEffect, useRef, useState } from "react";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
+import { createDummyVesselData } from "./util";
+import { VesselInfoType } from "@/app/util/typeDef";
+import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
+import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import DownloadIcon from "@mui/icons-material/Download";
+import VesselResultTable from "./result-table";
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest < 100) {
-      setIsScrollTop(true);
-    } else {
-      setIsScrollTop(false);
-    }
+export default function VesselSchedule() {
+  const scrollRef = useRef<any>();
+
+  const [vesselList] = useState<VesselInfoType[]>(createDummyVesselData());
+  const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
+    useState(false);
+  const [vesselQuery, setVesselQuery] = useState<string>("");
+  const [vesselData, setVesselData] = useState<VesselInfoType>({
+    vesselName: "-",
+    serviceLane: "-",
+    consortiumVoyage: "-",
   });
+  const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
+
+  const [initialize, instance] = useOverlayScrollbars({
+    events: {
+      scroll: (instance) => {
+        const viewport = instance.elements().viewport;
+        if (viewport.scrollTop > 150) {
+          setIsSearchConditionSummaryOpen(true);
+        } else {
+          setIsSearchConditionSummaryOpen(false);
+        }
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (scrollRef.current) initialize(scrollRef.current);
+  }, [initialize]);
 
   return (
-    <div className="relative flex-1 w-full max-w-[1400px] overflow-auto">
-      <AnimatePresence>
-        {!isScrollTop && (
-          <motion.div
-            initial={{ y: -200 }}
-            animate={{ y: 0 }}
-            exit={{ y: -200 }}
-            transition={{
-              duration: 0.5,
-              type: "spring",
-            }}
-            className="absolute top-0 w-full h-48 border-b border-surfaceVariant p-6 bg-surfaceContainer z-20"
-          ></motion.div>
-        )}
-      </AnimatePresence>
-      <div
-        ref={scrollContainerRef}
-        className="relative flex justify-center flex-1 overflow-auto w-full p-6"
-      >
-        <div className="max-w-[1400px] w-full">
-          <MdOutlinedCard className={`flex-1 flex flex-col gap-3 z-10 p-6`}>
-            <>
-              <MdSingleDatePicker handleDateChange={setFirstDate} />
-              <MdSingleDatePicker />
-              <MdRangeDatePicker />
-              <div className="flex">
-                <NAOutlinedAutoComplete
-                  id="test-1"
-                  className="flex-1"
-                  itemList={autocompleteItemList}
-                />
-                <NAOutlinedAutoComplete
-                  id="test-2"
-                  itemList={autocompleteItemList}
-                />
-              </div>
-            </>
-          </MdOutlinedCard>
-          <MdOutlinedCard className="flex flex-col gap-3 p-5 my-5 ">
+    <div ref={scrollRef} className="flex-1">
+      <div className="flex justify-center">
+        <div
+          aria-label="container"
+          className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "
+        >
+          <div
+            aria-label="page-title"
+            className="flex justify-start items-center gap-3"
+          >
             <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
+              Vessel Schedule
             </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-            <MdTypography variant="title" size="large">
-              {firstDate ? firstDate.toISODate() : "No date selected"}
-            </MdTypography>
-          </MdOutlinedCard>
+            <MdIconButton>
+              <MdIcon>
+                <FavoriteBorderIcon />
+              </MdIcon>
+            </MdIconButton>
+          </div>
+          <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
+            <NAOutlinedAutoComplete
+              label="Vessel Name"
+              required
+              itemList={vesselList.map((vessel) => vessel.vesselName)}
+              handleSelect={(value) => {
+                setVesselQuery(value === "" ? "" : value);
+              }}
+            />
+            <div className="flex justify-end gap-2">
+              <MdTextButton
+                onClick={() => {
+                  setVesselQuery("");
+                  setPageState("unsearch");
+                }}
+              >
+                Reset
+              </MdTextButton>
+              <MdFilledButton
+                onClick={() => {
+                  setPageState("search");
+                  setVesselData(
+                    vesselList.find(
+                      (vessel) => vessel.vesselName === vesselQuery
+                    ) || vesselData
+                  );
+                }}
+              >
+                Search
+              </MdFilledButton>
+            </div>
+          </div>
+          <div className="bg-surface rounded-2xl p-6 flex flex-col">
+            {
+              {
+                unsearch: (
+                  <div className="flex flex-col justify-center items-center h-96">
+                    <EmptyResultPlaceHolder className="mb-8" />
+                    <MdTypography
+                      variant="headline"
+                      size="medium"
+                      className="text-outlineVariant"
+                    >
+                      Please search for the schedule
+                    </MdTypography>
+                  </div>
+                ),
+                search: (
+                  <>
+                    <div className="flex justify-center">
+                      <div className="flex w-full h-fit">
+                        <div className="flex-1 grid grid-cols-[148px_1fr] gap-1">
+                          <MdTypography
+                            variant="body"
+                            size="medium"
+                            className="mr-4"
+                          >
+                            Vessel
+                          </MdTypography>
+                          <MdTypography
+                            variant="body"
+                            size="large"
+                            className={`text-primary ${
+                              vesselData.vesselName === "-"
+                                ? ""
+                                : "underline cursor-pointer"
+                            }`}
+                          >
+                            {vesselData.vesselName}
+                          </MdTypography>
+                          <MdTypography
+                            variant="body"
+                            size="medium"
+                            className="mr-4"
+                          >
+                            Service Lane
+                          </MdTypography>
+                          <MdTypography
+                            variant="body"
+                            size="large"
+                            className="text-primary"
+                          >
+                            {vesselData.serviceLane}
+                          </MdTypography>
+                          <MdTypography
+                            variant="body"
+                            size="medium"
+                            className="mr-4"
+                          >
+                            Consortium Voyage
+                          </MdTypography>
+                          <MdTypography
+                            variant="body"
+                            size="large"
+                            className="text-primary"
+                          >
+                            {vesselData.consortiumVoyage}
+                          </MdTypography>
+                        </div>
+                        <div className="flex h-fit items-center gap-2.5">
+                          <MdTextButton>
+                            <MdIcon slot="icon">
+                              <ChevronLeftIcon fontSize="small" />
+                            </MdIcon>
+                            Previous Voyage
+                          </MdTextButton>
+                          <div
+                            aria-label="divider"
+                            className="w-px h-6 bg-outlineVariant"
+                          ></div>
+                          <MdTextButton trailingIcon>
+                            Next Voyage
+                            <MdIcon slot="icon">
+                              <ChevronRightIcon fontSize="small" />
+                            </MdIcon>
+                          </MdTextButton>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      aria-label="divider"
+                      className="h-px w-full border-b border-dashed border-outlineVariant mt-6 mb-4"
+                    ></div>
+                    <div className="flex justify-between">
+                      <div className="flex items-center gap-2">
+                        <MdTypography
+                          variant="label"
+                          size="large"
+                          className="text-outline"
+                        >
+                          Ports Total:
+                        </MdTypography>
+                        <MdTypography
+                          variant="body"
+                          size="large"
+                          prominent
+                          className="text-onSurface"
+                        >
+                          2
+                        </MdTypography>
+                      </div>
+                      <div className="flex items-center gap-6">
+                        <MdTypography
+                          variant="label"
+                          size="medium"
+                          tag="label"
+                          className="flex items-center gap-2"
+                        >
+                          <ActualScheduleIcon />
+                          Actual Schedule
+                        </MdTypography>
+                        <MdTypography
+                          variant="label"
+                          size="medium"
+                          tag="label"
+                          className="flex items-center gap-2"
+                        >
+                          <EstimateScheduleIcon />
+                          Estimate Schedule
+                        </MdTypography>
+                        <MdTextButton>
+                          <MdIcon slot="icon">
+                            <DownloadIcon fontSize="small" />
+                          </MdIcon>
+                          Download
+                        </MdTextButton>
+                      </div>
+                    </div>
+                    <VesselResultTable />
+                  </>
+                ),
+              }[pageState]
+            }
+          </div>
         </div>
       </div>
     </div>

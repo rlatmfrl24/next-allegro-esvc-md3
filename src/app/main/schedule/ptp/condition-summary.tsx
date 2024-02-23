@@ -2,14 +2,19 @@ import Portal from "@/app/components/portal";
 import {
   MdChipSet,
   MdElevation,
+  MdFilledTonalIconButton,
   MdIcon,
   MdOutlinedButton,
 } from "@/app/util/md3";
 import { AnimatePresence, motion } from "framer-motion";
 import { CSSProperties } from "react";
 import { MdTypography } from "@/app/components/typography";
+import { SearchConditionType } from "@/app/util/typeDef";
+import { useRecoilState } from "recoil";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
-import { SearchConditionProps } from "@/app/util/typeDef";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { FavoriteRouteListState } from "@/app/store/ptp.store";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -29,7 +34,7 @@ const PortChip = ({ port }: { port: string }) => {
     <MdTypography
       variant="label"
       size="large"
-      className="px-3 py-1.5 bg-secondaryContainer text-onSecondaryContainer rounded-lg"
+      className="px-3 py-1.5 bg-secondaryContainer text-onSecondaryContainer rounded-lg whitespace-nowrap"
     >
       {port}
     </MdTypography>
@@ -42,17 +47,51 @@ export default function ConditionSummary({
   scrollTop,
 }: {
   open: boolean;
-  condition: SearchConditionProps;
+  condition: SearchConditionType;
   scrollTop?: () => void;
 }) {
+  const [presetList, setPresetList] = useRecoilState(FavoriteRouteListState);
+
+  function isCurrentRouteFavourite() {
+    return presetList.some((preset) => {
+      return (
+        preset.origin.toString() === condition.origins.toString() &&
+        preset.destination.toString() === condition.destinations.toString()
+      );
+    });
+  }
+
+  function toggleFavourite() {
+    if (isCurrentRouteFavourite()) {
+      setPresetList(
+        presetList.filter((preset) => {
+          return (
+            preset.origin.toString() !== condition.origins.toString() ||
+            preset.destination.toString() !== condition.destinations.toString()
+          );
+        })
+      );
+    } else {
+      setPresetList([
+        ...presetList,
+        {
+          id: "preset-" + presetList.length,
+          name: "Preset " + (presetList.length + 1),
+          origin: condition.origins,
+          destination: condition.destinations,
+        },
+      ]);
+    }
+  }
+
   return (
     <Portal selector="#main-container">
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ y: -200 }}
+            initial={{ y: -300 }}
             animate={{ y: 0 }}
-            exit={{ y: -200 }}
+            exit={{ y: -300 }}
             transition={{ type: "spring", bounce: 0, duration: 0.5 }}
             style={
               {
@@ -64,8 +103,8 @@ export default function ConditionSummary({
             <MdElevation />
             <div className="max-w-[1400px] w-full py-6 flex mx-6">
               <div className="flex flex-col flex-1 gap-4">
-                <div className="flex gap-4 items-center">
-                  <div className="flex flex-col gap-1">
+                <div className="flex gap-4 ">
+                  <div className="flex flex-1 flex-col gap-1">
                     <MdTypography
                       variant="body"
                       size="medium"
@@ -91,7 +130,7 @@ export default function ConditionSummary({
                       <SwapHorizOutlinedIcon />
                     </MdIcon>
                   </div>
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-1 flex-col gap-1">
                     <MdTypography
                       variant="body"
                       size="medium"
@@ -127,7 +166,21 @@ export default function ConditionSummary({
                   />
                 </div>
               </div>
-              <div className="flex h-full justify-end items-end gap-4">
+              <div className="flex flex-col h-full justify-between items-end">
+                <MdFilledTonalIconButton
+                  onClick={() => {
+                    toggleFavourite();
+                  }}
+                >
+                  <MdIcon>
+                    {isCurrentRouteFavourite() ? (
+                      <FavoriteIcon />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}
+                  </MdIcon>
+                </MdFilledTonalIconButton>
+
                 <MdOutlinedButton onClick={scrollTop}>
                   Re-Search
                 </MdOutlinedButton>

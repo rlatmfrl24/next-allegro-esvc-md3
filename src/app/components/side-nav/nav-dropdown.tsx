@@ -121,7 +121,7 @@ const MenuComponent = ({
             {item.name}
           </MdTypography>
           <MdIcon className="w-5 h-5 ml-8">
-            <ChevronRightIcon className="w-5 h-5" />
+            <ChevronRightIcon fontSize="small" />
           </MdIcon>
         </div>
       ) : (

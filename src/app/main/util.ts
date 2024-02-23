@@ -1,5 +1,5 @@
 import { menuItems } from "../util/constants";
-import { PresetType } from "../util/typeDef";
+import { FavoriteRouteType } from "../util/typeDef";
 
 export function getRoutePath(paths: string[]) {
   let itemTree = menuItems;

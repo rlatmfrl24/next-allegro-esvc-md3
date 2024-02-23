@@ -29,7 +29,7 @@ export type DashboardStatisticCardDataType = {
   showChart?: boolean;
 };
 
-export type ListItemProps = {
+export type ListItemType = {
   origin: string;
   departure: DateTime;
   destination: string;
@@ -39,7 +39,7 @@ export type ListItemProps = {
   serviceLane: string;
 };
 
-export type SearchConditionProps = {
+export type SearchConditionType = {
   origins: string[];
   destinations: string[];
   searchOn: "departure" | "arrival";
@@ -48,10 +48,24 @@ export type SearchConditionProps = {
   directOnly: boolean;
 };
 
-export type PresetType = {
+export type FavoriteRouteType = {
   id: string;
   name: string;
-  useMailingService: boolean;
-  createDateTime: DateTime;
-  condition: SearchConditionProps;
+  origin: string[];
+  destination: string[];
+};
+
+export type PlaceInformationType = {
+  yardName: string;
+  address: string;
+  phoneNo: string;
+  faxNo: string;
+  customerNo: string;
+  emailAddress: string;
+};
+
+export type VesselInfoType = {
+  vesselName: string;
+  serviceLane: string;
+  consortiumVoyage: string;
 };

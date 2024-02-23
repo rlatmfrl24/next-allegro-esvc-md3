@@ -32,7 +32,7 @@ import styles from "@/app/styles/datepicker.module.css";
 export const MdRangeDatePicker = (props: {
   className?: string;
   label?: string;
-  defautStartDate?: DateTime;
+  defaultStartDate?: DateTime;
   defaultEndDate?: DateTime;
   supportingText?: string;
   handleDateRangeSelected?: Dispatch<SetStateAction<[DateTime, DateTime]>>;
@@ -40,7 +40,7 @@ export const MdRangeDatePicker = (props: {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
   const [focusStartDate, setFocusStartDate] = useState<DateTime>(
-    props.defautStartDate || DateTime.now()
+    props.defaultStartDate || DateTime.now()
   );
   const [focusEndDate, setFocusEndDate] = useState<DateTime>(
     props.defaultEndDate || DateTime.now()
@@ -74,7 +74,8 @@ export const MdRangeDatePicker = (props: {
   ]);
 
   const { headers, body, navigation, cursorDate } = useCalendar({
-    defaultDate: props.defautStartDate?.toJSDate() || DateTime.now().toJSDate(),
+    defaultDate:
+      props.defaultStartDate?.toJSDate() || DateTime.now().toJSDate(),
   });
 
   function handleDateChange(e: any) {
@@ -140,6 +141,12 @@ export const MdRangeDatePicker = (props: {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
+
+  // set default date range if provided
+  useEffect(() => {
+    if (props.defaultStartDate && props.defaultEndDate)
+      setDefaultDateRange([props.defaultStartDate, props.defaultEndDate]);
+  }, [props.defaultStartDate, props.defaultEndDate]);
 
   return (
     <div
