@@ -5,7 +5,6 @@ import {
   MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
-  MdOutlinedButton,
   MdOutlinedSelect,
   MdRadio,
   MdSelectOption,
@@ -16,10 +15,7 @@ import { useEffect, useState } from "react";
 import { SearchTextField } from "./search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
-import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
-import SavePresetDialog from "./popup/save-preset";
 import { SearchConditionType } from "@/app/util/typeDef";
-import PresetScheduleDialog from "./popup/preset-schedule";
 import { createDummyPortData } from "./util";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -51,8 +47,6 @@ export default function SearchCondition({
 
   const [isOriginError, setIsOriginError] = useState<boolean>(false);
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
-  const [isSavePrestOpen, setIsSavePrestOpen] = useState(false);
-  const [isPresetScheduleOpen, setIsPresetScheduleOpen] = useState(false);
 
   const [currentCondition, setCurrentCondition] = useState<SearchConditionType>(
     {
@@ -94,6 +88,11 @@ export default function SearchCondition({
   function clearAllSelection() {
     setOriginList([]);
     setDestinationList([]);
+    setIsOriginError(false);
+    setIsDestinationError(false);
+    setSearchOn("departure");
+    setIsDirectOnly(true);
+    setDateRange([DateTime.now(), DateTime.now()]);
   }
 
   function switchOriginDestination() {
@@ -147,10 +146,6 @@ export default function SearchCondition({
     }
   }
 
-  useEffect(() => {
-    console.log(presetList);
-  }, [presetList]);
-
   function Validation() {
     if (originList.length === 0) {
       setIsOriginError(true);
@@ -177,15 +172,10 @@ export default function SearchCondition({
       aria-label="search-panel"
       className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
     >
-      <SavePresetDialog
-        open={isSavePrestOpen}
-        handleOpen={setIsSavePrestOpen}
-        condition={currentCondition}
-      />
-      <PresetScheduleDialog
+      {/* <PresetScheduleDialog
         open={isPresetScheduleOpen}
         handleOpen={setIsPresetScheduleOpen}
-      />
+      /> */}
 
       <div className="flex gap-6 h-10">
         <MdTypography
@@ -276,16 +266,8 @@ export default function SearchCondition({
             )}
           </MdIcon>
         </MdFilledTonalIconButton>
-        <MdFilledTonalButton
-          className="h-fit mt-2"
-          onClick={() => {
-            setIsPresetScheduleOpen(true);
-          }}
-        >
-          <div slot="icon">
-            <InboxOutlinedIcon fontSize="small" />
-          </div>
-          Preset
+        <MdFilledTonalButton className="h-fit mt-2" onClick={() => {}}>
+          My Favorite
         </MdFilledTonalButton>
       </div>
 
@@ -311,6 +293,8 @@ export default function SearchCondition({
         <MdRangeDatePicker
           label="Date"
           supportingText=" "
+          defaultStartDate={dateRange[0]}
+          defaultEndDate={dateRange[1]}
           handleDateRangeSelected={setDateRange}
         />
 
@@ -329,7 +313,13 @@ export default function SearchCondition({
         </MdTypography>
       </div>
       <div className="flex justify-end gap-2">
-        <MdTextButton>Reset</MdTextButton>
+        <MdTextButton
+          onClick={() => {
+            clearAllSelection();
+          }}
+        >
+          Reset
+        </MdTextButton>
         <MdFilledButton
           onClick={() => {
             Validation() &&
