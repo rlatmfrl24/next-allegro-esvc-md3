@@ -20,6 +20,7 @@ import {
   useListNavigation,
   useRole,
 } from "@floating-ui/react";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -28,11 +29,13 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 export const NAOutlinedAutoComplete = ({
   itemList,
   className,
+  recentItems,
   handleSelect,
   ...props
 }: {
   itemList: string[];
   className?: string;
+  recentItems?: string[];
   handleSelect?: (value: string) => void;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
@@ -40,7 +43,6 @@ export const NAOutlinedAutoComplete = ({
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<any[]>([]);
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { refs, floatingStyles, context } = useFloating({
@@ -86,6 +88,11 @@ export const NAOutlinedAutoComplete = ({
         ref={refs.setReference}
         className="flex-1"
         required={false}
+        focus={() => {
+          if (recentItems && recentItems?.length > 0 && value === "") {
+            setIsMenuOpen(true);
+          }
+        }}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
           if (
@@ -138,28 +145,71 @@ export const NAOutlinedAutoComplete = ({
           >
             <MdElevation />
             <div className="max-h-[600px] overflow-auto">
-              {recommandedItems.map((item, index) => (
-                <div
-                  key={item + "_" + index}
-                  className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
-                  tabIndex={activeIndex === index ? 0 : -1}
-                  ref={(node) => {
-                    listRef.current[index] = node;
-                  }}
-                  {...getItemProps()}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleItemSelect(item);
+              <div>
+                {recentItems &&
+                  recentItems.length > 0 &&
+                  recentItems.map((item, index) => (
+                    <div
+                      key={item + "_" + index}
+                      className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+                      tabIndex={activeIndex === index ? 0 : -1}
+                      ref={(node) => {
+                        listRef.current[index] = node;
+                      }}
+                      {...getItemProps()}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleItemSelect(item);
+                        }
+                      }}
+                      onClick={() => {
+                        handleItemSelect(item);
+                      }}
+                    >
+                      <MdRippleEffect />
+                      <RestoreIcon className="mr-2 text-onSurfaceVariant" />
+                      {highlightText(item, value)}
+                    </div>
+                  ))}
+              </div>
+              {recentItems &&
+                recentItems.length > 0 &&
+                recommandedItems.length > 0 &&
+                value.length > 2 && (
+                  <div
+                    aria-label="recent-divider"
+                    className="h-px w-full bg-outlineVariant"
+                  ></div>
+                )}
+
+              {value.length > 2 &&
+                recommandedItems.map((item, index) => (
+                  <div
+                    key={item + "_" + index}
+                    className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+                    tabIndex={
+                      activeIndex === index + (recentItems?.length || 0)
+                        ? 0
+                        : -1
                     }
-                  }}
-                  onClick={() => {
-                    handleItemSelect(item);
-                  }}
-                >
-                  <MdRippleEffect />
-                  {highlightText(item, value)}
-                </div>
-              ))}
+                    ref={(node) => {
+                      listRef.current[index + (recentItems?.length || 0)] =
+                        node;
+                    }}
+                    {...getItemProps()}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleItemSelect(item);
+                      }
+                    }}
+                    onClick={() => {
+                      handleItemSelect(item);
+                    }}
+                  >
+                    <MdRippleEffect />
+                    {highlightText(item, value)}
+                  </div>
+                ))}
             </div>
           </div>
         </FloatingFocusManager>
@@ -179,7 +229,9 @@ export const NAOutlinedAutoComplete = ({
 };
 
 function highlightText(text: string, highlight: string) {
-  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = text.split(new RegExp(`(${escapedHighlight})`, "gi"));
+
   return (
     <MdTypography variant="body" size="large" className="flex-1">
       <span>

@@ -8,7 +8,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
 import { createDummyVesselData } from "./util";
@@ -20,6 +20,8 @@ import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
+import OutlinedAutoComplete from "@/app/components/na-autocomplete";
+import { useAutoCompleteComponent } from "@/app/components/hl-autocomplete";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -28,6 +30,7 @@ export default function VesselSchedule() {
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
+  const [recentVesselQueries, setRecentVesselQueries] = useState<string[]>([]);
   const [vesselData, setVesselData] = useState<VesselInfoType>({
     vesselName: "-",
     serviceLane: "-",
@@ -52,6 +55,17 @@ export default function VesselSchedule() {
     if (scrollRef.current) initialize(scrollRef.current);
   }, [initialize]);
 
+  function clearSearchCondition() {
+    setVesselQuery("");
+    setPageState("unsearch");
+  }
+
+  const {
+    component: AutoCompleteComponent,
+    selectedItem,
+    setQuery,
+  } = useAutoCompleteComponent();
+
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -73,19 +87,32 @@ export default function VesselSchedule() {
             </MdIconButton>
           </div>
           <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
-            <NAOutlinedAutoComplete
+            <OutlinedAutoComplete
+              value={vesselQuery}
+              setValue={setVesselQuery}
               label="Vessel Name"
-              required
+              recentItems={recentVesselQueries}
               itemList={vesselList.map((vessel) => vessel.vesselName)}
-              handleSelect={(value) => {
+              className="w-full"
+              onSelection={(value) => {
                 setVesselQuery(value === "" ? "" : value);
+                if (value !== "") {
+                  setRecentVesselQueries((previous) => {
+                    if (previous.includes(value)) {
+                      const index = previous.indexOf(value);
+                      previous.splice(index, 1);
+                      return [value, ...previous];
+                    }
+                    return [value, ...previous].slice(0, 5);
+                  });
+                }
               }}
             />
+            {AutoCompleteComponent}
             <div className="flex justify-end gap-2">
               <MdTextButton
                 onClick={() => {
-                  setVesselQuery("");
-                  setPageState("unsearch");
+                  clearSearchCondition();
                 }}
               >
                 Reset
@@ -96,7 +123,11 @@ export default function VesselSchedule() {
                   setVesselData(
                     vesselList.find(
                       (vessel) => vessel.vesselName === vesselQuery
-                    ) || vesselData
+                    ) || {
+                      vesselName: "-",
+                      serviceLane: "-",
+                      consortiumVoyage: "-",
+                    }
                   );
                 }}
               >
@@ -137,7 +168,7 @@ export default function VesselSchedule() {
                             className={`text-primary ${
                               vesselData.vesselName === "-"
                                 ? ""
-                                : "underline cursor-pointer"
+                                : "underline cursor-pointer w-fit"
                             }`}
                           >
                             {vesselData.vesselName}
