@@ -183,32 +183,44 @@ export const SearchTextField = ({
         >
           <MdElevation />
           <div className="max-h-[600px] overflow-auto">
+            {recentItems.length > 0 && (
+              <MdTypography
+                className="m-3 bg-primaryContainer text-onPrimaryContainer w-fit h-6 px-3 flex items-center rounded-lg"
+                variant="label"
+                size="medium"
+              >
+                Reuse a Previous Search
+              </MdTypography>
+            )}
+
             {recentItems &&
               recentItems.length > 0 &&
               recentItems.map((item, index) => (
-                <MdListItem
-                  key={item}
-                  type="button"
-                  className="focus:bg-surfaceContainerHighest focus:outline-none "
-                  {...getItemProps()}
-                  tabIndex={activeIndex === index ? 0 : -1}
-                  ref={(node) => {
-                    listRef.current[index] = node;
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                <>
+                  <MdListItem
+                    key={item}
+                    type="button"
+                    className="focus:bg-surfaceContainerHighest focus:outline-none "
+                    {...getItemProps()}
+                    tabIndex={activeIndex === index ? 0 : -1}
+                    ref={(node) => {
+                      listRef.current[index] = node;
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSelection(item);
+                      }
+                    }}
+                    onClick={() => {
                       handleSelection(item);
-                    }
-                  }}
-                  onClick={() => {
-                    handleSelection(item);
-                  }}
-                >
-                  <MdIcon slot="start">
-                    <RestoreIcon />
-                  </MdIcon>
-                  {highlightText(item, value)}
-                </MdListItem>
+                    }}
+                  >
+                    <MdIcon slot="start">
+                      <RestoreIcon />
+                    </MdIcon>
+                    {highlightText(item, value)}
+                  </MdListItem>
+                </>
               ))}
             {recentItems &&
               recentItems.length > 0 &&
