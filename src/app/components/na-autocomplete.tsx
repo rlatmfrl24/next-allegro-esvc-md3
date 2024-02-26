@@ -1,4 +1,11 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   MdElevation,
   MdIcon,
@@ -28,18 +35,20 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 >;
 
 export default function OutlinedAutoComplete({
+  value,
+  setValue,
   itemList,
   recentItems,
-  onChange,
   onSelection,
   ...props
 }: {
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
   itemList: string[];
   recentItems?: string[];
-  onChange?: (value: string) => void;
   onSelection?: (value: string) => void;
 } & MdOutlinedTextFieldProps) {
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
   const [defaultValue, setDefaultValue] = useState("");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -75,15 +84,11 @@ export default function OutlinedAutoComplete({
   );
 
   useEffect(() => {
-    onChange?.(value);
-  }, [onChange, value]);
-
-  useEffect(() => {
     //when list is close, reset the value to default value
     if (!isListOpen) {
       setValue(defaultValue);
     }
-  }, [defaultValue, isListOpen, value]);
+  }, [defaultValue, isListOpen, setValue]);
 
   function handleItemSelect(item: string) {
     setValue(item);
@@ -132,7 +137,7 @@ export default function OutlinedAutoComplete({
           className="relative z-50 bg-surfaceContainerLow rounded focus:outline-none"
         >
           <MdElevation />
-          <MdList className="max-h-[600px] overflow-y-auto bg-surfaceContainerLow">
+          <MdList className="relative max-h-[600px] overflow-y-auto rounded bg-surfaceContainerLow">
             <OverlayScrollbarsComponent defer>
               {recentItems &&
                 recentItems.length > 0 &&
@@ -140,7 +145,7 @@ export default function OutlinedAutoComplete({
                   <MdListItem
                     key={item}
                     type="button"
-                    className="focus:bg-surfaceContainerHighest focus:outline-none"
+                    className="focus:bg-surfaceContainerHighest focus:outline-none "
                     {...getItemProps()}
                     tabIndex={activeIndex === index ? 0 : -1}
                     ref={(node) => {

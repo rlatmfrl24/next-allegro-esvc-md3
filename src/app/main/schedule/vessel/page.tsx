@@ -8,7 +8,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
 import { createDummyVesselData } from "./util";
@@ -21,6 +21,7 @@ import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
 import OutlinedAutoComplete from "@/app/components/na-autocomplete";
+import { useAutoCompleteComponent } from "@/app/components/hl-autocomplete";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -54,6 +55,17 @@ export default function VesselSchedule() {
     if (scrollRef.current) initialize(scrollRef.current);
   }, [initialize]);
 
+  function clearSearchCondition() {
+    setVesselQuery("");
+    setPageState("unsearch");
+  }
+
+  const {
+    component: AutoCompleteComponent,
+    selectedItem,
+    setQuery,
+  } = useAutoCompleteComponent();
+
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -76,6 +88,8 @@ export default function VesselSchedule() {
           </div>
           <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
             <OutlinedAutoComplete
+              value={vesselQuery}
+              setValue={setVesselQuery}
               label="Vessel Name"
               recentItems={recentVesselQueries}
               itemList={vesselList.map((vessel) => vessel.vesselName)}
@@ -94,11 +108,11 @@ export default function VesselSchedule() {
                 }
               }}
             />
+            {AutoCompleteComponent}
             <div className="flex justify-end gap-2">
               <MdTextButton
                 onClick={() => {
-                  setVesselQuery("");
-                  setPageState("unsearch");
+                  clearSearchCondition();
                 }}
               >
                 Reset
@@ -106,7 +120,6 @@ export default function VesselSchedule() {
               <MdFilledButton
                 onClick={() => {
                   setPageState("search");
-                  console.log(vesselQuery);
                   setVesselData(
                     vesselList.find(
                       (vessel) => vessel.vesselName === vesselQuery
