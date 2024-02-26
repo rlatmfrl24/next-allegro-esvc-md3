@@ -34,7 +34,7 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
 >;
 
-export default function OutlinedAutoComplete({
+export default function NAOutlinedAutoComplete({
   value,
   setValue,
   itemList,
