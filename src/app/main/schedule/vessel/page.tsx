@@ -8,9 +8,8 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { NAOutlinedAutoComplete } from "@/app/components/autocomplete";
 import { createDummyVesselData } from "./util";
 import { VesselInfoType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
@@ -21,7 +20,6 @@ import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
 import OutlinedAutoComplete from "@/app/components/na-autocomplete";
-import { useAutoCompleteComponent } from "@/app/components/hl-autocomplete";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -59,12 +57,6 @@ export default function VesselSchedule() {
     setVesselQuery("");
     setPageState("unsearch");
   }
-
-  const {
-    component: AutoCompleteComponent,
-    selectedItem,
-    setQuery,
-  } = useAutoCompleteComponent();
 
   return (
     <div ref={scrollRef} className="flex-1">
@@ -108,7 +100,6 @@ export default function VesselSchedule() {
                 }
               }}
             />
-            {AutoCompleteComponent}
             <div className="flex justify-end gap-2">
               <MdTextButton
                 onClick={() => {
