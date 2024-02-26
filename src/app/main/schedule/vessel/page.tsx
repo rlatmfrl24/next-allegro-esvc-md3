@@ -19,7 +19,7 @@ import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
-import OutlinedAutoComplete from "@/app/components/na-autocomplete";
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -79,7 +79,7 @@ export default function VesselSchedule() {
             </MdIconButton>
           </div>
           <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
-            <OutlinedAutoComplete
+            <NAOutlinedAutoComplete
               value={vesselQuery}
               setValue={setVesselQuery}
               label="Vessel Name"
