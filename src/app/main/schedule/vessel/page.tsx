@@ -20,20 +20,38 @@ import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import VesselInformation from "../popup/vessel-information";
+import Portal from "@/app/components/portal";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
+  const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
+
+  const emptyVesselData: VesselInfoType = {
+    vesselName: "-",
+    serviceLane: "-",
+    consortiumVoyage: "-",
+    age: 0,
+    builtOn: "",
+    classNumber: "",
+    IMONumber: "",
+    netWeight: 0,
+    officialNumber: "",
+    owner: "",
+    ownerName: "",
+    vesselCode: "",
+    grossWeight: 0,
+    flag: "",
+    callSign: "",
+    portOfRegistry: "",
+  };
 
   const [vesselList] = useState<VesselInfoType[]>(createDummyVesselData());
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
   const [recentVesselQueries, setRecentVesselQueries] = useState<string[]>([]);
-  const [vesselData, setVesselData] = useState<VesselInfoType>({
-    vesselName: "-",
-    serviceLane: "-",
-    consortiumVoyage: "-",
-  });
+  const [vesselData, setVesselData] = useState<VesselInfoType>(emptyVesselData);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
 
   const [initialize, instance] = useOverlayScrollbars({
@@ -114,11 +132,7 @@ export default function VesselSchedule() {
                   setVesselData(
                     vesselList.find(
                       (vessel) => vessel.vesselName === vesselQuery
-                    ) || {
-                      vesselName: "-",
-                      serviceLane: "-",
-                      consortiumVoyage: "-",
-                    }
+                    ) || emptyVesselData
                   );
                 }}
               >
@@ -153,17 +167,24 @@ export default function VesselSchedule() {
                           >
                             Vessel
                           </MdTypography>
-                          <MdTypography
-                            variant="body"
-                            size="large"
-                            className={`text-primary ${
-                              vesselData.vesselName === "-"
-                                ? ""
-                                : "underline cursor-pointer w-fit"
-                            }`}
+                          <div
+                            onClick={() => {
+                              if (vesselData.vesselName !== "-")
+                                setIsVesselInformationOpen(true);
+                            }}
                           >
-                            {vesselData.vesselName}
-                          </MdTypography>
+                            <MdTypography
+                              variant="body"
+                              size="large"
+                              className={`text-primary ${
+                                vesselData.vesselName === "-"
+                                  ? ""
+                                  : "underline cursor-pointer w-fit"
+                              }`}
+                            >
+                              {vesselData.vesselName}
+                            </MdTypography>
+                          </div>
                           <MdTypography
                             variant="body"
                             size="medium"
@@ -270,6 +291,13 @@ export default function VesselSchedule() {
           </div>
         </div>
       </div>
+      <Portal selector="#main-container">
+        <VesselInformation
+          open={isVesselInformationOpen}
+          handleOpen={setIsVesselInformationOpen}
+          data={vesselData}
+        />
+      </Portal>
     </div>
   );
 }
