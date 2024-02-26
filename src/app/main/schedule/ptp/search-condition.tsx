@@ -174,11 +174,6 @@ export default function SearchCondition({
       aria-label="search-panel"
       className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
     >
-      {/* <PresetScheduleDialog
-        open={isPresetScheduleOpen}
-        handleOpen={setIsPresetScheduleOpen}
-      /> */}
-
       <div className="flex gap-6 h-10">
         <MdTypography
           tag="label"

@@ -5,7 +5,7 @@ import {
   MdElevation,
   MdIcon,
   MdIconButton,
-  MdInputChip,
+  MdListItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
   MdRippleEffect,
 } from "@/app/util/md3";
@@ -33,6 +33,7 @@ import {
 } from "@floating-ui/react";
 import { MdTypography } from "@/app/components/typography";
 import ClearIcon from "@mui/icons-material/Clear";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -56,6 +57,7 @@ export const SearchTextField = ({
   const listRef = useRef<any[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
+  const [recentItems, setRecentItems] = useState<string[]>([]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isMenuOpen,
@@ -91,12 +93,24 @@ export const SearchTextField = ({
       selectionItems.length < maxSelectionCount &&
       !selectionItems.includes(item)
     ) {
-      // setSelectionItems([...selectionItems, item]);
       handleItemSelection([...selectionItems, item]);
     }
+    // add recent items max 5
+    setRecentItems((previous) => {
+      if (previous.includes(item)) {
+        const index = previous.indexOf(item);
+        previous.splice(index, 1);
+        return [item, ...previous];
+      }
+      return [item, ...previous].slice(0, 5);
+    });
     setValue("");
     setIsMenuOpen(false);
   }
+
+  useEffect(() => {
+    console.log(recentItems);
+  }, [recentItems]);
 
   useEffect(() => {
     handleItemSelection(selectionItems);
@@ -114,7 +128,9 @@ export const SearchTextField = ({
         disabled={selectionItems.length >= maxSelectionCount}
         placeholder={`Input Up to ${maxSelectionCount} Locations`}
         required={false}
-        onFocus={() => {}}
+        onFocus={() => {
+          setIsMenuOpen(true);
+        }}
         onInput={(e) => {
           const targetValue = (e.target as HTMLInputElement).value;
           if (
@@ -154,27 +170,67 @@ export const SearchTextField = ({
         )}
       </MdOutlinedTextFieldBase>
       {isMenuOpen && (
-        <FloatingFocusManager context={context} modal={false} initialFocus={-1}>
-          <div
-            ref={refs.setFloating}
-            style={
-              {
-                "--md-elevation-level": 2,
-                ...floatingStyles,
-              } as CSSProperties
-            }
-            {...getFloatingProps()}
-            className="relative z-50 bg-surfaceContainer rounded py-2 focus:outline-none"
-          >
-            <MdElevation />
-            <div className="max-h-[600px] overflow-auto">
-              {recommandedItems.map((item, index) => (
-                <div
-                  key={item + "_" + index}
-                  className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+        <div
+          ref={refs.setFloating}
+          style={
+            {
+              "--md-elevation-level": 2,
+              ...floatingStyles,
+            } as CSSProperties
+          }
+          {...getFloatingProps()}
+          className="relative z-50 bg-surfaceContainer rounded py-2 focus:outline-none"
+        >
+          <MdElevation />
+          <div className="max-h-[600px] overflow-auto">
+            {recentItems &&
+              recentItems.length > 0 &&
+              recentItems.map((item, index) => (
+                <MdListItem
+                  key={item}
+                  type="button"
+                  className="focus:bg-surfaceContainerHighest focus:outline-none "
+                  {...getItemProps()}
                   tabIndex={activeIndex === index ? 0 : -1}
                   ref={(node) => {
                     listRef.current[index] = node;
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSelection(item);
+                    }
+                  }}
+                  onClick={() => {
+                    handleSelection(item);
+                  }}
+                >
+                  <MdIcon slot="start">
+                    <RestoreIcon />
+                  </MdIcon>
+                  {highlightText(item, value)}
+                </MdListItem>
+              ))}
+            {recentItems &&
+              recentItems.length > 0 &&
+              itemList.filter((item) => {
+                return item.toLowerCase().includes(value.toLowerCase());
+              }).length > 0 &&
+              value.length > 2 && (
+                <div
+                  aria-label="recent-divider"
+                  className="h-px w-full bg-outlineVariant"
+                ></div>
+              )}
+            {value.length > 2 &&
+              recommandedItems.map((item, index) => (
+                <div
+                  key={item + "_" + index}
+                  className="focus:outline-none focus:bg-surfaceContainerHighest h-12 flex items-center px-3 cursor-pointer relative"
+                  tabIndex={
+                    activeIndex === index + (recentItems?.length || 0) ? 0 : -1
+                  }
+                  ref={(node) => {
+                    listRef.current[index + (recentItems?.length || 0)] = node;
                   }}
                   {...getItemProps()}
                   onKeyDown={(e) => {
@@ -190,9 +246,8 @@ export const SearchTextField = ({
                   {highlightText(item, value)}
                 </div>
               ))}
-            </div>
           </div>
-        </FloatingFocusManager>
+        </div>
       )}
 
       <MdTypography
