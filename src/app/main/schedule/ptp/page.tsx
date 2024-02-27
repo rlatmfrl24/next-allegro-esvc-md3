@@ -16,21 +16,22 @@ import { createDummyScheduleData } from "./util";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
-import { ListItemType, SearchConditionType } from "@/app/util/typeDef";
+import { ListItemType, PtPSearchConditionType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
-  const [searchCondition, setSearchCondition] = useState<SearchConditionType>({
-    origins: [],
-    destinations: [],
-    directOnly: true,
-    startDate: DateTime.now(),
-    endDate: DateTime.now(),
-    searchOn: "departure",
-  });
+  const [searchCondition, setSearchCondition] =
+    useState<PtPSearchConditionType>({
+      origins: [],
+      destinations: [],
+      directOnly: true,
+      startDate: DateTime.now(),
+      endDate: DateTime.now(),
+      searchOn: "departure",
+    });
   const [resultList, setResultList] = useState<ListItemType[]>([]);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);

@@ -1,74 +1,134 @@
-import { faker } from "@faker-js/faker";
-import { DateTime } from "luxon";
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { info } from "console";
+import { VesselScheduleType } from "@/app/util/typeDef";
+import { useState } from "react";
+import Portal from "@/app/components/portal";
+import PlaceInformationDialog from "../popup/place-information";
+import { faker } from "@faker-js/faker";
+import { BasicTable } from "@/app/components/basic-table";
+import { DateTime } from "luxon";
+import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
+import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import { MdTypography } from "@/app/components/typography";
 
-type VesselScheduleType = {
-  port: string;
-  terminal: string;
-  arrivalDate: DateTime;
-  berthingDate: DateTime;
-  departureDate: DateTime;
+const DateCell = ({
+  info,
+  flag,
+}: {
+  info: DateTime;
+  flag: "actual" | "estimate";
+}) => {
+  return (
+    <MdTypography variant="body" size="medium" className="flex items-center">
+      <div className="mr-2">
+        {flag === "actual" ? <ActualScheduleIcon /> : <EstimateScheduleIcon />}
+      </div>
+      {info.toFormat("yyyy-MM-dd HH:mm:ss")}
+    </MdTypography>
+  );
 };
 
-const DummyVesselSchedule: VesselScheduleType[] = Array.from(
-  { length: 10 },
-  (_, i) => {
-    const tempDate = DateTime.fromJSDate(faker.date.future());
-    return {
-      port: `Port ${i}`,
-      terminal: `Terminal ${i}`,
-      departureDate: tempDate,
-      berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
-      arrivalDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
-    };
-  }
-);
+export default function VesselResultTable({
+  data,
+}: {
+  data: VesselScheduleType[];
+}) {
+  const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  const columnHelper = createColumnHelper<VesselScheduleType>();
 
-const columnHelper = createColumnHelper<VesselScheduleType>();
+  const columns = [
+    columnHelper.accessor("port", {
+      header: "Port",
+      cell: (info) => {
+        return info.getValue();
+      },
+      size: undefined,
+    }),
+    columnHelper.accessor("terminal", {
+      header: "Terminal",
+      cell: (info) => (
+        <div
+          className="underline cursor-pointer"
+          onClick={() => {
+            setIsPlaceInformationOpen(true);
+          }}
+        >
+          {info.getValue()}
+        </div>
+      ),
+      size: undefined,
+    }),
+    columnHelper.accessor("arrivalDate", {
+      header: "Arrival Date",
+      cell: (info) => (
+        <DateCell
+          info={info.getValue()}
+          flag={
+            info.getValue().diff(DateTime.now(), "days").days > 0
+              ? "estimate"
+              : "actual"
+          }
+        />
+      ),
+      size: 200,
+    }),
+    columnHelper.accessor("berthingDate", {
+      header: "Berthing Date",
+      cell: (info) => (
+        <DateCell
+          info={info.getValue()}
+          flag={
+            info.getValue().diff(DateTime.now(), "days").days > 0
+              ? "estimate"
+              : "actual"
+          }
+        />
+      ),
+      size: 200,
+    }),
+    columnHelper.accessor("departureDate", {
+      header: "Departure Date",
+      cell: (info) => (
+        <DateCell
+          info={info.getValue()}
+          flag={
+            info.getValue().diff(DateTime.now(), "days").days > 0
+              ? "estimate"
+              : "actual"
+          }
+        />
+      ),
+      size: 200,
+    }),
+  ];
 
-const columns = [
-  columnHelper.accessor("port", {
-    header: "Port",
-    cell: (info) => <div>{info.getValue()}</div>,
-  }),
-  columnHelper.accessor("terminal", {
-    header: "Terminal",
-    cell: (info) => <div>{info.getValue()}</div>,
-  }),
-  columnHelper.accessor("arrivalDate", {
-    header: "Arrival Date",
-    cell: (info) => <div>{info.getValue().toISODate()}</div>,
-  }),
-  columnHelper.accessor("berthingDate", {
-    header: "Berthing Date",
-    cell: (info) => <div>{info.getValue().toISODate()}</div>,
-  }),
-  columnHelper.accessor("departureDate", {
-    header: "Departure Date",
-    cell: (info) => <div>{info.getValue().toISODate()}</div>,
-  }),
-];
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
-export default function VesselResultTable() {
   return (
-    <div>
-      {DummyVesselSchedule.map((vessel, index) => {
-        return (
-          <div key={index}>
-            <div>{vessel.port}</div>
-            <div>{vessel.terminal}</div>
-            <div>{vessel.arrivalDate.toISODate()}</div>
-            <div>{vessel.berthingDate.toISODate()}</div>
-            <div>{vessel.departureDate.toISODate()}</div>
-          </div>
-        );
-      })}
+    <div className="flex mt-1">
+      <BasicTable table={table} />
+      <Portal selector="#main-container">
+        <PlaceInformationDialog
+          open={isPlaceInformationOpen}
+          handleOpen={setIsPlaceInformationOpen}
+          data={{
+            yardName: faker.location.city(),
+            address: faker.location.streetAddress(),
+            phoneNo: faker.phone.imei(),
+            faxNo: faker.phone.number(),
+            customerNo: faker.string.uuid(),
+            emailAddress: faker.internet.email(),
+          }}
+        />
+      </Portal>
     </div>
   );
 }

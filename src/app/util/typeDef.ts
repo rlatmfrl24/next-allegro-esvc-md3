@@ -39,7 +39,7 @@ export type ListItemType = {
   serviceLane: string;
 };
 
-export type SearchConditionType = {
+export type PtPSearchConditionType = {
   origins: string[];
   destinations: string[];
   searchOn: "departure" | "arrival";
@@ -66,6 +66,28 @@ export type PlaceInformationType = {
 
 export type VesselInfoType = {
   vesselName: string;
+  vesselCode: string;
   serviceLane: string;
   consortiumVoyage: string;
+
+  owner: string;
+  ownerName: string;
+  classNumber: string;
+  officialNumber: string;
+  IMONumber: string;
+  builtOn: string;
+  grossWeight: number;
+  netWeight: number;
+  age: number;
+  callSign: string;
+  portOfRegistry: string;
+  flag: string;
+};
+
+export type VesselScheduleType = {
+  port: string;
+  terminal: string;
+  arrivalDate: DateTime;
+  berthingDate: DateTime;
+  departureDate: DateTime;
 };
