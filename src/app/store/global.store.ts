@@ -1,3 +1,4 @@
+import { UseOverlayScrollbarsInstance } from "overlayscrollbars-react";
 import { atom } from "recoil";
 
 const UserState = atom({
@@ -16,4 +17,13 @@ const DrawerState = atom({
   },
 });
 
-export { UserState, DrawerState };
+const ScrollState = atom({
+  key: "ScrollState",
+  default: {
+    xPosition: 0,
+    yPosition: 0,
+    viewPort: null as HTMLElement | null,
+  },
+});
+
+export { UserState, DrawerState, ScrollState };
