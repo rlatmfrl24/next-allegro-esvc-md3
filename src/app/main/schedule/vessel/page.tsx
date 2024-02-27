@@ -28,6 +28,7 @@ import {
   createDummaryVesselSchedules,
   createDummyVesselInformations,
 } from "../util";
+import NaToggleButton from "@/app/components/na-toggle-button";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -64,6 +65,7 @@ export default function VesselSchedule() {
   const [vesselSchedules] = useState<VesselScheduleType[]>(
     createDummaryVesselSchedules()
   );
+  const [isDirectOnly, setIsDirectOnly] = useState(false);
 
   const [initialize, instance] = useOverlayScrollbars({
     events: {
@@ -253,42 +255,23 @@ export default function VesselSchedule() {
                       className="h-px w-full border-b border-dashed border-outlineVariant mt-6 mb-4"
                     ></div>
                     <div className="flex justify-between">
-                      <div className="flex items-center gap-2">
-                        <MdTypography
-                          variant="label"
-                          size="large"
-                          className="text-outline"
-                        >
-                          Ports Total:
-                        </MdTypography>
-                        <MdTypography
-                          variant="body"
-                          size="large"
-                          prominent
-                          className="text-onSurface"
-                        >
-                          {vesselSchedules.length}
-                        </MdTypography>
-                      </div>
+                      <NaToggleButton
+                        label="Direct Only"
+                        state={isDirectOnly ? "checked" : "unchecked"}
+                        onClick={() => {
+                          setIsDirectOnly((prev) => !prev);
+                        }}
+                      />
                       <div className="flex items-center gap-6">
-                        <MdTypography
-                          variant="label"
-                          size="medium"
-                          tag="label"
-                          className="flex items-center gap-2"
-                        >
-                          <ActualScheduleIcon />
-                          Actual Schedule
-                        </MdTypography>
-                        <MdTypography
-                          variant="label"
-                          size="medium"
-                          tag="label"
-                          className="flex items-center gap-2"
-                        >
-                          <EstimateScheduleIcon />
-                          Estimate Schedule
-                        </MdTypography>
+                        <div className="flex items-center gap-2">
+                          <MdTypography
+                            variant="label"
+                            size="large"
+                            className="text-outline"
+                          >
+                            Ports Total:{vesselSchedules.length}
+                          </MdTypography>
+                        </div>
                         <MdTextButton>
                           <MdIcon slot="icon">
                             <DownloadIcon fontSize="small" />

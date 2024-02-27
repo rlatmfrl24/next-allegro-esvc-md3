@@ -303,20 +303,6 @@ export default function SearchCondition({
             setDateRange(range);
           }}
         />
-
-        <MdTypography
-          variant="body"
-          size="large"
-          className="flex items-center gap-2"
-        >
-          <MdSwitch
-            selected={isDirectOnly}
-            onClick={() => {
-              setIsDirectOnly(!isDirectOnly);
-            }}
-          />
-          Direct
-        </MdTypography>
       </div>
       <div className="flex justify-end gap-2">
         <MdTextButton

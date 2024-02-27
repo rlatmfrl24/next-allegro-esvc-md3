@@ -7,12 +7,13 @@ import {
 } from "@/app/util/md3";
 import { VesselInfoType } from "@/app/util/typeDef";
 import { AnimatePresence, motion } from "framer-motion";
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VesselIcon from "@/../public/icon_vessel.svg";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/summary.module.css";
+import VesselInformationDialog from "../popup/vessel-information";
 
 export default function ConditionSummary({
   open,
@@ -23,6 +24,9 @@ export default function ConditionSummary({
   condition: VesselInfoType;
   scrollTop?: () => void;
 }) {
+  const [isVesselInfomationDialogOpen, setIsVesselInfomationDialogOpen] =
+    useState(false);
+
   return (
     <Portal selector="#main-container">
       <AnimatePresence>
@@ -42,12 +46,15 @@ export default function ConditionSummary({
             <MdElevation />
             <div className="max-w-[1400px] w-full py-6 flex flex-col flex-1 mx-6">
               <div className="flex text-primary justify-between items-center gap-2 mb-4">
-                <div className="flex items-center gap-2">
+                <div
+                  className="flex items-center gap-2"
+                  onClick={() => setIsVesselInfomationDialogOpen(true)}
+                >
                   <VesselIcon />
                   <MdTypography
                     variant="title"
                     size="large"
-                    className="text-onSurface underline"
+                    className="text-onSurface underline cursor-pointer"
                   >
                     {condition.vesselName + " (" + condition.vesselCode + ")"}
                   </MdTypography>
@@ -112,6 +119,13 @@ export default function ConditionSummary({
           </motion.div>
         )}
       </AnimatePresence>
+      {condition && (
+        <VesselInformationDialog
+          open={isVesselInfomationDialogOpen}
+          handleOpen={setIsVesselInfomationDialogOpen}
+          data={condition}
+        />
+      )}
     </Portal>
   );
 }

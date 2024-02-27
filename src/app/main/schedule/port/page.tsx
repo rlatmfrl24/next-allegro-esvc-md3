@@ -43,6 +43,7 @@ export default function PortSchedule() {
   const [portScheduls] = useState<PortScheduleType[]>(
     createDummyPortSchedules()
   );
+  const [isOceanVesselOnly, setIsOceanVesselOnly] = useState(false);
 
   useEffect(() => {
     if (scrollRef.current) initialize(scrollRef.current);
@@ -130,7 +131,6 @@ export default function PortSchedule() {
               </MdTextButton>
               <MdFilledButton
                 onClick={() => {
-                  console.log(portQuery);
                   setPageState("search");
                 }}
               >
@@ -143,42 +143,23 @@ export default function PortSchedule() {
           ) : (
             <div className={styles.area}>
               <div className="flex justify-between">
-                <div className="flex items-center gap-2">
-                  <MdTypography
-                    variant="label"
-                    size="large"
-                    className="text-outline"
-                  >
-                    Ports Total:
-                  </MdTypography>
-                  <MdTypography
-                    variant="body"
-                    size="large"
-                    prominent
-                    className="text-onSurface"
-                  >
-                    {portScheduls.length}
-                  </MdTypography>
-                </div>
+                <NaToggleButton
+                  label="Ocean Vessel Only"
+                  state={isOceanVesselOnly ? "checked" : "unchecked"}
+                  onClick={() => {
+                    setIsOceanVesselOnly((prev) => !prev);
+                  }}
+                />
                 <div className="flex items-center gap-6">
-                  <MdTypography
-                    variant="label"
-                    size="medium"
-                    tag="label"
-                    className="flex items-center gap-2"
-                  >
-                    <ActualScheduleIcon />
-                    Actual Schedule
-                  </MdTypography>
-                  <MdTypography
-                    variant="label"
-                    size="medium"
-                    tag="label"
-                    className="flex items-center gap-2"
-                  >
-                    <EstimateScheduleIcon />
-                    Estimate Schedule
-                  </MdTypography>
+                  <div className="flex items-center gap-2">
+                    <MdTypography
+                      variant="label"
+                      size="large"
+                      className="text-outline"
+                    >
+                      Ports Total: {portScheduls.length}
+                    </MdTypography>
+                  </div>
                   <MdTextButton>
                     <MdIcon slot="icon">
                       <DownloadIcon fontSize="small" />
