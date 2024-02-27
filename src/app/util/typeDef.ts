@@ -83,3 +83,11 @@ export type VesselInfoType = {
   portOfRegistry: string;
   flag: string;
 };
+
+export type VesselScheduleType = {
+  port: string;
+  terminal: string;
+  arrivalDate: DateTime;
+  berthingDate: DateTime;
+  departureDate: DateTime;
+};

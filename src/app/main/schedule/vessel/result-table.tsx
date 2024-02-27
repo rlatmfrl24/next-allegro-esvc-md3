@@ -1,5 +1,3 @@
-import { faker } from "@faker-js/faker";
-import { DateTime } from "luxon";
 import {
   createColumnHelper,
   flexRender,
@@ -7,69 +5,62 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import styles from "./table.module.css";
-import classNames from "classnames";
-
-type VesselScheduleType = {
-  port: string;
-  terminal: string;
-  arrivalDate: DateTime;
-  berthingDate: DateTime;
-  departureDate: DateTime;
-};
-
-const DummyVesselSchedule: VesselScheduleType[] = Array.from(
-  { length: 10 },
-  (_, i) => {
-    const tempDate =
-      i > 4
-        ? DateTime.fromJSDate(faker.date.future())
-        : DateTime.fromJSDate(faker.date.past());
-
-    return {
-      port: `Port ${i}`,
-      terminal: `Terminal ${i}`,
-      departureDate: tempDate,
-      berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
-      arrivalDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
-    };
-  }
-);
+import { VesselScheduleType } from "@/app/util/typeDef";
+import { useState } from "react";
+import Portal from "@/app/components/portal";
+import PlaceInformationDialog from "../popup/place-information";
+import { faker } from "@faker-js/faker";
 
 const columnHelper = createColumnHelper<VesselScheduleType>();
 
-const columns = [
-  columnHelper.accessor("port", {
-    header: "Port",
-    cell: (info) => {
-      return info.getValue();
-    },
-    size: undefined,
-  }),
-  columnHelper.accessor("terminal", {
-    header: "Terminal",
-    cell: (info) => <div className="underline">{info.getValue()}</div>,
-    size: undefined,
-  }),
-  columnHelper.accessor("arrivalDate", {
-    header: "Arrival Date",
-    cell: (info) => <div>{info.getValue().toISODate()}</div>,
-    size: 200,
-  }),
-  columnHelper.accessor("berthingDate", {
-    header: "Berthing Date",
-    cell: (info) => <div>{info.getValue().toISODate()}</div>,
-    size: 200,
-  }),
-  columnHelper.accessor("departureDate", {
-    header: "Departure Date",
-    cell: (info) => <div>{info.getValue().toISODate()}</div>,
-    size: 200,
-  }),
-];
+export default function VesselResultTable({
+  data,
+}: {
+  data: VesselScheduleType[];
+}) {
+  const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
 
-export default function VesselResultTable() {
+  const columns = [
+    columnHelper.accessor("port", {
+      header: "Port",
+      cell: (info) => {
+        return info.getValue();
+      },
+      size: undefined,
+    }),
+    columnHelper.accessor("terminal", {
+      header: "Terminal",
+      cell: (info) => (
+        <div
+          className="underline cursor-pointer"
+          onClick={() => {
+            setIsPlaceInformationOpen(true);
+          }}
+        >
+          {info.getValue()}
+        </div>
+      ),
+      size: undefined,
+    }),
+    columnHelper.accessor("arrivalDate", {
+      header: "Arrival Date",
+      cell: (info) => <div>{info.getValue().toISODate()}</div>,
+      size: 200,
+    }),
+    columnHelper.accessor("berthingDate", {
+      header: "Berthing Date",
+      cell: (info) => <div>{info.getValue().toISODate()}</div>,
+      size: 200,
+    }),
+    columnHelper.accessor("departureDate", {
+      header: "Departure Date",
+      cell: (info) => <div>{info.getValue().toISODate()}</div>,
+      size: 200,
+    }),
+  ];
+
   const table = useReactTable({
-    data: DummyVesselSchedule,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -116,6 +107,20 @@ export default function VesselResultTable() {
           })}
         </tbody>
       </table>
+      <Portal selector="#main-container">
+        <PlaceInformationDialog
+          open={isPlaceInformationOpen}
+          handleOpen={setIsPlaceInformationOpen}
+          data={{
+            yardName: faker.location.city(),
+            address: faker.location.streetAddress(),
+            phoneNo: faker.phone.imei(),
+            faxNo: faker.phone.number(),
+            customerNo: faker.string.uuid(),
+            emailAddress: faker.internet.email(),
+          }}
+        />
+      </Portal>
     </div>
   );
 }

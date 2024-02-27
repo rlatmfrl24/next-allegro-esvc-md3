@@ -10,8 +10,8 @@ import {
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { createDummyVesselData } from "./util";
-import { VesselInfoType } from "@/app/util/typeDef";
+import { createDummaryVesselSchedules, createDummyVesselData } from "./util";
+import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -53,6 +53,9 @@ export default function VesselSchedule() {
   const [recentVesselQueries, setRecentVesselQueries] = useState<string[]>([]);
   const [vesselData, setVesselData] = useState<VesselInfoType>(emptyVesselData);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
+  const [vesselSchedules] = useState<VesselScheduleType[]>(
+    createDummaryVesselSchedules()
+  );
 
   const [initialize, instance] = useOverlayScrollbars({
     events: {
@@ -253,7 +256,7 @@ export default function VesselSchedule() {
                           prominent
                           className="text-onSurface"
                         >
-                          2
+                          {vesselSchedules.length}
                         </MdTypography>
                       </div>
                       <div className="flex items-center gap-6">
@@ -283,7 +286,7 @@ export default function VesselSchedule() {
                         </MdTextButton>
                       </div>
                     </div>
-                    <VesselResultTable />
+                    <VesselResultTable data={vesselSchedules} />
                   </>
                 ),
               }[pageState]
