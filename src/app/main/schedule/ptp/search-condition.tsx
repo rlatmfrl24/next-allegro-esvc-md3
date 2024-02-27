@@ -23,7 +23,7 @@ import { FavoriteRouteListState } from "@/app/store/ptp.store";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import styles from "@/app/styles/base.module.css";
 
 export default function SearchCondition({
   searchAction,
@@ -170,10 +170,7 @@ export default function SearchCondition({
   }
 
   return (
-    <div
-      aria-label="search-panel"
-      className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
-    >
+    <div aria-label="search-panel" className={styles.area}>
       <div className="flex gap-6 h-10">
         <MdTypography
           tag="label"

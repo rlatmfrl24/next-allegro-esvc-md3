@@ -24,6 +24,7 @@ import VesselInformation from "../popup/vessel-information";
 import Portal from "@/app/components/portal";
 import ConditionSummary from "./condition-summary";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
+import styles from "@/app/styles/base.module.css";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -113,15 +114,15 @@ export default function VesselSchedule() {
               </MdIcon>
             </MdIconButton>
           </div>
-          <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
+          <div className={styles.area}>
             <NAOutlinedAutoComplete
               value={vesselQuery}
               setValue={setVesselQuery}
               label="Vessel Name"
+              required
               icon={<VesselIcon />}
               recentItems={recentVesselQueries}
               itemList={vesselList.map((vessel) => vessel.vesselName)}
-              className="w-full"
               onSelection={(value) => {
                 setVesselQuery(value === "" ? "" : value);
                 if (value !== "") {
@@ -158,7 +159,7 @@ export default function VesselSchedule() {
               </MdFilledButton>
             </div>
           </div>
-          <div className="bg-surface rounded-2xl p-6 flex flex-col">
+          <div className={styles.area}>
             {
               {
                 unsearch: (

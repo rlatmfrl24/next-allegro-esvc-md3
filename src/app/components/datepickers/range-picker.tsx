@@ -150,7 +150,7 @@ export const MdRangeDatePicker = (props: {
 
   return (
     <div
-      className={`relative flex ${props.className} gap-2 z-10`}
+      className={`relative flex ${props.className} gap-2 z-10 min-w-fit`}
       ref={refs.setReference}
     >
       <MdOutlinedTextField

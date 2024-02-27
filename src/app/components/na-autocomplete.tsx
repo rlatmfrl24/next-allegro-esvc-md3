@@ -39,16 +39,20 @@ export default function NAOutlinedAutoComplete({
   setValue,
   itemList,
   icon,
+  required,
   recentItems,
   onSelection,
+  className,
   ...props
 }: {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   itemList: string[];
+  required?: boolean;
   recentItems?: string[];
   icon?: React.ReactNode;
   onSelection?: (value: string) => void;
+  className?: string;
 } & MdOutlinedTextFieldProps) {
   // const [value, setValue] = useState("");
   const [defaultValue, setDefaultValue] = useState("");
@@ -100,7 +104,7 @@ export default function NAOutlinedAutoComplete({
   }
 
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       <MdOutlinedTextFieldBase
         {...props}
         ref={refs.setReference}
@@ -109,6 +113,8 @@ export default function NAOutlinedAutoComplete({
         focus={() => {
           setIsListOpen(true);
         }}
+        className="w-full"
+        required={false}
         onInput={(e) => {
           setValue(e.currentTarget.value);
         }}
@@ -215,6 +221,15 @@ export default function NAOutlinedAutoComplete({
             </OverlayScrollbarsComponent>
           </MdList>
         </div>
+      )}
+      {required && (
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-error absolute top-0.5 left-1.5"
+        >
+          *
+        </MdTypography>
       )}
     </div>
   );

@@ -18,6 +18,7 @@ import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
 import { ListItemType, PtPSearchConditionType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
+import styles from "@/app/styles/base.module.css";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
@@ -94,10 +95,7 @@ export default function PointToPointSchedule() {
               setPageState("list");
             }}
           />
-          <div
-            aria-label="result-panel"
-            className="bg-surface rounded-2xl flex flex-col"
-          >
+          <div aria-label="result-panel" className={styles.area}>
             {resultList.length > 0 && (
               <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
                 <MdOutlinedSegmentedButton
