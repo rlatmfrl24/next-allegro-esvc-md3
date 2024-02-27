@@ -9,7 +9,6 @@ import {
 } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
-import { createDummaryVesselSchedules, createDummyVesselData } from "./util";
 import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import VesselResultTable from "./result-table";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -25,6 +24,10 @@ import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import styles from "@/app/styles/base.module.css";
+import {
+  createDummaryVesselSchedules,
+  createDummyVesselInformations,
+} from "../util";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -49,7 +52,9 @@ export default function VesselSchedule() {
     portOfRegistry: "",
   };
 
-  const [vesselList] = useState<VesselInfoType[]>(createDummyVesselData());
+  const [vesselList] = useState<VesselInfoType[]>(
+    createDummyVesselInformations()
+  );
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
@@ -147,6 +152,7 @@ export default function VesselSchedule() {
               </MdTextButton>
               <MdFilledButton
                 onClick={() => {
+                  console.log(vesselSchedules);
                   setPageState("search");
                   setVesselData(
                     vesselList.find(

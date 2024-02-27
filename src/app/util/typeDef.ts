@@ -29,10 +29,10 @@ export type DashboardStatisticCardDataType = {
   showChart?: boolean;
 };
 
-export type ListItemType = {
-  origin: string;
+export type PtPScheduleType = {
+  origin: PlaceInformationType;
+  destination: PlaceInformationType;
   departure: DateTime;
-  destination: string;
   arrival: DateTime;
   vesselName: string;
   transitTime: number;
@@ -86,7 +86,7 @@ export type VesselInfoType = {
 
 export type VesselScheduleType = {
   port: string;
-  terminal: string;
+  terminal: PlaceInformationType;
   arrivalDate: DateTime;
   berthingDate: DateTime;
   departureDate: DateTime;
@@ -100,9 +100,8 @@ export type PortScheduleSearchConditionType = {
 };
 
 export type PortScheduleType = {
-  vessel: string;
-  terminal: string;
-  serviceLane: string;
+  vesselInfo: VesselInfoType;
+  terminalInfo: PlaceInformationType;
   arrivalDate: DateTime;
   berthingDate: DateTime;
   departureDate: DateTime;

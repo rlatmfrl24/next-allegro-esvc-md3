@@ -20,8 +20,12 @@ import EmptyResultPlaceholder from "../empty-placeholder";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
-import { PortScheduleSearchConditionType } from "@/app/util/typeDef";
+import {
+  PortScheduleSearchConditionType,
+  PortScheduleType,
+} from "@/app/util/typeDef";
 import { DateTime } from "luxon";
+import { createDummyPortSchedules } from "../util";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
@@ -36,6 +40,9 @@ export default function PortSchedule() {
   const [recentPorts, setRecentPorts] = useState<string[]>([]);
   const [initialize, instance] = useOverlayScrollbars();
   const [portName, setPortName] = useState("");
+  const [portScheduls, setPortSchedules] = useState<PortScheduleType[]>(
+    createDummyPortSchedules()
+  );
 
   useEffect(() => {
     if (scrollRef.current) initialize(scrollRef.current);
@@ -162,7 +169,7 @@ export default function PortSchedule() {
                     prominent
                     className="text-onSurface"
                   >
-                    {12}
+                    {portScheduls.length}
                   </MdTypography>
                 </div>
                 <div className="flex items-center gap-6">

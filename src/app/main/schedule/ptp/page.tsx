@@ -10,16 +10,15 @@ import { useEffect, useRef, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SearchCondition from "./search-condition";
-import PointToPointCalendarResult from "./list-calendar";
-import PointToPointListResult from "./list-result";
-import { createDummyScheduleData } from "./util";
+import PointToPointCalendarResult from "./result-calendar";
+import PointToPointListResult from "./result-list";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import ConditionSummary from "./condition-summary";
 import { DateTime } from "luxon";
-import { ListItemType, PtPSearchConditionType } from "@/app/util/typeDef";
-import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
+import { PtPScheduleType, PtPSearchConditionType } from "@/app/util/typeDef";
 import styles from "@/app/styles/base.module.css";
 import EmptyResultPlaceholder from "../empty-placeholder";
+import { createDummyPtPScheduleData } from "../util";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
@@ -34,7 +33,7 @@ export default function PointToPointSchedule() {
       endDate: DateTime.now(),
       searchOn: "departure",
     });
-  const [resultList, setResultList] = useState<ListItemType[]>([]);
+  const [resultList, setResultList] = useState<PtPScheduleType[]>([]);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
 
@@ -91,7 +90,7 @@ export default function PointToPointSchedule() {
           <SearchCondition
             searchAction={(condition) => {
               setSearchCondition(condition);
-              const list = createDummyScheduleData(condition);
+              const list = createDummyPtPScheduleData(condition);
               setResultList(list);
               setPageState("list");
             }}

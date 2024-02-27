@@ -1,8 +1,5 @@
 "use client";
 
-import { useMotionValueEvent, useScroll } from "framer-motion";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-
 export default function MainLayout({
   children,
 }: Readonly<{
