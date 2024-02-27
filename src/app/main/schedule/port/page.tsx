@@ -11,15 +11,16 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import PortIcon from "@/../public/icon_port.svg";
 import styles from "@/app/styles/base.module.css";
+import EmptyResultPlaceholder from "../empty-placeholder";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
+  const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [portQuery, setPortQuery] = useState("");
   const [isOcenVesselOnly, setIsOcenVesselOnly] = useState(false);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
@@ -99,7 +100,11 @@ export default function PortSchedule() {
               <MdFilledButton>Search</MdFilledButton>
             </div>
           </div>
-          <div className={styles.area}></div>
+          {pageState === "unsearch" ? (
+            <EmptyResultPlaceholder />
+          ) : (
+            <div className={styles.area}></div>
+          )}
         </div>
       </div>
     </div>

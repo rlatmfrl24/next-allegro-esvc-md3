@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { createDummaryVesselSchedules, createDummyVesselData } from "./util";
 import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
-import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
@@ -25,6 +24,7 @@ import Portal from "@/app/components/portal";
 import ConditionSummary from "./condition-summary";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import styles from "@/app/styles/base.module.css";
+import EmptyResultPlaceholder from "../empty-placeholder";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -162,18 +162,7 @@ export default function VesselSchedule() {
           <div className={styles.area}>
             {
               {
-                unsearch: (
-                  <div className="flex flex-col justify-center items-center h-96">
-                    <EmptyResultPlaceHolder className="mb-8" />
-                    <MdTypography
-                      variant="headline"
-                      size="medium"
-                      className="text-outlineVariant"
-                    >
-                      Please search for the schedule
-                    </MdTypography>
-                  </div>
-                ),
+                unsearch: <EmptyResultPlaceholder />,
                 search: (
                   <>
                     <div className="flex justify-center">
