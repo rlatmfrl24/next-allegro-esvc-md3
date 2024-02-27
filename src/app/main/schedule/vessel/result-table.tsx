@@ -1,14 +1,12 @@
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { VesselScheduleType } from "@/app/util/typeDef";
+import { PlaceInformationType, VesselScheduleType } from "@/app/util/typeDef";
 import { useState } from "react";
 import Portal from "@/app/components/portal";
 import PlaceInformationDialog from "../popup/place-information";
-import { faker } from "@faker-js/faker";
 import { BasicTable } from "@/app/components/basic-table";
 import { DateTime } from "luxon";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
@@ -38,6 +36,8 @@ export default function VesselResultTable({
   data: VesselScheduleType[];
 }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  const [placeInformation, setPlaceInformation] =
+    useState<PlaceInformationType>();
   const columnHelper = createColumnHelper<VesselScheduleType>();
 
   const columns = [
@@ -54,10 +54,11 @@ export default function VesselResultTable({
         <div
           className="underline cursor-pointer"
           onClick={() => {
+            setPlaceInformation(info.getValue());
             setIsPlaceInformationOpen(true);
           }}
         >
-          {info.getValue()}
+          {info.getValue().yardName}
         </div>
       ),
       size: undefined,
@@ -116,18 +117,13 @@ export default function VesselResultTable({
     <div className="flex mt-1">
       <BasicTable table={table} />
       <Portal selector="#main-container">
-        <PlaceInformationDialog
-          open={isPlaceInformationOpen}
-          handleOpen={setIsPlaceInformationOpen}
-          data={{
-            yardName: faker.location.city(),
-            address: faker.location.streetAddress(),
-            phoneNo: faker.phone.imei(),
-            faxNo: faker.phone.number(),
-            customerNo: faker.string.uuid(),
-            emailAddress: faker.internet.email(),
-          }}
-        />
+        {placeInformation && (
+          <PlaceInformationDialog
+            open={isPlaceInformationOpen}
+            handleOpen={setIsPlaceInformationOpen}
+            data={placeInformation}
+          />
+        )}
       </Portal>
     </div>
   );

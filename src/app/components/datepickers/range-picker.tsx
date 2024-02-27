@@ -35,7 +35,7 @@ export const MdRangeDatePicker = (props: {
   defaultStartDate?: DateTime;
   defaultEndDate?: DateTime;
   supportingText?: string;
-  handleDateRangeSelected?: Dispatch<SetStateAction<[DateTime, DateTime]>>;
+  handleDateRangeSelected?: (dateRange: [DateTime, DateTime]) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
@@ -150,7 +150,7 @@ export const MdRangeDatePicker = (props: {
 
   return (
     <div
-      className={`relative flex ${props.className} gap-2 z-10`}
+      className={`relative flex ${props.className} gap-2 z-10 min-w-fit`}
       ref={refs.setReference}
     >
       <MdOutlinedTextField

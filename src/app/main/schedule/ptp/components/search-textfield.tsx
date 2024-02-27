@@ -109,10 +109,6 @@ export const SearchTextField = ({
   }
 
   useEffect(() => {
-    console.log(recentItems);
-  }, [recentItems]);
-
-  useEffect(() => {
     handleItemSelection(selectionItems);
   }, [handleItemSelection, selectionItems]);
 
@@ -276,9 +272,6 @@ export const SearchTextField = ({
               key={item + "_" + index}
               label={item}
               onDelete={() => {
-                // setSelectionItems((previous) =>
-                //   previous.filter((value) => value !== item)
-                // );
                 handleItemSelection((previous) =>
                   previous.filter((value) => value !== item)
                 );

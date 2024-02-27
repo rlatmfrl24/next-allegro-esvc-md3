@@ -9,21 +9,26 @@ import {
 } from "@/app/util/md3";
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { createDummaryVesselSchedules, createDummyVesselData } from "./util";
 import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
-import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
+import VesselResultTable from "./result-table";
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import VesselInformationDialog from "../popup/vessel-information";
+import Portal from "@/app/components/portal";
+import ConditionSummary from "./condition-summary";
+import EmptyResultPlaceholder from "../empty-placeholder";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
-import VesselResultTable from "./result-table";
-import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import VesselInformation from "../popup/vessel-information";
-import Portal from "@/app/components/portal";
-import ConditionSummary from "./condition-summary";
-import VesselIcon from "@/../public/icon_vessel_outline.svg";
+import styles from "@/app/styles/base.module.css";
+import {
+  createDummaryVesselSchedules,
+  createDummyVesselInformations,
+} from "../util";
+import NaToggleButton from "@/app/components/na-toggle-button";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -48,7 +53,9 @@ export default function VesselSchedule() {
     portOfRegistry: "",
   };
 
-  const [vesselList] = useState<VesselInfoType[]>(createDummyVesselData());
+  const [vesselList] = useState<VesselInfoType[]>(
+    createDummyVesselInformations()
+  );
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
@@ -58,6 +65,7 @@ export default function VesselSchedule() {
   const [vesselSchedules] = useState<VesselScheduleType[]>(
     createDummaryVesselSchedules()
   );
+  const [isDirectOnly, setIsDirectOnly] = useState(false);
 
   const [initialize, instance] = useOverlayScrollbars({
     events: {
@@ -113,15 +121,15 @@ export default function VesselSchedule() {
               </MdIcon>
             </MdIconButton>
           </div>
-          <div className="bg-surface rounded-2xl p-6 flex flex-col gap-4">
+          <div className={styles.area}>
             <NAOutlinedAutoComplete
               value={vesselQuery}
               setValue={setVesselQuery}
               label="Vessel Name"
+              required
               icon={<VesselIcon />}
               recentItems={recentVesselQueries}
               itemList={vesselList.map((vessel) => vessel.vesselName)}
-              className="w-full"
               onSelection={(value) => {
                 setVesselQuery(value === "" ? "" : value);
                 if (value !== "") {
@@ -146,6 +154,7 @@ export default function VesselSchedule() {
               </MdTextButton>
               <MdFilledButton
                 onClick={() => {
+                  console.log(vesselSchedules);
                   setPageState("search");
                   setVesselData(
                     vesselList.find(
@@ -158,21 +167,10 @@ export default function VesselSchedule() {
               </MdFilledButton>
             </div>
           </div>
-          <div className="bg-surface rounded-2xl p-6 flex flex-col">
+          <div className={styles.area}>
             {
               {
-                unsearch: (
-                  <div className="flex flex-col justify-center items-center h-96">
-                    <EmptyResultPlaceHolder className="mb-8" />
-                    <MdTypography
-                      variant="headline"
-                      size="medium"
-                      className="text-outlineVariant"
-                    >
-                      Please search for the schedule
-                    </MdTypography>
-                  </div>
-                ),
+                unsearch: <EmptyResultPlaceholder />,
                 search: (
                   <>
                     <div className="flex justify-center">
@@ -257,42 +255,23 @@ export default function VesselSchedule() {
                       className="h-px w-full border-b border-dashed border-outlineVariant mt-6 mb-4"
                     ></div>
                     <div className="flex justify-between">
-                      <div className="flex items-center gap-2">
-                        <MdTypography
-                          variant="label"
-                          size="large"
-                          className="text-outline"
-                        >
-                          Ports Total:
-                        </MdTypography>
-                        <MdTypography
-                          variant="body"
-                          size="large"
-                          prominent
-                          className="text-onSurface"
-                        >
-                          {vesselSchedules.length}
-                        </MdTypography>
-                      </div>
+                      <NaToggleButton
+                        label="Direct Only"
+                        state={isDirectOnly ? "checked" : "unchecked"}
+                        onClick={() => {
+                          setIsDirectOnly((prev) => !prev);
+                        }}
+                      />
                       <div className="flex items-center gap-6">
-                        <MdTypography
-                          variant="label"
-                          size="medium"
-                          tag="label"
-                          className="flex items-center gap-2"
-                        >
-                          <ActualScheduleIcon />
-                          Actual Schedule
-                        </MdTypography>
-                        <MdTypography
-                          variant="label"
-                          size="medium"
-                          tag="label"
-                          className="flex items-center gap-2"
-                        >
-                          <EstimateScheduleIcon />
-                          Estimate Schedule
-                        </MdTypography>
+                        <div className="flex items-center gap-2">
+                          <MdTypography
+                            variant="label"
+                            size="large"
+                            className="text-outline"
+                          >
+                            Ports Total:{vesselSchedules.length}
+                          </MdTypography>
+                        </div>
                         <MdTextButton>
                           <MdIcon slot="icon">
                             <DownloadIcon fontSize="small" />
@@ -310,7 +289,7 @@ export default function VesselSchedule() {
         </div>
       </div>
       <Portal selector="#main-container">
-        <VesselInformation
+        <VesselInformationDialog
           open={isVesselInformationOpen}
           handleOpen={setIsVesselInformationOpen}
           data={vesselData}
