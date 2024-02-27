@@ -4,15 +4,17 @@ import styles from "@/app/styles/base.module.css";
 
 export default function EmptyResultPlaceholder() {
   return (
-    <div className={styles.area}>
-      <EmptyResultIcon className="mb-8" />
-      <MdTypography
-        variant="headline"
-        size="medium"
-        className="text-outlineVariant"
-      >
-        Please search for the schedule
-      </MdTypography>
+    <div className={styles.area + ` flex items-center`}>
+      <div className="my-10">
+        <EmptyResultIcon className="mb-8" />
+        <MdTypography
+          variant="headline"
+          size="medium"
+          className="text-outlineVariant"
+        >
+          Please search for the schedule
+        </MdTypography>
+      </div>
     </div>
   );
 }
