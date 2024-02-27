@@ -35,7 +35,7 @@ export const MdRangeDatePicker = (props: {
   defaultStartDate?: DateTime;
   defaultEndDate?: DateTime;
   supportingText?: string;
-  handleDateRangeSelected?: Dispatch<SetStateAction<[DateTime, DateTime]>>;
+  handleDateRangeSelected?: (dateRange: [DateTime, DateTime]) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");

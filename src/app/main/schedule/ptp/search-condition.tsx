@@ -299,7 +299,9 @@ export default function SearchCondition({
           supportingText=" "
           defaultStartDate={dateRange[0]}
           defaultEndDate={dateRange[1]}
-          handleDateRangeSelected={setDateRange}
+          handleDateRangeSelected={(range) => {
+            setDateRange(range);
+          }}
         />
 
         <MdTypography
@@ -326,6 +328,7 @@ export default function SearchCondition({
         </MdTextButton>
         <MdFilledButton
           onClick={() => {
+            console.log(currentCondition);
             Validation() && searchAction(currentCondition);
           }}
         >

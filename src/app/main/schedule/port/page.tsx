@@ -35,7 +35,6 @@ export default function PortSchedule() {
 
   const [recentPorts, setRecentPorts] = useState<string[]>([]);
   const [initialize, instance] = useOverlayScrollbars();
-
   const [portName, setPortName] = useState("");
 
   useEffect(() => {
@@ -89,7 +88,17 @@ export default function PortSchedule() {
                   }
                 }}
               />
-              <MdRangeDatePicker />
+              <MdRangeDatePicker
+                defaultStartDate={portQuery.startDate}
+                defaultEndDate={portQuery.endDate}
+                handleDateRangeSelected={([start, end]) => {
+                  setPortQuery({
+                    ...portQuery,
+                    startDate: start,
+                    endDate: end,
+                  });
+                }}
+              />
               <NaToggleButton
                 className="mr-36 h-10"
                 label="Ocean Vessel Only"
