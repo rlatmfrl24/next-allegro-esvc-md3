@@ -16,7 +16,6 @@ import { SearchTextField } from "./components/search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
 import { PtPSearchConditionType } from "@/app/util/typeDef";
-import { createDummyPortData } from "./util";
 import { useRecoilState } from "recoil";
 import MyFavorite from "./components/my-favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
@@ -24,6 +23,7 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import styles from "@/app/styles/base.module.css";
+import { createDummyPortData } from "../util";
 
 export default function SearchCondition({
   searchAction,
