@@ -17,27 +17,16 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import PortIcon from "@/../public/icon_port.svg";
 import styles from "@/app/styles/base.module.css";
 import EmptyResultPlaceholder from "../empty-placeholder";
+import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
+import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import DownloadIcon from "@mui/icons-material/Download";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [portQuery, setPortQuery] = useState("");
   const [isOcenVesselOnly, setIsOcenVesselOnly] = useState(false);
-  const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
-    useState(false);
-
-  const [initialize, instance] = useOverlayScrollbars({
-    events: {
-      scroll: (instance) => {
-        const viewport = instance.elements().viewport;
-        if (viewport.scrollTop > 150) {
-          setIsSearchConditionSummaryOpen(true);
-        } else {
-          setIsSearchConditionSummaryOpen(false);
-        }
-      },
-    },
-  });
+  const [initialize, instance] = useOverlayScrollbars();
 
   useEffect(() => {
     if (scrollRef.current) initialize(scrollRef.current);
@@ -96,14 +85,72 @@ export default function PortSchedule() {
               aria-label="search-condition-actions"
               className="flex justify-end gap-2"
             >
-              <MdTextButton>Reset</MdTextButton>
-              <MdFilledButton>Search</MdFilledButton>
+              <MdTextButton
+                onClick={() => {
+                  setPageState("unsearch");
+                }}
+              >
+                Reset
+              </MdTextButton>
+              <MdFilledButton
+                onClick={() => {
+                  setPageState("search");
+                }}
+              >
+                Search
+              </MdFilledButton>
             </div>
           </div>
           {pageState === "unsearch" ? (
             <EmptyResultPlaceholder />
           ) : (
-            <div className={styles.area}></div>
+            <div className={styles.area}>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-2">
+                  <MdTypography
+                    variant="label"
+                    size="large"
+                    className="text-outline"
+                  >
+                    Ports Total:
+                  </MdTypography>
+                  <MdTypography
+                    variant="body"
+                    size="large"
+                    prominent
+                    className="text-onSurface"
+                  >
+                    {12}
+                  </MdTypography>
+                </div>
+                <div className="flex items-center gap-6">
+                  <MdTypography
+                    variant="label"
+                    size="medium"
+                    tag="label"
+                    className="flex items-center gap-2"
+                  >
+                    <ActualScheduleIcon />
+                    Actual Schedule
+                  </MdTypography>
+                  <MdTypography
+                    variant="label"
+                    size="medium"
+                    tag="label"
+                    className="flex items-center gap-2"
+                  >
+                    <EstimateScheduleIcon />
+                    Estimate Schedule
+                  </MdTypography>
+                  <MdTextButton>
+                    <MdIcon slot="icon">
+                      <DownloadIcon fontSize="small" />
+                    </MdIcon>
+                    Download
+                  </MdTextButton>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
