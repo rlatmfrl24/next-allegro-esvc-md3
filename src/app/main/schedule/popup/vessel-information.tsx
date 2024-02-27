@@ -4,7 +4,7 @@ import { VesselInfoType } from "@/app/util/typeDef";
 import React from "react";
 import VesselIcon from "@/../public/icon_vessel.svg";
 
-export default function VesselInformation({
+export default function VesselInformationDialog({
   open,
   handleOpen,
   data,

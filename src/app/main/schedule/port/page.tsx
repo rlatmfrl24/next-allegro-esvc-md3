@@ -26,6 +26,7 @@ import {
 } from "@/app/util/typeDef";
 import { DateTime } from "luxon";
 import { createDummyPortSchedules } from "../util";
+import PortResultTable from "./result-table";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
@@ -34,13 +35,12 @@ export default function PortSchedule() {
     portName: "",
     startDate: DateTime.now(),
     endDate: DateTime.now(),
-    isOceanVesselOnly: false,
   });
 
   const [recentPorts, setRecentPorts] = useState<string[]>([]);
   const [initialize, instance] = useOverlayScrollbars();
   const [portName, setPortName] = useState("");
-  const [portScheduls, setPortSchedules] = useState<PortScheduleType[]>(
+  const [portScheduls] = useState<PortScheduleType[]>(
     createDummyPortSchedules()
   );
 
@@ -54,7 +54,6 @@ export default function PortSchedule() {
       portName: "",
       startDate: DateTime.now(),
       endDate: DateTime.now(),
-      isOceanVesselOnly: false,
     });
   }
 
@@ -113,17 +112,6 @@ export default function PortSchedule() {
                     ...portQuery,
                     startDate: start,
                     endDate: end,
-                  });
-                }}
-              />
-              <NaToggleButton
-                className="mr-36 h-10"
-                label="Ocean Vessel Only"
-                state={portQuery.isOceanVesselOnly ? "checked" : "unchecked"}
-                onClick={() => {
-                  setPortQuery({
-                    ...portQuery,
-                    isOceanVesselOnly: !portQuery.isOceanVesselOnly,
                   });
                 }}
               />
@@ -199,6 +187,7 @@ export default function PortSchedule() {
                   </MdTextButton>
                 </div>
               </div>
+              <PortResultTable data={portScheduls} />
             </div>
           )}
         </div>

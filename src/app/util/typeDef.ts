@@ -96,7 +96,6 @@ export type PortScheduleSearchConditionType = {
   portName: string;
   startDate: DateTime;
   endDate: DateTime;
-  isOceanVesselOnly: boolean;
 };
 
 export type PortScheduleType = {

@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import VesselResultTable from "./result-table";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import VesselInformation from "../popup/vessel-information";
+import VesselInformationDialog from "../popup/vessel-information";
 import Portal from "@/app/components/portal";
 import ConditionSummary from "./condition-summary";
 import EmptyResultPlaceholder from "../empty-placeholder";
@@ -306,7 +306,7 @@ export default function VesselSchedule() {
         </div>
       </div>
       <Portal selector="#main-container">
-        <VesselInformation
+        <VesselInformationDialog
           open={isVesselInformationOpen}
           handleOpen={setIsVesselInformationOpen}
           data={vesselData}

@@ -7,7 +7,6 @@ import { PlaceInformationType, VesselScheduleType } from "@/app/util/typeDef";
 import { useState } from "react";
 import Portal from "@/app/components/portal";
 import PlaceInformationDialog from "../popup/place-information";
-import { faker } from "@faker-js/faker";
 import { BasicTable } from "@/app/components/basic-table";
 import { DateTime } from "luxon";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";

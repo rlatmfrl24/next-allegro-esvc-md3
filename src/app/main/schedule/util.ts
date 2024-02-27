@@ -57,7 +57,7 @@ export function createDummyVesselInformations(): VesselInfoType[] {
 export function createDummaryVesselSchedules(): VesselScheduleType[] {
   return Array.from({ length: 10 }, (_, i) => {
     const tempDate =
-      i > 4
+      i > 5
         ? DateTime.fromJSDate(faker.date.future())
         : DateTime.fromJSDate(faker.date.past());
 
@@ -72,8 +72,12 @@ export function createDummaryVesselSchedules(): VesselScheduleType[] {
 }
 
 export function createDummyPortSchedules(): PortScheduleType[] {
-  return Array.from({ length: 20 }, () => {
-    const tempDate = DateTime.fromJSDate(faker.date.future());
+  return Array.from({ length: 20 }, (_, i) => {
+    const tempDate =
+      i > 10
+        ? DateTime.fromJSDate(faker.date.future())
+        : DateTime.fromJSDate(faker.date.past());
+
     return {
       vesselInfo: createDummyVesselInformation(),
       terminalInfo: createDummyPlaceInformation(faker.location.city()),
