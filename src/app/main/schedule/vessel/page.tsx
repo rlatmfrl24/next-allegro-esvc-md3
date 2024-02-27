@@ -10,8 +10,8 @@ import {
 import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { createDummyVesselData } from "./util";
-import { VesselInfoType } from "@/app/util/typeDef";
+import { createDummaryVesselSchedules, createDummyVesselData } from "./util";
+import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import EmptyResultPlaceHolder from "@/../public/image_empty_search_result.svg";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -20,21 +20,44 @@ import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
 import VesselResultTable from "./result-table";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import VesselInformation from "../popup/vessel-information";
+import Portal from "@/app/components/portal";
+import ConditionSummary from "./condition-summary";
+import VesselIcon from "@/../public/icon_vessel_outline.svg";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
+  const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
+
+  const emptyVesselData: VesselInfoType = {
+    vesselName: "-",
+    serviceLane: "-",
+    consortiumVoyage: "-",
+    age: 0,
+    builtOn: "",
+    classNumber: "",
+    IMONumber: "",
+    netWeight: 0,
+    officialNumber: "",
+    owner: "",
+    ownerName: "",
+    vesselCode: "",
+    grossWeight: 0,
+    flag: "",
+    callSign: "",
+    portOfRegistry: "",
+  };
 
   const [vesselList] = useState<VesselInfoType[]>(createDummyVesselData());
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
   const [recentVesselQueries, setRecentVesselQueries] = useState<string[]>([]);
-  const [vesselData, setVesselData] = useState<VesselInfoType>({
-    vesselName: "-",
-    serviceLane: "-",
-    consortiumVoyage: "-",
-  });
+  const [vesselData, setVesselData] = useState<VesselInfoType>(emptyVesselData);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
+  const [vesselSchedules] = useState<VesselScheduleType[]>(
+    createDummaryVesselSchedules()
+  );
 
   const [initialize, instance] = useOverlayScrollbars({
     events: {
@@ -58,6 +81,13 @@ export default function VesselSchedule() {
     setPageState("unsearch");
   }
 
+  function ScrollToTop() {
+    instance()?.elements().viewport.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -65,6 +95,11 @@ export default function VesselSchedule() {
           aria-label="container"
           className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "
         >
+          <ConditionSummary
+            open={isSearchConditionSummaryOpen && vesselSchedules.length > 0}
+            condition={vesselData}
+            scrollTop={ScrollToTop}
+          />
           <div
             aria-label="page-title"
             className="flex justify-start items-center gap-3"
@@ -83,6 +118,7 @@ export default function VesselSchedule() {
               value={vesselQuery}
               setValue={setVesselQuery}
               label="Vessel Name"
+              icon={<VesselIcon />}
               recentItems={recentVesselQueries}
               itemList={vesselList.map((vessel) => vessel.vesselName)}
               className="w-full"
@@ -114,11 +150,7 @@ export default function VesselSchedule() {
                   setVesselData(
                     vesselList.find(
                       (vessel) => vessel.vesselName === vesselQuery
-                    ) || {
-                      vesselName: "-",
-                      serviceLane: "-",
-                      consortiumVoyage: "-",
-                    }
+                    ) || emptyVesselData
                   );
                 }}
               >
@@ -153,17 +185,24 @@ export default function VesselSchedule() {
                           >
                             Vessel
                           </MdTypography>
-                          <MdTypography
-                            variant="body"
-                            size="large"
-                            className={`text-primary ${
-                              vesselData.vesselName === "-"
-                                ? ""
-                                : "underline cursor-pointer w-fit"
-                            }`}
+                          <div
+                            onClick={() => {
+                              if (vesselData.vesselName !== "-")
+                                setIsVesselInformationOpen(true);
+                            }}
                           >
-                            {vesselData.vesselName}
-                          </MdTypography>
+                            <MdTypography
+                              variant="body"
+                              size="large"
+                              className={`text-primary ${
+                                vesselData.vesselName === "-"
+                                  ? ""
+                                  : "underline cursor-pointer w-fit"
+                              }`}
+                            >
+                              {vesselData.vesselName}
+                            </MdTypography>
+                          </div>
                           <MdTypography
                             variant="body"
                             size="medium"
@@ -232,7 +271,7 @@ export default function VesselSchedule() {
                           prominent
                           className="text-onSurface"
                         >
-                          2
+                          {vesselSchedules.length}
                         </MdTypography>
                       </div>
                       <div className="flex items-center gap-6">
@@ -262,7 +301,7 @@ export default function VesselSchedule() {
                         </MdTextButton>
                       </div>
                     </div>
-                    <VesselResultTable />
+                    <VesselResultTable data={vesselSchedules} />
                   </>
                 ),
               }[pageState]
@@ -270,6 +309,13 @@ export default function VesselSchedule() {
           </div>
         </div>
       </div>
+      <Portal selector="#main-container">
+        <VesselInformation
+          open={isVesselInformationOpen}
+          handleOpen={setIsVesselInformationOpen}
+          data={vesselData}
+        />
+      </Portal>
     </div>
   );
 }

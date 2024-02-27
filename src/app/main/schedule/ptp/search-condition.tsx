@@ -15,19 +15,20 @@ import { useEffect, useState } from "react";
 import { SearchTextField } from "./components/search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
-import { SearchConditionType } from "@/app/util/typeDef";
+import { PtPSearchConditionType } from "@/app/util/typeDef";
 import { createDummyPortData } from "./util";
-import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRecoilState } from "recoil";
 import MyFavorite from "./components/my-favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 
 export default function SearchCondition({
   searchAction,
 }: {
-  searchAction: (condition: SearchConditionType) => void;
+  searchAction: (condition: PtPSearchConditionType) => void;
 }) {
   const [searchCondition, setSearchCondition] = useState<
     "single" | "multi-origin" | "multi-destination"
@@ -48,16 +49,15 @@ export default function SearchCondition({
 
   const [isOriginError, setIsOriginError] = useState<boolean>(false);
   const [isDestinationError, setIsDestinationError] = useState<boolean>(false);
-  const [currentCondition, setCurrentCondition] = useState<SearchConditionType>(
-    {
+  const [currentCondition, setCurrentCondition] =
+    useState<PtPSearchConditionType>({
       origins: originList,
       destinations: destinationList,
       directOnly: isDirectOnly,
       startDate: dateRange[0],
       endDate: dateRange[1],
       searchOn: searchOn,
-    }
-  );
+    });
 
   const [favoriteList, setFavoriteList] = useRecoilState(
     FavoriteRouteListState
@@ -234,7 +234,7 @@ export default function SearchCondition({
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
-          />
+          ></SearchTextField>
           <MdIconButton className="mt-2" onClick={switchOriginDestination}>
             <MdIcon>
               <SwapHorizOutlinedIcon />

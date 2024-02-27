@@ -1,0 +1,19 @@
+.table {
+  @apply font-normal text-sm text-onSurfaceVariant flex-1;
+}
+
+.table thead {
+  @apply bg-surfaceVariant h-12;
+}
+
+.table th {
+  @apply font-normal text-left p-2;
+}
+
+.table tbody tr {
+  @apply h-12 border-b border-b-outlineVariant;
+}
+
+.table tbody td {
+  @apply p-2;
+}
