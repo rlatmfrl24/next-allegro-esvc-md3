@@ -23,6 +23,7 @@ import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import VesselInformation from "../popup/vessel-information";
 import Portal from "@/app/components/portal";
 import ConditionSummary from "./condition-summary";
+import VesselIcon from "@/../public/icon_vessel_outline.svg";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -117,6 +118,7 @@ export default function VesselSchedule() {
               value={vesselQuery}
               setValue={setVesselQuery}
               label="Vessel Name"
+              icon={<VesselIcon />}
               recentItems={recentVesselQueries}
               itemList={vesselList.map((vessel) => vessel.vesselName)}
               className="w-full"

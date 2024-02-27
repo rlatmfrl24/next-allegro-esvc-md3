@@ -38,6 +38,7 @@ export default function NAOutlinedAutoComplete({
   value,
   setValue,
   itemList,
+  icon,
   recentItems,
   onSelection,
   ...props
@@ -46,6 +47,7 @@ export default function NAOutlinedAutoComplete({
   setValue: Dispatch<SetStateAction<string>>;
   itemList: string[];
   recentItems?: string[];
+  icon?: React.ReactNode;
   onSelection?: (value: string) => void;
 } & MdOutlinedTextFieldProps) {
   // const [value, setValue] = useState("");
@@ -111,6 +113,7 @@ export default function NAOutlinedAutoComplete({
           setValue(e.currentTarget.value);
         }}
       >
+        {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
         {value !== "" && (
           <MdIconButton
             slot="trailing-icon"

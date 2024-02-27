@@ -17,12 +17,13 @@ import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
 import { PtPSearchConditionType } from "@/app/util/typeDef";
 import { createDummyPortData } from "./util";
-import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRecoilState } from "recoil";
 import MyFavorite from "./components/my-favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 
 export default function SearchCondition({
   searchAction,
@@ -233,7 +234,7 @@ export default function SearchCondition({
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
-          />
+          ></SearchTextField>
           <MdIconButton className="mt-2" onClick={switchOriginDestination}>
             <MdIcon>
               <SwapHorizOutlinedIcon />
