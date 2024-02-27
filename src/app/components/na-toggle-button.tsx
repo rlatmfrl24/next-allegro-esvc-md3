@@ -1,11 +1,13 @@
 import { MdTypography } from "./typography";
 import { MdCheckbox } from "../util/md3";
+import { HTMLAttributes } from "react";
 
 export default function NaToggleButton({
   label,
   state,
-  onChange,
   className,
+  onClick,
+  ...props
 }: {
   label?: string;
   state:
@@ -14,11 +16,12 @@ export default function NaToggleButton({
     | "indetermine"
     | "disabled"
     | "disabled-checked";
-  onChange?: (state: "checked" | "unchecked" | "indetermine") => void;
   className?: string;
-}) {
+  onClick?: () => void;
+} & HTMLAttributes<HTMLLabelElement>) {
   return (
     <MdTypography
+      {...props}
       tag="label"
       variant="label"
       size="large"
@@ -31,16 +34,7 @@ export default function NaToggleButton({
         }
         indeterminate={state === "indetermine"}
         disabled={state === "disabled" || state === "disabled-checked"}
-        onClick={(e) => {
-          onChange &&
-            onChange(
-              state === "checked"
-                ? "unchecked"
-                : state === "unchecked"
-                ? "checked"
-                : "indetermine"
-            );
-        }}
+        onClick={onClick}
       />
       {label}
     </MdTypography>

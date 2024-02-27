@@ -91,3 +91,19 @@ export type VesselScheduleType = {
   berthingDate: DateTime;
   departureDate: DateTime;
 };
+
+export type PortScheduleSearchConditionType = {
+  portName: string;
+  startDate: DateTime;
+  endDate: DateTime;
+  isOceanVesselOnly: boolean;
+};
+
+export type PortScheduleType = {
+  vessel: string;
+  terminal: string;
+  serviceLane: string;
+  arrivalDate: DateTime;
+  berthingDate: DateTime;
+  departureDate: DateTime;
+};

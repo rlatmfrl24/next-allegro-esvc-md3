@@ -20,13 +20,23 @@ import EmptyResultPlaceholder from "../empty-placeholder";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import DownloadIcon from "@mui/icons-material/Download";
+import { PortScheduleSearchConditionType } from "@/app/util/typeDef";
+import { DateTime } from "luxon";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
-  const [portQuery, setPortQuery] = useState("");
-  const [isOcenVesselOnly, setIsOcenVesselOnly] = useState(false);
+  const [portQuery, setPortQuery] = useState<PortScheduleSearchConditionType>({
+    portName: "",
+    startDate: DateTime.now(),
+    endDate: DateTime.now(),
+    isOceanVesselOnly: false,
+  });
+
+  const [recentPorts, setRecentPorts] = useState<string[]>([]);
   const [initialize, instance] = useOverlayScrollbars();
+
+  const [portName, setPortName] = useState("");
 
   useEffect(() => {
     if (scrollRef.current) initialize(scrollRef.current);
@@ -57,27 +67,38 @@ export default function PortSchedule() {
               <NAOutlinedAutoComplete
                 label="Port Name"
                 className="w-full"
-                value={portQuery}
+                value={portName}
                 required
-                icon={<PortIcon />}
-                setValue={setPortQuery}
+                recentItems={recentPorts}
                 itemList={Array.from({ length: 60 }, (_, i) => {
                   return `${faker.location.city()}, ${faker.location.country()}`;
                 })}
+                icon={<PortIcon />}
+                setValue={setPortName}
+                onSelection={(value) => {
+                  if (value !== "") {
+                    setRecentPorts((previous) => {
+                      if (previous.includes(value)) {
+                        const index = previous.indexOf(value);
+                        previous.splice(index, 1);
+                        return [value, ...previous];
+                      }
+                      return [value, ...previous].slice(0, 5);
+                    });
+                    setPortQuery({ ...portQuery, portName: value });
+                  }
+                }}
               />
               <MdRangeDatePicker />
               <NaToggleButton
                 className="mr-36 h-10"
                 label="Ocean Vessel Only"
-                state={isOcenVesselOnly ? "checked" : "unchecked"}
-                onChange={(value) => {
-                  setIsOcenVesselOnly(
-                    value === "checked"
-                      ? true
-                      : value === "unchecked"
-                      ? false
-                      : isOcenVesselOnly
-                  );
+                state={portQuery.isOceanVesselOnly ? "checked" : "unchecked"}
+                onClick={() => {
+                  setPortQuery({
+                    ...portQuery,
+                    isOceanVesselOnly: !portQuery.isOceanVesselOnly,
+                  });
                 }}
               />
             </div>
@@ -94,6 +115,7 @@ export default function PortSchedule() {
               </MdTextButton>
               <MdFilledButton
                 onClick={() => {
+                  console.log(portQuery);
                   setPageState("search");
                 }}
               >
