@@ -4,12 +4,12 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import styles from "./table.module.css";
 import { VesselScheduleType } from "@/app/util/typeDef";
 import { useState } from "react";
 import Portal from "@/app/components/portal";
 import PlaceInformationDialog from "../popup/place-information";
 import { faker } from "@faker-js/faker";
+import styles from "@/app/styles/table.module.css";
 
 const columnHelper = createColumnHelper<VesselScheduleType>();
 

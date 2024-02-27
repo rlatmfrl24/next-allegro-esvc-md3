@@ -39,7 +39,7 @@ export type ListItemType = {
   serviceLane: string;
 };
 
-export type SearchConditionType = {
+export type PtPSearchConditionType = {
   origins: string[];
   destinations: string[];
   searchOn: "departure" | "arrival";

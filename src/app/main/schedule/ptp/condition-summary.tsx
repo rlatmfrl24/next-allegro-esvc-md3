@@ -9,12 +9,13 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { CSSProperties } from "react";
 import { MdTypography } from "@/app/components/typography";
-import { SearchConditionType } from "@/app/util/typeDef";
+import { PtPSearchConditionType } from "@/app/util/typeDef";
 import { useRecoilState } from "recoil";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
+import styles from "@/app/styles/summary.module.css";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -47,7 +48,7 @@ export default function ConditionSummary({
   scrollTop,
 }: {
   open: boolean;
-  condition: SearchConditionType;
+  condition: PtPSearchConditionType;
   scrollTop?: () => void;
 }) {
   const [presetList, setPresetList] = useRecoilState(FavoriteRouteListState);
@@ -98,7 +99,8 @@ export default function ConditionSummary({
                 "--md-elevation-level": 1,
               } as CSSProperties
             }
-            className="absolute w-full top-0 left-0 h-fit bg-surfaceBright flex justify-center"
+            // className="absolute w-full top-0 left-0 h-fit bg-surfaceBright flex justify-center"
+            className={styles.summaryContainer}
           >
             <MdElevation />
             <div className="max-w-[1400px] w-full py-6 flex mx-6">

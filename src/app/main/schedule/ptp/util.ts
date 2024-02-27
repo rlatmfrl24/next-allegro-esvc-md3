@@ -1,4 +1,4 @@
-import { ListItemType, SearchConditionType } from "@/app/util/typeDef";
+import { ListItemType, PtPSearchConditionType } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 
@@ -10,7 +10,7 @@ export function createDummyPortData(): string[] {
 }
 
 export function createDummyScheduleData(
-  condition: SearchConditionType
+  condition: PtPSearchConditionType
 ): ListItemType[] {
   const { origins, destinations, searchOn, startDate, endDate, directOnly } =
     condition;

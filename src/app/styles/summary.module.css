@@ -1,0 +1,3 @@
+.summaryContainer {
+  @apply absolute w-full top-0 left-0 h-fit bg-surfaceBright flex justify-center;
+}

@@ -22,6 +22,7 @@ import VesselResultTable from "./result-table";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import VesselInformation from "../popup/vessel-information";
 import Portal from "@/app/components/portal";
+import ConditionSummary from "./condition-summary";
 
 export default function VesselSchedule() {
   const scrollRef = useRef<any>();
@@ -79,6 +80,13 @@ export default function VesselSchedule() {
     setPageState("unsearch");
   }
 
+  function ScrollToTop() {
+    instance()?.elements().viewport.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -86,6 +94,11 @@ export default function VesselSchedule() {
           aria-label="container"
           className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "
         >
+          <ConditionSummary
+            open={isSearchConditionSummaryOpen && vesselSchedules.length > 0}
+            condition={vesselData}
+            scrollTop={ScrollToTop}
+          />
           <div
             aria-label="page-title"
             className="flex justify-start items-center gap-3"
