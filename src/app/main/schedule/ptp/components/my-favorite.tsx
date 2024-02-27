@@ -65,17 +65,17 @@ export default function MyFavorite({
         My Favorite
       </MdFilledTonalButton>
       <FloatingFocusManager context={context} modal={false}>
-        <div
-        // ref={refs.setFloating}
-        // style={floatingStyles}
-        // {...getFloatingProps()}
-        >
-          {/* <AnimatePresence>
-            {isPopoverOpen && (
+        <AnimatePresence>
+          {isPopoverOpen && (
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              {...getFloatingProps()}
+            >
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.1 }}
               >
                 <MdElevatedCard className="flex flex-col min-w-[720px]">
@@ -107,7 +107,8 @@ export default function MyFavorite({
                           </div>
                           <div slot="end">
                             <MdIconButton
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setFavoriteList(
                                   favoriteList.filter(
                                     (item) => item.id !== favorite.id
@@ -132,79 +133,9 @@ export default function MyFavorite({
                   </MdTextButton>
                 </MdElevatedCard>
               </motion.div>
-            )}
-          </AnimatePresence> */}
-          <AnimatePresence>
-            {isPopoverOpen && (
-              <div
-                ref={refs.setFloating}
-                style={floatingStyles}
-                {...getFloatingProps()}
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.1 }}
-                >
-                  <MdElevatedCard className="flex flex-col min-w-[720px]">
-                    <MdTypography
-                      variant="headline"
-                      size="small"
-                      className="pt-6 px-6 pb-0"
-                    >
-                      My Favorite
-                    </MdTypography>
-                    <MdList className="bg-surfaceContainerLow">
-                      {favoriteList.map((favorite) => {
-                        return (
-                          <MdListItem
-                            key={favorite.id}
-                            className="hover:bg-surfaceDim cursor-pointer"
-                            onClick={() => {
-                              onSelection?.(
-                                favorite.origin,
-                                favorite.destination
-                              );
-                              setIsPopoverOpen(false);
-                            }}
-                          >
-                            <div slot="headline" className="px-2">
-                              {favorite.origin.join(", ") +
-                                " - " +
-                                favorite.destination.join(", ")}
-                            </div>
-                            <div slot="end">
-                              <MdIconButton
-                                onClick={() => {
-                                  setFavoriteList(
-                                    favoriteList.filter(
-                                      (item) => item.id !== favorite.id
-                                    )
-                                  );
-                                }}
-                              >
-                                <DeleteOutlineIcon />
-                              </MdIconButton>
-                            </div>
-                          </MdListItem>
-                        );
-                      })}
-                    </MdList>
-                    <MdTextButton
-                      className="w-fit self-end mb-6 mx-5 mt-0"
-                      onClick={() => {
-                        setIsPopoverOpen(false);
-                      }}
-                    >
-                      Close
-                    </MdTextButton>
-                  </MdElevatedCard>
-                </motion.div>
-              </div>
-            )}
-          </AnimatePresence>
-        </div>
+            </div>
+          )}
+        </AnimatePresence>
       </FloatingFocusManager>
     </div>
   );
