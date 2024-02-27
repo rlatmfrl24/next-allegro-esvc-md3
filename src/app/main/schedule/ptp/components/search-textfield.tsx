@@ -109,10 +109,6 @@ export const SearchTextField = ({
   }
 
   useEffect(() => {
-    console.log(recentItems);
-  }, [recentItems]);
-
-  useEffect(() => {
     handleItemSelection(selectionItems);
   }, [handleItemSelection, selectionItems]);
 

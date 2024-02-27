@@ -41,6 +41,16 @@ export default function PortSchedule() {
     if (scrollRef.current) initialize(scrollRef.current);
   }, [initialize]);
 
+  function resetPortQuery() {
+    setPortName("");
+    setPortQuery({
+      portName: "",
+      startDate: DateTime.now(),
+      endDate: DateTime.now(),
+      isOceanVesselOnly: false,
+    });
+  }
+
   return (
     <div ref={scrollRef} className="flex-1">
       <div className="flex justify-center">
@@ -117,6 +127,7 @@ export default function PortSchedule() {
             >
               <MdTextButton
                 onClick={() => {
+                  resetPortQuery();
                   setPageState("unsearch");
                 }}
               >

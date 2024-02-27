@@ -328,7 +328,6 @@ export default function SearchCondition({
         </MdTextButton>
         <MdFilledButton
           onClick={() => {
-            console.log(currentCondition);
             Validation() && searchAction(currentCondition);
           }}
         >
