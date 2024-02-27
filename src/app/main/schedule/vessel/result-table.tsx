@@ -9,9 +9,28 @@ import { useState } from "react";
 import Portal from "@/app/components/portal";
 import PlaceInformationDialog from "../popup/place-information";
 import { faker } from "@faker-js/faker";
-import styles from "@/app/styles/table.module.css";
+import { BasicTable } from "@/app/components/basic-table";
+import { DateTime } from "luxon";
+import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
+import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import { MdTypography } from "@/app/components/typography";
 
-const columnHelper = createColumnHelper<VesselScheduleType>();
+const DateCell = ({
+  info,
+  flag,
+}: {
+  info: DateTime;
+  flag: "actual" | "estimate";
+}) => {
+  return (
+    <MdTypography variant="body" size="medium" className="flex items-center">
+      <div className="mr-2">
+        {flag === "actual" ? <ActualScheduleIcon /> : <EstimateScheduleIcon />}
+      </div>
+      {info.toFormat("yyyy-MM-dd HH:mm:ss")}
+    </MdTypography>
+  );
+};
 
 export default function VesselResultTable({
   data,
@@ -19,6 +38,7 @@ export default function VesselResultTable({
   data: VesselScheduleType[];
 }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  const columnHelper = createColumnHelper<VesselScheduleType>();
 
   const columns = [
     columnHelper.accessor("port", {
@@ -44,17 +64,44 @@ export default function VesselResultTable({
     }),
     columnHelper.accessor("arrivalDate", {
       header: "Arrival Date",
-      cell: (info) => <div>{info.getValue().toISODate()}</div>,
+      cell: (info) => (
+        <DateCell
+          info={info.getValue()}
+          flag={
+            info.getValue().diff(DateTime.now(), "days").days > 0
+              ? "estimate"
+              : "actual"
+          }
+        />
+      ),
       size: 200,
     }),
     columnHelper.accessor("berthingDate", {
       header: "Berthing Date",
-      cell: (info) => <div>{info.getValue().toISODate()}</div>,
+      cell: (info) => (
+        <DateCell
+          info={info.getValue()}
+          flag={
+            info.getValue().diff(DateTime.now(), "days").days > 0
+              ? "estimate"
+              : "actual"
+          }
+        />
+      ),
       size: 200,
     }),
     columnHelper.accessor("departureDate", {
       header: "Departure Date",
-      cell: (info) => <div>{info.getValue().toISODate()}</div>,
+      cell: (info) => (
+        <DateCell
+          info={info.getValue()}
+          flag={
+            info.getValue().diff(DateTime.now(), "days").days > 0
+              ? "estimate"
+              : "actual"
+          }
+        />
+      ),
       size: 200,
     }),
   ];
@@ -66,47 +113,8 @@ export default function VesselResultTable({
   });
 
   return (
-    <div className="flex">
-      <table className={styles.table}>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <thead key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                style={{
-                  width:
-                    header.column?.columnDef.size !== undefined
-                      ? `${header.column.columnDef.size}px`
-                      : "auto",
-                }}
-              >
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </th>
-            ))}
-          </thead>
-        ))}
-        <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div className="flex mt-1">
+      <BasicTable table={table} />
       <Portal selector="#main-container">
         <PlaceInformationDialog
           open={isPlaceInformationOpen}
