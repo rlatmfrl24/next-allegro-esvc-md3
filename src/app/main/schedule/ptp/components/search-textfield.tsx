@@ -119,7 +119,6 @@ export const SearchTextField = ({
         error={selectionItems.length > 0 ? false : props.error}
         {...getReferenceProps()}
         ref={refs.setReference}
-        className="z-0"
         value={value}
         disabled={selectionItems.length >= maxSelectionCount}
         placeholder={`Input Up to ${maxSelectionCount} Locations`}

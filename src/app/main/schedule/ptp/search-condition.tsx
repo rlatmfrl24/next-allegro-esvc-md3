@@ -276,7 +276,7 @@ export default function SearchCondition({
       </div>
 
       <div className="flex gap-4">
-        <MdOutlinedSelect label="Search On" value={searchOn} className="z-0">
+        <MdOutlinedSelect label="Search On" value={searchOn}>
           <MdSelectOption
             value="departure"
             onClick={() => {
@@ -302,7 +302,6 @@ export default function SearchCondition({
           handleDateRangeSelected={(range) => {
             setDateRange(range);
           }}
-          className="z-0"
         />
       </div>
       <div className="flex justify-end gap-2">
@@ -314,7 +313,6 @@ export default function SearchCondition({
           Reset
         </MdTextButton>
         <MdFilledButton
-          className="z-0"
           onClick={() => {
             Validation() && searchAction(currentCondition);
           }}

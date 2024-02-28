@@ -150,7 +150,7 @@ export const MdRangeDatePicker = (props: {
 
   return (
     <div
-      className={`relative flex ${props.className} gap-2 z-10 min-w-fit`}
+      className={`relative flex ${props.className} gap-2 min-w-fit`}
       ref={refs.setReference}
     >
       <MdOutlinedTextField
@@ -186,9 +186,9 @@ export const MdRangeDatePicker = (props: {
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
-      <FloatingFocusManager context={context} modal={false}>
+      <FloatingFocusManager context={context} modal={true}>
         <div
-          className={isCalendarOpen ? "visible" : "invisible"}
+          className={isCalendarOpen ? "visible z-10" : "invisible"}
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
