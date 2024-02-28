@@ -113,7 +113,7 @@ export const SearchTextField = ({
   }, [handleItemSelection, selectionItems]);
 
   return (
-    <div ref={containerRef} className="relative flex flex-1 flex-col gap-2">
+    <div ref={containerRef} className="flex flex-1 flex-col gap-2">
       <MdOutlinedTextFieldBase
         {...props}
         error={selectionItems.length > 0 ? false : props.error}

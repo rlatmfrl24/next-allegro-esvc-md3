@@ -10,7 +10,7 @@ export default function SummaryContainer({
   collapseSize?: number;
 }) {
   return (
-    <div className="fixed left-0 translate-x-20 -translate-y-8 w-[calc(100%-80px)] pb-2 overflow-hidden rounded-t-2xl z-20">
+    <div className="fixed left-0 translate-x-20 -translate-y-8 w-[calc(100%-80px)] pb-2 overflow-hidden rounded-t-2xl z-10">
       <AnimatePresence>
         {open && (
           <motion.div

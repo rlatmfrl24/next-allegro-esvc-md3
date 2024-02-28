@@ -32,6 +32,13 @@ export default function ConditionSummary({
 
   return (
     <>
+      {condition && (
+        <VesselInformationDialog
+          open={isVesselInfomationDialogOpen}
+          handleOpen={setIsVesselInfomationDialogOpen}
+          data={condition}
+        />
+      )}
       <SummaryContainer open={open} collapseSize={300}>
         <div className="max-w-[1400px] w-full py-6 flex flex-col flex-1 mx-6">
           <div className="flex text-primary justify-between items-center gap-2 mb-4">
@@ -106,13 +113,6 @@ export default function ConditionSummary({
           </div>
         </div>
       </SummaryContainer>
-      {condition && (
-        <VesselInformationDialog
-          open={isVesselInfomationDialogOpen}
-          handleOpen={setIsVesselInfomationDialogOpen}
-          data={condition}
-        />
-      )}
     </>
   );
 }

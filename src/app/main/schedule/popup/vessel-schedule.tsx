@@ -14,29 +14,31 @@ export default function VesselScheduleDialog({
   vesselSchedules: VesselScheduleType[];
 }) {
   return (
-    <MdDialog
-      open={open}
-      closed={() => {
-        handleOpen(false);
-      }}
-      className="min-w-[1280px]"
-    >
-      <div slot="headline">Vessel Schedule</div>
-      <div slot="content">
-        <VesselScheduleResult
-          vesselData={vesselInfo}
-          vesselSchedules={vesselSchedules}
-        />
-      </div>
-      <div slot="actions">
-        <MdTextButton
-          onClick={() => {
-            handleOpen(false);
-          }}
-        >
-          Close
-        </MdTextButton>
-      </div>
-    </MdDialog>
+    <div className="z-50">
+      <MdDialog
+        open={open}
+        closed={() => {
+          handleOpen(false);
+        }}
+        className="min-w-[1280px]"
+      >
+        <div slot="headline">Vessel Schedule</div>
+        <div slot="content">
+          <VesselScheduleResult
+            vesselData={vesselInfo}
+            vesselSchedules={vesselSchedules}
+          />
+        </div>
+        <div slot="actions">
+          <MdTextButton
+            onClick={() => {
+              handleOpen(false);
+            }}
+          >
+            Close
+          </MdTextButton>
+        </div>
+      </MdDialog>
+    </div>
   );
 }

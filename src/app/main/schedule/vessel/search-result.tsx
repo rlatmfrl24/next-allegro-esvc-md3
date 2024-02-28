@@ -111,6 +111,13 @@ export function VesselScheduleResult({
         handleOpen={setIsVesselInformationOpen}
         data={vesselData}
       />
+      {/* {placeInformation && (
+        <PlaceInformationDialog
+          open={isPlaceInformationOpen}
+          handleOpen={setIsPlaceInformationOpen}
+          data={placeInformation}
+        />
+      )} */}
     </>
   );
 }
