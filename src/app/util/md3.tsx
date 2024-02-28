@@ -152,6 +152,9 @@ export const MdOutlinedSelect = createComponent({
   tagName: "md-outlined-select",
   elementClass: MdOutlinedSelectWebComponent,
   react: React,
+  events: {
+    onchange: "change",
+  },
 });
 
 export const MdSelectOption = createComponent({

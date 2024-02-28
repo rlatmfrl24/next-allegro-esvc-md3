@@ -10,10 +10,15 @@ import PlaceInformationDialog from "../popup/place-information";
 import Portal from "@/app/components/portal";
 import { faker } from "@faker-js/faker";
 import CutOffTooltip from "./components/cut-off-tooltip";
+import VesselScheduleDialog from "../popup/vessel-schedule";
+import {
+  createDummaryVesselSchedules,
+  createDummyVesselInformation,
+} from "../util";
 
 export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
-  const [isDetailScheduleOpen, setIsDetailScheduleOpen] = useState(false);
+  const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceInformationType>();
 
   function ScrolltoItemOnViewPort() {
@@ -67,7 +72,12 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
           </div>
           <div className="flex flex-1 flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">
-              <span className="border-b border-onSurface">
+              <span
+                className="border-b border-onSurface cursor-pointer"
+                onClick={() => {
+                  setIsVesselScheduleOpen(true);
+                }}
+              >
                 {item.vesselName}
               </span>
             </MdTypography>
@@ -118,17 +128,14 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
         >
           Booking
         </MdFilledButton>
-        <MdElevationButton
-          onClick={() => {
-            setIsDetailScheduleOpen(!isDetailScheduleOpen);
-          }}
-        >
+        <MdElevationButton>
           <div slot="icon">
             <ExpandMoreOutlinedIcon fontSize="small" />
           </div>
           Details
         </MdElevationButton>
       </div>
+
       <Portal selector="#main-container">
         {selectedPlace && (
           <PlaceInformationDialog
@@ -137,6 +144,12 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
             data={selectedPlace}
           />
         )}
+        <VesselScheduleDialog
+          open={isVesselScheduleOpen}
+          handleOpen={setIsVesselScheduleOpen}
+          vesselInfo={createDummyVesselInformation()}
+          vesselSchedules={createDummaryVesselSchedules()}
+        />
       </Portal>
     </div>
   );

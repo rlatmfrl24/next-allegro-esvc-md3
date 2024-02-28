@@ -29,33 +29,35 @@ export default function PlaceInformationDialog({
   };
 
   return (
-    <MdDialog
-      open={open}
-      closed={() => {
-        handleOpen(false);
-      }}
-      className="min-w-[720px]"
-    >
-      <div slot="headline">Place Information</div>
-      <div slot="content">
-        <div className="grid grid-cols-[200px_1fr] border border-outlineVariant bg-outlineVariant gap-px">
-          <RowItem title="Yard Name" value={data.yardName} />
-          <RowItem title="Address" value={data.address} />
-          <RowItem title="Phone No" value={data.phoneNo} />
-          <RowItem title="Fax No" value={data.faxNo} />
-          <RowItem title="Customer No" value={data.customerNo} />
-          <RowItem title="E-Mail Address" value={data.emailAddress} />
+    <div className="z-50">
+      <MdDialog
+        open={open}
+        closed={() => {
+          handleOpen(false);
+        }}
+        className="min-w-[720px]"
+      >
+        <div slot="headline">Place Information</div>
+        <div slot="content">
+          <div className="grid grid-cols-[200px_1fr] border border-outlineVariant bg-outlineVariant gap-px">
+            <RowItem title="Yard Name" value={data.yardName} />
+            <RowItem title="Address" value={data.address} />
+            <RowItem title="Phone No" value={data.phoneNo} />
+            <RowItem title="Fax No" value={data.faxNo} />
+            <RowItem title="Customer No" value={data.customerNo} />
+            <RowItem title="E-Mail Address" value={data.emailAddress} />
+          </div>
         </div>
-      </div>
-      <div slot="actions">
-        <MdTextButton
-          onClick={() => {
-            handleOpen(false);
-          }}
-        >
-          Close
-        </MdTextButton>
-      </div>
-    </MdDialog>
+        <div slot="actions">
+          <MdTextButton
+            onClick={() => {
+              handleOpen(false);
+            }}
+          >
+            Close
+          </MdTextButton>
+        </div>
+      </MdDialog>
+    </div>
   );
 }

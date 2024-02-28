@@ -3,6 +3,7 @@ import {
   RichTooltipItem,
 } from "@/app/components/tooltip";
 import { VariableElavatedButton } from "@/app/components/variable-buttons";
+import { ScrollState } from "@/app/store/global.store";
 import {
   autoUpdate,
   flip,
@@ -16,7 +17,8 @@ import {
 } from "@floating-ui/react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 export default function CutOffTooltip() {
   const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
@@ -37,6 +39,12 @@ export default function CutOffTooltip() {
     dismiss,
     role,
   ]);
+
+  const scrollState = useRecoilValue(ScrollState);
+
+  useEffect(() => {
+    setIsCutOffTooltipOpen(false);
+  }, [scrollState.yPosition]);
 
   return (
     <>

@@ -231,7 +231,7 @@ export default function SearchCondition({
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
-          ></SearchTextField>
+          />
           <MdIconButton className="mt-2" onClick={switchOriginDestination}>
             <MdIcon>
               <SwapHorizOutlinedIcon />

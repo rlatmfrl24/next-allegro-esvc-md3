@@ -17,6 +17,8 @@ export default function PointToPointListResult({
     | "latest_arrival"
   >("earliest_departure");
 
+  const [isDirectOnly, setIsDirectOnly] = useState<boolean>(true);
+
   return (
     <div className="flex flex-col gap-4 p-6">
       <div className="flex items-center gap-4">
@@ -36,7 +38,11 @@ export default function PointToPointListResult({
           </MdSelectOption>
           <MdSelectOption value="latest_arrival">Latest Arrival</MdSelectOption>
         </MdOutlinedSelect>
-        <NaToggleButton label="Direct Only" state="checked" />
+        <NaToggleButton
+          label="Direct Only"
+          state={isDirectOnly ? "checked" : "unchecked"}
+          onClick={() => setIsDirectOnly(!isDirectOnly)}
+        />
 
         <div className="flex-1"></div>
         <MdTextButton>
