@@ -27,8 +27,9 @@ import {
 } from "@floating-ui/react";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import RestoreIcon from "@mui/icons-material/Restore";
 import { MdTypography } from "./typography";
+import RestoreIcon from "@mui/icons-material/Restore";
+import { ArrowDropDownOutlined as DownArrowIcon } from "@mui/icons-material/";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -39,18 +40,21 @@ export default function NAOutlinedAutoComplete({
   setValue,
   itemList,
   icon,
+  required,
   recentItems,
   onSelection,
+  className,
   ...props
 }: {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   itemList: string[];
+  required?: boolean;
   recentItems?: string[];
   icon?: React.ReactNode;
   onSelection?: (value: string) => void;
+  className?: string;
 } & MdOutlinedTextFieldProps) {
-  // const [value, setValue] = useState("");
   const [defaultValue, setDefaultValue] = useState("");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -100,7 +104,7 @@ export default function NAOutlinedAutoComplete({
   }
 
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       <MdOutlinedTextFieldBase
         {...props}
         ref={refs.setReference}
@@ -109,23 +113,33 @@ export default function NAOutlinedAutoComplete({
         focus={() => {
           setIsListOpen(true);
         }}
+        className="w-full"
+        required={false}
         onInput={(e) => {
           setValue(e.currentTarget.value);
         }}
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
-        {value !== "" && (
-          <MdIconButton
-            slot="trailing-icon"
-            onClick={() => {
-              handleItemSelect("");
-            }}
+        <div slot="trailing-icon" className="mr-2">
+          {value !== "" && (
+            <MdIconButton
+              onClick={() => {
+                handleItemSelect("");
+              }}
+            >
+              <MdIcon>
+                <CancelIcon />
+              </MdIcon>
+            </MdIconButton>
+          )}
+          <div
+            className={`w-10 h-10 flex items-center justify-center ${
+              isListOpen ? "rotate-180" : ""
+            }`}
           >
-            <MdIcon>
-              <CancelIcon />
-            </MdIcon>
-          </MdIconButton>
-        )}
+            <DownArrowIcon className="flex-1" />
+          </div>
+        </div>
       </MdOutlinedTextFieldBase>
       {isListOpen && (
         <div
@@ -215,6 +229,15 @@ export default function NAOutlinedAutoComplete({
             </OverlayScrollbarsComponent>
           </MdList>
         </div>
+      )}
+      {required && (
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-error absolute top-0.5 left-1.5"
+        >
+          *
+        </MdTypography>
       )}
     </div>
   );

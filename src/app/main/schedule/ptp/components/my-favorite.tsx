@@ -12,6 +12,7 @@ import {
   FloatingFocusManager,
   autoUpdate,
   flip,
+  hide,
   offset,
   shift,
   useDismiss,
@@ -20,9 +21,10 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { ScrollState } from "@/app/store/global.store";
 
 export default function MyFavorite({
   onSelection,
@@ -52,8 +54,15 @@ export default function MyFavorite({
     click,
   ]);
 
+  const scrollState = useRecoilValue(ScrollState);
+
+  useEffect(() => {
+    console.log("scrollState.yPosition", scrollState.yPosition);
+    setIsPopoverOpen(false);
+  }, [scrollState.yPosition]);
+
   return (
-    <div className="z-20 relative">
+    <>
       <MdFilledTonalButton
         ref={refs.setReference}
         {...getReferenceProps}
@@ -64,148 +73,79 @@ export default function MyFavorite({
       >
         My Favorite
       </MdFilledTonalButton>
-      <FloatingFocusManager context={context} modal={false}>
-        <div
-        // ref={refs.setFloating}
-        // style={floatingStyles}
-        // {...getFloatingProps()}
-        >
-          {/* <AnimatePresence>
-            {isPopoverOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
-              >
-                <MdElevatedCard className="flex flex-col min-w-[720px]">
-                  <MdTypography
-                    variant="headline"
-                    size="small"
-                    className="pt-6 px-6 pb-0"
-                  >
-                    My Favorite
-                  </MdTypography>
-                  <MdList className="bg-surfaceContainerLow">
-                    {favoriteList.map((favorite) => {
-                      return (
-                        <MdListItem
-                          key={favorite.id}
-                          className="hover:bg-surfaceDim cursor-pointer"
-                          onClick={() => {
-                            onSelection?.(
-                              favorite.origin,
-                              favorite.destination
-                            );
-                            setIsPopoverOpen(false);
-                          }}
-                        >
-                          <div slot="headline" className="px-2">
-                            {favorite.origin.join(", ") +
-                              " - " +
-                              favorite.destination.join(", ")}
-                          </div>
-                          <div slot="end">
-                            <MdIconButton
-                              onClick={() => {
-                                setFavoriteList(
-                                  favoriteList.filter(
-                                    (item) => item.id !== favorite.id
-                                  )
-                                );
-                              }}
-                            >
-                              <DeleteOutlineIcon />
-                            </MdIconButton>
-                          </div>
-                        </MdListItem>
-                      );
-                    })}
-                  </MdList>
-                  <MdTextButton
-                    className="w-fit self-end mb-6 mx-5 mt-0"
-                    onClick={() => {
-                      setIsPopoverOpen(false);
-                    }}
-                  >
-                    Close
-                  </MdTextButton>
-                </MdElevatedCard>
-              </motion.div>
-            )}
-          </AnimatePresence> */}
-          <AnimatePresence>
-            {isPopoverOpen && (
-              <div
-                ref={refs.setFloating}
-                style={floatingStyles}
-                {...getFloatingProps()}
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.1 }}
+      <AnimatePresence>
+        {isPopoverOpen && (
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
+            className="z-10"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.1 }}
+            >
+              <MdElevatedCard className="flex flex-col min-w-[720px]">
+                <MdTypography
+                  variant="headline"
+                  size="small"
+                  className="pt-6 px-6 pb-0"
                 >
-                  <MdElevatedCard className="flex flex-col min-w-[720px]">
-                    <MdTypography
-                      variant="headline"
-                      size="small"
-                      className="pt-6 px-6 pb-0"
-                    >
-                      My Favorite
-                    </MdTypography>
-                    <MdList className="bg-surfaceContainerLow">
-                      {favoriteList.map((favorite) => {
-                        return (
-                          <MdListItem
-                            key={favorite.id}
-                            className="hover:bg-surfaceDim cursor-pointer"
-                            onClick={() => {
-                              onSelection?.(
-                                favorite.origin,
-                                favorite.destination
+                  My Favorite
+                </MdTypography>
+                <MdList className="bg-surfaceContainerLow">
+                  {favoriteList.map((favorite) => {
+                    return (
+                      <MdListItem
+                        key={favorite.id}
+                        className="hover:bg-surfaceDim cursor-pointer"
+                        onClick={() => {
+                          onSelection?.(favorite.origin, favorite.destination);
+                          setIsPopoverOpen(false);
+                        }}
+                      >
+                        <div slot="headline" className="px-2">
+                          {favorite.origin.join(", ") +
+                            " - " +
+                            favorite.destination.join(", ")}
+                        </div>
+                        <div slot="end">
+                          <MdIconButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFavoriteList(
+                                favoriteList.filter(
+                                  (item) => item.id !== favorite.id
+                                )
                               );
-                              setIsPopoverOpen(false);
                             }}
                           >
-                            <div slot="headline" className="px-2">
-                              {favorite.origin.join(", ") +
-                                " - " +
-                                favorite.destination.join(", ")}
-                            </div>
-                            <div slot="end">
-                              <MdIconButton
-                                onClick={() => {
-                                  setFavoriteList(
-                                    favoriteList.filter(
-                                      (item) => item.id !== favorite.id
-                                    )
-                                  );
-                                }}
-                              >
-                                <DeleteOutlineIcon />
-                              </MdIconButton>
-                            </div>
-                          </MdListItem>
-                        );
-                      })}
-                    </MdList>
-                    <MdTextButton
-                      className="w-fit self-end mb-6 mx-5 mt-0"
-                      onClick={() => {
-                        setIsPopoverOpen(false);
-                      }}
-                    >
-                      Close
-                    </MdTextButton>
-                  </MdElevatedCard>
-                </motion.div>
-              </div>
-            )}
-          </AnimatePresence>
-        </div>
-      </FloatingFocusManager>
-    </div>
+                            <DeleteOutlineIcon />
+                          </MdIconButton>
+                        </div>
+                      </MdListItem>
+                    );
+                  })}
+                </MdList>
+                <MdTextButton
+                  className="w-fit self-end mb-6 mx-5 mt-0"
+                  onClick={() => {
+                    setIsPopoverOpen(false);
+                  }}
+                >
+                  Close
+                </MdTextButton>
+              </MdElevatedCard>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+      {/* <FloatingFocusManager
+        context={context}
+        modal={true}
+      ></FloatingFocusManager> */}
+    </>
   );
 }

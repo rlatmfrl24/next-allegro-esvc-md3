@@ -42,12 +42,6 @@ export const menuItems: MenuItemType[] = [
         link: "long-range",
         subMenu: [],
       },
-      {
-        id: "my_schedule",
-        name: "My Schedule",
-        link: "my-schedule",
-        subMenu: [],
-      },
     ],
   },
   {

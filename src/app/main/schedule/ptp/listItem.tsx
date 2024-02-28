@@ -4,17 +4,22 @@ import VesselIcon from "@/../public/icon_vessel.svg";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { ListItemType } from "@/app/util/typeDef";
+import { PlaceInformationType, PtPScheduleType } from "@/app/util/typeDef";
 import { useState } from "react";
 import PlaceInformationDialog from "../popup/place-information";
 import Portal from "@/app/components/portal";
 import { faker } from "@faker-js/faker";
 import CutOffTooltip from "./components/cut-off-tooltip";
+import VesselScheduleDialog from "../popup/vessel-schedule";
+import {
+  createDummaryVesselSchedules,
+  createDummyVesselInformation,
+} from "../util";
 
-export default function ListItem({ item }: { item: ListItemType }) {
+export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
-  const [isDetailScheduleOpen, setIsDetailScheduleOpen] = useState(false);
-  const [selectedPlace, setSelectedPlace] = useState("");
+  const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState<PlaceInformationType>();
 
   function ScrolltoItemOnViewPort() {
     document.getElementById(`list-item-` + item.serviceLane)?.scrollIntoView({
@@ -53,7 +58,7 @@ export default function ListItem({ item }: { item: ListItemType }) {
                   setIsPlaceInformationOpen(!isPlaceInformationOpen);
                 }}
               >
-                {item.origin}
+                {item.origin.yardName}
               </span>
             </MdTypography>
             <MdTypography
@@ -67,7 +72,12 @@ export default function ListItem({ item }: { item: ListItemType }) {
           </div>
           <div className="flex flex-1 flex-col items-center gap-1">
             <MdTypography variant="title" size="medium">
-              <span className="border-b border-onSurface">
+              <span
+                className="border-b border-onSurface cursor-pointer"
+                onClick={() => {
+                  setIsVesselScheduleOpen(true);
+                }}
+              >
                 {item.vesselName}
               </span>
             </MdTypography>
@@ -97,7 +107,7 @@ export default function ListItem({ item }: { item: ListItemType }) {
                   setIsPlaceInformationOpen(!isPlaceInformationOpen);
                 }}
               >
-                {item.destination}
+                {item.destination.yardName}
               </span>
             </MdTypography>
             <MdTypography
@@ -118,29 +128,27 @@ export default function ListItem({ item }: { item: ListItemType }) {
         >
           Booking
         </MdFilledButton>
-        <MdElevationButton
-          onClick={() => {
-            setIsDetailScheduleOpen(!isDetailScheduleOpen);
-          }}
-        >
+        <MdElevationButton>
           <div slot="icon">
             <ExpandMoreOutlinedIcon fontSize="small" />
           </div>
           Details
         </MdElevationButton>
       </div>
+
       <Portal selector="#main-container">
-        <PlaceInformationDialog
-          open={isPlaceInformationOpen}
-          handleOpen={setIsPlaceInformationOpen}
-          data={{
-            yardName: selectedPlace,
-            address: faker.location.streetAddress(),
-            phoneNo: faker.phone.imei(),
-            faxNo: faker.phone.number(),
-            customerNo: faker.string.uuid(),
-            emailAddress: faker.internet.email(),
-          }}
+        {selectedPlace && (
+          <PlaceInformationDialog
+            open={isPlaceInformationOpen}
+            handleOpen={setIsPlaceInformationOpen}
+            data={selectedPlace}
+          />
+        )}
+        <VesselScheduleDialog
+          open={isVesselScheduleOpen}
+          handleOpen={setIsVesselScheduleOpen}
+          vesselInfo={createDummyVesselInformation()}
+          vesselSchedules={createDummaryVesselSchedules()}
         />
       </Portal>
     </div>

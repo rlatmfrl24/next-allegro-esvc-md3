@@ -1,12 +1,41 @@
 "use client";
 
-import { useMotionValueEvent, useScroll } from "framer-motion";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
+import { useEffect, useRef } from "react";
+import { useSetRecoilState } from "recoil";
+import { ScrollState } from "../store/global.store";
 
 export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="h-full flex px-1 py-2">{children}</div>;
+  const scrollRef = useRef<any>();
+  const setScrollState = useSetRecoilState(ScrollState);
+  const [initialize, instance] = useOverlayScrollbars({
+    events: {
+      scroll: (instance) => {
+        const viewport = instance.elements().viewport;
+        setScrollState({
+          xPosition: viewport.scrollLeft,
+          yPosition: viewport.scrollTop,
+          viewPort: viewport,
+        });
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      initialize(scrollRef.current);
+    }
+  }, [initialize]);
+
+  return (
+    <div className="relative flex h-full mx-1 py-2" id="test">
+      <div className="w-full" ref={scrollRef}>
+        <div className="flex justify-center">{children}</div>
+      </div>
+    </div>
+  );
 }

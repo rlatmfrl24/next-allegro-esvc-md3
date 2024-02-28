@@ -16,14 +16,14 @@ import { SearchTextField } from "./components/search-textfield";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { DateTime } from "luxon";
 import { PtPSearchConditionType } from "@/app/util/typeDef";
-import { createDummyPortData } from "./util";
 import { useRecoilState } from "recoil";
 import MyFavorite from "./components/my-favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import styles from "@/app/styles/base.module.css";
+import { createDummyPortData } from "../util";
 
 export default function SearchCondition({
   searchAction,
@@ -170,10 +170,7 @@ export default function SearchCondition({
   }
 
   return (
-    <div
-      aria-label="search-panel"
-      className="bg-surface rounded-2xl p-6 flex flex-col gap-4"
-    >
+    <div aria-label="search-panel" className={styles.area}>
       <div className="flex gap-6 h-10">
         <MdTypography
           tag="label"
@@ -234,7 +231,7 @@ export default function SearchCondition({
             handleItemSelection={setOriginList}
             errorText="Please select origin"
             error={isOriginError}
-          ></SearchTextField>
+          />
           <MdIconButton className="mt-2" onClick={switchOriginDestination}>
             <MdIcon>
               <SwapHorizOutlinedIcon />
@@ -302,22 +299,10 @@ export default function SearchCondition({
           supportingText=" "
           defaultStartDate={dateRange[0]}
           defaultEndDate={dateRange[1]}
-          handleDateRangeSelected={setDateRange}
+          handleDateRangeSelected={(range) => {
+            setDateRange(range);
+          }}
         />
-
-        <MdTypography
-          variant="body"
-          size="large"
-          className="flex items-center gap-2"
-        >
-          <MdSwitch
-            selected={isDirectOnly}
-            onClick={() => {
-              setIsDirectOnly(!isDirectOnly);
-            }}
-          />
-          Direct
-        </MdTypography>
       </div>
       <div className="flex justify-end gap-2">
         <MdTextButton
