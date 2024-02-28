@@ -188,7 +188,7 @@ export const MdRangeDatePicker = (props: {
       </MdOutlinedTextField>
       <FloatingFocusManager context={context} modal={true}>
         <div
-          className={isCalendarOpen ? "visible z-10" : "invisible"}
+          className={isCalendarOpen ? "visible" : "invisible"}
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}

@@ -8,7 +8,6 @@ import {
   MdTextButton,
 } from "../util/md3";
 import { useState } from "react";
-import styles from "@/app/components/components.module.css";
 import QuickTracking from "@/app/components/quick/tracking";
 import QuickSchedule from "@/app/components/quick/schedule";
 import QuickNotice from "@/app/components/quick/notice";
