@@ -80,6 +80,7 @@ export function createDummyPortSchedules(): PortScheduleType[] {
 
     return {
       vesselInfo: createDummyVesselInformation(),
+      vesselSchedules: createDummaryVesselSchedules(),
       terminalInfo: createDummyPlaceInformation(faker.location.city()),
       departureDate: tempDate,
       berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),

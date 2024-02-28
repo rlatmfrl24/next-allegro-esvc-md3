@@ -3,6 +3,7 @@ import {
   PlaceInformationType,
   PortScheduleType,
   VesselInfoType,
+  VesselScheduleType,
 } from "@/app/util/typeDef";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
@@ -18,6 +19,7 @@ import Portal from "@/app/components/portal";
 import PlaceInformationDialog from "../popup/place-information";
 import VesselInformationDialog from "../popup/vessel-information";
 import { MdFilledTonalButton } from "@/app/util/md3";
+import VesselScheduleDialog from "../popup/vessel-schedule";
 
 export default function PortResultTable({
   data,
@@ -27,8 +29,10 @@ export default function PortResultTable({
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
   const [placeInformation, setPlaceInformation] =
     useState<PlaceInformationType>();
-  const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
+  const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
   const [vesselInformation, setVesselInformation] = useState<VesselInfoType>();
+  const [vesselSchedules, setVesselSchedules] =
+    useState<VesselScheduleType[]>();
   const columnHelper = createColumnHelper<PortScheduleType>();
 
   const columns = [
@@ -40,7 +44,11 @@ export default function PortResultTable({
             className="underline cursor-pointer"
             onClick={() => {
               setVesselInformation(info.getValue());
-              setIsVesselInformationOpen(true);
+              setVesselSchedules(
+                data.find((d) => d.vesselInfo === info.getValue())
+                  ?.vesselSchedules
+              );
+              setIsVesselScheduleOpen(true);
             }}
           >
             {info.getValue().vesselName}
@@ -143,11 +151,12 @@ export default function PortResultTable({
             data={placeInformation}
           />
         )}
-        {vesselInformation && (
-          <VesselInformationDialog
-            open={isVesselInformationOpen}
-            handleOpen={setIsVesselInformationOpen}
-            data={vesselInformation}
+        {vesselInformation && vesselSchedules && (
+          <VesselScheduleDialog
+            open={isVesselScheduleOpen}
+            handleOpen={setIsVesselScheduleOpen}
+            vesselInfo={vesselInformation}
+            vesselSchedules={vesselSchedules}
           />
         )}
       </Portal>

@@ -100,6 +100,7 @@ export type PortScheduleSearchConditionType = {
 
 export type PortScheduleType = {
   vesselInfo: VesselInfoType;
+  vesselSchedules: VesselScheduleType[];
   terminalInfo: PlaceInformationType;
   arrivalDate: DateTime;
   berthingDate: DateTime;
