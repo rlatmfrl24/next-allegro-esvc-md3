@@ -50,8 +50,10 @@ export function createDummyVesselInformation(): VesselInfoType {
   };
 }
 
-export function createDummyVesselInformations(): VesselInfoType[] {
-  return Array.from({ length: 900 }, () => createDummyVesselInformation());
+export function createDummyVesselInformations(
+  number: number
+): VesselInfoType[] {
+  return Array.from({ length: number }, () => createDummyVesselInformation());
 }
 
 export function createDummaryVesselSchedules(): VesselScheduleType[] {

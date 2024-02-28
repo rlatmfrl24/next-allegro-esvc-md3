@@ -7,7 +7,10 @@ import {
   MdIconButton,
   MdOutlinedButton,
   MdOutlinedSelect,
+  MdPrimaryTab,
+  MdSecondaryTab,
   MdSelectOption,
+  MdTabs,
   MdTextButton,
 } from "@/app/util/md3";
 import { useEffect, useState } from "react";
@@ -16,6 +19,8 @@ import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import styles from "@/app/styles/base.module.css";
 import EmptyResultPlaceholder from "../empty-placeholder";
+import { Download } from "@mui/icons-material";
+import LongRangeTable from "./table";
 
 type LongRangeSearchConditionType = {
   continentFrom: string;
@@ -136,7 +141,37 @@ export default function LongRangeSchedule() {
       {pageState === "unsearch" ? (
         <EmptyResultPlaceholder />
       ) : (
-        <div className={styles.area}>Search Result</div>
+        <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
+          <MdTabs className="overflow-hidden">
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+            <MdSecondaryTab>1111</MdSecondaryTab>
+          </MdTabs>
+          <div className="p-6">
+            <div className="flex gap-4 items-center justify-end">
+              <MdTypography
+                variant="label"
+                size="large"
+                className="text-outline"
+              >
+                Total: 13
+              </MdTypography>
+              <MdTextButton>
+                <MdIcon slot="icon">
+                  <Download fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
+            </div>
+            <LongRangeTable />
+          </div>
+        </div>
       )}
     </div>
   );

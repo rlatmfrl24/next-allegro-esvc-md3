@@ -7,7 +7,7 @@ import {
   MdIconButton,
   MdTextButton,
 } from "@/app/util/md3";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import ConditionSummary from "./condition-summary";
@@ -44,9 +44,7 @@ export default function VesselSchedule() {
   };
 
   const scrollState = useRecoilValue(ScrollState);
-  const [vesselList] = useState<VesselInfoType[]>(
-    createDummyVesselInformations()
-  );
+  const vesselList = useMemo(() => createDummyVesselInformations(400), []);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
