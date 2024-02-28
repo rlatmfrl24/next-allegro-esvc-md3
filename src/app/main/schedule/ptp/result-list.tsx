@@ -26,6 +26,7 @@ export default function PointToPointListResult({
           label="Sort By"
           value={listSort}
           onClick={(e) => setListSort((e.target as any).value)}
+          className="z-0"
         >
           <MdSelectOption value="earliest_departure">
             Earliest Departure

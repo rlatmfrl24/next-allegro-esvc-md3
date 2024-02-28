@@ -57,11 +57,6 @@ export default function PointToPointSchedule() {
       aria-label="container"
       className="max-w-[1400px] w-full p-6 flex flex-col gap-4"
     >
-      <ConditionSummary
-        open={isSearchConditionSummaryOpen && resultList.length > 0}
-        condition={searchCondition}
-        scrollTop={ScrollToTop}
-      />
       <div
         aria-label="page-title"
         className="flex justify-start items-center gap-3"
@@ -107,6 +102,11 @@ export default function PointToPointSchedule() {
           }[pageState]
         }
       </div>
+      <ConditionSummary
+        open={isSearchConditionSummaryOpen && resultList.length > 0}
+        condition={searchCondition}
+        scrollTop={ScrollToTop}
+      />
     </div>
   );
 }

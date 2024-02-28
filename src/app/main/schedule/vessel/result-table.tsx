@@ -116,14 +116,15 @@ export default function VesselResultTable({
   return (
     <div className="flex mt-1">
       <BasicTable table={table} />
+      {placeInformation && (
+        <PlaceInformationDialog
+          open={isPlaceInformationOpen}
+          handleOpen={setIsPlaceInformationOpen}
+          data={placeInformation}
+        />
+      )}
       <Portal selector="#main-container">
-        {placeInformation && (
-          <PlaceInformationDialog
-            open={isPlaceInformationOpen}
-            handleOpen={setIsPlaceInformationOpen}
-            data={placeInformation}
-          />
-        )}
+        <></>
       </Portal>
     </div>
   );
