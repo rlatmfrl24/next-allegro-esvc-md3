@@ -1,4 +1,7 @@
 import {
+  LongRangeDateType,
+  LongRangePortType,
+  LongRangeScheduleType,
   PlaceInformationType,
   PortScheduleType,
   PtPScheduleType,
@@ -142,4 +145,60 @@ export function createDummyPtPScheduleData(
   });
 
   return dummyData;
+}
+
+export function createDummyPortList(): LongRangePortType[] {
+  return Array.from(
+    {
+      length: faker.number.int({
+        min: 20,
+        max: 30,
+      }),
+    },
+    (_, i) => {
+      return {
+        name: faker.location.city(),
+        direction: faker.helpers.arrayElement([
+          "north",
+          "south",
+          "east",
+          "west",
+        ]),
+      };
+    }
+  );
+}
+
+export function createDummyLongRangeSchedule(
+  portList: LongRangePortType[],
+  hasDeparture = true
+): LongRangeScheduleType {
+  return {
+    vesselInfo: createDummyVesselInformation(),
+    vesselSchedules: createDummaryVesselSchedules(),
+    remarkInfo: faker.lorem.sentence(),
+    longRangeDates: portList.map((port) => {
+      return {
+        port,
+        arrival: DateTime.fromJSDate(faker.date.future()),
+        departure: hasDeparture
+          ? DateTime.fromJSDate(faker.date.future())
+          : undefined,
+      } as LongRangeDateType;
+    }),
+  };
+}
+
+export function createDummyLongRangeSchedules(
+  hasDeparture = true,
+  length = 30
+) {
+  const portList = createDummyPortList();
+  const schedules = Array.from({ length: length }, () =>
+    createDummyLongRangeSchedule(portList, hasDeparture)
+  );
+  return {
+    schedules,
+    portList,
+  };
 }

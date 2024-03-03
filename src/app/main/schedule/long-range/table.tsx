@@ -1,12 +1,10 @@
-import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
-import { SimpleFaker, de, faker } from "@faker-js/faker";
-import { DateTime } from "luxon";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import {
-  createDummaryVesselSchedules,
-  createDummyVesselInformation,
-} from "../util";
-import { useEffect, useMemo } from "react";
+  LongRangePortType,
+  LongRangeScheduleType,
+  VesselInfoType,
+} from "@/app/util/typeDef";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import WestIcon from "@/../public/icon_direction_west.svg";
 import EastIcon from "@/../public/icon_direction_east.svg";
@@ -15,75 +13,10 @@ import SouthIcon from "@/../public/icon_direction_south.svg";
 import { max } from "lodash";
 import ActualDateIcon from "@/../public/icon_actual_schedule.svg";
 import LongRangeDateIcon from "@/../public/icon_long_range_schedule.svg";
-import { MdIcon } from "@/app/util/md3";
-
-type LongRangePortType = {
-  name: string;
-  direction: "north" | "south" | "east" | "west";
-};
-
-type LongRangeDateType = {
-  port: LongRangePortType;
-  arrival: DateTime;
-  departure: DateTime;
-};
-
-type LongRangeScheduleType = {
-  vesselInfo: VesselInfoType;
-  vesselSchedules: VesselScheduleType[];
-  remarkInfo: string;
-  longRangeDates: LongRangeDateType[];
-};
-
-function createDummyPortList(): LongRangePortType[] {
-  return Array.from(
-    {
-      length: faker.number.int({
-        min: 20,
-        max: 30,
-      }),
-    },
-    (_, i) => {
-      return {
-        name: faker.location.city(),
-        direction: faker.helpers.arrayElement([
-          "north",
-          "south",
-          "east",
-          "west",
-        ]),
-      };
-    }
-  );
-}
-
-function createDummyLongRangeSchedule(
-  portList: LongRangePortType[]
-): LongRangeScheduleType {
-  return {
-    vesselInfo: createDummyVesselInformation(),
-    vesselSchedules: createDummaryVesselSchedules(),
-    remarkInfo: faker.lorem.sentence(),
-    longRangeDates: portList.map((port) => {
-      return {
-        port,
-        arrival: DateTime.fromJSDate(faker.date.future()),
-        departure: DateTime.fromJSDate(faker.date.future()),
-      } as LongRangeDateType;
-    }),
-  };
-}
-
-function createDummyLongRangeSchedules() {
-  const portList = createDummyPortList();
-  const schedules = Array.from({ length: 30 }, () =>
-    createDummyLongRangeSchedule(portList)
-  );
-  return {
-    schedules,
-    portList,
-  };
-}
+import RemarkIcon from "@/../public/icon_long_range_remark.svg";
+import VesselScheduleDialog from "../popup/vessel-schedule";
+import { MdIcon, MdIconButton } from "@/app/util/md3";
+import { createDummaryVesselSchedules } from "../util";
 
 const DirectionIcon = ({
   direction,
@@ -104,20 +37,31 @@ const DirectionIcon = ({
   }
 };
 
-export default function LongRangeTable() {
-  const { schedules, portList } = useMemo(
-    () => createDummyLongRangeSchedules(),
-    []
-  );
-
-  useEffect(() => {
-    console.log(schedules);
-    console.log(portList);
-  }, [schedules, portList]);
+export default function LongRangeTable({
+  schedules,
+  portList,
+  hasDeparture,
+}: {
+  schedules: LongRangeScheduleType[];
+  portList: LongRangePortType[];
+  hasDeparture: boolean;
+}) {
+  const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
+    useState(false);
+  const [selectedVesselInfo, setSelectedVesselInfo] =
+    useState<VesselInfoType | null>(null);
 
   return (
     <div className="flex">
-      <div className="w-72 flex flex-col border-r border-r-onSurfaceVariant">
+      {selectedVesselInfo && (
+        <VesselScheduleDialog
+          open={isVesselScheduleDialogOpen}
+          handleOpen={setIsVesselScheduleDialogOpen}
+          vesselInfo={selectedVesselInfo}
+          vesselSchedules={createDummaryVesselSchedules()}
+        />
+      )}
+      <div className="w-fit flex flex-col border-r border-r-onSurfaceVariant">
         <div className="flex items-center h-12 p-2 bg-surfaceVariant">
           <MdTypography
             variant="body"
@@ -130,9 +74,53 @@ export default function LongRangeTable() {
         {schedules.map((schedule, i) => (
           <div
             key={i}
-            className="flex items-center justify-center h-24 pb-px bg-surface border-b border-b-outlineVariant"
+            className={`${
+              hasDeparture ? "h-24" : "h-12"
+            } flex justify-between pb-px bg-surface border-b border-b-outlineVariant`}
           >
-            {schedule.vesselInfo.vesselName}
+            <div className="flex p-2 flex-1 items-center">
+              <div
+                className="flex-1"
+                onClick={() => {
+                  setSelectedVesselInfo(schedule.vesselInfo);
+                  setIsVesselScheduleDialogOpen(true);
+                }}
+              >
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  className="underline cursor-pointer py-1.5"
+                >
+                  {schedule.vesselInfo.vesselName}
+                </MdTypography>
+              </div>
+
+              <MdIconButton>
+                <MdIcon>
+                  <div className="flex items-center justify-center">
+                    <RemarkIcon />
+                  </div>
+                </MdIcon>
+              </MdIconButton>
+            </div>
+            <div className="flex flex-col w-fit border-l border-l-outlineVariant">
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="flex-1 flex items-center p-2"
+              >
+                Arrival
+              </MdTypography>
+              {hasDeparture && (
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  className="flex-1 flex items-center p-2"
+                >
+                  Departure
+                </MdTypography>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -180,7 +168,9 @@ export default function LongRangeTable() {
                 {schedule.longRangeDates.map((date, j) => (
                   <div
                     key={j}
-                    className="col-span-1 border-b border-b-outlineVariant w-[200px] h-24 bg-surface flex flex-col"
+                    className={`${
+                      hasDeparture ? "h-24" : "h-12"
+                    } col-span-1 border-b border-b-outlineVariant w-[200px] bg-surface flex flex-col`}
                   >
                     <div className="flex p-2 items-center justify-start flex-1">
                       <div className="w-8 h-8 flex justify-center items-center">
@@ -190,14 +180,16 @@ export default function LongRangeTable() {
                         {date.arrival.toFormat("yyyy-MM-dd HH:mm:ss")}
                       </MdTypography>
                     </div>
-                    <div className="flex p-2 items-center justify-start flex-1">
-                      <div className="w-8 h-8 flex justify-center items-center">
-                        <LongRangeDateIcon />
+                    {date.departure && (
+                      <div className="flex p-2 items-center justify-start flex-1">
+                        <div className="w-8 h-8 flex justify-center items-center">
+                          <LongRangeDateIcon />
+                        </div>
+                        <MdTypography variant="body" size="medium">
+                          {date.departure.toFormat("yyyy-MM-dd HH:mm:ss")}
+                        </MdTypography>
                       </div>
-                      <MdTypography variant="body" size="medium">
-                        {date.departure.toFormat("yyyy-MM-dd HH:mm:ss")}
-                      </MdTypography>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>

@@ -7,13 +7,12 @@ import {
   MdIconButton,
   MdOutlinedButton,
   MdOutlinedSelect,
-  MdPrimaryTab,
   MdSecondaryTab,
   MdSelectOption,
   MdTabs,
   MdTextButton,
 } from "@/app/util/md3";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
@@ -21,11 +20,9 @@ import styles from "@/app/styles/base.module.css";
 import EmptyResultPlaceholder from "../empty-placeholder";
 import { Download } from "@mui/icons-material";
 import LongRangeTable from "./table";
-
-type LongRangeSearchConditionType = {
-  continentFrom: string;
-  continentTo: string;
-};
+import { createDummyLongRangeSchedules } from "../util";
+import { LongRangeSearchConditionType } from "@/app/util/typeDef";
+import NAOutlinedSelect from "@/app/components/na-outlined-select";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -34,6 +31,32 @@ export default function LongRangeSchedule() {
       continentFrom: "",
       continentTo: "",
     });
+
+  const hasDeparture = true;
+  const { schedules, portList } = useMemo(
+    () => createDummyLongRangeSchedules(hasDeparture),
+    [hasDeparture]
+  );
+  const [errorState, setErrorState] = useState<"from" | "to" | null>(null);
+
+  function checkValidAndSearch() {
+    if (searchCondition.continentFrom === "") {
+      setErrorState("from");
+      return;
+    }
+    if (searchCondition.continentTo === "") {
+      setErrorState("to");
+      return;
+    }
+
+    if (
+      searchCondition.continentFrom !== "" &&
+      searchCondition.continentTo !== ""
+    ) {
+      setErrorState(null);
+      setPageState("search");
+    }
+  }
 
   return (
     <div
@@ -54,8 +77,11 @@ export default function LongRangeSchedule() {
         </MdIconButton>
       </div>
       <div className={styles.area} aria-label="search-condition-area">
-        <div className="flex items-center gap-4">
-          <MdOutlinedSelect
+        <div className="flex gap-4">
+          <NAOutlinedSelect
+            required
+            error={errorState === "from"}
+            errorText="Please select continent"
             aria-label="continent-from-select"
             label="Continent From"
             className="w-80"
@@ -76,8 +102,11 @@ export default function LongRangeSchedule() {
             <MdSelectOption value="south-america">South America</MdSelectOption>
             <MdSelectOption value="africa">Africa</MdSelectOption>
             <MdSelectOption value="oceania">Oceania</MdSelectOption>
-          </MdOutlinedSelect>
-          <MdOutlinedSelect
+          </NAOutlinedSelect>
+          <NAOutlinedSelect
+            required
+            error={errorState === "to"}
+            errorText="Please select continent"
             aria-label="continent-to-select"
             label="Continent To"
             className="w-80"
@@ -98,8 +127,8 @@ export default function LongRangeSchedule() {
             <MdSelectOption value="south-america">South America</MdSelectOption>
             <MdSelectOption value="africa">Africa</MdSelectOption>
             <MdSelectOption value="oceania">Oceania</MdSelectOption>
-          </MdOutlinedSelect>
-          <MdOutlinedButton className="h-fit">
+          </NAOutlinedSelect>
+          <MdOutlinedButton className="h-fit mt-2">
             <MdIcon slot="icon">
               <AddOutlinedIcon fontSize="small" />
             </MdIcon>
@@ -131,7 +160,7 @@ export default function LongRangeSchedule() {
           </MdTextButton>
           <MdFilledButton
             onClick={() => {
-              setPageState("search");
+              checkValidAndSearch();
             }}
           >
             Search
@@ -154,13 +183,13 @@ export default function LongRangeSchedule() {
             <MdSecondaryTab>1111</MdSecondaryTab>
           </MdTabs>
           <div className="p-6">
-            <div className="flex gap-4 items-center justify-end">
+            <div className="flex gap-4 items-center justify-end mb-2">
               <MdTypography
                 variant="label"
                 size="large"
                 className="text-outline"
               >
-                Total: 13
+                Total: {schedules.length}
               </MdTypography>
               <MdTextButton>
                 <MdIcon slot="icon">
@@ -169,7 +198,11 @@ export default function LongRangeSchedule() {
                 Download
               </MdTextButton>
             </div>
-            <LongRangeTable />
+            <LongRangeTable
+              schedules={schedules}
+              hasDeparture={hasDeparture}
+              portList={portList}
+            />
           </div>
         </div>
       )}

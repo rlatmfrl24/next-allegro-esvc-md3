@@ -106,3 +106,26 @@ export type PortScheduleType = {
   berthingDate: DateTime;
   departureDate: DateTime;
 };
+
+export type LongRangeSearchConditionType = {
+  continentFrom: string;
+  continentTo: string;
+};
+
+export type LongRangePortType = {
+  name: string;
+  direction: "north" | "south" | "east" | "west";
+};
+
+export type LongRangeDateType = {
+  port: LongRangePortType;
+  arrival: DateTime;
+  departure: DateTime | undefined;
+};
+
+export type LongRangeScheduleType = {
+  vesselInfo: VesselInfoType;
+  vesselSchedules: VesselScheduleType[];
+  remarkInfo: string;
+  longRangeDates: LongRangeDateType[];
+};
