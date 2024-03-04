@@ -134,6 +134,9 @@ export const MdTabs = createComponent({
   tagName: "md-tabs",
   elementClass: MdTabsWebComponent,
   react: React,
+  events: {
+    onchange: "change",
+  },
 });
 
 export const MdPrimaryTab = createComponent({

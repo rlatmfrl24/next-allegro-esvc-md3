@@ -9,7 +9,7 @@ import {
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
@@ -21,6 +21,7 @@ import { createDummyLongRangeSchedules } from "../util";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef";
 import NAOutlinedSelect from "@/app/components/na-outlined-select";
 import ServiceLaneSelector from "./service-lane-selector";
+import { faker } from "@faker-js/faker";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -31,11 +32,29 @@ export default function LongRangeSchedule() {
       continentTo: "",
     });
 
-  const hasDeparture = false;
-  const { schedules, portList } = useMemo(
-    () => createDummyLongRangeSchedules(hasDeparture),
-    [hasDeparture]
+  const hasDeparture = true;
+  const [schedules, setSchedules] = useState<any[]>([]);
+  const [portList, setPortList] = useState<any[]>([]);
+
+  const serviceLaneItems = useMemo(
+    () =>
+      Array.from({ length: 30 }, () =>
+        faker.string.alphanumeric(4).toUpperCase()
+      ),
+    []
   );
+  const [selectedServiceLane, setSelectedServiceLane] = useState<string>("");
+
+  const createDummyData = useCallback(() => {
+    const { schedules, portList } = createDummyLongRangeSchedules(hasDeparture);
+    setSchedules(schedules);
+    setPortList(portList);
+  }, [hasDeparture]);
+
+  useEffect(() => {
+    createDummyData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedServiceLane]);
 
   function checkValidAndSearch() {
     if (searchCondition.continentFrom === "") {
@@ -137,7 +156,6 @@ export default function LongRangeSchedule() {
           <MdTextButton
             onClick={() => {
               setPageState("unsearch");
-
               setSearchCondition({
                 continentFrom: "",
                 continentTo: "",
@@ -169,7 +187,12 @@ export default function LongRangeSchedule() {
         <EmptyResultPlaceholder />
       ) : (
         <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
-          <ServiceLaneSelector />
+          <ServiceLaneSelector
+            items={serviceLaneItems}
+            onChange={(value) => {
+              setSelectedServiceLane(value);
+            }}
+          />
           <div className="p-6">
             <div className="flex gap-4 items-center justify-end mb-2">
               <MdTypography
