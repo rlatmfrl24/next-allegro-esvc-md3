@@ -142,10 +142,6 @@ export default function ConditionSummary({
                 "yyyy-MM-dd"
               )} ~ ${condition.endDate.toFormat("yyyy-MM-dd")}`}
             />
-            <SummaryItem
-              title="Shipping Mode"
-              value={condition.directOnly ? "Direct" : "Indirect"}
-            />
           </div>
         </div>
         <div className="flex flex-col h-full justify-between items-end">
