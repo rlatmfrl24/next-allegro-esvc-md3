@@ -1,3 +1,5 @@
+"use client";
+
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
@@ -23,7 +25,6 @@ import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
 
-("use client");
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
