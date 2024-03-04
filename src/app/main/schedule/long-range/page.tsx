@@ -6,10 +6,7 @@ import {
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
-  MdOutlinedSelect,
-  MdSecondaryTab,
   MdSelectOption,
-  MdTabs,
   MdTextButton,
 } from "@/app/util/md3";
 import { useMemo, useState } from "react";
@@ -23,21 +20,22 @@ import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef";
 import NAOutlinedSelect from "@/app/components/na-outlined-select";
+import ServiceLaneSelector from "./service-lane-selector";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
+  const [errorState, setErrorState] = useState<"from" | "to" | null>(null);
   const [searchCondition, setSearchCondition] =
     useState<LongRangeSearchConditionType>({
       continentFrom: "",
       continentTo: "",
     });
 
-  const hasDeparture = true;
+  const hasDeparture = false;
   const { schedules, portList } = useMemo(
     () => createDummyLongRangeSchedules(hasDeparture),
     [hasDeparture]
   );
-  const [errorState, setErrorState] = useState<"from" | "to" | null>(null);
 
   function checkValidAndSearch() {
     if (searchCondition.continentFrom === "") {
@@ -171,17 +169,7 @@ export default function LongRangeSchedule() {
         <EmptyResultPlaceholder />
       ) : (
         <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
-          <MdTabs className="overflow-hidden">
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-            <MdSecondaryTab>1111</MdSecondaryTab>
-          </MdTabs>
+          <ServiceLaneSelector />
           <div className="p-6">
             <div className="flex gap-4 items-center justify-end mb-2">
               <MdTypography
