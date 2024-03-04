@@ -4,6 +4,7 @@ import {
   MdElevation,
   MdIcon,
   MdIconButton,
+  MdOutlinedButton,
   MdRippleEffect,
 } from "@/app/util/md3";
 
@@ -13,6 +14,11 @@ import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { PtPScheduleType } from "@/app/util/typeDef";
+import Portal from "@/app/components/portal";
+import { useState } from "react";
+import PointToPointListResult from "./result-list";
+import { Data } from "@dnd-kit/core";
+import { dir } from "console";
 
 const LabelChip = ({
   label,
@@ -69,6 +75,42 @@ function classifyByDate(list: PtPScheduleType[]) {
   return result;
 }
 
+function exploreOtherDate(
+  currentDate: DateTime,
+  classifiedList: Record<string, PtPScheduleType[]>,
+  direction: "prev" | "next"
+) {
+  const dateKey = currentDate.toISO()?.split("T")[0];
+  if (!dateKey) {
+    return null;
+  }
+  const keys = Object.keys(classifiedList).sort(
+    (a, b) => DateTime.fromISO(a).toMillis() - DateTime.fromISO(b).toMillis()
+  );
+
+  const idx = keys.indexOf(dateKey);
+  if (idx === -1) {
+    return null;
+  }
+  if (direction === "prev") {
+    if (idx === 0) {
+      return null;
+    }
+    return {
+      date: DateTime.fromISO(keys[idx - 1]),
+      list: classifiedList[keys[idx - 1]],
+    };
+  } else {
+    if (idx === keys.length - 1) {
+      return null;
+    }
+    return {
+      date: DateTime.fromISO(keys[idx + 1]),
+      list: classifiedList[keys[idx + 1]],
+    };
+  }
+}
+
 export default function PointToPointCalendarResult({
   list,
 }: {
@@ -76,6 +118,11 @@ export default function PointToPointCalendarResult({
 }) {
   const { headers, body, navigation, cursorDate } = useCalendar();
   const classified = classifyByDate(list);
+  const [isDetailListOpen, setIsDetailListOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState<{
+    date: DateTime;
+    list: PtPScheduleType[];
+  } | null>(null);
 
   return (
     <div>
@@ -143,6 +190,12 @@ export default function PointToPointCalendarResult({
               <div
                 key={key}
                 className={`relative flex flex-col gap-2 h-[152px] p-2 bg-surface cursor-pointer`}
+                onClick={() => {
+                  if (list.length > 0) {
+                    setSelectedData({ date: DateTime.fromJSDate(value), list });
+                    setIsDetailListOpen(true);
+                  }
+                }}
               >
                 <MdRippleEffect />
                 <MdTypography
@@ -185,6 +238,63 @@ export default function PointToPointCalendarResult({
           });
         })}
       </div>
+      <Portal selector="#result-container">
+        {isDetailListOpen && (
+          <div className="absolute top-0 right-0 w-full min-h-full h-fit bg-surface rounded-2xl border border-outlineVariant">
+            <div className="p-6 flex items-center justify-center relative">
+              <MdOutlinedButton
+                className="absolute left-6 top-6"
+                onClick={() => {
+                  setIsDetailListOpen(false);
+                }}
+              >
+                <MdIcon slot="icon">
+                  <ChevronLeftIcon fontSize="small" />
+                </MdIcon>
+                Back
+              </MdOutlinedButton>
+              <MdIconButton
+                disabled={
+                  !selectedData ||
+                  !exploreOtherDate(selectedData?.date, classified, "prev")
+                }
+                onClick={() => {
+                  const prevData =
+                    selectedData &&
+                    exploreOtherDate(selectedData?.date, classified, "prev");
+                  setSelectedData(prevData);
+                }}
+              >
+                <MdIcon>
+                  <ChevronLeftIcon />
+                </MdIcon>
+              </MdIconButton>
+              <MdTypography variant="title" size="large" className="mx-12">
+                {selectedData?.date.toFormat("dd MMM yyyy")}
+              </MdTypography>
+              <MdIconButton
+                disabled={
+                  !selectedData ||
+                  !exploreOtherDate(selectedData?.date, classified, "next")
+                }
+                onClick={() => {
+                  const nextData =
+                    selectedData &&
+                    exploreOtherDate(selectedData?.date, classified, "next");
+                  setSelectedData(nextData);
+                }}
+              >
+                <MdIcon>
+                  <ChevronRightIcon />
+                </MdIcon>
+              </MdIconButton>
+            </div>
+            {selectedData && (
+              <PointToPointListResult list={selectedData?.list} />
+            )}
+          </div>
+        )}
+      </Portal>
     </div>
   );
 }

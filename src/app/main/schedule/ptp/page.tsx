@@ -88,7 +88,11 @@ export default function PointToPointSchedule() {
           setPageState("unsearch");
         }}
       />
-      <div aria-label="result-panel" className={styles.area}>
+      <div
+        id="result-container"
+        aria-label="result-panel"
+        className={styles.area}
+      >
         {resultList.length > 0 && (
           <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
             <MdOutlinedSegmentedButton
