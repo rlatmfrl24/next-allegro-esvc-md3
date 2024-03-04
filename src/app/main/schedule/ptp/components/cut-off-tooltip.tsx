@@ -4,6 +4,7 @@ import {
 } from "@/app/components/tooltip";
 import { VariableElavatedButton } from "@/app/components/variable-buttons";
 import { ScrollState } from "@/app/store/global.store";
+import { CutOffDataType } from "@/app/util/typeDef";
 import {
   autoUpdate,
   flip,
@@ -20,7 +21,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
-export default function CutOffTooltip() {
+export default function CutOffTooltip({ data }: { data: CutOffDataType }) {
   const [isCutOffTooltipOpen, setIsCutOffTooltipOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
     open: isCutOffTooltipOpen,
@@ -85,17 +86,19 @@ export default function CutOffTooltip() {
                 <RichTooltipItem
                   slot="content"
                   title="Documentation"
-                  supportingText="2021-09-01 12:00"
+                  supportingText={data.documentation.toFormat(
+                    "yyyy-MM-dd HH:mm"
+                  )}
                 />
                 <RichTooltipItem
                   slot="content"
                   title="EDI"
-                  supportingText="2021-09-01 12:00"
+                  supportingText={data.EDI.toFormat("yyyy-MM-dd HH:mm")}
                 />
                 <RichTooltipItem
                   slot="content"
                   title="Cargo"
-                  supportingText="2021-09-01 12:00"
+                  supportingText={data.cargo.toFormat("yyyy-MM-dd HH:mm")}
                 />
               </RichTooltipContainer>
             </motion.div>

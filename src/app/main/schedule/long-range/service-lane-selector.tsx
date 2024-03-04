@@ -20,10 +20,6 @@ export default function ServiceLaneSelector({
   const [isOverflowed, setIsOverflowed] = useState(false);
 
   useEffect(() => {
-    console.log("scrollState", scrollState);
-  }, [scrollState]);
-
-  useEffect(() => {
     // detect ref is overflowed
     setTimeout(() => {
       if (tabContainerRef.current) {

@@ -57,7 +57,6 @@ export default function MyFavorite({
   const scrollState = useRecoilValue(ScrollState);
 
   useEffect(() => {
-    console.log("scrollState.yPosition", scrollState.yPosition);
     setIsPopoverOpen(false);
   }, [scrollState.yPosition]);
 

@@ -1,25 +1,28 @@
 "use client";
 
-import { DateTime } from 'luxon';
-import { useOverlayScrollbars } from 'overlayscrollbars-react';
-import { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { DateTime } from "luxon";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
 
-import { MdTypography } from '@/app/components/typography';
-import { ScrollState } from '@/app/store/global.store';
-import styles from '@/app/styles/base.module.css';
+import { MdTypography } from "@/app/components/typography";
+import { ScrollState } from "@/app/store/global.store";
+import styles from "@/app/styles/base.module.css";
 import {
-    MdIcon, MdIconButton, MdOutlinedSegmentedButton, MdOutlinedSegmentedButtonSet
-} from '@/app/util/md3';
-import { PtPScheduleType, PtPSearchConditionType } from '@/app/util/typeDef';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+  MdIcon,
+  MdIconButton,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
+} from "@/app/util/md3";
+import { PtPScheduleType, PtPSearchConditionType } from "@/app/util/typeDef";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import EmptyResultPlaceholder from '../empty-placeholder';
-import { createDummyPtPScheduleData } from '../util';
-import ConditionSummary from './condition-summary';
-import PointToPointCalendarResult from './result-calendar';
-import PointToPointListResult from './result-list';
-import SearchCondition from './search-condition';
+import EmptyResultPlaceholder from "../empty-placeholder";
+import { createDummyPtPScheduleData } from "../util";
+import ConditionSummary from "./condition-summary";
+import PointToPointCalendarResult from "./result-calendar";
+import PointToPointListResult from "./result-list";
+import SearchCondition from "./search-condition";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
@@ -72,8 +75,7 @@ export default function PointToPointSchedule() {
       <SearchCondition
         searchAction={(condition) => {
           setSearchCondition(condition);
-          const list = createDummyPtPScheduleData(condition);
-          setResultList(list);
+          setResultList(createDummyPtPScheduleData(condition));
           setPageState("list");
         }}
       />

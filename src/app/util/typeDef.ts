@@ -48,6 +48,12 @@ export type PtPSearchConditionType = {
   directOnly: boolean;
 };
 
+export type CutOffDataType = {
+  documentation: DateTime;
+  EDI: DateTime;
+  cargo: DateTime;
+};
+
 export type FavoriteRouteType = {
   id: string;
   name: string;
