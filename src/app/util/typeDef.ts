@@ -45,7 +45,6 @@ export type PtPSearchConditionType = {
   searchOn: "departure" | "arrival";
   startDate: DateTime;
   endDate: DateTime;
-  directOnly: boolean;
 };
 
 export type CutOffDataType = {

@@ -1,28 +1,38 @@
-import { DateTime } from 'luxon';
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { DateTime } from "luxon";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
-import { MdRangeDatePicker } from '@/app/components/datepickers/range-picker';
-import { MdTypography } from '@/app/components/typography';
-import { FavoriteRouteListState } from '@/app/store/ptp.store';
-import styles from '@/app/styles/base.module.css';
+import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { MdTypography } from "@/app/components/typography";
+import { FavoriteRouteListState } from "@/app/store/ptp.store";
+import styles from "@/app/styles/base.module.css";
 import {
-    MdFilledButton, MdFilledTonalButton, MdFilledTonalIconButton, MdIcon, MdIconButton,
-    MdOutlinedSelect, MdRadio, MdSelectOption, MdSwitch, MdTextButton
-} from '@/app/util/md3';
-import { PtPSearchConditionType } from '@/app/util/typeDef';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import SwapHorizOutlinedIcon from '@mui/icons-material/SwapHorizOutlined';
+  MdFilledButton,
+  MdFilledTonalButton,
+  MdFilledTonalIconButton,
+  MdIcon,
+  MdIconButton,
+  MdOutlinedSelect,
+  MdRadio,
+  MdSelectOption,
+  MdSwitch,
+  MdTextButton,
+} from "@/app/util/md3";
+import { PtPSearchConditionType } from "@/app/util/typeDef";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 
-import { createDummyPortData } from '../util';
-import MyFavorite from './components/my-favorite';
-import { SearchTextField } from './components/search-textfield';
+import { createDummyPortData } from "../util";
+import MyFavorite from "./components/my-favorite";
+import { SearchTextField } from "./components/search-textfield";
 
 export default function SearchCondition({
   searchAction,
+  resetAction,
 }: {
   searchAction: (condition: PtPSearchConditionType) => void;
+  resetAction: () => void;
 }) {
   const [searchCondition, setSearchCondition] = useState<
     "single" | "multi-origin" | "multi-destination"
@@ -35,7 +45,6 @@ export default function SearchCondition({
   const [searchOn, setSearchOn] = useState<"departure" | "arrival">(
     "departure"
   );
-  const [isDirectOnly, setIsDirectOnly] = useState<boolean>(true);
   const [dateRange, setDateRange] = useState<[DateTime, DateTime]>([
     DateTime.now(),
     DateTime.now(),
@@ -47,7 +56,6 @@ export default function SearchCondition({
     useState<PtPSearchConditionType>({
       origins: originList,
       destinations: destinationList,
-      directOnly: isDirectOnly,
       startDate: dateRange[0],
       endDate: dateRange[1],
       searchOn: searchOn,
@@ -74,12 +82,11 @@ export default function SearchCondition({
     setCurrentCondition({
       origins: originList,
       destinations: destinationList,
-      directOnly: isDirectOnly,
       startDate: dateRange[0],
       endDate: dateRange[1],
       searchOn: searchOn,
     });
-  }, [originList, destinationList, isDirectOnly, dateRange, searchOn]);
+  }, [originList, destinationList, dateRange, searchOn]);
 
   function clearAllSelection() {
     setOriginList([]);
@@ -87,7 +94,6 @@ export default function SearchCondition({
     setIsOriginError(false);
     setIsDestinationError(false);
     setSearchOn("departure");
-    setIsDirectOnly(true);
     setDateRange([DateTime.now(), DateTime.now()]);
   }
 
@@ -302,6 +308,7 @@ export default function SearchCondition({
         <MdTextButton
           onClick={() => {
             clearAllSelection();
+            resetAction();
           }}
         >
           Reset

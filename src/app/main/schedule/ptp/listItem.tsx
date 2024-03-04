@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { DateTime } from "luxon";
+import { use, useEffect, useMemo, useState } from "react";
 
 import VesselIcon from "@/../public/icon_vessel.svg";
 import Portal from "@/app/components/portal";
@@ -20,7 +21,6 @@ import {
   ArrowDropDown,
   FmdGood,
   FmdGoodOutlined,
-  Info,
   InfoOutlined,
 } from "@mui/icons-material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -28,6 +28,7 @@ import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import PlaceInformationDialog from "../popup/place-information";
+import VesselInformationDialog from "../popup/vessel-information";
 import VesselScheduleDialog from "../popup/vessel-schedule";
 import {
   createDummaryVesselSchedules,
@@ -35,8 +36,6 @@ import {
   createDummyVesselInformation,
 } from "../util";
 import CutOffTooltip from "./components/cut-off-tooltip";
-import { DateTime } from "luxon";
-import VesselInformationDialog from "../popup/vessel-information";
 
 export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
@@ -213,7 +212,6 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
 
   const middleRoutes = useMemo(() => {
     const portCount = faker.number.int({ min: 1, max: 3 });
-
     return (
       <>
         {Array.from({ length: portCount }).map(() => {
@@ -235,6 +233,8 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
         <VesselRouteComponent />
       </>
     );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.arrival, item.departure]);
 
   const tempVesselInfo = useMemo(() => {

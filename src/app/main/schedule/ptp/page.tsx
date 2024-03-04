@@ -1,8 +1,7 @@
 "use client";
 
 import { DateTime } from "luxon";
-import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import { MdTypography } from "@/app/components/typography";
@@ -32,7 +31,6 @@ export default function PointToPointSchedule() {
     useState<PtPSearchConditionType>({
       origins: [],
       destinations: [],
-      directOnly: true,
       startDate: DateTime.now(),
       endDate: DateTime.now(),
       searchOn: "departure",
@@ -77,6 +75,17 @@ export default function PointToPointSchedule() {
           setSearchCondition(condition);
           setResultList(createDummyPtPScheduleData(condition));
           setPageState("list");
+        }}
+        resetAction={() => {
+          setSearchCondition({
+            origins: [],
+            destinations: [],
+            startDate: DateTime.now(),
+            endDate: DateTime.now(),
+            searchOn: "departure",
+          });
+          setResultList([]);
+          setPageState("unsearch");
         }}
       />
       <div aria-label="result-panel" className={styles.area}>
