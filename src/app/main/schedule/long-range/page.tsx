@@ -1,5 +1,12 @@
-"use client";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Download } from "@mui/icons-material";
+import { faker } from "@faker-js/faker";
 
+import NAOutlinedSelect from "@/app/components/na-outlined-select";
+import styles from "@/app/styles/base.module.css";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdFilledButton,
@@ -9,19 +16,14 @@ import {
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import styles from "@/app/styles/base.module.css";
+import { LongRangeSearchConditionType } from "@/app/util/typeDef";
+
 import EmptyResultPlaceholder from "../empty-placeholder";
-import { Download } from "@mui/icons-material";
+import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
-import { LongRangeSearchConditionType } from "@/app/util/typeDef";
-import NAOutlinedSelect from "@/app/components/na-outlined-select";
-import ServiceLaneSelector from "./service-lane-selector";
-import { faker } from "@faker-js/faker";
+
+("use client");
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
