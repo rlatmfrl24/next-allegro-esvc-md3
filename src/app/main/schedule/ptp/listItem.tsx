@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import VesselIcon from "@/../public/icon_vessel.svg";
 import Portal from "@/app/components/portal";
@@ -35,9 +35,11 @@ import {
 } from "../util";
 import CutOffTooltip from "./components/cut-off-tooltip";
 import { DateTime } from "luxon";
+import VesselInformationDialog from "../popup/vessel-information";
 
 export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
   const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceInformationType>();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -49,6 +51,136 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
       cargo: item.departure.minus({ hours: 6 }),
     };
   }, [item.departure]);
+
+  const detailInfo = useMemo(() => {
+    return {
+      cyInfo: {
+        loadingTerminal: faker.airline.airport().name,
+        customNo: faker.string.numeric(10),
+        import: faker.phone.number(),
+      },
+      csfInfo: {
+        companyName: faker.company.name(),
+        title: faker.person.fullName(),
+        phone: faker.phone.number(),
+      },
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsDetailOpen(false);
+  }, [item]);
+
+  const VesselPortComponent = ({
+    item,
+    time,
+    portState = "middle",
+  }: {
+    item: PlaceInformationType;
+    time: DateTime;
+    cutOff?: CutOffDataType;
+    portState?: "origin" | "middle" | "destination";
+  }) => {
+    return (
+      <div className="flex items-center">
+        {portState === "origin" || portState === "destination" ? (
+          <FmdGood className="text-primary" />
+        ) : (
+          <FmdGoodOutlined className="text-primary" />
+        )}
+        <div className="ml-6">
+          <div className="flex items-center gap-2">
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="text-primary"
+            >
+              {item.yardName}
+            </MdTypography>
+            <MdTypography variant="body" size="medium" className="text-outline">
+              {time.toFormat("yyyy-MM-dd HH:mm")}
+            </MdTypography>
+          </div>
+          <div
+            className="w-fit"
+            onClick={() => {
+              setSelectedPlace(item);
+              setIsPlaceInformationOpen(!isPlaceInformationOpen);
+            }}
+          >
+            <MdTypography
+              variant="body"
+              size="medium"
+              className="text-onSurfaceVariant underline cursor-pointer"
+            >
+              {item.address}
+            </MdTypography>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const VesselRouteComponent = () => {
+    const data = useMemo(() => {
+      return {
+        vesselLine: faker.airline.airplane().name,
+        serviceLane: faker.string.alphanumeric(4).toUpperCase(),
+        transitTime: faker.number.int({
+          max: 10,
+        }),
+      };
+    }, []);
+
+    return (
+      <div className="flex items-center relative">
+        <div className="mr-6 bg-surfaceContainerLowest z-10 text-primary">
+          <ArrowDropDown />
+        </div>
+        <div className="border-r-2 border-r-outlineVariant border-dotted h-28 absolute left-3 -translate-x-px"></div>
+        <div className="bg-secondaryContainer rounded-2xl flex flex-1 px-8 py-2 gap-2 items-center">
+          <MdIcon className="text-primary">
+            <VesselIcon />
+          </MdIcon>
+          <div
+            onClick={() => {
+              setIsVesselScheduleOpen(true);
+            }}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              className="underline text-onSurfaceVariant cursor-pointer"
+            >
+              {data.vesselLine}
+            </MdTypography>
+          </div>
+          <MdIconButton
+            onClick={() => {
+              setIsVesselInformationOpen(true);
+            }}
+          >
+            <MdIcon>
+              <InfoOutlined />
+            </MdIcon>
+          </MdIconButton>
+          <div className="bg-onSecondary px-4 py-1 rounded-full ml-6">
+            <MdTypography variant="label" size="small">
+              {data.serviceLane}
+            </MdTypography>
+          </div>
+          <div className="w-px h-10 bg-outlineVariant mx-6"></div>
+          <MdTypography variant="label" size="medium" className="text-outline">
+            T/Time
+          </MdTypography>
+          <MdTypography variant="label" size="medium" prominent>
+            {data.transitTime} Hours
+          </MdTypography>
+        </div>
+      </div>
+    );
+  };
 
   const middleRoutes = useMemo(() => {
     const portCount = faker.number.int({ min: 1, max: 3 });
@@ -75,6 +207,14 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
       </>
     );
   }, [item.arrival, item.departure]);
+
+  const tempVesselInfo = useMemo(() => {
+    return createDummyVesselInformation();
+  }, []);
+
+  const tempVesselSchedules = useMemo(() => {
+    return createDummaryVesselSchedules();
+  }, []);
 
   return (
     <div>
@@ -187,11 +327,16 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
               data={selectedPlace}
             />
           )}
+          <VesselInformationDialog
+            open={isVesselInformationOpen}
+            handleOpen={setIsVesselInformationOpen}
+            data={tempVesselInfo}
+          />
           <VesselScheduleDialog
             open={isVesselScheduleOpen}
             handleOpen={setIsVesselScheduleOpen}
-            vesselInfo={createDummyVesselInformation()}
-            vesselSchedules={createDummaryVesselSchedules()}
+            vesselInfo={tempVesselInfo}
+            vesselSchedules={tempVesselSchedules}
           />
         </Portal>
       </div>
@@ -221,38 +366,46 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                   item={item.origin}
                   time={item.departure}
                   cutOff={cutoffData}
+                  portState="origin"
                 />
                 {middleRoutes}
                 <VesselPortComponent
                   item={item.destination}
                   time={item.arrival}
+                  portState="destination"
                 />
               </div>
               <div className="h-px bg-outlineVariant my-10"></div>
               <DetailTitle title="Container Yard Information" />
-              <div className="grid grid-cols-5 mt-6">
+              <div className="grid grid-cols-5 mt-6 gap-8">
                 <BasicDetailItem
                   title="Loading Terminal"
-                  value={faker.airline.airport().name}
+                  value={detailInfo.cyInfo.loadingTerminal}
                 />
                 <BasicDetailItem
                   title="Custom No."
-                  value={faker.string.numeric(10)}
+                  value={detailInfo.cyInfo.customNo}
                 />
-                <BasicDetailItem title="Import" value={faker.phone.number()} />
+                <BasicDetailItem
+                  title="Import"
+                  value={detailInfo.cyInfo.import}
+                />
               </div>
               <div className="h-px bg-outlineVariant my-10"></div>
-              <DetailTitle title="CSF Information" />{" "}
-              <div className="grid grid-cols-5 mt-6">
+              <DetailTitle title="CSF Information" />
+              <div className="grid grid-cols-5 mt-6 gap-8">
                 <BasicDetailItem
                   title="Company Name"
-                  value={faker.company.name()}
+                  value={detailInfo.csfInfo.companyName}
                 />
                 <BasicDetailItem
                   title="Title"
-                  value={faker.person.fullName()}
+                  value={detailInfo.csfInfo.title}
                 />
-                <BasicDetailItem title="Import" value={faker.phone.number()} />
+                <BasicDetailItem
+                  title="Import"
+                  value={detailInfo.csfInfo.phone}
+                />
               </div>
             </div>
           </div>
@@ -288,100 +441,6 @@ const BasicDetailItem = ({
       <MdTypography variant="title" size="medium" className="text-onSurface">
         {value}
       </MdTypography>
-    </div>
-  );
-};
-
-const VesselPortComponent = ({
-  item,
-  time,
-  isPinned = false,
-}: {
-  item: PlaceInformationType;
-  time: DateTime;
-  isPinned?: boolean;
-  cutOff?: CutOffDataType;
-}) => {
-  return (
-    <div className="flex items-center">
-      {isPinned ? (
-        <FmdGood className="text-primary" />
-      ) : (
-        <FmdGoodOutlined className="text-primary" />
-      )}
-      <div className="ml-6">
-        <div className="flex items-center gap-2">
-          <MdTypography
-            variant="body"
-            size="large"
-            prominent
-            className="text-primary"
-          >
-            {item.yardName}
-          </MdTypography>
-          <MdTypography variant="body" size="medium" className="text-outline">
-            {time.toFormat("yyyy-MM-dd HH:mm")}
-          </MdTypography>
-        </div>
-        <div>
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-onSurfaceVariant underline cursor-pointer"
-          >
-            {item.address}
-          </MdTypography>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const VesselRouteComponent = () => {
-  const data = useMemo(() => {
-    return {
-      vesselLine: faker.airline.airplane().name,
-      serviceLane: faker.string.alphanumeric(4).toUpperCase(),
-      transitTime: faker.number.int({
-        max: 10,
-      }),
-    };
-  }, []);
-
-  return (
-    <div className="flex items-center">
-      <div className="mr-6">
-        <ArrowDropDown />
-      </div>
-      <div className="bg-secondaryContainer rounded-2xl flex flex-1 px-8 py-2 gap-2 items-center">
-        <MdIcon className="text-primary">
-          <VesselIcon />
-        </MdIcon>
-        <MdTypography
-          variant="body"
-          size="large"
-          className="underline text-onSurfaceVariant cursor-pointer"
-        >
-          {data.vesselLine}
-        </MdTypography>
-        <MdIconButton>
-          <MdIcon>
-            <InfoOutlined />
-          </MdIcon>
-        </MdIconButton>
-        <div className="bg-onSecondary px-4 py-1 rounded-full ml-6">
-          <MdTypography variant="label" size="small">
-            {data.serviceLane}
-          </MdTypography>
-        </div>
-        <div className="w-px h-10 bg-outlineVariant mx-6"></div>
-        <MdTypography variant="label" size="medium" className="text-outline">
-          T/Time
-        </MdTypography>
-        <MdTypography variant="label" size="medium" prominent>
-          {data.transitTime} Hours
-        </MdTypography>
-      </div>
     </div>
   );
 };
