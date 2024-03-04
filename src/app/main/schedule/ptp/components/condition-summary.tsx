@@ -11,7 +11,7 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
-import SummaryContainer from "../summary-container";
+import SummaryContainer from "../../summary-container";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (

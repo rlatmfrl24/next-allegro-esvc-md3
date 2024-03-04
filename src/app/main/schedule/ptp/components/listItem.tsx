@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import VesselIcon from "@/../public/icon_vessel.svg";
 import Portal from "@/app/components/portal";
@@ -27,15 +27,15 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-import PlaceInformationDialog from "../popup/place-information";
-import VesselInformationDialog from "../popup/vessel-information";
-import VesselScheduleDialog from "../popup/vessel-schedule";
+import PlaceInformationDialog from "../../popup/place-information";
+import VesselInformationDialog from "../../popup/vessel-information";
+import VesselScheduleDialog from "../../popup/vessel-schedule";
 import {
   createDummaryVesselSchedules,
   createDummyPlaceInformation,
   createDummyVesselInformation,
-} from "../util";
-import CutOffTooltip from "./components/cut-off-tooltip";
+} from "../../util";
+import CutOffTooltip from "./cut-off-tooltip";
 
 export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
@@ -43,33 +43,6 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceInformationType>();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-
-  const cutoffData = useMemo(() => {
-    return {
-      documentation: item.departure.minus({ days: 1 }),
-      EDI: item.departure.minus({ hours: 3 }),
-      cargo: item.departure.minus({ hours: 6 }),
-    };
-  }, [item.departure]);
-
-  const detailInfo = useMemo(() => {
-    return {
-      cyInfo: {
-        loadingTerminal: faker.airline.airport().name,
-        customNo: faker.string.numeric(10),
-        import: faker.phone.number(),
-      },
-      csfInfo: {
-        companyName: faker.company.name(),
-        title: faker.person.fullName(),
-        phone: faker.phone.number(),
-      },
-    };
-  }, []);
-
-  useEffect(() => {
-    setIsDetailOpen(false);
-  }, [item]);
 
   const VesselPortComponent = ({
     item,
@@ -210,6 +183,29 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
     );
   };
 
+  const cutoffData = useMemo(() => {
+    return {
+      documentation: item.departure.minus({ days: 1 }),
+      EDI: item.departure.minus({ hours: 3 }),
+      cargo: item.departure.minus({ hours: 6 }),
+    };
+  }, [item.departure]);
+
+  const detailInfo = useMemo(() => {
+    return {
+      cyInfo: {
+        loadingTerminal: faker.airline.airport().name,
+        customNo: faker.string.numeric(10),
+        import: faker.phone.number(),
+      },
+      csfInfo: {
+        companyName: faker.company.name(),
+        title: faker.person.fullName(),
+        phone: faker.phone.number(),
+      },
+    };
+  }, []);
+
   const middleRoutes = useMemo(() => {
     const portCount = faker.number.int({ min: 1, max: 3 });
     return (
@@ -244,6 +240,10 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
   const tempVesselSchedules = useMemo(() => {
     return createDummaryVesselSchedules();
   }, []);
+
+  useEffect(() => {
+    setIsDetailOpen(false);
+  }, [item]);
 
   return (
     <div>
@@ -342,104 +342,112 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
             }}
           >
             <div slot="icon">
-              <ExpandMoreOutlinedIcon fontSize="small" />
+              <ExpandMoreOutlinedIcon
+                fontSize="small"
+                className={
+                  isDetailOpen
+                    ? "transform rotate-180 transition-transform duration-300"
+                    : "transform rotate-0 transition-transform duration-300"
+                }
+              />
             </div>
             Details
           </MdElevationButton>
         </div>
-
-        <Portal selector="#main-container">
-          {selectedPlace && (
-            <PlaceInformationDialog
-              open={isPlaceInformationOpen}
-              handleOpen={setIsPlaceInformationOpen}
-              data={selectedPlace}
-            />
-          )}
-          <VesselInformationDialog
-            open={isVesselInformationOpen}
-            handleOpen={setIsVesselInformationOpen}
-            data={tempVesselInfo}
-          />
-          <VesselScheduleDialog
-            open={isVesselScheduleOpen}
-            handleOpen={setIsVesselScheduleOpen}
-            vesselInfo={tempVesselInfo}
-            vesselSchedules={tempVesselSchedules}
-          />
-        </Portal>
       </div>
-      {isDetailOpen && (
-        <div className="rounded-lg border border-outlineVariant py-6 px-4 bg-surfaceContainerLow">
-          <div className="border border-outlineVariant bg-surfaceContainerLowest rounded-2xl overflow-hidden">
-            <div className="h-2 bg-secondaryContainer"></div>
-            <div className="py-4 px-6 flex flex-col relative">
-              <div className="absolute top-4 right-6 flex gap-2 px-4 py-2 bg-background rounded-2xl">
-                <MdTypography
-                  variant="label"
-                  size="medium"
-                  className="text-outline"
-                >
-                  Total
-                </MdTypography>
-                <MdTypography variant="label" size="medium" prominent>
-                  {item.transitTime} Days
-                </MdTypography>
-                <MdTypography variant="label" size="medium" prominent>
-                  {`(Ocean: 7 Days, Land: 3 Days)`}
-                </MdTypography>
-              </div>
-              <DetailTitle title="Route" />
-              <div className="flex flex-col gap-6 mt-6">
-                <VesselPortComponent
-                  item={item.origin}
-                  time={item.departure}
-                  cutOff={cutoffData}
-                  portState="origin"
-                />
-                {middleRoutes}
-                <VesselPortComponent
-                  item={item.destination}
-                  time={item.arrival}
-                  portState="destination"
-                />
-              </div>
-              <div className="h-px bg-outlineVariant my-10"></div>
-              <DetailTitle title="Container Yard Information" />
-              <div className="grid grid-cols-5 mt-6 gap-8">
-                <BasicDetailItem
-                  title="Loading Terminal"
-                  value={detailInfo.cyInfo.loadingTerminal}
-                />
-                <BasicDetailItem
-                  title="Custom No."
-                  value={detailInfo.cyInfo.customNo}
-                />
-                <BasicDetailItem
-                  title="Import"
-                  value={detailInfo.cyInfo.import}
-                />
-              </div>
-              <div className="h-px bg-outlineVariant my-10"></div>
-              <DetailTitle title="CSF Information" />
-              <div className="grid grid-cols-5 mt-6 gap-8">
-                <BasicDetailItem
-                  title="Company Name"
-                  value={detailInfo.csfInfo.companyName}
-                />
-                <BasicDetailItem
-                  title="Title"
-                  value={detailInfo.csfInfo.title}
-                />
-                <BasicDetailItem
-                  title="Import"
-                  value={detailInfo.csfInfo.phone}
-                />
+      <Portal selector="#main-container">
+        {selectedPlace && (
+          <PlaceInformationDialog
+            open={isPlaceInformationOpen}
+            handleOpen={setIsPlaceInformationOpen}
+            data={selectedPlace}
+          />
+        )}
+        <VesselInformationDialog
+          open={isVesselInformationOpen}
+          handleOpen={setIsVesselInformationOpen}
+          data={tempVesselInfo}
+        />
+        <VesselScheduleDialog
+          open={isVesselScheduleOpen}
+          handleOpen={setIsVesselScheduleOpen}
+          vesselInfo={tempVesselInfo}
+          vesselSchedules={tempVesselSchedules}
+        />
+      </Portal>
+      <>
+        {isDetailOpen && (
+          <div className="rounded-lg border border-outlineVariant py-6 px-4 bg-surfaceContainerLow">
+            <div className="border border-outlineVariant bg-surfaceContainerLowest rounded-2xl overflow-hidden">
+              <div className="h-2 bg-secondaryContainer"></div>
+              <div className="py-4 px-6 flex flex-col relative">
+                <div className="absolute top-4 right-6 flex gap-2 px-4 py-2 bg-background rounded-2xl">
+                  <MdTypography
+                    variant="label"
+                    size="medium"
+                    className="text-outline"
+                  >
+                    Total
+                  </MdTypography>
+                  <MdTypography variant="label" size="medium" prominent>
+                    {item.transitTime} Days
+                  </MdTypography>
+                  <MdTypography variant="label" size="medium" prominent>
+                    {`(Ocean: 7 Days, Land: 3 Days)`}
+                  </MdTypography>
+                </div>
+                <DetailTitle title="Route" />
+                <div className="flex flex-col gap-6 mt-6">
+                  <VesselPortComponent
+                    item={item.origin}
+                    time={item.departure}
+                    cutOff={cutoffData}
+                    portState="origin"
+                  />
+                  {middleRoutes}
+                  <VesselPortComponent
+                    item={item.destination}
+                    time={item.arrival}
+                    portState="destination"
+                  />
+                </div>
+                <div className="h-px bg-outlineVariant my-10"></div>
+                <DetailTitle title="Container Yard Information" />
+                <div className="grid grid-cols-5 mt-6 gap-8">
+                  <BasicDetailItem
+                    title="Loading Terminal"
+                    value={detailInfo.cyInfo.loadingTerminal}
+                  />
+                  <BasicDetailItem
+                    title="Custom No."
+                    value={detailInfo.cyInfo.customNo}
+                  />
+                  <BasicDetailItem
+                    title="Import"
+                    value={detailInfo.cyInfo.import}
+                  />
+                </div>
+                <div className="h-px bg-outlineVariant my-10"></div>
+                <DetailTitle title="CSF Information" />
+                <div className="grid grid-cols-5 mt-6 gap-8">
+                  <BasicDetailItem
+                    title="Company Name"
+                    value={detailInfo.csfInfo.companyName}
+                  />
+                  <BasicDetailItem
+                    title="Title"
+                    value={detailInfo.csfInfo.title}
+                  />
+                  <BasicDetailItem
+                    title="Import"
+                    value={detailInfo.csfInfo.phone}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </>
     </div>
   );
 }

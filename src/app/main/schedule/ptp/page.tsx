@@ -18,7 +18,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import EmptyResultPlaceholder from "../empty-placeholder";
 import { createDummyPtPScheduleData } from "../util";
-import ConditionSummary from "./condition-summary";
+import ConditionSummary from "./components/condition-summary";
 import PointToPointCalendarResult from "./result-calendar";
 import PointToPointListResult from "./result-list";
 import SearchCondition from "./search-condition";
