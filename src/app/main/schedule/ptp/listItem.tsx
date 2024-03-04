@@ -16,6 +16,7 @@ import {
 } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import {
+  AccessTime,
   ArrowDropDown,
   FmdGood,
   FmdGoodOutlined,
@@ -82,25 +83,31 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
     portState?: "origin" | "middle" | "destination";
   }) => {
     return (
-      <div className="flex items-center">
+      <div className="flex items-center w-full">
         {portState === "origin" || portState === "destination" ? (
           <FmdGood className="text-primary" />
         ) : (
           <FmdGoodOutlined className="text-primary" />
         )}
-        <div className="ml-6">
+        <div className="ml-6 flex-1">
           <div className="flex items-center gap-2">
-            <MdTypography
-              variant="body"
-              size="large"
-              prominent
-              className="text-primary"
-            >
-              {item.yardName}
-            </MdTypography>
-            <MdTypography variant="body" size="medium" className="text-outline">
-              {time.toFormat("yyyy-MM-dd HH:mm")}
-            </MdTypography>
+            <div className="flex flex-1 gap-2 items-center">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="text-primary"
+              >
+                {item.yardName.toUpperCase()}
+              </MdTypography>
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="text-outline"
+              >
+                {time.toFormat("yyyy-MM-dd HH:mm")}
+              </MdTypography>
+            </div>
           </div>
           <div
             className="w-fit"
@@ -118,6 +125,28 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
             </MdTypography>
           </div>
         </div>
+        {portState === "origin" && (
+          <div className="h-12 border-l border-l-outlineVariant flex items-center text-primary">
+            <AccessTime className="ml-4 mr-2" fontSize="small" />
+            <MdTypography variant="label" size="large" className="mr-8">
+              Cut Off
+            </MdTypography>
+            <div className="flex gap-6 mr-6">
+              <BasicDetailItem
+                title="Documentation"
+                value={cutoffData.documentation.toFormat("yyyy-MM-dd HH:mm")}
+              />
+              <BasicDetailItem
+                title="EDI"
+                value={cutoffData.EDI.toFormat("yyyy-MM-dd HH:mm")}
+              />
+              <BasicDetailItem
+                title="Cargo"
+                value={cutoffData.cargo.toFormat("yyyy-MM-dd HH:mm")}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -354,7 +383,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                   Total
                 </MdTypography>
                 <MdTypography variant="label" size="medium" prominent>
-                  10 Days
+                  {item.transitTime} Days
                 </MdTypography>
                 <MdTypography variant="label" size="medium" prominent>
                   {`(Ocean: 7 Days, Land: 3 Days)`}
