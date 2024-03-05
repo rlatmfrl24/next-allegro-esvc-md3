@@ -44,6 +44,9 @@ dependencies:
   '@mui/material':
     specifier: ^5.15.6
     version: 5.15.6(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
+  '@tanstack/react-form':
+    specifier: ^0.13.7
+    version: 0.13.7(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
   '@tanstack/react-table':
     specifier: ^8.12.0
     version: 8.12.0(react-dom@18.2.0)(react@18.2.0)
@@ -77,9 +80,6 @@ dependencies:
   react-grid-layout:
     specifier: ^1.4.4
     version: 1.4.4(react-dom@18.2.0)(react@18.2.0)
-  react-hook-form:
-    specifier: ^7.49.3
-    version: 7.49.3(react@18.2.0)
   react-use-draggable-scroll:
     specifier: ^0.4.7
     version: 0.4.7(react@18.2.0)
@@ -2498,6 +2498,39 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@tanstack/form-core@0.13.7:
+    resolution: {integrity: sha512-rz5/CVmZ/QUQoFmmMGi6A6gkBYWRmENRwo+6Hxh0EWZNHR9OFNtEiHLILnT/iKKzSfjFkQOPJmVnPZzJ2kiT6Q==}
+    dependencies:
+      '@tanstack/store': 0.3.1
+    dev: false
+
+  /@tanstack/react-form@0.13.7(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-dLN/Ok+LXtfHpkJPo218iOr2347fPpjiz1OmSud7OYf68C5SxChoOabI/UX3und9Un4MjMxMxKjICHTigNRkiw==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/form-core': 0.13.7
+      '@tanstack/react-store': 0.3.1(react-dom@18.2.0)(react@18.2.0)
+      decode-formdata: 0.4.0
+      react: 18.2.0
+      rehackt: 0.0.3(@types/react@18.2.48)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+    dev: false
+
+  /@tanstack/react-store@0.3.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PfV271d345It6FdcX4c9gd+llKGddtvau8iJnybTAWmYVyDeFWfIIkiAJ5iNITJmI02AzqgtcV3QLNBBlpBUjA==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/store': 0.3.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
   /@tanstack/react-table@8.12.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-LlEQ1Gpz4bfpiET+qmle4BhKDgKN3Y/sssc+O/wLqX8HRtjV+nhusYbllZlutZfMR8oeef83whKTj/VhaV8EeA==}
     engines: {node: '>=12'}
@@ -2519,6 +2552,10 @@ packages:
       '@tanstack/virtual-core': 3.0.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/store@0.3.1:
+    resolution: {integrity: sha512-A49KN8SpLMWaNmZGPa9K982RQ81W+m7W6iStcQVeKeVS70JZRqkF0fDwKByREPq6qz9/kS0aQFOPQ0W6wIeU5g==}
     dev: false
 
   /@tanstack/table-core@8.12.0:
@@ -3312,6 +3349,10 @@ packages:
 
   /decimal.js-light@2.5.1:
     resolution: {integrity: sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==}
+    dev: false
+
+  /decode-formdata@0.4.0:
+    resolution: {integrity: sha512-/OMUlsRLrSgHPOWCwembsFFTT4DY7Ts9GGlwK8v9yeLOyYZSPKIfn/1oOuV9UmpQ9CZi5JeyT8edunRoBOOl5g==}
     dev: false
 
   /deep-is@0.1.4:
@@ -5015,15 +5056,6 @@ packages:
       resize-observer-polyfill: 1.5.1
     dev: false
 
-  /react-hook-form@7.49.3(react@18.2.0):
-    resolution: {integrity: sha512-foD6r3juidAT1cOZzpmD/gOKt7fRsDhXXZ0y28+Al1CHgX+AY1qIN9VSIIItXRq1dN68QrRwl1ORFlwjBaAqeQ==}
-    engines: {node: '>=18', pnpm: '8'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -5221,6 +5253,21 @@ packages:
     dependencies:
       jsesc: 0.5.0
     dev: true
+
+  /rehackt@0.0.3(@types/react@18.2.48)(react@18.2.0):
+    resolution: {integrity: sha512-aBRHudKhOWwsTvCbSoinzq+Lej/7R8e8UoPvLZo5HirZIIBLGAgdG7SL9QpdcBoQ7+3QYPi3lRLknAzXBlhZ7g==}
+    peerDependencies:
+      '@types/react': '*'
+      react: '*'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.48
+      react: 18.2.0
+    dev: false
 
   /resize-observer-polyfill@1.5.1:
     resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
@@ -5777,6 +5824,14 @@ packages:
     dependencies:
       punycode: 2.3.1
     dev: true
+
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

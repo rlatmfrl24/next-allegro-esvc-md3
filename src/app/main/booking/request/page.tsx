@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useRecoilState } from "recoil";
 
 import PageTitle from "@/app/components/page-title";
-import { BookingRequestState } from "@/app/store/booking-request.store";
+import { BookingRequestStepState } from "@/app/store/booking-request.store";
 import styles from "@/app/styles/base.module.css";
 import { MdOutlinedButton } from "@/app/util/md3";
 
@@ -17,11 +17,12 @@ import PartiesStep from "./step-parties";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);
-  const [bookingRequestState, setBookingRequestState] =
-    useRecoilState(BookingRequestState);
+  const [bookingRequestStepState, setBookingRequestStepState] = useRecoilState(
+    BookingRequestStepState
+  );
 
   function handleStepClick(key: string) {
-    setBookingRequestState((prev) => {
+    setBookingRequestStepState((prev) => {
       const newArray = Object.keys(prev).map((k) => {
         return {
           ...prev[k as keyof typeof prev],
@@ -39,9 +40,10 @@ export default function BookingRequest() {
 
   function getSelectedStepId() {
     // return keyof typeof bookingRequestState
-    return Object.keys(bookingRequestState).find((key) => {
-      return bookingRequestState[key as keyof typeof bookingRequestState]
-        .isSelected;
+    return Object.keys(bookingRequestStepState).find((key) => {
+      return bookingRequestStepState[
+        key as keyof typeof bookingRequestStepState
+      ].isSelected;
     });
   }
 
@@ -56,13 +58,15 @@ export default function BookingRequest() {
           styles["area"],
           styles["no-padding"],
           styles["row-direction"],
-          "min-h-[812px]"
+          "min-h-[792px] mb-4"
         )}
       >
         <div className="flex flex-col gap-4 py-6 px-4 border-r border-r-outlineVariant">
-          {Object.keys(bookingRequestState).map((key) => {
+          {Object.keys(bookingRequestStepState).map((key) => {
             const item =
-              bookingRequestState[key as keyof typeof bookingRequestState];
+              bookingRequestStepState[
+                key as keyof typeof bookingRequestStepState
+              ];
             return (
               <StepItem
                 key={key}
@@ -84,7 +88,7 @@ export default function BookingRequest() {
               cargoPickUpReturn: <CargoStep />,
               container: <ContainerStep />,
               etc: <EtcStep />,
-            }[getSelectedStepId() as keyof typeof bookingRequestState]
+            }[getSelectedStepId() as keyof typeof bookingRequestStepState]
           }
         </div>
       </div>

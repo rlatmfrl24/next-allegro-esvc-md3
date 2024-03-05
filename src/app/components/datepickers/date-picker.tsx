@@ -35,6 +35,7 @@ import { DateSelector } from "./date-selector";
 import styles from "@/app/styles/datepicker.module.css";
 
 export const MdSingleDatePicker = (props: {
+  label?: string;
   defaultDate?: DateTime;
   className?: string;
   handleDateChange?: (date: DateTime) => void;
@@ -123,6 +124,7 @@ export const MdSingleDatePicker = (props: {
     <div className={`relative flex ${props.className}`} ref={refs.setReference}>
       <MdOutlinedTextField
         ref={inputEl}
+        label={props.label}
         className="flex-1"
         value={defaultDate.toFormat("MM/dd/yyyy")}
         errorText="Invalid date format"
