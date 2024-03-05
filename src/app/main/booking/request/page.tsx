@@ -80,7 +80,7 @@ export default function BookingRequest() {
             );
           })}
         </div>
-        <div className="flex-1 p-6">
+        <div className="flex-1 flex p-6">
           {
             {
               locationSchedule: <LoactionScheduleStep />,

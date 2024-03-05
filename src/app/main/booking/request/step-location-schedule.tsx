@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { useRecoilState } from "recoil";
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedSelect from "@/app/components/na-outlined-select";
 import { MdTypography } from "@/app/components/typography";
+import { LocationScheduleState } from "@/app/store/booking-request.store";
 import {
   MdFilledButton,
   MdOutlinedSelect,
@@ -13,8 +15,6 @@ import {
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
-import { useRecoilState } from "recoil";
-import { LocationScheduleState } from "@/app/store/booking-request.store";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -72,11 +72,11 @@ export default function LoactionScheduleStep() {
   }, [locationScheduleData]);
 
   return (
-    <div>
+    <div className="flex flex-col flex-1">
       <MdTypography variant="title" size="large" className="mb-6">
         Location & Schedule
       </MdTypography>
-      <div className="flex flex-col gap-6">
+      <div className="flex-1 flex flex-col gap-6">
         <form className="flex gap-8">
           <MdTypography
             tag="label"
@@ -270,6 +270,7 @@ export default function LoactionScheduleStep() {
           ></MdOutlinedTextField>
         </div>
       </div>
+      <MdFilledButton className="self-end">Next</MdFilledButton>
     </div>
   );
 }
