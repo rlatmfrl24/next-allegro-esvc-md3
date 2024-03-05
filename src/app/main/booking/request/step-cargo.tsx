@@ -16,6 +16,7 @@ export default function CargoStep() {
       <SubTitle title="Cargo" className="mb-4" />
       <div className="flex gap-4">
         <NAOutlinedAutoComplete
+          required
           label="Commodity"
           value={commodity}
           setValue={setCommodity}
