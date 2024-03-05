@@ -65,3 +65,45 @@ export const LocationScheduleState = atom<LocationScheduleDataType>({
     contractNumber: "",
   },
 });
+
+export interface PartyInterface {
+  name: string;
+  address: string;
+}
+export interface BookingRequestorInterface extends PartyInterface {
+  email: string[];
+  telNo: string;
+  fax: string;
+}
+
+export const PartiesState = atom<{
+  bookingRequestor: BookingRequestorInterface;
+  shipper: PartyInterface;
+  freightForwarder: PartyInterface;
+  consignee: PartyInterface;
+  actualShipper: string;
+}>({
+  key: "partiesState",
+  default: {
+    bookingRequestor: {
+      name: "",
+      address: "",
+      email: [],
+      telNo: "",
+      fax: "",
+    } as BookingRequestorInterface,
+    shipper: {
+      name: "",
+      address: "",
+    } as PartyInterface,
+    freightForwarder: {
+      name: "",
+      address: "",
+    } as PartyInterface,
+    consignee: {
+      name: "",
+      address: "",
+    } as PartyInterface,
+    actualShipper: "",
+  },
+});

@@ -58,7 +58,7 @@ export default function BookingRequest() {
           styles["area"],
           styles["no-padding"],
           styles["row-direction"],
-          "min-h-[792px] mb-4"
+          "min-h-[792px] mb-12"
         )}
       >
         <div className="flex flex-col gap-4 py-6 px-4 border-r border-r-outlineVariant">
