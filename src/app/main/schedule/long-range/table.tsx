@@ -1,5 +1,5 @@
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { max } from "lodash";
 
 import ActualDateIcon from "@/../public/icon_actual_schedule.svg";
@@ -19,6 +19,22 @@ import { MdIcon, MdIconButton } from "@/app/util/md3";
 
 import VesselScheduleDialog from "../popup/vessel-schedule";
 import { createDummaryVesselSchedules } from "../util";
+import {
+  autoUpdate,
+  offset,
+  shift,
+  flip,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useRole,
+  FloatingDelayGroup,
+  useDelayGroup,
+  useDelayGroupContext,
+} from "@floating-ui/react";
+import { PlainTooltip } from "@/app/components/tooltip";
 
 const DirectionIcon = ({
   direction,
@@ -174,24 +190,33 @@ export default function LongRangeTable({
                       hasDeparture ? "h-24" : "h-12"
                     } col-span-1 border-b border-b-outlineVariant w-[200px] bg-surface flex flex-col`}
                   >
-                    <div className="flex p-2 items-center justify-start flex-1">
-                      <div className="w-8 h-8 flex justify-center items-center">
-                        <ActualDateIcon />
-                      </div>
-                      <MdTypography variant="body" size="medium">
-                        {date.arrival.toFormat("yyyy-MM-dd HH:mm:ss")}
-                      </MdTypography>
-                    </div>
-                    {date.departure && (
+                    <FloatingDelayGroup
+                      delay={{
+                        open: 1000,
+                        close: 200,
+                      }}
+                    >
                       <div className="flex p-2 items-center justify-start flex-1">
-                        <div className="w-8 h-8 flex justify-center items-center">
-                          <LongRangeDateIcon />
-                        </div>
+                        <DateIndicator
+                          icon={<ActualDateIcon />}
+                          text={"Actual Date"}
+                        />
                         <MdTypography variant="body" size="medium">
-                          {date.departure.toFormat("yyyy-MM-dd HH:mm:ss")}
+                          {date.arrival.toFormat("yyyy-MM-dd HH:mm:ss")}
                         </MdTypography>
                       </div>
-                    )}
+                      {date.departure && (
+                        <div className="flex p-2 items-center justify-start flex-1">
+                          <DateIndicator
+                            icon={<LongRangeDateIcon />}
+                            text={"Long Range Date"}
+                          />
+                          <MdTypography variant="body" size="medium">
+                            {date.departure.toFormat("yyyy-MM-dd HH:mm:ss")}
+                          </MdTypography>
+                        </div>
+                      )}
+                    </FloatingDelayGroup>
                   </div>
                 ))}
               </div>
@@ -202,3 +227,65 @@ export default function LongRangeTable({
     </div>
   );
 }
+
+const DateIndicator = ({
+  icon,
+  text,
+}: {
+  icon: React.ReactNode;
+  text: string;
+}) => {
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const { refs, floatingStyles, context } = useFloating({
+    open: isTooltipOpen,
+    onOpenChange: setIsTooltipOpen,
+    middleware: [
+      offset({
+        mainAxis: -3,
+        crossAxis: 7,
+      }),
+      shift(),
+      flip(),
+    ],
+    placement: "bottom-start",
+    whileElementsMounted: autoUpdate,
+  });
+
+  useDelayGroup(context, { id: context.floatingId });
+  const { delay } = useDelayGroupContext();
+
+  const hover = useHover(context, { move: false, delay });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context, {
+    role: "tooltip",
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ]);
+
+  return (
+    <>
+      <div
+        className="w-8 h-8 flex justify-center items-center"
+        ref={refs.setReference}
+        {...getReferenceProps()}
+      >
+        {icon}
+      </div>
+      {isTooltipOpen && (
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+        >
+          <PlainTooltip label={text} />
+        </div>
+      )}
+    </>
+  );
+};
