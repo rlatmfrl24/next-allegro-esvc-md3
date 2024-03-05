@@ -5,7 +5,6 @@ import {
 } from "@tanstack/react-table";
 import { PlaceInformationType, VesselScheduleType } from "@/app/util/typeDef";
 import { useState } from "react";
-import Portal from "@/app/components/portal";
 import PlaceInformationDialog from "../popup/place-information";
 import { BasicTable } from "@/app/components/basic-table";
 import { DateTime } from "luxon";
@@ -44,7 +43,11 @@ export default function VesselResultTable({
     columnHelper.accessor("port", {
       header: "Port",
       cell: (info) => {
-        return info.getValue();
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
       },
       size: undefined,
     }),
@@ -58,7 +61,9 @@ export default function VesselResultTable({
             setIsPlaceInformationOpen(true);
           }}
         >
-          {info.getValue().yardName}
+          <MdTypography variant="body" size="medium">
+            {info.getValue().yardName}
+          </MdTypography>
         </div>
       ),
       size: undefined,

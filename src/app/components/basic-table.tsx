@@ -1,5 +1,6 @@
 import { Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
+import { MdTypography } from "./typography";
 
 export const BasicTable = ({ table }: { table: Table<any> }) => {
   return (
@@ -16,7 +17,12 @@ export const BasicTable = ({ table }: { table: Table<any> }) => {
                     : "auto",
               }}
             >
-              {flexRender(header.column.columnDef.header, header.getContext())}
+              <MdTypography variant="body" size="medium">
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+              </MdTypography>
             </th>
           ))}
         </thead>
