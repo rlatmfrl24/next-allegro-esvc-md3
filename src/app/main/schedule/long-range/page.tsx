@@ -24,7 +24,7 @@ import EmptyResultPlaceholder from "../empty-placeholder";
 import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
-
+import PageTitle from "@/app/components/page-title";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -79,23 +79,8 @@ export default function LongRangeSchedule() {
   }
 
   return (
-    <div
-      aria-label="container"
-      className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "
-    >
-      <div
-        aria-label="page-title"
-        className="flex justify-start items-center gap-3"
-      >
-        <MdTypography variant="title" size="large">
-          Long Range Schedule
-        </MdTypography>
-        <MdIconButton>
-          <MdIcon>
-            <FavoriteBorderIcon />
-          </MdIcon>
-        </MdIconButton>
-      </div>
+    <div aria-label="container" className={styles.container}>
+      <PageTitle title="Long Range Schedule" />
       <div className={styles.area} aria-label="search-condition-area">
         <div className="flex gap-4">
           <NAOutlinedSelect

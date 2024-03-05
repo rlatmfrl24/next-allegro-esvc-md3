@@ -1,30 +1,33 @@
 "use client";
 
+import { DateTime } from "luxon";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
+import { useEffect, useRef, useState } from "react";
+
+import PortIcon from "@/../public/icon_port.svg";
+import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
+import styles from "@/app/styles/base.module.css";
 import {
   MdFilledButton,
   MdIcon,
   MdIconButton,
   MdTextButton,
 } from "@/app/util/md3";
-import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useEffect, useRef, useState } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import { faker } from "@faker-js/faker";
-import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
-import NaToggleButton from "@/app/components/na-toggle-button";
-import PortIcon from "@/../public/icon_port.svg";
-import styles from "@/app/styles/base.module.css";
-import EmptyResultPlaceholder from "../empty-placeholder";
-import DownloadIcon from "@mui/icons-material/Download";
 import {
   PortScheduleSearchConditionType,
   PortScheduleType,
 } from "@/app/util/typeDef";
-import { DateTime } from "luxon";
+import { faker } from "@faker-js/faker";
+import DownloadIcon from "@mui/icons-material/Download";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
+import EmptyResultPlaceholder from "../empty-placeholder";
 import { createDummyPortSchedules } from "../util";
 import PortResultTable from "./result-table";
+import PageTitle from "@/app/components/page-title";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
@@ -57,23 +60,8 @@ export default function PortSchedule() {
   }
 
   return (
-    <div
-      aria-label="container"
-      className="max-w-[1400px] w-full m-6 flex flex-col gap-4 "
-    >
-      <div
-        aria-label="page-title"
-        className="flex justify-start items-center gap-3"
-      >
-        <MdTypography variant="title" size="large">
-          Port Schedule
-        </MdTypography>
-        <MdIconButton>
-          <MdIcon>
-            <FavoriteBorderIcon />
-          </MdIcon>
-        </MdIconButton>
-      </div>
+    <div aria-label="container" className={styles.container}>
+      <PageTitle title="Port Schedule" />
       <div aria-label="condition-container" className={styles.area}>
         <div className="flex gap-4 items-start">
           <NAOutlinedAutoComplete

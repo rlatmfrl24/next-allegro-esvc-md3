@@ -22,6 +22,7 @@ import ConditionSummary from "./components/condition-summary";
 import PointToPointCalendarResult from "./result-calendar";
 import PointToPointListResult from "./result-list";
 import SearchCondition from "./search-condition";
+import PageTitle from "@/app/components/page-title";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
@@ -53,23 +54,8 @@ export default function PointToPointSchedule() {
   }
 
   return (
-    <div
-      aria-label="container"
-      className="max-w-[1400px] w-full p-6 flex flex-col gap-4"
-    >
-      <div
-        aria-label="page-title"
-        className="flex justify-start items-center gap-3"
-      >
-        <MdTypography variant="title" size="large">
-          Point to Point Schedule
-        </MdTypography>
-        <MdIconButton>
-          <MdIcon>
-            <FavoriteBorderIcon />
-          </MdIcon>
-        </MdIconButton>
-      </div>
+    <div aria-label="container" className={styles.container}>
+      <PageTitle title="Point to Point Schedule" />
       <SearchCondition
         searchAction={(condition) => {
           setSearchCondition(condition);

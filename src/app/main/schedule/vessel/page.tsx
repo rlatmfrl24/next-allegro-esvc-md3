@@ -22,6 +22,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { VesselScheduleResult } from "./search-result";
+import PageTitle from "@/app/components/page-title";
 
 export default function VesselSchedule() {
   const emptyVesselData: VesselInfoType = {
@@ -76,21 +77,9 @@ export default function VesselSchedule() {
     <div
       id="content-container"
       aria-label="container"
-      className="relative max-w-[1400px] w-full p-6 flex flex-col gap-4"
+      className={styles.container + " relative"}
     >
-      <div
-        aria-label="page-title"
-        className="flex justify-start items-center gap-3"
-      >
-        <MdTypography variant="title" size="large">
-          Vessel Schedule
-        </MdTypography>
-        <MdIconButton>
-          <MdIcon>
-            <FavoriteBorderIcon />
-          </MdIcon>
-        </MdIconButton>
-      </div>
+      <PageTitle title="Vessel Schedule" />
       <div className={styles.area}>
         <NAOutlinedAutoComplete
           value={vesselQuery}
