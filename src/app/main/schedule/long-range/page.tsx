@@ -1,34 +1,82 @@
 "use client";
 
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Download } from "@mui/icons-material";
+import { faker } from "@faker-js/faker";
+
+import NAOutlinedSelect from "@/app/components/na-outlined-select";
+import styles from "@/app/styles/base.module.css";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdFilledButton,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
-  MdOutlinedSelect,
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { useEffect, useState } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import styles from "@/app/styles/base.module.css";
-import EmptyResultPlaceholder from "../empty-placeholder";
+import { LongRangeSearchConditionType } from "@/app/util/typeDef";
 
-type LongRangeSearchConditionType = {
-  continentFrom: string;
-  continentTo: string;
-};
+import EmptyResultPlaceholder from "../empty-placeholder";
+import ServiceLaneSelector from "./service-lane-selector";
+import LongRangeTable from "./table";
+import { createDummyLongRangeSchedules } from "../util";
+
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
+  const [errorState, setErrorState] = useState<"from" | "to" | null>(null);
   const [searchCondition, setSearchCondition] =
     useState<LongRangeSearchConditionType>({
       continentFrom: "",
       continentTo: "",
     });
+
+  const hasDeparture = true;
+  const [schedules, setSchedules] = useState<any[]>([]);
+  const [portList, setPortList] = useState<any[]>([]);
+
+  const serviceLaneItems = useMemo(
+    () =>
+      Array.from({ length: 30 }, () =>
+        faker.string.alphanumeric(4).toUpperCase()
+      ),
+    []
+  );
+  const [selectedServiceLane, setSelectedServiceLane] = useState<string>("");
+
+  const createDummyData = useCallback(() => {
+    const { schedules, portList } = createDummyLongRangeSchedules(hasDeparture);
+    setSchedules(schedules);
+    setPortList(portList);
+  }, [hasDeparture]);
+
+  useEffect(() => {
+    createDummyData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedServiceLane]);
+
+  function checkValidAndSearch() {
+    if (searchCondition.continentFrom === "") {
+      setErrorState("from");
+      return;
+    }
+    if (searchCondition.continentTo === "") {
+      setErrorState("to");
+      return;
+    }
+
+    if (
+      searchCondition.continentFrom !== "" &&
+      searchCondition.continentTo !== ""
+    ) {
+      setErrorState(null);
+      setPageState("search");
+    }
+  }
 
   return (
     <div
@@ -49,8 +97,11 @@ export default function LongRangeSchedule() {
         </MdIconButton>
       </div>
       <div className={styles.area} aria-label="search-condition-area">
-        <div className="flex items-center gap-4">
-          <MdOutlinedSelect
+        <div className="flex gap-4">
+          <NAOutlinedSelect
+            required
+            error={errorState === "from"}
+            errorText="Please select continent"
             aria-label="continent-from-select"
             label="Continent From"
             className="w-80"
@@ -71,8 +122,11 @@ export default function LongRangeSchedule() {
             <MdSelectOption value="south-america">South America</MdSelectOption>
             <MdSelectOption value="africa">Africa</MdSelectOption>
             <MdSelectOption value="oceania">Oceania</MdSelectOption>
-          </MdOutlinedSelect>
-          <MdOutlinedSelect
+          </NAOutlinedSelect>
+          <NAOutlinedSelect
+            required
+            error={errorState === "to"}
+            errorText="Please select continent"
             aria-label="continent-to-select"
             label="Continent To"
             className="w-80"
@@ -93,8 +147,8 @@ export default function LongRangeSchedule() {
             <MdSelectOption value="south-america">South America</MdSelectOption>
             <MdSelectOption value="africa">Africa</MdSelectOption>
             <MdSelectOption value="oceania">Oceania</MdSelectOption>
-          </MdOutlinedSelect>
-          <MdOutlinedButton className="h-fit">
+          </NAOutlinedSelect>
+          <MdOutlinedButton className="h-fit mt-2">
             <MdIcon slot="icon">
               <AddOutlinedIcon fontSize="small" />
             </MdIcon>
@@ -105,7 +159,6 @@ export default function LongRangeSchedule() {
           <MdTextButton
             onClick={() => {
               setPageState("unsearch");
-
               setSearchCondition({
                 continentFrom: "",
                 continentTo: "",
@@ -126,7 +179,7 @@ export default function LongRangeSchedule() {
           </MdTextButton>
           <MdFilledButton
             onClick={() => {
-              setPageState("search");
+              checkValidAndSearch();
             }}
           >
             Search
@@ -136,7 +189,36 @@ export default function LongRangeSchedule() {
       {pageState === "unsearch" ? (
         <EmptyResultPlaceholder />
       ) : (
-        <div className={styles.area}>Search Result</div>
+        <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
+          <ServiceLaneSelector
+            items={serviceLaneItems}
+            onChange={(value) => {
+              setSelectedServiceLane(value);
+            }}
+          />
+          <div className="p-6">
+            <div className="flex gap-4 items-center justify-end mb-2">
+              <MdTypography
+                variant="label"
+                size="large"
+                className="text-outline"
+              >
+                Total: {schedules.length}
+              </MdTypography>
+              <MdTextButton>
+                <MdIcon slot="icon">
+                  <Download fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
+            </div>
+            <LongRangeTable
+              schedules={schedules}
+              hasDeparture={hasDeparture}
+              portList={portList}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

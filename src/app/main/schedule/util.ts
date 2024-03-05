@@ -1,4 +1,7 @@
 import {
+  LongRangeDateType,
+  LongRangePortType,
+  LongRangeScheduleType,
   PlaceInformationType,
   PortScheduleType,
   PtPScheduleType,
@@ -50,8 +53,10 @@ export function createDummyVesselInformation(): VesselInfoType {
   };
 }
 
-export function createDummyVesselInformations(): VesselInfoType[] {
-  return Array.from({ length: 900 }, () => createDummyVesselInformation());
+export function createDummyVesselInformations(
+  number: number
+): VesselInfoType[] {
+  return Array.from({ length: number }, () => createDummyVesselInformation());
 }
 
 export function createDummaryVesselSchedules(): VesselScheduleType[] {
@@ -99,8 +104,7 @@ export function createDummyPortData(): string[] {
 export function createDummyPtPScheduleData(
   condition: PtPSearchConditionType
 ): PtPScheduleType[] {
-  const { origins, destinations, searchOn, startDate, endDate, directOnly } =
-    condition;
+  const { origins, destinations, searchOn, startDate, endDate } = condition;
 
   // This function is a dummy function that returns an empty array.
   const dummyData: PtPScheduleType[] = [];
@@ -140,4 +144,60 @@ export function createDummyPtPScheduleData(
   });
 
   return dummyData;
+}
+
+export function createDummyPortList(): LongRangePortType[] {
+  return Array.from(
+    {
+      length: faker.number.int({
+        min: 20,
+        max: 30,
+      }),
+    },
+    (_, i) => {
+      return {
+        name: faker.location.city(),
+        direction: faker.helpers.arrayElement([
+          "north",
+          "south",
+          "east",
+          "west",
+        ]),
+      };
+    }
+  );
+}
+
+export function createDummyLongRangeSchedule(
+  portList: LongRangePortType[],
+  hasDeparture = true
+): LongRangeScheduleType {
+  return {
+    vesselInfo: createDummyVesselInformation(),
+    vesselSchedules: createDummaryVesselSchedules(),
+    remarkInfo: faker.lorem.sentence(),
+    longRangeDates: portList.map((port) => {
+      return {
+        port,
+        arrival: DateTime.fromJSDate(faker.date.future()),
+        departure: hasDeparture
+          ? DateTime.fromJSDate(faker.date.future())
+          : undefined,
+      } as LongRangeDateType;
+    }),
+  };
+}
+
+export function createDummyLongRangeSchedules(
+  hasDeparture = true,
+  length = 30
+) {
+  const portList = createDummyPortList();
+  const schedules = Array.from({ length: length }, () =>
+    createDummyLongRangeSchedule(portList, hasDeparture)
+  );
+  return {
+    schedules,
+    portList,
+  };
 }
