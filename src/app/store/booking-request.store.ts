@@ -32,7 +32,7 @@ export const BookingRequestStepState = atom({
       id: "etc",
       title: "Attachment & Special Instruction & Duplicate Bookings",
       isSelected: false,
-      isCompleted: false,
+      isCompleted: true,
     },
   },
 });

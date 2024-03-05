@@ -2,37 +2,62 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import {
+  MdCheckbox,
   MdChipSet,
+  MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
   MdInputChip,
-  MdOutlinedTextField,
+  MdList,
+  MdListItem,
   MdRippleEffect,
+  MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import { MailOutline } from "@mui/icons-material";
+import { ChevronRight, MailOutline } from "@mui/icons-material";
 import { SimpleItem, SubTitle } from "./components";
 import { useRecoilState } from "recoil";
 import { PartiesState } from "@/app/store/booking-request.store";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Portal from "@/app/components/portal";
 
 export default function PartiesStep() {
   const [partiesData, setPartiesData] = useRecoilState(PartiesState);
+  const [newEmailInput, setNewEmailInput] = useState<string>("");
+  const [newEmailRecipients, setNewEmailRecipients] = useState<Array<string>>(
+    []
+  );
+  const [isManageEmailDialogOpen, setIsManageEmailDialogOpen] = useState(false);
 
   const tempBookingRequestor = useMemo(() => {
     return {
-      name: faker.company.name(),
+      name: partiesData.bookingRequestor.name || faker.company.name(),
       address:
+        partiesData.bookingRequestor.address ||
         faker.location.streetAddress() +
-        ", " +
-        faker.location.city() +
-        ", " +
-        faker.location.country(),
-      email: [],
-      telNo: faker.phone.number(),
-      fax: faker.phone.number(),
+          ", " +
+          faker.location.city() +
+          ", " +
+          faker.location.country(),
+      email: partiesData.bookingRequestor.email,
+      telNo: partiesData.bookingRequestor.telNo || faker.phone.number(),
+      fax: partiesData.bookingRequestor.fax || faker.phone.number(),
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const tempEmailRecipients = useMemo(() => {
+    return [
+      faker.internet.email(),
+      faker.internet.email(),
+      faker.internet.email(),
+      ...partiesData.bookingRequestor.email,
+    ];
+  }, [partiesData.bookingRequestor.email]);
+
+  const [emailRecipients, setEmailRecipients] =
+    useState<Array<string>>(tempEmailRecipients);
 
   useEffect(() => {
     setPartiesData((prev) => ({
@@ -40,6 +65,10 @@ export default function PartiesStep() {
       bookingRequestor: tempBookingRequestor,
     }));
   }, [setPartiesData, tempBookingRequestor]);
+
+  useEffect(() => {
+    console.log(partiesData);
+  }, [partiesData]);
 
   return (
     <div className="w-full flex flex-col">
@@ -65,11 +94,32 @@ export default function PartiesStep() {
             Email Recipient
           </MdTypography>
           <MdChipSet>
-            <MdInputChip label="John Doe" />
-            <MdInputChip label="John Doe" />
-            <MdInputChip label="John Doe" />
+            {partiesData.bookingRequestor.email.map((email) => {
+              return (
+                <MdInputChip
+                  key={email}
+                  label={email}
+                  handleTrailingActionFocus={() => {
+                    setPartiesData((prev) => ({
+                      ...prev,
+                      bookingRequestor: {
+                        ...prev.bookingRequestor,
+                        email: prev.bookingRequestor.email.filter(
+                          (e) => e !== email
+                        ),
+                      },
+                    }));
+                  }}
+                />
+              );
+            })}
           </MdChipSet>
-          <button className="relative bg-secondaryContainer rounded-full px-3 py-2 mt-2">
+          <button
+            className="relative bg-secondaryContainer rounded-full px-3 py-2 mt-2"
+            onClick={() => {
+              setIsManageEmailDialogOpen(true);
+            }}
+          >
             <MdRippleEffect />
             <MdTypography variant="label" size="medium">
               <MailOutline
@@ -244,6 +294,108 @@ export default function PartiesStep() {
         }}
       />
       <MdFilledButton className="self-end mt-4">Next</MdFilledButton>
+      <Portal selector="#main-container">
+        <MdDialog
+          className="min-w-[720px]"
+          open={isManageEmailDialogOpen}
+          opened={() => {
+            setNewEmailRecipients(partiesData.bookingRequestor.email);
+          }}
+          closed={() => {
+            setIsManageEmailDialogOpen(false);
+          }}
+        >
+          <div slot="headline">Manage Email</div>
+          <div slot="content" className="flex flex-col">
+            <div className="flex w-full gap-2 items-center">
+              <div className="flex-1">
+                <NAOutlinedTextField
+                  label="Email"
+                  placeholder="e.g. email@email.com"
+                  type="email"
+                  value={newEmailInput}
+                  required
+                  handleValueChange={(value) => {
+                    setNewEmailInput(value);
+                  }}
+                />
+              </div>
+              <MdFilledTonalButton
+                className="h-fit"
+                onClick={() => {
+                  //check email validation by regex
+                  const emailRegex =
+                    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                  if (!emailRegex.test(newEmailInput)) {
+                    return;
+                  } else {
+                    setEmailRecipients([...emailRecipients, newEmailInput]);
+                    setNewEmailInput("");
+                  }
+                }}
+              >
+                Add Email
+              </MdFilledTonalButton>
+            </div>
+            <MdTypography variant="label" size="medium" className="mt-6">
+              Email Recipient
+            </MdTypography>
+            <MdList className="bg-surfaceContainerHigh">
+              {emailRecipients.map((email) => {
+                return (
+                  <MdListItem
+                    key={email}
+                    className="relative cursor-pointer"
+                    onClick={() => {
+                      setNewEmailRecipients(
+                        newEmailRecipients.includes(email)
+                          ? newEmailRecipients.filter((e) => e !== email)
+                          : [...newEmailRecipients, email]
+                      );
+                    }}
+                  >
+                    <MdRippleEffect />
+                    <MdCheckbox
+                      slot="start"
+                      checked={newEmailRecipients.includes(email)}
+                    />
+                    <MdTypography variant="label" size="medium">
+                      {email}
+                    </MdTypography>
+                    <div slot="end">
+                      <ChevronRight />
+                    </div>
+                  </MdListItem>
+                );
+              })}
+            </MdList>
+          </div>
+          <div slot="actions" className="flex gap-2">
+            <MdTextButton
+              onClick={() => {
+                setNewEmailRecipients([]);
+                setIsManageEmailDialogOpen(false);
+              }}
+            >
+              Close
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPartiesData((prev) => ({
+                  ...prev,
+                  bookingRequestor: {
+                    ...prev.bookingRequestor,
+                    email: newEmailRecipients,
+                  },
+                }));
+                setIsManageEmailDialogOpen(false);
+              }}
+            >
+              Save
+            </MdFilledButton>
+          </div>
+        </MdDialog>
+      </Portal>
     </div>
   );
 }
