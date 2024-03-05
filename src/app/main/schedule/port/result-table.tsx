@@ -1,24 +1,25 @@
+import { DateTime } from "luxon";
+import { useState } from "react";
+
+import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
+import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import { BasicTable } from "@/app/components/basic-table";
+import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
+import { MdFilledTonalButton } from "@/app/util/md3";
 import {
   PlaceInformationType,
   PortScheduleType,
   VesselInfoType,
   VesselScheduleType,
 } from "@/app/util/typeDef";
-import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
-import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
-import { DateTime } from "luxon";
-import { useState } from "react";
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { BasicTable } from "@/app/components/basic-table";
-import Portal from "@/app/components/portal";
+
 import PlaceInformationDialog from "../popup/place-information";
-import VesselInformationDialog from "../popup/vessel-information";
-import { MdFilledTonalButton } from "@/app/util/md3";
 import VesselScheduleDialog from "../popup/vessel-schedule";
 
 export default function PortResultTable({
@@ -51,7 +52,9 @@ export default function PortResultTable({
               setIsVesselScheduleOpen(true);
             }}
           >
-            {info.getValue().vesselName}
+            <MdTypography variant="body" size="medium">
+              {info.getValue().vesselName}
+            </MdTypography>
           </div>
         );
       },
@@ -67,7 +70,9 @@ export default function PortResultTable({
             setIsPlaceInformationOpen(true);
           }}
         >
-          {info.getValue().yardName}
+          <MdTypography variant="body" size="medium">
+            {info.getValue().yardName}
+          </MdTypography>
         </div>
       ),
       size: undefined,
@@ -75,7 +80,11 @@ export default function PortResultTable({
     columnHelper.accessor("vesselInfo.serviceLane", {
       header: "Service Lane",
       cell: (info) => {
-        return info.getValue();
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
       },
       size: undefined,
     }),
@@ -129,7 +138,7 @@ export default function PortResultTable({
     }),
     columnHelper.accessor("vesselInfo.vesselName", {
       header: "Action",
-      cell: (info) => <MdFilledTonalButton>Booking</MdFilledTonalButton>,
+      cell: () => <MdFilledTonalButton>Booking</MdFilledTonalButton>,
       size: undefined,
     }),
   ];
