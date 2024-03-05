@@ -46,7 +46,7 @@ export const MdSingleDatePicker = (props: {
   const { refs, floatingStyles, context } = useFloating({
     open: isCalendarOpen,
     onOpenChange: setIsCalendarOpen,
-    middleware: [offset(10), flip(), shift()],
+    middleware: [offset(10), shift()],
     placement: "bottom-start",
     whileElementsMounted: autoUpdate,
   });
@@ -125,7 +125,6 @@ export const MdSingleDatePicker = (props: {
         ref={inputEl}
         className="flex-1"
         value={defaultDate.toFormat("MM/dd/yyyy")}
-        supportingText="MM/DD/YYYY"
         errorText="Invalid date format"
         error={invalid}
         onBlur={(e) => {
@@ -138,7 +137,7 @@ export const MdSingleDatePicker = (props: {
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
-      <FloatingFocusManager context={context} modal={true}>
+      <FloatingFocusManager context={context} modal={false}>
         <div
           className={isCalendarOpen ? "visible z-20" : "invisible"}
           ref={refs.setFloating}

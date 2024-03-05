@@ -34,7 +34,6 @@ export const MdRangeDatePicker = (props: {
   label?: string;
   defaultStartDate?: DateTime;
   defaultEndDate?: DateTime;
-  supportingText?: string;
   handleDateRangeSelected?: (dateRange: [DateTime, DateTime]) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -162,7 +161,6 @@ export const MdRangeDatePicker = (props: {
           " - " +
           defaultDateRange[1].toFormat("MM/dd/yyyy")
         }
-        supportingText={props.supportingText || "MM/DD/YYYY - MM/DD/YYYY"}
         errorText={errorSupportText}
         error={
           !isDateRangeValid ||

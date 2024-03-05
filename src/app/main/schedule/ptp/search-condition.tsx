@@ -296,7 +296,6 @@ export default function SearchCondition({
         </MdOutlinedSelect>
         <MdRangeDatePicker
           label="Date"
-          supportingText=" "
           defaultStartDate={dateRange[0]}
           defaultEndDate={dateRange[1]}
           handleDateRangeSelected={(range) => {
