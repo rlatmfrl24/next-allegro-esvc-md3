@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-
 import { MdIconButton, MdSecondaryTab, MdTabs } from "@/app/util/md3";
 
 export default function ServiceLaneSelector({
@@ -19,10 +18,6 @@ export default function ServiceLaneSelector({
     "left"
   );
   const [isOverflowed, setIsOverflowed] = useState(false);
-
-  useEffect(() => {
-    console.log("scrollState", scrollState);
-  }, [scrollState]);
 
   useEffect(() => {
     // detect ref is overflowed

@@ -104,8 +104,7 @@ export function createDummyPortData(): string[] {
 export function createDummyPtPScheduleData(
   condition: PtPSearchConditionType
 ): PtPScheduleType[] {
-  const { origins, destinations, searchOn, startDate, endDate, directOnly } =
-    condition;
+  const { origins, destinations, searchOn, startDate, endDate } = condition;
 
   // This function is a dummy function that returns an empty array.
   const dummyData: PtPScheduleType[] = [];

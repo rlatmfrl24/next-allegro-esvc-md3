@@ -45,7 +45,12 @@ export type PtPSearchConditionType = {
   searchOn: "departure" | "arrival";
   startDate: DateTime;
   endDate: DateTime;
-  directOnly: boolean;
+};
+
+export type CutOffDataType = {
+  documentation: DateTime;
+  EDI: DateTime;
+  cargo: DateTime;
 };
 
 export type FavoriteRouteType = {
