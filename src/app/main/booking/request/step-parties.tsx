@@ -7,6 +7,7 @@ import {
   MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
+  MdIconButton,
   MdInputChip,
   MdList,
   MdListItem,
@@ -14,7 +15,12 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import { ChevronRight, MailOutline } from "@mui/icons-material";
+import {
+  ChevronRight,
+  Delete,
+  DeleteOutline,
+  MailOutline,
+} from "@mui/icons-material";
 import { SimpleItem, SubTitle } from "./components";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
@@ -404,7 +410,20 @@ export default function PartiesStep() {
                       {email}
                     </MdTypography>
                     <div slot="end">
-                      <ChevronRight />
+                      <MdIconButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setEmailRecipients(
+                            emailRecipients.filter((e) => e !== email)
+                          );
+                          setNewEmailRecipients(
+                            newEmailRecipients.filter((e) => e !== email)
+                          );
+                        }}
+                      >
+                        <DeleteOutline fontSize="small" />
+                      </MdIconButton>
                     </div>
                   </MdListItem>
                 );
