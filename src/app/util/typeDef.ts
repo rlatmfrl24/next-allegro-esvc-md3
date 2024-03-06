@@ -61,6 +61,7 @@ export type FavoriteRouteType = {
 };
 
 export type PlaceInformationType = {
+  code: string;
   yardName: string;
   address: string;
   phoneNo: string;
@@ -149,16 +150,3 @@ export interface BookingRequestorInterface extends PartyInterface {
   telNo: string;
   fax: string;
 }
-
-export type LocationScheduleDataType = {
-  searchType: string;
-  originPort: string;
-  destinationPort: string;
-  originType: "cy" | "door";
-  destinationType: "cy" | "door";
-  pol: string;
-  pod: string;
-  departureDate: DateTime;
-  bookingOffice: string;
-  contractNumber: string;
-};

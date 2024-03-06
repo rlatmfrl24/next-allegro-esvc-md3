@@ -2,8 +2,9 @@ import { DateTime } from "luxon";
 import { atom } from "recoil";
 import {
   BookingRequestorInterface,
-  LocationScheduleDataType,
+  CommodityType,
   PartyInterface,
+  PlaceInformationType,
 } from "../util/typeDef";
 
 export const BookingRequestStepState = atom({
@@ -42,7 +43,7 @@ export const BookingRequestStepState = atom({
   },
 });
 
-export const LocationScheduleState = atom<LocationScheduleDataType>({
+export const LocationScheduleState = atom({
   key: "locationScheduleState",
   default: {
     searchType: "schedule",
@@ -87,5 +88,45 @@ export const PartiesState = atom<{
       address: "",
     } as PartyInterface,
     actualShipper: "",
+  },
+});
+
+export const CargoPickUpReturnState = atom({
+  key: "cargoPickUpReturnState",
+  default: {
+    commodity: {
+      code: "",
+      description: "",
+    } as CommodityType,
+    grossWeight: "0.000",
+    emptyPickUpDate: DateTime.now(),
+    fullReturnDate: DateTime.now(),
+    emptyPickUpLocation: {
+      code: "",
+      yardName: "",
+      address: "",
+      phoneNo: "",
+      faxNo: "",
+      customerNo: "",
+      emailAddress: "",
+    } as PlaceInformationType,
+    fullReturnLocation: {
+      code: "",
+      yardName: "",
+      address: "",
+      phoneNo: "",
+      faxNo: "",
+      customerNo: "",
+      emailAddress: "",
+    } as PlaceInformationType,
+  },
+});
+
+export const EtcDataState = atom({
+  key: "etcDataState",
+  default: {
+    attachments: [] as File[],
+    specialInstruction: "",
+    duplicateBookings: "1",
   },
 });

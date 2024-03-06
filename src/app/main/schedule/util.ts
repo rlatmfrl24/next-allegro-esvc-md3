@@ -16,6 +16,7 @@ export function createDummyPlaceInformation(
   placeName: string
 ): PlaceInformationType {
   return {
+    code: faker.string.alpha(4).toUpperCase(),
     yardName: placeName,
     address: faker.location.streetAddress(),
     phoneNo: faker.phone.imei(),
