@@ -1,19 +1,73 @@
-import { MdTypography } from "@/app/components/typography";
-import { SubTitle } from "./components";
-import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
-import { MdOutlinedTextField } from "@/app/util/md3";
-import CommodityAutoComplete from "./commodity-search";
-import { CommodityType } from "@/app/util/typeDef";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { CargoPickUpReturnState } from "@/app/store/booking-request.store";
-import { useRecoilState } from "recoil";
+import { MdTypography } from "@/app/components/typography";
+import {
+  BookingRequestStepState,
+  CargoPickUpReturnState,
+} from "@/app/store/booking-request.store";
+import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
+
+import CommodityAutoComplete from "./commodity-search";
+import { SubTitle } from "./components";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
     CargoPickUpReturnState
   );
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+
+  const ValidateRequired = useCallback(() => {
+    if (
+      cargoPickUpReturnData.commodity.code === "" ||
+      cargoPickUpReturnData.commodity.description === "" ||
+      cargoPickUpReturnData.grossWeight === "0.000"
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [
+    cargoPickUpReturnData.commodity.code,
+    cargoPickUpReturnData.commodity.description,
+    cargoPickUpReturnData.grossWeight,
+  ]);
+
+  const moveToContainerStep = useCallback(() => {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      cargoPickUpReturn: {
+        ...prev.cargoPickUpReturn,
+        isSelected: false,
+      },
+      container: {
+        ...prev.container,
+        isSelected: true,
+      },
+    }));
+  }, [setBookingRequestStep]);
+
+  useEffect(() => {
+    if (ValidateRequired()) {
+      setBookingRequestStep((prev) => ({
+        ...prev,
+        cargoPickUpReturn: {
+          ...prev.cargoPickUpReturn,
+          isCompleted: true,
+        },
+      }));
+    } else {
+      setBookingRequestStep((prev) => ({
+        ...prev,
+        cargoPickUpReturn: {
+          ...prev.cargoPickUpReturn,
+          isCompleted: false,
+        },
+      }));
+    }
+  }, [ValidateRequired, setBookingRequestStep]);
 
   return (
     <div className="w-full flex flex-col">
@@ -217,6 +271,11 @@ export default function CargoStep() {
             />
           </div>
         </div>
+      </div>
+      <div className="flex-1 flex items-end justify-end">
+        <MdFilledButton onClick={() => moveToContainerStep()}>
+          Next
+        </MdFilledButton>
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export const BookingRequestStepState = atom({
       id: "container",
       title: "Container",
       isSelected: false,
-      isCompleted: false,
+      isCompleted: true,
     },
     etc: {
       id: "etc",

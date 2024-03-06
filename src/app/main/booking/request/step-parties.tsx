@@ -16,12 +16,16 @@ import {
 import { faker } from "@faker-js/faker";
 import { ChevronRight, MailOutline } from "@mui/icons-material";
 import { SimpleItem, SubTitle } from "./components";
-import { useRecoilState } from "recoil";
-import { PartiesState } from "@/app/store/booking-request.store";
-import { useEffect, useMemo, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  BookingRequestStepState,
+  PartiesState,
+} from "@/app/store/booking-request.store";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Portal from "@/app/components/portal";
 
 export default function PartiesStep() {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const [partiesData, setPartiesData] = useRecoilState(PartiesState);
   const [newEmailInput, setNewEmailInput] = useState<string>("");
   const [newEmailRecipients, setNewEmailRecipients] = useState<Array<string>>(
@@ -66,9 +70,48 @@ export default function PartiesStep() {
     }));
   }, [setPartiesData, tempBookingRequestor]);
 
+  const ValidateRequired = useCallback(() => {
+    if (partiesData.shipper.name === "" || partiesData.shipper.address === "") {
+      return false;
+    } else {
+      return true;
+    }
+  }, [partiesData.shipper.address, partiesData.shipper.name]);
+
+  const moveToCargoStep = useCallback(() => {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      parties: {
+        ...prev.parties,
+        isSelected: false,
+      },
+      cargoPickUpReturn: {
+        ...prev.cargoPickUpReturn,
+        isSelected: true,
+      },
+    }));
+  }, [setBookingRequestStep]);
+
   useEffect(() => {
     console.log(partiesData);
-  }, [partiesData]);
+    if (ValidateRequired()) {
+      setBookingRequestStep((prev) => ({
+        ...prev,
+        parties: {
+          ...prev.parties,
+          isCompleted: true,
+        },
+      }));
+    } else {
+      setBookingRequestStep((prev) => ({
+        ...prev,
+        parties: {
+          ...prev.parties,
+          isCompleted: false,
+        },
+      }));
+    }
+  }, [ValidateRequired, partiesData, setBookingRequestStep]);
 
   return (
     <div className="w-full flex flex-col">
@@ -287,7 +330,12 @@ export default function PartiesStep() {
           }));
         }}
       />
-      <MdFilledButton className="self-end mt-4">Next</MdFilledButton>
+      <MdFilledButton
+        className="self-end mt-4"
+        onClick={() => moveToCargoStep()}
+      >
+        Next
+      </MdFilledButton>
       <Portal selector="#main-container">
         <MdDialog
           className="min-w-[720px]"

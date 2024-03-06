@@ -6,7 +6,12 @@ import { useRecoilState } from "recoil";
 import PageTitle from "@/app/components/page-title";
 import { BookingRequestStepState } from "@/app/store/booking-request.store";
 import styles from "@/app/styles/base.module.css";
-import { MdOutlinedButton } from "@/app/util/md3";
+import {
+  MdElevation,
+  MdFilledButton,
+  MdFilledTonalButton,
+  MdOutlinedButton,
+} from "@/app/util/md3";
 
 import CargoStep from "./step-cargo";
 import ContainerStep from "./step-container";
@@ -14,12 +19,23 @@ import EtcStep from "./step-etc";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
+import { CSSProperties, useCallback, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { type } from "os";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);
   const [bookingRequestStepState, setBookingRequestStepState] = useRecoilState(
     BookingRequestStepState
   );
+
+  const AllStepsCompleted = useMemo(() => {
+    return Object.keys(bookingRequestStepState).every((key) => {
+      return bookingRequestStepState[
+        key as keyof typeof bookingRequestStepState
+      ].isCompleted;
+    });
+  }, [bookingRequestStepState]);
 
   function handleStepClick(key: string) {
     setBookingRequestStepState((prev) => {
@@ -92,6 +108,30 @@ export default function BookingRequest() {
           }
         </div>
       </div>
+      <AnimatePresence>
+        {AllStepsCompleted && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ type: "spring" }}
+            className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2"
+          >
+            <div
+              className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
+              style={
+                {
+                  "--md-elevation-level": 4,
+                } as CSSProperties
+              }
+            >
+              <MdElevation />
+              <MdFilledTonalButton>Preview</MdFilledTonalButton>
+              <MdFilledButton>Booking</MdFilledButton>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
