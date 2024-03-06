@@ -134,3 +134,31 @@ export type LongRangeScheduleType = {
   remarkInfo: string;
   longRangeDates: LongRangeDateType[];
 };
+
+export type CommodityType = {
+  code: string;
+  description: string;
+};
+
+export interface PartyInterface {
+  name: string;
+  address: string;
+}
+export interface BookingRequestorInterface extends PartyInterface {
+  email: string[];
+  telNo: string;
+  fax: string;
+}
+
+export type LocationScheduleDataType = {
+  searchType: string;
+  originPort: string;
+  destinationPort: string;
+  originType: "cy" | "door";
+  destinationType: "cy" | "door";
+  pol: string;
+  pod: string;
+  departureDate: DateTime;
+  bookingOffice: string;
+  contractNumber: string;
+};

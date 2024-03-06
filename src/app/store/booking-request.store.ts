@@ -1,5 +1,10 @@
 import { DateTime } from "luxon";
 import { atom } from "recoil";
+import {
+  BookingRequestorInterface,
+  LocationScheduleDataType,
+  PartyInterface,
+} from "../util/typeDef";
 
 export const BookingRequestStepState = atom({
   key: "bookingRequestStepState",
@@ -37,19 +42,6 @@ export const BookingRequestStepState = atom({
   },
 });
 
-export type LocationScheduleDataType = {
-  searchType: string;
-  originPort: string;
-  destinationPort: string;
-  originType: "cy" | "door";
-  destinationType: "cy" | "door";
-  pol: string;
-  pod: string;
-  departureDate: DateTime;
-  bookingOffice: string;
-  contractNumber: string;
-};
-
 export const LocationScheduleState = atom<LocationScheduleDataType>({
   key: "locationScheduleState",
   default: {
@@ -65,16 +57,6 @@ export const LocationScheduleState = atom<LocationScheduleDataType>({
     contractNumber: "",
   },
 });
-
-export interface PartyInterface {
-  name: string;
-  address: string;
-}
-export interface BookingRequestorInterface extends PartyInterface {
-  email: string[];
-  telNo: string;
-  fax: string;
-}
 
 export const PartiesState = atom<{
   bookingRequestor: BookingRequestorInterface;

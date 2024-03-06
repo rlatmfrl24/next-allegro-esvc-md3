@@ -156,24 +156,22 @@ export default function PartiesStep() {
             }));
           }}
         />
-        <div className="flex-1">
-          <NAOutlinedTextField
-            className="w-full"
-            label="Address"
-            placeholder="Address (State Name, City, State & Zip Code, Country Name)"
-            required
-            value={partiesData.shipper.address}
-            handleValueChange={(value) => {
-              setPartiesData((prev) => ({
-                ...prev,
-                shipper: {
-                  ...prev.shipper,
-                  address: value,
-                },
-              }));
-            }}
-          />
-        </div>
+        <NAOutlinedTextField
+          className="flex-1"
+          label="Address"
+          placeholder="Address (State Name, City, State & Zip Code, Country Name)"
+          required
+          value={partiesData.shipper.address}
+          handleValueChange={(value) => {
+            setPartiesData((prev) => ({
+              ...prev,
+              shipper: {
+                ...prev.shipper,
+                address: value,
+              },
+            }));
+          }}
+        />
         <NaToggleButton
           label="Same as Booking Requestor"
           state={
@@ -210,23 +208,21 @@ export default function PartiesStep() {
             }));
           }}
         />
-        <div className="flex-1">
-          <NAOutlinedTextField
-            className="flex-1"
-            label="Address"
-            placeholder="Address (State Name, City, State & Zip Code, Country Name)"
-            value={partiesData.freightForwarder.address}
-            handleValueChange={(value) => {
-              setPartiesData((prev) => ({
-                ...prev,
-                freightForwarder: {
-                  ...prev.freightForwarder,
-                  address: value,
-                },
-              }));
-            }}
-          />
-        </div>
+        <NAOutlinedTextField
+          className="flex-1"
+          label="Address"
+          placeholder="Address (State Name, City, State & Zip Code, Country Name)"
+          value={partiesData.freightForwarder.address}
+          handleValueChange={(value) => {
+            setPartiesData((prev) => ({
+              ...prev,
+              freightForwarder: {
+                ...prev.freightForwarder,
+                address: value,
+              },
+            }));
+          }}
+        />
         <NaToggleButton
           label="Same as Booking Requestor"
           state={
@@ -264,23 +260,21 @@ export default function PartiesStep() {
             }));
           }}
         />
-        <div className="flex-1">
-          <NAOutlinedTextField
-            className="flex-1"
-            label="Address"
-            placeholder="Address (State Name, City, State & Zip Code, Country Name)"
-            value={partiesData.consignee.address}
-            handleValueChange={(value) => {
-              setPartiesData((prev) => ({
-                ...prev,
-                consignee: {
-                  ...prev.consignee,
-                  address: value,
-                },
-              }));
-            }}
-          />
-        </div>
+        <NAOutlinedTextField
+          className="flex-1"
+          label="Address"
+          placeholder="Address (State Name, City, State & Zip Code, Country Name)"
+          value={partiesData.consignee.address}
+          handleValueChange={(value) => {
+            setPartiesData((prev) => ({
+              ...prev,
+              consignee: {
+                ...prev.consignee,
+                address: value,
+              },
+            }));
+          }}
+        />
       </div>
       <SubTitle title="Actual" className="mt-8 mb-4" />
       <NAOutlinedTextField
@@ -308,18 +302,17 @@ export default function PartiesStep() {
           <div slot="headline">Manage Email</div>
           <div slot="content" className="flex flex-col">
             <div className="flex w-full gap-2 items-center">
-              <div className="flex-1">
-                <NAOutlinedTextField
-                  label="Email"
-                  placeholder="e.g. email@email.com"
-                  type="email"
-                  value={newEmailInput}
-                  required
-                  handleValueChange={(value) => {
-                    setNewEmailInput(value);
-                  }}
-                />
-              </div>
+              <NAOutlinedTextField
+                className="flex-1"
+                label="Email"
+                placeholder="e.g. email@email.com"
+                type="email"
+                value={newEmailInput}
+                required
+                handleValueChange={(value) => {
+                  setNewEmailInput(value);
+                }}
+              />
               <MdFilledTonalButton
                 className="h-fit"
                 onClick={() => {
