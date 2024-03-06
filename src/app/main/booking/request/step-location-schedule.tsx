@@ -170,8 +170,6 @@ export default function LoactionScheduleStep() {
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
               itemList={portList}
-              value={originPort}
-              setValue={setOriginPort}
               required
               label="Origin"
               icon={<FmdGoodOutlined />}
@@ -205,8 +203,6 @@ export default function LoactionScheduleStep() {
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
               itemList={portList}
-              value={destinationPort}
-              setValue={setDestinationPort}
               required
               label="Destination"
               icon={<FmdGoodOutlined />}

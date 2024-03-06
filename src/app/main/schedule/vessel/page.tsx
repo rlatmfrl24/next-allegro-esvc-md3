@@ -82,8 +82,6 @@ export default function VesselSchedule() {
       <PageTitle title="Vessel Schedule" />
       <div className={styles.area}>
         <NAOutlinedAutoComplete
-          value={vesselQuery}
-          setValue={setVesselQuery}
           label="Vessel Name"
           required
           icon={<VesselIcon />}
