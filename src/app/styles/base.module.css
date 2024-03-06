@@ -9,3 +9,7 @@
 .area.no-padding {
   @apply p-0;
 }
+
+.area.row-direction {
+  @apply flex-row;
+}

@@ -61,6 +61,7 @@ export type FavoriteRouteType = {
 };
 
 export type PlaceInformationType = {
+  code: string;
   yardName: string;
   address: string;
   phoneNo: string;
@@ -134,3 +135,18 @@ export type LongRangeScheduleType = {
   remarkInfo: string;
   longRangeDates: LongRangeDateType[];
 };
+
+export type CommodityType = {
+  code: string;
+  description: string;
+};
+
+export interface PartyInterface {
+  name: string;
+  address: string;
+}
+export interface BookingRequestorInterface extends PartyInterface {
+  email: string[];
+  telNo: string;
+  fax: string;
+}
