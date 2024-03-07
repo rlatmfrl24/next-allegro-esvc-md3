@@ -335,59 +335,61 @@ export default function BookingStatusCondition() {
         {...getFloatingProps()}
         className="z-10"
       >
-        <div
-          style={
-            {
-              "--md-elevation-level": 2,
-              ...styles,
-            } as CSSProperties
-          }
-          className="bg-surfaceContainerHigh rounded-3xl relative w-72"
-        >
-          <MdElevation />
-          <MdTypography variant="headline" size="small" className="p-6">
-            Filter Details
-          </MdTypography>
-          <MdList className="bg-surfaceContainerHigh">
-            {filterOptions.map((item) => (
-              <MdListItem
-                key={item.id}
-                className="border-b border-b-outlineVariant"
-                type="button"
+        {isMounted && (
+          <div
+            style={
+              {
+                "--md-elevation-level": 2,
+                ...styles,
+              } as CSSProperties
+            }
+            className="bg-surfaceContainerHigh rounded-3xl relative w-72"
+          >
+            <MdElevation />
+            <MdTypography variant="headline" size="small" className="p-6">
+              Filter Details
+            </MdTypography>
+            <MdList className="bg-surfaceContainerHigh">
+              {filterOptions.map((item) => (
+                <MdListItem
+                  key={item.id}
+                  className="border-b border-b-outlineVariant"
+                  type="button"
+                  onClick={() => {
+                    if (activeFilters.includes(item.id)) {
+                      setActiveFilters(
+                        activeFilters.filter((id) => id !== item.id)
+                      );
+                      setSearchCondition({
+                        ...searchCondition,
+                        [item.id]: "",
+                      });
+                    } else {
+                      setActiveFilters([...activeFilters, item.id]);
+                    }
+                  }}
+                >
+                  <div
+                    slot="start"
+                    className="w-6 h-6 flex items-center justify-center"
+                  >
+                    <MdCheckbox checked={activeFilters.includes(item.id)} />
+                  </div>
+                  <div slot="headline">{item.label}</div>
+                </MdListItem>
+              ))}
+            </MdList>
+            <div className="p-6 flex justify-end">
+              <MdTextButton
                 onClick={() => {
-                  if (activeFilters.includes(item.id)) {
-                    setActiveFilters(
-                      activeFilters.filter((id) => id !== item.id)
-                    );
-                    setSearchCondition({
-                      ...searchCondition,
-                      [item.id]: "",
-                    });
-                  } else {
-                    setActiveFilters([...activeFilters, item.id]);
-                  }
+                  setIsFilterDetailsOpen(false);
                 }}
               >
-                <div
-                  slot="start"
-                  className="w-6 h-6 flex items-center justify-center"
-                >
-                  <MdCheckbox checked={activeFilters.includes(item.id)} />
-                </div>
-                <div slot="headline">{item.label}</div>
-              </MdListItem>
-            ))}
-          </MdList>
-          <div className="p-6 flex justify-end">
-            <MdTextButton
-              onClick={() => {
-                setIsFilterDetailsOpen(false);
-              }}
-            >
-              Close
-            </MdTextButton>
+                Close
+              </MdTextButton>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "../styles/typography.module.css";
+import { HtmlHTMLAttributes } from "react";
 
 export const MdTypography = ({
   children,
@@ -8,6 +9,7 @@ export const MdTypography = ({
   size,
   prominent,
   className,
+  ...props
 }: {
   children: string | React.ReactNode;
   tag?: "div" | "span" | "label";
@@ -15,11 +17,12 @@ export const MdTypography = ({
   size: "small" | "medium" | "large";
   prominent?: boolean;
   className?: string;
-}) => {
+} & HtmlHTMLAttributes<HTMLElement>) => {
   const cx = classNames.bind(styles);
   const Wrapper = tag || "div";
   return (
     <Wrapper
+      {...props}
       className={cx(className, styles[variant], styles[size], {
         [styles.prominent]: prominent,
       })}
