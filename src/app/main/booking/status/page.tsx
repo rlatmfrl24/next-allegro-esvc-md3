@@ -161,21 +161,6 @@ export default function BookingStatus() {
           </div>
           <MdFilterChip label="My Booking" />
         </MdChipSet>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <MdTextButton>
-              <div slot="icon">
-                <Download fontSize="small" />
-              </div>
-              Download
-            </MdTextButton>
-            <div className="w-px h-6 bg-outlineVariant"></div>
-            <MdTextButton>Copy</MdTextButton>
-          </div>
-          <MdTypography variant="label" size="large" className="text-outline">
-            Total: 13
-          </MdTypography>
-        </div>
         <BookingStatusTable />
       </div>
     </div>

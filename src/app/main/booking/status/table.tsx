@@ -1,13 +1,17 @@
 "use client";
 
-import { VesselInfoType } from "@/app/util/typeDef";
+import {
+  BookingStatus,
+  BookingStatusTableProps,
+  VesselInfoType,
+} from "@/app/util/typeDef";
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   createDummaryVesselSchedules,
   createDummyVesselInformation,
@@ -17,42 +21,10 @@ import { faker } from "@faker-js/faker";
 import { MdTypography } from "@/app/components/typography";
 import Portal from "@/app/components/portal";
 import VesselScheduleDialog from "../../schedule/popup/vessel-schedule";
-import { MdRadio } from "@/app/util/md3";
+import { MdRadio, MdTextButton } from "@/app/util/md3";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-
-enum BookingStatus {
-  Requested = "Requested",
-  ChangeRequested = "Change Requested",
-  CancelRequested = "Cancel Requested",
-  Cancelled = "Cancelled",
-  Accepted = "Accepted",
-  Rejected = "Rejected",
-  Pending = "Pending",
-}
-
-type BookingStatusTableProps = {
-  requestNo: string;
-  status: BookingStatus;
-  bookingNo: string;
-  requestDate: DateTime;
-  actualShipper: string;
-  vessel: VesselInfoType;
-  requestDepartureTime: {
-    date: DateTime;
-    status: "normal" | "delayed" | "early";
-  };
-  estimatedTimeofDeparture: {
-    date: DateTime;
-    status: "normal" | "delayed" | "early";
-  };
-  origin: string;
-  destination: string;
-  cargoClosingTime: DateTime;
-  docClosingTime: DateTime;
-  vgmCutOffTime: DateTime;
-  via: "web" | "general" | "edi";
-  qty: string;
-};
+import { Download, Info } from "@mui/icons-material";
+import VesselStatusNotesDialog from "./vessel-status-notes";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
@@ -73,13 +45,7 @@ export default function BookingStatusTable() {
       requestDate: DateTime.fromJSDate(faker.date.past()),
       actualShipper: faker.person.fullName(),
       vessel: createDummyVesselInformation(),
-      requestDepartureTime: {
-        date: DateTime.fromJSDate(faker.date.past()),
-        status: faker.helpers.arrayElement(["normal", "delayed", "early"]) as
-          | "normal"
-          | "delayed"
-          | "early",
-      },
+      requestDepartureTime: DateTime.fromJSDate(faker.date.past()),
       estimatedTimeofDeparture: {
         date: DateTime.fromJSDate(faker.date.future()),
         status: faker.helpers.arrayElement(["normal", "delayed", "early"]) as
@@ -104,7 +70,10 @@ export default function BookingStatusTable() {
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
+  const [rowSelection, setRowSelection] = useState({});
   const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
+    useState(false);
+  const [isVesselStatusNotesDialogOpen, setIsVesselStatusNotesDialogOpen] =
     useState(false);
   const [selectedVesselInfo, setSelectedVesselInfo] =
     useState<VesselInfoType | null>(null);
@@ -206,7 +175,7 @@ export default function BookingStatusTable() {
           size="medium"
           className="text-onSurfaceVariant p-2"
         >
-          {info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
       size: 120,
@@ -215,13 +184,32 @@ export default function BookingStatusTable() {
     columnHelper.accessor("estimatedTimeofDeparture", {
       header: "Estimated Time of Departure",
       cell: (info) => (
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="text-onSurfaceVariant p-2"
-        >
-          {info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
-        </MdTypography>
+        <div className="flex p-2 ">
+          <MdTypography
+            variant="body"
+            size="medium"
+            className={`text-onSurfaceVariant ${
+              info.getValue().status !== "normal"
+                ? "underline cursor-pointer"
+                : ""
+            }`}
+            onClick={() => {
+              setIsVesselStatusNotesDialogOpen(true);
+            }}
+          >
+            {info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
+          </MdTypography>
+          {info.getValue().status !== "normal" && (
+            <Info
+              className={`m-0.5 ${
+                info.getValue().status === "early"
+                  ? "text-[#325BDA]"
+                  : "text-error"
+              }`}
+              sx={{ fontSize: "16px" }}
+            />
+          )}
+        </div>
       ),
       size: 120,
       minSize: 120,
@@ -333,21 +321,70 @@ export default function BookingStatusTable() {
     columns,
     data: tableData,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
     initialState: {
       columnPinning: {
         left: ["requestNo", "status"],
       },
     },
+    state: {
+      rowSelection: rowSelection,
+    },
     enableMultiRowSelection: false,
   });
 
+  const getSelectedBooking = useMemo(() => {
+    const selectedRow = table
+      .getSelectedRowModel()
+      .rows.find((row) => row.getIsSelected());
+    return selectedRow?.original;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table.getSelectedRowModel().rows]);
+
   return (
     <>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <MdTextButton>
+            <div slot="icon">
+              <Download fontSize="small" />
+            </div>
+            Download
+          </MdTextButton>
+          <div className="w-px h-6 bg-outlineVariant"></div>
+          <MdTextButton>Copy</MdTextButton>
+          {getSelectedBooking?.status === "Requested" ||
+          getSelectedBooking?.status === "Change Requested" ||
+          getSelectedBooking?.status === "Accepted" ? (
+            <>
+              <MdTextButton>Edit</MdTextButton>
+              <MdTextButton>Cancel</MdTextButton>
+            </>
+          ) : null}
+          {getSelectedBooking?.status === "Accepted" ? (
+            <>
+              <MdTextButton>S/I</MdTextButton>
+              <MdTextButton>Print Receipt</MdTextButton>
+            </>
+          ) : null}
+        </div>
+        <MdTypography variant="label" size="large" className="text-outline">
+          Total: {table.getRowModel().rows.length}
+        </MdTypography>
+      </div>
+
       <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent>
           <BasicTable table={table} />
         </OverlayScrollbarsComponent>
       </div>
+
+      <MdTypography variant="body" size="small">
+        If there is time difference between the changed departure time and the
+        time previously notified, it will marked as below.
+      </MdTypography>
+
       <Portal selector="#main-container">
         {selectedVesselInfo && (
           <VesselScheduleDialog
@@ -355,6 +392,13 @@ export default function BookingStatusTable() {
             handleOpen={setIsVesselScheduleDialogOpen}
             vesselInfo={selectedVesselInfo}
             vesselSchedules={createDummaryVesselSchedules()}
+          />
+        )}
+        {getSelectedBooking && (
+          <VesselStatusNotesDialog
+            open={isVesselStatusNotesDialogOpen}
+            handleOpen={setIsVesselStatusNotesDialogOpen}
+            bookingData={getSelectedBooking}
           />
         )}
       </Portal>

@@ -150,3 +150,34 @@ export interface BookingRequestorInterface extends PartyInterface {
   telNo: string;
   fax: string;
 }
+
+export enum BookingStatus {
+  Requested = "Requested",
+  ChangeRequested = "Change Requested",
+  CancelRequested = "Cancel Requested",
+  Cancelled = "Cancelled",
+  Accepted = "Accepted",
+  Rejected = "Rejected",
+  Pending = "Pending",
+}
+
+export type BookingStatusTableProps = {
+  requestNo: string;
+  status: BookingStatus;
+  bookingNo: string;
+  requestDate: DateTime;
+  actualShipper: string;
+  vessel: VesselInfoType;
+  requestDepartureTime: DateTime;
+  estimatedTimeofDeparture: {
+    date: DateTime;
+    status: "normal" | "delayed" | "early";
+  };
+  origin: string;
+  destination: string;
+  cargoClosingTime: DateTime;
+  docClosingTime: DateTime;
+  vgmCutOffTime: DateTime;
+  via: "web" | "general" | "edi";
+  qty: string;
+};
