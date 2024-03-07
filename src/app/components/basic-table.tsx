@@ -12,11 +12,16 @@ const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
     isPinned === "right" && column.getIsFirstColumn("right");
 
   return {
+    // right border for left pinned columns
+    boxShadow: isLastLeftPinnedColumn
+      ? "-1px 0 0 0 var(--md-sys-color-on-surface-variant) inset"
+      : isFirstRightPinnedColumn
+      ? "1px 0 0 0 var(--md-sys-color-on-surface-variant) inset"
+      : undefined,
     left: isPinned === "left" ? `${column.getStart("left")}px` : undefined,
     right: isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
     position: isPinned ? "sticky" : "relative",
     width: column.columnDef?.size === undefined ? "auto" : column.getSize(),
-
     minWidth: column.columnDef.minSize,
     zIndex: isPinned ? 1 : 0,
   };

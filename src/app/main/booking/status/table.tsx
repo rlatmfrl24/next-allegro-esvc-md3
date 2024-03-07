@@ -18,17 +18,21 @@ import { MdTypography } from "@/app/components/typography";
 import Portal from "@/app/components/portal";
 import VesselScheduleDialog from "../../schedule/popup/vessel-schedule";
 import { MdRadio } from "@/app/util/md3";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+
+enum BookingStatus {
+  Requested = "Requested",
+  ChangeRequested = "Change Requested",
+  CancelRequested = "Cancel Requested",
+  Cancelled = "Cancelled",
+  Accepted = "Accepted",
+  Rejected = "Rejected",
+  Pending = "Pending",
+}
 
 type BookingStatusTableProps = {
   requestNo: string;
-  status:
-    | "Requested"
-    | "Changed Requested"
-    | "Cancel Requested"
-    | "Cancelled"
-    | "Accepted"
-    | "Rejected"
-    | "Pending";
+  status: BookingStatus;
   bookingNo: string;
   requestDate: DateTime;
   actualShipper: string;
@@ -64,14 +68,7 @@ export default function BookingStatusTable() {
         "Accepted",
         "Rejected",
         "Pending",
-      ]) as
-        | "Requested"
-        | "Changed Requested"
-        | "Cancel Requested"
-        | "Cancelled"
-        | "Accepted"
-        | "Rejected"
-        | "Pending",
+      ]) as BookingStatus,
       bookingNo: `R${faker.string.numeric(12)}`,
       requestDate: DateTime.fromJSDate(faker.date.past()),
       actualShipper: faker.person.fullName(),
@@ -139,6 +136,7 @@ export default function BookingStatusTable() {
     }),
     columnHelper.accessor("status", {
       header: "Status",
+      cell: (info) => <BookingStatusChip status={info.getValue()} />,
       size: 120,
       minSize: 120,
     }),
@@ -346,7 +344,9 @@ export default function BookingStatusTable() {
   return (
     <>
       <div className="relative overflow-auto w-full max-w-full">
-        <BasicTable table={table} />
+        <OverlayScrollbarsComponent>
+          <BasicTable table={table} />
+        </OverlayScrollbarsComponent>
       </div>
       <Portal selector="#main-container">
         {selectedVesselInfo && (
@@ -361,3 +361,25 @@ export default function BookingStatusTable() {
     </>
   );
 }
+
+const BookingStatusChip = ({ status }: { status: BookingStatus }) => {
+  return (
+    <MdTypography
+      variant="label"
+      size="medium"
+      className={`px-2 py-1 rounded-lg whitespace-nowrap m-2 w-fit ${
+        {
+          Requested: "bg-surfaceContainerHigh text-onSurface",
+          "Change Requested": "bg-surfaceContainerHigh text-onSurface",
+          "Cancel Requested": "bg-surfaceContainerHigh text-onSurface",
+          Cancelled: "bg-surfaceContainerHigh",
+          Accepted: "bg-extendGoodContainer text-extendOnGoodContainer",
+          Rejected: "bg-errorContainer text-onErrorContainer",
+          Pending: "bg-extendPendingContainer text-extendOnPendingContainer",
+        }[status]
+      }`}
+    >
+      {status}
+    </MdTypography>
+  );
+};
