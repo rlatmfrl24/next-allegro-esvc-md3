@@ -40,6 +40,7 @@ export default function NAOutlinedAutoComplete({
   icon,
   required,
   recentItems,
+  initialValue,
   onSelection,
   className,
   ...props
@@ -48,11 +49,12 @@ export default function NAOutlinedAutoComplete({
   required?: boolean;
   recentItems?: string[];
   icon?: React.ReactNode;
+  initialValue?: string;
   onSelection?: (value: string) => void;
   className?: string;
 } & MdOutlinedTextFieldProps) {
   const [query, setQuery] = useState<string>("");
-  const [defaultValue, setDefaultValue] = useState("");
+  const [defaultValue, setDefaultValue] = useState(initialValue || "");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<any[]>([]);

@@ -27,10 +27,10 @@ export default function LoactionScheduleStep() {
   );
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
 
-  const [originPort, setOriginPort] = useState(locationScheduleData.originPort);
-  const [destinationPort, setDestinationPort] = useState(
-    locationScheduleData.destinationPort
-  );
+  // const [originPort, setOriginPort] = useState(locationScheduleData.originPort);
+  // const [destinationPort, setDestinationPort] = useState(
+  //   locationScheduleData.destinationPort
+  // );
   const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
     useState(false);
 
@@ -58,20 +58,20 @@ export default function LoactionScheduleStep() {
       : newList;
   }, [locationScheduleData.contractNumber]);
 
-  useEffect(() => {
-    setLoactionScheduleData({
-      ...locationScheduleData,
-      originPort,
-      destinationPort,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [originPort, destinationPort]);
+  // useEffect(() => {
+  //   setLoactionScheduleData({
+  //     ...locationScheduleData,
+  //     originPort,
+  //     destinationPort,
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [originPort, destinationPort]);
 
-  useEffect(() => {
-    setOriginPort(locationScheduleData.originPort);
-    setDestinationPort(locationScheduleData.destinationPort);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   setOriginPort(locationScheduleData.originPort);
+  //   setDestinationPort(locationScheduleData.destinationPort);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const ValidateRequired = useCallback(() => {
     if (
@@ -174,6 +174,13 @@ export default function LoactionScheduleStep() {
               label="Origin"
               icon={<FmdGoodOutlined />}
               className="flex-1"
+              initialValue={locationScheduleData.originPort}
+              onSelection={(value) => {
+                setLoactionScheduleData((prev) => ({
+                  ...prev,
+                  originPort: value,
+                }));
+              }}
             />
             <MdOutlinedSelect
               selectedIndex={locationScheduleData.originType === "cy" ? 0 : 1}
@@ -207,6 +214,13 @@ export default function LoactionScheduleStep() {
               label="Destination"
               icon={<FmdGoodOutlined />}
               className="flex-1"
+              initialValue={locationScheduleData.destinationPort}
+              onSelection={(value) => {
+                setLoactionScheduleData((prev) => ({
+                  ...prev,
+                  destinationPort: value,
+                }));
+              }}
             />
             <MdOutlinedSelect
               selectedIndex={

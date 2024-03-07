@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { DateTime } from "luxon";
 import { CSSProperties, useMemo, useState } from "react";
 
