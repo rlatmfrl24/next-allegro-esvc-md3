@@ -31,8 +31,10 @@ export default function VesselScheduleDialog({
         </div>
         <div slot="actions">
           <MdTextButton
-            onClick={() => {
-              handleOpen(false);
+            onClick={(e) => {
+              const DialogElement =
+                e.currentTarget.parentElement?.parentElement;
+              (DialogElement as any).close();
             }}
           >
             Close

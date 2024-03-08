@@ -19,9 +19,9 @@ import EtcStep from "./step-etc";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import { CSSProperties, useCallback, useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { type } from "os";
+import Link from "next/link";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);
@@ -67,7 +67,9 @@ export default function BookingRequest() {
     <div aria-label="container" className={styles.container + " h-fit"}>
       <div className="flex items-center justify-between">
         <PageTitle title="Booking Request" />
-        <MdOutlinedButton>Booking Template</MdOutlinedButton>
+        <Link href={`/main/booking/template`}>
+          <MdOutlinedButton>Booking Template</MdOutlinedButton>
+        </Link>
       </div>
       <div
         className={cx(

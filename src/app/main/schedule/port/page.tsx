@@ -67,14 +67,12 @@ export default function PortSchedule() {
           <NAOutlinedAutoComplete
             label="Port Name"
             className="w-full"
-            value={portName}
             required
             recentItems={recentPorts}
             itemList={Array.from({ length: 60 }, (_, i) => {
               return `${faker.location.city()}, ${faker.location.country()}`;
             })}
             icon={<PortIcon />}
-            setValue={setPortName}
             onSelection={(value) => {
               if (value !== "") {
                 setRecentPorts((previous) => {

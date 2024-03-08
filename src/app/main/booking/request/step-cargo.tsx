@@ -8,7 +8,12 @@ import {
   BookingRequestStepState,
   CargoPickUpReturnState,
 } from "@/app/store/booking-request.store";
-import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
+import {
+  MdFilledButton,
+  MdOutlinedSelect,
+  MdOutlinedTextField,
+  MdSelectOption,
+} from "@/app/util/md3";
 
 import CommodityAutoComplete from "./commodity-search";
 import { SubTitle } from "./components";
@@ -88,7 +93,6 @@ export default function CargoStep() {
         />
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight}
-          suffixText="KGS"
           className="flex-1"
           required
           onKeyDown={(e) => {
@@ -115,6 +119,23 @@ export default function CargoStep() {
             }
           }}
         />
+        <MdOutlinedSelect
+          selectedIndex={
+            cargoPickUpReturnData.grossWeightUnit === "KGS" ? 0 : 1
+          }
+          onchange={(event) => {
+            const target = event.target as HTMLSelectElement;
+            setCargoPickUpReturnData((prev) => {
+              return {
+                ...prev,
+                grossWeightUnit: target.value as "KGS" | "LBS",
+              };
+            });
+          }}
+        >
+          <MdSelectOption value="KGS">KGS</MdSelectOption>
+          <MdSelectOption value="LBS">LBS</MdSelectOption>
+        </MdOutlinedSelect>
       </div>
       <SubTitle title="Container Pick Up/Return Place" className="mt-6 mb-4" />
       <div className="flex flex-col gap-6">

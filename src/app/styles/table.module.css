@@ -1,5 +1,5 @@
 .table {
-  @apply font-normal text-sm text-onSurfaceVariant flex-1;
+  @apply font-normal text-sm text-onSurfaceVariant min-w-fit flex-1;
 }
 
 .table thead {
@@ -7,7 +7,7 @@
 }
 
 .table th {
-  @apply font-normal text-left p-2;
+  @apply font-normal text-left bg-surfaceVariant;
 }
 
 .table tbody tr {
@@ -15,5 +15,5 @@
 }
 
 .table tbody td {
-  @apply p-2;
+  @apply bg-surface;
 }

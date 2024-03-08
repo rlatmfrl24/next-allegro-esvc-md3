@@ -36,26 +36,25 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 >;
 
 export default function NAOutlinedAutoComplete({
-  value,
-  setValue,
   itemList,
   icon,
   required,
   recentItems,
+  initialValue,
   onSelection,
   className,
   ...props
 }: {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
   itemList: string[];
   required?: boolean;
   recentItems?: string[];
   icon?: React.ReactNode;
+  initialValue?: string;
   onSelection?: (value: string) => void;
   className?: string;
 } & MdOutlinedTextFieldProps) {
-  const [defaultValue, setDefaultValue] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const [defaultValue, setDefaultValue] = useState(initialValue || "");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<any[]>([]);
@@ -92,12 +91,12 @@ export default function NAOutlinedAutoComplete({
   useEffect(() => {
     //when list is close, reset the value to default value
     if (!isListOpen) {
-      setValue(defaultValue);
+      setQuery(defaultValue);
     }
-  }, [defaultValue, isListOpen, setValue]);
+  }, [defaultValue, isListOpen, setQuery]);
 
   function handleItemSelect(item: string) {
-    setValue(item);
+    setQuery(item);
     setDefaultValue(item);
     setIsListOpen(false);
     onSelection?.(item);
@@ -109,19 +108,19 @@ export default function NAOutlinedAutoComplete({
         {...props}
         ref={refs.setReference}
         {...getReferenceProps()}
-        value={value}
+        value={query}
         focus={() => {
           setIsListOpen(true);
         }}
         className="w-full"
         required={false}
         onInput={(e) => {
-          setValue(e.currentTarget.value);
+          setQuery(e.currentTarget.value);
         }}
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
         <div slot="trailing-icon" className="mr-2">
-          {value !== "" && (
+          {query !== "" && (
             <MdIconButton
               onClick={() => {
                 handleItemSelect("");
@@ -180,24 +179,24 @@ export default function NAOutlinedAutoComplete({
                     <MdIcon slot="start">
                       <RestoreIcon />
                     </MdIcon>
-                    {highlightText(item, value)}
+                    {highlightText(item, query)}
                   </MdListItem>
                 ))}
               {recentItems &&
                 recentItems.length > 0 &&
                 itemList.filter((item) => {
-                  return item.toLowerCase().includes(value.toLowerCase());
+                  return item.toLowerCase().includes(query.toLowerCase());
                 }).length > 0 &&
-                value.length > 2 && (
+                query.length > 2 && (
                   <div
                     aria-label="recent-divider"
                     className="h-px w-full bg-outlineVariant"
                   ></div>
                 )}
-              {value.length > 2 &&
+              {query.length > 2 &&
                 itemList
                   .filter((item) => {
-                    return item.toLowerCase().includes(value.toLowerCase());
+                    return item.toLowerCase().includes(query.toLowerCase());
                   })
                   .map((item, index) => (
                     <MdListItem
@@ -223,7 +222,7 @@ export default function NAOutlinedAutoComplete({
                         handleItemSelect(item);
                       }}
                     >
-                      {highlightText(item, value)}
+                      {highlightText(item, query)}
                     </MdListItem>
                   ))}
             </OverlayScrollbarsComponent>
