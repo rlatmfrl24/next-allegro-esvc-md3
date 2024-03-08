@@ -128,8 +128,12 @@ export default function BookingRequest() {
               }
             >
               <MdElevation />
-              <MdFilledTonalButton>Preview</MdFilledTonalButton>
-              <MdFilledButton>Booking</MdFilledButton>
+              <Link href={`/main/booking/information/preview`}>
+                <MdFilledTonalButton>Preview</MdFilledTonalButton>
+              </Link>
+              <Link href={`/main/booking/status`}>
+                <MdFilledButton>Booking</MdFilledButton>
+              </Link>
             </div>
           </motion.div>
         )}
