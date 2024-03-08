@@ -1,8 +1,9 @@
 import { Column, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
-import { CSSProperties } from "react";
+import { CSSProperties, memo, useMemo } from "react";
 import { MdRippleEffect } from "../util/md3";
+import React from "react";
 
 const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
   const isPinned = column.getIsPinned();
@@ -54,11 +55,7 @@ export const BasicTable = ({ table }: { table: Table<any> }) => {
       <tbody>
         {table.getRowModel().rows.map((row) => {
           return (
-            <tr
-              key={row.id}
-              className="group"
-              onClick={row.getToggleSelectedHandler()}
-            >
+            <tr key={row.id} className="group">
               {row.getVisibleCells().map((cell) => {
                 return (
                   <td
@@ -67,6 +64,13 @@ export const BasicTable = ({ table }: { table: Table<any> }) => {
                       ...getCommonPinningStyles(cell.column),
                     }}
                     className="group-hover:bg-surfaceContainer"
+                    onClick={(e) => {
+                      if (row.getIsSelected()) {
+                        return;
+                      } else {
+                        row.toggleSelected();
+                      }
+                    }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
