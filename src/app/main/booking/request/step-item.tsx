@@ -23,12 +23,8 @@ export default function StepItem({
       <div
         className={`rounded-full min-w-10 h-10 flex items-center justify-center ${
           isCompleted
-            ? isSelected
-              ? "bg-onPrimary text-primary"
-              : "bg-primary text-white"
-            : isSelected
-            ? "bg-onPrimary text-primary opacity-20"
-            : "bg-primary opacity-20 text-white"
+            ? "bg-primary text-white border border-outlineVariant"
+            : "border border-outlineVariant text-outlineVariant"
         }  `}
       >
         <Check fontSize="small" />

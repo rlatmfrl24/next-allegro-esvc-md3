@@ -29,14 +29,35 @@ export type DashboardStatisticCardDataType = {
   showChart?: boolean;
 };
 
-export type PtPScheduleType = {
+export interface BaseScheduleType {
   origin: PlaceInformationType;
   destination: PlaceInformationType;
-  departure: DateTime;
-  arrival: DateTime;
-  vesselName: string;
+  departureDate: DateTime;
+  berthingDate: DateTime;
+  arrivalDate: DateTime;
+  vesselInfo: VesselInfoType;
+}
+
+export interface PtPScheduleType extends BaseScheduleType {
   transitTime: number;
   serviceLane: string;
+}
+
+export interface VesselScheduleType extends BaseScheduleType {
+  port: string;
+  terminal: PlaceInformationType;
+}
+
+export interface PortScheduleType extends BaseScheduleType {
+  terminal: PlaceInformationType;
+  vesselSchedules: VesselScheduleType[];
+}
+
+export type LongRangeScheduleType = {
+  vesselInfo: VesselInfoType;
+  vesselSchedules: VesselScheduleType[];
+  remarkInfo: string;
+  longRangeDates: LongRangeDateType[];
 };
 
 export type PtPSearchConditionType = {
@@ -90,27 +111,10 @@ export type VesselInfoType = {
   flag: string;
 };
 
-export type VesselScheduleType = {
-  port: string;
-  terminal: PlaceInformationType;
-  arrivalDate: DateTime;
-  berthingDate: DateTime;
-  departureDate: DateTime;
-};
-
 export type PortScheduleSearchConditionType = {
   portName: string;
   startDate: DateTime;
   endDate: DateTime;
-};
-
-export type PortScheduleType = {
-  vesselInfo: VesselInfoType;
-  vesselSchedules: VesselScheduleType[];
-  terminalInfo: PlaceInformationType;
-  arrivalDate: DateTime;
-  berthingDate: DateTime;
-  departureDate: DateTime;
 };
 
 export type LongRangeSearchConditionType = {
@@ -129,13 +133,6 @@ export type LongRangeDateType = {
   departure: DateTime | undefined;
 };
 
-export type LongRangeScheduleType = {
-  vesselInfo: VesselInfoType;
-  vesselSchedules: VesselScheduleType[];
-  remarkInfo: string;
-  longRangeDates: LongRangeDateType[];
-};
-
 export type CommodityType = {
   code: string;
   description: string;
@@ -145,11 +142,13 @@ export interface PartyInterface {
   name: string;
   address: string;
 }
-export interface BookingRequestorInterface extends PartyInterface {
-  email: string[];
-  telNo: string;
-  fax: string;
-}
+
+export type PartiesType = {
+  shipper: PartyInterface;
+  freightForwarder: PartyInterface;
+  consignee: PartyInterface;
+  actualShipper: string;
+};
 
 export enum BookingStatus {
   Requested = "Requested",
@@ -181,3 +180,54 @@ export type BookingStatusTableProps = {
   via: "web" | "general" | "edi";
   qty: string;
 };
+
+export type CargoPickUpReturnType = {
+  commodity: CommodityType;
+  grossWeight: string;
+  grossWeightUnit: "KGS" | "LBS";
+  emptyPickUpDate: DateTime;
+  fullReturnDate: DateTime;
+  emptyPickUpLocation: PlaceInformationType;
+  fullReturnLocation: PlaceInformationType;
+};
+
+export type LocationScheduleType = {
+  searchType: "schedule" | "earliest";
+  originPort: PlaceInformationType;
+  destinationPort: PlaceInformationType;
+  originType: "cy" | "door";
+  destinationType: "cy" | "door";
+  pol: string;
+  pod: string;
+  departureDate: DateTime;
+  vessel: VesselInfoType;
+  bookingOffice: string;
+  contractNumber: string;
+};
+
+export type ContactInformationType = {
+  name: string;
+  address: string;
+  telNo: string;
+  faxNo: string;
+  email: string[];
+};
+
+export type AdditionalInformatioType = {
+  attachments: File[];
+  specialInstruction: string;
+  duplicateCount: number;
+  emailSubscription: {
+    rollOver: boolean;
+    vesselDeparture: boolean;
+    vesselAdvanceDelay: boolean;
+  };
+};
+
+export interface BookingInformationRequestType {
+  locationSchedule: LocationScheduleType;
+  parties: PartiesType;
+  cargoPickUpReturn: CargoPickUpReturnType;
+  additionalInformation: AdditionalInformatioType;
+  contactInformation: ContactInformationType;
+}

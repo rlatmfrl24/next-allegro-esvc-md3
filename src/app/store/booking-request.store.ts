@@ -1,10 +1,16 @@
 import { DateTime } from "luxon";
 import { atom } from "recoil";
 import {
-  BookingRequestorInterface,
+  AdditionalInformatioType,
+  BookingInformationRequestType,
+  CargoPickUpReturnType,
   CommodityType,
+  ContactInformationType,
+  LocationScheduleType,
+  PartiesType,
   PartyInterface,
   PlaceInformationType,
+  VesselInfoType,
 } from "../util/typeDef";
 
 export const BookingRequestStepState = atom({
@@ -34,47 +40,52 @@ export const BookingRequestStepState = atom({
       isSelected: false,
       isCompleted: true,
     },
-    etc: {
-      id: "etc",
-      title: "Attachment & Special Instruction & Duplicate Bookings",
+    additionalInformation: {
+      id: "additionalInformation",
+      title: "Addtional Information",
       isSelected: false,
       isCompleted: true,
+    },
+    contactInformation: {
+      id: "contactInformation",
+      title: "Contact Information",
+      isSelected: false,
+      isCompleted: false,
     },
   },
 });
 
-export const LocationScheduleState = atom({
+export const ContactInformationState = atom<ContactInformationType>({
+  key: "contactInformationState",
+  default: {
+    name: "",
+    address: "",
+    telNo: "",
+    faxNo: "",
+    email: [],
+  },
+});
+
+export const LocationScheduleState = atom<LocationScheduleType>({
   key: "locationScheduleState",
   default: {
     searchType: "schedule",
-    originPort: "",
-    destinationPort: "",
+    originPort: {} as PlaceInformationType,
+    destinationPort: {} as PlaceInformationType,
     originType: "cy",
     destinationType: "cy",
     pol: "",
     pod: "",
     departureDate: DateTime.now(),
+    vessel: {} as VesselInfoType,
     bookingOffice: "",
     contractNumber: "",
   },
 });
 
-export const PartiesState = atom<{
-  bookingRequestor: BookingRequestorInterface;
-  shipper: PartyInterface;
-  freightForwarder: PartyInterface;
-  consignee: PartyInterface;
-  actualShipper: string;
-}>({
+export const PartiesState = atom<PartiesType>({
   key: "partiesState",
   default: {
-    bookingRequestor: {
-      name: "",
-      address: "",
-      email: [],
-      telNo: "",
-      fax: "",
-    } as BookingRequestorInterface,
     shipper: {
       name: "",
       address: "",
@@ -91,7 +102,7 @@ export const PartiesState = atom<{
   },
 });
 
-export const CargoPickUpReturnState = atom({
+export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
   key: "cargoPickUpReturnState",
   default: {
     commodity: {
@@ -123,11 +134,21 @@ export const CargoPickUpReturnState = atom({
   },
 });
 
-export const EtcDataState = atom({
+export const AdditionalInformationState = atom<AdditionalInformatioType>({
   key: "etcDataState",
   default: {
     attachments: [] as File[],
     specialInstruction: "",
-    duplicateBookings: "1",
+    duplicateCount: 1,
+    emailSubscription: {
+      rollOver: false,
+      vesselAdvanceDelay: false,
+      vesselDeparture: false,
+    },
   },
+});
+
+export const BookingInformationState = atom<BookingInformationRequestType[]>({
+  key: "bookingInformationState",
+  default: [],
 });

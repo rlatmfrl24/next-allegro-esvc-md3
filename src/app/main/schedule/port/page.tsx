@@ -10,19 +10,13 @@ import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
-import {
-  MdFilledButton,
-  MdIcon,
-  MdIconButton,
-  MdTextButton,
-} from "@/app/util/md3";
+import { MdFilledButton, MdIcon, MdTextButton } from "@/app/util/md3";
 import {
   PortScheduleSearchConditionType,
   PortScheduleType,
 } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import DownloadIcon from "@mui/icons-material/Download";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import EmptyResultPlaceholder from "../empty-placeholder";
 import { createDummyPortSchedules } from "../util";
@@ -38,9 +32,7 @@ export default function PortSchedule() {
     endDate: DateTime.now(),
   });
 
-  const [recentPorts, setRecentPorts] = useState<string[]>([]);
   const [initialize, instance] = useOverlayScrollbars();
-  const [portName, setPortName] = useState("");
   const [portScheduls] = useState<PortScheduleType[]>(
     createDummyPortSchedules()
   );
@@ -51,7 +43,6 @@ export default function PortSchedule() {
   }, [initialize]);
 
   function resetPortQuery() {
-    setPortName("");
     setPortQuery({
       portName: "",
       startDate: DateTime.now(),
@@ -67,22 +58,14 @@ export default function PortSchedule() {
           <NAOutlinedAutoComplete
             label="Port Name"
             className="w-full"
+            recentCookieKey="recent-port"
             required
-            recentItems={recentPorts}
             itemList={Array.from({ length: 60 }, (_, i) => {
-              return `${faker.location.city()}, ${faker.location.country()}`;
+              return `${faker.location.city()}, ${faker.location.country()}`.toUpperCase();
             })}
             icon={<PortIcon />}
             onSelection={(value) => {
               if (value !== "") {
-                setRecentPorts((previous) => {
-                  if (previous.includes(value)) {
-                    const index = previous.indexOf(value);
-                    previous.splice(index, 1);
-                    return [value, ...previous];
-                  }
-                  return [value, ...previous].slice(0, 5);
-                });
                 setPortQuery({ ...portQuery, portName: value });
               }
             }}

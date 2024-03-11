@@ -1,4 +1,5 @@
 import {
+  BaseScheduleType,
   LongRangeDateType,
   LongRangePortType,
   LongRangeScheduleType,
@@ -70,6 +71,9 @@ export function createDummaryVesselSchedules(): VesselScheduleType[] {
     return {
       port: faker.location.city(),
       terminal: createDummyPlaceInformation(faker.location.city()),
+      origin: createDummyPlaceInformation(faker.location.city()),
+      destination: createDummyPlaceInformation(faker.location.city()),
+      vesselInfo: createDummyVesselInformation(),
       departureDate: tempDate,
       berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
       arrivalDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
@@ -85,9 +89,11 @@ export function createDummyPortSchedules(): PortScheduleType[] {
         : DateTime.fromJSDate(faker.date.past());
 
     return {
+      origin: createDummyPlaceInformation(faker.location.city()),
+      destination: createDummyPlaceInformation(faker.location.city()),
+      terminal: createDummyPlaceInformation(faker.location.city()),
       vesselInfo: createDummyVesselInformation(),
       vesselSchedules: createDummaryVesselSchedules(),
-      terminalInfo: createDummyPlaceInformation(faker.location.city()),
       departureDate: tempDate,
       berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
       arrivalDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
@@ -95,10 +101,21 @@ export function createDummyPortSchedules(): PortScheduleType[] {
   });
 }
 
-export function createDummyPortData(): string[] {
-  return Array.from({ length: 900 }, (_, i) => {
-    const fakeCity = faker.location;
-    return `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase();
+export function createDummyBaseScheduleData(size: number): BaseScheduleType[] {
+  return Array.from({ length: size }, (_, i) => {
+    const tempDate =
+      i > 10
+        ? DateTime.fromJSDate(faker.date.future())
+        : DateTime.fromJSDate(faker.date.past());
+
+    return {
+      origin: createDummyPlaceInformation(faker.location.city()),
+      destination: createDummyPlaceInformation(faker.location.city()),
+      vesselInfo: createDummyVesselInformation(),
+      departureDate: tempDate,
+      berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
+      arrivalDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
+    };
   });
 }
 
@@ -122,13 +139,10 @@ export function createDummyPtPScheduleData(
         const listItem: PtPScheduleType = {
           origin: createDummyPlaceInformation(origin),
           destination: createDummyPlaceInformation(destination),
-          departure: DateTime.fromJSDate(dateRange[0]),
-          arrival: DateTime.fromJSDate(dateRange[1]),
-          vesselName: faker.lorem
-            .words(3)
-            .split(" ")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" "),
+          departureDate: DateTime.fromJSDate(dateRange[0]),
+          berthingDate: DateTime.fromJSDate(dateRange[0]),
+          arrivalDate: DateTime.fromJSDate(dateRange[1]),
+          vesselInfo: createDummyVesselInformation(),
           transitTime: Math.round(
             DateTime.fromJSDate(dateRange[1]).diff(
               DateTime.fromJSDate(dateRange[0]),
@@ -156,8 +170,9 @@ export function createDummyPortList(): LongRangePortType[] {
       }),
     },
     (_, i) => {
+      const fakeCity = faker.location;
       return {
-        name: faker.location.city(),
+        name: `${fakeCity.city()}, ${fakeCity.country()}`.toUpperCase(),
         direction: faker.helpers.arrayElement([
           "north",
           "south",

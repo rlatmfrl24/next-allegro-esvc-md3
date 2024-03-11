@@ -1,10 +1,18 @@
 "use client";
 
 import classNames from "classnames";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import PageTitle from "@/app/components/page-title";
-import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import {
+  AdditionalInformationState,
+  BookingInformationState,
+  BookingRequestStepState,
+  CargoPickUpReturnState,
+  ContactInformationState,
+  LocationScheduleState,
+  PartiesState,
+} from "@/app/store/booking-request.store";
 import styles from "@/app/styles/base.module.css";
 import {
   MdElevation,
@@ -15,19 +23,30 @@ import {
 
 import CargoStep from "./step-cargo";
 import ContainerStep from "./step-container";
-import EtcStep from "./step-etc";
+import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
 import { CSSProperties, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import ContactInformationStep from "./step-contact-information";
+import { useRouter } from "next/navigation";
+import { BookingInformationRequestType } from "@/app/util/typeDef";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);
   const [bookingRequestStepState, setBookingRequestStepState] = useRecoilState(
     BookingRequestStepState
   );
+  const router = useRouter();
+
+  const locationSchedule = useRecoilValue(LocationScheduleState);
+  const parties = useRecoilValue(PartiesState);
+  const cargoPickUpReturn = useRecoilValue(CargoPickUpReturnState);
+  const additionalInformation = useRecoilValue(AdditionalInformationState);
+  const contactInformation = useRecoilValue(ContactInformationState);
+  const setBookingInformations = useSetRecoilState(BookingInformationState);
 
   const AllStepsCompleted = useMemo(() => {
     return Object.keys(bookingRequestStepState).every((key) => {
@@ -105,7 +124,8 @@ export default function BookingRequest() {
               parties: <PartiesStep />,
               cargoPickUpReturn: <CargoStep />,
               container: <ContainerStep />,
-              etc: <EtcStep />,
+              additionalInformation: <AdditionalInformationStep />,
+              contactInformation: <ContactInformationStep />,
             }[getSelectedStepId() as keyof typeof bookingRequestStepState]
           }
         </div>
@@ -131,9 +151,24 @@ export default function BookingRequest() {
               <Link href={`/main/booking/information/preview`}>
                 <MdFilledTonalButton>Preview</MdFilledTonalButton>
               </Link>
-              <Link href={`/main/booking/status`}>
-                <MdFilledButton>Booking</MdFilledButton>
-              </Link>
+              <MdFilledButton
+                onClick={() => {
+                  const newBookingInformation = {
+                    locationSchedule,
+                    parties,
+                    cargoPickUpReturn,
+                    additionalInformation,
+                    contactInformation,
+                  } as BookingInformationRequestType;
+                  setBookingInformations((prev) => [
+                    ...prev,
+                    newBookingInformation,
+                  ]);
+                  router.push("/main/booking/request");
+                }}
+              >
+                Booking
+              </MdFilledButton>
             </div>
           </motion.div>
         )}

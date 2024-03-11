@@ -33,11 +33,13 @@ import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { DateSelector } from "./date-selector";
 import styles from "@/app/styles/datepicker.module.css";
+import { MdTypography } from "../typography";
 
 export const MdSingleDatePicker = (props: {
   label?: string;
   defaultDate?: DateTime;
   className?: string;
+  required?: boolean;
   handleDateChange?: (date: DateTime) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -189,6 +191,15 @@ export const MdSingleDatePicker = (props: {
           </motion.div>
         </div>
       </FloatingFocusManager>
+      {props.required && (
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-error absolute top-0.5 left-1.5"
+        >
+          *
+        </MdTypography>
+      )}
     </div>
   );
 };

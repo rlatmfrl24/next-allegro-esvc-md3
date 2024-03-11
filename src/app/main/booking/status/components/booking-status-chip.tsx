@@ -10,7 +10,7 @@ export default function BookingStatusChip({
     <MdTypography
       variant="label"
       size="medium"
-      className={`px-2 py-1 rounded-lg whitespace-nowrap m-2 w-fit ${
+      className={`px-2 py-1 rounded-lg whitespace-nowrap w-fit ${
         {
           Requested: "bg-surfaceContainerHigh text-onSurface",
           "Change Requested": "bg-surfaceContainerHigh text-onSurface",

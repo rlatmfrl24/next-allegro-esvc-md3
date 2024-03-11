@@ -22,6 +22,7 @@ import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import EstimatedTimeofDepartureCell from "./components/estimated-time-of-departure-cell";
 import VesselInfoCell from "./components/vessel-info-cell";
+import Link from "next/link";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
@@ -80,19 +81,23 @@ export default function BookingStatusTable() {
     columnHelper.accessor("requestNo", {
       header: "Request No",
       cell: (info) => (
-        <MdTypography
-          tag="label"
-          variant="body"
-          size="medium"
-          className="text-onSurfaceVariant underline cursor-pointer p-2"
-        >
+        <>
           <MdRadio
             name="requestNo"
             className="mr-2"
             checked={currentBookingData?.requestNo === info.getValue()}
           />
-          {info.getValue()}
-        </MdTypography>
+          <Link href={`/main/booking/information/request`}>
+            <MdTypography
+              tag="label"
+              variant="body"
+              size="medium"
+              className="text-onSurfaceVariant underline cursor-pointer"
+            >
+              {info.getValue()}
+            </MdTypography>
+          </Link>
+        </>
       ),
       size: 180,
       minSize: 180,
@@ -106,13 +111,15 @@ export default function BookingStatusTable() {
     columnHelper.accessor("bookingNo", {
       header: "Booking No",
       cell: (info) => (
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="text-onSurfaceVariant underline cursor-pointer p-2"
-        >
-          {info.getValue()}
-        </MdTypography>
+        <Link href={`/main/booking/information/confirmation`}>
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-onSurfaceVariant underline cursor-pointer"
+          >
+            {info.getValue()}
+          </MdTypography>
+        </Link>
       ),
       size: 140,
       minSize: 140,
@@ -123,7 +130,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
@@ -137,7 +144,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue()}
         </MdTypography>
@@ -155,7 +162,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
@@ -177,7 +184,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue()}
         </MdTypography>
@@ -191,7 +198,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue()}
         </MdTypography>
@@ -205,7 +212,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
@@ -219,7 +226,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
@@ -233,7 +240,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
@@ -247,7 +254,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2"
+          className="text-onSurfaceVariant"
         >
           {
             {
@@ -266,7 +273,7 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant p-2 whitespace-nowrap"
+          className="text-onSurfaceVariant whitespace-nowrap"
         >
           {info.getValue()}
         </MdTypography>

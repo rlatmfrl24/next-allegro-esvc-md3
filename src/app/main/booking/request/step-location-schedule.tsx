@@ -20,24 +20,26 @@ import {
 import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { createDummyPlaceInformation } from "../../schedule/util";
+import { PlaceInformationType } from "@/app/util/typeDef";
+import SearchScheduleDialog from "./search-schedule-dialog";
+import { DateTime } from "luxon";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
     LocationScheduleState
   );
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-
-  // const [originPort, setOriginPort] = useState(locationScheduleData.originPort);
-  // const [destinationPort, setDestinationPort] = useState(
-  //   locationScheduleData.destinationPort
-  // );
   const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
+    useState(false);
+  const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
     useState(false);
 
   const portList = useMemo(() => {
-    return Array.from(
-      { length: 50 },
-      (_, i) => faker.location.city() + ", " + faker.location.country()
+    return Array.from({ length: 30 }, (_, i) =>
+      createDummyPlaceInformation(
+        (faker.location.city() + ", " + faker.location.country()).toUpperCase()
+      )
     );
   }, []);
 
@@ -58,25 +60,10 @@ export default function LoactionScheduleStep() {
       : newList;
   }, [locationScheduleData.contractNumber]);
 
-  // useEffect(() => {
-  //   setLoactionScheduleData({
-  //     ...locationScheduleData,
-  //     originPort,
-  //     destinationPort,
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [originPort, destinationPort]);
-
-  // useEffect(() => {
-  //   setOriginPort(locationScheduleData.originPort);
-  //   setDestinationPort(locationScheduleData.destinationPort);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   const ValidateRequired = useCallback(() => {
     if (
-      locationScheduleData.originPort === "" ||
-      locationScheduleData.destinationPort === "" ||
+      locationScheduleData.originPort.yardName === undefined ||
+      locationScheduleData.destinationPort.yardName === undefined ||
       locationScheduleData.bookingOffice === ""
     ) {
       return false;
@@ -169,16 +156,23 @@ export default function LoactionScheduleStep() {
           </form>
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
-              itemList={portList}
+              itemList={portList.map((port) => port.yardName)}
               required
               label="Origin"
               icon={<FmdGoodOutlined />}
               className="flex-1"
-              initialValue={locationScheduleData.originPort}
+              recentCookieKey="recent-port"
+              initialValue={locationScheduleData.originPort.yardName}
               onSelection={(value) => {
+                let selectedPort = portList.find(
+                  (port) => port.yardName === value
+                );
+                if (value !== "" && selectedPort === undefined) {
+                  selectedPort = createDummyPlaceInformation(value);
+                }
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  originPort: value,
+                  originPort: selectedPort || ({} as PlaceInformationType),
                 }));
               }}
             />
@@ -209,16 +203,25 @@ export default function LoactionScheduleStep() {
           </div>
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
-              itemList={portList}
+              itemList={portList.map((port) => port.yardName)}
               required
               label="Destination"
               icon={<FmdGoodOutlined />}
               className="flex-1"
-              initialValue={locationScheduleData.destinationPort}
+              recentCookieKey="recent-port"
+              initialValue={locationScheduleData.destinationPort.yardName}
               onSelection={(value) => {
+                let selectedPort = portList.find(
+                  (port) => port.yardName === value
+                );
+
+                if (value !== "" && selectedPort === undefined) {
+                  selectedPort = createDummyPlaceInformation(value);
+                }
+
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  destinationPort: value,
+                  destinationPort: selectedPort || ({} as PlaceInformationType),
                 }));
               }}
             />
@@ -256,13 +259,15 @@ export default function LoactionScheduleStep() {
                 className="bg-surfaceContainer rounded"
                 label="Estimated Time of Departure"
                 required
-                value={``}
+                value={locationScheduleData.departureDate.toFormat(
+                  "yyyy-MM-dd"
+                )}
               />
               <NAOutlinedTextField
                 disabled
                 label="Vessel Voyage"
                 required
-                value=""
+                value={locationScheduleData.vessel.consortiumVoyage || ""}
               />
             </div>
           )}
@@ -350,7 +355,12 @@ export default function LoactionScheduleStep() {
           </div>
         </div>
         {locationScheduleData.searchType === "schedule" && (
-          <MdFilledTonalButton className="mt-[50px] h-fit">
+          <MdFilledTonalButton
+            className="mt-[50px] h-fit"
+            onClick={() => {
+              setIsSearchScheduleDialogOpen(true);
+            }}
+          >
             Search Schedule
           </MdFilledTonalButton>
         )}
@@ -358,6 +368,40 @@ export default function LoactionScheduleStep() {
       <MdFilledButton className="self-end" onClick={() => moveToParties()}>
         Next
       </MdFilledButton>
+      <SearchScheduleDialog
+        open={isSearchScheduleDialogOpen}
+        handleOpen={setIsSearchScheduleDialogOpen}
+        condition={{
+          origins: [
+            (
+              faker.location.city() +
+              ", " +
+              faker.location.country()
+            ).toUpperCase(),
+          ],
+          destinations: [
+            (
+              faker.location.city() +
+              ", " +
+              faker.location.country()
+            ).toUpperCase(),
+          ],
+          searchOn: "departure",
+          startDate: DateTime.now().minus({ days: 7 }),
+          endDate: DateTime.now(),
+        }}
+        onSelection={(vaule) => {
+          setLoactionScheduleData((prev) => ({
+            ...prev,
+            originPort: vaule.origin,
+            destinationPort: vaule.destination,
+            pol: vaule.origin.code,
+            pod: vaule.destination.code,
+            departureDate: vaule.departureDate,
+            vessel: vaule.vesselInfo,
+          }));
+        }}
+      />
     </div>
   );
 }

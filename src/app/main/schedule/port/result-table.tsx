@@ -60,7 +60,7 @@ export default function PortResultTable({
       },
       size: undefined,
     }),
-    columnHelper.accessor("terminalInfo", {
+    columnHelper.accessor("terminal", {
       header: "Terminal",
       cell: (info) => (
         <div
