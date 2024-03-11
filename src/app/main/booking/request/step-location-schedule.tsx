@@ -17,7 +17,7 @@ import {
   MdRadio,
   MdSelectOption,
 } from "@/app/util/md3";
-import { fa, faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { createDummyPlaceInformation } from "../../schedule/util";
@@ -73,7 +73,7 @@ export default function LoactionScheduleStep() {
     setBookingRequestStep((prev) => ({
       ...prev,
       locationSchedule: {
-        ...prev.locationSchedule,
+        ...prev.parties,
         isSelected: false,
       },
       parties: {
@@ -255,7 +255,7 @@ export default function LoactionScheduleStep() {
                 disabled
                 label="Vessel Voyage"
                 required
-                value={locationScheduleData.vessel.consortiumVoyage}
+                value={locationScheduleData.vessel.consortiumVoyage || ""}
               />
             </div>
           )}

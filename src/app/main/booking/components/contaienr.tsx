@@ -3,8 +3,25 @@ import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
 import EmptyContainerImage from "@/../public/img_empty_container.svg";
 import { MdTypography } from "@/app/components/typography";
+import { useSetRecoilState } from "recoil";
+import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { useRouter } from "next/navigation";
 
 export default function ContainerSection() {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const router = useRouter();
+
+  function moveToContainerStep() {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      container: {
+        ...prev.container,
+        isSelected: true,
+      },
+    }));
+    router.push("/main/booking/request");
+  }
+
   return (
     <Section title="Container">
       <div className="grid grid-cols-5 gap-4">

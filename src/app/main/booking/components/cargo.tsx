@@ -1,6 +1,9 @@
 import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
 import { CargoPickUpReturnType } from "@/app/util/typeDef";
+import { useSetRecoilState } from "recoil";
+import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { useRouter } from "next/navigation";
 
 export default function CargoSection({
   data,
@@ -9,8 +12,28 @@ export default function CargoSection({
   hasEdit?: boolean;
   data: CargoPickUpReturnType;
 }) {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const router = useRouter();
+
+  function moveToCargoStep() {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      cargoPickUpReturn: {
+        ...prev.cargoPickUpReturn,
+        isSelected: true,
+      },
+    }));
+    router.push("/main/booking/request");
+  }
+
   return (
-    <Section title="Cargo" hasEdit={hasEdit}>
+    <Section
+      title="Cargo"
+      hasEdit={hasEdit}
+      editAction={() => {
+        moveToCargoStep();
+      }}
+    >
       <div className="grid grid-cols-[240px_1fr] gap-4">
         <MdTypography variant="body" size="medium" className="text-outline">
           Commodty

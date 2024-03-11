@@ -7,10 +7,12 @@ export const Section = ({
   title,
   children,
   hasEdit = false,
+  editAction,
 }: {
   title: string;
   children: React.ReactNode;
   hasEdit?: boolean;
+  editAction?: () => void;
 }) => {
   return (
     <div className="flex flex-col gap-4 flex-1">
@@ -20,7 +22,10 @@ export const Section = ({
           {title}
         </MdTypography>
         {hasEdit && (
-          <button className="relative border border-outlineVariant rounded-full py-1 pl-2 pr-4 flex items-center text-primary gap-0.5">
+          <button
+            className="relative border border-outlineVariant rounded-full py-1 pl-2 pr-4 flex items-center text-primary gap-0.5"
+            onClick={editAction}
+          >
             <MdRippleEffect />
             <EditOutlined
               sx={{

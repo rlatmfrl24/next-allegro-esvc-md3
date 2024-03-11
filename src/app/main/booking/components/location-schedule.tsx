@@ -2,6 +2,9 @@ import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
 import ShipRouteIcon from "@/../public/icon_ship_route.svg";
 import { LocationScheduleType } from "@/app/util/typeDef";
+import { useSetRecoilState } from "recoil";
+import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { useRouter } from "next/navigation";
 
 export default function LocationScheduleSection({
   data,
@@ -10,8 +13,28 @@ export default function LocationScheduleSection({
   data: LocationScheduleType;
   hasEdit?: boolean;
 }) {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const router = useRouter();
+
+  function moveToLocationScheduleStep() {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      locationSchedule: {
+        ...prev.locationSchedule,
+        isSelected: true,
+      },
+    }));
+    router.push("/main/booking/request");
+  }
+
   return (
-    <Section title="Location & Schedule" hasEdit={hasEdit}>
+    <Section
+      title="Location & Schedule"
+      hasEdit={hasEdit}
+      editAction={() => {
+        moveToLocationScheduleStep();
+      }}
+    >
       <div className="flex items-center justify-center gap-4 mb-8">
         <MdTypography variant="body" size="small" className="text-outline">
           {data.originPort.yardName}
@@ -46,10 +69,29 @@ export default function LocationScheduleSection({
           title="Port of Discharge"
           value={data.pod || "N/A"}
         />
-        <SimpleItemComponent
-          title="Departure Date"
-          value={data.departureDate.toFormat("yyyy-MM-dd")}
-        />
+        {
+          {
+            schedule: (
+              <>
+                <SimpleItemComponent
+                  title="Vessel"
+                  value={data.vessel.vesselName}
+                />
+                <SimpleItemComponent
+                  title="Estimated Time of Departure"
+                  value={data.departureDate.toFormat("yyyy-MM-dd")}
+                />
+              </>
+            ),
+            earliest: (
+              <SimpleItemComponent
+                title="Departure Date"
+                value={data.departureDate.toFormat("yyyy-MM-dd")}
+              />
+            ),
+          }[data.searchType]
+        }
+
         <SimpleItemComponent
           title="Contract Number"
           value={data.contractNumber || "N/A"}

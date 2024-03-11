@@ -3,6 +3,9 @@ import { Section } from "./base";
 import { MdChipSet } from "@/app/util/md3";
 import LabelChip from "@/app/components/label-chip";
 import { ContactInformationType } from "@/app/util/typeDef";
+import { useSetRecoilState } from "recoil";
+import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { useRouter } from "next/navigation";
 
 export default function ContactInformationSection({
   data,
@@ -11,8 +14,28 @@ export default function ContactInformationSection({
   data: ContactInformationType;
   hasEdit?: boolean;
 }) {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const router = useRouter();
+
+  function moveToContactInformationStep() {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      contactInformation: {
+        ...prev.contactInformation,
+        isSelected: true,
+      },
+    }));
+    router.push("/main/booking/request");
+  }
+
   return (
-    <Section title="Contact Information" hasEdit={hasEdit}>
+    <Section
+      title="Contact Information"
+      hasEdit={hasEdit}
+      editAction={() => {
+        moveToContactInformationStep();
+      }}
+    >
       <div className="grid grid-cols-[240px_1fr] gap-4">
         <MdTypography variant="body" size="medium" className="text-outline">
           Name

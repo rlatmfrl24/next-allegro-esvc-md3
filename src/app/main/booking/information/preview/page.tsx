@@ -12,20 +12,21 @@ import {
   MdFilledButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect } from "react";
 import CargoSection from "../../components/cargo";
 import AttachmentSection from "../../components/attachment";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import Link from "next/link";
 import ContainerSection from "../../components/contaienr";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CargoPickUpReturnState,
   ContactInformationState,
   AdditionalInformationState,
   LocationScheduleState,
   PartiesState,
+  BookingRequestStepState,
 } from "@/app/store/booking-request.store";
 
 export default function BookingRequestPreview() {
@@ -38,6 +39,43 @@ export default function BookingRequestPreview() {
     useRecoilState(AdditionalInformationState);
 
   const cx = classNames.bind(styles);
+
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+
+  useEffect(() => {
+    // set every step of isSelcted to false
+
+    setBookingRequestStep((prev) => {
+      return {
+        ...prev,
+        locationSchedule: {
+          ...prev.locationSchedule,
+          isSelected: false,
+        },
+        parties: {
+          ...prev.parties,
+          isSelected: false,
+        },
+        cargoPickUpReturn: {
+          ...prev.cargoPickUpReturn,
+          isSelected: false,
+        },
+        contactInformation: {
+          ...prev.contactInformation,
+          isSelected: false,
+        },
+        additionalInformation: {
+          ...prev.additionalInformation,
+          isSelected: false,
+        },
+        container: {
+          ...prev.container,
+          isSelected: false,
+        },
+      };
+    });
+  }, [setBookingRequestStep]);
+
   return (
     <>
       <div aria-label="container" className={cx(styles.container, "mb-12")}>
