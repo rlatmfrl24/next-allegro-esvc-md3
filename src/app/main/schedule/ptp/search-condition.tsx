@@ -8,14 +8,12 @@ import { FavoriteRouteListState } from "@/app/store/ptp.store";
 import styles from "@/app/styles/base.module.css";
 import {
   MdFilledButton,
-  MdFilledTonalButton,
   MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
   MdOutlinedSelect,
   MdRadio,
   MdSelectOption,
-  MdSwitch,
   MdTextButton,
 } from "@/app/util/md3";
 import { PtPSearchConditionType } from "@/app/util/typeDef";
@@ -23,9 +21,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 
-import { createDummyPortData } from "../util";
 import MyFavorite from "./components/my-favorite";
 import { SearchTextField } from "./components/search-textfield";
+import { createDummyPortList } from "../util";
 
 export default function SearchCondition({
   searchAction,
@@ -38,6 +36,7 @@ export default function SearchCondition({
     "single" | "multi-origin" | "multi-destination"
   >("single");
 
+  const tempPortList = createDummyPortList();
   const [originList, setOriginList] = useState<string[]>([]);
   const [destinationList, setDestinationList] = useState<string[]>([]);
   const [originLimit, setOriginLimit] = useState<number>(1);
@@ -225,7 +224,7 @@ export default function SearchCondition({
       <div className="flex gap-4 ">
         <div className="flex flex-1 gap-4">
           <SearchTextField
-            itemList={createDummyPortData()}
+            itemList={tempPortList.map((port) => port.name)}
             selectionItems={originList}
             maxSelectionCount={originLimit}
             handleItemSelection={setOriginList}
@@ -238,7 +237,7 @@ export default function SearchCondition({
             </MdIcon>
           </MdIconButton>
           <SearchTextField
-            itemList={createDummyPortData()}
+            itemList={tempPortList.map((port) => port.name)}
             selectionItems={destinationList}
             maxSelectionCount={destinationLimit}
             handleItemSelection={setDestinationList}

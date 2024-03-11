@@ -9,6 +9,7 @@ import {
   PartiesType,
   PartyInterface,
   PlaceInformationType,
+  VesselInfoType,
 } from "../util/typeDef";
 
 export const BookingRequestStepState = atom({
@@ -75,6 +76,7 @@ export const LocationScheduleState = atom<LocationScheduleType>({
     pol: "",
     pod: "",
     departureDate: DateTime.now(),
+    vessel: {} as VesselInfoType,
     bookingOffice: "",
     contractNumber: "",
   },

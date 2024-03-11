@@ -29,14 +29,35 @@ export type DashboardStatisticCardDataType = {
   showChart?: boolean;
 };
 
-export type PtPScheduleType = {
+export interface BaseScheduleType {
   origin: PlaceInformationType;
   destination: PlaceInformationType;
-  departure: DateTime;
-  arrival: DateTime;
-  vesselName: string;
+  departureDate: DateTime;
+  berthingDate: DateTime;
+  arrivalDate: DateTime;
+  vesselInfo: VesselInfoType;
+}
+
+export interface PtPScheduleType extends BaseScheduleType {
   transitTime: number;
   serviceLane: string;
+}
+
+export interface VesselScheduleType extends BaseScheduleType {
+  port: string;
+  terminal: PlaceInformationType;
+}
+
+export interface PortScheduleType extends BaseScheduleType {
+  terminal: PlaceInformationType;
+  vesselSchedules: VesselScheduleType[];
+}
+
+export type LongRangeScheduleType = {
+  vesselInfo: VesselInfoType;
+  vesselSchedules: VesselScheduleType[];
+  remarkInfo: string;
+  longRangeDates: LongRangeDateType[];
 };
 
 export type PtPSearchConditionType = {
@@ -90,27 +111,10 @@ export type VesselInfoType = {
   flag: string;
 };
 
-export type VesselScheduleType = {
-  port: string;
-  terminal: PlaceInformationType;
-  arrivalDate: DateTime;
-  berthingDate: DateTime;
-  departureDate: DateTime;
-};
-
 export type PortScheduleSearchConditionType = {
   portName: string;
   startDate: DateTime;
   endDate: DateTime;
-};
-
-export type PortScheduleType = {
-  vesselInfo: VesselInfoType;
-  vesselSchedules: VesselScheduleType[];
-  terminalInfo: PlaceInformationType;
-  arrivalDate: DateTime;
-  berthingDate: DateTime;
-  departureDate: DateTime;
 };
 
 export type LongRangeSearchConditionType = {
@@ -127,13 +131,6 @@ export type LongRangeDateType = {
   port: LongRangePortType;
   arrival: DateTime;
   departure: DateTime | undefined;
-};
-
-export type LongRangeScheduleType = {
-  vesselInfo: VesselInfoType;
-  vesselSchedules: VesselScheduleType[];
-  remarkInfo: string;
-  longRangeDates: LongRangeDateType[];
 };
 
 export type CommodityType = {
@@ -203,6 +200,7 @@ export type LocationScheduleType = {
   pol: string;
   pod: string;
   departureDate: DateTime;
+  vessel: VesselInfoType;
   bookingOffice: string;
   contractNumber: string;
 };

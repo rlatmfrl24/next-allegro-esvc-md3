@@ -156,7 +156,7 @@ export default function LongRangeTable({
             >
               {portList.map((port, i) => (
                 <div key={i} className="col-span-1">
-                  <div className="flex items-center p-2 h-12 bg-surfaceVariant">
+                  <div className="flex items-center p-2 h-12 bg-surfaceVariant whitespace-nowrap">
                     <MdTypography
                       variant="body"
                       size="medium"
@@ -166,7 +166,7 @@ export default function LongRangeTable({
                         <DirectionIcon direction={port.direction} />
                       </div>
 
-                      {port.name}
+                      {port.name.split(",")[0]}
                     </MdTypography>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function LongRangeTable({
                     key={j}
                     className={`${
                       hasDeparture ? "h-24" : "h-12"
-                    } col-span-1 border-b border-b-outlineVariant w-[200px] bg-surface flex flex-col`}
+                    } col-span-1 border-b border-b-outlineVariant bg-surface flex flex-col`}
                   >
                     <FloatingDelayGroup
                       delay={{

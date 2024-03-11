@@ -41,7 +41,7 @@ const ViewMoreButton = ({
 function classifyByDate(list: PtPScheduleType[]) {
   const result: Record<string, PtPScheduleType[]> = {};
   list.forEach((item) => {
-    const date = item.departure;
+    const date = item.departureDate;
     const key = date.toISO()?.split("T")[0];
     if (key) {
       if (!result[key]) {
@@ -195,13 +195,13 @@ export default function PointToPointCalendarResult({
                 </MdTypography>
                 {list[0] && (
                   <LabelChip
-                    label={list[0].vesselName}
+                    label={list[0].vesselInfo.vesselName}
                     className={isCurrentDate ? "" : "opacity-30"}
                   />
                 )}
                 {list[1] && (
                   <LabelChip
-                    label={list[1].vesselName}
+                    label={list[1].vesselInfo.vesselName}
                     className={isCurrentDate ? "" : "opacity-30"}
                   />
                 )}

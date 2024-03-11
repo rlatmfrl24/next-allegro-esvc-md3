@@ -95,6 +95,11 @@ export default function NAOutlinedAutoComplete({
     }
   }, [defaultValue, isListOpen, setQuery]);
 
+  useEffect(() => {
+    setQuery(initialValue || "");
+    setDefaultValue(initialValue || "");
+  }, [initialValue]);
+
   function handleItemSelect(item: string) {
     setQuery(item);
     setDefaultValue(item);

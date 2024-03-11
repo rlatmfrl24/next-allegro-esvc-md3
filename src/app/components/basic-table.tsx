@@ -63,7 +63,7 @@ export const BasicTable = ({ table }: { table: Table<any> }) => {
                     style={{
                       ...getCommonPinningStyles(cell.column),
                     }}
-                    className="group-hover:bg-surfaceContainer"
+                    className="group-hover:bg-surfaceContainer p-2"
                     onClick={(e) => {
                       if (row.getIsSelected()) {
                         return;

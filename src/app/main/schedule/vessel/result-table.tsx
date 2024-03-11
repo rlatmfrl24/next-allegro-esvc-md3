@@ -20,11 +20,7 @@ const DateCell = ({
   flag: "actual" | "estimate";
 }) => {
   return (
-    <MdTypography
-      variant="body"
-      size="medium"
-      className="flex items-center p-2"
-    >
+    <MdTypography variant="body" size="medium" className="flex items-center">
       <div className="mr-2">
         {flag === "actual" ? <ActualScheduleIcon /> : <EstimateScheduleIcon />}
       </div>
@@ -48,7 +44,7 @@ export default function VesselResultTable({
       header: "Port",
       cell: (info) => {
         return (
-          <MdTypography variant="body" size="medium" className="p-2">
+          <MdTypography variant="body" size="medium">
             {info.getValue()}
           </MdTypography>
         );
@@ -65,7 +61,7 @@ export default function VesselResultTable({
             setIsPlaceInformationOpen(true);
           }}
         >
-          <MdTypography variant="body" size="medium" className="p-2">
+          <MdTypography variant="body" size="medium">
             {info.getValue().yardName}
           </MdTypography>
         </div>

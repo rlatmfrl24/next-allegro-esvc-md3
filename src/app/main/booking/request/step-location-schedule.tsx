@@ -17,11 +17,13 @@ import {
   MdRadio,
   MdSelectOption,
 } from "@/app/util/md3";
-import { faker } from "@faker-js/faker";
+import { fa, faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { PlaceInformationType } from "@/app/util/typeDef";
+import SearchScheduleDialog from "./search-schedule-dialog";
+import { DateTime } from "luxon";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -29,6 +31,8 @@ export default function LoactionScheduleStep() {
   );
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
+    useState(false);
+  const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
     useState(false);
 
   const portList = useMemo(() => {
@@ -53,21 +57,6 @@ export default function LoactionScheduleStep() {
       ? [locationScheduleData.contractNumber, ...newList]
       : newList;
   }, [locationScheduleData.contractNumber]);
-
-  // useEffect(() => {
-  //   setLoactionScheduleData({
-  //     ...locationScheduleData,
-  //     originPort,
-  //     destinationPort,
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [originPort, destinationPort]);
-
-  // useEffect(() => {
-  //   setOriginPort(locationScheduleData.originPort);
-  //   setDestinationPort(locationScheduleData.destinationPort);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   const ValidateRequired = useCallback(() => {
     if (
@@ -352,7 +341,12 @@ export default function LoactionScheduleStep() {
           </div>
         </div>
         {locationScheduleData.searchType === "schedule" && (
-          <MdFilledTonalButton className="mt-[50px] h-fit">
+          <MdFilledTonalButton
+            className="mt-[50px] h-fit"
+            onClick={() => {
+              setIsSearchScheduleDialogOpen(true);
+            }}
+          >
             Search Schedule
           </MdFilledTonalButton>
         )}
@@ -360,6 +354,27 @@ export default function LoactionScheduleStep() {
       <MdFilledButton className="self-end" onClick={() => moveToParties()}>
         Next
       </MdFilledButton>
+      <SearchScheduleDialog
+        open={isSearchScheduleDialogOpen}
+        handleOpen={setIsSearchScheduleDialogOpen}
+        condition={{
+          origins: [faker.location.city()],
+          destinations: [faker.location.city()],
+          searchOn: "departure",
+          startDate: DateTime.now().minus({ days: 7 }),
+          endDate: DateTime.now(),
+        }}
+        onSelection={(vaule) => {
+          console.log("selected", vaule);
+          setLoactionScheduleData((prev) => ({
+            ...prev,
+            originPort: vaule.origin,
+            destinationPort: vaule.destination,
+            pol: vaule.origin.code,
+            pod: vaule.destination.code,
+          }));
+        }}
+      />
     </div>
   );
 }
