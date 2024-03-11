@@ -22,7 +22,8 @@ import ContainerSection from "../../components/contaienr";
 import { useRecoilValue } from "recoil";
 import {
   CargoPickUpReturnState,
-  EtcDataState,
+  ContactInformationState,
+  AdditionalInformationState,
   LocationScheduleState,
   PartiesState,
 } from "@/app/store/booking-request.store";
@@ -31,7 +32,8 @@ export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);
   const partiesValue = useRecoilValue(PartiesState);
   const cargoValue = useRecoilValue(CargoPickUpReturnState);
-  const etcValue = useRecoilValue(EtcDataState);
+  const etcValue = useRecoilValue(AdditionalInformationState);
+  const contactInformationValue = useRecoilValue(ContactInformationState);
 
   const cx = classNames.bind(styles);
   return (
@@ -46,10 +48,7 @@ export default function BookingRequestPreview() {
             <LocationScheduleSection hasEdit data={locationScheduleValue} />
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
-              <BookingRequestorSection
-                hasEdit
-                data={partiesValue.bookingRequestor}
-              />
+              <BookingRequestorSection hasEdit data={contactInformationValue} />
               <DividerComponent
                 className="mx-8 border-dotted"
                 orientation="vertical"

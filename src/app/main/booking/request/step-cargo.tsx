@@ -93,7 +93,7 @@ export default function CargoStep() {
         />
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight}
-          className="flex-1"
+          className="flex-1 text-right"
           required
           onKeyDown={(e) => {
             //block non numeric input
@@ -143,6 +143,7 @@ export default function CargoStep() {
           <MdSingleDatePicker
             className="flex-1"
             label="Empty Pick Up Date"
+            required
             defaultDate={cargoPickUpReturnData.emptyPickUpDate}
             handleDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {

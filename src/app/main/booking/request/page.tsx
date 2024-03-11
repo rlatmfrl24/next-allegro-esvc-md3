@@ -15,13 +15,14 @@ import {
 
 import CargoStep from "./step-cargo";
 import ContainerStep from "./step-container";
-import EtcStep from "./step-etc";
+import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
 import { CSSProperties, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import ContactInformationStep from "./step-contact-information";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);
@@ -105,7 +106,8 @@ export default function BookingRequest() {
               parties: <PartiesStep />,
               cargoPickUpReturn: <CargoStep />,
               container: <ContainerStep />,
-              etc: <EtcStep />,
+              additionalInformation: <AdditionalInformationStep />,
+              contactInformation: <ContactInformationStep />,
             }[getSelectedStepId() as keyof typeof bookingRequestStepState]
           }
         </div>

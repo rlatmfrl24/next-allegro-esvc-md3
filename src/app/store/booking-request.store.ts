@@ -1,9 +1,10 @@
 import { DateTime } from "luxon";
 import { atom } from "recoil";
 import {
-  BookingRequestorInterface,
+  AdditionalInformatioType,
   CargoPickUpReturnType,
   CommodityType,
+  ContactInformationType,
   LocationScheduleType,
   PartiesType,
   PartyInterface,
@@ -37,12 +38,29 @@ export const BookingRequestStepState = atom({
       isSelected: false,
       isCompleted: true,
     },
-    etc: {
-      id: "etc",
-      title: "Attachment & Special Instruction & Duplicate Bookings",
+    additionalInformation: {
+      id: "additionalInformation",
+      title: "Addtional Information",
       isSelected: false,
       isCompleted: true,
     },
+    contactInformation: {
+      id: "contactInformation",
+      title: "Contact Information",
+      isSelected: false,
+      isCompleted: true,
+    },
+  },
+});
+
+export const ContactInformationState = atom<ContactInformationType>({
+  key: "contactInformationState",
+  default: {
+    name: "",
+    address: "",
+    telNo: "",
+    faxNo: "",
+    email: [],
   },
 });
 
@@ -65,13 +83,6 @@ export const LocationScheduleState = atom<LocationScheduleType>({
 export const PartiesState = atom<PartiesType>({
   key: "partiesState",
   default: {
-    bookingRequestor: {
-      name: "",
-      address: "",
-      email: [],
-      telNo: "",
-      fax: "",
-    } as BookingRequestorInterface,
     shipper: {
       name: "",
       address: "",
@@ -120,11 +131,16 @@ export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
   },
 });
 
-export const EtcDataState = atom({
+export const AdditionalInformationState = atom<AdditionalInformatioType>({
   key: "etcDataState",
   default: {
     attachments: [] as File[],
     specialInstruction: "",
-    duplicateBookings: "1",
+    duplicateCount: 1,
+    emailSubscription: {
+      rollOver: false,
+      vesselAdvanceDelay: false,
+      vesselDeparture: false,
+    },
   },
 });

@@ -145,14 +145,8 @@ export interface PartyInterface {
   name: string;
   address: string;
 }
-export interface BookingRequestorInterface extends PartyInterface {
-  email: string[];
-  telNo: string;
-  fax: string;
-}
 
 export type PartiesType = {
-  bookingRequestor: BookingRequestorInterface;
   shipper: PartyInterface;
   freightForwarder: PartyInterface;
   consignee: PartyInterface;
@@ -211,4 +205,23 @@ export type LocationScheduleType = {
   departureDate: DateTime;
   bookingOffice: string;
   contractNumber: string;
+};
+
+export type ContactInformationType = {
+  name: string;
+  address: string;
+  telNo: string;
+  faxNo: string;
+  email: string[];
+};
+
+export type AdditionalInformatioType = {
+  attachments: File[];
+  specialInstruction: string;
+  duplicateCount: number;
+  emailSubscription: {
+    rollOver: boolean;
+    vesselDeparture: boolean;
+    vesselAdvanceDelay: boolean;
+  };
 };
