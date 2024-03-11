@@ -28,8 +28,8 @@ import {
   BookingRequestStepState,
   BookingInformationState,
 } from "@/app/store/booking-request.store";
-import { BookingInformationRequestType } from "@/app/util/typeDef";
 import { useRouter } from "next/navigation";
+import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 
 export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);

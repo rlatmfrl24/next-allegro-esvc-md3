@@ -20,7 +20,7 @@ import { SubTitle } from "./components";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { faker } from "@faker-js/faker";
-import { PlaceInformationType } from "@/app/util/typeDef";
+import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(

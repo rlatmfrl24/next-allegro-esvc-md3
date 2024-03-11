@@ -1,31 +1,21 @@
-import Portal from "@/app/components/portal";
-import {
-  MdElevation,
-  MdIcon,
-  MdOutlinedButton,
-  MdTextButton,
-} from "@/app/util/md3";
-import { VesselInfoType } from "@/app/util/typeDef";
-import { AnimatePresence, motion } from "framer-motion";
-import { CSSProperties, useState } from "react";
+import { MdIcon, MdOutlinedButton, MdTextButton } from "@/app/util/md3";
+import { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VesselIcon from "@/../public/icon_vessel.svg";
 import { MdTypography } from "@/app/components/typography";
-import styles from "@/app/styles/summary.module.css";
 import VesselInformationDialog from "../popup/vessel-information";
 import SummaryContainer from "../summary-container";
+import { VesselInfoType } from "@/app/util/typeDef/schedule";
 
 export default function ConditionSummary({
   open,
   condition,
   scrollTop,
-  className,
 }: {
   open: boolean;
   condition: VesselInfoType;
   scrollTop?: () => void;
-  className?: string;
 }) {
   const [isVesselInfomationDialogOpen, setIsVesselInfomationDialogOpen] =
     useState(false);

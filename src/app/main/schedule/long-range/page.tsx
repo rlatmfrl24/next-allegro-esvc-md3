@@ -1,7 +1,6 @@
 "use client";
 
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Download } from "@mui/icons-material";
@@ -13,18 +12,17 @@ import { MdTypography } from "@/app/components/typography";
 import {
   MdFilledButton,
   MdIcon,
-  MdIconButton,
   MdOutlinedButton,
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { LongRangeSearchConditionType } from "@/app/util/typeDef";
 
 import EmptyResultPlaceholder from "../empty-placeholder";
 import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
 import PageTitle from "@/app/components/page-title";
+import { LongRangeSearchConditionType } from "@/app/util/typeDef/schedule";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");

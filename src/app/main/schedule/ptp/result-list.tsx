@@ -3,7 +3,7 @@ import { useState } from "react";
 import ListItem from "./components/listItem";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import DownloadIcon from "@mui/icons-material/Download";
-import { PtPScheduleType } from "@/app/util/typeDef";
+import { PtPScheduleType } from "@/app/util/typeDef/schedule";
 
 export default function PointToPointListResult({
   list,

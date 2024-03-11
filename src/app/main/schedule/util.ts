@@ -1,15 +1,15 @@
 import {
-  BaseScheduleType,
-  LongRangeDateType,
-  LongRangePortType,
-  LongRangeScheduleType,
   PlaceInformationType,
-  PortScheduleType,
-  PtPScheduleType,
-  PtPSearchConditionType,
   VesselInfoType,
   VesselScheduleType,
-} from "@/app/util/typeDef";
+  PortScheduleType,
+  BaseScheduleType,
+  PtPSearchConditionType,
+  PtPScheduleType,
+  LongRangeScheduleType,
+  LongRangeDateType,
+  LongRangePortType,
+} from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 

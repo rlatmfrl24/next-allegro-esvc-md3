@@ -1,5 +1,5 @@
 import { MdTypography } from "@/app/components/typography";
-import { BookingStatus } from "@/app/util/typeDef";
+import { BookingStatus } from "@/app/util/typeDef/boooking";
 
 export default function BookingStatusChip({
   status,

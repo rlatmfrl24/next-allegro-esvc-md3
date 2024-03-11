@@ -21,9 +21,9 @@ import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { createDummyPlaceInformation } from "../../schedule/util";
-import { PlaceInformationType } from "@/app/util/typeDef";
 import SearchScheduleDialog from "./search-schedule-dialog";
 import { DateTime } from "luxon";
+import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(

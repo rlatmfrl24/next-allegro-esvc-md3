@@ -3,7 +3,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { PlaceInformationType, VesselScheduleType } from "@/app/util/typeDef";
 import { useState } from "react";
 import PlaceInformationDialog from "../popup/place-information";
 import { BasicTable } from "@/app/components/basic-table";
@@ -11,6 +10,10 @@ import { DateTime } from "luxon";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import { MdTypography } from "@/app/components/typography";
+import {
+  VesselScheduleType,
+  PlaceInformationType,
+} from "@/app/util/typeDef/schedule";
 
 const DateCell = ({
   info,

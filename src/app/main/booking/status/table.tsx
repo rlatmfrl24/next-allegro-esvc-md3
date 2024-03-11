@@ -9,7 +9,6 @@ import { BasicTable } from "@/app/components/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { CurrentBookingDataState } from "@/app/store/booking-status.store";
 import { MdRadio, MdTextButton } from "@/app/util/md3";
-import { BookingStatus, BookingStatusTableProps } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
 import {
@@ -23,6 +22,10 @@ import BookingStatusChip from "./components/booking-status-chip";
 import EstimatedTimeofDepartureCell from "./components/estimated-time-of-departure-cell";
 import VesselInfoCell from "./components/vessel-info-cell";
 import Link from "next/link";
+import {
+  BookingStatusTableProps,
+  BookingStatus,
+} from "@/app/util/typeDef/boooking";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();

@@ -16,7 +16,6 @@ import {
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { PtPSearchConditionType } from "@/app/util/typeDef";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
@@ -24,6 +23,7 @@ import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import MyFavorite from "./components/my-favorite";
 import { SearchTextField } from "./components/search-textfield";
 import { createDummyPortList } from "../util";
+import { PtPSearchConditionType } from "@/app/util/typeDef/schedule";
 
 export default function SearchCondition({
   searchAction,

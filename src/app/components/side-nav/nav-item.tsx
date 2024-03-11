@@ -1,5 +1,4 @@
 import { MdIcon, MdRippleEffect } from "@/app/util/md3";
-import { MenuItemType } from "@/app/util/typeDef";
 import classNames from "classnames";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "@/app/styles/side-nav.module.css";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
+import { MenuItemType } from "@/app/util/typeDef/generic";
 
 const NavItem = ({
   item,

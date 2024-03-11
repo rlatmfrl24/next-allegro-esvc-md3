@@ -4,7 +4,6 @@ import {
   MdIconButton,
   MdRippleEffect,
 } from "@/app/util/md3";
-import { MenuItemType } from "@/app/util/typeDef";
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -33,6 +32,7 @@ import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
 import DropDownArrow from "@/../public/img_dropdown_arrow.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useRouter } from "next/navigation";
+import { MenuItemType } from "@/app/util/typeDef/generic";
 
 export const DropdownMenu = () => {
   return menuItems.map((item) => (

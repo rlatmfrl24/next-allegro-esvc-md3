@@ -4,7 +4,7 @@ import {
 } from "@/app/components/tooltip";
 import { VariableElavatedButton } from "@/app/components/variable-buttons";
 import { ScrollState } from "@/app/store/global.store";
-import { CutOffDataType } from "@/app/util/typeDef";
+import { CutOffDataType } from "@/app/util/typeDef/schedule";
 import {
   autoUpdate,
   flip,

@@ -5,13 +5,13 @@ import {
   MdOutlinedButton,
 } from "@/app/util/md3";
 import { MdTypography } from "@/app/components/typography";
-import { PtPSearchConditionType } from "@/app/util/typeDef";
 import { useRecoilState } from "recoil";
 import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
 import SummaryContainer from "../../summary-container";
+import { PtPSearchConditionType } from "@/app/util/typeDef/schedule";
 
 const SummaryItem = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -42,12 +42,10 @@ export default function ConditionSummary({
   open,
   condition,
   scrollTop,
-  className,
 }: {
   open: boolean;
   condition: PtPSearchConditionType;
   scrollTop?: () => void;
-  className?: string;
 }) {
   const [presetList, setPresetList] = useRecoilState(FavoriteRouteListState);
 

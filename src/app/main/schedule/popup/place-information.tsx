@@ -1,6 +1,6 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdDialog, MdTextButton } from "@/app/util/md3";
-import { PlaceInformationType } from "@/app/util/typeDef";
+import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 
 export default function PlaceInformationDialog({
   open,

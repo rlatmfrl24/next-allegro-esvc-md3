@@ -9,11 +9,7 @@ import SouthIcon from "@/../public/icon_direction_south.svg";
 import WestIcon from "@/../public/icon_direction_west.svg";
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import LongRangeDateIcon from "@/../public/icon_long_range_schedule.svg";
-import {
-  LongRangePortType,
-  LongRangeScheduleType,
-  VesselInfoType,
-} from "@/app/util/typeDef";
+
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 
@@ -35,6 +31,11 @@ import {
   useDelayGroupContext,
 } from "@floating-ui/react";
 import { PlainTooltip } from "@/app/components/tooltip";
+import {
+  LongRangeScheduleType,
+  LongRangePortType,
+  VesselInfoType,
+} from "@/app/util/typeDef/schedule";
 
 const DirectionIcon = ({
   direction,
