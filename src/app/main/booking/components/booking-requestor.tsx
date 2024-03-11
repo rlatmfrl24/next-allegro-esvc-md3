@@ -1,9 +1,14 @@
 import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
+import { MdAssistChip, MdChipSet, MdFilterChip } from "@/app/util/md3";
+import LabelChip from "@/app/components/label-chip";
+import { BookingRequestorInterface } from "@/app/util/typeDef";
 
 export default function BookingRequestorSection({
+  data,
   hasEdit,
 }: {
+  data: BookingRequestorInterface;
   hasEdit?: boolean;
 }) {
   return (
@@ -13,31 +18,33 @@ export default function BookingRequestorSection({
           Name
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          John Doe
+          {data.name}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Cell Phone
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          010-1234-5678
+          {data.telNo}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Fax
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          02-1234-5678
+          {data.fax || "N/A"}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Email
         </MdTypography>
-        <MdTypography variant="body" size="medium" className="text-onSurface">
-          Test@cyberlogitec.com
-        </MdTypography>
+        <MdChipSet>
+          {data.email.map((email, index) => (
+            <LabelChip key={index} label={email} />
+          ))}
+        </MdChipSet>
         <MdTypography variant="body" size="medium" className="text-outline">
           Address
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          dldldldldldddddddddddddddddd
+          {data.address}
         </MdTypography>
       </div>
     </Section>

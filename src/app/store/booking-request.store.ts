@@ -2,7 +2,10 @@ import { DateTime } from "luxon";
 import { atom } from "recoil";
 import {
   BookingRequestorInterface,
+  CargoPickUpReturnType,
   CommodityType,
+  LocationScheduleType,
+  PartiesType,
   PartyInterface,
   PlaceInformationType,
 } from "../util/typeDef";
@@ -43,12 +46,12 @@ export const BookingRequestStepState = atom({
   },
 });
 
-export const LocationScheduleState = atom({
+export const LocationScheduleState = atom<LocationScheduleType>({
   key: "locationScheduleState",
   default: {
     searchType: "schedule",
-    originPort: "",
-    destinationPort: "",
+    originPort: {} as PlaceInformationType,
+    destinationPort: {} as PlaceInformationType,
     originType: "cy",
     destinationType: "cy",
     pol: "",
@@ -59,13 +62,7 @@ export const LocationScheduleState = atom({
   },
 });
 
-export const PartiesState = atom<{
-  bookingRequestor: BookingRequestorInterface;
-  shipper: PartyInterface;
-  freightForwarder: PartyInterface;
-  consignee: PartyInterface;
-  actualShipper: string;
-}>({
+export const PartiesState = atom<PartiesType>({
   key: "partiesState",
   default: {
     bookingRequestor: {
@@ -91,7 +88,7 @@ export const PartiesState = atom<{
   },
 });
 
-export const CargoPickUpReturnState = atom({
+export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
   key: "cargoPickUpReturnState",
   default: {
     commodity: {

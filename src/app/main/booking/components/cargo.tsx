@@ -1,7 +1,14 @@
 import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
+import { CargoPickUpReturnType } from "@/app/util/typeDef";
 
-export default function CargoSection({ hasEdit }: { hasEdit?: boolean }) {
+export default function CargoSection({
+  data,
+  hasEdit,
+}: {
+  hasEdit?: boolean;
+  data: CargoPickUpReturnType;
+}) {
   return (
     <Section title="Cargo" hasEdit={hasEdit}>
       <div className="grid grid-cols-[240px_1fr] gap-4">
@@ -9,38 +16,53 @@ export default function CargoSection({ hasEdit }: { hasEdit?: boolean }) {
           Commodty
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          Cyberlogitec
+          {data.commodity.description}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Total Estimated Gross Weight
         </MdTypography>
-        <MdTypography variant="body" size="medium" className="text-onSurface">
-          John Doe
-        </MdTypography>
+        <div className="flex gap-2">
+          <MdTypography variant="body" size="medium" className="text-onSurface">
+            {data.grossWeight}
+          </MdTypography>
+          <MdTypography variant="body" size="medium" className="text-outline">
+            {data.grossWeightUnit}
+          </MdTypography>
+        </div>
         <MdTypography variant="body" size="medium" className="text-outline">
           Empty Pick Up Date
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          Jane Doe
+          {data.emptyPickUpDate.toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Empty Pick Up CY/Depot (Prefered)
         </MdTypography>
-        <MdTypography variant="body" size="medium" className="text-onSurface">
-          John Doe
-        </MdTypography>
+        <div>
+          <MdTypography variant="body" size="medium" className="text-onSurface">
+            {data.emptyPickUpLocation.yardName}
+          </MdTypography>
+          <MdTypography variant="body" size="medium" className="text-outline">
+            {data.emptyPickUpLocation.address}
+          </MdTypography>
+        </div>
         <MdTypography variant="body" size="medium" className="text-outline">
           Full Cargo Return Date
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          John Doe
+          {data.fullReturnDate.toFormat("yyyy-MM-dd")}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Full Container Return CY
         </MdTypography>
-        <MdTypography variant="body" size="medium" className="text-onSurface">
-          John Doe
-        </MdTypography>
+        <div>
+          <MdTypography variant="body" size="medium" className="text-onSurface">
+            {data.fullReturnLocation.yardName}
+          </MdTypography>
+          <MdTypography variant="body" size="medium" className="text-outline">
+            {data.fullReturnLocation.address}
+          </MdTypography>
+        </div>
       </div>
     </Section>
   );

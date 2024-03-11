@@ -18,8 +18,21 @@ import AttachmentSection from "../../components/attachment";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import Link from "next/link";
+import ContainerSection from "../../components/contaienr";
+import { useRecoilValue } from "recoil";
+import {
+  CargoPickUpReturnState,
+  EtcDataState,
+  LocationScheduleState,
+  PartiesState,
+} from "@/app/store/booking-request.store";
 
 export default function BookingRequestPreview() {
+  const locationScheduleValue = useRecoilValue(LocationScheduleState);
+  const partiesValue = useRecoilValue(PartiesState);
+  const cargoValue = useRecoilValue(CargoPickUpReturnState);
+  const etcValue = useRecoilValue(EtcDataState);
+
   const cx = classNames.bind(styles);
   return (
     <>
@@ -30,35 +43,85 @@ export default function BookingRequestPreview() {
         >
           <div className="bg-secondaryContainer h-4"></div>
           <div className="px-6 pt-4 pb-8">
-            <LocationScheduleSection hasEdit />
+            <LocationScheduleSection hasEdit data={locationScheduleValue} />
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
-              <BookingRequestorSection hasEdit />
+              <BookingRequestorSection
+                hasEdit
+                data={partiesValue.bookingRequestor}
+              />
               <DividerComponent
                 className="mx-8 border-dotted"
                 orientation="vertical"
               />
-              <PartiesSection hasEdit />
+              <PartiesSection hasEdit data={partiesValue} />
             </div>
             <DividerComponent className="my-8" />
-            <Section title="Container">ddd</Section>
+            <ContainerSection />
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
-              <CargoSection hasEdit />
+              <CargoSection hasEdit data={cargoValue} />
               <DividerComponent
                 className="mx-8 border-dotted"
                 orientation="vertical"
               />
-              <AttachmentSection hasEdit />
+              <AttachmentSection
+                hasEdit
+                files={etcValue.attachments}
+                specialInstruction={etcValue.specialInstruction}
+              />
             </div>
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
               <Section title="Duplicate reservation">
                 <div className="flex flex-col gap-4">
-                  <MdTypography variant="body" size="medium">
-                    Do you want to make duplicate bookings for the same vessel?
-                  </MdTypography>
-                  <MdOutlinedTextField value="10" className="w-fit" />
+                  <div>
+                    <MdTypography
+                      variant="body"
+                      size="medium"
+                      className="text-onSurface"
+                    >
+                      Do you want to make duplicate bookings for the same
+                      vessel?
+                    </MdTypography>
+                    <MdTypography
+                      variant="body"
+                      size="small"
+                      className="text-outline"
+                    >
+                      Enter the number of bookings to duplicate. (Maximum 50)
+                    </MdTypography>
+                  </div>
+                  <MdOutlinedTextField
+                    value="10"
+                    className="w-fit text-right"
+                    onKeyDown={(e) => {
+                      // Only allow numbers and backspace
+                      if (
+                        !(
+                          (e.key >= "0" && e.key <= "9") ||
+                          e.key === "Backspace" ||
+                          e.key === "Delete" ||
+                          e.key === "ArrowLeft" ||
+                          e.key === "ArrowRight" ||
+                          e.key === "Tab" ||
+                          e.key === "Shift" ||
+                          e.key === "Control" ||
+                          e.key === "Alt" ||
+                          e.key === "ArrowUp" ||
+                          e.key === "ArrowDown"
+                        )
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onInput={(e) => {
+                      // Only allow up to 50
+                      if (parseInt(e.currentTarget.value) > 50) {
+                        e.currentTarget.value = "50";
+                      }
+                    }}
+                  />
                   <MdTypography
                     variant="body"
                     size="small"
@@ -89,9 +152,9 @@ export default function BookingRequestPreview() {
             </div>
           </div>
         </div>
-        <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2">
+        <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-20">
           <div
-            className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
+            className=" relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
             style={
               {
                 "--md-elevation-level": 4,

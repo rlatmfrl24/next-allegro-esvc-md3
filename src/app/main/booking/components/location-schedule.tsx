@@ -1,22 +1,62 @@
 import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
+import ShipRouteIcon from "@/../public/icon_ship_route.svg";
+import { LocationScheduleType } from "@/app/util/typeDef";
 
 export default function LocationScheduleSection({
+  data,
   hasEdit = false,
 }: {
+  data: LocationScheduleType;
   hasEdit?: boolean;
 }) {
   return (
     <Section title="Location & Schedule" hasEdit={hasEdit}>
+      <div className="flex items-center justify-center gap-4 mb-8">
+        <MdTypography variant="body" size="small" className="text-outline">
+          {data.originPort.yardName}
+        </MdTypography>
+        <MdTypography variant="headline" size="small" className="text-primary">
+          {data.originPort.code}
+        </MdTypography>
+        <div className="w-8 border-b border-outline border-dotted"></div>
+        <ShipRouteIcon />
+        <div className="w-8 border-b border-outline border-dotted"></div>
+        <MdTypography variant="headline" size="small" className="text-primary">
+          {data.destinationPort.code}
+        </MdTypography>
+        <MdTypography variant="body" size="small" className="text-outline">
+          {data.destinationPort.yardName}
+        </MdTypography>
+      </div>
       <div className="flex">
-        <SimpleItemComponent title="Service Term" value="CY - CY" />
-        <SimpleItemComponent title="Port of Loading" value="CHSHA" />
-        <SimpleItemComponent title="Port of Discharge" value="SISIN" />
-        <SimpleItemComponent title="Departure Date" value="2024-03-10" />
-        <SimpleItemComponent title="Contract Number" value="C2201121" />
         <SimpleItemComponent
-          title="Booking Office"
-          value="Busan Branch Office"
+          title="Service Term"
+          value={
+            (data.originType === "cy" ? "CY" : "Door") +
+            " - " +
+            (data.destinationType === "cy" ? "CY" : "Door")
+          }
+        />
+        <SimpleItemComponent
+          title="Port of Loading"
+          value={data.pol || "N/A"}
+        />
+        <SimpleItemComponent
+          title="Port of Discharge"
+          value={data.pod || "N/A"}
+        />
+        <SimpleItemComponent
+          title="Departure Date"
+          value={data.departureDate.toFormat("yyyy-MM-dd")}
+        />
+        <SimpleItemComponent
+          title="Contract Number"
+          value={data.contractNumber || "N/A"}
+        />
+        <SimpleItemComponent
+          title="Booking O.ffice"
+          value={data.bookingOffice || "N/A"}
         />
       </div>
     </Section>

@@ -151,6 +151,14 @@ export interface BookingRequestorInterface extends PartyInterface {
   fax: string;
 }
 
+export type PartiesType = {
+  bookingRequestor: BookingRequestorInterface;
+  shipper: PartyInterface;
+  freightForwarder: PartyInterface;
+  consignee: PartyInterface;
+  actualShipper: string;
+};
+
 export enum BookingStatus {
   Requested = "Requested",
   ChangeRequested = "Change Requested",
@@ -180,4 +188,27 @@ export type BookingStatusTableProps = {
   vgmCutOffTime: DateTime;
   via: "web" | "general" | "edi";
   qty: string;
+};
+
+export type CargoPickUpReturnType = {
+  commodity: CommodityType;
+  grossWeight: string;
+  grossWeightUnit: "KGS" | "LBS";
+  emptyPickUpDate: DateTime;
+  fullReturnDate: DateTime;
+  emptyPickUpLocation: PlaceInformationType;
+  fullReturnLocation: PlaceInformationType;
+};
+
+export type LocationScheduleType = {
+  searchType: "schedule" | "earliest";
+  originPort: PlaceInformationType;
+  destinationPort: PlaceInformationType;
+  originType: "cy" | "door";
+  destinationType: "cy" | "door";
+  pol: string;
+  pod: string;
+  departureDate: DateTime;
+  bookingOffice: string;
+  contractNumber: string;
 };

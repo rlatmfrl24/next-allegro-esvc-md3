@@ -20,24 +20,20 @@ import {
 import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { createDummyPlaceInformation } from "../../schedule/util";
+import { PlaceInformationType } from "@/app/util/typeDef";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
     LocationScheduleState
   );
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-
-  // const [originPort, setOriginPort] = useState(locationScheduleData.originPort);
-  // const [destinationPort, setDestinationPort] = useState(
-  //   locationScheduleData.destinationPort
-  // );
   const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
     useState(false);
 
   const portList = useMemo(() => {
-    return Array.from(
-      { length: 50 },
-      (_, i) => faker.location.city() + ", " + faker.location.country()
+    return Array.from({ length: 30 }, (_, i) =>
+      createDummyPlaceInformation(faker.location.city())
     );
   }, []);
 
@@ -75,8 +71,8 @@ export default function LoactionScheduleStep() {
 
   const ValidateRequired = useCallback(() => {
     if (
-      locationScheduleData.originPort === "" ||
-      locationScheduleData.destinationPort === "" ||
+      locationScheduleData.originPort === ({} as PlaceInformationType) ||
+      locationScheduleData.destinationPort === ({} as PlaceInformationType) ||
       locationScheduleData.bookingOffice === ""
     ) {
       return false;
@@ -169,16 +165,19 @@ export default function LoactionScheduleStep() {
           </form>
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
-              itemList={portList}
+              itemList={portList.map((port) => port.yardName)}
               required
               label="Origin"
               icon={<FmdGoodOutlined />}
               className="flex-1"
-              initialValue={locationScheduleData.originPort}
+              initialValue={locationScheduleData.originPort.yardName}
               onSelection={(value) => {
+                const selectedPort = portList.find(
+                  (port) => port.yardName === value
+                );
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  originPort: value,
+                  originPort: selectedPort || ({} as PlaceInformationType),
                 }));
               }}
             />
@@ -209,16 +208,19 @@ export default function LoactionScheduleStep() {
           </div>
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
-              itemList={portList}
+              itemList={portList.map((port) => port.yardName)}
               required
               label="Destination"
               icon={<FmdGoodOutlined />}
               className="flex-1"
-              initialValue={locationScheduleData.destinationPort}
+              initialValue={locationScheduleData.destinationPort.yardName}
               onSelection={(value) => {
+                const selectedPort = portList.find(
+                  (port) => port.yardName === value
+                );
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  destinationPort: value,
+                  destinationPort: selectedPort || ({} as PlaceInformationType),
                 }));
               }}
             />
