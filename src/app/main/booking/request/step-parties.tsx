@@ -8,7 +8,7 @@ import {
   BookingRequestStepState,
   PartiesState,
 } from "@/app/store/booking-request.store";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function PartiesStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -37,7 +37,6 @@ export default function PartiesStep() {
   }, [setBookingRequestStep]);
 
   useEffect(() => {
-    console.log(partiesData);
     if (ValidateRequired()) {
       setBookingRequestStep((prev) => ({
         ...prev,
@@ -128,9 +127,10 @@ export default function PartiesStep() {
         <NaToggleButton
           label="Same as Shipper"
           state={
-            partiesData.freightForwarder.address ===
-              partiesData.shipper.address &&
-            partiesData.freightForwarder.name === partiesData.shipper.name
+            partiesData.shipper.name !== "" &&
+            partiesData.shipper.address !== "" &&
+            partiesData.freightForwarder.name === partiesData.shipper.name &&
+            partiesData.freightForwarder.address === partiesData.shipper.address
               ? "checked"
               : "unchecked"
           }

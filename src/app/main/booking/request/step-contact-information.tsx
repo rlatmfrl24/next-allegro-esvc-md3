@@ -2,9 +2,12 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
 import { SubTitle } from "./components";
 import { faker } from "@faker-js/faker";
-import { useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
-import { ContactInformationState } from "@/app/store/booking-request.store";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  BookingRequestStepState,
+  ContactInformationState,
+} from "@/app/store/booking-request.store";
 import {
   MdCheckbox,
   MdChipSet,
@@ -22,6 +25,7 @@ import { DeleteOutline, MailOutline } from "@mui/icons-material";
 import Portal from "@/app/components/portal";
 
 export default function ContactInformationStep() {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const [contactInformationData, setContactInformationData] = useRecoilState(
     ContactInformationState
   );
@@ -43,6 +47,39 @@ export default function ContactInformationStep() {
     []
   );
 
+  const ValidateRequired = useCallback(() => {
+    if (
+      contactInformationData.name === "" ||
+      contactInformationData.address === "" ||
+      contactInformationData.telNo === "" ||
+      contactInformationData.faxNo === ""
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [contactInformationData]);
+
+  useEffect(() => {
+    if (ValidateRequired()) {
+      setBookingRequestStep((prev) => ({
+        ...prev,
+        contactInformation: {
+          ...prev.contactInformation,
+          isCompleted: true,
+        },
+      }));
+    } else {
+      setBookingRequestStep((prev) => ({
+        ...prev,
+        contactInformation: {
+          ...prev.contactInformation,
+          isCompleted: false,
+        },
+      }));
+    }
+  }, [ValidateRequired, contactInformationData, setBookingRequestStep]);
+
   return (
     <div className="w-full">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -53,11 +90,11 @@ export default function ContactInformationStep() {
           required
           value={contactInformationData.name}
           label="Name"
-          onInput={(e) => {
+          handleValueChange={(value) => {
             setContactInformationData((prev) => {
               return {
                 ...prev,
-                name: e.currentTarget.value,
+                name: value,
               };
             });
           }}
@@ -66,11 +103,11 @@ export default function ContactInformationStep() {
           required
           value={contactInformationData.address}
           label="Address"
-          onInput={(e) => {
+          handleValueChange={(value) => {
             setContactInformationData((prev) => {
               return {
                 ...prev,
-                address: e.currentTarget.value,
+                address: value,
               };
             });
           }}
@@ -79,11 +116,11 @@ export default function ContactInformationStep() {
           required
           value={contactInformationData.telNo}
           label="Tel No."
-          onInput={(e) => {
+          handleValueChange={(value) => {
             setContactInformationData((prev) => {
               return {
                 ...prev,
-                telNo: e.currentTarget.value,
+                telNo: value,
               };
             });
           }}
@@ -92,11 +129,11 @@ export default function ContactInformationStep() {
           required
           value={contactInformationData.faxNo}
           label="Fax No."
-          onInput={(e) => {
+          handleValueChange={(value) => {
             setContactInformationData((prev) => {
               return {
                 ...prev,
-                faxNo: e.currentTarget.value,
+                faxNo: value,
               };
             });
           }}

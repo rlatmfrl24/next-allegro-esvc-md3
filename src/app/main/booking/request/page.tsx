@@ -1,10 +1,17 @@
 "use client";
 
 import classNames from "classnames";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 
 import PageTitle from "@/app/components/page-title";
-import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import {
+  AdditionalInformationState,
+  BookingRequestStepState,
+  CargoPickUpReturnState,
+  ContactInformationState,
+  LocationScheduleState,
+  PartiesState,
+} from "@/app/store/booking-request.store";
 import styles from "@/app/styles/base.module.css";
 import {
   MdElevation,
@@ -19,12 +26,12 @@ import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
 
-export default function BookingRequest() {
+export default function BookingRequest({}: {}) {
   const cx = classNames.bind(styles);
   const [bookingRequestStepState, setBookingRequestStepState] = useRecoilState(
     BookingRequestStepState

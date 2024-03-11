@@ -2,16 +2,21 @@ import { MdTypography } from "@/app/components/typography";
 import { SubTitle } from "./components";
 import {
   MdChipSet,
+  MdFilledButton,
   MdInputChip,
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { useRef } from "react";
-import { useRecoilState } from "recoil";
-import { AdditionalInformationState } from "@/app/store/booking-request.store";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  AdditionalInformationState,
+  BookingRequestStepState,
+} from "@/app/store/booking-request.store";
 import NaToggleButton from "@/app/components/na-toggle-button";
 
 export default function AdditionalInformationStep() {
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const [AdditionalInformationData, setAdditionalInformationData] =
     useRecoilState(AdditionalInformationState);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -29,6 +34,20 @@ export default function AdditionalInformationStep() {
         };
       });
     }
+  };
+
+  const moveToContactInformationStep = () => {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      additionalInformation: {
+        ...prev.additionalInformation,
+        isSelected: false,
+      },
+      contactInformation: {
+        ...prev.contactInformation,
+        isSelected: true,
+      },
+    }));
   };
 
   return (
@@ -207,6 +226,11 @@ export default function AdditionalInformationStep() {
             });
           }}
         />
+      </div>
+      <div className="flex-1 flex items-end justify-end">
+        <MdFilledButton onClick={() => moveToContactInformationStep()}>
+          Next
+        </MdFilledButton>
       </div>
     </div>
   );

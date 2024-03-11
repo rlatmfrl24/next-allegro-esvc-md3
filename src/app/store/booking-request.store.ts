@@ -48,7 +48,7 @@ export const BookingRequestStepState = atom({
       id: "contactInformation",
       title: "Contact Information",
       isSelected: false,
-      isCompleted: true,
+      isCompleted: false,
     },
   },
 });

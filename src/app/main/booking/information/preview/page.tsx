@@ -19,7 +19,7 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import Link from "next/link";
 import ContainerSection from "../../components/contaienr";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   CargoPickUpReturnState,
   ContactInformationState,
@@ -34,6 +34,8 @@ export default function BookingRequestPreview() {
   const cargoValue = useRecoilValue(CargoPickUpReturnState);
   const etcValue = useRecoilValue(AdditionalInformationState);
   const contactInformationValue = useRecoilValue(ContactInformationState);
+  const [additionalInformationData, setAdditionalInformationData] =
+    useRecoilState(AdditionalInformationState);
 
   const cx = classNames.bind(styles);
   return (
@@ -92,7 +94,7 @@ export default function BookingRequestPreview() {
                     </MdTypography>
                   </div>
                   <MdOutlinedTextField
-                    value="10"
+                    value={additionalInformationData.duplicateCount.toString()}
                     className="w-fit text-right"
                     onKeyDown={(e) => {
                       // Only allow numbers and backspace
@@ -114,10 +116,36 @@ export default function BookingRequestPreview() {
                         e.preventDefault();
                       }
                     }}
-                    onInput={(e) => {
-                      // Only allow up to 50
-                      if (parseInt(e.currentTarget.value) > 50) {
-                        e.currentTarget.value = "50";
+                    onBlur={(e) => {
+                      const value = parseInt(e.currentTarget.value);
+                      if (value > 50) {
+                        setAdditionalInformationData((prev) => {
+                          return {
+                            ...prev,
+                            duplicateCount: 50,
+                          };
+                        });
+                      } else if (value < 1) {
+                        setAdditionalInformationData((prev) => {
+                          return {
+                            ...prev,
+                            duplicateCount: 1,
+                          };
+                        });
+                      } else if (isNaN(value)) {
+                        setAdditionalInformationData((prev) => {
+                          return {
+                            ...prev,
+                            duplicateCount: 1,
+                          };
+                        });
+                      } else {
+                        setAdditionalInformationData((prev) => {
+                          return {
+                            ...prev,
+                            duplicateCount: value,
+                          };
+                        });
                       }
                     }}
                   />
@@ -139,12 +167,64 @@ export default function BookingRequestPreview() {
                 <div className="flex flex-col">
                   <NaToggleButton
                     label="Roll-Over (Including T/S)"
-                    state="checked"
+                    state={
+                      additionalInformationData.emailSubscription.rollOver
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onClick={() => {
+                      setAdditionalInformationData((prev) => {
+                        return {
+                          ...prev,
+                          emailSubscription: {
+                            ...prev.emailSubscription,
+                            rollOver: !prev.emailSubscription.rollOver,
+                          },
+                        };
+                      });
+                    }}
                   />
-                  <NaToggleButton label="Vessel Departure" state="checked" />
+                  <NaToggleButton
+                    label="Vessel Departure"
+                    state={
+                      additionalInformationData.emailSubscription
+                        .vesselDeparture
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onClick={() => {
+                      setAdditionalInformationData((prev) => {
+                        return {
+                          ...prev,
+                          emailSubscription: {
+                            ...prev.emailSubscription,
+                            vesselDeparture:
+                              !prev.emailSubscription.vesselDeparture,
+                          },
+                        };
+                      });
+                    }}
+                  />
                   <NaToggleButton
                     label="Vessel Advance / Delay"
-                    state="checked"
+                    state={
+                      additionalInformationData.emailSubscription
+                        .vesselAdvanceDelay
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onClick={() => {
+                      setAdditionalInformationData((prev) => {
+                        return {
+                          ...prev,
+                          emailSubscription: {
+                            ...prev.emailSubscription,
+                            vesselAdvanceDelay:
+                              !prev.emailSubscription.vesselAdvanceDelay,
+                          },
+                        };
+                      });
+                    }}
                   />
                 </div>
               </Section>

@@ -1,14 +1,14 @@
 import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
-import { MdAssistChip, MdChipSet, MdFilterChip } from "@/app/util/md3";
+import { MdChipSet } from "@/app/util/md3";
 import LabelChip from "@/app/components/label-chip";
-import { BookingRequestorInterface } from "@/app/util/typeDef";
+import { ContactInformationType } from "@/app/util/typeDef";
 
 export default function BookingRequestorSection({
   data,
   hasEdit,
 }: {
-  data: BookingRequestorInterface;
+  data: ContactInformationType;
   hasEdit?: boolean;
 }) {
   return (
@@ -30,7 +30,7 @@ export default function BookingRequestorSection({
           Fax
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          {data.fax || "N/A"}
+          {data.faxNo || "N/A"}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Email

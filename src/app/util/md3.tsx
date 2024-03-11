@@ -94,6 +94,9 @@ export const MdCheckbox = createComponent({
   tagName: "md-checkbox",
   elementClass: MdCheckboxWebComponent,
   react: React,
+  events: {
+    onchange: "change",
+  },
 });
 
 export const MdIcon = createComponent({
