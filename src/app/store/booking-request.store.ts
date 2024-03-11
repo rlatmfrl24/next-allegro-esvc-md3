@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { atom } from "recoil";
 import {
   AdditionalInformatioType,
+  BookingInformationRequestType,
   CargoPickUpReturnType,
   CommodityType,
   ContactInformationType,
@@ -145,4 +146,9 @@ export const AdditionalInformationState = atom<AdditionalInformatioType>({
       vesselDeparture: false,
     },
   },
+});
+
+export const BookingInformationState = atom<BookingInformationRequestType[]>({
+  key: "bookingInformationState",
+  default: [],
 });

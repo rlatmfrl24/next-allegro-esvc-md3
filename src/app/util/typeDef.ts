@@ -223,3 +223,11 @@ export type AdditionalInformatioType = {
     vesselAdvanceDelay: boolean;
   };
 };
+
+export interface BookingInformationRequestType {
+  locationSchedule: LocationScheduleType;
+  parties: PartiesType;
+  cargoPickUpReturn: CargoPickUpReturnType;
+  additionalInformation: AdditionalInformatioType;
+  contactInformation: ContactInformationType;
+}

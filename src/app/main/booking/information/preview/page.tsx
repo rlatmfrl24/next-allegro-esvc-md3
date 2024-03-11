@@ -17,7 +17,6 @@ import CargoSection from "../../components/cargo";
 import AttachmentSection from "../../components/attachment";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
-import Link from "next/link";
 import ContainerSection from "../../components/contaienr";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -27,7 +26,10 @@ import {
   LocationScheduleState,
   PartiesState,
   BookingRequestStepState,
+  BookingInformationState,
 } from "@/app/store/booking-request.store";
+import { BookingInformationRequestType } from "@/app/util/typeDef";
+import { useRouter } from "next/navigation";
 
 export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);
@@ -39,8 +41,10 @@ export default function BookingRequestPreview() {
     useRecoilState(AdditionalInformationState);
 
   const cx = classNames.bind(styles);
+  const router = useRouter();
 
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const setBookingInformation = useSetRecoilState(BookingInformationState);
 
   useEffect(() => {
     // set every step of isSelcted to false
@@ -282,9 +286,24 @@ export default function BookingRequestPreview() {
             }
           >
             <MdElevation />
-            <Link href={`/main/booking/status`}>
-              <MdFilledButton>Submit</MdFilledButton>
-            </Link>
+            <MdFilledButton
+              onClick={() => {
+                const data = {
+                  locationSchedule: locationScheduleValue,
+                  parties: partiesValue,
+                  cargoPickUpReturn: cargoValue,
+                  contactInformation: contactInformationValue,
+                  additionalInformation: etcValue,
+                } as BookingInformationRequestType;
+
+                setBookingInformation((prev) => {
+                  return [...prev, data];
+                });
+                router.push("/main/booking/status");
+              }}
+            >
+              Submit
+            </MdFilledButton>
           </div>
         </div>
       </div>

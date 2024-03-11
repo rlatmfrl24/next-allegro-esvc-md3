@@ -1,11 +1,12 @@
 "use client";
 
 import classNames from "classnames";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import PageTitle from "@/app/components/page-title";
 import {
   AdditionalInformationState,
+  BookingInformationState,
   BookingRequestStepState,
   CargoPickUpReturnState,
   ContactInformationState,
@@ -26,16 +27,26 @@ import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import { CSSProperties, useEffect, useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
+import { useRouter } from "next/navigation";
+import { BookingInformationRequestType } from "@/app/util/typeDef";
 
-export default function BookingRequest({}: {}) {
+export default function BookingRequest() {
   const cx = classNames.bind(styles);
   const [bookingRequestStepState, setBookingRequestStepState] = useRecoilState(
     BookingRequestStepState
   );
+  const router = useRouter();
+
+  const locationSchedule = useRecoilValue(LocationScheduleState);
+  const parties = useRecoilValue(PartiesState);
+  const cargoPickUpReturn = useRecoilValue(CargoPickUpReturnState);
+  const additionalInformation = useRecoilValue(AdditionalInformationState);
+  const contactInformation = useRecoilValue(ContactInformationState);
+  const setBookingInformations = useSetRecoilState(BookingInformationState);
 
   const AllStepsCompleted = useMemo(() => {
     return Object.keys(bookingRequestStepState).every((key) => {
@@ -140,9 +151,24 @@ export default function BookingRequest({}: {}) {
               <Link href={`/main/booking/information/preview`}>
                 <MdFilledTonalButton>Preview</MdFilledTonalButton>
               </Link>
-              <Link href={`/main/booking/status`}>
-                <MdFilledButton>Booking</MdFilledButton>
-              </Link>
+              <MdFilledButton
+                onClick={() => {
+                  const newBookingInformation = {
+                    locationSchedule,
+                    parties,
+                    cargoPickUpReturn,
+                    additionalInformation,
+                    contactInformation,
+                  } as BookingInformationRequestType;
+                  setBookingInformations((prev) => [
+                    ...prev,
+                    newBookingInformation,
+                  ]);
+                  router.push("/main/booking/request");
+                }}
+              >
+                Booking
+              </MdFilledButton>
             </div>
           </motion.div>
         )}
