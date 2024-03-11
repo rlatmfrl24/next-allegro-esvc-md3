@@ -1,18 +1,11 @@
 "use client";
 
-import { MdTypography } from "@/app/components/typography";
-import {
-  MdFilledButton,
-  MdIcon,
-  MdIconButton,
-  MdTextButton,
-} from "@/app/util/md3";
+import { MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { useEffect, useMemo, useState } from "react";
 import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import ConditionSummary from "./condition-summary";
 import EmptyResultPlaceholder from "../empty-placeholder";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import styles from "@/app/styles/base.module.css";
 import {

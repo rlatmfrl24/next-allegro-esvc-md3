@@ -1,11 +1,4 @@
-import {
-  CSSProperties,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -30,7 +23,6 @@ import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { MdTypography } from "./typography";
 import RestoreIcon from "@mui/icons-material/Restore";
-import { ArrowDropDownOutlined as DownArrowIcon } from "@mui/icons-material/";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -144,7 +136,7 @@ export default function NAOutlinedAutoComplete({
           </div> */}
         </div>
       </MdOutlinedTextFieldBase>
-      {recentItems?.length !== 0 && query.length > 2 && isListOpen && (
+      {(query.length > 2 || recentItems?.length !== 0) && isListOpen && (
         <div
           ref={refs.setFloating}
           style={
