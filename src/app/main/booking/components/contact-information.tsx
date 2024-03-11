@@ -4,7 +4,7 @@ import { MdChipSet } from "@/app/util/md3";
 import LabelChip from "@/app/components/label-chip";
 import { ContactInformationType } from "@/app/util/typeDef";
 
-export default function BookingRequestorSection({
+export default function ContactInformationSection({
   data,
   hasEdit,
 }: {
@@ -12,7 +12,7 @@ export default function BookingRequestorSection({
   hasEdit?: boolean;
 }) {
   return (
-    <Section title="Booking Requestor" hasEdit={hasEdit}>
+    <Section title="Contact Information" hasEdit={hasEdit}>
       <div className="grid grid-cols-[240px_1fr] gap-4">
         <MdTypography variant="body" size="medium" className="text-outline">
           Name

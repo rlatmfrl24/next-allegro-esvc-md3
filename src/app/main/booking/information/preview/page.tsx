@@ -5,7 +5,7 @@ import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
 import { DividerComponent, Section } from "../../components/base";
 import LocationScheduleSection from "../../components/location-schedule";
-import BookingRequestorSection from "../../components/booking-requestor";
+import ContactInformationSection from "../../components/contact-information";
 import PartiesSection from "../../components/parties";
 import {
   MdElevation,
@@ -50,7 +50,10 @@ export default function BookingRequestPreview() {
             <LocationScheduleSection hasEdit data={locationScheduleValue} />
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
-              <BookingRequestorSection hasEdit data={contactInformationValue} />
+              <ContactInformationSection
+                hasEdit
+                data={contactInformationValue}
+              />
               <DividerComponent
                 className="mx-8 border-dotted"
                 orientation="vertical"

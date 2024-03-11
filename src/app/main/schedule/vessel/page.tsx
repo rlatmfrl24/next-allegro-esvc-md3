@@ -111,7 +111,6 @@ export default function VesselSchedule() {
           </MdTextButton>
           <MdFilledButton
             onClick={() => {
-              console.log(vesselSchedules);
               setPageState("search");
               setVesselData(
                 vesselList.find(

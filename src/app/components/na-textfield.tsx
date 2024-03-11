@@ -31,7 +31,7 @@ export const NAOutlinedTextField = ({
         }
         required={false}
       >
-        {props.value !== "" && props.label && (
+        {!props.disabled && props.value !== "" && props.label && (
           <MdIconButton
             slot="trailing-icon"
             onClick={() => {

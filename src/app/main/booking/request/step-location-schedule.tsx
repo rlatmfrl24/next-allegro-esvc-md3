@@ -247,13 +247,15 @@ export default function LoactionScheduleStep() {
                 className="bg-surfaceContainer rounded"
                 label="Estimated Time of Departure"
                 required
-                value={``}
+                value={locationScheduleData.departureDate.toFormat(
+                  "yyyy-MM-dd"
+                )}
               />
               <NAOutlinedTextField
                 disabled
                 label="Vessel Voyage"
                 required
-                value=""
+                value={locationScheduleData.vessel.consortiumVoyage}
               />
             </div>
           )}
@@ -365,13 +367,14 @@ export default function LoactionScheduleStep() {
           endDate: DateTime.now(),
         }}
         onSelection={(vaule) => {
-          console.log("selected", vaule);
           setLoactionScheduleData((prev) => ({
             ...prev,
             originPort: vaule.origin,
             destinationPort: vaule.destination,
             pol: vaule.origin.code,
             pod: vaule.destination.code,
+            departureDate: vaule.departureDate,
+            vessel: vaule.vesselInfo,
           }));
         }}
       />
