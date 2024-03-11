@@ -10,11 +10,6 @@ import {
   MdIcon,
   MdIconButton,
 } from "@/app/util/md3";
-import {
-  CutOffDataType,
-  PlaceInformationType,
-  PtPScheduleType,
-} from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import {
   AccessTime,
@@ -36,6 +31,11 @@ import {
   createDummyVesselInformation,
 } from "../../util";
 import CutOffTooltip from "./cut-off-tooltip";
+import {
+  PtPScheduleType,
+  PlaceInformationType,
+  CutOffDataType,
+} from "@/app/util/typeDef/schedule";
 
 export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);

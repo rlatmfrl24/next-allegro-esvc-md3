@@ -2,7 +2,8 @@ import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import VesselScheduleDialog from "@/app/main/schedule/popup/vessel-schedule";
 import { createDummaryVesselSchedules } from "@/app/main/schedule/util";
-import { BookingStatusTableProps, VesselInfoType } from "@/app/util/typeDef";
+import { BookingStatusTableProps } from "@/app/util/typeDef/boooking";
+import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { useState } from "react";
 
 const VesselInfoCell = (row: BookingStatusTableProps) => {

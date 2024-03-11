@@ -2,10 +2,10 @@ import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
 import { MdChipSet } from "@/app/util/md3";
 import LabelChip from "@/app/components/label-chip";
-import { ContactInformationType } from "@/app/util/typeDef";
 import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking-request.store";
 import { useRouter } from "next/navigation";
+import { ContactInformationType } from "@/app/util/typeDef/boooking";
 
 export default function ContactInformationSection({
   data,

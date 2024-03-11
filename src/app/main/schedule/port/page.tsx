@@ -11,10 +11,6 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import { MdFilledButton, MdIcon, MdTextButton } from "@/app/util/md3";
-import {
-  PortScheduleSearchConditionType,
-  PortScheduleType,
-} from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import DownloadIcon from "@mui/icons-material/Download";
 
@@ -22,6 +18,10 @@ import EmptyResultPlaceholder from "../empty-placeholder";
 import { createDummyPortSchedules } from "../util";
 import PortResultTable from "./result-table";
 import PageTitle from "@/app/components/page-title";
+import {
+  PortScheduleSearchConditionType,
+  PortScheduleType,
+} from "@/app/util/typeDef/schedule";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();

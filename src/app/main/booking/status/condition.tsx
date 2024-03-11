@@ -16,7 +16,6 @@ import {
   MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
-import { PlaceInformationType, VesselInfoType } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import {
   autoUpdate,
@@ -33,6 +32,10 @@ import {
   createDummyPlaceInformation,
   createDummyVesselInformations,
 } from "../../schedule/util";
+import {
+  PlaceInformationType,
+  VesselInfoType,
+} from "@/app/util/typeDef/schedule";
 
 const filterOptions = [
   {

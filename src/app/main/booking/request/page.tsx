@@ -32,7 +32,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
 import { useRouter } from "next/navigation";
-import { BookingInformationRequestType } from "@/app/util/typeDef";
+import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);

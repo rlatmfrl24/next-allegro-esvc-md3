@@ -1,6 +1,9 @@
 import { MdDialog, MdTextButton } from "@/app/util/md3";
-import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import { VesselScheduleResult } from "../vessel/search-result";
+import {
+  VesselInfoType,
+  VesselScheduleType,
+} from "@/app/util/typeDef/schedule";
 
 export default function VesselScheduleDialog({
   open,

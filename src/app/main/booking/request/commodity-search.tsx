@@ -10,7 +10,6 @@ import {
   MdListItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
 } from "@/app/util/md3";
-import { CommodityType } from "@/app/util/typeDef";
 import { faker } from "@faker-js/faker";
 import {
   autoUpdate,
@@ -23,6 +22,7 @@ import {
   useListNavigation,
 } from "@floating-ui/react";
 import { ArrowDropDown, CancelOutlined } from "@mui/icons-material";
+import { CommodityType } from "@/app/util/typeDef/boooking";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase

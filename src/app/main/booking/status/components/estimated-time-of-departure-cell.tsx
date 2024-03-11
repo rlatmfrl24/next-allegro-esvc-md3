@@ -1,9 +1,9 @@
 import { MdTypography } from "@/app/components/typography";
-import { BookingStatusTableProps } from "@/app/util/typeDef";
 import { useState } from "react";
 import VesselStatusNotesDialog from "./vessel-status-notes";
 import Portal from "@/app/components/portal";
 import { Info } from "@mui/icons-material";
+import { BookingStatusTableProps } from "@/app/util/typeDef/boooking";
 
 const EstimatedTimeofDepartureCell = (row: BookingStatusTableProps) => {
   const [isVesselStatusNotesDialogOpen, setIsVesselStatusNotesDialogOpen] =

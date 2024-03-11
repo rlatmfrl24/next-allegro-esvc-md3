@@ -11,9 +11,12 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { PtPScheduleType, PtPSearchConditionType } from "@/app/util/typeDef";
 import { BasicTable } from "@/app/components/basic-table";
 import { useEffect, useMemo, useState } from "react";
+import {
+  PtPScheduleType,
+  PtPSearchConditionType,
+} from "@/app/util/typeDef/schedule";
 
 export default function SearchScheduleDialog({
   open,

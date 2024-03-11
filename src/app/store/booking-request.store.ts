@@ -1,17 +1,16 @@
 import { DateTime } from "luxon";
 import { atom } from "recoil";
 import {
-  AdditionalInformatioType,
-  BookingInformationRequestType,
-  CargoPickUpReturnType,
-  CommodityType,
   ContactInformationType,
   LocationScheduleType,
   PartiesType,
   PartyInterface,
-  PlaceInformationType,
-  VesselInfoType,
-} from "../util/typeDef";
+  CargoPickUpReturnType,
+  CommodityType,
+  AdditionalInformatioType,
+  BookingInformationRequestType,
+} from "../util/typeDef/boooking";
+import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 
 export const BookingRequestStepState = atom({
   key: "bookingRequestStepState",

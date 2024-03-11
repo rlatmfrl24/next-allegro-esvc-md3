@@ -1,8 +1,8 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdDialog, MdTextButton } from "@/app/util/md3";
-import { VesselInfoType } from "@/app/util/typeDef";
 import React from "react";
 import VesselIcon from "@/../public/icon_vessel.svg";
+import { VesselInfoType } from "@/app/util/typeDef/schedule";
 
 export default function VesselInformationDialog({
   open,

@@ -12,11 +12,11 @@ import { useCalendar } from "@h6s/calendar";
 import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { PtPScheduleType } from "@/app/util/typeDef";
 import Portal from "@/app/components/portal";
 import { useState } from "react";
 import PointToPointListResult from "./result-list";
 import LabelChip from "@/app/components/label-chip";
+import { PtPScheduleType } from "@/app/util/typeDef/schedule";
 
 const ViewMoreButton = ({
   cnt,

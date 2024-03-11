@@ -15,14 +15,12 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import {
-  FloatingFocusManager,
   autoUpdate,
   offset,
   shift,

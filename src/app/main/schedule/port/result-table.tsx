@@ -8,12 +8,6 @@ import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import { MdFilledTonalButton } from "@/app/util/md3";
 import {
-  PlaceInformationType,
-  PortScheduleType,
-  VesselInfoType,
-  VesselScheduleType,
-} from "@/app/util/typeDef";
-import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
@@ -21,6 +15,12 @@ import {
 
 import PlaceInformationDialog from "../popup/place-information";
 import VesselScheduleDialog from "../popup/vessel-schedule";
+import {
+  PortScheduleType,
+  PlaceInformationType,
+  VesselInfoType,
+  VesselScheduleType,
+} from "@/app/util/typeDef/schedule";
 
 export default function PortResultTable({
   data,

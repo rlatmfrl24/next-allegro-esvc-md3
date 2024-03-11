@@ -3,7 +3,6 @@
 import PageTitle from "@/app/components/page-title";
 import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
-import LocationScheduleSection from "../../components/location-schedule";
 
 export default function BookingConfirmationInformation() {
   const cx = classNames.bind(styles);

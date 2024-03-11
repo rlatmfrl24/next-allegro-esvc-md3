@@ -6,8 +6,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
-import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import VesselInformationDialog from "../popup/vessel-information";
+import {
+  VesselInfoType,
+  VesselScheduleType,
+} from "@/app/util/typeDef/schedule";
 
 export function VesselScheduleResult({
   vesselData,

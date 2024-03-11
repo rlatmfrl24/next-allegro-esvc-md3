@@ -1,10 +1,5 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon } from "@/app/util/md3";
-import {
-  DashboardCardInfoType,
-  DashboardInputCardDataType,
-  DashboardStatisticCardDataType,
-} from "@/app/util/typeDef";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { motion } from "framer-motion";
 import QuickInquiry from "@/app/components/quick/inquiry";
@@ -13,6 +8,11 @@ import QuickNotice from "@/app/components/quick/notice";
 import QuickTracking from "@/app/components/quick/tracking";
 import QuickAttachment from "@/app/components/quick/attachment";
 import QuickSchedule from "@/app/components/quick/schedule";
+import {
+  DashboardInputCardDataType,
+  DashboardStatisticCardDataType,
+  DashboardCardInfoType,
+} from "@/app/util/typeDef/generic";
 
 export function InputCard(props: DashboardInputCardDataType) {
   return (

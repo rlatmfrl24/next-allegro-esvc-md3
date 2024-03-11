@@ -2,7 +2,6 @@
 
 import { MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { useEffect, useMemo, useState } from "react";
-import { VesselInfoType, VesselScheduleType } from "@/app/util/typeDef";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import ConditionSummary from "./condition-summary";
 import EmptyResultPlaceholder from "../empty-placeholder";
@@ -16,6 +15,10 @@ import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { VesselScheduleResult } from "./search-result";
 import PageTitle from "@/app/components/page-title";
+import {
+  VesselInfoType,
+  VesselScheduleType,
+} from "@/app/util/typeDef/schedule";
 
 export default function VesselSchedule() {
   const emptyVesselData: VesselInfoType = {
