@@ -13,7 +13,9 @@ import {
   CSSProperties,
   Dispatch,
   SetStateAction,
+  useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -34,6 +36,7 @@ import {
 import { MdTypography } from "@/app/components/typography";
 import ClearIcon from "@mui/icons-material/Clear";
 import RestoreIcon from "@mui/icons-material/Restore";
+import { getCookie, setCookie } from "cookies-next";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -43,12 +46,15 @@ export const SearchTextField = ({
   itemList,
   selectionItems,
   maxSelectionCount,
+  recentCookieKey,
   handleItemSelection,
   ...props
 }: {
   itemList: string[];
   selectionItems: string[];
   maxSelectionCount: number;
+  recentCookieKey?: string;
+
   handleItemSelection: Dispatch<SetStateAction<string[]>>;
 } & MdOutlinedTextFieldProps) => {
   const [value, setValue] = useState(props.value || "");
@@ -57,7 +63,33 @@ export const SearchTextField = ({
   const listRef = useRef<any[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
-  const [recentItems, setRecentItems] = useState<string[]>([]);
+
+  const recentItems = recentCookieKey
+    ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
+    : ([] as string[]);
+
+  function setRecentItems(value: string) {
+    const maxRecentItems = 5;
+
+    if (recentCookieKey) {
+      const recent = JSON.parse(getCookie(recentCookieKey) || "[]") as string[];
+      if (recent.includes(value)) {
+        const index = recent.indexOf(value);
+        recent.splice(index, 1);
+        recent.unshift(value);
+      } else {
+        recent.unshift(value);
+      }
+
+      if (recent.length > maxRecentItems) {
+        recent.pop();
+      }
+
+      setCookie(recentCookieKey, JSON.stringify(recent), {
+        maxAge: 31536000,
+      });
+    }
+  }
 
   const { refs, floatingStyles, context } = useFloating({
     open: isMenuOpen,
@@ -95,15 +127,7 @@ export const SearchTextField = ({
     ) {
       handleItemSelection([...selectionItems, item]);
     }
-    // add recent items max 5
-    setRecentItems((previous) => {
-      if (previous.includes(item)) {
-        const index = previous.indexOf(item);
-        previous.splice(index, 1);
-        return [item, ...previous];
-      }
-      return [item, ...previous].slice(0, 5);
-    });
+    setRecentItems(item.toUpperCase());
     setValue("");
     setIsMenuOpen(false);
   }
@@ -111,6 +135,24 @@ export const SearchTextField = ({
   useEffect(() => {
     handleItemSelection(selectionItems);
   }, [handleItemSelection, selectionItems]);
+
+  const showRecommand = useCallback(() => {
+    if (recentItems.length > 0) {
+      return true;
+    }
+
+    if (value.length > 2) {
+      const queryResult = itemList.filter((value) => {
+        return value.toLowerCase().includes(value.toLowerCase());
+      });
+
+      if (queryResult.length > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [itemList, recentItems.length, value.length]);
 
   return (
     <div ref={containerRef} className="flex flex-1 flex-col gap-2 relative">
@@ -164,7 +206,7 @@ export const SearchTextField = ({
           </MdIconButton>
         )}
       </MdOutlinedTextFieldBase>
-      {isMenuOpen && (
+      {showRecommand() && isMenuOpen && (
         <div
           ref={refs.setFloating}
           style={

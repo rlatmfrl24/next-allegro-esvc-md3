@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  MdElevation,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
@@ -17,28 +16,7 @@ import { PtPScheduleType } from "@/app/util/typeDef";
 import Portal from "@/app/components/portal";
 import { useState } from "react";
 import PointToPointListResult from "./result-list";
-import { Data } from "@dnd-kit/core";
-import { dir } from "console";
-
-const LabelChip = ({
-  label,
-  isCurrentMonth = true,
-}: {
-  label: string;
-  isCurrentMonth?: boolean;
-}) => {
-  return (
-    <MdTypography
-      variant="label"
-      size="large"
-      className={`py-1.5 px-4 h-fit min-h-fit bg-primaryContainer text-onPrimaryContainer rounded-lg inline-block overflow-hidden whitespace-nowrap text-ellipsis ${
-        !isCurrentMonth && "opacity-30"
-      }`}
-    >
-      {label}
-    </MdTypography>
-  );
-};
+import LabelChip from "@/app/components/label-chip";
 
 const ViewMoreButton = ({
   cnt,
@@ -63,7 +41,7 @@ const ViewMoreButton = ({
 function classifyByDate(list: PtPScheduleType[]) {
   const result: Record<string, PtPScheduleType[]> = {};
   list.forEach((item) => {
-    const date = item.departure;
+    const date = item.departureDate;
     const key = date.toISO()?.split("T")[0];
     if (key) {
       if (!result[key]) {
@@ -217,14 +195,14 @@ export default function PointToPointCalendarResult({
                 </MdTypography>
                 {list[0] && (
                   <LabelChip
-                    label={list[0].vesselName}
-                    isCurrentMonth={isCurrentMonth}
+                    label={list[0].vesselInfo.vesselName}
+                    className={isCurrentDate ? "" : "opacity-30"}
                   />
                 )}
                 {list[1] && (
                   <LabelChip
-                    label={list[1].vesselName}
-                    isCurrentMonth={isCurrentMonth}
+                    label={list[1].vesselInfo.vesselName}
+                    className={isCurrentDate ? "" : "opacity-30"}
                   />
                 )}
                 {list.length > 2 && (

@@ -1,5 +1,5 @@
 .display {
-  @apply font-pretendard;
+  @apply font-pretendard font-semibold;
 }
 
 .display.large {
@@ -15,7 +15,7 @@
 }
 
 .headline {
-  @apply font-pretendard;
+  @apply font-pretendard font-semibold;
 }
 
 .headline.large {
@@ -31,7 +31,7 @@
 }
 
 .title {
-  @apply font-pretendard;
+  @apply font-pretendard font-semibold;
 }
 
 .title.large {
@@ -39,11 +39,11 @@
 }
 
 .title.medium {
-  @apply text-[16px] leading-[24px] tracking-[0.15px] font-medium;
+  @apply text-[16px] leading-[24px] tracking-[0.15px];
 }
 
 .title.small {
-  @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium;
+  @apply text-[14px] leading-[20px] tracking-[0.1px];
 }
 
 .body {

@@ -1,4 +1,3 @@
-import { UseOverlayScrollbarsInstance } from "overlayscrollbars-react";
 import { atom } from "recoil";
 
 const UserState = atom({

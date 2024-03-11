@@ -185,11 +185,11 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
 
   const cutoffData = useMemo(() => {
     return {
-      documentation: item.departure.minus({ days: 1 }),
-      EDI: item.departure.minus({ hours: 3 }),
-      cargo: item.departure.minus({ hours: 6 }),
+      documentation: item.departureDate.minus({ days: 1 }),
+      EDI: item.departureDate.minus({ hours: 3 }),
+      cargo: item.departureDate.minus({ hours: 6 }),
     };
-  }, [item.departure]);
+  }, [item.departureDate]);
 
   const detailInfo = useMemo(() => {
     return {
@@ -218,8 +218,8 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                 item={createDummyPlaceInformation(faker.location.city())}
                 time={DateTime.fromJSDate(
                   faker.date.between(
-                    item.departure.toJSDate(),
-                    item.arrival.toJSDate()
+                    item.departureDate.toJSDate(),
+                    item.arrivalDate.toJSDate()
                   )
                 )}
               />
@@ -231,7 +231,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item.arrival, item.departure]);
+  }, [item.arrivalDate, item.departureDate]);
 
   const tempVesselInfo = useMemo(() => {
     return createDummyVesselInformation();
@@ -280,7 +280,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                 size="medium"
                 className="text-outline w-fit"
               >
-                {item.departure.toFormat("yyyy-MM-dd")}
+                {item.departureDate.toFormat("yyyy-MM-dd")}
               </MdTypography>
               <CutOffTooltip data={cutoffData} />
             </div>
@@ -292,7 +292,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                     setIsVesselScheduleOpen(true);
                   }}
                 >
-                  {item.vesselName}
+                  {item.vesselInfo.vesselName}
                 </span>
               </MdTypography>
               <MdTypography variant="body" size="medium" className="flex">
@@ -329,7 +329,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                 size="medium"
                 className="text-outline w-fit"
               >
-                {item.arrival.toFormat("yyyy-MM-dd")}
+                {item.arrivalDate.toFormat("yyyy-MM-dd")}
               </MdTypography>
             </div>
           </div>
@@ -400,14 +400,14 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                 <div className="flex flex-col gap-6 mt-6">
                   <VesselPortComponent
                     item={item.origin}
-                    time={item.departure}
+                    time={item.departureDate}
                     cutOff={cutoffData}
                     portState="origin"
                   />
                   {middleRoutes}
                   <VesselPortComponent
                     item={item.destination}
-                    time={item.arrival}
+                    time={item.arrivalDate}
                     portState="destination"
                   />
                 </div>

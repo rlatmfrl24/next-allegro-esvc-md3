@@ -33,10 +33,13 @@ import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { DateSelector } from "./date-selector";
 import styles from "@/app/styles/datepicker.module.css";
+import { MdTypography } from "../typography";
 
 export const MdSingleDatePicker = (props: {
+  label?: string;
   defaultDate?: DateTime;
   className?: string;
+  required?: boolean;
   handleDateChange?: (date: DateTime) => void;
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -46,7 +49,7 @@ export const MdSingleDatePicker = (props: {
   const { refs, floatingStyles, context } = useFloating({
     open: isCalendarOpen,
     onOpenChange: setIsCalendarOpen,
-    middleware: [offset(10), flip(), shift()],
+    middleware: [offset(10), shift()],
     placement: "bottom-start",
     whileElementsMounted: autoUpdate,
   });
@@ -123,9 +126,9 @@ export const MdSingleDatePicker = (props: {
     <div className={`relative flex ${props.className}`} ref={refs.setReference}>
       <MdOutlinedTextField
         ref={inputEl}
+        label={props.label}
         className="flex-1"
         value={defaultDate.toFormat("MM/dd/yyyy")}
-        supportingText="MM/DD/YYYY"
         errorText="Invalid date format"
         error={invalid}
         onBlur={(e) => {
@@ -138,7 +141,7 @@ export const MdSingleDatePicker = (props: {
           </MdIcon>
         </MdIconButton>
       </MdOutlinedTextField>
-      <FloatingFocusManager context={context} modal={true}>
+      <FloatingFocusManager context={context} modal={false}>
         <div
           className={isCalendarOpen ? "visible z-20" : "invisible"}
           ref={refs.setFloating}
@@ -188,6 +191,15 @@ export const MdSingleDatePicker = (props: {
           </motion.div>
         </div>
       </FloatingFocusManager>
+      {props.required && (
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-error absolute top-0.5 left-1.5"
+        >
+          *
+        </MdTypography>
+      )}
     </div>
   );
 };

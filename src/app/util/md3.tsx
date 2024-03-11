@@ -43,6 +43,8 @@ import { MdDialog as MdDialogWebComponent } from "@material/web/dialog/dialog";
 import { MdList as MdListWebComponent } from "@material/web/list/list";
 import { MdListItem as MdListItemWebComponent } from "@material/web/list/list-item";
 
+import { MdFilledSelect as MdFilledSelectWebComponent } from "@material/web/select/filled-select";
+
 export const MdRippleEffect = createComponent({
   tagName: "md-ripple",
   elementClass: MdRipple,
@@ -92,6 +94,9 @@ export const MdCheckbox = createComponent({
   tagName: "md-checkbox",
   elementClass: MdCheckboxWebComponent,
   react: React,
+  events: {
+    onchange: "change",
+  },
 });
 
 export const MdIcon = createComponent({
@@ -319,4 +324,13 @@ export const MdListItem = createComponent({
   tagName: "md-list-item",
   elementClass: MdListItemWebComponent,
   react: React,
+});
+
+export const MdFilledSelect = createComponent({
+  tagName: "md-filled-select",
+  elementClass: MdFilledSelectWebComponent,
+  react: React,
+  events: {
+    onchange: "change",
+  },
 });

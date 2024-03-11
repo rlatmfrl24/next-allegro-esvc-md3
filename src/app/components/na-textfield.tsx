@@ -15,23 +15,27 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 
 export const NAOutlinedTextField = ({
   handleValueChange,
+  className,
   ...props
 }: {
-  handleValueChange: (value: string) => void;
+  handleValueChange?: (value: string) => void;
+  className?: string;
 } & MdOutlinedTextFieldProps) => {
   return (
-    <div className="relative flex">
+    <div className={`relative flex ${className}`}>
       <MdOutlinedTextFieldBase
         {...props}
         className="flex-1"
-        onInput={(e) => handleValueChange((e.target as HTMLInputElement).value)}
+        onInput={(e) =>
+          handleValueChange?.((e.target as HTMLInputElement).value)
+        }
         required={false}
       >
-        {props.value !== "" && props.label && (
+        {!props.disabled && props.value !== "" && props.label && (
           <MdIconButton
             slot="trailing-icon"
             onClick={() => {
-              handleValueChange("");
+              handleValueChange?.("");
             }}
           >
             <MdIcon>

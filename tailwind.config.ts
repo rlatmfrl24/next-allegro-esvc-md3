@@ -71,6 +71,11 @@ const config: Config = {
         surfaceContainerHigh: "var(--md-sys-color-surface-container-high)",
         surfaceContainerHighest:
           "var(--md-sys-color-surface-container-highest)",
+
+        extendGoodContainer: "#B4F1BD",
+        extendOnGoodContainer: "#00210B",
+        extendPendingContainer: "#FCE186",
+        extendOnPendingContainer: "#231B00",
       },
     },
   },
