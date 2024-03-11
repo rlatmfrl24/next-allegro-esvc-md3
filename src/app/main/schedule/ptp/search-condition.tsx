@@ -228,6 +228,7 @@ export default function SearchCondition({
             selectionItems={originList}
             maxSelectionCount={originLimit}
             handleItemSelection={setOriginList}
+            recentCookieKey="recent-port"
             errorText="Please select origin"
             error={isOriginError}
           />
@@ -242,6 +243,7 @@ export default function SearchCondition({
             maxSelectionCount={destinationLimit}
             handleItemSelection={setDestinationList}
             errorText="Please select destination"
+            recentCookieKey="recent-port"
             error={isDestinationError}
           />
         </div>

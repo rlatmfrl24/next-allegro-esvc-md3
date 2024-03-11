@@ -1,4 +1,11 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   MdElevation,
   MdIcon,
@@ -23,6 +30,7 @@ import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { MdTypography } from "./typography";
 import RestoreIcon from "@mui/icons-material/Restore";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -32,7 +40,7 @@ export default function NAOutlinedAutoComplete({
   itemList,
   icon,
   required,
-  recentItems,
+  recentCookieKey,
   initialValue,
   onSelection,
   className,
@@ -40,7 +48,7 @@ export default function NAOutlinedAutoComplete({
 }: {
   itemList: string[];
   required?: boolean;
-  recentItems?: string[];
+  recentCookieKey?: string;
   icon?: React.ReactNode;
   initialValue?: string;
   onSelection?: (value: string) => void;
@@ -50,6 +58,34 @@ export default function NAOutlinedAutoComplete({
   const [defaultValue, setDefaultValue] = useState(initialValue || "");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const recentItems = recentCookieKey
+    ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
+    : ([] as string[]);
+
+  function setRecentItems(value: string) {
+    const maxRecentItems = 5;
+
+    if (recentCookieKey) {
+      const recent = JSON.parse(getCookie(recentCookieKey) || "[]") as string[];
+      if (recent.includes(value)) {
+        const index = recent.indexOf(value);
+        recent.splice(index, 1);
+        recent.unshift(value);
+      } else {
+        recent.unshift(value);
+      }
+
+      if (recent.length > maxRecentItems) {
+        recent.pop();
+      }
+
+      setCookie(recentCookieKey, JSON.stringify(recent), {
+        maxAge: 31536000,
+      });
+    }
+  }
+
   const listRef = useRef<any[]>([]);
 
   const { refs, floatingStyles, context } = useFloating({
@@ -99,7 +135,26 @@ export default function NAOutlinedAutoComplete({
     setDefaultValue(item);
     setIsListOpen(false);
     onSelection?.(item);
+    item !== "" && setRecentItems(item);
   }
+
+  const showRecommand = useCallback(() => {
+    if (recentItems.length > 0) {
+      return true;
+    }
+
+    if (query.length > 2) {
+      const queryResult = itemList.filter((value) => {
+        return value.toLowerCase().includes(query.toLowerCase());
+      });
+
+      if (queryResult.length > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [itemList, query, recentItems.length]);
 
   return (
     <div className={`relative ${className}`}>
@@ -136,7 +191,7 @@ export default function NAOutlinedAutoComplete({
           </div> */}
         </div>
       </MdOutlinedTextFieldBase>
-      {(query.length > 2 || recentItems?.length !== 0) && isListOpen && (
+      {showRecommand() && isListOpen && (
         <div
           ref={refs.setFloating}
           style={

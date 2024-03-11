@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
@@ -17,6 +17,10 @@ import {
 
 import CommodityAutoComplete from "./commodity-search";
 import { SubTitle } from "./components";
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import { createDummyPlaceInformation } from "../../schedule/util";
+import { faker } from "@faker-js/faker";
+import { PlaceInformationType } from "@/app/util/typeDef";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -73,6 +77,14 @@ export default function CargoStep() {
       }));
     }
   }, [ValidateRequired, setBookingRequestStep]);
+
+  const portList = useMemo(() => {
+    return Array.from({ length: 50 }, (_, i) =>
+      createDummyPlaceInformation(
+        (faker.location.city() + ", " + faker.location.country()).toUpperCase()
+      )
+    );
+  }, []);
 
   return (
     <div className="w-full flex flex-col">
@@ -171,29 +183,38 @@ export default function CargoStep() {
           </div>
         </div>
         <div className="flex gap-4">
-          <MdOutlinedTextField
+          <NAOutlinedAutoComplete
             className="flex-1"
             label="Empty Pick Up CY/Depot"
             placeholder="Empty Pick Up CY/Depot (Prefered)"
-            value={cargoPickUpReturnData.emptyPickUpLocation.yardName}
-            onInput={(e) => {
+            recentCookieKey="recent-port"
+            initialValue={cargoPickUpReturnData.emptyPickUpLocation.yardName}
+            itemList={portList.map((port) => port.yardName)}
+            onSelection={(value) => {
+              let selectedPort = portList.find(
+                (port) => port.yardName === value
+              );
+
+              if (value !== "" && selectedPort === undefined) {
+                selectedPort = createDummyPlaceInformation(value);
+              }
+
               setCargoPickUpReturnData((prev) => {
                 return {
                   ...prev,
-                  emptyPickUpLocation: {
-                    ...prev.emptyPickUpLocation,
-                    yardName: e.currentTarget.value,
-                  },
+                  emptyPickUpLocation:
+                    selectedPort || ({} as PlaceInformationType),
                 };
               });
             }}
           />
+
           <div className="flex-1 flex gap-4">
             <MdOutlinedTextField
               disabled
               label="Code"
               className="flex-1"
-              value={cargoPickUpReturnData.emptyPickUpLocation.code}
+              value={cargoPickUpReturnData.emptyPickUpLocation.code || ""}
               onInput={(e) => {
                 setCargoPickUpReturnData((prev) => {
                   return {
@@ -211,7 +232,7 @@ export default function CargoStep() {
               disabled
               label="Address"
               className="flex-1"
-              value={cargoPickUpReturnData.emptyPickUpLocation.address}
+              value={cargoPickUpReturnData.emptyPickUpLocation.address || ""}
               onInput={(e) => {
                 setCargoPickUpReturnData((prev) => {
                   return {
@@ -240,28 +261,37 @@ export default function CargoStep() {
           <div className="flex-1"></div>
         </div>
         <div className="flex gap-4">
-          <MdOutlinedTextField
+          <NAOutlinedAutoComplete
             className="flex-1"
             label="Full Container Return CY"
             value={cargoPickUpReturnData.fullReturnLocation.yardName}
-            onInput={(e) => {
+            itemList={portList.map((port) => port.yardName)}
+            recentCookieKey="recent-port"
+            onSelection={(value) => {
+              let selectedPort = portList.find(
+                (port) => port.yardName === value
+              );
+
+              if (value !== "" && selectedPort === undefined) {
+                selectedPort = createDummyPlaceInformation(value);
+              }
+
               setCargoPickUpReturnData((prev) => {
                 return {
                   ...prev,
-                  fullReturnLocation: {
-                    ...prev.fullReturnLocation,
-                    yardName: e.currentTarget.value,
-                  },
+                  fullReturnLocation:
+                    selectedPort || ({} as PlaceInformationType),
                 };
               });
             }}
           />
+
           <div className="flex-1 flex gap-4">
             <MdOutlinedTextField
               disabled
               label="Code"
               className="flex-1"
-              value={cargoPickUpReturnData.fullReturnLocation.code}
+              value={cargoPickUpReturnData.fullReturnLocation.code || ""}
               onInput={(e) => {
                 setCargoPickUpReturnData((prev) => {
                   return {
@@ -278,7 +308,7 @@ export default function CargoStep() {
               disabled
               label="Address"
               className="flex-1"
-              value={cargoPickUpReturnData.fullReturnLocation.address}
+              value={cargoPickUpReturnData.fullReturnLocation.address || ""}
               onInput={(e) => {
                 setCargoPickUpReturnData((prev) => {
                   return {

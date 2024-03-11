@@ -37,7 +37,9 @@ export default function LoactionScheduleStep() {
 
   const portList = useMemo(() => {
     return Array.from({ length: 30 }, (_, i) =>
-      createDummyPlaceInformation(faker.location.city())
+      createDummyPlaceInformation(
+        (faker.location.city() + ", " + faker.location.country()).toUpperCase()
+      )
     );
   }, []);
 
@@ -60,8 +62,8 @@ export default function LoactionScheduleStep() {
 
   const ValidateRequired = useCallback(() => {
     if (
-      locationScheduleData.originPort === ({} as PlaceInformationType) ||
-      locationScheduleData.destinationPort === ({} as PlaceInformationType) ||
+      locationScheduleData.originPort.yardName === undefined ||
+      locationScheduleData.destinationPort.yardName === undefined ||
       locationScheduleData.bookingOffice === ""
     ) {
       return false;
@@ -73,7 +75,7 @@ export default function LoactionScheduleStep() {
     setBookingRequestStep((prev) => ({
       ...prev,
       locationSchedule: {
-        ...prev.parties,
+        ...prev.locationSchedule,
         isSelected: false,
       },
       parties: {
@@ -159,11 +161,15 @@ export default function LoactionScheduleStep() {
               label="Origin"
               icon={<FmdGoodOutlined />}
               className="flex-1"
+              recentCookieKey="recent-port"
               initialValue={locationScheduleData.originPort.yardName}
               onSelection={(value) => {
-                const selectedPort = portList.find(
+                let selectedPort = portList.find(
                   (port) => port.yardName === value
                 );
+                if (value !== "" && selectedPort === undefined) {
+                  selectedPort = createDummyPlaceInformation(value);
+                }
                 setLoactionScheduleData((prev) => ({
                   ...prev,
                   originPort: selectedPort || ({} as PlaceInformationType),
@@ -202,11 +208,17 @@ export default function LoactionScheduleStep() {
               label="Destination"
               icon={<FmdGoodOutlined />}
               className="flex-1"
+              recentCookieKey="recent-port"
               initialValue={locationScheduleData.destinationPort.yardName}
               onSelection={(value) => {
-                const selectedPort = portList.find(
+                let selectedPort = portList.find(
                   (port) => port.yardName === value
                 );
+
+                if (value !== "" && selectedPort === undefined) {
+                  selectedPort = createDummyPlaceInformation(value);
+                }
+
                 setLoactionScheduleData((prev) => ({
                   ...prev,
                   destinationPort: selectedPort || ({} as PlaceInformationType),
@@ -360,8 +372,20 @@ export default function LoactionScheduleStep() {
         open={isSearchScheduleDialogOpen}
         handleOpen={setIsSearchScheduleDialogOpen}
         condition={{
-          origins: [faker.location.city()],
-          destinations: [faker.location.city()],
+          origins: [
+            (
+              faker.location.city() +
+              ", " +
+              faker.location.country()
+            ).toUpperCase(),
+          ],
+          destinations: [
+            (
+              faker.location.city() +
+              ", " +
+              faker.location.country()
+            ).toUpperCase(),
+          ],
           searchOn: "departure",
           startDate: DateTime.now().minus({ days: 7 }),
           endDate: DateTime.now(),

@@ -169,6 +169,7 @@ export default function AdditionalInformationStep() {
       <SubTitle title="Email Notification Subscription" className="mt-6" />
       <div className="flex flex-col">
         <NaToggleButton
+          className="w-fit"
           label="Roll-Over (Including T/S)"
           state={
             AdditionalInformationData.emailSubscription.rollOver
@@ -188,6 +189,7 @@ export default function AdditionalInformationStep() {
           }}
         />
         <NaToggleButton
+          className="w-fit"
           label="Vessel Departure"
           state={
             AdditionalInformationData.emailSubscription.vesselDeparture
@@ -207,6 +209,7 @@ export default function AdditionalInformationStep() {
           }}
         />
         <NaToggleButton
+          className="w-fit"
           label="Vessel Advance / Delay"
           state={
             AdditionalInformationData.emailSubscription.vesselAdvanceDelay

@@ -42,7 +42,6 @@ export default function VesselSchedule() {
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
-  const [recentVesselQueries, setRecentVesselQueries] = useState<string[]>([]);
   const [vesselData, setVesselData] = useState<VesselInfoType>(emptyVesselData);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [vesselSchedules] = useState<VesselScheduleType[]>(
@@ -78,20 +77,10 @@ export default function VesselSchedule() {
           label="Vessel Name"
           required
           icon={<VesselIcon />}
-          recentItems={recentVesselQueries}
+          recentCookieKey="recent-vessel"
           itemList={vesselList.map((vessel) => vessel.vesselName)}
           onSelection={(value) => {
             setVesselQuery(value === "" ? "" : value);
-            if (value !== "") {
-              setRecentVesselQueries((previous) => {
-                if (previous.includes(value)) {
-                  const index = previous.indexOf(value);
-                  previous.splice(index, 1);
-                  return [value, ...previous];
-                }
-                return [value, ...previous].slice(0, 5);
-              });
-            }
           }}
         />
         <div className="flex justify-end gap-2">

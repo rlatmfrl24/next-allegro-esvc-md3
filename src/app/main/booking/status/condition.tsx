@@ -192,13 +192,16 @@ export default function BookingStatusCondition() {
 
   const OriginPortFilter = useMemo(() => {
     const portList = Array.from({ length: 50 }, (_, i) => {
-      return createDummyPlaceInformation(faker.location.city());
+      return createDummyPlaceInformation(
+        (faker.location.city() + ", " + faker.location.country()).toUpperCase()
+      );
     });
 
     return (
       <NAOutlinedAutoComplete
         label="Origin"
         itemList={portList.map((port) => port.yardName)}
+        recentCookieKey="recent-port"
         onSelection={(selected) => {
           const selectedPort = portList.find(
             (port) => port.yardName === selected
@@ -216,13 +219,16 @@ export default function BookingStatusCondition() {
 
   const DestinationPortFilter = useMemo(() => {
     const portList = Array.from({ length: 50 }, (_, i) => {
-      return createDummyPlaceInformation(faker.location.city());
+      return createDummyPlaceInformation(
+        (faker.location.city() + ", " + faker.location.country()).toUpperCase()
+      );
     });
 
     return (
       <NAOutlinedAutoComplete
         label="Destination"
         itemList={portList.map((port) => port.yardName)}
+        recentCookieKey="recent-port"
         onSelection={(selected) => {
           const selectedPort = portList.find(
             (port) => port.yardName === selected
