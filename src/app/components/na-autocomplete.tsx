@@ -21,6 +21,7 @@ import {
   size,
   useDismiss,
   useFloating,
+  useFocus,
   useInteractions,
   useListNavigation,
   useRole,
@@ -76,6 +77,7 @@ export default function NAOutlinedAutoComplete({
     whileElementsMounted: autoUpdate,
   });
 
+  const focus = useFocus(context);
   const dismiss = useDismiss(context);
   const role = useRole(context);
   const listNavigation = useListNavigation(context, {
@@ -85,7 +87,7 @@ export default function NAOutlinedAutoComplete({
   });
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [dismiss, role, listNavigation]
+    [dismiss, role, listNavigation, focus]
   );
 
   useEffect(() => {
@@ -114,9 +116,6 @@ export default function NAOutlinedAutoComplete({
         ref={refs.setReference}
         {...getReferenceProps()}
         value={query}
-        focus={() => {
-          setIsListOpen(true);
-        }}
         className="w-full"
         required={false}
         onInput={(e) => {
@@ -136,16 +135,16 @@ export default function NAOutlinedAutoComplete({
               </MdIcon>
             </MdIconButton>
           )}
-          <div
+          {/* <div
             className={`w-10 h-10 flex items-center justify-center ${
               isListOpen ? "rotate-180" : ""
             }`}
           >
             <DownArrowIcon className="flex-1" />
-          </div>
+          </div> */}
         </div>
       </MdOutlinedTextFieldBase>
-      {isListOpen && (
+      {recentItems?.length !== 0 && query.length > 2 && isListOpen && (
         <div
           ref={refs.setFloating}
           style={
