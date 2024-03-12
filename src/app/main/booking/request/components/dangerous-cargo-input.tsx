@@ -18,6 +18,7 @@ import {
 } from "@/app/util/md3";
 
 import { Upload } from "@mui/icons-material";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 const DangerousCargoInput = ({
   container,
@@ -123,19 +124,11 @@ const DangerousCargoInput = ({
               disabled
               value={container.dangerousCargoInformation.flashPoint}
             />
-            <MdOutlinedSelect
+            <NAOutlinedListBox
               label="Package Group"
-              selectedIndex={
-                container.dangerousCargoInformation.packingGroup === "I"
-                  ? 1
-                  : container.dangerousCargoInformation.packingGroup === "II"
-                  ? 2
-                  : container.dangerousCargoInformation.packingGroup === "III"
-                  ? 3
-                  : 0
-              }
-              onchange={(e) => {
-                const value = (e.target as HTMLSelectElement).value;
+              options={["None", "I", "II", "III"]}
+              initialValue={container.dangerousCargoInformation.packingGroup}
+              onSelection={(value) => {
                 setContainerInformation((prev) => ({
                   ...prev,
                   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -151,12 +144,7 @@ const DangerousCargoInput = ({
                   ),
                 }));
               }}
-            >
-              <MdSelectOption value="None">None</MdSelectOption>
-              <MdSelectOption value="I">I</MdSelectOption>
-              <MdSelectOption value="II">II</MdSelectOption>
-              <MdSelectOption value="III">III</MdSelectOption>
-            </MdOutlinedSelect>
+            />
             <MdOutlinedTextField
               label="Proper Shipping Name"
               value={container.dangerousCargoInformation.properShippingName}

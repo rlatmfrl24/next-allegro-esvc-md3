@@ -20,6 +20,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { getEmptyContainerData } from "@/app/main/util";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 const DryContainerInputContainer = ({
   list,
@@ -69,33 +70,21 @@ const DryContainerInputContainer = ({
                   )}
 
                   <div className="flex gap-4 items-start">
-                    <MdOutlinedSelect
+                    <NAOutlinedListBox
                       label="Size"
-                      className="text-right"
-                      selectedIndex={
-                        container.size === "20ft"
-                          ? 0
-                          : container.size === "40ft"
-                          ? 1
-                          : container.size === "45ft"
-                          ? 2
-                          : 3
-                      }
-                      onchange={(e) => {
-                        const value = (e.target as HTMLSelectElement).value;
+                      className="w-52 text-right"
+                      suffixText="ft"
+                      initialValue={container.size.replaceAll("ft", "")}
+                      options={["20", "40", "45", "53"]}
+                      onSelection={(size) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           dry: prev.dry.map((c, i) =>
-                            i === index ? { ...c, size: value as any } : c
+                            i === index ? { ...c, size: size as any } : c
                           ),
                         }));
                       }}
-                    >
-                      <MdSelectOption value="20ft">{`20 ft`}</MdSelectOption>
-                      <MdSelectOption value="40ft">{`40 ft`}</MdSelectOption>
-                      <MdSelectOption value="45ft">{`45 ft`}</MdSelectOption>
-                      <MdSelectOption value="53ft">{`53 ft`}</MdSelectOption>
-                    </MdOutlinedSelect>
+                    />
                     <MdOutlinedTextField
                       label="Quantity / Total"
                       className="text-right"
