@@ -128,13 +128,61 @@ export type DangerousContainerInformationType = {
   dangerousCargoCertificate: File[];
 };
 
+export interface DryContainerInformationType extends ContainerInformationType {
+  type: ContainerType.dry;
+}
+
 export interface ReeferContainerInformationType
   extends ContainerInformationType {
   type: ContainerType.reefer;
-  temperatureUnit: "C" | "F";
+  temperatureUnit: "℃" | "℉";
   temperature: number;
   ventilation: string;
   nature: string;
   humidity: number;
   genset: boolean;
+}
+
+export interface OpenTopContainerInformationType
+  extends ContainerInformationType {
+  type: ContainerType.opentop;
+  isAwkward: boolean;
+  awkward: AwkwardContainerInformationType;
+}
+
+export interface FlatRackContainerInformationType
+  extends ContainerInformationType {
+  type: ContainerType.flatrack;
+  isAwkward: boolean;
+  awkward: AwkwardContainerInformationType;
+}
+
+export interface TankContainerInformationType extends ContainerInformationType {
+  type: ContainerType.tank;
+}
+
+export interface BulkContainerInformationInterface {
+  package: number;
+  packageType: string;
+  grossWeight: number;
+  grossWeightUnit: "KGS" | "LBS";
+  commodity: CommodityType;
+  length: number;
+  width: number;
+  height: number;
+  unit: "CM" | "INCH";
+}
+
+export interface BulkContainerInformationType
+  extends BulkContainerInformationInterface {
+  uuid: string;
+  type: ContainerType.bulk;
+  totalMeasurement: number;
+}
+
+export interface AwkwardContainerInformationType
+  extends BulkContainerInformationInterface {
+  netWeight: number;
+  netWeightUnit: "KGS" | "LBS";
+  remark: string;
 }

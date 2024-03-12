@@ -4,7 +4,10 @@ import { useSetRecoilState } from "recoil";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import { ContainerState } from "@/app/store/booking-request.store";
-import { ContainerInformationType } from "@/app/util/typeDef/boooking";
+import {
+  ContainerInformationType,
+  ContainerType,
+} from "@/app/util/typeDef/boooking";
 import {
   MdChipSet,
   MdInputChip,
@@ -18,9 +21,12 @@ import { Upload } from "@mui/icons-material";
 
 const DangerousCargoInput = ({
   container,
+  type,
 }: {
   container: ContainerInformationType;
+  type: ContainerType;
 }) => {
+  const typeKey = type.toString().toLowerCase();
   const setContainerInformation = useSetRecoilState(ContainerState);
   const fileRef = useRef<HTMLInputElement>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,8 +37,8 @@ const DangerousCargoInput = ({
       );
       setContainerInformation((prev) => ({
         ...prev,
-        dry: prev.dry.map((c) =>
-          c.uuid === container.uuid
+        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+          c.uuid === container.uuid && c.type !== ContainerType.bulk
             ? {
                 ...c,
                 dangerousCargoInformation: {
@@ -58,8 +64,8 @@ const DangerousCargoInput = ({
         onClick={() => {
           setContainerInformation((prev) => ({
             ...prev,
-            dry: prev.dry.map((c) =>
-              c.uuid === container.uuid
+            [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+              c.uuid === container.uuid && c.type !== ContainerType.bulk
                 ? { ...c, isDangerous: !c.isDangerous }
                 : c
             ),
@@ -76,8 +82,8 @@ const DangerousCargoInput = ({
                 const value = (e.target as HTMLInputElement).value;
                 setContainerInformation((prev) => ({
                   ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
+                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                    c.uuid === container.uuid && c.type !== ContainerType.bulk
                       ? {
                           ...c,
                           dangerousCargoInformation: {
@@ -97,8 +103,8 @@ const DangerousCargoInput = ({
                 const value = (e.target as HTMLInputElement).value;
                 setContainerInformation((prev) => ({
                   ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
+                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                    c.uuid === container.uuid && c.type !== ContainerType.bulk
                       ? {
                           ...c,
                           dangerousCargoInformation: {
@@ -132,8 +138,8 @@ const DangerousCargoInput = ({
                 const value = (e.target as HTMLSelectElement).value;
                 setContainerInformation((prev) => ({
                   ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
+                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                    c.uuid === container.uuid && c.type !== ContainerType.bulk
                       ? {
                           ...c,
                           dangerousCargoInformation: {
@@ -158,8 +164,8 @@ const DangerousCargoInput = ({
                 const value = (e.target as HTMLInputElement).value;
                 setContainerInformation((prev) => ({
                   ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
+                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                    c.uuid === container.uuid && c.type !== ContainerType.bulk
                       ? {
                           ...c,
                           dangerousCargoInformation: {
@@ -201,19 +207,21 @@ const DangerousCargoInput = ({
                       handleTrailingActionFocus={() => {
                         setContainerInformation((prev) => ({
                           ...prev,
-                          dry: prev.dry.map((c) =>
-                            c.uuid === container.uuid
-                              ? {
-                                  ...c,
-                                  dangerousCargoInformation: {
-                                    ...c.dangerousCargoInformation,
-                                    dangerousCargoCertificate:
-                                      c.dangerousCargoInformation.dangerousCargoCertificate.filter(
-                                        (item) => item.name !== file.name
-                                      ),
-                                  },
-                                }
-                              : c
+                          [typeKey]: prev[typeKey as keyof typeof prev].map(
+                            (c) =>
+                              c.uuid === container.uuid &&
+                              c.type !== ContainerType.bulk
+                                ? {
+                                    ...c,
+                                    dangerousCargoInformation: {
+                                      ...c.dangerousCargoInformation,
+                                      dangerousCargoCertificate:
+                                        c.dangerousCargoInformation.dangerousCargoCertificate.filter(
+                                          (item) => item.name !== file.name
+                                        ),
+                                    },
+                                  }
+                                : c
                           ),
                         }));
                       }}
