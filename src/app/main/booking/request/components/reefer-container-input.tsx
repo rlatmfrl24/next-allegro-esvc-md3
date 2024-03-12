@@ -4,9 +4,7 @@ import { ContainerState } from "@/app/store/booking-request.store";
 import {
   MdFilledTonalIconButton,
   MdIconButton,
-  MdOutlinedSelect,
   MdOutlinedTextField,
-  MdSelectOption,
 } from "@/app/util/md3";
 import {
   ContainerType,
@@ -16,6 +14,7 @@ import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import { useSetRecoilState } from "recoil";
 import DangerousCargoInput from "./dangerous-cargo-input";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 const ReeferContainerInput = ({
   list,
@@ -69,33 +68,12 @@ const ReeferContainerInput = ({
                         <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
                       )}
                       <div className="flex gap-4 items-start">
-                        <MdOutlinedSelect
+                        <NAOutlinedListBox
                           label="Size"
-                          className="text-right"
-                          selectedIndex={
-                            container.size === "20ft"
-                              ? 0
-                              : container.size === "40ft"
-                              ? 1
-                              : container.size === "45ft"
-                              ? 2
-                              : 3
-                          }
-                          onchange={(e) => {
-                            const value = (e.target as HTMLSelectElement).value;
-                            setContainerInformation((prev) => ({
-                              ...prev,
-                              reefer: prev.reefer.map((c, i) =>
-                                i === index ? { ...c, size: value as any } : c
-                              ),
-                            }));
-                          }}
-                        >
-                          <MdSelectOption value="20ft">{`20 ft`}</MdSelectOption>
-                          <MdSelectOption value="40ft">{`40 ft`}</MdSelectOption>
-                          <MdSelectOption value="45ft">{`45 ft`}</MdSelectOption>
-                          <MdSelectOption value="53ft">{`53 ft`}</MdSelectOption>
-                        </MdOutlinedSelect>
+                          className="w-52 text-right"
+                          suffixText="ft"
+                          options={["20", "40", "45", "53"]}
+                        />
                         <MdOutlinedTextField label="Quantity / Total" />
                         <MdOutlinedTextField label="Quantity / SOC" />
                         <MdIconButton
@@ -113,34 +91,23 @@ const ReeferContainerInput = ({
                       <div className="flex gap-4 items-start">
                         <div className="flex gap-2">
                           <MdOutlinedTextField label="Degree" />
-                          <MdOutlinedSelect>
-                            <MdSelectOption value="℃">℃</MdSelectOption>
-                            <MdSelectOption value="℉">℉</MdSelectOption>
-                          </MdOutlinedSelect>
+                          <NAOutlinedListBox options={["℃", "℉"]} />
                         </div>
                         <div className="flex gap-2">
                           <MdOutlinedTextField label="Ventilation" />
-                          <MdOutlinedSelect>
-                            <MdSelectOption value="open">%Open</MdSelectOption>
-                            <MdSelectOption value="close">
-                              %Close
-                            </MdSelectOption>
-                          </MdOutlinedSelect>
+                          <NAOutlinedListBox options={["%Open", "%Close"]} />
                         </div>
-                        <MdOutlinedSelect label="Nature">
-                          <MdSelectOption value="Chilled">
-                            Chilled
-                          </MdSelectOption>
-                          <MdSelectOption value="Frozen">Frozen</MdSelectOption>
-                        </MdOutlinedSelect>
+                        <NAOutlinedListBox
+                          label="Nature"
+                          options={["Chilled", "Frozen"]}
+                        />
                         <MdOutlinedTextField label="Humidity" suffixText="%" />
-                        <div className="max-w-36 w-36">
-                          <MdOutlinedSelect label="Genset">
-                            <MdSelectOption value={"yes"}>Yes</MdSelectOption>
-                            <MdSelectOption value={"no"}>No</MdSelectOption>
-                          </MdOutlinedSelect>
-                        </div>
+                        <NAOutlinedListBox
+                          label="Gen"
+                          options={["Yes", "No"]}
+                        />
                       </div>
+
                       <DangerousCargoInput
                         container={container}
                         type={ContainerType.reefer}
