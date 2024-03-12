@@ -42,6 +42,7 @@ import { getEmptyContainerData } from "../../util";
 import OpenTopContainerInput from "./components/opentop-container-input";
 import FlatRackContainerInput from "./components/flatrack-container-input";
 import TankContainerInputContainer from "./components/tank-container-input";
+import BulkContainerInput from "./components/bulk-container-input";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -189,8 +190,11 @@ export default function ContainerStep() {
         {typeSelections.includes(ContainerType.tank) && (
           <TankContainerInputContainer list={containerInformation.tank} />
         )}
+        {typeSelections.includes(ContainerType.bulk) && (
+          <BulkContainerInput list={containerInformation.bulk} />
+        )}
       </div>
-      <div className="flex-1 flex items-end justify-end">
+      <div className="flex-1 flex items-end justify-end mt-6">
         <MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
           Next
         </MdFilledButton>
