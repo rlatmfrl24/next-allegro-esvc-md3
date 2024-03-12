@@ -15,7 +15,7 @@ import {
   MdSelectOption,
 } from "@/app/util/md3";
 
-import CommodityAutoComplete from "./commodity-search";
+import CommodityAutoComplete from "./components/commodity-search";
 import { SubTitle } from "./components/base";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { createDummyPlaceInformation } from "../../schedule/util";

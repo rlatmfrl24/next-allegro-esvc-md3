@@ -18,24 +18,17 @@ import {
 import { useRecoilState, useSetRecoilState } from "recoil";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ContainerInformationType,
   ContainerType,
 } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
-import {
-  Add,
-  ArrowDropDown,
-  Delete,
-  DeleteOutline,
-  EggTwoTone,
-  Upload,
-  UploadFileOutlined,
-  UploadOutlined,
-} from "@mui/icons-material";
+import { Add, ArrowDropDown, DeleteOutline, Upload } from "@mui/icons-material";
 import NaToggleButton from "@/app/components/na-toggle-button";
+import ContainerToggleButton from "./components/container-toggle-button";
+import DangerousCargoInput from "./components/dangerous-cargo-input";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -193,47 +186,6 @@ export default function ContainerStep() {
   );
 }
 
-const ContainerToggleButton = ({
-  image,
-  onClick,
-  isSelected,
-  title,
-  count,
-}: {
-  onClick: () => void;
-  image: React.ReactNode;
-  isSelected: boolean;
-  title: string;
-  count?: number;
-}) => {
-  return (
-    <div
-      className={`relative flex-1 flex flex-col gap-1 justify-center items-center px-7 py-4 rounded-lg border ${
-        isSelected ? "border-primary bg-[#19658414]" : "border-outlineVariant"
-      } cursor-pointer`}
-      onClick={onClick}
-    >
-      <MdRippleEffect />
-      {image}
-      <MdTypography variant="body" size="large" prominent>
-        {title}
-      </MdTypography>
-      {count && count > 0 && (
-        <MdTypography
-          variant="body"
-          size="medium"
-          tag="div"
-          className={`absolute top-2 right-2 text-white rounded-full w-6 h-6 flex justify-center items-center ${
-            isSelected ? "bg-primary" : "bg-secondary"
-          }`}
-        >
-          {count}
-        </MdTypography>
-      )}
-    </div>
-  );
-};
-
 const DryContainerInputContainer = ({
   list,
 }: {
@@ -384,218 +336,5 @@ const DryContainerInputContainer = ({
         </>
       )}
     </Disclosure>
-  );
-};
-
-const DangerousCargoInput = ({
-  container,
-}: {
-  container: ContainerInformationType;
-}) => {
-  const setContainerInformation = useSetRecoilState(ContainerState);
-  const fileRef = useRef<HTMLInputElement>(null);
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const mergedFiles = files.concat(
-        container.dangerousCargoInformation.dangerousCargoCertificate
-      );
-      setContainerInformation((prev) => ({
-        ...prev,
-        dry: prev.dry.map((c) =>
-          c.uuid === container.uuid
-            ? {
-                ...c,
-                dangerousCargoInformation: {
-                  ...c.dangerousCargoInformation,
-                  dangerousCargoCertificate: mergedFiles,
-                },
-              }
-            : c
-        ),
-      }));
-    }
-  };
-  const handleClick = () => {
-    fileRef.current?.click();
-  };
-
-  return (
-    <>
-      <NaToggleButton
-        className="w-fit"
-        label="Dangerous Cargo"
-        state={container.isDangerous ? "checked" : "unchecked"}
-        onClick={() => {
-          setContainerInformation((prev) => ({
-            ...prev,
-            dry: prev.dry.map((c) =>
-              c.uuid === container.uuid
-                ? { ...c, isDangerous: !c.isDangerous }
-                : c
-            ),
-          }));
-        }}
-      />
-      {container.isDangerous && (
-        <div className="flex flex-col gap-6">
-          <div className="flex gap-4">
-            <MdOutlinedTextField
-              label="UN No."
-              value={container.dangerousCargoInformation.unNumber}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            unNumber: value,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            />
-            <MdOutlinedTextField
-              label="Class"
-              value={container.dangerousCargoInformation.class}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            class: value,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            />
-
-            <MdOutlinedTextField
-              label="Flash Point"
-              disabled
-              value={container.dangerousCargoInformation.flashPoint}
-            />
-            <MdOutlinedSelect
-              label="Package Group"
-              selectedIndex={
-                container.dangerousCargoInformation.packingGroup === "I"
-                  ? 1
-                  : container.dangerousCargoInformation.packingGroup === "II"
-                  ? 2
-                  : container.dangerousCargoInformation.packingGroup === "III"
-                  ? 3
-                  : 0
-              }
-              onchange={(e) => {
-                const value = (e.target as HTMLSelectElement).value;
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            packingGroup: value as any,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            >
-              <MdSelectOption>None</MdSelectOption>
-              <MdSelectOption>I</MdSelectOption>
-              <MdSelectOption>II</MdSelectOption>
-              <MdSelectOption>III</MdSelectOption>
-            </MdOutlinedSelect>
-            <MdOutlinedTextField
-              label="Proper Shipping Name"
-              value={container.dangerousCargoInformation.properShippingName}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  dry: prev.dry.map((c) =>
-                    c.uuid === container.uuid
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            properShippingName: value,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            />
-          </div>
-          <div className="flex flex-col gap-4">
-            <MdTypography variant="title" size="small">
-              Dangerous Cargo Certificate
-            </MdTypography>
-            <div className="flex items-center gap-4">
-              <MdOutlinedButton onClick={handleClick}>
-                <div slot="icon">
-                  <Upload fontSize="small" />
-                </div>
-                File Upload
-              </MdOutlinedButton>
-              <input
-                type="file"
-                ref={fileRef}
-                className="hidden"
-                multiple
-                onInput={handleFileChange}
-              />
-              <MdChipSet>
-                {container.dangerousCargoInformation.dangerousCargoCertificate.map(
-                  (file, index) => (
-                    <MdInputChip
-                      key={index}
-                      label={file.name}
-                      selected
-                      handleTrailingActionFocus={() => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          dry: prev.dry.map((c) =>
-                            c.uuid === container.uuid
-                              ? {
-                                  ...c,
-                                  dangerousCargoInformation: {
-                                    ...c.dangerousCargoInformation,
-                                    dangerousCargoCertificate:
-                                      c.dangerousCargoInformation.dangerousCargoCertificate.filter(
-                                        (item) => item.name !== file.name
-                                      ),
-                                  },
-                                }
-                              : c
-                          ),
-                        }));
-                      }}
-                    />
-                  )
-                )}
-              </MdChipSet>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
   );
 };
