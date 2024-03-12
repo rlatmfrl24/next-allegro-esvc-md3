@@ -9,6 +9,13 @@ import {
   CommodityType,
   AdditionalInformatioType,
   BookingInformationRequestType,
+  ContainerInformationType,
+  ReeferContainerInformationType,
+  DryContainerInformationType,
+  TankContainerInformationType,
+  OpenTopContainerInformationType,
+  FlatRackContainerInformationType,
+  BulkContainerInformationType,
 } from "../util/typeDef/boooking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 
@@ -144,6 +151,25 @@ export const AdditionalInformationState = atom<AdditionalInformatioType>({
       vesselAdvanceDelay: false,
       vesselDeparture: false,
     },
+  },
+});
+
+export const ContainerState = atom<{
+  dry: DryContainerInformationType[];
+  reefer: ReeferContainerInformationType[];
+  tank: TankContainerInformationType[];
+  opentop: OpenTopContainerInformationType[];
+  flatrack: FlatRackContainerInformationType[];
+  bulk: BulkContainerInformationType[];
+}>({
+  key: "containerState",
+  default: {
+    dry: [],
+    reefer: [],
+    tank: [],
+    opentop: [],
+    flatrack: [],
+    bulk: [],
   },
 });
 

@@ -1,5 +1,5 @@
 import Portal from "@/app/components/portal";
-import { createDummyPtPScheduleData } from "../../schedule/util";
+import { createDummyPtPScheduleData } from "../../../schedule/util";
 import {
   MdDialog,
   MdFilledButton,

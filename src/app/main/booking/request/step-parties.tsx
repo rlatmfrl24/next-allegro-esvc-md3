@@ -2,7 +2,7 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import { MdFilledButton } from "@/app/util/md3";
-import { SubTitle } from "./components";
+import { SubTitle } from "./components/base";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   BookingRequestStepState,
