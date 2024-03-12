@@ -13,16 +13,17 @@ import {
   ContainerInformationType,
   ContainerType,
   DryContainerInformationType,
+  TankContainerInformationType,
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
 
-const DryContainerInputContainer = ({
+const TankContainerInputContainer = ({
   list,
 }: {
-  list: DryContainerInformationType[];
+  list: TankContainerInformationType[];
 }) => {
   const setContainerInformation = useSetRecoilState(ContainerState);
 
@@ -33,7 +34,7 @@ const DryContainerInputContainer = ({
           <Disclosure.Button className={`flex items-center gap-2`}>
             <div className="w-1 h-4 bg-primary"></div>
             <MdTypography variant="body" size="large" prominent>
-              Dry Container
+              Tank Container
             </MdTypography>
             <div className="flex-1 border-b border-b-outlineVariant"></div>
             <ArrowDropDown
@@ -48,11 +49,11 @@ const DryContainerInputContainer = ({
               onClick={() => {
                 setContainerInformation((prev) => ({
                   ...prev,
-                  dry: [
-                    ...prev.dry,
+                  tank: [
+                    ...prev.tank,
                     getEmptyContainerData(
-                      ContainerType.dry
-                    ) as DryContainerInformationType,
+                      ContainerType.tank
+                    ) as TankContainerInformationType,
                   ],
                 }));
               }}
@@ -76,7 +77,7 @@ const DryContainerInputContainer = ({
                       onSelection={(size) => {
                         setContainerInformation((prev) => ({
                           ...prev,
-                          dry: prev.dry.map((c, i) =>
+                          tank: prev.tank.map((c, i) =>
                             i === index ? { ...c, size: size as any } : c
                           ),
                         }));
@@ -93,7 +94,7 @@ const DryContainerInputContainer = ({
 
                         setContainerInformation((prev) => ({
                           ...prev,
-                          dry: prev.dry.map((c, i) =>
+                          tank: prev.tank.map((c, i) =>
                             i === index ? { ...c, quantity: +value } : c
                           ),
                         }));
@@ -115,7 +116,7 @@ const DryContainerInputContainer = ({
 
                         setContainerInformation((prev) => ({
                           ...prev,
-                          dry: prev.dry.map((c, i) =>
+                          tank: prev.tank.map((c, i) =>
                             i === index ? { ...c, soc: +value } : c
                           ),
                         }));
@@ -129,7 +130,7 @@ const DryContainerInputContainer = ({
                       onClick={() => {
                         setContainerInformation((prev) => ({
                           ...prev,
-                          dry: prev.dry.filter((c, i) => i !== index),
+                          tank: prev.tank.filter((c, i) => i !== index),
                         }));
                       }}
                     >
@@ -138,7 +139,7 @@ const DryContainerInputContainer = ({
                   </div>
                   <DangerousCargoInput
                     container={container}
-                    type={ContainerType.dry}
+                    type={ContainerType.tank}
                   />
                 </div>
               ))}
@@ -150,4 +151,4 @@ const DryContainerInputContainer = ({
   );
 };
 
-export default DryContainerInputContainer;
+export default TankContainerInputContainer;

@@ -40,6 +40,8 @@ import ReeferContainerInput from "./components/reefer-container-input";
 import { Flat, get } from "lodash";
 import { getEmptyContainerData } from "../../util";
 import OpenTopContainerInput from "./components/opentop-container-input";
+import FlatRackContainerInput from "./components/flatrack-container-input";
+import TankContainerInputContainer from "./components/tank-container-input";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -180,6 +182,12 @@ export default function ContainerStep() {
         )}
         {typeSelections.includes(ContainerType.opentop) && (
           <OpenTopContainerInput list={containerInformation.opentop} />
+        )}
+        {typeSelections.includes(ContainerType.flatrack) && (
+          <FlatRackContainerInput list={containerInformation.flatrack} />
+        )}
+        {typeSelections.includes(ContainerType.tank) && (
+          <TankContainerInputContainer list={containerInformation.tank} />
         )}
       </div>
       <div className="flex-1 flex items-end justify-end">

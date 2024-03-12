@@ -9,6 +9,7 @@ import {
 } from "@/app/util/md3";
 import {
   ContainerType,
+  FlatRackContainerInformationType,
   OpenTopContainerInformationType,
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
@@ -17,10 +18,10 @@ import { useSetRecoilState } from "recoil";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import AwkwardContainerInput from "./awkward-container-input";
 
-const OpenTopContainerInput = ({
+const FlatRackContainerInput = ({
   list,
 }: {
-  list: OpenTopContainerInformationType[];
+  list: FlatRackContainerInformationType[];
 }) => {
   const setContainerInformation = useSetRecoilState(ContainerState);
 
@@ -32,7 +33,7 @@ const OpenTopContainerInput = ({
             <Disclosure.Button className={`flex items-center gap-2`}>
               <div className="w-1 h-4 bg-primary"></div>
               <MdTypography variant="body" size="large" prominent>
-                Open Top Container
+                Flat Rack Container
               </MdTypography>
               <div className="flex-1 border-b border-b-outlineVariant"></div>
               <ArrowDropDown
@@ -47,11 +48,11 @@ const OpenTopContainerInput = ({
                 onClick={() => {
                   setContainerInformation((prev) => ({
                     ...prev,
-                    opentop: [
-                      ...prev.opentop,
+                    flatrack: [
+                      ...prev.flatrack,
                       getEmptyContainerData(
-                        ContainerType.opentop
-                      ) as OpenTopContainerInformationType,
+                        ContainerType.flatrack
+                      ) as FlatRackContainerInformationType,
                     ],
                   }));
                 }}
@@ -78,7 +79,7 @@ const OpenTopContainerInput = ({
                           onSelection={(size) => {
                             setContainerInformation((prev) => ({
                               ...prev,
-                              opentop: prev.opentop.map((c, i) =>
+                              flatrack: prev.flatrack.map((c, i) =>
                                 i === index ? { ...c, size: size as any } : c
                               ),
                             }));
@@ -95,7 +96,7 @@ const OpenTopContainerInput = ({
 
                             setContainerInformation((prev) => ({
                               ...prev,
-                              opentop: prev.opentop.map((c, i) =>
+                              flatrack: prev.flatrack.map((c, i) =>
                                 i === index ? { ...c, quantity: +value } : c
                               ),
                             }));
@@ -117,7 +118,7 @@ const OpenTopContainerInput = ({
 
                             setContainerInformation((prev) => ({
                               ...prev,
-                              opentop: prev.opentop.map((c, i) =>
+                              flatrack: prev.flatrack.map((c, i) =>
                                 i === index ? { ...c, soc: +value } : c
                               ),
                             }));
@@ -131,7 +132,7 @@ const OpenTopContainerInput = ({
                           onClick={() => {
                             setContainerInformation((prev) => ({
                               ...prev,
-                              opentop: prev.opentop.filter(
+                              flatrack: prev.flatrack.filter(
                                 (c, i) => i !== index
                               ),
                             }));
@@ -142,11 +143,11 @@ const OpenTopContainerInput = ({
                       </div>
                       <AwkwardContainerInput
                         container={container}
-                        type={ContainerType.opentop}
+                        type={ContainerType.flatrack}
                       />
                       <DangerousCargoInput
                         container={container}
-                        type={ContainerType.opentop}
+                        type={ContainerType.flatrack}
                       />
                     </div>
                   );
@@ -160,4 +161,4 @@ const OpenTopContainerInput = ({
   );
 };
 
-export default OpenTopContainerInput;
+export default FlatRackContainerInput;
