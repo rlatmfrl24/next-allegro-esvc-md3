@@ -85,10 +85,6 @@ export default function ContainerStep() {
     }
   }
 
-  useEffect(() => {
-    console.log("containerInformation", containerInformation);
-  }, [containerInformation]);
-
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large">

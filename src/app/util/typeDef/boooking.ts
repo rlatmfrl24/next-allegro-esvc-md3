@@ -95,6 +95,14 @@ export type AdditionalInformatioType = {
 export interface BookingInformationRequestType {
   locationSchedule: LocationScheduleType;
   parties: PartiesType;
+  container: {
+    dry: DryContainerInformationType[];
+    reefer: ReeferContainerInformationType[];
+    opentop: OpenTopContainerInformationType[];
+    flatrack: FlatRackContainerInformationType[];
+    tank: TankContainerInformationType[];
+    bulk: BulkContainerInformationType[];
+  };
   cargoPickUpReturn: CargoPickUpReturnType;
   additionalInformation: AdditionalInformatioType;
   contactInformation: ContactInformationType;
@@ -111,7 +119,7 @@ export enum ContainerType {
 
 export interface ContainerInformationType {
   uuid: string;
-  size: "20ft" | "40ft" | "45ft" | "53ft" | "other";
+  size: string;
   type: ContainerType;
   quantity: number;
   soc: number;

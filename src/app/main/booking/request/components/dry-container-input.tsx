@@ -71,13 +71,13 @@ const DryContainerInputContainer = ({
                       label="Size"
                       className="w-52 text-right"
                       suffixText="ft"
-                      initialValue={container.size.replaceAll("ft", "")}
+                      initialValue={container.size}
                       options={["20", "40", "45", "53"]}
                       onSelection={(size) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           dry: prev.dry.map((c, i) =>
-                            i === index ? { ...c, size: size as any } : c
+                            i === index ? { ...c, size: size } : c
                           ),
                         }));
                       }}

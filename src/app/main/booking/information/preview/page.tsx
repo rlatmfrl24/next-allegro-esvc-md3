@@ -27,6 +27,7 @@ import {
   PartiesState,
   BookingRequestStepState,
   BookingInformationState,
+  ContainerState,
 } from "@/app/store/booking-request.store";
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
@@ -34,6 +35,7 @@ import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);
   const partiesValue = useRecoilValue(PartiesState);
+  const containerValue = useRecoilValue(ContainerState);
   const cargoValue = useRecoilValue(CargoPickUpReturnState);
   const etcValue = useRecoilValue(AdditionalInformationState);
   const contactInformationValue = useRecoilValue(ContactInformationState);
@@ -103,7 +105,7 @@ export default function BookingRequestPreview() {
               <PartiesSection hasEdit data={partiesValue} />
             </div>
             <DividerComponent className="my-8" />
-            <ContainerSection />
+            <ContainerSection hasEdit data={containerValue} />
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
               <CargoSection hasEdit data={cargoValue} />
@@ -291,6 +293,7 @@ export default function BookingRequestPreview() {
                 const data = {
                   locationSchedule: locationScheduleValue,
                   parties: partiesValue,
+                  container: containerValue,
                   cargoPickUpReturn: cargoValue,
                   contactInformation: contactInformationValue,
                   additionalInformation: etcValue,

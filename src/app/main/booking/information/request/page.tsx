@@ -51,7 +51,7 @@ export default function BookingRequestInformation() {
             <PartiesSection data={dataSet[0].parties} />
           </div>
           <DividerComponent className="my-8" />
-          <ContainerSection />
+          <ContainerSection data={dataSet[0].container} />
           <DividerComponent className="my-8" />
           <div className="flex items-stretch">
             <CargoSection data={dataSet[0].cargoPickUpReturn} />
