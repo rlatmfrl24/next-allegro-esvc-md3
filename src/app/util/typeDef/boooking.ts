@@ -137,7 +137,8 @@ export interface ReeferContainerInformationType
   type: ContainerType.reefer;
   temperatureUnit: "℃" | "℉";
   temperature: number;
-  ventilation: string;
+  ventilation: number;
+  ventilationType: "open" | "close";
   nature: string;
   humidity: number;
   genset: boolean;
