@@ -1,6 +1,6 @@
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
-import { SubTitle } from "./components";
+import { SubTitle } from "./components/base";
 import { faker } from "@faker-js/faker";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";

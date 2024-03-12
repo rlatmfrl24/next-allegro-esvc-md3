@@ -16,7 +16,7 @@ import {
 } from "@/app/util/md3";
 
 import CommodityAutoComplete from "./commodity-search";
-import { SubTitle } from "./components";
+import { SubTitle } from "./components/base";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { faker } from "@faker-js/faker";

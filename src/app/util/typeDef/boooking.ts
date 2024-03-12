@@ -99,3 +99,42 @@ export interface BookingInformationRequestType {
   additionalInformation: AdditionalInformatioType;
   contactInformation: ContactInformationType;
 }
+
+export enum ContainerType {
+  dry = "Dry",
+  reefer = "Reefer",
+  opentop = "OpenTop",
+  flatrack = "FlatRack",
+  tank = "Tank",
+  bulk = "Bulk",
+}
+
+export interface ContainerInformationType {
+  uuid: string;
+  size: "20ft" | "40ft" | "45ft" | "53ft" | "other";
+  type: ContainerType;
+  quantity: number;
+  soc: number;
+  isDangerous: boolean;
+  dangerousCargoInformation: DangerousContainerInformationType;
+}
+
+export type DangerousContainerInformationType = {
+  unNumber: string;
+  class: string;
+  flashPoint: string;
+  packingGroup: string;
+  properShippingName: string;
+  dangerousCargoCertificate: File[];
+};
+
+export interface ReeferContainerInformationType
+  extends ContainerInformationType {
+  type: ContainerType.reefer;
+  temperatureUnit: "C" | "F";
+  temperature: number;
+  ventilation: string;
+  nature: string;
+  humidity: number;
+  genset: boolean;
+}
