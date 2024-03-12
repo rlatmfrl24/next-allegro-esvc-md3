@@ -95,7 +95,103 @@ export type AdditionalInformatioType = {
 export interface BookingInformationRequestType {
   locationSchedule: LocationScheduleType;
   parties: PartiesType;
+  container: {
+    dry: DryContainerInformationType[];
+    reefer: ReeferContainerInformationType[];
+    opentop: OpenTopContainerInformationType[];
+    flatrack: FlatRackContainerInformationType[];
+    tank: TankContainerInformationType[];
+    bulk: BulkContainerInformationType[];
+  };
   cargoPickUpReturn: CargoPickUpReturnType;
   additionalInformation: AdditionalInformatioType;
   contactInformation: ContactInformationType;
+}
+
+export enum ContainerType {
+  dry = "Dry",
+  reefer = "Reefer",
+  opentop = "OpenTop",
+  flatrack = "FlatRack",
+  tank = "Tank",
+  bulk = "Bulk",
+}
+
+export interface ContainerInformationType {
+  uuid: string;
+  size: string;
+  type: ContainerType;
+  quantity: number;
+  soc: number;
+  isDangerous: boolean;
+  dangerousCargoInformation: DangerousContainerInformationType;
+}
+
+export type DangerousContainerInformationType = {
+  unNumber: string;
+  class: string;
+  flashPoint: string;
+  packingGroup: string;
+  properShippingName: string;
+  dangerousCargoCertificate: File[];
+};
+
+export interface DryContainerInformationType extends ContainerInformationType {
+  type: ContainerType.dry;
+}
+
+export interface ReeferContainerInformationType
+  extends ContainerInformationType {
+  type: ContainerType.reefer;
+  temperatureUnit: "℃" | "℉";
+  temperature: number;
+  ventilation: number;
+  ventilationType: "open" | "close";
+  nature: string;
+  humidity: number;
+  genset: boolean;
+}
+
+export interface OpenTopContainerInformationType
+  extends ContainerInformationType {
+  type: ContainerType.opentop;
+  isAwkward: boolean;
+  awkward: AwkwardContainerInformationType;
+}
+
+export interface FlatRackContainerInformationType
+  extends ContainerInformationType {
+  type: ContainerType.flatrack;
+  isAwkward: boolean;
+  awkward: AwkwardContainerInformationType;
+}
+
+export interface TankContainerInformationType extends ContainerInformationType {
+  type: ContainerType.tank;
+}
+
+export interface BulkContainerInformationInterface {
+  package: number;
+  packageType: string;
+  grossWeight: number;
+  grossWeightUnit: "KGS" | "LBS";
+  commodity: CommodityType;
+  length: number;
+  width: number;
+  height: number;
+  unit: "CM" | "INCH";
+}
+
+export interface BulkContainerInformationType
+  extends BulkContainerInformationInterface {
+  uuid: string;
+  type: ContainerType.bulk;
+  totalMeasurement: number;
+}
+
+export interface AwkwardContainerInformationType
+  extends BulkContainerInformationInterface {
+  netWeight: number;
+  netWeightUnit: "KGS" | "LBS";
+  remark: string;
 }

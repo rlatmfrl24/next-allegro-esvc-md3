@@ -6,8 +6,30 @@ import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking-request.store";
 import { useRouter } from "next/navigation";
+import {
+  BulkContainerInformationType,
+  ContainerInformationType,
+  DryContainerInformationType,
+  FlatRackContainerInformationType,
+  OpenTopContainerInformationType,
+  ReeferContainerInformationType,
+  TankContainerInformationType,
+} from "@/app/util/typeDef/boooking";
 
-export default function ContainerSection() {
+export default function ContainerSection({
+  hasEdit,
+  data,
+}: {
+  hasEdit?: boolean;
+  data: {
+    dry: DryContainerInformationType[];
+    reefer: ReeferContainerInformationType[];
+    flatrack: FlatRackContainerInformationType[];
+    opentop: OpenTopContainerInformationType[];
+    tank: TankContainerInformationType[];
+    bulk: BulkContainerInformationType[];
+  };
+}) {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const router = useRouter();
 
@@ -23,13 +45,59 @@ export default function ContainerSection() {
   }
 
   return (
-    <Section title="Container">
+    <Section
+      title="Container"
+      hasEdit={hasEdit}
+      editAction={() => {
+        moveToContainerStep();
+      }}
+    >
       <div className="grid grid-cols-5 gap-4">
-        <ContainerItem type="dry" size="20ft" quantity={1} soc={1} />
-        <ContainerItem type="reefer" size="40ft" quantity={3} soc={1} />
-        <ContainerItem type="open-top" size="45ft" quantity={2} soc={0} />
-        <ContainerItem type="bulk" size="20ft" quantity={1} soc={1} />
-        <ContainerItem type="empty" size="20ft" quantity={1} soc={1} />
+        {data.dry.map((container, index) => (
+          <ContainerItem
+            key={index}
+            type="dry"
+            size={container.size}
+            quantity={container.quantity}
+            soc={container.soc}
+          />
+        ))}
+        {data.reefer.map((container, index) => (
+          <ContainerItem
+            key={index}
+            type="reefer"
+            size={container.size}
+            quantity={container.quantity}
+            soc={container.soc}
+          />
+        ))}
+        {data.flatrack.map((container, index) => (
+          <ContainerItem
+            key={index}
+            type="flatrack"
+            size={container.size}
+            quantity={container.quantity}
+            soc={container.soc}
+          />
+        ))}
+        {data.opentop.map((container, index) => (
+          <ContainerItem
+            key={index}
+            type="open-top"
+            size={container.size}
+            quantity={container.quantity}
+            soc={container.soc}
+          />
+        ))}
+        {data.tank.map((container, index) => (
+          <ContainerItem
+            key={index}
+            type="tank"
+            size={container.size}
+            quantity={container.quantity}
+            soc={container.soc}
+          />
+        ))}
       </div>
     </Section>
   );
@@ -50,10 +118,12 @@ const ContainerItem = ({
     | "tank"
     | "other"
     | "bulk";
-  size: "20ft" | "40ft" | "45ft" | "53ft" | "other";
+  size: string;
   quantity: number;
   soc: number;
 }) => {
+  console.log(size);
+
   return (
     <div className="flex flex-1 border rounded-lg border-outlineVariant p-4 gap-4">
       {type === "dry" ? (
@@ -80,15 +150,7 @@ const ContainerItem = ({
         </MdTypography>
         <div className="flex gap-1">
           <MdTypography variant="body" size="large" prominent>
-            {
-              {
-                "20ft": "20ft",
-                "40ft": "40ft",
-                "45ft": "45ft",
-                "53ft": "53ft",
-                other: "Other",
-              }[size]
-            }
+            {size}
           </MdTypography>
           <MdTypography
             variant="body"

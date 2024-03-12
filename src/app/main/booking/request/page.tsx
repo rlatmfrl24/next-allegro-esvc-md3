@@ -10,6 +10,7 @@ import {
   BookingRequestStepState,
   CargoPickUpReturnState,
   ContactInformationState,
+  ContainerState,
   LocationScheduleState,
   PartiesState,
 } from "@/app/store/booking-request.store";
@@ -43,6 +44,7 @@ export default function BookingRequest() {
 
   const locationSchedule = useRecoilValue(LocationScheduleState);
   const parties = useRecoilValue(PartiesState);
+  const container = useRecoilValue(ContainerState);
   const cargoPickUpReturn = useRecoilValue(CargoPickUpReturnState);
   const additionalInformation = useRecoilValue(AdditionalInformationState);
   const contactInformation = useRecoilValue(ContactInformationState);
@@ -156,6 +158,7 @@ export default function BookingRequest() {
                   const newBookingInformation = {
                     locationSchedule,
                     parties,
+                    container,
                     cargoPickUpReturn,
                     additionalInformation,
                     contactInformation,

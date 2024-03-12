@@ -5,13 +5,13 @@ import PageTitle from "@/app/components/page-title";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
-import AttachmentSection from "../../components/attachment";
-import { DividerComponent, Section } from "../../components/base";
-import CargoSection from "../../components/cargo";
-import ContactInformationSection from "../../components/contact-information";
-import ContainerSection from "../../components/contaienr";
-import LocationScheduleSection from "../../components/location-schedule";
-import PartiesSection from "../../components/parties";
+import AttachmentSection from "../components/attachment";
+import { DividerComponent, Section } from "../components/base";
+import CargoSection from "../components/cargo";
+import ContactInformationSection from "../components/contact-information";
+import ContainerSection from "../components/contaienr";
+import LocationScheduleSection from "../components/location-schedule";
+import PartiesSection from "../components/parties";
 import { BookingInformationState } from "@/app/store/booking-request.store";
 import { useRecoilValue } from "recoil";
 import { MdOutlinedTextField } from "@/app/util/md3";
@@ -51,7 +51,7 @@ export default function BookingRequestInformation() {
             <PartiesSection data={dataSet[0].parties} />
           </div>
           <DividerComponent className="my-8" />
-          <ContainerSection />
+          <ContainerSection data={dataSet[0].container} />
           <DividerComponent className="my-8" />
           <div className="flex items-stretch">
             <CargoSection data={dataSet[0].cargoPickUpReturn} />

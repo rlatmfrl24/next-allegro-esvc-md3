@@ -3,21 +3,21 @@
 import PageTitle from "@/app/components/page-title";
 import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
-import { DividerComponent, Section } from "../../components/base";
-import LocationScheduleSection from "../../components/location-schedule";
-import ContactInformationSection from "../../components/contact-information";
-import PartiesSection from "../../components/parties";
+import { DividerComponent, Section } from "../components/base";
+import LocationScheduleSection from "../components/location-schedule";
+import ContactInformationSection from "../components/contact-information";
+import PartiesSection from "../components/parties";
 import {
   MdElevation,
   MdFilledButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { CSSProperties, useEffect } from "react";
-import CargoSection from "../../components/cargo";
-import AttachmentSection from "../../components/attachment";
+import CargoSection from "../components/cargo";
+import AttachmentSection from "../components/attachment";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
-import ContainerSection from "../../components/contaienr";
+import ContainerSection from "../components/contaienr";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   CargoPickUpReturnState,
@@ -27,6 +27,7 @@ import {
   PartiesState,
   BookingRequestStepState,
   BookingInformationState,
+  ContainerState,
 } from "@/app/store/booking-request.store";
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
@@ -34,6 +35,7 @@ import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);
   const partiesValue = useRecoilValue(PartiesState);
+  const containerValue = useRecoilValue(ContainerState);
   const cargoValue = useRecoilValue(CargoPickUpReturnState);
   const etcValue = useRecoilValue(AdditionalInformationState);
   const contactInformationValue = useRecoilValue(ContactInformationState);
@@ -103,7 +105,7 @@ export default function BookingRequestPreview() {
               <PartiesSection hasEdit data={partiesValue} />
             </div>
             <DividerComponent className="my-8" />
-            <ContainerSection />
+            <ContainerSection hasEdit data={containerValue} />
             <DividerComponent className="my-8" />
             <div className="flex items-stretch">
               <CargoSection hasEdit data={cargoValue} />
@@ -291,6 +293,7 @@ export default function BookingRequestPreview() {
                 const data = {
                   locationSchedule: locationScheduleValue,
                   parties: partiesValue,
+                  container: containerValue,
                   cargoPickUpReturn: cargoValue,
                   contactInformation: contactInformationValue,
                   additionalInformation: etcValue,

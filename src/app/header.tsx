@@ -77,17 +77,13 @@ const HeaderSignComponent = () => {
     </div>
   );
 };
+
 const HeaderMainComponent = () => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("English");
 
   return (
     <div className="flex gap-3">
-      <MdIconButton>
-        <MdIcon>
-          <SearchOutlinedIcon />
-        </MdIcon>
-      </MdIconButton>
       <MdIconButton>
         <MdIcon>
           <NotificationsNoneOutlinedIcon />

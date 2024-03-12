@@ -1,5 +1,5 @@
 import { MdTypography } from "@/app/components/typography";
-import { SubTitle } from "./components";
+import { SubTitle } from "./components/base";
 import {
   MdChipSet,
   MdFilledButton,
@@ -14,6 +14,7 @@ import {
   BookingRequestStepState,
 } from "@/app/store/booking-request.store";
 import NaToggleButton from "@/app/components/na-toggle-button";
+import { Upload } from "@mui/icons-material";
 
 export default function AdditionalInformationStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -57,7 +58,12 @@ export default function AdditionalInformationStep() {
       </MdTypography>
       <SubTitle title="Attachment" className="mb-4" />
       <div className="flex items-center gap-4">
-        <MdOutlinedButton onClick={handleClick}>File Upload</MdOutlinedButton>
+        <MdOutlinedButton onClick={handleClick}>
+          <div slot="icon">
+            <Upload fontSize="small" />
+          </div>
+          File Upload
+        </MdOutlinedButton>
         <MdChipSet>
           {AdditionalInformationData.attachments.map((file, index) => (
             <MdInputChip
