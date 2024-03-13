@@ -180,7 +180,13 @@ export default function LongRangeSchedule() {
             }}
           />
           <div className="p-6">
-            <div className="flex gap-4 items-center justify-end mb-2">
+            <div className="flex gap-4 items-center justify-between mb-2">
+              <MdTextButton>
+                <MdIcon slot="icon">
+                  <Download fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
               <MdTypography
                 variant="label"
                 size="large"
@@ -188,12 +194,6 @@ export default function LongRangeSchedule() {
               >
                 Total: {schedules.length}
               </MdTypography>
-              <MdTextButton>
-                <MdIcon slot="icon">
-                  <Download fontSize="small" />
-                </MdIcon>
-                Download
-              </MdTextButton>
             </div>
             <LongRangeTable
               schedules={schedules}

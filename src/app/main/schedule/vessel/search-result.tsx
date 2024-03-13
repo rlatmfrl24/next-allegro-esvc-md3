@@ -11,6 +11,7 @@ import {
   VesselInfoType,
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
+import { DividerComponent } from "../../booking/information/components/base";
 
 export function VesselScheduleResult({
   vesselData,
@@ -85,27 +86,26 @@ export function VesselScheduleResult({
         aria-label="divider"
         className="h-px w-full border-b border-dashed border-outlineVariant mt-6 mb-4"
       ></div>
-      <div className="flex justify-between">
-        <NaToggleButton
-          label="Direct Only"
-          state={isDirectOnly ? "checked" : "unchecked"}
-          onClick={() => {
-            setIsDirectOnly((prev) => !prev);
-          }}
-        />
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <MdTypography variant="label" size="large" className="text-outline">
-              Ports Total:{vesselSchedules.length}
-            </MdTypography>
-          </div>
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
           <MdTextButton>
             <MdIcon slot="icon">
               <DownloadIcon fontSize="small" />
             </MdIcon>
             Download
           </MdTextButton>
+          <DividerComponent orientation="vertical" className="h-8 mx-2" />
+          <NaToggleButton
+            label="Direct Only"
+            state={isDirectOnly ? "checked" : "unchecked"}
+            onClick={() => {
+              setIsDirectOnly((prev) => !prev);
+            }}
+          />
         </div>
+        <MdTypography variant="label" size="large" className="text-outline">
+          Ports Total:{vesselSchedules.length}
+        </MdTypography>
       </div>
       <VesselResultTable data={vesselSchedules} />
       <VesselInformationDialog
@@ -113,13 +113,6 @@ export function VesselScheduleResult({
         handleOpen={setIsVesselInformationOpen}
         data={vesselData}
       />
-      {/* {placeInformation && (
-        <PlaceInformationDialog
-          open={isPlaceInformationOpen}
-          handleOpen={setIsPlaceInformationOpen}
-          data={placeInformation}
-        />
-      )} */}
     </>
   );
 }

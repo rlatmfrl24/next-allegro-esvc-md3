@@ -22,6 +22,7 @@ import {
   PortScheduleSearchConditionType,
   PortScheduleType,
 } from "@/app/util/typeDef/schedule";
+import { DividerComponent } from "../../booking/information/components/base";
 
 export default function PortSchedule() {
   const scrollRef = useRef<any>();
@@ -108,13 +109,23 @@ export default function PortSchedule() {
       ) : (
         <div className={styles.area}>
           <div className="flex justify-between">
-            <NaToggleButton
-              label="Ocean Vessel Only"
-              state={isOceanVesselOnly ? "checked" : "unchecked"}
-              onClick={() => {
-                setIsOceanVesselOnly((prev) => !prev);
-              }}
-            />
+            <div className="flex items-center">
+              <MdTextButton>
+                <MdIcon slot="icon">
+                  <DownloadIcon fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
+              <DividerComponent orientation="vertical" className="h-8 mx-2" />
+              <NaToggleButton
+                label="Ocean Vessel Only"
+                state={isOceanVesselOnly ? "checked" : "unchecked"}
+                onClick={() => {
+                  setIsOceanVesselOnly((prev) => !prev);
+                }}
+              />
+            </div>
+
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <MdTypography
@@ -122,15 +133,9 @@ export default function PortSchedule() {
                   size="large"
                   className="text-outline"
                 >
-                  Ports Total: {portScheduls.length}
+                  Total: {portScheduls.length}
                 </MdTypography>
               </div>
-              <MdTextButton>
-                <MdIcon slot="icon">
-                  <DownloadIcon fontSize="small" />
-                </MdIcon>
-                Download
-              </MdTextButton>
             </div>
           </div>
           <PortResultTable data={portScheduls} />

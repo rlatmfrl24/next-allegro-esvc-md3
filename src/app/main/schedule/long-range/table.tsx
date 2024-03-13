@@ -113,14 +113,15 @@ export default function LongRangeTable({
                   {schedule.vesselInfo.vesselName}
                 </MdTypography>
               </div>
-
-              <MdIconButton>
-                <MdIcon>
-                  <div className="flex items-center justify-center">
-                    <RemarkIcon />
-                  </div>
-                </MdIcon>
-              </MdIconButton>
+              {schedule.remarkInfo && (
+                <MdIconButton>
+                  <MdIcon>
+                    <div className="flex items-center justify-center">
+                      <RemarkIcon />
+                    </div>
+                  </MdIcon>
+                </MdIconButton>
+              )}
             </div>
             <div className="flex flex-col w-fit border-l border-l-outlineVariant">
               <MdTypography
