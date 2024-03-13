@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MdIcon,
   MdIconButton,
@@ -21,28 +21,42 @@ export const NAOutlinedTextField = ({
   handleValueChange?: (value: string) => void;
   className?: string;
 } & MdOutlinedTextFieldProps) => {
+  const [hasValue, setHasValue] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!props.value) {
+      setHasValue(false);
+    }
+  }, [props.value]);
+
   return (
     <div className={`relative flex ${className}`}>
       <MdOutlinedTextFieldBase
         {...props}
+        ref={inputRef}
         className="flex-1"
-        onInput={(e) =>
-          handleValueChange?.((e.target as HTMLInputElement).value)
-        }
+        onInput={(e) => {
+          setHasValue(e.currentTarget.value.length > 0);
+          handleValueChange?.((e.target as HTMLInputElement).value);
+        }}
         required={false}
       >
-        {!props.disabled && props.value !== "" && props.label && (
-          <MdIconButton
-            slot="trailing-icon"
-            onClick={() => {
-              handleValueChange?.("");
-            }}
-          >
-            <MdIcon>
-              <CancelIcon />
-            </MdIcon>
-          </MdIconButton>
-        )}
+        <MdIconButton
+          slot="trailing-icon"
+          className={
+            !props.disabled && hasValue && props.label ? "visible" : "invisible"
+          }
+          onClick={() => {
+            if (inputRef.current) (inputRef.current as any).value = "";
+            setHasValue(false);
+            handleValueChange?.("");
+          }}
+        >
+          <MdIcon>
+            <CancelIcon />
+          </MdIcon>
+        </MdIconButton>
       </MdOutlinedTextFieldBase>
       {props.required && (
         <MdTypography

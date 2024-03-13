@@ -76,7 +76,7 @@ export default function BookingStatusCondition() {
   });
 
   function getCondition() {
-    const baseCondition = {
+    let baseCondition: Object = {
       requestDateStart: searchCondition.requestDateStart,
       requestDateEnd: searchCondition.requestDateEnd,
       requestNo: searchCondition.requestNo,
@@ -84,7 +84,7 @@ export default function BookingStatusCondition() {
     };
 
     if (activeFilters.includes("vesselVoyage")) {
-      return {
+      baseCondition = {
         ...baseCondition,
         vesselInfo: searchCondition.vesselInfo,
         voyage: searchCondition.voyage,
@@ -93,21 +93,21 @@ export default function BookingStatusCondition() {
     }
 
     if (activeFilters.includes("bookingVia")) {
-      return {
+      baseCondition = {
         ...baseCondition,
         bookingVia: searchCondition.bookingVia,
       };
     }
 
     if (activeFilters.includes("origin")) {
-      return {
+      baseCondition = {
         ...baseCondition,
         origin: searchCondition.origin,
       };
     }
 
     if (activeFilters.includes("destination")) {
-      return {
+      baseCondition = {
         ...baseCondition,
         destination: searchCondition.destination,
       };
