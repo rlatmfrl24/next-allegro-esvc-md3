@@ -3,46 +3,21 @@ import {
   BookingRequestStepState,
   ContainerState,
 } from "@/app/store/booking-request.store";
-import {
-  MdChipSet,
-  MdFilledButton,
-  MdFilledTonalIconButton,
-  MdIconButton,
-  MdInputChip,
-  MdOutlinedButton,
-  MdOutlinedSelect,
-  MdOutlinedTextField,
-  MdRippleEffect,
-  MdSelectOption,
-} from "@/app/util/md3";
+import { MdFilledButton } from "@/app/util/md3";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import { useEffect, useRef, useState } from "react";
-import {
-  BulkContainerInformationType,
-  ContainerInformationType,
-  ContainerType,
-  DryContainerInformationType,
-  FlatRackContainerInformationType,
-  OpenTopContainerInformationType,
-  ReeferContainerInformationType,
-  TankContainerInformationType,
-} from "@/app/util/typeDef/boooking";
-import { faker } from "@faker-js/faker";
-import { Disclosure } from "@headlessui/react";
-import { Add, ArrowDropDown, DeleteOutline, Upload } from "@mui/icons-material";
-import NaToggleButton from "@/app/components/na-toggle-button";
+import { useEffect, useState } from "react";
+import { ContainerType } from "@/app/util/typeDef/boooking";
 import ContainerToggleButton from "./components/container-toggle-button";
-import DangerousCargoInput from "./components/dangerous-cargo-input";
 import DryContainerInputContainer from "./components/dry-container-input";
 import ReeferContainerInput from "./components/reefer-container-input";
-import { Flat, get } from "lodash";
 import { getEmptyContainerData } from "../../util";
 import OpenTopContainerInput from "./components/opentop-container-input";
 import FlatRackContainerInput from "./components/flatrack-container-input";
 import TankContainerInputContainer from "./components/tank-container-input";
 import BulkContainerInput from "./components/bulk-container-input";
+import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -84,6 +59,34 @@ export default function ContainerStep() {
       }));
     }
   }
+
+  useEffect(() => {
+    containerInformation.dry.length === 0 &&
+      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.dry));
+    containerInformation.reefer.length === 0 &&
+      setTypeSelections((prev) =>
+        prev.filter((t) => t !== ContainerType.reefer)
+      );
+    containerInformation.opentop.length === 0 &&
+      setTypeSelections((prev) =>
+        prev.filter((t) => t !== ContainerType.opentop)
+      );
+    containerInformation.flatrack.length === 0 &&
+      setTypeSelections((prev) =>
+        prev.filter((t) => t !== ContainerType.flatrack)
+      );
+    containerInformation.tank.length === 0 &&
+      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.tank));
+    containerInformation.bulk.length === 0 &&
+      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.bulk));
+  }, [
+    containerInformation.bulk.length,
+    containerInformation.dry.length,
+    containerInformation.flatrack.length,
+    containerInformation.opentop.length,
+    containerInformation.reefer.length,
+    containerInformation.tank.length,
+  ]);
 
   return (
     <div className="w-full flex flex-col">
@@ -170,27 +173,45 @@ export default function ContainerStep() {
           }
         />
       </div>
-      <div className="flex flex-col w-full mt-6 gap-6">
-        {typeSelections.includes(ContainerType.dry) && (
-          <DryContainerInputContainer list={containerInformation.dry} />
-        )}
-        {typeSelections.includes(ContainerType.reefer) && (
-          <ReeferContainerInput list={containerInformation.reefer} />
-        )}
-        {typeSelections.includes(ContainerType.opentop) && (
-          <OpenTopContainerInput list={containerInformation.opentop} />
-        )}
-        {typeSelections.includes(ContainerType.flatrack) && (
-          <FlatRackContainerInput list={containerInformation.flatrack} />
-        )}
-        {typeSelections.includes(ContainerType.tank) && (
-          <TankContainerInputContainer list={containerInformation.tank} />
-        )}
-        {typeSelections.includes(ContainerType.bulk) && (
-          <BulkContainerInput list={containerInformation.bulk} />
+      <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
+        {typeSelections.map((type) => {
+          return (
+            <div key={type}>
+              {type === ContainerType.dry && (
+                <DryContainerInputContainer list={containerInformation.dry} />
+              )}
+              {type === ContainerType.reefer && (
+                <ReeferContainerInput list={containerInformation.reefer} />
+              )}
+              {type === ContainerType.opentop && (
+                <OpenTopContainerInput list={containerInformation.opentop} />
+              )}
+              {type === ContainerType.flatrack && (
+                <FlatRackContainerInput list={containerInformation.flatrack} />
+              )}
+              {type === ContainerType.tank && (
+                <TankContainerInputContainer list={containerInformation.tank} />
+              )}
+              {type === ContainerType.bulk && (
+                <BulkContainerInput list={containerInformation.bulk} />
+              )}
+            </div>
+          );
+        })}
+        {typeSelections.length === 0 && (
+          <div className="flex-1 flex-col flex items-center justify-center gap-8">
+            <EmptyContainerPlaceholder />
+            <MdTypography
+              variant="headline"
+              size="medium"
+              className="text-outlineVariant"
+            >
+              Please select the container type you want to add.
+            </MdTypography>
+          </div>
         )}
       </div>
-      <div className="flex-1 flex items-end justify-end mt-6">
+      <div className="flex items-end justify-end mt-6">
         <MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
           Next
         </MdFilledButton>
