@@ -1,0 +1,15 @@
+export enum SIState {
+  None = "None",
+  TemporarySaved = "Temporary Saved",
+  Submit = "Submit",
+  ChangeRequested = "Change Requested",
+  ChangeRequestedRejected = "Change Requested Rejected",
+  Confirmed = "Confirmed",
+  Rejected = "Rejected",
+  Pending = "Pending",
+  BLIssueRequest = "B/L Issue Request",
+  BLIssueConfirm = "B/L Issue Confirm",
+  BLIssueRejected = "B/L Issue Rejected",
+  BLIssuePending = "B/L Issue Pending",
+  BLIssueClosed = "B/L Issue Closed",
+}

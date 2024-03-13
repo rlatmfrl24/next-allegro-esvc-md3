@@ -7,18 +7,11 @@ import Link from "next/link";
 import BookingStatusCondition from "./condition";
 import BookingStatusTable from "./table";
 import StatusFilterComponent from "../../../components/status-filter";
+import { BookingStatus } from "@/app/util/typeDef/boooking";
 
-const statusOptions = [
-  "Requested",
-  "Change Requested",
-  "Cancel Requested",
-  "Cancelled",
-  "Accepted",
-  "Rejected",
-  "Pending",
-];
+export default function BookingStatusPage() {
+  const statusOptions = Object.values(BookingStatus);
 
-export default function BookingStatus() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex items-center justify-between">
@@ -31,12 +24,7 @@ export default function BookingStatus() {
 
       <div className={styles.area}>
         <MdChipSet>
-          <StatusFilterComponent
-            statusOptions={statusOptions}
-            onChange={(status) => {
-              console.log(status);
-            }}
-          />
+          <StatusFilterComponent statusOptions={statusOptions} />
           <MdFilterChip label="My Booking" />
         </MdChipSet>
         <BookingStatusTable />

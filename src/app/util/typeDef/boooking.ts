@@ -1,6 +1,25 @@
 import { DateTime } from "luxon";
 import { VesselInfoType, PlaceInformationType } from "./schedule";
 
+export enum ContainerType {
+  dry = "Dry",
+  reefer = "Reefer",
+  opentop = "OpenTop",
+  flatrack = "FlatRack",
+  tank = "Tank",
+  bulk = "Bulk",
+}
+
+export enum BookingStatus {
+  Requested = "Requested",
+  ChangeRequested = "Change Requested",
+  CancelRequested = "Cancel Requested",
+  Cancelled = "Cancelled",
+  Accepted = "Accepted",
+  Rejected = "Rejected",
+  Pending = "Pending",
+}
+
 export type CommodityType = {
   code: string;
   description: string;
@@ -17,16 +36,6 @@ export type PartiesType = {
   consignee: PartyInterface;
   actualShipper: string;
 };
-
-export enum BookingStatus {
-  Requested = "Requested",
-  ChangeRequested = "Change Requested",
-  CancelRequested = "Cancel Requested",
-  Cancelled = "Cancelled",
-  Accepted = "Accepted",
-  Rejected = "Rejected",
-  Pending = "Pending",
-}
 
 export type BookingStatusTableProps = {
   requestNo: string;
@@ -106,15 +115,6 @@ export interface BookingInformationRequestType {
   cargoPickUpReturn: CargoPickUpReturnType;
   additionalInformation: AdditionalInformatioType;
   contactInformation: ContactInformationType;
-}
-
-export enum ContainerType {
-  dry = "Dry",
-  reefer = "Reefer",
-  opentop = "OpenTop",
-  flatrack = "FlatRack",
-  tank = "Tank",
-  bulk = "Bulk",
 }
 
 export interface ContainerInformationType {

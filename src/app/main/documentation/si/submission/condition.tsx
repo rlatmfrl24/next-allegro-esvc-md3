@@ -177,7 +177,7 @@ export default function SISearchCondition() {
           <NAOutlinedListBox
             label="Date"
             initialValue={searchCondition.date}
-            options={["Request Date", "Booking Date"]}
+            options={["Request Date", "Booking Date", "Departure Date"]}
             onSelection={(date) => {
               setSearchCondition((prev) => ({
                 ...prev,

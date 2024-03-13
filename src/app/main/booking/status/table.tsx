@@ -33,15 +33,9 @@ export default function BookingStatusTable() {
   const tempData: BookingStatusTableProps[] = useMemo(() => {
     return Array.from({ length: 10 }, (_, i) => ({
       requestNo: `R${faker.string.numeric(12)}`,
-      status: faker.helpers.arrayElement([
-        "Requested",
-        "Change Requested",
-        "Cancel Requested",
-        "Cancelled",
-        "Accepted",
-        "Rejected",
-        "Pending",
-      ]) as BookingStatus,
+      status: faker.helpers.arrayElement(
+        Object.values(BookingStatus)
+      ) as BookingStatus,
       bookingNo: `R${faker.string.numeric(12)}`,
       requestDate: DateTime.fromJSDate(faker.date.past()),
       actualShipper: faker.person.fullName(),

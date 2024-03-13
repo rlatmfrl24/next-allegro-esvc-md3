@@ -5,21 +5,8 @@ import styles from "@/app/styles/base.module.css";
 import SISearchCondition from "./condition";
 import { MdChipSet, MdFilterChip } from "@/app/util/md3";
 import StatusFilterComponent from "@/app/components/status-filter";
-
-const statusOptions = [
-  "Temporary Saved",
-  "Submit",
-  "Change Requested",
-  "Change Requested Rejected",
-  "Confirmed",
-  "Rejected",
-  "Pending",
-  "B/L Issue Request",
-  "B/L Issue Confirm",
-  "B/L Issue Rejected",
-  "B/L Issue Pending",
-  "B/L Issue Closed",
-];
+import { SIState } from "@/app/util/typeDef/si";
+import SITable from "./table";
 
 export default function SISearch() {
   return (
@@ -28,9 +15,10 @@ export default function SISearch() {
       <SISearchCondition />
       <div className={styles.area}>
         <MdChipSet>
-          <StatusFilterComponent statusOptions={statusOptions} />
+          <StatusFilterComponent statusOptions={Object.values(SIState)} />
           <MdFilterChip label="My Booking" />
         </MdChipSet>
+        <SITable />
       </div>
     </div>
   );
