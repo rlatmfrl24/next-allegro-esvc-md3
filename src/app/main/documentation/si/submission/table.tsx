@@ -2,13 +2,12 @@ import { BasicTable } from "@/app/components/basic-table";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
+  MdElevation,
   MdIcon,
   MdIconButton,
   MdListItem,
-  MdRippleEffect,
 } from "@/app/util/md3";
-import { VesselInfoType } from "@/app/util/typeDef/schedule";
-import { SIState } from "@/app/util/typeDef/si";
+import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import {
   createColumnHelper,
@@ -17,31 +16,13 @@ import {
 } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useEffect, useMemo, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import { MdTypography } from "@/app/components/typography";
 import SIStateChip from "./si-state-chip";
 import { ArrowDropDown } from "@mui/icons-material";
 import { Menu } from "@headlessui/react";
-
-type SISearchTableProps = {
-  requestNumber: string;
-  bookingNumber: string;
-  blState: SIState;
-  blNumber: string;
-  requestBlType: string;
-  actualShipper: string;
-  SiCutOffTime: DateTime;
-  requestUpdateDate: DateTime;
-  vessel: VesselInfoType;
-  origin: string;
-  destination: string;
-  bookingVia: string;
-  estimatedTimeofBerth: DateTime;
-  estimatedTimeofDeparture: DateTime;
-  estimatedTimeofArrival: DateTime;
-  blType: string;
-};
+import VesselInfoCell from "./vessel-info-cell";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -66,6 +47,7 @@ function createDummySITableData(count: number = 10) {
     estimatedTimeofDeparture: DateTime.local(),
     estimatedTimeofArrival: DateTime.local(),
     blType: faker.helpers.arrayElement(["", "FCL", "LCL"]),
+    remarks: faker.helpers.maybe(() => faker.lorem.sentence()),
   }));
 }
 
@@ -109,13 +91,19 @@ export default function SITable() {
             <MdTypography variant="body" size="medium" className="underline">
               {info.getValue()}
             </MdTypography>
-            <MdIconButton>
-              <MdIcon>
-                <div className="flex items-center justify-center">
-                  <RemarkIcon />
-                </div>
-              </MdIcon>
-            </MdIconButton>
+            {info.row.original.remarks && (
+              <MdIconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <MdIcon>
+                  <div className="flex items-center justify-center">
+                    <RemarkIcon />
+                  </div>
+                </MdIcon>
+              </MdIconButton>
+            )}
           </span>
         );
       },
@@ -135,6 +123,8 @@ export default function SITable() {
     columnHelper.accessor("blState", {
       header: "B/L Status",
       cell: (info) => <SIStateChip state={info.getValue()} />,
+      size: 150,
+      minSize: 150,
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
@@ -149,56 +139,57 @@ export default function SITable() {
       cell: (info) => {
         return (
           <Menu>
-            {({ open }) => {
-              return (
-                <div className="relative">
-                  <Menu.Button
-                    className={`w-full flex items-center justify-between`}
+            <Menu.Button
+              className={`w-full flex items-center justify-between`}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="flex-1 flex justify-start"
+              >
+                {info.getValue()}
+              </MdTypography>
+              <ArrowDropDown />
+            </Menu.Button>
+            <Menu.Items
+              style={
+                {
+                  "--md-elevation-level": 2,
+                } as CSSProperties
+              }
+              className={`absolute z-10 bg-surfaceContainerHigh rounded-lg py-2`}
+            >
+              <MdElevation />
+              {["None", "O.BL", "Surrender", "SeaWaybill"].map((option) => (
+                <Menu.Item key={option}>
+                  <MdListItem
+                    type="button"
+                    className={` ${
+                      info.getValue() === option ? "bg-secondaryContainer" : ""
+                    }`}
                     onClick={(e) => {
                       e.stopPropagation();
+                      setTableData((prev) =>
+                        prev.map((row) => {
+                          if (row === info.row.original) {
+                            return {
+                              ...row,
+                              requestBlType: option,
+                            };
+                          }
+                          return row;
+                        })
+                      );
                     }}
                   >
-                    <MdTypography
-                      variant="body"
-                      size="medium"
-                      className="flex-1 flex justify-start"
-                    >
-                      {info.getValue()}
-                    </MdTypography>
-                    <ArrowDropDown />
-                  </Menu.Button>
-                  <Menu.Items
-                    style={{
-                      boxShadow:
-                        "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3) ",
-                    }}
-                    className={`absolute z-10 bg-surfaceContainerHigh rounded-lg py-2`}
-                  >
-                    {["None", "O.BL", "Surrender", "SeaWaybill"].map(
-                      (option) => (
-                        <Menu.Item key={option}>
-                          {({ active }) => {
-                            return (
-                              <MdListItem
-                                type="button"
-                                className={` ${
-                                  active ? "bg-secondaryContainer" : ""
-                                }`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                }}
-                              >
-                                {option}
-                              </MdListItem>
-                            );
-                          }}
-                        </Menu.Item>
-                      )
-                    )}
-                  </Menu.Items>
-                </div>
-              );
-            }}
+                    {option}
+                  </MdListItem>
+                </Menu.Item>
+              ))}
+            </Menu.Items>
           </Menu>
         );
       },
@@ -237,15 +228,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
-      cell: (info) => (
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="whitespace-nowrap underline"
-        >
-          {info.getValue().vesselName}
-        </MdTypography>
-      ),
+      cell: (info) => <VesselInfoCell {...info.row.original} />,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
