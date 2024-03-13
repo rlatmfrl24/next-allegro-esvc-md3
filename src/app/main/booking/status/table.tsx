@@ -337,7 +337,16 @@ export default function BookingStatusTable() {
 
       <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent>
-          <BasicTable table={table} />
+          <BasicTable
+            table={table}
+            onRowSelction={(row) => {
+              if (row.getIsSelected()) {
+                return;
+              } else {
+                row.toggleSelected();
+              }
+            }}
+          />
         </OverlayScrollbarsComponent>
       </div>
 

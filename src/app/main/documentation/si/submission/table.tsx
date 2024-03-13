@@ -1,6 +1,12 @@
 import { BasicTable } from "@/app/components/basic-table";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
-import { MdCheckbox, MdIcon, MdIconButton } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdIcon,
+  MdIconButton,
+  MdListItem,
+  MdRippleEffect,
+} from "@/app/util/md3";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
@@ -15,6 +21,8 @@ import { useEffect, useMemo, useState } from "react";
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import { MdTypography } from "@/app/components/typography";
 import SIStateChip from "./si-state-chip";
+import { ArrowDropDown } from "@mui/icons-material";
+import { Menu } from "@headlessui/react";
 
 type SISearchTableProps = {
   requestNumber: string;
@@ -67,6 +75,8 @@ export default function SITable() {
     []
   );
   const [tableData, setTableData] = useState<SISearchTableProps[]>([]);
+  const [selectedRows, setSelectedRows] = useState<SISearchTableProps[]>([]);
+
   useEffect(() => {
     setTableData(tempTableData);
   }, [tempTableData]);
@@ -76,7 +86,20 @@ export default function SITable() {
     columnHelper.display({
       id: "select",
       header: () => <MdCheckbox className="mx-2" />,
-      cell: () => <MdCheckbox className="mx-2" />,
+      cell: (info) => (
+        <MdCheckbox
+          className="mx-2"
+          checked={
+            // if selectedRows includes the current row, return true
+            selectedRows.includes(info.row.original) ? true : false
+          }
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        />
+      ),
+      size: 52,
+      minSize: 52,
     }),
     columnHelper.accessor("requestNumber", {
       header: "Request No.",
@@ -96,6 +119,8 @@ export default function SITable() {
           </span>
         );
       },
+      size: 165,
+      minSize: 165,
     }),
     columnHelper.accessor("bookingNumber", {
       header: "Booking No.",
@@ -104,6 +129,8 @@ export default function SITable() {
           {info.getValue()}
         </MdTypography>
       ),
+      size: 160,
+      minSize: 160,
     }),
     columnHelper.accessor("blState", {
       header: "B/L Status",
@@ -119,7 +146,62 @@ export default function SITable() {
     }),
     columnHelper.accessor("requestBlType", {
       header: "Request B/L Type",
-      cell: (info) => info.getValue(),
+      cell: (info) => {
+        return (
+          <Menu>
+            {({ open }) => {
+              return (
+                <div className="relative">
+                  <Menu.Button
+                    className={`w-full flex items-center justify-between`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <MdTypography
+                      variant="body"
+                      size="medium"
+                      className="flex-1 flex justify-start"
+                    >
+                      {info.getValue()}
+                    </MdTypography>
+                    <ArrowDropDown />
+                  </Menu.Button>
+                  <Menu.Items
+                    style={{
+                      boxShadow:
+                        "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3) ",
+                    }}
+                    className={`absolute z-10 bg-surfaceContainerHigh rounded-lg py-2`}
+                  >
+                    {["None", "O.BL", "Surrender", "SeaWaybill"].map(
+                      (option) => (
+                        <Menu.Item key={option}>
+                          {({ active }) => {
+                            return (
+                              <MdListItem
+                                type="button"
+                                className={` ${
+                                  active ? "bg-secondaryContainer" : ""
+                                }`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                {option}
+                              </MdListItem>
+                            );
+                          }}
+                        </Menu.Item>
+                      )
+                    )}
+                  </Menu.Items>
+                </div>
+              );
+            }}
+          </Menu>
+        );
+      },
       size: 120,
       minSize: 120,
     }),
@@ -245,13 +327,42 @@ export default function SITable() {
     columns,
     data: tableData,
     getCoreRowModel: getCoreRowModel(),
+    initialState: {
+      columnPinning: {
+        left: ["select", "requestNumber", "bookingNumber"],
+      },
+    },
+    enableMultiRowSelection: false,
   });
 
   return (
     <>
       <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent>
-          <BasicTable table={table} />
+          <BasicTable
+            table={table}
+            onRowSelction={(row) => {
+              // if selectedRows includes the current row, remove it
+              if (selectedRows.includes(row.original)) {
+                setSelectedRows(
+                  selectedRows.filter((selected) => selected !== row.original)
+                );
+              } else {
+                // if row's bl state is 'bl issue request' and selectrows's all bl state is 'bl issue request', just add the row
+                if (
+                  row.original.blState === SIState.BLIssueRequest &&
+                  selectedRows.every(
+                    (selected) => selected.blState === SIState.BLIssueRequest
+                  )
+                ) {
+                  setSelectedRows([...selectedRows, row.original]);
+                } else {
+                  //else, clear the selected rows and add the row
+                  setSelectedRows([row.original]);
+                }
+              }
+            }}
+          />
         </OverlayScrollbarsComponent>
       </div>
     </>

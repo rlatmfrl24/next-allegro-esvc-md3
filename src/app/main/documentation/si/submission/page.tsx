@@ -16,7 +16,7 @@ export default function SISearch() {
       <div className={styles.area}>
         <MdChipSet>
           <StatusFilterComponent statusOptions={Object.values(SIState)} />
-          <MdFilterChip label="My Booking" />
+          <MdFilterChip label="My Shipment " />
         </MdChipSet>
         <SITable />
       </div>
