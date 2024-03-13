@@ -1,36 +1,32 @@
+import { CSSProperties, useEffect, useState } from "react";
+
 import { MdTypography } from "@/app/components/typography";
 import {
   MdCheckbox,
-  MdChipSet,
   MdElevation,
-  MdFilterChip,
   MdList,
   MdListItem,
   MdRippleEffect,
 } from "@/app/util/md3";
 import {
-  useFloating,
+  autoUpdate,
   offset,
   shift,
-  autoUpdate,
-  useTransitionStyles,
-  useDismiss,
   useClick,
+  useDismiss,
+  useFloating,
   useInteractions,
+  useTransitionStyles,
 } from "@floating-ui/react";
-import { Check, ArrowDropDown } from "@mui/icons-material";
-import { useState, CSSProperties } from "react";
+import { ArrowDropDown, Check } from "@mui/icons-material";
 
-const StatusFilterComponent = () => {
-  const statusOptions = [
-    "Requested",
-    "Change Requested",
-    "Cancel Requested",
-    "Cancelled",
-    "Accepted",
-    "Rejected",
-    "Pending",
-  ];
+const StatusFilterComponent = ({
+  statusOptions,
+  onChange,
+}: {
+  statusOptions: string[];
+  onChange?: (status: string[]) => void;
+}) => {
   const [selectedStatus, setSelectedStatus] = useState(statusOptions);
   const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
 
@@ -55,8 +51,14 @@ const StatusFilterComponent = () => {
     click,
   ]);
 
+  useEffect(() => {
+    if (onChange) {
+      onChange(selectedStatus);
+    }
+  }, [onChange, selectedStatus]);
+
   return (
-    <MdChipSet>
+    <>
       <div
         ref={refs.setReference}
         {...getReferenceProps()}
@@ -65,7 +67,7 @@ const StatusFilterComponent = () => {
         <MdRippleEffect />
         <Check fontSize="small" className="mx-2" />
         <MdTypography variant="label" size="large" className="select-none">
-          {selectedStatus.length === 7
+          {selectedStatus.length === statusOptions.length
             ? "All Status"
             : selectedStatus.join(", ")}
         </MdTypography>
@@ -92,7 +94,7 @@ const StatusFilterComponent = () => {
               type="button"
               className="border-b border-b-outlineVariant pt-2"
               onClick={() => {
-                if (selectedStatus.length === 7) {
+                if (selectedStatus.length === statusOptions.length) {
                   setSelectedStatus([]);
                 } else {
                   setSelectedStatus(statusOptions);
@@ -103,9 +105,11 @@ const StatusFilterComponent = () => {
                 slot="start"
                 className="w-6 h-6 flex items-center justify-center"
               >
-                <MdCheckbox checked={selectedStatus.length === 7} />
+                <MdCheckbox
+                  checked={selectedStatus.length === statusOptions.length}
+                />
               </div>
-              {`(${selectedStatus.length}/7)`}
+              {`(${selectedStatus.length}/${statusOptions.length})`}
             </MdListItem>
             <MdList className="bg-surfaceContainerHigh rounded-b-lg">
               {statusOptions.map((status) => (
@@ -135,8 +139,7 @@ const StatusFilterComponent = () => {
           </div>
         )}
       </div>
-      <MdFilterChip label="My Booking" />
-    </MdChipSet>
+    </>
   );
 };
 

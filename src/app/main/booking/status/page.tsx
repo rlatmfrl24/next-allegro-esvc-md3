@@ -2,11 +2,21 @@
 
 import PageTitle from "@/app/components/page-title";
 import styles from "@/app/styles/base.module.css";
-import { MdOutlinedButton } from "@/app/util/md3";
+import { MdChipSet, MdFilterChip, MdOutlinedButton } from "@/app/util/md3";
 import Link from "next/link";
 import BookingStatusCondition from "./condition";
 import BookingStatusTable from "./table";
-import StatusFilterComponent from "./components/status-filter";
+import StatusFilterComponent from "../../../components/status-filter";
+
+const statusOptions = [
+  "Requested",
+  "Change Requested",
+  "Cancel Requested",
+  "Cancelled",
+  "Accepted",
+  "Rejected",
+  "Pending",
+];
 
 export default function BookingStatus() {
   return (
@@ -20,7 +30,15 @@ export default function BookingStatus() {
       <BookingStatusCondition />
 
       <div className={styles.area}>
-        <StatusFilterComponent />
+        <MdChipSet>
+          <StatusFilterComponent
+            statusOptions={statusOptions}
+            onChange={(status) => {
+              console.log(status);
+            }}
+          />
+          <MdFilterChip label="My Booking" />
+        </MdChipSet>
         <BookingStatusTable />
       </div>
     </div>
