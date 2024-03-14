@@ -65,6 +65,14 @@ export default function BLCheckResultTable() {
       header: "Vessel",
       cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
+    columnHelper.accessor("onBoardDate", {
+      header: "On Board Date",
+      cell: (info) => info.getValue().toFormat("yyyy-MM-dd"),
+    }),
+    columnHelper.accessor("freight", {
+      header: "Freight",
+      cell: (info) => (info.getValue() ? "Yes" : "No"),
+    }),
   ];
 
   const table = useReactTable({
