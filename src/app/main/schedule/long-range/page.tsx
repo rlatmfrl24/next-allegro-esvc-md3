@@ -170,7 +170,7 @@ export default function LongRangeSchedule() {
         </div>
       </div>
       {pageState === "unsearch" ? (
-        <EmptyResultPlaceholder />
+        <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
         <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
           <ServiceLaneSelector

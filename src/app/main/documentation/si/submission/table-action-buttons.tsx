@@ -1,6 +1,7 @@
 import { BasicTable } from "@/app/components/basic-table";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
@@ -19,7 +20,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
-import VesselInfoCell from "./vessel-info-cell";
 
 const ActionButtons = ({
   selectionList,
@@ -285,7 +285,7 @@ const BLCombine = ({
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...rowData} />,
+      cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",

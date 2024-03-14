@@ -105,7 +105,7 @@ export default function PortSchedule() {
         </div>
       </div>
       {pageState === "unsearch" ? (
-        <EmptyResultPlaceholder />
+        <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
         <div className={styles.area}>
           <div className="flex justify-between">

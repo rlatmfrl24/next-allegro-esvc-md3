@@ -1,7 +1,7 @@
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import VesselResultTable from "./result-table";
-import { MdIcon, MdTextButton } from "@/app/util/md3";
+import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
@@ -84,7 +84,7 @@ export function VesselScheduleResult({
       </div>
       <div
         aria-label="divider"
-        className="h-px w-full border-b border-dashed border-outlineVariant mt-6 mb-4"
+        className="h-px w-full border-b border-dashed border-outlineVariant"
       ></div>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -95,16 +95,15 @@ export function VesselScheduleResult({
             Download
           </MdTextButton>
           <DividerComponent orientation="vertical" className="h-8 mx-2" />
-          <NaToggleButton
+          <MdFilterChip
             label="Direct Only"
-            state={isDirectOnly ? "checked" : "unchecked"}
             onClick={() => {
               setIsDirectOnly((prev) => !prev);
             }}
           />
         </div>
         <MdTypography variant="label" size="large" className="text-outline">
-          Ports Total:{vesselSchedules.length}
+          Total:{vesselSchedules.length}
         </MdTypography>
       </div>
       <VesselResultTable data={vesselSchedules} />

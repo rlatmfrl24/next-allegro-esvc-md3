@@ -26,7 +26,7 @@ export default function VesselScheduleDialog({
         className="min-w-[1280px]"
       >
         <div slot="headline">Vessel Schedule</div>
-        <div slot="content">
+        <div slot="content" className="flex flex-col gap-4">
           <VesselScheduleResult
             vesselData={vesselInfo}
             vesselSchedules={vesselSchedules}

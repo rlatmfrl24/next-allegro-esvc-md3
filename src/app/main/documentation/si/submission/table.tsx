@@ -28,10 +28,10 @@ import {
 } from "@tanstack/react-table";
 
 import SIStateChip from "./si-state-chip";
-import VesselInfoCell from "./vessel-info-cell";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import ActionButtons from "./table-action-buttons";
 import StatusFilterComponent from "@/app/components/status-filter";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -279,7 +279,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...info.row.original} />,
+      cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",

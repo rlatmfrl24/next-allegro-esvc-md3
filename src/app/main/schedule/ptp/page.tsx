@@ -95,7 +95,9 @@ export default function PointToPointSchedule() {
 
         {
           {
-            unsearch: <EmptyResultPlaceholder />,
+            unsearch: (
+              <EmptyResultPlaceholder text={"Please search for the schedule"} />
+            ),
             list: <PointToPointListResult list={resultList} />,
             calendar: <PointToPointCalendarResult list={resultList} />,
           }[pageState]

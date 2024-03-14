@@ -110,7 +110,7 @@ export default function VesselSchedule() {
       </div>
       <div className={styles.area}>
         {pageState === "unsearch" ? (
-          <EmptyResultPlaceholder />
+          <EmptyResultPlaceholder text={"Please search for the schedule"} />
         ) : (
           <VesselScheduleResult
             vesselData={vesselData}

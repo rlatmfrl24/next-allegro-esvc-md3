@@ -21,13 +21,13 @@ import {
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import EstimatedTimeofDepartureCell from "./components/estimated-time-of-departure-cell";
-import VesselInfoCell from "./components/vessel-info-cell";
 import Link from "next/link";
 import {
   BookingStatusTableProps,
   BookingStatus,
 } from "@/app/util/typeDef/boooking";
 import StatusFilterComponent from "@/app/components/status-filter";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
@@ -156,7 +156,7 @@ export default function BookingStatusTable() {
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...info.row.original} />,
+      cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("requestDepartureTime", {
       header: "Request Departure Time",
