@@ -364,7 +364,7 @@ export default function SITable() {
     getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       columnPinning: {
-        left: ["select", "requestNumber", "bookingNumber"],
+        left: ["select", "requestNumber", "bookingNumber", "blState"],
       },
     },
     enableMultiRowSelection: false,

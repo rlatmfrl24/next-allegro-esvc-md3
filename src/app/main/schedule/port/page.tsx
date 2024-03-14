@@ -14,7 +14,7 @@ import { MdFilledButton, MdIcon, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import DownloadIcon from "@mui/icons-material/Download";
 
-import EmptyResultPlaceholder from "../empty-placeholder";
+import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import { createDummyPortSchedules } from "../util";
 import PortResultTable from "./result-table";
 import PageTitle from "@/app/components/page-title";

@@ -4,7 +4,7 @@ import { MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { useEffect, useMemo, useState } from "react";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import ConditionSummary from "./condition-summary";
-import EmptyResultPlaceholder from "../empty-placeholder";
+import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import styles from "@/app/styles/base.module.css";
 import {

@@ -11,7 +11,7 @@ import {
   MdOutlinedSegmentedButtonSet,
 } from "@/app/util/md3";
 
-import EmptyResultPlaceholder from "../empty-placeholder";
+import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import { createDummyPtPScheduleData } from "../util";
 import ConditionSummary from "./components/condition-summary";
 import PointToPointCalendarResult from "./result-calendar";

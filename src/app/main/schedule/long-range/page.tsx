@@ -17,7 +17,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 
-import EmptyResultPlaceholder from "../empty-placeholder";
+import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
