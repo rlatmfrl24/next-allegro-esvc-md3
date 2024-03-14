@@ -1,4 +1,4 @@
-import { Column, Table, flexRender } from "@tanstack/react-table";
+import { Column, Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
 import { CSSProperties } from "react";
@@ -32,7 +32,7 @@ export const BasicTable = ({
   onRowSelction,
 }: {
   table: Table<any>;
-  onRowSelction?: (row: any) => void;
+  onRowSelction?: (row: Row<any>) => void;
 }) => {
   return (
     <table className={styles.table}>

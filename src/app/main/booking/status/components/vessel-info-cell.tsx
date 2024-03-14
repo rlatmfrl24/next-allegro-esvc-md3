@@ -21,7 +21,7 @@ const VesselInfoCell = (row: BookingStatusTableProps) => {
       <MdTypography
         variant="body"
         size="medium"
-        className="text-onSurfaceVariant underline cursor-pointer p-2 whitespace-nowrap"
+        className="text-onSurfaceVariant underline cursor-pointer whitespace-nowrap"
       >
         {cellValue.vesselName}
       </MdTypography>

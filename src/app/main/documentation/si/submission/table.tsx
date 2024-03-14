@@ -1,4 +1,10 @@
+import { DateTime } from "luxon";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
+
+import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import { BasicTable } from "@/app/components/basic-table";
+import { MdTypography } from "@/app/components/typography";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -6,23 +12,22 @@ import {
   MdIcon,
   MdIconButton,
   MdListItem,
+  MdTextButton,
 } from "@/app/util/md3";
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
+import { Menu } from "@headlessui/react";
+import { ArrowDropDown, Download } from "@mui/icons-material";
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { DateTime } from "luxon";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
-import RemarkIcon from "@/../public/icon_long_range_remark.svg";
-import { MdTypography } from "@/app/components/typography";
+
 import SIStateChip from "./si-state-chip";
-import { ArrowDropDown } from "@mui/icons-material";
-import { Menu } from "@headlessui/react";
 import VesselInfoCell from "./vessel-info-cell";
+import { DividerComponent } from "@/app/main/booking/information/components/base";
+import ActionButtons from "./table-action-buttons";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -52,6 +57,28 @@ function createDummySITableData(count: number = 10) {
 }
 
 export default function SITable() {
+  function handleSITableRowSelection(row: any) {
+    // if selectedRows includes the current row, remove it
+    if (selectedRows.includes(row.original)) {
+      setSelectedRows(
+        selectedRows.filter((selected) => selected !== row.original)
+      );
+    } else {
+      // if row's bl state is 'bl issue request' and selectrows's all bl state is 'bl issue request', just add the row
+      if (
+        row.original.blState === SIState.BLIssueRequest &&
+        selectedRows.every(
+          (selected) => selected.blState === SIState.BLIssueRequest
+        )
+      ) {
+        setSelectedRows([...selectedRows, row.original]);
+      } else {
+        //else, clear the selected rows and add the row
+        setSelectedRows([row.original]);
+      }
+    }
+  }
+
   const tempTableData: SISearchTableProps[] = useMemo(
     () => createDummySITableData(30),
     []
@@ -122,7 +149,12 @@ export default function SITable() {
     }),
     columnHelper.accessor("blState", {
       header: "B/L Status",
-      cell: (info) => <SIStateChip state={info.getValue()} />,
+      cell: (info) =>
+        info.getValue() === SIState.None ? (
+          <></>
+        ) : (
+          <SIStateChip state={info.getValue()} />
+        ),
       size: 150,
       minSize: 150,
     }),
@@ -137,13 +169,25 @@ export default function SITable() {
     columnHelper.accessor("requestBlType", {
       header: "Request B/L Type",
       cell: (info) => {
+        const isDisabled =
+          info.row.original.blState ===
+          (SIState.Rejected ||
+            SIState.Pending ||
+            SIState.BLIssuePending ||
+            SIState.BLIssueClosed)
+            ? true
+            : false;
+
         return (
           <Menu>
             <Menu.Button
-              className={`w-full flex items-center justify-between`}
+              className={`w-full flex items-center justify-between ${
+                isDisabled ? "text-outlineVariant" : "cursor-pointer"
+              }`}
               onClick={(e) => {
-                e.stopPropagation();
+                isDisabled ? e.preventDefault() : e.stopPropagation();
               }}
+              disabled={isDisabled}
             >
               <MdTypography
                 variant="body"
@@ -320,30 +364,30 @@ export default function SITable() {
 
   return (
     <>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex gap-2 items-center">
+          <MdTextButton>
+            <div slot="icon">
+              <Download fontSize="small" />
+            </div>
+            Download
+          </MdTextButton>
+          <ActionButtons selectionList={selectedRows} />
+        </div>
+
+        <div>
+          <MdTypography variant="label" size="large" className="text-outline">
+            Total: {tableData.length}
+          </MdTypography>
+        </div>
+      </div>
+
       <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent>
           <BasicTable
             table={table}
             onRowSelction={(row) => {
-              // if selectedRows includes the current row, remove it
-              if (selectedRows.includes(row.original)) {
-                setSelectedRows(
-                  selectedRows.filter((selected) => selected !== row.original)
-                );
-              } else {
-                // if row's bl state is 'bl issue request' and selectrows's all bl state is 'bl issue request', just add the row
-                if (
-                  row.original.blState === SIState.BLIssueRequest &&
-                  selectedRows.every(
-                    (selected) => selected.blState === SIState.BLIssueRequest
-                  )
-                ) {
-                  setSelectedRows([...selectedRows, row.original]);
-                } else {
-                  //else, clear the selected rows and add the row
-                  setSelectedRows([row.original]);
-                }
-              }
+              handleSITableRowSelection(row);
             }}
           />
         </OverlayScrollbarsComponent>
