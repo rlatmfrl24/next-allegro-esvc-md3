@@ -1,4 +1,5 @@
 import { BasicTable } from "@/app/components/basic-table";
+import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
@@ -39,6 +40,7 @@ export default function BLCheckResultTable() {
     );
   }, []);
   const [tableData, setTableData] = useState<BLCheckResultTableProps[]>([]);
+  const [rowSelection, setRowSelection] = useState({});
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
@@ -48,9 +50,19 @@ export default function BLCheckResultTable() {
   const columns = [
     columnHelper.display({
       id: "checkbox",
-      header: () => <MdCheckbox />,
-      cell: () => <MdCheckbox />,
-      size: 48,
+      header: (info) => (
+        <MdCheckbox
+          className="ml-2"
+          checked={info.table.getIsAllRowsSelected()}
+          onClick={() => {
+            info.table.toggleAllRowsSelected();
+          }}
+        />
+      ),
+      cell: (info) => (
+        <MdCheckbox className="ml-2" checked={info.row.getIsSelected()} />
+      ),
+      size: 44,
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
@@ -67,11 +79,17 @@ export default function BLCheckResultTable() {
     }),
     columnHelper.accessor("onBoardDate", {
       header: "On Board Date",
-      cell: (info) => info.getValue().toFormat("yyyy-MM-dd"),
+      cell: (info) => info.getValue().toFormat("yyyy-MM-dd HH:mm"),
     }),
     columnHelper.accessor("freight", {
       header: "Freight",
-      cell: (info) => (info.getValue() ? "Yes" : "No"),
+      cell: (info) => (
+        <NaToggleButton
+          label="Include"
+          state={info.getValue() ? "checked" : "unchecked"}
+        />
+      ),
+      size: 100,
     }),
   ];
 
@@ -79,6 +97,10 @@ export default function BLCheckResultTable() {
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
   });
 
   return (
@@ -96,7 +118,12 @@ export default function BLCheckResultTable() {
           </MdTypography>
         </div>
       </div>
-      <BasicTable table={table} />
+      <BasicTable
+        table={table}
+        onRowSelction={(row) => {
+          row.toggleSelected();
+        }}
+      />
     </>
   );
 }
