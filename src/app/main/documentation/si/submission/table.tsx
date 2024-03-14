@@ -8,19 +8,22 @@ import { MdTypography } from "@/app/components/typography";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
+  MdChipSet,
   MdElevation,
+  MdFilterChip,
   MdIcon,
   MdIconButton,
   MdListItem,
   MdTextButton,
 } from "@/app/util/md3";
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
-import { faker } from "@faker-js/faker";
+import { faker, fi } from "@faker-js/faker";
 import { Menu } from "@headlessui/react";
 import { ArrowDropDown, Download } from "@mui/icons-material";
 import {
   createColumnHelper,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -28,6 +31,7 @@ import SIStateChip from "./si-state-chip";
 import VesselInfoCell from "./vessel-info-cell";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import ActionButtons from "./table-action-buttons";
+import StatusFilterComponent from "@/app/components/status-filter";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -157,6 +161,9 @@ export default function SITable() {
         ),
       size: 150,
       minSize: 150,
+      filterFn: (row, id, filterValue) => {
+        return filterValue.includes(row.getValue(id));
+      },
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
@@ -354,6 +361,7 @@ export default function SITable() {
     columns,
     data: tableData,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       columnPinning: {
         left: ["select", "requestNumber", "bookingNumber"],
@@ -364,6 +372,16 @@ export default function SITable() {
 
   return (
     <>
+      <MdChipSet>
+        <StatusFilterComponent
+          statusOptions={Object.values(SIState)}
+          onChange={(states) => {
+            states.length !== 0 &&
+              table.getColumn("blState")?.setFilterValue(states);
+          }}
+        />
+        <MdFilterChip label="My Shipment " />
+      </MdChipSet>
       <div className="flex items-center justify-between gap-4">
         <div className="flex gap-2 items-center">
           <MdTextButton>

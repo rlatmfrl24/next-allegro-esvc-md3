@@ -55,7 +55,8 @@ const StatusFilterComponent = ({
     if (onChange) {
       onChange(selectedStatus);
     }
-  }, [onChange, selectedStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStatus]);
 
   return (
     <>

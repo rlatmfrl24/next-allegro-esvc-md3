@@ -12,7 +12,7 @@ import {
 } from "@/app/util/md3";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
-import { faker, ro } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import {
   createColumnHelper,
   getCoreRowModel,
