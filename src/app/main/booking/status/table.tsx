@@ -8,24 +8,26 @@ import { useRecoilState } from "recoil";
 import { BasicTable } from "@/app/components/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { CurrentBookingDataState } from "@/app/store/booking-status.store";
-import { MdRadio, MdTextButton } from "@/app/util/md3";
+import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
 import {
   createColumnHelper,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import EstimatedTimeofDepartureCell from "./components/estimated-time-of-departure-cell";
-import VesselInfoCell from "./components/vessel-info-cell";
 import Link from "next/link";
 import {
   BookingStatusTableProps,
   BookingStatus,
 } from "@/app/util/typeDef/boooking";
+import StatusFilterComponent from "@/app/components/status-filter";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
@@ -33,15 +35,9 @@ export default function BookingStatusTable() {
   const tempData: BookingStatusTableProps[] = useMemo(() => {
     return Array.from({ length: 10 }, (_, i) => ({
       requestNo: `R${faker.string.numeric(12)}`,
-      status: faker.helpers.arrayElement([
-        "Requested",
-        "Change Requested",
-        "Cancel Requested",
-        "Cancelled",
-        "Accepted",
-        "Rejected",
-        "Pending",
-      ]) as BookingStatus,
+      status: faker.helpers.arrayElement(
+        Object.values(BookingStatus)
+      ) as BookingStatus,
       bookingNo: `R${faker.string.numeric(12)}`,
       requestDate: DateTime.fromJSDate(faker.date.past()),
       actualShipper: faker.person.fullName(),
@@ -108,6 +104,9 @@ export default function BookingStatusTable() {
     columnHelper.accessor("status", {
       header: "Status",
       cell: (info) => <BookingStatusChip status={info.getValue()} />,
+      filterFn: (row, id, filterValue) => {
+        return filterValue.includes(row.original.status);
+      },
       size: 120,
       minSize: 120,
     }),
@@ -157,7 +156,7 @@ export default function BookingStatusTable() {
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...info.row.original} />,
+      cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("requestDepartureTime", {
       header: "Request Departure Time",
@@ -288,6 +287,7 @@ export default function BookingStatusTable() {
     columns,
     data: tableData,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
     initialState: {
       columnPinning: {
@@ -311,6 +311,16 @@ export default function BookingStatusTable() {
 
   return (
     <>
+      <MdChipSet>
+        <StatusFilterComponent
+          statusOptions={Object.values(BookingStatus)}
+          onChange={(states) => {
+            states.length > 0 &&
+              table.getColumn("status")?.setFilterValue(states);
+          }}
+        />
+        <MdFilterChip label="My Booking" />
+      </MdChipSet>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <MdTextButton>
@@ -343,7 +353,16 @@ export default function BookingStatusTable() {
 
       <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent>
-          <BasicTable table={table} />
+          <BasicTable
+            table={table}
+            onRowSelction={(row) => {
+              if (row.getIsSelected()) {
+                return;
+              } else {
+                row.toggleSelected();
+              }
+            }}
+          />
         </OverlayScrollbarsComponent>
       </div>
 

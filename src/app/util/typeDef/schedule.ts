@@ -57,7 +57,7 @@ export interface PortScheduleType extends BaseScheduleType {
 export type LongRangeScheduleType = {
   vesselInfo: VesselInfoType;
   vesselSchedules: VesselScheduleType[];
-  remarkInfo: string;
+  remarkInfo?: string;
   longRangeDates: LongRangeDateType[];
 };
 

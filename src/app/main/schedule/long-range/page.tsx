@@ -17,7 +17,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 
-import EmptyResultPlaceholder from "../empty-placeholder";
+import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
@@ -170,7 +170,7 @@ export default function LongRangeSchedule() {
         </div>
       </div>
       {pageState === "unsearch" ? (
-        <EmptyResultPlaceholder />
+        <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
         <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
           <ServiceLaneSelector
@@ -180,7 +180,13 @@ export default function LongRangeSchedule() {
             }}
           />
           <div className="p-6">
-            <div className="flex gap-4 items-center justify-end mb-2">
+            <div className="flex gap-4 items-center justify-between mb-2">
+              <MdTextButton>
+                <MdIcon slot="icon">
+                  <Download fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
               <MdTypography
                 variant="label"
                 size="large"
@@ -188,12 +194,6 @@ export default function LongRangeSchedule() {
               >
                 Total: {schedules.length}
               </MdTypography>
-              <MdTextButton>
-                <MdIcon slot="icon">
-                  <Download fontSize="small" />
-                </MdIcon>
-                Download
-              </MdTextButton>
             </div>
             <LongRangeTable
               schedules={schedules}

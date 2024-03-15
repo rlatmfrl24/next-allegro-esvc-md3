@@ -2,13 +2,17 @@ import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
 import { ContainerState } from "@/app/store/booking-request.store";
-import { MdFilledTonalIconButton, MdOutlinedTextField } from "@/app/util/md3";
+import {
+  MdFilledTonalIconButton,
+  MdIconButton,
+  MdOutlinedTextField,
+} from "@/app/util/md3";
 import {
   BulkContainerInformationType,
   ContainerType,
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
-import { Add, ArrowDropDown } from "@mui/icons-material";
+import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import { useSetRecoilState } from "recoil";
 
 const BulkContainerInput = ({
@@ -19,10 +23,10 @@ const BulkContainerInput = ({
   const setContainerInformation = useSetRecoilState(ContainerState);
 
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => (
         <>
-          <Disclosure.Button className={`flex items-center gap-2`}>
+          <Disclosure.Button className={`flex w-full items-center gap-2`}>
             <div className="w-1 h-4 bg-primary"></div>
             <MdTypography variant="body" size="large" prominent>
               Bulk Container
@@ -154,6 +158,17 @@ const BulkContainerInput = ({
                         }));
                       }}
                     />
+                    <MdIconButton
+                      className="mt-2"
+                      onClick={() => {
+                        setContainerInformation((prev) => ({
+                          ...prev,
+                          bulk: prev.bulk.filter((c, i) => i !== index),
+                        }));
+                      }}
+                    >
+                      <DeleteOutline fontSize="small" />
+                    </MdIconButton>
                   </div>
                   <div className="flex gap-4">
                     <MdOutlinedTextField

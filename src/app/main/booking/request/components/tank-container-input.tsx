@@ -10,9 +10,7 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import {
-  ContainerInformationType,
   ContainerType,
-  DryContainerInformationType,
   TankContainerInformationType,
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
@@ -28,10 +26,10 @@ const TankContainerInputContainer = ({
   const setContainerInformation = useSetRecoilState(ContainerState);
 
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => (
         <>
-          <Disclosure.Button className={`flex items-center gap-2`}>
+          <Disclosure.Button className={`flex w-full items-center gap-2`}>
             <div className="w-1 h-4 bg-primary"></div>
             <MdTypography variant="body" size="large" prominent>
               Tank Container

@@ -112,7 +112,7 @@ export default function NAOutlinedListBox({
     <div
       ref={refs.setReference}
       {...getReferenceProps()}
-      className={`relative cursor-pointer ${className}`}
+      className={`relative cursor-pointer h-fit ${className}`}
     >
       <MdOutlinedTextField
         {...props}

@@ -13,8 +13,6 @@ export const PlainTooltip = ({ label }: { label: string }) => {
   );
 };
 
-export const RichTooltip = () => {};
-
 export const RichTooltipContainer = ({
   children,
 }: {

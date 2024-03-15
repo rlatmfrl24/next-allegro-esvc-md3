@@ -24,11 +24,11 @@ const ReeferContainerInput = ({
   const setContainerInformation = useSetRecoilState(ContainerState);
 
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => {
         return (
           <>
-            <Disclosure.Button className={`flex items-center gap-2`}>
+            <Disclosure.Button className={`flex w-full items-center gap-2`}>
               <div className="w-1 h-4 bg-primary"></div>
               <MdTypography variant="body" size="large" prominent>
                 Reefer Container

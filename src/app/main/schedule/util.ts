@@ -191,7 +191,7 @@ export function createDummyLongRangeSchedule(
   return {
     vesselInfo: createDummyVesselInformation(),
     vesselSchedules: createDummaryVesselSchedules(),
-    remarkInfo: faker.lorem.sentence(),
+    remarkInfo: faker.helpers.maybe(() => faker.lorem.paragraph(1)),
     longRangeDates: portList.map((port) => {
       return {
         port,

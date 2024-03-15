@@ -6,9 +6,8 @@ import { MdOutlinedButton } from "@/app/util/md3";
 import Link from "next/link";
 import BookingStatusCondition from "./condition";
 import BookingStatusTable from "./table";
-import StatusFilterComponent from "./components/status-filter";
 
-export default function BookingStatus() {
+export default function BookingStatusPage() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex items-center justify-between">
@@ -20,7 +19,6 @@ export default function BookingStatus() {
       <BookingStatusCondition />
 
       <div className={styles.area}>
-        <StatusFilterComponent />
         <BookingStatusTable />
       </div>
     </div>

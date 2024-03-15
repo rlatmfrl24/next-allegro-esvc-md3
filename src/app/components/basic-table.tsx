@@ -1,9 +1,8 @@
-import { Column, Table, flexRender } from "@tanstack/react-table";
+import { Column, Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
-import { CSSProperties, memo, useMemo } from "react";
-import { MdRippleEffect } from "../util/md3";
-import React from "react";
+import { CSSProperties } from "react";
+import { on } from "events";
 
 const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
   const isPinned = column.getIsPinned();
@@ -24,11 +23,17 @@ const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
     position: isPinned ? "sticky" : "relative",
     width: column.columnDef?.size === undefined ? "auto" : column.getSize(),
     minWidth: column.columnDef.minSize,
-    zIndex: isPinned ? 1 : 0,
+    zIndex: isPinned ? 20 : undefined,
   };
 };
 
-export const BasicTable = ({ table }: { table: Table<any> }) => {
+export const BasicTable = ({
+  table,
+  onRowSelction,
+}: {
+  table: Table<any>;
+  onRowSelction?: (row: Row<any>) => void;
+}) => {
   return (
     <table className={styles.table}>
       {table.getHeaderGroups().map((headerGroup) => (
@@ -65,11 +70,7 @@ export const BasicTable = ({ table }: { table: Table<any> }) => {
                     }}
                     className="group-hover:bg-surfaceContainer p-2"
                     onClick={(e) => {
-                      if (row.getIsSelected()) {
-                        return;
-                      } else {
-                        row.toggleSelected();
-                      }
+                      onRowSelction?.(row);
                     }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

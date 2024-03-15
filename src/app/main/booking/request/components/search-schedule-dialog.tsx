@@ -121,7 +121,16 @@ export default function SearchScheduleDialog({
       >
         <div slot="headline">Search Schedule</div>
         <div slot="content">
-          <BasicTable table={table} />
+          <BasicTable
+            table={table}
+            onRowSelction={(row) => {
+              if (row.getIsSelected()) {
+                return;
+              } else {
+                row.toggleSelected();
+              }
+            }}
+          />
         </div>
         <div slot="actions">
           <MdTextButton
