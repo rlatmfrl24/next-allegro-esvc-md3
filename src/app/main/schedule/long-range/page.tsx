@@ -23,6 +23,7 @@ import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
 import PageTitle from "@/app/components/page-title";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef/schedule";
+import { SubTitle } from "../../booking/request/components/base";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -44,7 +45,9 @@ export default function LongRangeSchedule() {
       ),
     []
   );
-  const [selectedServiceLane, setSelectedServiceLane] = useState<string>("");
+  const [selectedServiceLane, setSelectedServiceLane] = useState<string>(
+    serviceLaneItems[0] || ""
+  );
 
   const createDummyData = useCallback(() => {
     const { schedules, portList } = createDummyLongRangeSchedules(hasDeparture);
@@ -75,6 +78,10 @@ export default function LongRangeSchedule() {
       setPageState("search");
     }
   }
+
+  const tempServiceLaneTitle = useMemo(() => {
+    return `${faker.location.city()}-${faker.location.city()} SERVICE (${selectedServiceLane})`;
+  }, [selectedServiceLane]);
 
   return (
     <div aria-label="container" className={styles.container}>
@@ -180,6 +187,7 @@ export default function LongRangeSchedule() {
             }}
           />
           <div className="p-6">
+            <SubTitle title={tempServiceLaneTitle} className="mb-2" />
             <div className="flex gap-4 items-center justify-between mb-2">
               <MdTextButton>
                 <MdIcon slot="icon">

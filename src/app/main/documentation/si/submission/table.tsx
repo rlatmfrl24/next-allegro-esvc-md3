@@ -377,8 +377,7 @@ export default function SITable() {
         <StatusFilterComponent
           statusOptions={Object.values(SIState)}
           onChange={(states) => {
-            states.length !== 0 &&
-              table.getColumn("blState")?.setFilterValue(states);
+            table.getColumn("blState")?.setFilterValue(states);
           }}
         />
         <MdFilterChip label="My Shipment " />

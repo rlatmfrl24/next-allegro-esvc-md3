@@ -7,7 +7,7 @@ import { MdFilledButton } from "@/app/util/md3";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ContainerType } from "@/app/util/typeDef/boooking";
 import ContainerToggleButton from "./components/container-toggle-button";
 import DryContainerInputContainer from "./components/dry-container-input";
@@ -24,6 +24,16 @@ export default function ContainerStep() {
   const [typeSelections, setTypeSelections] = useState<ContainerType[]>([]);
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
+
+  useEffect(() => {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      container: {
+        ...prev.container,
+        isCompleted: true,
+      },
+    }));
+  }, [setBookingRequestStep]);
 
   const moveToAdditionalInformationStep = () => {
     setBookingRequestStep((prev) => ({

@@ -68,9 +68,14 @@ const StatusFilterComponent = ({
         <MdRippleEffect />
         <Check fontSize="small" className="mx-2" />
         <MdTypography variant="label" size="large" className="select-none">
-          {selectedStatus.length === statusOptions.length
+          {selectedStatus.length === 0
+            ? "No Status"
+            : selectedStatus.length === statusOptions.length
             ? "All Status"
-            : selectedStatus.join(", ")}
+            : selectedStatus[0] +
+              (selectedStatus.length > 1
+                ? " +" + (selectedStatus.length - 1)
+                : "")}
         </MdTypography>
         <ArrowDropDown fontSize="small" className="mx-2" />
       </div>

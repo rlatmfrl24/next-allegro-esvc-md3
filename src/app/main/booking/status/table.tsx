@@ -315,8 +315,7 @@ export default function BookingStatusTable() {
         <StatusFilterComponent
           statusOptions={Object.values(BookingStatus)}
           onChange={(states) => {
-            states.length > 0 &&
-              table.getColumn("status")?.setFilterValue(states);
+            table.getColumn("status")?.setFilterValue(states);
           }}
         />
         <MdFilterChip label="My Booking" />

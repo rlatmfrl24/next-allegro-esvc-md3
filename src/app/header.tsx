@@ -3,6 +3,7 @@
 import Logo from "./components/logo";
 import Link from "next/link";
 import {
+  MdElevatedCard,
   MdFilledButton,
   MdIcon,
   MdIconButton,
@@ -10,13 +11,23 @@ import {
   MdMenuItem,
   MdOutlinedButton,
 } from "./util/md3";
-import { useState } from "react";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { CSSProperties, useState } from "react";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import UnknownAvatar from "@/../public/avatar_unknown.svg";
 import CheckIcon from "@mui/icons-material/Check";
 import { usePathname } from "next/navigation";
+import { AccountCircleOutlined } from "@mui/icons-material";
+import {
+  autoUpdate,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from "@floating-ui/react";
+import { MdTypography } from "./components/typography";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -82,6 +93,32 @@ const HeaderMainComponent = () => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("English");
 
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isUserMenuOpen,
+    onOpenChange: setIsUserMenuOpen,
+    middleware: [shift()],
+    placement: "bottom-end",
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { getFloatingProps, getReferenceProps } = useInteractions([
+    useClick(context),
+    useDismiss(context),
+    useRole(context),
+  ]);
+
+  const { isMounted, styles } = useTransitionStyles(context, {
+    duration: {
+      open: 200,
+      close: 100,
+    },
+    initial: { opacity: 0, transform: "translateY(-8px)" },
+    open: { opacity: 1, transform: "translateY(0)" },
+    close: { opacity: 0, transform: "translateY(-8px)" },
+  });
+
   return (
     <div className="flex gap-3">
       <MdIconButton>
@@ -122,9 +159,39 @@ const HeaderMainComponent = () => {
           </MdMenuItem>
         </MdMenu>
       </div>
-      <Link href={"/sign"}>
-        <UnknownAvatar />
-      </Link>
+      <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
+        <AccountCircleOutlined />
+      </MdIconButton>
+      {isMounted && (
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+          className="z-20"
+        >
+          <MdElevatedCard
+            style={
+              {
+                ...styles,
+              } as CSSProperties
+            }
+            className="w-60 bg-surfaceContainerHigh py-2"
+          >
+            <div className="w-full flex flex-col justify-center items-center p-6 gap-4">
+              <MdTypography variant="headline" size="small" className="w-fit">
+                Wy_lee
+              </MdTypography>
+              <MdTypography variant="body" size="medium">
+                Jsahn@cyberlogitec.com
+              </MdTypography>
+            </div>
+            <MdMenuItem>Account Profile</MdMenuItem>
+            <Link href={"/sign"}>
+              <MdMenuItem>Sign Out</MdMenuItem>
+            </Link>
+          </MdElevatedCard>
+        </div>
+      )}
     </div>
   );
 };
