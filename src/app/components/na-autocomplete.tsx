@@ -1,11 +1,4 @@
-import {
-  CSSProperties,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import {
   MdElevation,
   MdIcon,
@@ -30,7 +23,7 @@ import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { MdTypography } from "./typography";
 import RestoreIcon from "@mui/icons-material/Restore";
-import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
