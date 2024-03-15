@@ -44,13 +44,13 @@ export const BookingRequestStepState = atom({
       id: "container",
       title: "Container",
       isSelected: false,
-      isCompleted: true,
+      isCompleted: false,
     },
     additionalInformation: {
       id: "additionalInformation",
       title: "Addtional Information",
       isSelected: false,
-      isCompleted: true,
+      isCompleted: false,
     },
     contactInformation: {
       id: "contactInformation",

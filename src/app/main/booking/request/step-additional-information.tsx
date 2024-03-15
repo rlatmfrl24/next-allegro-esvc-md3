@@ -7,7 +7,7 @@ import {
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   AdditionalInformationState,
@@ -36,6 +36,16 @@ export default function AdditionalInformationStep() {
       });
     }
   };
+
+  useEffect(() => {
+    setBookingRequestStep((prev) => ({
+      ...prev,
+      additionalInformation: {
+        ...prev.additionalInformation,
+        isCompleted: true,
+      },
+    }));
+  }, [setBookingRequestStep]);
 
   const moveToContactInformationStep = () => {
     setBookingRequestStep((prev) => ({

@@ -35,7 +35,10 @@ export const MdRangeDatePicker = (props: {
   defaultStartDate?: DateTime;
   defaultEndDate?: DateTime;
   handleDateRangeSelected?: (dateRange: [DateTime, DateTime]) => void;
+  dateFormat?: string;
 }) => {
+  const currentDateFormat = props.dateFormat || "yyyy-MM-dd";
+
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
   const [focusStartDate, setFocusStartDate] = useState<DateTime>(
@@ -93,12 +96,12 @@ export const MdRangeDatePicker = (props: {
 
     const startDate = DateTime.fromFormat(
       (targetValue.split("-")[0] as string).trim(),
-      "MM/dd/yyyy"
+      currentDateFormat
     );
 
     const endDate = DateTime.fromFormat(
       (targetValue.split("-")[1] as string).trim(),
-      "MM/dd/yyyy"
+      currentDateFormat
     );
 
     if (startDate.isValid && endDate.isValid) {
@@ -157,9 +160,9 @@ export const MdRangeDatePicker = (props: {
         label={props.label}
         className="flex-1"
         value={
-          defaultDateRange[0].toFormat("MM/dd/yyyy") +
-          " - " +
-          defaultDateRange[1].toFormat("MM/dd/yyyy")
+          defaultDateRange[0].toFormat(currentDateFormat) +
+          " ~ " +
+          defaultDateRange[1].toFormat(currentDateFormat)
         }
         errorText={errorSupportText}
         error={
@@ -171,6 +174,7 @@ export const MdRangeDatePicker = (props: {
         onBlur={(e) => {
           handleDateChange(e);
         }}
+        readOnly
       >
         <MdIconButton
           slot="trailing-icon"
