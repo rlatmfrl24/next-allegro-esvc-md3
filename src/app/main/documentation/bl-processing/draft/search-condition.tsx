@@ -113,7 +113,7 @@ export default function BLCheckSearchCondition({
                   <NAOutlinedTextField
                     className="flex-1"
                     value={blQuery}
-                    placeholder="Multi B/L No."
+                    placeholder="Multi B/L No. or Booking No."
                     handleValueChange={(value) => {
                       setBlQuery(value);
                     }}

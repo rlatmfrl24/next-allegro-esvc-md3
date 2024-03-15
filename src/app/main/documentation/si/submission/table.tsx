@@ -14,6 +14,7 @@ import {
   MdIcon,
   MdIconButton,
   MdListItem,
+  MdMenuItem,
   MdTextButton,
 } from "@/app/util/md3";
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
@@ -188,7 +189,7 @@ export default function SITable() {
         return (
           <Menu>
             <Menu.Button
-              className={`w-full flex items-center justify-between ${
+              className={`w-full h-10 flex items-center justify-between ${
                 isDisabled ? "text-outlineVariant" : "cursor-pointer"
               }`}
               onClick={(e) => {
@@ -216,7 +217,7 @@ export default function SITable() {
               <MdElevation />
               {["None", "O.BL", "Surrender", "SeaWaybill"].map((option) => (
                 <Menu.Item key={option}>
-                  <MdListItem
+                  <MdMenuItem
                     type="button"
                     className={` ${
                       info.getValue() === option ? "bg-secondaryContainer" : ""
@@ -237,7 +238,7 @@ export default function SITable() {
                     }}
                   >
                     {option}
-                  </MdListItem>
+                  </MdMenuItem>
                 </Menu.Item>
               ))}
             </Menu.Items>
