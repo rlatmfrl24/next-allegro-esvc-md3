@@ -8,12 +8,7 @@ import {
   BookingRequestStepState,
   CargoPickUpReturnState,
 } from "@/app/store/booking-request.store";
-import {
-  MdFilledButton,
-  MdOutlinedSelect,
-  MdOutlinedTextField,
-  MdSelectOption,
-} from "@/app/util/md3";
+import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 
 import CommodityAutoComplete from "./components/commodity-search";
 import { SubTitle } from "./components/base";
@@ -21,6 +16,7 @@ import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { faker } from "@faker-js/faker";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -131,23 +127,16 @@ export default function CargoStep() {
             }
           }}
         />
-        <MdOutlinedSelect
-          selectedIndex={
-            cargoPickUpReturnData.grossWeightUnit === "KGS" ? 0 : 1
-          }
-          onchange={(event) => {
-            const target = event.target as HTMLSelectElement;
+        <NAOutlinedListBox
+          className="w-32"
+          initialValue={cargoPickUpReturnData.grossWeightUnit}
+          options={["KGS", "LBS"]}
+          onSelection={(value) => {
             setCargoPickUpReturnData((prev) => {
-              return {
-                ...prev,
-                grossWeightUnit: target.value as "KGS" | "LBS",
-              };
+              return { ...prev, grossWeightUnit: value as "KGS" | "LBS" };
             });
           }}
-        >
-          <MdSelectOption value="KGS">KGS</MdSelectOption>
-          <MdSelectOption value="LBS">LBS</MdSelectOption>
-        </MdOutlinedSelect>
+        />
       </div>
       <SubTitle title="Container Pick Up/Return Place" className="mt-6 mb-4" />
       <div className="flex flex-col gap-6">

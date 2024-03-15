@@ -3,7 +3,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import NAOutlinedSelect from "@/app/components/na-outlined-select";
 import { MdTypography } from "@/app/components/typography";
 import {
   BookingRequestStepState,
@@ -12,10 +11,8 @@ import {
 import {
   MdFilledButton,
   MdFilledTonalButton,
-  MdOutlinedSelect,
   MdOutlinedTextField,
   MdRadio,
-  MdSelectOption,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
@@ -24,6 +21,7 @@ import { createDummyPlaceInformation } from "../../schedule/util";
 import SearchScheduleDialog from "./components/search-schedule-dialog";
 import { DateTime } from "luxon";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -31,7 +29,7 @@ export default function LoactionScheduleStep() {
   );
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
-    useState(false);
+    useState(locationScheduleData.contractNumber === "");
   const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
     useState(false);
 
@@ -176,20 +174,20 @@ export default function LoactionScheduleStep() {
                 }));
               }}
             />
-            <MdOutlinedSelect
-              selectedIndex={locationScheduleData.originType === "cy" ? 0 : 1}
-              onchange={(e) => {
+            <NAOutlinedListBox
+              className="w-40"
+              initialValue={
+                locationScheduleData.originType === "cy" ? "CY" : "Door"
+              }
+              options={["CY", "Door"]}
+              onSelection={(value) => {
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  originType: (e.target as HTMLSelectElement).value as
-                    | "cy"
-                    | "door",
+                  originType: value === "CY" ? "cy" : "door",
                 }));
               }}
-            >
-              <MdSelectOption value="cy">CY</MdSelectOption>
-              <MdSelectOption value="door">Door</MdSelectOption>
-            </MdOutlinedSelect>
+            />
+
             <MdOutlinedTextField
               placeholder="Port of Loading"
               value={locationScheduleData.pol}
@@ -225,22 +223,19 @@ export default function LoactionScheduleStep() {
                 }));
               }}
             />
-            <MdOutlinedSelect
-              selectedIndex={
-                locationScheduleData.destinationType === "cy" ? 0 : 1
+            <NAOutlinedListBox
+              className="w-40"
+              initialValue={
+                locationScheduleData.destinationType === "cy" ? "CY" : "Door"
               }
-              onchange={(e) => {
+              options={["CY", "Door"]}
+              onSelection={(value) => {
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  destinationType: (e.target as HTMLSelectElement).value as
-                    | "cy"
-                    | "door",
+                  destinationType: value === "CY" ? "cy" : "door",
                 }));
               }}
-            >
-              <MdSelectOption value="cy">CY</MdSelectOption>
-              <MdSelectOption value="door">Door</MdSelectOption>
-            </MdOutlinedSelect>
+            />
             <MdOutlinedTextField
               value={locationScheduleData.pod}
               onInput={(e) => {
@@ -286,72 +281,60 @@ export default function LoactionScheduleStep() {
             </div>
           )}
           <div className="flex gap-4">
-            <NAOutlinedSelect
-              label="Booking Office"
+            <NAOutlinedListBox
               required
-              selectedIndex={bookingOfficeList.indexOf(
-                locationScheduleData.bookingOffice
-              )}
-              onchange={(e) => {
+              label="Booking Office"
+              initialValue={locationScheduleData.bookingOffice}
+              options={bookingOfficeList}
+              onSelection={(value) => {
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  bookingOffice: (e.target as HTMLSelectElement).value,
+                  bookingOffice: value,
                 }));
               }}
-            >
-              {bookingOfficeList.map((office, index) => (
-                <MdSelectOption key={index} value={office}>
-                  {office}
-                </MdSelectOption>
-              ))}
-            </NAOutlinedSelect>
-            <MdOutlinedSelect
+            />
+
+            <NAOutlinedListBox
               label="Contract Number"
-              selectedIndex={
+              options={[
+                "Manually Input",
+                ...randomContractList.map((contract) => {
+                  return contract;
+                }),
+              ]}
+              initialValue={
                 isContractNumberManuallyInput
-                  ? randomContractList.length
-                  : randomContractList.indexOf(
-                      locationScheduleData.contractNumber
-                    )
+                  ? "Manually Input"
+                  : locationScheduleData.contractNumber
               }
-              onchange={(e) => {
-                const newValue = (e.target as HTMLSelectElement).value;
-                if (newValue === undefined) {
+              onSelection={(value) => {
+                if (value === "Manually Input") {
                   setIsContractNumberManuallyInput(true);
                   setLoactionScheduleData((prev) => ({
                     ...prev,
                     contractNumber: "",
                   }));
-                  return;
                 } else {
                   setIsContractNumberManuallyInput(false);
                   setLoactionScheduleData((prev) => ({
                     ...prev,
-                    contractNumber: (e.target as HTMLSelectElement).value,
+                    contractNumber: value,
                   }));
                 }
               }}
-            >
-              {randomContractList.map((contract, index) => (
-                <MdSelectOption key={index} value={contract}>
-                  {contract}
-                </MdSelectOption>
-              ))}
-              <MdSelectOption value={undefined}>Manually Input</MdSelectOption>
-            </MdOutlinedSelect>
-            <MdOutlinedTextField
-              className={
-                isContractNumberManuallyInput ? "visible" : "invisible"
-              }
-              placeholder="Contract Number"
-              value={locationScheduleData.contractNumber}
-              onInput={(e) => {
-                setLoactionScheduleData((prev) => ({
-                  ...prev,
-                  contractNumber: (e.target as HTMLInputElement).value,
-                }));
-              }}
-            ></MdOutlinedTextField>
+            />
+            {isContractNumberManuallyInput && (
+              <NAOutlinedTextField
+                placeholder="Contract Number"
+                value={locationScheduleData.contractNumber}
+                handleValueChange={(value) => {
+                  setLoactionScheduleData((prev) => ({
+                    ...prev,
+                    contractNumber: value,
+                  }));
+                }}
+              />
+            )}
           </div>
         </div>
         {locationScheduleData.searchType === "schedule" && (
