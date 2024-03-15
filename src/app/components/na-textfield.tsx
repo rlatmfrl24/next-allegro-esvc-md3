@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import {
   MdIcon,
   MdIconButton,
@@ -25,7 +25,7 @@ export const NAOutlinedTextField = ({
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (!props.value) {
+    if (!props.value || props.value.length === 0) {
       setHasValue(false);
     }
   }, [props.value]);
@@ -44,9 +44,7 @@ export const NAOutlinedTextField = ({
       >
         <MdIconButton
           slot="trailing-icon"
-          className={
-            !props.disabled && hasValue && props.label ? "visible" : "invisible"
-          }
+          className={!props.disabled && hasValue ? "visible" : "invisible"}
           onClick={() => {
             if (inputRef.current) (inputRef.current as any).value = "";
             setHasValue(false);

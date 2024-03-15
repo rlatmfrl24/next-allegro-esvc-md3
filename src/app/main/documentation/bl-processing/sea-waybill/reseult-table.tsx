@@ -11,7 +11,6 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { ResultTableProps } from "@/app/util/typeDef/documentation";
-import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
 import {
@@ -22,7 +21,7 @@ import {
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 
-export default function BLCheckResultTable() {
+export default function SeaWaybillResultTable() {
   const tempData = useMemo(() => {
     return Array.from(
       { length: 10 },

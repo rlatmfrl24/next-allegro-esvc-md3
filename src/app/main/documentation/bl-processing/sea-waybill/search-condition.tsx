@@ -16,20 +16,20 @@ import {
 } from "@/app/util/md3";
 import { InfoOutlined } from "@mui/icons-material";
 import {
+  autoUpdate,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+} from "@floating-ui/react";
+import {
   RichTooltipContainer,
   RichTooltipItem,
 } from "@/app/components/tooltip";
-import {
-  useFloating,
-  shift,
-  autoUpdate,
-  useInteractions,
-  useClick,
-  useDismiss,
-  useRole,
-} from "@floating-ui/react";
 
-export default function BLCheckSearchCondition({
+export default function SeaWaybillSearchCondition({
   onSearch,
   onReset,
 }: {
