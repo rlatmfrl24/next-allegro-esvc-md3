@@ -41,7 +41,9 @@ export const MdSingleDatePicker = (props: {
   className?: string;
   required?: boolean;
   handleDateChange?: (date: DateTime) => void;
+  dateFormat?: string;
 }) => {
+  const currentDateFormat = props.dateFormat || "yyyy-MM-dd";
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [mode, setMode] = useState<"date" | "month" | "year">("date");
   const inputEl = useRef<any>(null);
@@ -87,15 +89,15 @@ export const MdSingleDatePicker = (props: {
 
     // validate date
     if (targetValue !== "") {
-      const inputDate = DateTime.fromFormat(targetValue, "MM/dd/yyyy");
+      const inputDate = DateTime.fromFormat(targetValue, currentDateFormat);
 
       if (inputDate.isValid) {
-        setDefaultDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
-        setFocusDate(DateTime.fromFormat(targetValue, "MM/dd/yyyy"));
+        setDefaultDate(DateTime.fromFormat(targetValue, currentDateFormat));
+        setFocusDate(DateTime.fromFormat(targetValue, currentDateFormat));
         navigation.setDate(inputDate.toJSDate());
         setInvalid(false);
       } else {
-        e.target.value = defaultDate.toFormat("MM/dd/yyyy");
+        e.target.value = defaultDate.toFormat(currentDateFormat);
         setInvalid(true);
       }
     }
@@ -128,12 +130,13 @@ export const MdSingleDatePicker = (props: {
         ref={inputEl}
         label={props.label}
         className="flex-1"
-        value={defaultDate.toFormat("MM/dd/yyyy")}
+        value={defaultDate.toFormat(currentDateFormat)}
         errorText="Invalid date format"
         error={invalid}
         onBlur={(e) => {
           handleDateChange(e);
         }}
+        readOnly
       >
         <MdIconButton slot="trailing-icon" {...getReferenceProps()}>
           <MdIcon>
