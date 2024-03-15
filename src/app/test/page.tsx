@@ -2,9 +2,12 @@
 
 import { MdFilledButton } from "../util/md3";
 import { createMDTheme, applyPresetTheme } from "../util/theme";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
+import NAOutlinedAutoComplete from "../components/na-autocomplete";
+import CommodityAutoComplete from "../main/booking/request/components/commodity-search";
+import { faker } from "@faker-js/faker";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -13,6 +16,15 @@ export default function Test() {
   useEffect(() => {
     createMDTheme(color);
   }, [color]);
+
+  const options = useMemo(() => {
+    return Array.from({ length: 40 }, (_, i) => ({
+      code: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+    }));
+  }, []);
+
+  const autoRef = useRef(null);
 
   function HexTest() {
     const [color, setColor] = useState("#009FE8");
@@ -35,7 +47,7 @@ export default function Test() {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-2 p-2 overflow-auto">
+    <div className="flex flex-1 flex-col gap-2 p-2 overflow-auto h-full">
       <MdFilledButton
         onClick={() => {
           router.push("/");
@@ -74,6 +86,10 @@ export default function Test() {
         >
           Preset 3
         </button>
+      </div>
+
+      <div className="flex gap-2">
+        <CommodityAutoComplete />
       </div>
     </div>
   );
