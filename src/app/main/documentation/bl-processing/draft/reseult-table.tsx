@@ -1,9 +1,15 @@
 import { BasicTable } from "@/app/components/basic-table";
 import NaToggleButton from "@/app/components/na-toggle-button";
+import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
-import { MdCheckbox, MdTextButton } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdDialog,
+  MdFilledButton,
+  MdTextButton,
+} from "@/app/util/md3";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
@@ -41,6 +47,7 @@ export default function BLCheckResultTable() {
   }, []);
   const [tableData, setTableData] = useState<BLCheckResultTableProps[]>([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [printDialogOpen, setPrintDialogOpen] = useState(false);
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
@@ -106,7 +113,11 @@ export default function BLCheckResultTable() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <MdTextButton>
+        <MdTextButton
+          onClick={() => {
+            setPrintDialogOpen(true);
+          }}
+        >
           <div slot="icon">
             <Print fontSize="small" />
           </div>
@@ -124,6 +135,55 @@ export default function BLCheckResultTable() {
           row.toggleSelected();
         }}
       />
+      <Portal selector="#main-container">
+        <BLPrintDialog
+          open={printDialogOpen}
+          onOpenChange={setPrintDialogOpen}
+        />
+      </Portal>
     </>
   );
 }
+
+const BLPrintDialog = ({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) => {
+  return (
+    <MdDialog
+      open={open}
+      closed={() => {
+        onOpenChange(false);
+      }}
+    >
+      <div slot="headline">B/L Print</div>
+      <div
+        slot="content"
+        className="bg-surfaceContainerHighest flex items-center justify-center w-96 h-96"
+      >
+        <MdTypography variant="headline" size="large">
+          PDF Viewer
+        </MdTypography>
+      </div>
+      <div slot="actions">
+        <MdTextButton
+          onClick={() => {
+            onOpenChange(false);
+          }}
+        >
+          Close
+        </MdTextButton>
+        <MdFilledButton
+          onClick={() => {
+            onOpenChange(false);
+          }}
+        >
+          Print
+        </MdFilledButton>
+      </div>
+    </MdDialog>
+  );
+};
