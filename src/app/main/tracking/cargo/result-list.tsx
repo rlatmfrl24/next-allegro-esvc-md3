@@ -3,7 +3,7 @@ import {
   TrackingStatus,
   TransitType,
 } from "@/app/util/typeDef/tracking";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createDummyCargoTrackingData } from "./util";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "../../booking/information/components/base";
@@ -29,211 +29,239 @@ export default function TrackingDataList() {
 }
 
 const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
   return (
-    <div className="px-6 py-4 bg-surface border border-outlineVariant rounded-lg flex relative">
-      <MdIconButton
-        className={`absolute right-4 top-4  rounded-full ${
-          data.isFavorite
-            ? "bg-secondaryContainer"
-            : "bg-surfaceContainerHighest"
-        }`}
+    <div>
+      <div
+        className="px-6 py-4 bg-surface border border-outlineVariant rounded-lg flex relative"
+        onClick={() => {
+          setIsDetailOpen(!isDetailOpen);
+        }}
       >
-        {data.isFavorite ? (
-          <Favorite className="text-onSurface" fontSize="small" />
-        ) : (
-          <FavoriteBorder className="text-onSurface" fontSize="small" />
-        )}
-      </MdIconButton>
-      <div className="flex flex-col pr-4 mr-4 border-r border-dotted border-outlineVariant w-[180px]">
-        <MdTypography variant="label" size="small" className="text-outline">
-          BKG No.
-        </MdTypography>
-        <MdTypography
-          variant="body"
-          size="medium"
-          prominent
-          className="text-onSurface"
+        <MdIconButton
+          className={`absolute right-4 top-4  rounded-full ${
+            data.isFavorite
+              ? "bg-secondaryContainer"
+              : "bg-surfaceContainerHighest"
+          }`}
         >
-          {data.bookingNumber}
-        </MdTypography>
-      </div>
-      <div className="flex flex-col w-72 border-r border-dotted border-outlineVariant mr-4">
-        <MdTypography variant="label" size="small" className="text-outline">
-          Container No.
-        </MdTypography>
-        <div className="flex items-center gap-2">
+          {data.isFavorite ? (
+            <Favorite className="text-onSurface" fontSize="small" />
+          ) : (
+            <FavoriteBorder className="text-onSurface" fontSize="small" />
+          )}
+        </MdIconButton>
+        <div className="flex flex-col pr-4 mr-4 border-r border-dotted border-outlineVariant w-[180px]">
+          <MdTypography variant="label" size="small" className="text-outline">
+            BKG No.
+          </MdTypography>
           <MdTypography
             variant="body"
             size="medium"
             prominent
             className="text-onSurface"
           >
-            {data.contaienrNumber}
-          </MdTypography>
-          <DividerComponent orientation="vertical" className="h-4" />
-          <MdTypography
-            variant="label"
-            size="medium"
-            className="text-onSurface"
-          >
-            {data.containerSize + `'` + data.containerType}
+            {data.bookingNumber}
           </MdTypography>
         </div>
-        <MdTypography variant="label" size="medium" className="text-outline">
-          {getStatusText(data.trackingStatus)}
-        </MdTypography>
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="flex items-center mt-4"
-        >
-          <Place
-            className="text-primary"
-            sx={{
-              fontSize: "20px",
-            }}
-          />
-          {getLastLocation(data).yardName}
-        </MdTypography>
-        <MdTypography variant="body" size="small" className="text-outline">
-          {getLastLocationTime(data).toLocaleString()}
-        </MdTypography>
+        <div className="flex flex-col w-72 border-r border-dotted border-outlineVariant mr-4">
+          <MdTypography variant="label" size="small" className="text-outline">
+            Container No.
+          </MdTypography>
+          <div className="flex items-center gap-2">
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-onSurface"
+            >
+              {data.contaienrNumber}
+            </MdTypography>
+            <DividerComponent orientation="vertical" className="h-4" />
+            <MdTypography
+              variant="label"
+              size="medium"
+              className="text-onSurface"
+            >
+              {data.containerSize + `'` + data.containerType}
+            </MdTypography>
+          </div>
+          <MdTypography variant="label" size="medium" className="text-outline">
+            {getStatusText(data.trackingStatus)}
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="flex items-center mt-4"
+          >
+            <Place
+              className="text-primary"
+              sx={{
+                fontSize: "20px",
+              }}
+            />
+            {getLastLocation(data).yardName}
+          </MdTypography>
+          <MdTypography variant="body" size="small" className="text-outline">
+            {getLastLocationTime(data).toLocaleString()}
+          </MdTypography>
+        </div>
+        <div className="flex-1 grid grid-cols-4">
+          <div aria-label="place-status"></div>
+          <div aria-label="place-status" className="pl-2 flex items-end h-6">
+            {data.trackingStatus === TrackingStatus.ArrivedAtPOL && (
+              <TransitPortIcon />
+            )}
+          </div>
+          <div aria-label="place-status" className="pl-2 flex items-end h-6">
+            {data.trackingStatus === TrackingStatus.ArrivedAtPOD && (
+              <TransitPortIcon />
+            )}
+          </div>
+          <div aria-label="place-status" className="pl-2 flex items-end h-6">
+            {data.trackingStatus === TrackingStatus.ArrivedAtDEL && (
+              <TransitPortIcon />
+            )}
+          </div>
+          <div className="flex-1 flex justify-end items-end h-6">
+            <MdTypography
+              variant="label"
+              size="medium"
+              className={`text-white bg-primary w-fit px-2 py-0.5 rounded-lg`}
+            >
+              POR
+            </MdTypography>
+            <LineBetween
+              startPosition="por"
+              trackingStatus={data.trackingStatus}
+              transitType={data.transitType}
+            />
+          </div>
+          <div className="flex-1 flex justify-end items-end h-6">
+            <MdTypography
+              variant="label"
+              size="medium"
+              className={`w-fit px-2 py-0.5 rounded-lg ${
+                data.trackingStatus === TrackingStatus.Departed
+                  ? "bg-surfaceContainerHigh text-onSurface"
+                  : "bg-primary text-white"
+              }`}
+            >
+              POL
+            </MdTypography>
+            <LineBetween
+              startPosition="pol"
+              trackingStatus={data.trackingStatus}
+              transitType={data.transitType}
+            />
+          </div>
+          <div className="flex-1 flex justify-end items-end h-6">
+            <MdTypography
+              variant="label"
+              size="medium"
+              className={`w-fit px-2 py-0.5 rounded-lg ${
+                data.trackingStatus === TrackingStatus.Departed ||
+                data.trackingStatus === TrackingStatus.ArrivedAtPOL ||
+                data.trackingStatus === TrackingStatus.TransitToPOD
+                  ? "bg-surfaceContainerHigh text-onSurface"
+                  : "bg-primary text-white"
+              }`}
+            >
+              POD
+            </MdTypography>
+            <LineBetween
+              startPosition="pod"
+              trackingStatus={data.trackingStatus}
+              transitType={data.transitType}
+            />
+          </div>
+          <div className="flex-1 flex items-end h-6">
+            <MdTypography
+              variant="label"
+              size="medium"
+              className={`w-fit px-2 py-0.5 rounded-lg ${
+                data.trackingStatus !== TrackingStatus.ArrivedAtDEL
+                  ? "bg-surfaceContainerHigh text-onSurface"
+                  : "bg-primary text-white"
+              }`}
+            >
+              DEL
+            </MdTypography>
+          </div>
+          <div className="pt-4">
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-balance pr-2 self-start"
+            >
+              {data.por.yardName}
+            </MdTypography>
+            <MdTypography
+              variant="label"
+              size="medium"
+              className="text-outline"
+            >
+              {data.porTime.toFormat("yyyy-MM-dd HH:mm")}
+            </MdTypography>
+          </div>
+          <div className="pt-4">
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-balance pr-2 self-start"
+            >
+              {data.pol.yardName}
+            </MdTypography>
+            <MdTypography
+              variant="label"
+              size="medium"
+              className="text-outline"
+            >
+              {data.polTime.toFormat("yyyy-MM-dd HH:mm")}
+            </MdTypography>
+          </div>
+          <div className="pt-4">
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-balance pr-2 self-start"
+            >
+              {data.pod.yardName}
+            </MdTypography>
+            <MdTypography
+              variant="label"
+              size="medium"
+              className="text-outline"
+            >
+              {data.podTime.toFormat("yyyy-MM-dd HH:mm")}
+            </MdTypography>
+          </div>
+          <div className="pt-4">
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-balance pr-2 self-start"
+            >
+              {data.del.yardName}
+            </MdTypography>
+            <MdTypography
+              variant="label"
+              size="medium"
+              className="text-outline"
+            >
+              {data.delTime.toFormat("yyyy-MM-dd HH:mm")}
+            </MdTypography>
+          </div>
+        </div>
       </div>
-      <div className="flex-1 grid grid-cols-4">
-        <div aria-label="place-status"></div>
-        <div aria-label="place-status" className="pl-2 flex items-end h-6">
-          {data.trackingStatus === TrackingStatus.ArrivedAtPOL && (
-            <TransitPortIcon />
-          )}
-        </div>
-        <div aria-label="place-status" className="pl-2 flex items-end h-6">
-          {data.trackingStatus === TrackingStatus.ArrivedAtPOD && (
-            <TransitPortIcon />
-          )}
-        </div>
-        <div aria-label="place-status" className="pl-2 flex items-end h-6">
-          {data.trackingStatus === TrackingStatus.ArrivedAtDEL && (
-            <TransitPortIcon />
-          )}
-        </div>
-        <div className="flex-1 flex justify-end items-end h-6">
-          <MdTypography
-            variant="label"
-            size="medium"
-            className={`text-white bg-primary w-fit px-2 py-0.5 rounded-lg`}
-          >
-            POR
-          </MdTypography>
-          <LineBetween
-            startPosition="por"
-            trackingStatus={data.trackingStatus}
-            transitType={data.transitType}
-          />
-        </div>
-        <div className="flex-1 flex justify-end items-end h-6">
-          <MdTypography
-            variant="label"
-            size="medium"
-            className={`w-fit px-2 py-0.5 rounded-lg ${
-              data.trackingStatus === TrackingStatus.Departed
-                ? "bg-surfaceContainerHigh text-onSurface"
-                : "bg-primary text-white"
-            }`}
-          >
-            POL
-          </MdTypography>
-          <LineBetween
-            startPosition="pol"
-            trackingStatus={data.trackingStatus}
-            transitType={data.transitType}
-          />
-        </div>
-        <div className="flex-1 flex justify-end items-end h-6">
-          <MdTypography
-            variant="label"
-            size="medium"
-            className={`w-fit px-2 py-0.5 rounded-lg ${
-              data.trackingStatus === TrackingStatus.Departed ||
-              data.trackingStatus === TrackingStatus.ArrivedAtPOL ||
-              data.trackingStatus === TrackingStatus.TransitToPOD
-                ? "bg-surfaceContainerHigh text-onSurface"
-                : "bg-primary text-white"
-            }`}
-          >
-            POD
-          </MdTypography>
-          <LineBetween
-            startPosition="pod"
-            trackingStatus={data.trackingStatus}
-            transitType={data.transitType}
-          />
-        </div>
-        <div className="flex-1 flex items-end h-6">
-          <MdTypography
-            variant="label"
-            size="medium"
-            className={`w-fit px-2 py-0.5 rounded-lg ${
-              data.trackingStatus !== TrackingStatus.ArrivedAtDEL
-                ? "bg-surfaceContainerHigh text-onSurface"
-                : "bg-primary text-white"
-            }`}
-          >
-            DEL
-          </MdTypography>
-        </div>
-        <div className="pt-4">
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-balance pr-2 self-start"
-          >
-            {data.por.yardName}
-          </MdTypography>
-          <MdTypography variant="label" size="medium" className="text-outline">
-            {data.porTime.toFormat("yyyy-MM-dd HH:mm")}
-          </MdTypography>
-        </div>
-        <div className="pt-4">
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-balance pr-2 self-start"
-          >
-            {data.pol.yardName}
-          </MdTypography>
-          <MdTypography variant="label" size="medium" className="text-outline">
-            {data.polTime.toFormat("yyyy-MM-dd HH:mm")}
-          </MdTypography>
-        </div>
-        <div className="pt-4">
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-balance pr-2 self-start"
-          >
-            {data.pod.yardName}
-          </MdTypography>
-          <MdTypography variant="label" size="medium" className="text-outline">
-            {data.podTime.toFormat("yyyy-MM-dd HH:mm")}
-          </MdTypography>
-        </div>
-        <div className="pt-4">
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-balance pr-2 self-start"
-          >
-            {data.del.yardName}
-          </MdTypography>
-          <MdTypography variant="label" size="medium" className="text-outline">
-            {data.delTime.toFormat("yyyy-MM-dd HH:mm")}
-          </MdTypography>
-        </div>
-      </div>
+      {isDetailOpen && (
+        <div className="bg-surfaceContainerLow border border-outlineVariant rounded-lg p-4"></div>
+      )}
     </div>
   );
 };
