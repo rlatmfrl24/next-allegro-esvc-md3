@@ -161,7 +161,7 @@ export default function LoactionScheduleStep() {
               className="flex-1"
               recentCookieKey="recent-port"
               initialValue={locationScheduleData.originPort.yardName}
-              onSelection={(value) => {
+              onItemSelection={(value) => {
                 let selectedPort = portList.find(
                   (port) => port.yardName === value
                 );
@@ -208,7 +208,7 @@ export default function LoactionScheduleStep() {
               className="flex-1"
               recentCookieKey="recent-port"
               initialValue={locationScheduleData.destinationPort.yardName}
-              onSelection={(value) => {
+              onItemSelection={(value) => {
                 let selectedPort = portList.find(
                   (port) => port.yardName === value
                 );

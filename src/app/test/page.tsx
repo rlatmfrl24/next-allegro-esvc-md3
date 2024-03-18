@@ -5,9 +5,10 @@ import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
-import NAOutlinedAutoComplete from "../components/na-autocomplete";
+
 import CommodityAutoComplete from "../main/booking/request/components/commodity-search";
 import { faker } from "@faker-js/faker";
+import NAMultiOutlinedComplete from "../components/na-multi-autocomplete";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -23,8 +24,6 @@ export default function Test() {
       description: faker.commerce.productDescription(),
     }));
   }, []);
-
-  const autoRef = useRef(null);
 
   function HexTest() {
     const [color, setColor] = useState("#009FE8");
@@ -89,7 +88,22 @@ export default function Test() {
       </div>
 
       <div className="flex gap-2">
+        <NAMultiOutlinedComplete
+          itemList={options}
+          onItemSelection={(value) => {
+            console.log(value);
+          }}
+          recentCookieKey="test-recent"
+          isAllowOnlyListItems={false}
+        />
         <CommodityAutoComplete />
+        <MdFilledButton
+          onClick={() => {
+            document.cookie = "test-recent=";
+          }}
+        >
+          Clear Cookie
+        </MdFilledButton>
       </div>
     </div>
   );

@@ -124,7 +124,7 @@ export default function BookingStatusCondition() {
           label="Vessel Name"
           className="min-w-[502px]"
           itemList={vesselInfos.map((vessel) => vessel.vesselName)}
-          onSelection={(selected) => {
+          onItemSelection={(selected) => {
             const selectedVessel = vesselInfos.find(
               (vessel) => vessel.vesselName === selected
             );
@@ -176,7 +176,7 @@ export default function BookingStatusCondition() {
         />
       </div>
     );
-  }, []);
+  }, [searchCondition.direction]);
 
   const BookingViaFilter = useMemo(() => {
     return (
@@ -215,7 +215,7 @@ export default function BookingStatusCondition() {
         label="Origin"
         itemList={portList.map((port) => port.yardName)}
         recentCookieKey="recent-port"
-        onSelection={(selected) => {
+        onItemSelection={(selected) => {
           const selectedPort = portList.find(
             (port) => port.yardName === selected
           );
@@ -242,7 +242,7 @@ export default function BookingStatusCondition() {
         label="Destination"
         itemList={portList.map((port) => port.yardName)}
         recentCookieKey="recent-port"
-        onSelection={(selected) => {
+        onItemSelection={(selected) => {
           const selectedPort = portList.find(
             (port) => port.yardName === selected
           );

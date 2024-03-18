@@ -179,7 +179,7 @@ export default function CargoStep() {
             recentCookieKey="recent-port"
             initialValue={cargoPickUpReturnData.emptyPickUpLocation.yardName}
             itemList={portList.map((port) => port.yardName)}
-            onSelection={(value) => {
+            onItemSelection={(value) => {
               let selectedPort = portList.find(
                 (port) => port.yardName === value
               );
@@ -256,7 +256,7 @@ export default function CargoStep() {
             value={cargoPickUpReturnData.fullReturnLocation.yardName}
             itemList={portList.map((port) => port.yardName)}
             recentCookieKey="recent-port"
-            onSelection={(value) => {
+            onItemSelection={(value) => {
               let selectedPort = portList.find(
                 (port) => port.yardName === value
               );

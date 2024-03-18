@@ -180,7 +180,7 @@ export default function SeaWaybillSearchCondition({
                   recentCookieKey="recent-vessel"
                   initialValue={vesselCondition.vesselName}
                   itemList={vesselList.map((vessel) => vessel.vesselName)}
-                  onSelection={(value) => {
+                  onItemSelection={(value) => {
                     setVesselCondition((prev) => ({
                       ...prev,
                       vesselName: value,
