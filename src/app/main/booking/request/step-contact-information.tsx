@@ -1,6 +1,5 @@
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
-import { SubTitle } from "./components/base";
 import { faker } from "@faker-js/faker";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -23,6 +22,7 @@ import {
 } from "@/app/util/md3";
 import { DeleteOutline, MailOutline } from "@mui/icons-material";
 import Portal from "@/app/components/portal";
+import { SubTitle } from "@/app/components/title-components";
 
 export default function ContactInformationStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);

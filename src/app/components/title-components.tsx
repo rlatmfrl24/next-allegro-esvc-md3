@@ -37,9 +37,15 @@ export const SubTitle = ({
   );
 };
 
-export const DetailTitle = ({ title }: { title: string }) => {
+export const DetailTitle = ({
+  title,
+  className,
+}: {
+  title: string;
+  className?: string;
+}) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className={`flex items-center gap-2 ${className ? className : ""}`}>
       <div className="h-4 w-1 bg-primary rounded-r-sm"></div>
       <MdTypography variant="body" size="large" prominent>
         {title}

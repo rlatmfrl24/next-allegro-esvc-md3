@@ -1,5 +1,4 @@
 import { MdTypography } from "@/app/components/typography";
-import { SubTitle } from "./components/base";
 import {
   MdChipSet,
   MdFilledButton,
@@ -15,6 +14,7 @@ import {
 } from "@/app/store/booking-request.store";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { Upload } from "@mui/icons-material";
+import { SubTitle } from "@/app/components/title-components";
 
 export default function AdditionalInformationStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);

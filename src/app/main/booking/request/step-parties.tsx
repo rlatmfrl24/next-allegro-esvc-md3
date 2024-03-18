@@ -2,7 +2,6 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import { MdFilledButton } from "@/app/util/md3";
-import { SubTitle } from "./components/base";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   BookingRequestStepState,
@@ -11,6 +10,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
+import { SubTitle } from "@/app/components/title-components";
 
 export default function PartiesStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);

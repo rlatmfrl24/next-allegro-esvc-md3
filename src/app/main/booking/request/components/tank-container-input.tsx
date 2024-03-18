@@ -17,6 +17,7 @@ import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
+import { DetailTitle } from "@/app/components/title-components";
 
 const TankContainerInputContainer = ({
   list,
@@ -30,10 +31,7 @@ const TankContainerInputContainer = ({
       {({ open }) => (
         <>
           <Disclosure.Button className={`flex w-full items-center gap-2`}>
-            <div className="w-1 h-4 bg-primary"></div>
-            <MdTypography variant="body" size="large" prominent>
-              Tank Container
-            </MdTypography>
+            <DetailTitle title="Tank Container" />
             <div className="flex-1 border-b border-b-outlineVariant"></div>
             <ArrowDropDown
               className={`transform transition-transform ${

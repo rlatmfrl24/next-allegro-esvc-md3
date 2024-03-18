@@ -21,9 +21,8 @@ import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
-import PageTitle from "@/app/components/title-components";
+import PageTitle, { SubTitle } from "@/app/components/title-components";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef/schedule";
-import { SubTitle } from "../../booking/request/components/base";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");

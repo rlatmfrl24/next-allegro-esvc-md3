@@ -1,4 +1,5 @@
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
 import { ContainerState } from "@/app/store/booking-request.store";
@@ -27,10 +28,7 @@ const BulkContainerInput = ({
       {({ open }) => (
         <>
           <Disclosure.Button className={`flex w-full items-center gap-2`}>
-            <div className="w-1 h-4 bg-primary"></div>
-            <MdTypography variant="body" size="large" prominent>
-              Bulk Container
-            </MdTypography>
+            <DetailTitle title="Bulk Container" />
             <div className="flex-1 border-b border-b-outlineVariant"></div>
             <ArrowDropDown
               className={`transform transition-transform ${

@@ -13,8 +13,8 @@ import TransitTrainIcon from "@/../public/icon_transit_train.svg";
 import TransitShipIcon from "@/../public/icon_transit_ship.svg";
 import TransitPortIcon from "@/../public/icon_transit_port.svg";
 import { MdIconButton } from "@/app/util/md3";
-import { SubTitle } from "../../booking/request/components/base";
 import Image from "next/image";
+import { DetailTitle } from "@/app/components/title-components";
 
 export default function TrackingDataList() {
   const tempData: CargoTrackingProps[] = useMemo(() => {
@@ -266,7 +266,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
           <div className="border border-outlineVariant rounded-lg flex flex-col overflow-hidden">
             <div className="h-2 bg-secondaryContainer"></div>
             <div className="px-6 py-4 bg-surfaceContainerLowest">
-              <SubTitle title="Sailing Info" className="mb-4" />
+              <DetailTitle title="Sailing Info" className="mb-4" />
               <div className="flex bg-surfaceContainerLow rounded-lg justify-center gap-6 py-14">
                 <div className="text-right">
                   <MdTypography
