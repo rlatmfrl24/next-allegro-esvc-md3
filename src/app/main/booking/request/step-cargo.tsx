@@ -8,12 +8,7 @@ import {
   BookingRequestStepState,
   CargoPickUpReturnState,
 } from "@/app/store/booking-request.store";
-import {
-  MdFilledButton,
-  MdOutlinedSelect,
-  MdOutlinedTextField,
-  MdSelectOption,
-} from "@/app/util/md3";
+import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 
 import CommodityAutoComplete from "./components/commodity-search";
 import { SubTitle } from "./components/base";
@@ -21,6 +16,9 @@ import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { faker } from "@faker-js/faker";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
+import { CommodityType } from "@/app/util/typeDef/boooking";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -86,6 +84,13 @@ export default function CargoStep() {
     );
   }, []);
 
+  const tempCommodities = useMemo(() => {
+    return Array.from({ length: 40 }, (_, i) => ({
+      description: faker.commerce.productName(),
+      code: faker.string.numeric(7),
+    }));
+  }, []);
+
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -93,7 +98,7 @@ export default function CargoStep() {
       </MdTypography>
       <SubTitle title="Cargo" className="mb-4" />
       <div className="flex gap-4">
-        <CommodityAutoComplete
+        {/* <CommodityAutoComplete
           className="flex-1"
           required
           defaultSelection={cargoPickUpReturnData.commodity}
@@ -102,7 +107,31 @@ export default function CargoStep() {
               return { ...prev, commodity: value };
             });
           }}
+        /> */}
+        <NAMultiAutoComplete
+          required
+          initialValue={cargoPickUpReturnData.commodity}
+          isAllowOnlyListItems={false}
+          showAllonFocus={true}
+          itemList={tempCommodities}
+          onQueryChange={(query) => {
+            setCargoPickUpReturnData((prev) => {
+              return {
+                ...prev,
+                commodity: {
+                  code: "",
+                  description: query,
+                },
+              };
+            });
+          }}
+          onItemSelection={(value) => {
+            setCargoPickUpReturnData((prev) => {
+              return { ...prev, commodity: value as CommodityType };
+            });
+          }}
         />
+
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight}
           className="flex-1 text-right"
@@ -131,23 +160,16 @@ export default function CargoStep() {
             }
           }}
         />
-        <MdOutlinedSelect
-          selectedIndex={
-            cargoPickUpReturnData.grossWeightUnit === "KGS" ? 0 : 1
-          }
-          onchange={(event) => {
-            const target = event.target as HTMLSelectElement;
+        <NAOutlinedListBox
+          className="w-32"
+          initialValue={cargoPickUpReturnData.grossWeightUnit}
+          options={["KGS", "LBS"]}
+          onSelection={(value) => {
             setCargoPickUpReturnData((prev) => {
-              return {
-                ...prev,
-                grossWeightUnit: target.value as "KGS" | "LBS",
-              };
+              return { ...prev, grossWeightUnit: value as "KGS" | "LBS" };
             });
           }}
-        >
-          <MdSelectOption value="KGS">KGS</MdSelectOption>
-          <MdSelectOption value="LBS">LBS</MdSelectOption>
-        </MdOutlinedSelect>
+        />
       </div>
       <SubTitle title="Container Pick Up/Return Place" className="mt-6 mb-4" />
       <div className="flex flex-col gap-6">
@@ -190,7 +212,7 @@ export default function CargoStep() {
             recentCookieKey="recent-port"
             initialValue={cargoPickUpReturnData.emptyPickUpLocation.yardName}
             itemList={portList.map((port) => port.yardName)}
-            onSelection={(value) => {
+            onItemSelection={(value) => {
               let selectedPort = portList.find(
                 (port) => port.yardName === value
               );
@@ -267,7 +289,7 @@ export default function CargoStep() {
             value={cargoPickUpReturnData.fullReturnLocation.yardName}
             itemList={portList.map((port) => port.yardName)}
             recentCookieKey="recent-port"
-            onSelection={(value) => {
+            onItemSelection={(value) => {
               let selectedPort = portList.find(
                 (port) => port.yardName === value
               );

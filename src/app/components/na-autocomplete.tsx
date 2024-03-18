@@ -35,7 +35,9 @@ export default function NAOutlinedAutoComplete({
   required,
   recentCookieKey,
   initialValue,
-  onSelection,
+  onItemSelection: onSelection,
+  onQueryChange,
+  isAllowOnlyListItems = true,
   className,
   ...props
 }: {
@@ -44,7 +46,9 @@ export default function NAOutlinedAutoComplete({
   recentCookieKey?: string;
   icon?: React.ReactNode;
   initialValue?: string;
-  onSelection?: (value: string) => void;
+  onItemSelection?: (value: string) => void;
+  onQueryChange?: (value: string) => void;
+  isAllowOnlyListItems?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) {
   const [query, setQuery] = useState<string>("");
@@ -113,15 +117,19 @@ export default function NAOutlinedAutoComplete({
 
   useEffect(() => {
     //when list is close, reset the value to default value
-    if (!isListOpen) {
+    if (!isListOpen && isAllowOnlyListItems) {
       setQuery(defaultValue);
     }
-  }, [defaultValue, isListOpen, setQuery]);
+  }, [defaultValue, isAllowOnlyListItems, isListOpen, setQuery]);
 
   useEffect(() => {
     setQuery(initialValue || "");
     setDefaultValue(initialValue || "");
   }, [initialValue]);
+
+  useEffect(() => {
+    onQueryChange?.(query);
+  }, [query, onQueryChange]);
 
   function handleItemSelect(item: string) {
     setQuery(item);
@@ -175,13 +183,6 @@ export default function NAOutlinedAutoComplete({
               </MdIcon>
             </MdIconButton>
           )}
-          {/* <div
-            className={`w-10 h-10 flex items-center justify-center ${
-              isListOpen ? "rotate-180" : ""
-            }`}
-          >
-            <DownArrowIcon className="flex-1" />
-          </div> */}
         </div>
       </MdOutlinedTextFieldBase>
       {showRecommand() && isListOpen && (

@@ -3,6 +3,8 @@ import { MdTypography } from "../typography";
 import { menuItems } from "@/app/util/constants";
 import NavItem from "./nav-item";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { MenuOpen } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 const NavOverlay = ({ handleDrawer }: { handleDrawer: () => void }) => {
   return (
@@ -24,13 +26,14 @@ const NavOverlay = ({ handleDrawer }: { handleDrawer: () => void }) => {
         className="fixed h-screen w-[360px] bg-surfaceContainerLow p-3 z-50 rounded-r-2xl flex flex-col overflow-y-auto"
       >
         <OverlayScrollbarsComponent defer>
-          <MdTypography
-            variant="title"
-            size="small"
-            className="h-14 px-3.5 items-center w-full flex text-onSurfaceVariant"
+          <IconButton
+            className="mb-3"
+            onClick={() => {
+              handleDrawer && handleDrawer();
+            }}
           >
-            Menu
-          </MdTypography>
+            <MenuOpen />
+          </IconButton>
           {menuItems.map((item) => (
             <NavItem
               item={item}

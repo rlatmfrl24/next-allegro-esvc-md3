@@ -22,6 +22,7 @@ import { faker, fi } from "@faker-js/faker";
 import { Menu } from "@headlessui/react";
 import { ArrowDropDown, Download } from "@mui/icons-material";
 import {
+  Row,
   createColumnHelper,
   getCoreRowModel,
   getFilteredRowModel,
@@ -33,6 +34,7 @@ import { DividerComponent } from "@/app/main/booking/information/components/base
 import ActionButtons from "./table-action-buttons";
 import StatusFilterComponent from "@/app/components/status-filter";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { set } from "lodash";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -62,24 +64,31 @@ function createDummySITableData(count: number = 10) {
 }
 
 export default function SITable() {
-  function handleSITableRowSelection(row: any) {
-    // if selectedRows includes the current row, remove it
-    if (selectedRows.includes(row.original)) {
+  function handleSITableRowSelection(newRow: Row<SISearchTableProps>) {
+    if (selectedRows.includes(newRow.original)) {
       setSelectedRows(
-        selectedRows.filter((selected) => selected !== row.original)
+        selectedRows.filter((selected) => selected !== newRow.original)
       );
     } else {
-      // if row's bl state is 'bl issue request' and selectrows's all bl state is 'bl issue request', just add the row
       if (
-        row.original.blState === SIState.BLIssueRequest &&
-        selectedRows.every(
-          (selected) => selected.blState === SIState.BLIssueRequest
-        )
+        newRow.original.blState === SIState.Rejected ||
+        newRow.original.blState === SIState.Pending ||
+        newRow.original.blState === SIState.BLIssuePending ||
+        newRow.original.blState === SIState.BLIssueClosed
       ) {
-        setSelectedRows([...selectedRows, row.original]);
+        setSelectedRows([newRow.original]);
       } else {
-        //else, clear the selected rows and add the row
-        setSelectedRows([row.original]);
+        if (
+          selectedRows.length > 0 &&
+          (selectedRows[0].blState === SIState.Rejected ||
+            selectedRows[0].blState === SIState.Pending ||
+            selectedRows[0].blState === SIState.BLIssuePending ||
+            selectedRows[0].blState === SIState.BLIssueClosed)
+        ) {
+          setSelectedRows([newRow.original]);
+        } else {
+          setSelectedRows([...selectedRows, newRow.original]);
+        }
       }
     }
   }
@@ -99,7 +108,42 @@ export default function SITable() {
   const columns = [
     columnHelper.display({
       id: "select",
-      header: () => <MdCheckbox className="mx-2" />,
+      header: () => (
+        <MdCheckbox
+          className="mx-2"
+          checked={
+            selectedRows.length !== 0 &&
+            selectedRows.length ===
+              tableData.filter((row) => {
+                return row.blState === SIState.Rejected ||
+                  row.blState === SIState.Pending ||
+                  row.blState === SIState.BLIssuePending ||
+                  row.blState === SIState.BLIssueClosed
+                  ? false
+                  : true;
+              }).length
+              ? true
+              : false
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            if (selectedRows.length !== 0) {
+              setSelectedRows([]);
+            } else {
+              setSelectedRows(
+                tableData.filter((row) => {
+                  return row.blState === SIState.Rejected ||
+                    row.blState === SIState.Pending ||
+                    row.blState === SIState.BLIssuePending ||
+                    row.blState === SIState.BLIssueClosed
+                    ? false
+                    : true;
+                })
+              );
+            }
+          }}
+        />
+      ),
       cell: (info) => (
         <MdCheckbox
           className="mx-2"

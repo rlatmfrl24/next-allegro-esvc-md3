@@ -12,8 +12,6 @@ import {
   MdFilledButton,
   MdList,
   MdListItem,
-  MdOutlinedSelect,
-  MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
@@ -36,6 +34,7 @@ import {
   PlaceInformationType,
   VesselInfoType,
 } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 const filterOptions = [
   {
@@ -125,7 +124,7 @@ export default function BookingStatusCondition() {
           label="Vessel Name"
           className="min-w-[502px]"
           itemList={vesselInfos.map((vessel) => vessel.vesselName)}
-          onSelection={(selected) => {
+          onItemSelection={(selected) => {
             const selectedVessel = vesselInfos.find(
               (vessel) => vessel.vesselName === selected
             );
@@ -148,48 +147,59 @@ export default function BookingStatusCondition() {
             }));
           }}
         />
-        <MdOutlinedSelect
+
+        <NAOutlinedListBox
           label="Direction"
-          onchange={(e) => {
-            const target = e.target as HTMLSelectElement;
+          initialValue={
+            searchCondition.direction === "east"
+              ? "E"
+              : searchCondition.direction === "west"
+              ? "W"
+              : searchCondition.direction === "north"
+              ? "N"
+              : "S"
+          }
+          options={["E", "W", "N", "S"]}
+          onSelection={(value) => {
             setSearchCondition((prev) => ({
               ...prev,
-              direction: target.value as "east" | "west" | "north" | "south",
+              direction:
+                value === "E"
+                  ? "east"
+                  : value === "W"
+                  ? "west"
+                  : value === "N"
+                  ? "north"
+                  : "south",
             }));
           }}
-        >
-          <MdSelectOption value="east">E</MdSelectOption>
-          <MdSelectOption value="west">W</MdSelectOption>
-          <MdSelectOption value="north">N</MdSelectOption>
-          <MdSelectOption value="south">S</MdSelectOption>
-        </MdOutlinedSelect>
+        />
       </div>
     );
-  }, []);
+  }, [searchCondition.direction]);
 
   const BookingViaFilter = useMemo(() => {
     return (
-      <MdOutlinedSelect
-        label="Booking Via"
-        selectedIndex={
-          searchCondition.bookingVia === "web"
-            ? 0
-            : searchCondition.bookingVia === "edi"
-            ? 1
-            : 2
-        }
-        onchange={(e) => {
-          const target = e.target as HTMLSelectElement;
-          setSearchCondition({
-            ...searchCondition,
-            bookingVia: target.value as "web" | "edi" | "general",
-          });
-        }}
-      >
-        <MdSelectOption value="web">Web</MdSelectOption>
-        <MdSelectOption value="edi">EDI</MdSelectOption>
-        <MdSelectOption value="general">General</MdSelectOption>
-      </MdOutlinedSelect>
+      <>
+        <NAOutlinedListBox
+          label="Booking Via"
+          options={["Web", "EDI", "General"]}
+          initialValue={
+            searchCondition.bookingVia === "web"
+              ? "Web"
+              : searchCondition.bookingVia === "edi"
+              ? "EDI"
+              : "General"
+          }
+          onSelection={(value) => {
+            setSearchCondition((prev) => ({
+              ...prev,
+              bookingVia:
+                value === "Web" ? "web" : value === "EDI" ? "edi" : "general",
+            }));
+          }}
+        />
+      </>
     );
   }, [searchCondition]);
 
@@ -205,7 +215,7 @@ export default function BookingStatusCondition() {
         label="Origin"
         itemList={portList.map((port) => port.yardName)}
         recentCookieKey="recent-port"
-        onSelection={(selected) => {
+        onItemSelection={(selected) => {
           const selectedPort = portList.find(
             (port) => port.yardName === selected
           );
@@ -232,7 +242,7 @@ export default function BookingStatusCondition() {
         label="Destination"
         itemList={portList.map((port) => port.yardName)}
         recentCookieKey="recent-port"
-        onSelection={(selected) => {
+        onItemSelection={(selected) => {
           const selectedPort = portList.find(
             (port) => port.yardName === selected
           );
@@ -283,23 +293,24 @@ export default function BookingStatusCondition() {
           }}
         />
         <div className="flex gap-2">
-          <MdOutlinedSelect
-            label="State No."
-            selectedIndex={stateCondition === "requestNo" ? 0 : 1}
-            onchange={(e) => {
-              const target = e.target as HTMLSelectElement;
-              setStateCondition(target.value as "requestNo" | "bookingNo");
-              //clear each value
+          <NAOutlinedListBox
+            label="Search On"
+            initialValue={
+              stateCondition === "requestNo" ? "Request No." : "Booking No."
+            }
+            options={["Request No.", "Booking No."]}
+            onSelection={(value) => {
+              setStateCondition(
+                value === "Request No." ? "requestNo" : "bookingNo"
+              );
               setSearchCondition({
                 ...searchCondition,
                 requestNo: "",
                 bookingNo: "",
               });
             }}
-          >
-            <MdSelectOption value="requestNo">Request No.</MdSelectOption>
-            <MdSelectOption value="bookingNo">Booking No.</MdSelectOption>
-          </MdOutlinedSelect>
+          />
+
           <NAOutlinedTextField
             placeholder={
               stateCondition === "requestNo" ? "Request No." : "Booking No."

@@ -11,9 +11,7 @@ import {
   MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
-  MdOutlinedSelect,
   MdRadio,
-  MdSelectOption,
   MdTextButton,
 } from "@/app/util/md3";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -24,6 +22,7 @@ import MyFavorite from "./components/my-favorite";
 import { SearchTextField } from "./components/search-textfield";
 import { createDummyPortList } from "../util";
 import { PtPSearchConditionType } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 export default function SearchCondition({
   searchAction,
@@ -277,24 +276,14 @@ export default function SearchCondition({
       </div>
 
       <div className="flex gap-4">
-        <MdOutlinedSelect label="Search On" value={searchOn}>
-          <MdSelectOption
-            value="departure"
-            onClick={() => {
-              setSearchOn("departure");
-            }}
-          >
-            Departure
-          </MdSelectOption>
-          <MdSelectOption
-            value="arrival"
-            onClick={() => {
-              setSearchOn("arrival");
-            }}
-          >
-            Arrival
-          </MdSelectOption>
-        </MdOutlinedSelect>
+        <NAOutlinedListBox
+          label="Search On"
+          initialValue={searchOn.charAt(0).toUpperCase() + searchOn.slice(1)}
+          options={["Departure", "Arrival"]}
+          onSelection={(value) => {
+            setSearchOn(value.toLowerCase() as "departure" | "arrival");
+          }}
+        />
         <MdRangeDatePicker
           label="Date"
           defaultStartDate={dateRange[0]}

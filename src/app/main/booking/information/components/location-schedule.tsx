@@ -63,11 +63,11 @@ export default function LocationScheduleSection({
         />
         <SimpleItemComponent
           title="Port of Loading"
-          value={data.pol || "N/A"}
+          value={data.pol.code || "N/A"}
         />
         <SimpleItemComponent
           title="Port of Discharge"
-          value={data.pod || "N/A"}
+          value={data.pod.code || "N/A"}
         />
         {
           {

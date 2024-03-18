@@ -140,20 +140,7 @@ export default function BookingStatusTable() {
       size: 120,
       minSize: 120,
     }),
-    columnHelper.accessor("actualShipper", {
-      header: "Actual Shipper",
-      cell: (info) => (
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="text-onSurfaceVariant"
-        >
-          {info.getValue()}
-        </MdTypography>
-      ),
-      size: 150,
-      minSize: 150,
-    }),
+
     columnHelper.accessor("vessel", {
       header: "Vessel",
       cell: (info) => <VesselInfoCell {...info.getValue()} />,
@@ -249,6 +236,20 @@ export default function BookingStatusTable() {
       ),
       size: 120,
       minSize: 120,
+    }),
+    columnHelper.accessor("actualShipper", {
+      header: "Actual Shipper",
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="text-onSurfaceVariant"
+        >
+          {info.getValue()}
+        </MdTypography>
+      ),
+      size: 150,
+      minSize: 150,
     }),
     columnHelper.accessor("via", {
       header: "Via",
