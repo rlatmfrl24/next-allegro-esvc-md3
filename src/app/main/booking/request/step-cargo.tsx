@@ -17,6 +17,8 @@ import { createDummyPlaceInformation } from "../../schedule/util";
 import { faker } from "@faker-js/faker";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
+import { CommodityType } from "@/app/util/typeDef/boooking";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -82,6 +84,13 @@ export default function CargoStep() {
     );
   }, []);
 
+  const tempCommodities = useMemo(() => {
+    return Array.from({ length: 40 }, (_, i) => ({
+      description: faker.commerce.productName(),
+      code: faker.string.numeric(7),
+    }));
+  }, []);
+
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -89,7 +98,7 @@ export default function CargoStep() {
       </MdTypography>
       <SubTitle title="Cargo" className="mb-4" />
       <div className="flex gap-4">
-        <CommodityAutoComplete
+        {/* <CommodityAutoComplete
           className="flex-1"
           required
           defaultSelection={cargoPickUpReturnData.commodity}
@@ -98,7 +107,31 @@ export default function CargoStep() {
               return { ...prev, commodity: value };
             });
           }}
+        /> */}
+        <NAMultiAutoComplete
+          required
+          initialValue={cargoPickUpReturnData.commodity}
+          isAllowOnlyListItems={false}
+          showAllonFocus={true}
+          itemList={tempCommodities}
+          onQueryChange={(query) => {
+            setCargoPickUpReturnData((prev) => {
+              return {
+                ...prev,
+                commodity: {
+                  code: "",
+                  description: query,
+                },
+              };
+            });
+          }}
+          onItemSelection={(value) => {
+            setCargoPickUpReturnData((prev) => {
+              return { ...prev, commodity: value as CommodityType };
+            });
+          }}
         />
+
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight}
           className="flex-1 text-right"

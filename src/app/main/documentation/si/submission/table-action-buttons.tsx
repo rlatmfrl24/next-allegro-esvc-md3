@@ -44,9 +44,8 @@ const ActionButtons = ({
               states.includes(SIState.ChangeRequestedRejected) ||
               states.includes(SIState.Confirmed) ||
               states.includes(SIState.Rejected) ||
-              states.includes(SIState.Submit)) && (
-              <MdTextButton>Edit</MdTextButton>
-            )}
+              states.includes(SIState.Submit)) &&
+              states.length === 1 && <MdTextButton>Edit</MdTextButton>}
 
             {(states.includes(SIState.ChangeRequested) ||
               states.includes(SIState.ChangeRequestedRejected) ||
@@ -72,15 +71,16 @@ const ActionButtons = ({
               states.includes(SIState.ChangeRequested) ||
               states.includes(SIState.ChangeRequestedRejected) ||
               states.includes(SIState.Rejected) ||
-              states.includes(SIState.Confirmed)) && (
-              <MdTextButton
-                onClick={() => {
-                  setIsBLCombineOpen(true);
-                }}
-              >
-                Combine
-              </MdTextButton>
-            )}
+              states.includes(SIState.Confirmed)) &&
+              states.length === 1 && (
+                <MdTextButton
+                  onClick={() => {
+                    setIsBLCombineOpen(true);
+                  }}
+                >
+                  Combine
+                </MdTextButton>
+              )}
 
             {!(
               states.includes(SIState.Rejected) ||

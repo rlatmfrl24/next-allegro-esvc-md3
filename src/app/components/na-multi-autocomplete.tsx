@@ -53,6 +53,7 @@ export default function NAMultiAutoComplete({
   onItemSelection,
   onQueryChange,
   isAllowOnlyListItems = true,
+  showAllonFocus = false,
   className,
   ...props
 }: {
@@ -64,6 +65,7 @@ export default function NAMultiAutoComplete({
   onItemSelection?: (selectedItem: Record<string, string>) => void;
   onQueryChange?: (value: string) => void;
   isAllowOnlyListItems?: boolean;
+  showAllonFocus?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) {
   const [keySet, setKeySet] = useState<string[]>([]);
@@ -200,7 +202,9 @@ export default function NAMultiAutoComplete({
   }
 
   const recommandItems = useMemo(() => {
-    return getMatchedItems(query, InteralRecordItemList);
+    return query.length > 2
+      ? getMatchedItems(query, InteralRecordItemList)
+      : InteralRecordItemList;
   }, [InteralRecordItemList, query]);
 
   const matchedRecentItems = getMatchedItems(query, allRecentItems);
@@ -210,12 +214,17 @@ export default function NAMultiAutoComplete({
       return true;
     }
 
-    if (query.length > 2) {
+    if (query.length > 2 || showAllonFocus) {
       return recommandItems.length > 0;
     }
 
     return false;
-  }, [matchedRecentItems.length, query.length, recommandItems.length]);
+  }, [
+    matchedRecentItems.length,
+    query.length,
+    recommandItems.length,
+    showAllonFocus,
+  ]);
 
   return (
     <div className={`relative ${className}`}>
@@ -310,7 +319,7 @@ export default function NAMultiAutoComplete({
                   ></div>
                 )}
 
-              {query.length > 2 &&
+              {(showAllonFocus || query.length > 2) &&
                 recommandItems.map((item, index) => (
                   <MdListItem
                     key={item.key}
