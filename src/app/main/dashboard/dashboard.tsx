@@ -76,7 +76,7 @@ export default function Dashboard() {
       collisionDetection={customCollisionDetectionAlgorithm}
     >
       <SortableContext items={items} strategy={() => null}>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4 overflow-hidden">
           {items
             .filter((item) => {
               return enabledCardIds.includes(item.id);

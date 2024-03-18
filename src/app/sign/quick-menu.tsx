@@ -16,12 +16,17 @@ export default function QuickMenu() {
   return (
     <div className="flex flex-col justify-center gap-6 h-full absolute z-10 right-16 w-[848px] px-16">
       <QuickSearch />
-      <MdElevatedCard className="p-12">
-        <MdElevation />
-        <MdTypography variant="title" size="large" className="mb-4">
+      <MdElevatedCard>
+        <MdTypography
+          variant="title"
+          size="large"
+          className="px-6 py-4 border-b border-b-outlineVariant"
+        >
           Notice
         </MdTypography>
-        <QuickNotice />
+        <div className="px-6 pt-4 pb-6 flex flex-col gap-4">
+          <QuickNotice />
+        </div>
       </MdElevatedCard>
     </div>
   );
@@ -37,7 +42,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <MdElevatedCard>
+    <MdElevatedCard className="z-10">
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab
           id="tab-schedule"
@@ -64,7 +69,7 @@ const QuickSearch = () => {
       </MdTabs>
       <div
         id="schedule-panel"
-        className="px-12 py-6"
+        className="px-6 py-4"
         role="tabpanel"
         aria-labelledby="tab-schedule"
         hidden={tabItemId !== "tab-schedule"}
@@ -73,20 +78,13 @@ const QuickSearch = () => {
       </div>
       <div
         id="quick-tracking-panel"
-        className={`px-12 py-6 flex-col ${
+        className={`px-6 py-4 gap-4 flex-col ${
           tabItemId === "tab-quick-tracking" ? "flex" : "hidden"
         }`}
         role="tabpanel"
         aria-labelledby="tab-quick-tracking"
       >
         <QuickTracking />
-      </div>
-      <div
-        aria-label="quick-search-button"
-        className="px-12 py-4 flex justify-end "
-      >
-        <MdTextButton>Clear</MdTextButton>
-        <MdFilledButton>Search</MdFilledButton>
       </div>
     </MdElevatedCard>
   );

@@ -92,7 +92,7 @@ export function DashboardCardConstructor({
     return (
       <InputCard
         title={item.title}
-        buttonText="Inquiry"
+        buttonText="Search"
         description="Enter a B/L number to inquiry the B/L status"
         placeholder="B/L Number"
       />
@@ -112,8 +112,8 @@ export function DashboardCardConstructor({
   } else {
     if (item.id === "notice") {
       return (
-        <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
-          <div className="px-6 flex-1 flex flex-col justify-center">
+        <DashboardCard title={item.title} cardSize={2}>
+          <div className="px-4 gap-4 flex-1 flex flex-col justify-center">
             <QuickNotice />
           </div>
         </DashboardCard>
@@ -123,8 +123,8 @@ export function DashboardCardConstructor({
     if (item.id === "tracking") {
       return (
         <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
-          <div className="px-6 flex-1 flex flex-col justify-center">
-            <QuickTracking rows={3} />
+          <div className="px-4 flex-1 flex flex-col justify-center gap-4">
+            <QuickTracking />
           </div>
         </DashboardCard>
       );

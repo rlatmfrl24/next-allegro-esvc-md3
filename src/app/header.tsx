@@ -70,7 +70,7 @@ const HeaderSignComponent = () => {
             }}
           >
             <MdOutlinedButton className="w-32 font-pretendard font-medium">
-              Sign Up
+              Register
             </MdOutlinedButton>
           </Link>
           <Link
