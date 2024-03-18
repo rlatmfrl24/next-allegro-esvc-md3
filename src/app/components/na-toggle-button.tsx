@@ -17,7 +17,7 @@ export default function NaToggleButton({
     | "disabled"
     | "disabled-checked";
   className?: string;
-  onClick?: () => void;
+  onClick?: (prev: boolean) => void;
 } & HTMLAttributes<HTMLLabelElement>) {
   return (
     <MdTypography
@@ -34,7 +34,11 @@ export default function NaToggleButton({
         }
         indeterminate={state === "indetermine"}
         disabled={state === "disabled" || state === "disabled-checked"}
-        onClick={onClick}
+        onClick={
+          state !== "disabled" && state !== "disabled-checked"
+            ? () => onClick?.(state === "checked")
+            : undefined
+        }
       />
       {label}
     </MdTypography>

@@ -134,15 +134,26 @@ export default function PartiesStep() {
               ? "checked"
               : "unchecked"
           }
-          onClick={() => {
-            setPartiesData((prev) => ({
-              ...prev,
-              freightForwarder: {
-                ...prev.freightForwarder,
-                address: prev.shipper.address,
-                name: prev.shipper.name,
-              },
-            }));
+          onClick={(isChecked) => {
+            if (isChecked) {
+              setPartiesData((prev) => ({
+                ...prev,
+                freightForwarder: {
+                  ...prev.freightForwarder,
+                  address: "",
+                  name: "",
+                },
+              }));
+            } else {
+              setPartiesData((prev) => ({
+                ...prev,
+                freightForwarder: {
+                  ...prev.freightForwarder,
+                  address: prev.shipper.address,
+                  name: prev.shipper.name,
+                },
+              }));
+            }
           }}
         />
       </div>

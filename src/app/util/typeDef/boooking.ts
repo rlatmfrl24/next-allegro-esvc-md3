@@ -74,8 +74,8 @@ export type LocationScheduleType = {
   destinationPort: PlaceInformationType;
   originType: "cy" | "door";
   destinationType: "cy" | "door";
-  pol: string;
-  pod: string;
+  pol: PlaceInformationType;
+  pod: PlaceInformationType;
   departureDate: DateTime;
   vessel: VesselInfoType;
   bookingOffice: string;

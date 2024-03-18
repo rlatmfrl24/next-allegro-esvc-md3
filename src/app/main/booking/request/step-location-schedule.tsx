@@ -187,17 +187,25 @@ export default function LoactionScheduleStep() {
                 }));
               }}
             />
-
-            <MdOutlinedTextField
+            <NAOutlinedAutoComplete
+              itemList={portList.map((port) => port.yardName)}
               placeholder="Port of Loading"
-              value={locationScheduleData.pol}
-              onInput={(e) => {
+              label="POL"
+              initialValue={locationScheduleData.pol.yardName}
+              recentCookieKey="recent-port"
+              onItemSelection={(value) => {
+                let selectedPort = portList.find(
+                  (port) => port.yardName === value
+                );
+                if (value !== "" && selectedPort === undefined) {
+                  selectedPort = createDummyPlaceInformation(value);
+                }
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  pol: (e.target as HTMLInputElement).value,
+                  pol: selectedPort || ({} as PlaceInformationType),
                 }));
               }}
-            ></MdOutlinedTextField>
+            />
           </div>
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
@@ -236,16 +244,27 @@ export default function LoactionScheduleStep() {
                 }));
               }}
             />
-            <MdOutlinedTextField
-              value={locationScheduleData.pod}
-              onInput={(e) => {
+            <NAOutlinedAutoComplete
+              itemList={portList.map((port) => port.yardName)}
+              placeholder="Port of Discharging"
+              label="POD"
+              initialValue={locationScheduleData.pod.yardName}
+              recentCookieKey="recent-port"
+              onItemSelection={(value) => {
+                let selectedPort = portList.find(
+                  (port) => port.yardName === value
+                );
+
+                if (value !== "" && selectedPort === undefined) {
+                  selectedPort = createDummyPlaceInformation(value);
+                }
+
                 setLoactionScheduleData((prev) => ({
                   ...prev,
-                  pod: (e.target as HTMLInputElement).value,
+                  pod: selectedPort || ({} as PlaceInformationType),
                 }));
               }}
-              placeholder="Port of Discharging"
-            ></MdOutlinedTextField>
+            />
           </div>
           {locationScheduleData.searchType === "schedule" && (
             <div className="flex gap-4">
@@ -378,8 +397,8 @@ export default function LoactionScheduleStep() {
             ...prev,
             originPort: vaule.origin,
             destinationPort: vaule.destination,
-            pol: vaule.origin.code,
-            pod: vaule.destination.code,
+            pol: vaule.origin,
+            pod: vaule.destination,
             departureDate: vaule.departureDate,
             vessel: vaule.vesselInfo,
           }));
