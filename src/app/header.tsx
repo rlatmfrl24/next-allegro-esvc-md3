@@ -9,6 +9,7 @@ import {
   MdIconButton,
   MdMenu,
   MdMenuItem,
+  MdNavigationTab,
   MdOutlinedButton,
 } from "./util/md3";
 import { CSSProperties, useState } from "react";
@@ -16,7 +17,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import CheckIcon from "@mui/icons-material/Check";
 import { usePathname } from "next/navigation";
-import { AccountCircleOutlined } from "@mui/icons-material";
+import { AccountCircleOutlined, PlaceOutlined } from "@mui/icons-material";
 import {
   autoUpdate,
   shift,
@@ -28,6 +29,7 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { MdTypography } from "./components/typography";
+import TariffIcon from "@/../public/icon_menu_pricing.svg";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -47,9 +49,82 @@ export const Header = () => {
 
 const HeaderSignComponent = () => {
   const [isSigning, setIsSigning] = useState(false);
+  const [onHoverAt, setOnHoverAt] = useState(0);
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 items-center">
+      <div className="flex">
+        <MdNavigationTab
+          label="Surcharge Search"
+          className={`w-32`}
+          onMouseEnter={() => setOnHoverAt(1)}
+          onMouseLeave={() => setOnHoverAt(0)}
+          active={onHoverAt === 1}
+        >
+          <MdIcon slot="inactive-icon">
+            <TariffIcon />
+          </MdIcon>
+          <MdIcon slot="active-icon">
+            <TariffIcon />
+          </MdIcon>
+        </MdNavigationTab>
+        <MdNavigationTab
+          label="Guide"
+          className="w-32"
+          onMouseEnter={() => setOnHoverAt(2)}
+          onMouseLeave={() => setOnHoverAt(0)}
+          active={onHoverAt === 2}
+        >
+          <MdIcon slot="inactive-icon">
+            <TariffIcon />
+          </MdIcon>
+          <MdIcon slot="active-icon">
+            <TariffIcon />
+          </MdIcon>
+        </MdNavigationTab>
+        <MdNavigationTab
+          label="Simple SI"
+          className="w-32"
+          onMouseEnter={() => setOnHoverAt(3)}
+          onMouseLeave={() => setOnHoverAt(0)}
+          active={onHoverAt === 3}
+        >
+          <MdIcon slot="inactive-icon">
+            <TariffIcon />
+          </MdIcon>
+          <MdIcon slot="active-icon">
+            <TariffIcon />
+          </MdIcon>
+        </MdNavigationTab>
+        <MdNavigationTab
+          label="DEM/DET Tariff"
+          className="w-32"
+          onMouseEnter={() => setOnHoverAt(4)}
+          onMouseLeave={() => setOnHoverAt(0)}
+          active={onHoverAt === 4}
+        >
+          <MdIcon slot="inactive-icon">
+            <TariffIcon />
+          </MdIcon>
+          <MdIcon slot="active-icon">
+            <TariffIcon />
+          </MdIcon>
+        </MdNavigationTab>
+        <MdNavigationTab
+          label="SiteMap"
+          className="w-32"
+          onMouseEnter={() => setOnHoverAt(5)}
+          onMouseLeave={() => setOnHoverAt(0)}
+          active={onHoverAt === 5}
+        >
+          <MdIcon slot="inactive-icon">
+            <TariffIcon />
+          </MdIcon>
+          <MdIcon slot="active-icon">
+            <TariffIcon />
+          </MdIcon>
+        </MdNavigationTab>
+      </div>
       {isSigning ? (
         <Link
           href={"/sign"}

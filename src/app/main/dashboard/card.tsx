@@ -150,6 +150,49 @@ export function DashboardCardConstructor({
       );
     }
 
+    if (item.id === "checklist") {
+      {
+        return (
+          <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
+            <div className="flex flex-1 py-12">
+              <div className="flex-1 flex flex-col gap-2 items-center  border-r border-dotted border-outline">
+                <MdTypography
+                  variant="display"
+                  size="medium"
+                  className="text-secondary"
+                >
+                  5
+                </MdTypography>
+                <MdTypography
+                  variant="label"
+                  size="medium"
+                  className="text-outline text-balance w-fit text-center"
+                >
+                  Submit Shipping Instructions
+                </MdTypography>
+              </div>
+              <div className="flex-1 flex flex-col gap-2 items-center ">
+                <MdTypography
+                  variant="display"
+                  size="medium"
+                  className="text-secondary"
+                >
+                  5
+                </MdTypography>
+                <MdTypography
+                  variant="label"
+                  size="medium"
+                  className="text-outline text-balance w-fit text-center"
+                >
+                  Submit VGM
+                </MdTypography>
+              </div>
+            </div>
+          </DashboardCard>
+        );
+      }
+    }
+
     return (
       <DashboardCard title={item.title} hasTooltip={true}>
         <div className="px-6 pb-6 flex flex-col gap-4 ">
