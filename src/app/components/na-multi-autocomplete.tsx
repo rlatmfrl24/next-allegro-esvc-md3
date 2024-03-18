@@ -44,7 +44,7 @@ type InteralRecordType = {
   value: string;
 };
 
-export default function NAMultiOutlinedComplete({
+export default function NAMultiAutoComplete({
   itemList,
   icon,
   required,
@@ -86,12 +86,10 @@ export default function NAMultiOutlinedComplete({
   }, [itemList]);
 
   const [query, setQuery] = useState<string>("");
-  const [defaultValue, setDefaultValue] = useState(
-    initialValue || {
-      key: "",
-      value: "",
-    }
-  );
+  const [defaultValue, setDefaultValue] = useState({
+    key: "",
+    value: "",
+  });
 
   const allRecentItems = recentCookieKey
     ? (JSON.parse(getCookie(recentCookieKey) || "[]") as InteralRecordType[])
@@ -171,14 +169,14 @@ export default function NAMultiOutlinedComplete({
 
   useEffect(() => {
     // when the initial value is changed, update the query and default value
-    setQuery(initialValue?.key || "");
-    setDefaultValue(initialValue || { key: "", value: "" });
-  }, [initialValue]);
+    const convertedInitialValue = {
+      key: get(initialValue, keySet[0], ""),
+      value: get(initialValue, keySet[1], ""),
+    };
 
-  useEffect(() => {
-    // when the query is changed, call the onQueryChange callback
-    onQueryChange?.(query);
-  }, [query, onQueryChange]);
+    setQuery(convertedInitialValue.key || "");
+    setDefaultValue(convertedInitialValue);
+  }, [initialValue, keySet]);
 
   function handleItemSelect(item: InteralRecordType) {
     // when an item is selected, update the query, default value, and close the list
@@ -230,6 +228,7 @@ export default function NAMultiOutlinedComplete({
         required={false}
         onInput={(e) => {
           setQuery(e.currentTarget.value);
+          onQueryChange?.(e.currentTarget.value);
         }}
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}

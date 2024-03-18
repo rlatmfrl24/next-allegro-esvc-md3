@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import CommodityAutoComplete from "../main/booking/request/components/commodity-search";
 import { faker } from "@faker-js/faker";
-import NAMultiOutlinedComplete from "../components/na-multi-autocomplete";
+import NAMultiAutoComplete from "../components/na-multi-autocomplete";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -88,7 +88,7 @@ export default function Test() {
       </div>
 
       <div className="flex gap-2">
-        <NAMultiOutlinedComplete
+        <NAMultiAutoComplete
           itemList={options}
           onItemSelection={(value) => {
             console.log(value);
