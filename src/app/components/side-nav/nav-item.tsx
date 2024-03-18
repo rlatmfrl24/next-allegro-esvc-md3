@@ -9,6 +9,16 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
 import { MenuItemType } from "@/app/util/typeDef/generic";
 
+import DashboardIcon from "@/../public/icon_menu_dashboard.svg";
+import ScheduleIcon from "@/../public/icon_menu_schedule.svg";
+import BookingIcon from "@/../public/icon_menu_booking.svg";
+import PricingIcon from "@/../public/icon_menu_pricing.svg";
+import DocumentsIcon from "@/../public/icon_menu_documents.svg";
+import TrackTraceIcon from "@/../public/icon_menu_tracktrace.svg";
+import ImportIcon from "@/../public/icon_menu_import.svg";
+import ManageShipmentIcon from "@/../public/icon_menu_manage_shipment.svg";
+import DententionIcon from "@/../public/icon_menu_dentention.svg";
+
 const NavItem = ({
   item,
   depth,
@@ -28,6 +38,18 @@ const NavItem = ({
   const [open, setOpen] = useState(
     currentPath.includes(path[depth - 1]) || false
   );
+
+  const itemIcon = {
+    Dashboard: <DashboardIcon />,
+    Schedule: <ScheduleIcon />,
+    Booking: <BookingIcon />,
+    Pricing: <PricingIcon />,
+    Documentation: <DocumentsIcon />,
+    Tracking: <TrackTraceIcon />,
+    Import: <ImportIcon />,
+    "Manage Shipment": <ManageShipmentIcon />,
+    Dentention: <DententionIcon />,
+  }[item.name];
 
   return (
     <>
@@ -49,9 +71,7 @@ const NavItem = ({
       >
         <MdRippleEffect />
         {depth === 1 && (
-          <MdIcon>
-            <PlaceholdeIcon />
-          </MdIcon>
+          <MdIcon>{itemIcon ? itemIcon : <PlaceholdeIcon />}</MdIcon>
         )}
         <MdTypography
           variant="label"
