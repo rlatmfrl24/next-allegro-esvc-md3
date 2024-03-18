@@ -1,9 +1,8 @@
 import { Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import image1 from "@/../public/images/image_1.jpg";
-import image2 from "@/../public/images/image_2.jpg";
-import image3 from "@/../public/images/image_3.jpg";
-import image4 from "@/../public/images/image_4.jpg";
+import image1 from "@/../public/images/transfar_1.png";
+import image2 from "@/../public/images/transfar_2.png";
+import image3 from "@/../public/images/transfar_3.png";
 import { useState } from "react";
 import Image from "next/image";
 import "swiper/css";
@@ -11,7 +10,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 export default function BackgroundSwiper() {
-  const images = [image1, image2, image3, image4];
+  const images = [image1, image2, image3];
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
