@@ -1,11 +1,12 @@
 import { Cell, Pie, PieChart } from "recharts";
 import { MdTypography } from "../typography";
+import { Typography } from "@mui/material";
 
 enum ChartColorEnum {
-  BOOKED = "#77777A",
+  BOOKED = "#4D616C",
   REJECTED = "#BA1A1A",
-  PROCESSING = "#F7F2FA",
-  CANCELLED = "#000000",
+  PROCESSING = "#C0C7CD",
+  CANCELLED = "#EAEEF2",
 }
 
 export default function QuickChart(props: {
@@ -17,14 +18,24 @@ export default function QuickChart(props: {
 
   return (
     <div className="px-6 pb-6 flex flex-col font-pretendard">
-      <div className="py-5 flex gap-2 items-center">
-        <span className="text-2xl font-bold text-primary">{totalCount}</span>
-        <MdTypography variant="body" size="medium">
+      <div className="py-5 flex gap-2 items-end">
+        <MdTypography
+          variant="headline"
+          size="small"
+          className="text-secondary"
+        >
+          {totalCount}
+        </MdTypography>
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-outline mb-1"
+        >
           Confirmed
         </MdTypography>
       </div>
-      <div className="flex">
-        <div aria-label="chart" className="flex-1 justify-center flex">
+      <div className="flex justify-center gap-6">
+        <div aria-label="chart" className="justify-center flex">
           <PieChart width={100} height={100}>
             <Pie
               isAnimationActive={false}
@@ -55,16 +66,16 @@ export default function QuickChart(props: {
             </Pie>
           </PieChart>
         </div>
-        <div aria-label="data" className="flex justify-center pb-9 ">
-          <div>
+        <div aria-label="data" className="flex justify-center ">
+          <div className="flex flex-col justify-around h-full">
             {props.data.map((data, index) => {
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-2 text-sm text-neutral-500"
+                  className="flex items-center gap-2 text-outline"
                 >
                   <div
-                    className="w-2 h-2 rounded-sm"
+                    className="w-3 h-3 rounded"
                     style={{
                       backgroundColor:
                         data.key === "Booked"
@@ -78,8 +89,16 @@ export default function QuickChart(props: {
                           : ChartColorEnum.BOOKED,
                     }}
                   ></div>
-                  <MdTypography variant="label" size="small">
-                    {`${data.key} (${data.value})`}
+                  <MdTypography variant="label" size="large" className="flex-1">
+                    {data.key}
+                  </MdTypography>
+                  <MdTypography
+                    variant="label"
+                    size="large"
+                    prominent
+                    className="text-secondary"
+                  >
+                    {data.value}
                   </MdTypography>
                 </div>
               );
