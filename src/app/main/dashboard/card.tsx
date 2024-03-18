@@ -34,36 +34,50 @@ export function StatisticCard(props: DashboardStatisticCardDataType) {
   );
 }
 
-export function DashboardCardPlaceholder() {
+export function DashboardCardPlaceholder({
+  cardSize,
+}: {
+  cardSize?: 1 | 2 | 4;
+}) {
   return (
     <div
-      className={`bg-surfaceContainerHighest h-64 rounded-md shadow flex items-center justify-center border-[3px] border-primaryContainer`}
+      className={`bg-surfaceContainerHighest rounded-md shadow flex items-center justify-center border-2 border-secondaryContainer ${
+        cardSize === 4 ? "h-[33rem]" : "h-[16rem]"
+      }`}
     ></div>
   );
 }
 
-export function DashboardCard(props: {
+export function DashboardCard({
+  title,
+  hasTooltip,
+  children,
+  cardSize = 1,
+}: {
   title: string;
   hasTooltip?: boolean;
   children: React.ReactNode;
+  cardSize?: 1 | 2 | 4;
 }) {
   return (
     <motion.div
       layout
       transition={{ duration: 0.2 }}
-      className="border-primaryFixed border rounded-xl flex-1 bg-white select-none h-64 flex flex-col"
+      className={`border-secondaryContainer border-2 rounded-xl flex-1 bg-white select-none flex flex-col ${
+        cardSize === 4 ? "h-[33rem]" : "h-[16rem]"
+      }`}
     >
-      <div className="flex items-center text-primary bg-surfaceContainerLow h-16 min-h-[4rem] px-4 rounded-t-xl border-b border-primaryFixed">
+      <div className="flex items-center text-secondary bg-surfaceContainerLow h-16 min-h-[4rem] px-4 rounded-t-xl border-b-2 border-secondaryContainer">
         <MdTypography variant="title" size="medium" className="flex-1">
-          {props.title}
+          {title}
         </MdTypography>
-        {props.hasTooltip && (
+        {hasTooltip && (
           <MdIcon>
             <InfoOutlinedIcon />
           </MdIcon>
         )}
       </div>
-      {props.children}
+      {children}
     </motion.div>
   );
 }
@@ -98,7 +112,7 @@ export function DashboardCardConstructor({
   } else {
     if (item.id === "notice") {
       return (
-        <DashboardCard title={item.title} hasTooltip={true}>
+        <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
           <div className="px-6 flex-1 flex flex-col justify-center">
             <QuickNotice />
           </div>
@@ -108,7 +122,7 @@ export function DashboardCardConstructor({
 
     if (item.id === "tracking") {
       return (
-        <DashboardCard title={item.title} hasTooltip={true}>
+        <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
           <div className="px-6 flex-1 flex flex-col justify-center">
             <QuickTracking rows={3} />
           </div>
@@ -118,7 +132,7 @@ export function DashboardCardConstructor({
 
     if (item.id === "attachment") {
       return (
-        <DashboardCard title={item.title} hasTooltip={true}>
+        <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
           <div className="px-6 flex-1 flex flex-col justify-center">
             <QuickAttachment />
           </div>
@@ -128,8 +142,8 @@ export function DashboardCardConstructor({
 
     if (item.id === "schedule") {
       return (
-        <DashboardCard title={item.title} hasTooltip={true}>
-          <div className="px-6 py-6 flex-1 flex flex-col overflow-y-scroll">
+        <DashboardCard title={item.title} hasTooltip={true} cardSize={4}>
+          <div className="px-6 py-6 flex-1 flex flex-col ">
             <QuickSchedule />
           </div>
         </DashboardCard>

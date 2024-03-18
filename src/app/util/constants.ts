@@ -201,7 +201,7 @@ export const cardList: DashboardCardInfoType[] = [
   {
     id: "schedule",
     title: "Schedule",
-    size: 2,
+    size: 4,
     type: "etc",
   },
 ];
