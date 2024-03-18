@@ -39,6 +39,7 @@ export default function NAOutlinedAutoComplete({
   onQueryChange,
   isAllowOnlyListItems = true,
   className,
+  maxListHeight = 600,
   ...props
 }: {
   itemList: string[];
@@ -49,6 +50,7 @@ export default function NAOutlinedAutoComplete({
   onItemSelection?: (value: string) => void;
   onQueryChange?: (value: string) => void;
   isAllowOnlyListItems?: boolean;
+  maxListHeight?: number;
   className?: string;
 } & MdOutlinedTextFieldProps) {
   const [query, setQuery] = useState<string>("");
@@ -198,7 +200,10 @@ export default function NAOutlinedAutoComplete({
           className="relative z-50 bg-surfaceContainerLow rounded focus:outline-none"
         >
           <MdElevation />
-          <MdList className="relative max-h-[600px] overflow-y-auto rounded bg-surfaceContainerLow">
+          <MdList
+            style={{ maxHeight: `${maxListHeight}px` }}
+            className="relative overflow-y-auto rounded bg-surfaceContainerLow"
+          >
             <OverlayScrollbarsComponent defer>
               {recentItems &&
                 recentItems.length > 0 &&

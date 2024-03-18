@@ -42,7 +42,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <MdElevatedCard>
+    <MdElevatedCard className="z-10">
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab
           id="tab-schedule"
@@ -69,7 +69,7 @@ const QuickSearch = () => {
       </MdTabs>
       <div
         id="schedule-panel"
-        className="px-12 py-6"
+        className="px-6 py-4"
         role="tabpanel"
         aria-labelledby="tab-schedule"
         hidden={tabItemId !== "tab-schedule"}
