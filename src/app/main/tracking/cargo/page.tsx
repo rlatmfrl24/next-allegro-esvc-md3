@@ -1,7 +1,7 @@
 "use client";
 
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import { useState } from "react";
 import CargoTrackingSearchCondition from "./search-condition";

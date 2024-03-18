@@ -13,6 +13,8 @@ import TransitTrainIcon from "@/../public/icon_transit_train.svg";
 import TransitShipIcon from "@/../public/icon_transit_ship.svg";
 import TransitPortIcon from "@/../public/icon_transit_port.svg";
 import { MdIconButton } from "@/app/util/md3";
+import { SubTitle } from "../../booking/request/components/base";
+import Image from "next/image";
 
 export default function TrackingDataList() {
   const tempData: CargoTrackingProps[] = useMemo(() => {
@@ -260,7 +262,55 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
         </div>
       </div>
       {isDetailOpen && (
-        <div className="bg-surfaceContainerLow border border-outlineVariant rounded-lg p-4"></div>
+        <div className="bg-surfaceContainerLow border border-outlineVariant rounded-lg p-4">
+          <div className="border border-outlineVariant rounded-lg flex flex-col overflow-hidden">
+            <div className="h-2 bg-secondaryContainer"></div>
+            <div className="px-6 py-4 bg-surfaceContainerLowest">
+              <SubTitle title="Sailing Info" className="mb-4" />
+              <div className="flex bg-surfaceContainerLow rounded-lg justify-center gap-6 py-14">
+                <div className="text-right">
+                  <MdTypography
+                    variant="headline"
+                    size="small"
+                    className="text-primary"
+                  >
+                    {data.pol.code}
+                  </MdTypography>
+                  <MdTypography
+                    variant="body"
+                    size="small"
+                    className="text-outline"
+                  >
+                    {data.pol.yardName}
+                  </MdTypography>
+                </div>
+                <div className="flex w-fit h-fit items-center gap-4 pt-1">
+                  <DividerComponent className="w-8 min-w-8 border-b border-b-primary border-dotted" />
+                  <div>
+                    <TransitShipIcon />
+                  </div>
+                  <DividerComponent className="w-8 min-w-8 border-b border-b-primary border-dotted" />
+                </div>
+                <div>
+                  <MdTypography
+                    variant="headline"
+                    size="small"
+                    className="text-primary"
+                  >
+                    {data.pod.code}
+                  </MdTypography>
+                  <MdTypography
+                    variant="body"
+                    size="small"
+                    className="text-outline"
+                  >
+                    {data.pod.yardName}
+                  </MdTypography>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

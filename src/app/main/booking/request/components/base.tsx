@@ -1,22 +1,5 @@
 import { MdTypography } from "@/app/components/typography";
 
-export const SubTitle = ({
-  title,
-  className,
-}: {
-  title: string;
-  className?: string;
-}) => {
-  return (
-    <div className={`flex items-center gap-2 ${className ? className : ""}`}>
-      <div className="w-1 h-4 bg-primary"></div>
-      <MdTypography variant="body" size="large">
-        {title}
-      </MdTypography>
-    </div>
-  );
-};
-
 export const SimpleItem = ({
   title,
   value,

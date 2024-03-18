@@ -1,6 +1,6 @@
 "use client";
 
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import BLCheckSearchCondition from "./search-condition";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";

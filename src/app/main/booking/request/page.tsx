@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import {
   AdditionalInformationState,
   BookingInformationState,

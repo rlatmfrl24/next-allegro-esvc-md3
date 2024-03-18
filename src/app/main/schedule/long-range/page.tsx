@@ -21,7 +21,7 @@ import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import ServiceLaneSelector from "./service-lane-selector";
 import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef/schedule";
 import { SubTitle } from "../../booking/request/components/base";
 

@@ -14,7 +14,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { VesselScheduleResult } from "./search-result";
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import {
   VesselInfoType,
   VesselScheduleType,

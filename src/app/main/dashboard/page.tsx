@@ -9,7 +9,7 @@ import { useState } from "react";
 import Dashboard from "./dashboard";
 import SetDashboard from "./set-dashboard";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 
 export default function MainPage() {
   const [customizabled, setCustomizabled] = useRecoilState(draggableState);

@@ -17,7 +17,7 @@ import ConditionSummary from "./components/condition-summary";
 import PointToPointCalendarResult from "./result-calendar";
 import PointToPointListResult from "./result-list";
 import SearchCondition from "./search-condition";
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import {
   PtPSearchConditionType,
   PtPScheduleType,
