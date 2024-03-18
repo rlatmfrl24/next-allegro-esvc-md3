@@ -78,7 +78,7 @@ export default function SISearchCondition() {
           className="min-w-[502px]"
           initialValue={searchCondition.vesselInfo.vesselName}
           itemList={vesselInfos.map((vessel) => vessel.vesselName)}
-          onSelection={(selected) => {
+          onItemSelection={(selected) => {
             const selectedVessel = vesselInfos.find(
               (vessel) => vessel.vesselName === selected
             );

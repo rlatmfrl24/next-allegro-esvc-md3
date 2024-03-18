@@ -82,7 +82,7 @@ export default function VesselSchedule() {
           icon={<VesselIcon />}
           recentCookieKey="recent-vessel"
           itemList={vesselList.map((vessel) => vessel.vesselName)}
-          onSelection={(value) => {
+          onItemSelection={(value) => {
             setVesselQuery(value === "" ? "" : value);
           }}
         />

@@ -32,7 +32,7 @@ export default function SideNavigation() {
             <MenuIcon />
           </MdIcon>
         </MdIconButton>
-        <div className="flex flex-col mt-10 gap-5">
+        <div className="flex flex-col mt-3 gap-5">
           <DropdownMenu />
         </div>
       </aside>

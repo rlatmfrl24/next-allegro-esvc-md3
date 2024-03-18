@@ -8,11 +8,29 @@ import {
   BookingRequestStepState,
   PartiesState,
 } from "@/app/store/booking-request.store";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { faker } from "@faker-js/faker";
+import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 
 export default function PartiesStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
   const [partiesData, setPartiesData] = useRecoilState(PartiesState);
+
+  const tempCompaniesData = useMemo(() => {
+    return Array.from({ length: 100 }, (_, index) => ({
+      name: faker.company.name(),
+      address:
+        faker.location.streetAddress() +
+        ", " +
+        faker.location.city() +
+        ", " +
+        faker.location.state() +
+        ", " +
+        faker.location.zipCode() +
+        ", " +
+        faker.location.country(),
+    }));
+  }, []);
 
   const ValidateRequired = useCallback(() => {
     if (partiesData.shipper.name === "" || partiesData.shipper.address === "") {
@@ -63,20 +81,36 @@ export default function PartiesStep() {
       </MdTypography>
       <SubTitle title="Shipper" className="mb-4" />
       <div className="flex gap-4">
-        <NAOutlinedTextField
+        <NAMultiAutoComplete
           label="Company Name"
+          itemList={tempCompaniesData}
           required
-          value={partiesData.shipper.name}
-          handleValueChange={(value) => {
+          initialValue={{
+            name: partiesData.shipper.name,
+            address: partiesData.shipper.address,
+          }}
+          isAllowOnlyListItems={false}
+          onQueryChange={(query) => {
             setPartiesData((prev) => ({
               ...prev,
               shipper: {
                 ...prev.shipper,
-                name: value,
+                name: query,
+              },
+            }));
+          }}
+          onItemSelection={(item) => {
+            setPartiesData((prev) => ({
+              ...prev,
+              shipper: {
+                ...prev.shipper,
+                name: item.name,
+                address: item.address,
               },
             }));
           }}
         />
+
         <NAOutlinedTextField
           className="flex-1"
           label="Address"
@@ -96,19 +130,35 @@ export default function PartiesStep() {
       </div>
       <SubTitle title="Freight Forwarder" className="mt-8 mb-4" />
       <div className="flex gap-4">
-        <NAOutlinedTextField
+        <NAMultiAutoComplete
           label="Company Name"
-          value={partiesData.freightForwarder.name}
-          handleValueChange={(value) => {
+          itemList={tempCompaniesData}
+          initialValue={{
+            name: partiesData.freightForwarder.name,
+            address: partiesData.freightForwarder.address,
+          }}
+          isAllowOnlyListItems={false}
+          onQueryChange={(query) => {
             setPartiesData((prev) => ({
               ...prev,
               freightForwarder: {
                 ...prev.freightForwarder,
-                name: value,
+                name: query,
+              },
+            }));
+          }}
+          onItemSelection={(item) => {
+            setPartiesData((prev) => ({
+              ...prev,
+              freightForwarder: {
+                ...prev.freightForwarder,
+                name: item.name,
+                address: item.address,
               },
             }));
           }}
         />
+
         <NAOutlinedTextField
           className="flex-1"
           label="Address"
@@ -134,33 +184,60 @@ export default function PartiesStep() {
               ? "checked"
               : "unchecked"
           }
-          onClick={() => {
-            setPartiesData((prev) => ({
-              ...prev,
-              freightForwarder: {
-                ...prev.freightForwarder,
-                address: prev.shipper.address,
-                name: prev.shipper.name,
-              },
-            }));
+          onClick={(isChecked) => {
+            if (isChecked) {
+              setPartiesData((prev) => ({
+                ...prev,
+                freightForwarder: {
+                  ...prev.freightForwarder,
+                  address: "",
+                  name: "",
+                },
+              }));
+            } else {
+              setPartiesData((prev) => ({
+                ...prev,
+                freightForwarder: {
+                  ...prev.freightForwarder,
+                  address: prev.shipper.address,
+                  name: prev.shipper.name,
+                },
+              }));
+            }
           }}
         />
       </div>
       <SubTitle title="Consignee" className="mt-8 mb-4" />
       <div className="flex gap-4">
-        <NAOutlinedTextField
+        <NAMultiAutoComplete
           label="Company Name"
-          value={partiesData.consignee.name}
-          handleValueChange={(value) => {
+          itemList={tempCompaniesData}
+          initialValue={{
+            name: partiesData.consignee.name,
+            address: partiesData.consignee.address,
+          }}
+          isAllowOnlyListItems={false}
+          onQueryChange={(query) => {
             setPartiesData((prev) => ({
               ...prev,
               consignee: {
                 ...prev.consignee,
-                name: value,
+                name: query,
+              },
+            }));
+          }}
+          onItemSelection={(item) => {
+            setPartiesData((prev) => ({
+              ...prev,
+              consignee: {
+                ...prev.consignee,
+                name: item.name,
+                address: item.address,
               },
             }));
           }}
         />
+
         <NAOutlinedTextField
           className="flex-1"
           label="Address"

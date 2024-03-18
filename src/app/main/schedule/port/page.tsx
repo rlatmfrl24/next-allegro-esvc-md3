@@ -65,7 +65,7 @@ export default function PortSchedule() {
               return `${faker.location.city()}, ${faker.location.country()}`.toUpperCase();
             })}
             icon={<PortIcon />}
-            onSelection={(value) => {
+            onItemSelection={(value) => {
               if (value !== "") {
                 setPortQuery({ ...portQuery, portName: value });
               }

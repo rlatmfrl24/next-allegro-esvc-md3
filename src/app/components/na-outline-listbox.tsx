@@ -39,7 +39,7 @@ export default function NAOutlinedListBox({
   onSelection?: (value: string) => void;
   className?: string;
 } & MdOutlinedTextFieldProps) {
-  const [query, setQuery] = useState(initialValue || options[0]);
+  const [query, setQuery] = useState(initialValue || "");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<any[]>([]);

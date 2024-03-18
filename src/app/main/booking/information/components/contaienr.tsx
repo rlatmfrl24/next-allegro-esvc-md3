@@ -122,8 +122,6 @@ const ContainerItem = ({
   quantity: number;
   soc: number;
 }) => {
-  console.log(size);
-
   return (
     <div className="flex flex-1 border rounded-lg border-outlineVariant p-4 gap-4">
       {type === "dry" ? (

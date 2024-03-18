@@ -1,9 +1,10 @@
-import { MdOutlinedSelect, MdSelectOption, MdTextButton } from "@/app/util/md3";
+import { MdTextButton } from "@/app/util/md3";
 import { useState } from "react";
 import ListItem from "./components/listItem";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import DownloadIcon from "@mui/icons-material/Download";
 import { PtPScheduleType } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 export default function PointToPointListResult({
   list,
@@ -22,22 +23,26 @@ export default function PointToPointListResult({
   return (
     <div className="flex flex-col gap-4 p-6">
       <div className="flex items-center gap-4">
-        <MdOutlinedSelect
+        <NAOutlinedListBox
           label="Sort By"
-          value={listSort}
-          onClick={(e) => setListSort((e.target as any).value)}
-        >
-          <MdSelectOption value="earliest_departure">
-            Earliest Departure
-          </MdSelectOption>
-          <MdSelectOption value="latest_departure">
-            Latest Departure
-          </MdSelectOption>
-          <MdSelectOption value="earliest_arrival">
-            Earliest Arrival
-          </MdSelectOption>
-          <MdSelectOption value="latest_arrival">Latest Arrival</MdSelectOption>
-        </MdOutlinedSelect>
+          initialValue={
+            listSort
+              .replace("_", " ")
+              .split(" ")
+              .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+              .join(" ") as any
+          }
+          options={[
+            "Earliest Departure",
+            "Latest Departure",
+            "Earliest Arrival",
+            "Latest Arrival",
+          ]}
+          onSelection={(value) => {
+            setListSort(value.toLowerCase().replace(" ", "_") as any);
+          }}
+        />
+
         <NaToggleButton
           label="Direct Only"
           state={isDirectOnly ? "checked" : "unchecked"}

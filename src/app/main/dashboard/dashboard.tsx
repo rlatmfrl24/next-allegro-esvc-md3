@@ -89,10 +89,11 @@ export default function Dashboard() {
                     {
                       1: styles["sortable"],
                       2: styles["sortable-wide"],
+                      4: styles["sortable-tall"],
                     }[item.size]
                   }
                 >
-                  <DashboardCardPlaceholder />
+                  <DashboardCardPlaceholder cardSize={item.size} />
                 </div>
               ) : (
                 <Sortable
@@ -102,6 +103,7 @@ export default function Dashboard() {
                     {
                       1: styles["sortable"],
                       2: styles["sortable-wide"],
+                      4: styles["sortable-tall"],
                     }[item.size]
                   }
                   draggable={isDraggable}
