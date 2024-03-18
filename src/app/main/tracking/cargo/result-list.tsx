@@ -7,11 +7,12 @@ import { useMemo } from "react";
 import { createDummyCargoTrackingData } from "./util";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "../../booking/information/components/base";
-import { Place } from "@mui/icons-material";
+import { Favorite, FavoriteBorder, Place } from "@mui/icons-material";
 import TransitTruckIcon from "@/../public/icon_transit_truck.svg";
 import TransitTrainIcon from "@/../public/icon_transit_train.svg";
 import TransitShipIcon from "@/../public/icon_transit_ship.svg";
 import TransitPortIcon from "@/../public/icon_transit_port.svg";
+import { MdIconButton } from "@/app/util/md3";
 
 export default function TrackingDataList() {
   const tempData: CargoTrackingProps[] = useMemo(() => {
@@ -30,6 +31,19 @@ export default function TrackingDataList() {
 const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
   return (
     <div className="px-6 py-4 bg-surface border border-outlineVariant rounded-lg flex relative">
+      <MdIconButton
+        className={`absolute right-4 top-4  rounded-full ${
+          data.isFavorite
+            ? "bg-secondaryContainer"
+            : "bg-surfaceContainerHighest"
+        }`}
+      >
+        {data.isFavorite ? (
+          <Favorite className="text-onSurface" fontSize="small" />
+        ) : (
+          <FavoriteBorder className="text-onSurface" fontSize="small" />
+        )}
+      </MdIconButton>
       <div className="flex flex-col pr-4 mr-4 border-r border-dotted border-outlineVariant w-[180px]">
         <MdTypography variant="label" size="small" className="text-outline">
           BKG No.
@@ -106,7 +120,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
           <MdTypography
             variant="label"
             size="medium"
-            className="text-white bg-primary w-fit px-2 py-0.5 rounded-lg"
+            className={`text-white bg-primary w-fit px-2 py-0.5 rounded-lg`}
           >
             POR
           </MdTypography>
@@ -115,14 +129,16 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
             trackingStatus={data.trackingStatus}
             transitType={data.transitType}
           />
-
-          {/* <div className="flex-1 mb-2 border-t-4 border-dashed border-outlineVariant"></div> */}
         </div>
         <div className="flex-1 flex justify-end items-end h-6">
           <MdTypography
             variant="label"
             size="medium"
-            className="text-white bg-primary w-fit px-2 py-0.5 rounded-lg"
+            className={`w-fit px-2 py-0.5 rounded-lg ${
+              data.trackingStatus === TrackingStatus.Departed
+                ? "bg-surfaceContainerHigh text-onSurface"
+                : "bg-primary text-white"
+            }`}
           >
             POL
           </MdTypography>
@@ -136,7 +152,13 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
           <MdTypography
             variant="label"
             size="medium"
-            className="text-white bg-primary w-fit px-2 py-0.5 rounded-lg"
+            className={`w-fit px-2 py-0.5 rounded-lg ${
+              data.trackingStatus === TrackingStatus.Departed ||
+              data.trackingStatus === TrackingStatus.ArrivedAtPOL ||
+              data.trackingStatus === TrackingStatus.TransitToPOD
+                ? "bg-surfaceContainerHigh text-onSurface"
+                : "bg-primary text-white"
+            }`}
           >
             POD
           </MdTypography>
@@ -150,7 +172,11 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
           <MdTypography
             variant="label"
             size="medium"
-            className="text-white bg-primary w-fit px-2 py-0.5 rounded-lg"
+            className={`w-fit px-2 py-0.5 rounded-lg ${
+              data.trackingStatus !== TrackingStatus.ArrivedAtDEL
+                ? "bg-surfaceContainerHigh text-onSurface"
+                : "bg-primary text-white"
+            }`}
           >
             DEL
           </MdTypography>
@@ -229,7 +255,7 @@ const LineBetween = ({
             <div className="flex flex-1 relative">
               <div className="flex-1 border-t-4 border-primary mb-2"></div>
               <div className="flex-1 border-t-4 border-dashed border-outlineVariant mb-2"></div>
-              <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0.5 bg-surface px-1 py-1">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0 bg-surface px-1 py-1">
                 {
                   {
                     [TransitType.Truck]: <TransitTruckIcon />,
@@ -255,7 +281,7 @@ const LineBetween = ({
             <div className="flex flex-1 relative">
               <div className="flex-1 border-t-4 border-primary mb-2"></div>
               <div className="flex-1 border-t-4 border-dashed border-outlineVariant mb-2"></div>
-              <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0.5 bg-surface px-1 py-1">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0 bg-surface px-1 py-1">
                 {
                   {
                     [TransitType.Truck]: <TransitTruckIcon />,
@@ -283,7 +309,7 @@ const LineBetween = ({
             <div className="flex flex-1 relative">
               <div className="flex-1 border-t-4 border-primary mb-2"></div>
               <div className="flex-1 border-t-4 border-dashed border-outlineVariant mb-2"></div>
-              <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0.5 bg-surface px-1 py-1">
+              <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-0 bg-surface px-1 py-1">
                 {
                   {
                     [TransitType.Truck]: <TransitTruckIcon />,
