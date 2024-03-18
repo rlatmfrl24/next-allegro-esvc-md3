@@ -5,3 +5,7 @@
 .sortable-wide {
   @apply col-span-2 min-w-[668px];
 }
+
+.sortable-tall {
+  @apply row-span-2 col-span-2 min-w-[668px];
+}

@@ -9,7 +9,7 @@ export type DashboardCardInfoType = {
   id: string;
   title: string;
   type: "input" | "statistic" | "chart" | "etc";
-  size: 1 | 2;
+  size: 1 | 2 | 4;
 };
 
 export type DashboardInputCardDataType = {
