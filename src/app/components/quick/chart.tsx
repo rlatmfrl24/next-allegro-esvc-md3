@@ -1,6 +1,5 @@
 import { Cell, Pie, PieChart } from "recharts";
 import { MdTypography } from "../typography";
-import { Typography } from "@mui/material";
 
 enum ChartColorEnum {
   BOOKED = "#4D616C",
@@ -17,8 +16,8 @@ export default function QuickChart(props: {
   }, 0);
 
   return (
-    <div className="px-6 pb-6 flex flex-col font-pretendard">
-      <div className="py-5 flex gap-2 items-end">
+    <div className="px-4 pb-6 flex flex-col font-pretendard">
+      <div className="pt-3 pb-4 flex gap-2 items-end">
         <MdTypography
           variant="headline"
           size="small"
@@ -96,7 +95,7 @@ export default function QuickChart(props: {
                     variant="label"
                     size="large"
                     prominent
-                    className="text-secondary"
+                    className="text-secondary ml-2"
                   >
                     {data.value}
                   </MdTypography>

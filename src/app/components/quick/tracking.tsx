@@ -1,7 +1,7 @@
-import { MdOutlinedTextField } from "@/app/util/md3";
+import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import { MdTypography } from "../typography";
 
-export default function QuickTracking(props: { rows?: number }) {
+export default function QuickTracking() {
   return (
     <>
       <MdTypography variant="body" size="medium">
@@ -9,12 +9,9 @@ export default function QuickTracking(props: { rows?: number }) {
       </MdTypography>
       <MdOutlinedTextField
         label=""
-        placeholder="B/Ls, Bookings and/or Container numbers"
-        supportingText="Enter up to 10 numbers, separately by a space or comma."
-        type="textarea"
-        className="resize-none"
-        rows={props.rows ?? 5}
+        placeholder="B/Ls, Bookings or Container No."
       />
+      <MdFilledButton className="w-fit self-end">Search</MdFilledButton>
     </>
   );
 }
