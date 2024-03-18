@@ -10,7 +10,7 @@ import {
   MdFilledButton,
   MdTextButton,
 } from "@/app/util/md3";
-import { ResultTableProps } from "@/app/util/typeDef/documentation";
+import { SeaWaybillTableProps } from "@/app/util/typeDef/documentation";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
 import {
@@ -32,18 +32,19 @@ export default function SeaWaybillResultTable() {
           destination: faker.location.city(),
           vessel: createDummyVesselInformation(),
           onBoardDate: DateTime.fromJSDate(faker.date.recent()),
+          issueDate: DateTime.fromJSDate(faker.date.recent()),
           freight: faker.helpers.maybe(() => true),
-        } as ResultTableProps)
+        } as SeaWaybillTableProps)
     );
   }, []);
-  const [tableData, setTableData] = useState<ResultTableProps[]>([]);
+  const [tableData, setTableData] = useState<SeaWaybillTableProps[]>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
 
-  const columnHelper = createColumnHelper<ResultTableProps>();
+  const columnHelper = createColumnHelper<SeaWaybillTableProps>();
 
   const columns = [
     columnHelper.display({
@@ -64,12 +65,27 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("destination", {
       header: "Destination",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
@@ -77,7 +93,19 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("onBoardDate", {
       header: "On Board Date",
-      cell: (info) => info.getValue().toFormat("yyyy-MM-dd HH:mm"),
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+        </MdTypography>
+      ),
+    }),
+    columnHelper.accessor("issueDate", {
+      header: "Issue Date",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("freight", {
       header: "Freight",

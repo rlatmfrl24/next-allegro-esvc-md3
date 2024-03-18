@@ -11,7 +11,6 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { ResultTableProps } from "@/app/util/typeDef/documentation";
-import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
 import {
@@ -65,12 +64,27 @@ export default function BLCheckResultTable() {
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("destination", {
       header: "Destination",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
@@ -78,7 +92,11 @@ export default function BLCheckResultTable() {
     }),
     columnHelper.accessor("onBoardDate", {
       header: "On Board Date",
-      cell: (info) => info.getValue().toFormat("yyyy-MM-dd HH:mm"),
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue().toFormat("yyyy-MM-dd")}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("freight", {
       header: "Freight",

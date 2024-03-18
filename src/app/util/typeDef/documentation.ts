@@ -9,3 +9,7 @@ export interface ResultTableProps {
   onBoardDate: DateTime;
   freight: boolean;
 }
+
+export interface SeaWaybillTableProps extends ResultTableProps {
+  issueDate: DateTime;
+}
