@@ -1,20 +1,39 @@
+import { DateTime } from "luxon";
+import { useMemo, useState } from "react";
+
+import ActualDateIcon from "@/../public/icon_actual_schedule.svg";
+import EstimatedDateIcon from "@/../public/icon_estimate_schedule.svg";
+import TransitPortIcon from "@/../public/icon_transit_port.svg";
+import TransitShipIcon from "@/../public/icon_transit_ship.svg";
+import TransitTrainIcon from "@/../public/icon_transit_train.svg";
+import TransitTruckIcon from "@/../public/icon_transit_truck.svg";
+import Portal from "@/app/components/portal";
+import { DetailTitle } from "@/app/components/title-components";
+import { MdTypography } from "@/app/components/typography";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { MdIconButton } from "@/app/util/md3";
+import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import {
   CargoTrackingProps,
   TrackingStatus,
   TransitType,
 } from "@/app/util/typeDef/tracking";
-import { useMemo, useState } from "react";
-import { createDummyCargoTrackingData } from "./util";
-import { MdTypography } from "@/app/components/typography";
+import {
+  Favorite,
+  FavoriteBorder,
+  InfoOutlined,
+  Place,
+} from "@mui/icons-material";
+
 import { DividerComponent } from "../../booking/information/components/base";
-import { Favorite, FavoriteBorder, Place } from "@mui/icons-material";
-import TransitTruckIcon from "@/../public/icon_transit_truck.svg";
-import TransitTrainIcon from "@/../public/icon_transit_train.svg";
-import TransitShipIcon from "@/../public/icon_transit_ship.svg";
-import TransitPortIcon from "@/../public/icon_transit_port.svg";
-import { MdIconButton } from "@/app/util/md3";
-import Image from "next/image";
-import { DetailTitle } from "@/app/components/title-components";
+import PlaceInformationDialog from "../../schedule/popup/place-information";
+import {
+  createDummyCargoTrackingData,
+  getLastLocation,
+  getLastLocationTime,
+  getStatusText,
+  getWeightText,
+} from "./util";
 
 export default function TrackingDataList() {
   const tempData: CargoTrackingProps[] = useMemo(() => {
@@ -32,9 +51,22 @@ export default function TrackingDataList() {
 
 const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isPlaceInformationDialogOpen, setIsPlaceInformationDialogOpen] =
+    useState(false);
+  const [currentPlaceInformation, setCurrentPlaceInformation] =
+    useState<PlaceInformationType>();
 
   return (
     <div>
+      <Portal selector="#main-container">
+        {currentPlaceInformation && (
+          <PlaceInformationDialog
+            open={isPlaceInformationDialogOpen}
+            handleOpen={setIsPlaceInformationDialogOpen}
+            data={currentPlaceInformation}
+          />
+        )}
+      </Portal>
       <div
         className="px-6 py-4 bg-surface border border-outlineVariant rounded-lg flex relative"
         onClick={() => {
@@ -265,47 +297,155 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
         <div className="bg-surfaceContainerLow border border-outlineVariant rounded-lg p-4">
           <div className="border border-outlineVariant rounded-lg flex flex-col overflow-hidden">
             <div className="h-2 bg-secondaryContainer"></div>
-            <div className="px-6 py-4 bg-surfaceContainerLowest">
-              <DetailTitle title="Sailing Info" className="mb-4" />
-              <div className="flex bg-surfaceContainerLow rounded-lg justify-center gap-6 py-14">
-                <div className="text-right">
-                  <MdTypography
-                    variant="headline"
-                    size="small"
-                    className="text-primary"
-                  >
-                    {data.pol.code}
-                  </MdTypography>
-                  <MdTypography
-                    variant="body"
-                    size="small"
-                    className="text-outline"
-                  >
-                    {data.pol.yardName}
-                  </MdTypography>
-                </div>
-                <div className="flex w-fit h-fit items-center gap-4 pt-1">
-                  <DividerComponent className="w-8 min-w-8 border-b border-b-primary border-dotted" />
-                  <div>
-                    <TransitShipIcon />
+            <div className="px-6 py-4 bg-surfaceContainerLowest flex">
+              <div className="w-[460px] border-r border-dotted pr-4 mr-4">
+                <DetailTitle title="Sailing Info" className="mb-4" />
+                <div className="flex bg-surfaceContainerLow rounded-lg justify-center gap-6 py-14">
+                  <div className="text-right flex-1">
+                    <MdTypography
+                      variant="headline"
+                      size="small"
+                      className="text-primary"
+                    >
+                      {data.pol.code}
+                    </MdTypography>
+                    <MdTypography
+                      variant="body"
+                      size="small"
+                      className="text-outline"
+                    >
+                      {data.pol.yardName}
+                    </MdTypography>
                   </div>
-                  <DividerComponent className="w-8 min-w-8 border-b border-b-primary border-dotted" />
+                  <div className="flex w-fit h-fit items-center gap-4 pt-1">
+                    <DividerComponent className="w-8 min-w-8 border-b border-b-primary border-dotted" />
+                    <div>
+                      <TransitShipIcon />
+                    </div>
+                    <DividerComponent className="w-8 min-w-8 border-b border-b-primary border-dotted" />
+                  </div>
+                  <div className="flex-1">
+                    <MdTypography
+                      variant="headline"
+                      size="small"
+                      className="text-primary"
+                    >
+                      {data.pod.code}
+                    </MdTypography>
+                    <MdTypography
+                      variant="body"
+                      size="small"
+                      className="text-outline"
+                    >
+                      {data.pod.yardName}
+                    </MdTypography>
+                  </div>
                 </div>
-                <div>
+                <div className="grid grid-cols-[100px_1fr] gap-4 mt-4">
                   <MdTypography
-                    variant="headline"
-                    size="small"
-                    className="text-primary"
+                    variant="body"
+                    size="medium"
+                    className="text-outline"
                   >
-                    {data.pod.code}
+                    Seal No.
                   </MdTypography>
                   <MdTypography
                     variant="body"
-                    size="small"
+                    size="medium"
+                    className="text-onSurface"
+                  >
+                    {data.detailInfo.cargoSailingInfo.sealNumber}
+                  </MdTypography>
+                  <MdTypography
+                    variant="body"
+                    size="medium"
                     className="text-outline"
                   >
-                    {data.pod.yardName}
+                    Weight
                   </MdTypography>
+                  <MdTypography
+                    variant="body"
+                    size="medium"
+                    className="text-onSurface"
+                  >
+                    {getWeightText(data.detailInfo.cargoSailingInfo.weight)}{" "}
+                    <span className="text-outline">
+                      {data.detailInfo.cargoSailingInfo.weightUnit}
+                    </span>
+                  </MdTypography>
+                  <MdTypography
+                    variant="body"
+                    size="medium"
+                    className="text-outline"
+                  >
+                    Vessel
+                  </MdTypography>
+                  <div className="flex flex-col gap-4">
+                    {data.detailInfo.cargoSailingInfo.vessels.map(
+                      (vessel, index) => (
+                        <VesselInfoCell key={index} {...vessel} />
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <DetailTitle title="Cargo Detail" />
+                  <InfoOutlined
+                    sx={{
+                      fontSize: "16px",
+                    }}
+                    className="text-outline"
+                  />
+                </div>
+                <div className="grid grid-cols-[1fr_auto_1fr]">
+                  {data.detailInfo.cargoDetail.map((detail, index) => (
+                    <>
+                      <MdTypography
+                        variant="body"
+                        size="medium"
+                        className={`text-onSurface h-16 flex items-center gap-2 p-2 ${
+                          index === data.detailInfo.cargoDetail.length - 1
+                            ? ""
+                            : "border-b border-b-outlineVariant"
+                        }`}
+                      >
+                        {detail.description}
+                      </MdTypography>
+                      <MdTypography
+                        variant="body"
+                        size="medium"
+                        className={`text-onSurface flex gap-2 h-16 items-center p-2 ${
+                          index === data.detailInfo.cargoDetail.length - 1
+                            ? ""
+                            : "border-b border-b-outlineVariant"
+                        }`}
+                      >
+                        {detail.date > DateTime.now() ? (
+                          <EstimatedDateIcon />
+                        ) : (
+                          <ActualDateIcon />
+                        )}
+                        {detail.date.toFormat("yyyy-MM-dd HH:mm")}
+                      </MdTypography>
+                      <MdTypography
+                        variant="body"
+                        size="medium"
+                        className={`text-onSurface h-16 flex items-center gap-2 p-2 underline cursor-pointer ${
+                          index === data.detailInfo.cargoDetail.length - 1
+                            ? ""
+                            : "border-b border-b-outlineVariant"
+                        }`}
+                        onClick={() => {
+                          setCurrentPlaceInformation(detail.location);
+                          setIsPlaceInformationDialogOpen(true);
+                        }}
+                      >
+                        {detail.location.yardName}
+                      </MdTypography>
+                    </>
+                  ))}
                 </div>
               </div>
             </div>
@@ -403,56 +543,5 @@ const LineBetween = ({
       }
     default:
       return <div></div>;
-  }
-};
-
-const getStatusText = (status: TrackingStatus) => {
-  switch (status) {
-    case TrackingStatus.Departed:
-      return "Departure from Port of Receipt";
-    case TrackingStatus.ArrivedAtPOL:
-      return "Arrived at Port of Loading";
-    case TrackingStatus.TransitToPOD:
-      return "Transit to Port of Discharge";
-    case TrackingStatus.ArrivedAtPOD:
-      return "Arrived at Port of Discharge";
-    case TrackingStatus.TransitToDEL:
-      return "Transit to Destination";
-    case TrackingStatus.ArrivedAtDEL:
-      return "Arrived at Destination";
-  }
-};
-
-const getLastLocation = (data: CargoTrackingProps) => {
-  switch (data.trackingStatus) {
-    case TrackingStatus.Departed:
-      return data.por;
-    case TrackingStatus.ArrivedAtPOL:
-      return data.pol;
-    case TrackingStatus.TransitToPOD:
-      return data.pol;
-    case TrackingStatus.ArrivedAtPOD:
-      return data.pod;
-    case TrackingStatus.TransitToDEL:
-      return data.pod;
-    case TrackingStatus.ArrivedAtDEL:
-      return data.del;
-  }
-};
-
-const getLastLocationTime = (data: CargoTrackingProps) => {
-  switch (data.trackingStatus) {
-    case TrackingStatus.Departed:
-      return data.porTime;
-    case TrackingStatus.ArrivedAtPOL:
-      return data.polTime;
-    case TrackingStatus.TransitToPOD:
-      return data.polTime;
-    case TrackingStatus.ArrivedAtPOD:
-      return data.podTime;
-    case TrackingStatus.TransitToDEL:
-      return data.podTime;
-    case TrackingStatus.ArrivedAtDEL:
-      return data.delTime;
   }
 };

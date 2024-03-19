@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { PlaceInformationType } from "./schedule";
+import { PlaceInformationType, VesselInfoType } from "./schedule";
 
 export enum TrackingStatus {
   "Departed",
@@ -33,4 +33,23 @@ export interface CargoTrackingProps {
   trackingStatus: TrackingStatus;
   transitType: TransitType;
   isFavorite: boolean;
+  detailInfo: {
+    cargoSailingInfo: CargoSailingInfoType;
+    cargoDetail: CargoDetailType[];
+  };
 }
+
+export type CargoSailingInfoType = {
+  pol: PlaceInformationType;
+  pod: PlaceInformationType;
+  sealNumber: string;
+  weight: number;
+  weightUnit: string;
+  vessels: VesselInfoType[];
+};
+
+export type CargoDetailType = {
+  description: string;
+  date: DateTime;
+  location: PlaceInformationType;
+};
