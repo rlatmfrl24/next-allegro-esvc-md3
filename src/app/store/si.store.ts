@@ -1,4 +1,10 @@
 import { atom } from "recoil";
+import {
+  ConsigneeProps,
+  NotifyPartyProps,
+  SIEditPartiesType,
+  SIPartiesProps,
+} from "../util/typeDef/si";
 
 export const SIEditStepState = atom({
   key: "siEditStepState",
@@ -33,5 +39,16 @@ export const SIEditStepState = atom({
       isSelected: false,
       isCompleted: false,
     },
+  },
+});
+
+export const SIEditPartiesState = atom<SIEditPartiesType>({
+  key: "siEditPartiesState",
+  default: {
+    shipper: {} as SIPartiesProps,
+    consignee: {} as ConsigneeProps,
+    notifyParty: {} as NotifyPartyProps,
+    exportReference: "",
+    forwardingAgentReference: "",
   },
 });

@@ -53,9 +53,18 @@ export interface SIPartiesProps {
 }
 
 export interface ConsigneeProps extends SIPartiesProps {
+  isToOrder: boolean;
   contactPerson: string;
 }
 
 export interface NotifyPartyProps extends SIPartiesProps {
   alsoNotify: string;
 }
+
+export type SIEditPartiesType = {
+  shipper: SIPartiesProps;
+  consignee: ConsigneeProps;
+  notifyParty: NotifyPartyProps;
+  exportReference: string;
+  forwardingAgentReference: string;
+};
