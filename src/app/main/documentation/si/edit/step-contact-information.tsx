@@ -3,6 +3,7 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { SIEditContactInformationState } from "@/app/store/si.store";
 import {
   MdCheckbox,
   MdChipSet,
@@ -10,15 +11,38 @@ import {
   MdFilledButton,
   MdFilledTonalButton,
   MdIconButton,
+  MdInputChip,
   MdList,
   MdListItem,
   MdOutlinedTextField,
   MdRippleEffect,
   MdTextButton,
 } from "@/app/util/md3";
+import { faker } from "@faker-js/faker";
 import { DeleteOutline, MailOutline } from "@mui/icons-material";
+import { useMemo, useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function StepContactInformation() {
+  const [contactInformationStore, setContactInformationStore] = useRecoilState(
+    SIEditContactInformationState
+  );
+  const [isManageEmailDialogOpen, setIsManageEmailDialogOpen] = useState(false);
+  const tempEmailRecipients = useMemo(() => {
+    return [
+      faker.internet.email(),
+      faker.internet.email(),
+      faker.internet.email(),
+      ...contactInformationStore.emailRecipient,
+    ];
+  }, [contactInformationStore.emailRecipient]);
+  const [emailRecipients, setEmailRecipients] =
+    useState<Array<string>>(tempEmailRecipients);
+  const [newEmailInput, setNewEmailInput] = useState<string>("");
+  const [newEmailRecipients, setNewEmailRecipients] = useState<Array<string>>(
+    []
+  );
+
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -26,15 +50,93 @@ export default function StepContactInformation() {
       </MdTypography>
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 gap-4">
-          <NAOutlinedTextField required label="Name" />
-          <NAOutlinedTextField required label="Tel No." type="tel" />
-          <NAOutlinedTextField required label="Phone" type="tel" />
-          <NAOutlinedTextField required label="Fax" type="tel" />
+          <NAOutlinedTextField
+            required
+            label="Name"
+            value={contactInformationStore.name}
+            handleValueChange={(value) => {
+              setContactInformationStore((prev) => {
+                return {
+                  ...prev,
+                  name: value,
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            required
+            label="Tel No."
+            type="tel"
+            value={contactInformationStore.telNumber}
+            handleValueChange={(value) => {
+              setContactInformationStore((prev) => {
+                return {
+                  ...prev,
+                  telNumber: value,
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            required
+            label="Phone"
+            type="tel"
+            value={contactInformationStore.phone}
+            handleValueChange={(value) => {
+              setContactInformationStore((prev) => {
+                return {
+                  ...prev,
+                  phone: value,
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            required
+            label="Fax"
+            type="tel"
+            value={contactInformationStore.fax}
+            handleValueChange={(value) => {
+              setContactInformationStore((prev) => {
+                return {
+                  ...prev,
+                  fax: value,
+                };
+              });
+            }}
+          />
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="Email Recipient" />
-          <MdChipSet></MdChipSet>
-          <button className="relative bg-secondaryContainer rounded-full px-3 py-2 mt-2 w-fit">
+          {contactInformationStore.emailRecipient.length > 0 && (
+            <MdChipSet>
+              {contactInformationStore.emailRecipient.map((email) => {
+                return (
+                  <MdInputChip
+                    key={email}
+                    label={email}
+                    handleTrailingActionFocus={() => {
+                      setContactInformationStore((prev) => {
+                        return {
+                          ...prev,
+                          emailRecipient: prev.emailRecipient.filter(
+                            (e) => e !== email
+                          ),
+                        };
+                      });
+                    }}
+                  />
+                );
+              })}
+            </MdChipSet>
+          )}
+
+          <button
+            className="relative bg-secondaryContainer rounded-full px-3 py-2 w-fit"
+            onClick={() => {
+              setIsManageEmailDialogOpen(true);
+            }}
+          >
             <MdRippleEffect />
             <MdTypography variant="label" size="medium">
               <MailOutline
@@ -52,19 +154,70 @@ export default function StepContactInformation() {
           <div className="flex flex-col gap-1">
             <NaToggleButton
               label="Roll-Over (Including T/S)"
-              state="unchecked"
+              state={
+                contactInformationStore.subscrition.rollOver
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={() => {
+                setContactInformationStore((prev) => {
+                  return {
+                    ...prev,
+                    subscrition: {
+                      ...prev.subscrition,
+                      rollOver: !prev.subscrition.rollOver,
+                    },
+                  };
+                });
+              }}
             />
-            <NaToggleButton label="Vessel Departure" state="unchecked" />
-            <NaToggleButton label="Vessel Advance / Delay" state="unchecked" />
+            <NaToggleButton
+              label="Vessel Departure"
+              state={
+                contactInformationStore.subscrition.vesselDeparture
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={() => {
+                setContactInformationStore((prev) => {
+                  return {
+                    ...prev,
+                    subscrition: {
+                      ...prev.subscrition,
+                      vesselDeparture: !prev.subscrition.vesselDeparture,
+                    },
+                  };
+                });
+              }}
+            />
+            <NaToggleButton
+              label="Vessel Advance / Delay"
+              state={
+                contactInformationStore.subscrition.vesselAdvanceDelay
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={() => {
+                setContactInformationStore((prev) => {
+                  return {
+                    ...prev,
+                    subscrition: {
+                      ...prev.subscrition,
+                      vesselAdvanceDelay: !prev.subscrition.vesselAdvanceDelay,
+                    },
+                  };
+                });
+              }}
+            />
           </div>
         </div>
       </div>
-      {/* <Portal selector="#main-container">
+      <Portal selector="#main-container">
         <MdDialog
           className="min-w-[720px]"
           open={isManageEmailDialogOpen}
           opened={() => {
-            setNewEmailRecipients(contactInformationData.email);
+            setNewEmailRecipients(contactInformationStore.emailRecipient);
           }}
           closed={() => {
             setIsManageEmailDialogOpen(false);
@@ -158,10 +311,10 @@ export default function StepContactInformation() {
             </MdTextButton>
             <MdFilledButton
               onClick={() => {
-                setContactInformationData((prev) => {
+                setContactInformationStore((prev) => {
                   return {
                     ...prev,
-                    email: newEmailRecipients,
+                    emailRecipient: newEmailRecipients,
                   };
                 });
                 setIsManageEmailDialogOpen(false);
@@ -171,7 +324,7 @@ export default function StepContactInformation() {
             </MdFilledButton>
           </div>
         </MdDialog>
-      </Portal> */}
+      </Portal>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { SIEditStepState } from "@/app/store/si.store";
 import {
   MdChipSet,
   MdFilledButton,
@@ -8,13 +9,29 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { Upload, UploadFile } from "@mui/icons-material";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
+import { useSetRecoilState } from "recoil";
 
 export default function StepMarkDescription() {
+  const setSIEditStep = useSetRecoilState(SIEditStepState);
   const fileRef = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
     fileRef.current?.click();
   };
+
+  const moveToContactInformationStep = useCallback(() => {
+    setSIEditStep((prev) => ({
+      ...prev,
+      markDescription: {
+        ...prev.markDescription,
+        isSelected: false,
+      },
+      contactInformation: {
+        ...prev.contactInformation,
+        isSelected: true,
+      },
+    }));
+  }, [setSIEditStep]);
 
   return (
     <div className="w-full flex flex-col">
@@ -84,7 +101,14 @@ export default function StepMarkDescription() {
             Brand Name: Nike, Adidas, Louis Vuitton, Burberry
           </MdTypography>
         </div>
-        <MdFilledButton className="w-fit self-end">Next</MdFilledButton>
+        <MdFilledButton
+          className="w-fit self-end"
+          onClick={() => {
+            moveToContactInformationStep();
+          }}
+        >
+          Next
+        </MdFilledButton>
       </div>
     </div>
   );

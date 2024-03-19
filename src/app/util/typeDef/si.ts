@@ -85,3 +85,16 @@ export type SIRouteBLType = {
   remarks: string;
   houseBLInvovled: "none" | "console" | "simple";
 };
+
+export type SIEditContactInformationType = {
+  name: string;
+  phone: string;
+  telNumber: string;
+  fax: string;
+  emailRecipient: string[];
+  subscrition: {
+    rollOver: boolean;
+    vesselDeparture: boolean;
+    vesselAdvanceDelay: boolean;
+  };
+};

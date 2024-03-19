@@ -2,6 +2,7 @@ import { atom } from "recoil";
 import {
   ConsigneeProps,
   NotifyPartyProps,
+  SIEditContactInformationType,
   SIEditPartiesType,
   SIPartiesProps,
   SIRouteBLType,
@@ -62,3 +63,21 @@ export const SIEditRouteBLState = atom<SIRouteBLType>({
     houseBLInvovled: "none",
   } as SIRouteBLType,
 });
+
+export const SIEditContactInformationState = atom<SIEditContactInformationType>(
+  {
+    key: "siEditContactInformationState",
+    default: {
+      name: "",
+      phone: "",
+      telNumber: "",
+      fax: "",
+      emailRecipient: [],
+      subscrition: {
+        rollOver: false,
+        vesselAdvanceDelay: false,
+        vesselDeparture: false,
+      },
+    },
+  }
+);

@@ -6,16 +6,33 @@ import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
-import { SIEditRouteBLState } from "@/app/store/si.store";
+import { SIEditRouteBLState, SIEditStepState } from "@/app/store/si.store";
 import { MdFilledButton, MdOutlinedTextField, MdRadio } from "@/app/util/md3";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { PlaceOutlined } from "@mui/icons-material";
-import { useMemo } from "react";
-import { useRecoilState } from "recoil";
+import { useCallback, useMemo } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepRouteBL() {
   const [routeBLStore, setRouteBLStore] = useRecoilState(SIEditRouteBLState);
+  const setSIEditStep = useSetRecoilState(SIEditStepState);
+
+  const moveToContainerStep = useCallback(() => {
+    setSIEditStep((prev) => {
+      return {
+        ...prev,
+        routeBL: {
+          ...prev.routeBL,
+          isSelected: false,
+        },
+        container: {
+          ...prev.container,
+          isSelected: true,
+        },
+      };
+    });
+  }, [setSIEditStep]);
 
   const tempPortList = useMemo(() => {
     return Array.from({ length: 100 }, (_, i) => {
@@ -412,7 +429,14 @@ export default function StepRouteBL() {
           />
         </div>
       </div>
-      <MdFilledButton className="w-fit self-end mt-4">Next</MdFilledButton>
+      <MdFilledButton
+        className="w-fit self-end mt-4"
+        onClick={() => {
+          moveToContainerStep();
+        }}
+      >
+        Next
+      </MdFilledButton>
     </div>
   );
 }
