@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
-import { ContainerState } from "@/app/store/booking-request.store";
+import { ContainerState } from "@/app/store/booking.store";
 import {
   MdFilledTonalIconButton,
   MdIconButton,

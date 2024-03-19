@@ -2,7 +2,7 @@ import { MdTypography } from "@/app/components/typography";
 import {
   BookingRequestStepState,
   ContainerState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import { MdFilledButton } from "@/app/util/md3";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import DryContainerImage from "@/../public/img_dry_container.svg";

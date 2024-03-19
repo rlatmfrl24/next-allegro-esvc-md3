@@ -13,7 +13,7 @@ import {
   ContainerState,
   LocationScheduleState,
   PartiesState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import {
   MdElevation,

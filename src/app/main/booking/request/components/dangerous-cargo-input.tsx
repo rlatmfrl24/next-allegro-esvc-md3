@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
-import { ContainerState } from "@/app/store/booking-request.store";
+import { ContainerState } from "@/app/store/booking.store";
 import {
   ContainerInformationType,
   ContainerType,

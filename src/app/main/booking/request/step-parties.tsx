@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   BookingRequestStepState,
   PartiesState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
