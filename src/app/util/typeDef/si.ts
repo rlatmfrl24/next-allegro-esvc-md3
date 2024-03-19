@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { VesselInfoType } from "./schedule";
+import { PlaceInformationType, VesselInfoType } from "./schedule";
 
 export enum SIState {
   None = "None",
@@ -67,4 +67,21 @@ export type SIEditPartiesType = {
   notifyParty: NotifyPartyProps;
   exportReference: string;
   forwardingAgentReference: string;
+};
+
+export type SIRouteBLType = {
+  vesselVoyage: string;
+  preCarriageBy: string;
+  por: PlaceInformationType;
+  pol: PlaceInformationType;
+  pod: PlaceInformationType;
+  del: PlaceInformationType;
+  pointAndCountryOfOrigin: string;
+  finalDestination: string;
+  serviceTypeFrom: "cy" | "door";
+  serviceTypeTo: "cy" | "door";
+  blType: "none" | "originalBL" | "surrender" | "seaWaybill";
+  freightTerms: "prepaid" | "collect";
+  remarks: string;
+  houseBLInvovled: "none" | "console" | "simple";
 };

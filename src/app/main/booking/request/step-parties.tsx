@@ -177,10 +177,13 @@ export default function PartiesStep() {
         <NaToggleButton
           label="Same as Shipper"
           state={
-            partiesData.shipper.name !== "" &&
-            partiesData.shipper.address !== "" &&
-            partiesData.freightForwarder.name === partiesData.shipper.name &&
-            partiesData.freightForwarder.address === partiesData.shipper.address
+            partiesData.shipper.name === "" &&
+            partiesData.shipper.address === ""
+              ? "disabled"
+              : partiesData.freightForwarder.name ===
+                  partiesData.shipper.name &&
+                partiesData.freightForwarder.address ===
+                  partiesData.shipper.address
               ? "checked"
               : "unchecked"
           }

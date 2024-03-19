@@ -4,6 +4,7 @@ import {
   NotifyPartyProps,
   SIEditPartiesType,
   SIPartiesProps,
+  SIRouteBLType,
 } from "../util/typeDef/si";
 
 export const SIEditStepState = atom({
@@ -51,4 +52,13 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
     exportReference: "",
     forwardingAgentReference: "",
   },
+});
+
+export const SIEditRouteBLState = atom<SIRouteBLType>({
+  key: "siEditRouteBLState",
+  default: {
+    blType: "none",
+    freightTerms: "prepaid",
+    houseBLInvovled: "none",
+  } as SIRouteBLType,
 });
