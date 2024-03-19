@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { PlaceInformationType, VesselInfoType } from "./schedule";
+import { ContainerType } from "./boooking";
 
 export enum SIState {
   None = "None",
@@ -106,3 +107,52 @@ export type SIEditMarkDescriptionType = {
   descriptionFiles: File[];
   customsCommodity: string;
 };
+
+export interface SIContainerInputProps {
+  uuid: string;
+  containerType: ContainerType;
+  containerNumber: string;
+  containerSize: "20" | "40" | "45" | "53";
+  isSocContainer: boolean;
+  firstSeal: {
+    kind: SealKind;
+    type: "merchanical" | "electronic";
+    description: string;
+  };
+  secondSeal: {
+    kind: SealKind;
+    type: "merchanical" | "electronic";
+    description: string;
+  };
+  packageType: string;
+  packageQuantity: number;
+  packageWeight: number;
+  pacakgeWeightUnit: "KGS" | "LBS";
+  packageMeasurement: number;
+  packageMeasurementUnit: "CBM" | "CBF";
+  hasCargoManifest: boolean;
+  cargoManifest: CargoManifestType[];
+}
+
+export type CargoManifestType = {
+  cargoInformation: {
+    wpmStatus: "Y" | "N" | "N/A";
+    combo: string;
+    description: string;
+  };
+  commodityCode: {
+    htsCodeUS: string;
+    hisCodeEUASIA: string;
+    ncmCode: string;
+  };
+};
+
+export enum SealKind {
+  Shipper,
+  Carrier,
+  Consolidator,
+  Customs,
+  Unknown,
+  "Quarantine Agency",
+  "Terminal Agency",
+}

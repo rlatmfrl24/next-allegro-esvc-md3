@@ -2,6 +2,7 @@ import { atom } from "recoil";
 import {
   ConsigneeProps,
   NotifyPartyProps,
+  SIContainerInputProps,
   SIEditContactInformationType,
   SIEditMarkDescriptionType,
   SIEditPartiesType,
@@ -100,5 +101,24 @@ export const SIEditMarkDescriptionState = atom<SIEditMarkDescriptionType>({
     hsCode: "",
     descriptionFiles: [],
     customsCommodity: "",
+  },
+});
+
+export const SIEditContainerState = atom<{
+  dry: SIContainerInputProps[];
+  reefer: SIContainerInputProps[];
+  opentop: SIContainerInputProps[];
+  tank: SIContainerInputProps[];
+  flatrack: SIContainerInputProps[];
+  bulk: SIContainerInputProps[];
+}>({
+  key: "siEditContainerState",
+  default: {
+    dry: [],
+    reefer: [],
+    opentop: [],
+    tank: [],
+    flatrack: [],
+    bulk: [],
   },
 });

@@ -10,6 +10,7 @@ import {
   ReeferContainerInformationType,
   TankContainerInformationType,
 } from "../util/typeDef/boooking";
+import { SIContainerInputProps, SealKind } from "../util/typeDef/si";
 
 export function getRoutePath(paths: string[]) {
   let itemTree = menuItems;
@@ -26,6 +27,34 @@ export function getRoutePath(paths: string[]) {
   }
 
   return routes;
+}
+
+export function getEmptySIEditContainerData(type: ContainerType) {
+  return {
+    uuid: faker.string.uuid(),
+    containerType: type,
+    containerSize: "20",
+    containerNumber: "",
+    isSocContainer: false,
+    firstSeal: {
+      kind: SealKind.Shipper,
+      type: "merchanical",
+      description: "",
+    },
+    secondSeal: {
+      kind: SealKind.Carrier,
+      type: "merchanical",
+      description: "",
+    },
+    packageType: "",
+    packageQuantity: 0,
+    packageWeight: 0,
+    pacakgeWeightUnit: "KGS",
+    packageMeasurement: 0,
+    packageMeasurementUnit: "CBM",
+    hasCargoManifest: false,
+    cargoManifest: [],
+  } as SIContainerInputProps;
 }
 
 export function getEmptyContainerData(type: ContainerType) {

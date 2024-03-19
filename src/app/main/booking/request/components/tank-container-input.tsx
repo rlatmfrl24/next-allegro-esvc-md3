@@ -19,7 +19,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { DetailTitle } from "@/app/components/title-components";
 
-const TankContainerInputContainer = ({
+const TankContainerInput = ({
   list,
 }: {
   list: TankContainerInformationType[];
@@ -147,4 +147,4 @@ const TankContainerInputContainer = ({
   );
 };
 
-export default TankContainerInputContainer;
+export default TankContainerInput;

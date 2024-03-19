@@ -20,7 +20,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { DetailTitle } from "@/app/components/title-components";
 
-const DryContainerInputContainer = ({
+const DryContainerInput = ({
   list,
 }: {
   list: DryContainerInformationType[];
@@ -148,4 +148,4 @@ const DryContainerInputContainer = ({
   );
 };
 
-export default DryContainerInputContainer;
+export default DryContainerInput;
