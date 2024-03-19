@@ -62,6 +62,34 @@ export default function StepContainer() {
     }
   }
 
+  useEffect(() => {
+    siContainerStore.dry.length === 0 &&
+      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.dry));
+    siContainerStore.reefer.length === 0 &&
+      setTypeSelections((prev) =>
+        prev.filter((t) => t !== ContainerType.reefer)
+      );
+    siContainerStore.opentop.length === 0 &&
+      setTypeSelections((prev) =>
+        prev.filter((t) => t !== ContainerType.opentop)
+      );
+    siContainerStore.flatrack.length === 0 &&
+      setTypeSelections((prev) =>
+        prev.filter((t) => t !== ContainerType.flatrack)
+      );
+    siContainerStore.tank.length === 0 &&
+      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.tank));
+    siContainerStore.bulk.length === 0 &&
+      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.bulk));
+  }, [
+    siContainerStore.bulk.length,
+    siContainerStore.dry.length,
+    siContainerStore.flatrack.length,
+    siContainerStore.opentop.length,
+    siContainerStore.reefer.length,
+    siContainerStore.tank.length,
+  ]);
+
   return (
     <div className="w-full flex flex-col">
       <div className="flex items-center">
@@ -144,36 +172,42 @@ export default function StepContainer() {
               {type === ContainerType.dry && (
                 <ContainerInput
                   title="Dry Container"
+                  type={ContainerType.dry}
                   list={siContainerStore.dry}
                 />
               )}
               {type === ContainerType.reefer && (
                 <ContainerInput
                   title="Reefer Container"
+                  type={ContainerType.reefer}
                   list={siContainerStore.reefer}
                 />
               )}
               {type === ContainerType.opentop && (
                 <ContainerInput
                   title="Open Top Container"
+                  type={ContainerType.opentop}
                   list={siContainerStore.opentop}
                 />
               )}
               {type === ContainerType.flatrack && (
                 <ContainerInput
                   title="Flat Rack Container"
+                  type={ContainerType.flatrack}
                   list={siContainerStore.flatrack}
                 />
               )}
               {type === ContainerType.tank && (
                 <ContainerInput
                   title="Tank Container"
+                  type={ContainerType.tank}
                   list={siContainerStore.tank}
                 />
               )}
               {type === ContainerType.bulk && (
                 <ContainerInput
                   title="Bulk Container"
+                  type={ContainerType.bulk}
                   list={siContainerStore.bulk}
                 />
               )}
