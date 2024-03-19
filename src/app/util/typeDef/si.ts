@@ -36,3 +36,26 @@ export type SISearchTableProps = {
   blType: string;
   remarks?: string;
 };
+
+export interface SIPartiesProps {
+  companyName: string;
+  fullAddress: string;
+  addressCountry: string;
+  addressCityState: string;
+  addressZipCode: string;
+  addressStreet: string;
+  eoriNumber: string;
+  usccNumber: string;
+  taxID: string;
+  phone: string;
+  fax: string;
+  email: string;
+}
+
+export interface ConsigneeProps extends SIPartiesProps {
+  contactPerson: string;
+}
+
+export interface NotifyPartyProps extends SIPartiesProps {
+  alsoNotify: string;
+}
