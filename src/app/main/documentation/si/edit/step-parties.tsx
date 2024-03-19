@@ -3,14 +3,70 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { SIEditPartiesState } from "@/app/store/si.store";
+import { SIEditPartiesState, SIEditStepState } from "@/app/store/si.store";
 import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
 import { ArrowDropDown, InfoOutlined } from "@mui/icons-material";
-import { useRecoilState } from "recoil";
+import { useCallback, useEffect, useMemo } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function StepParties() {
+  const setSIEditStep = useSetRecoilState(SIEditStepState);
+  const partiesStore = useRecoilValue(SIEditPartiesState);
+
+  const moveToRouteBLStep = useCallback(() => {
+    setSIEditStep((prev) => ({
+      ...prev,
+      parties: {
+        ...prev.parties,
+        isSelected: false,
+      },
+      routeBL: {
+        ...prev.routeBL,
+        isSelected: true,
+      },
+    }));
+  }, [setSIEditStep]);
+
+  const ValidateRequired = useMemo(() => {
+    if (
+      partiesStore.shipper.companyName === "" ||
+      partiesStore.shipper.fullAddress === "" ||
+      partiesStore.notifyParty.companyName === "" ||
+      partiesStore.notifyParty.fullAddress === ""
+    ) {
+      return false;
+    }
+
+    if (
+      partiesStore.consignee.companyName === "" ||
+      partiesStore.consignee.fullAddress === ""
+    ) {
+      return partiesStore.consignee.isToOrder ? true : false;
+    } else {
+      return true;
+    }
+  }, [
+    partiesStore.consignee.companyName,
+    partiesStore.consignee.fullAddress,
+    partiesStore.consignee.isToOrder,
+    partiesStore.notifyParty.companyName,
+    partiesStore.notifyParty.fullAddress,
+    partiesStore.shipper.companyName,
+    partiesStore.shipper.fullAddress,
+  ]);
+
+  useEffect(() => {
+    setSIEditStep((prev) => ({
+      ...prev,
+      parties: {
+        ...prev.parties,
+        isCompleted: ValidateRequired,
+      },
+    }));
+  }, [setSIEditStep, ValidateRequired]);
+
   return (
     <div className="w-full flex flex-col gap-6">
       <MdTypography variant="title" size="large">
@@ -53,7 +109,16 @@ export default function StepParties() {
           </div>
         </div>
       </div>
-      <MdFilledButton className="w-fit self-end">Next</MdFilledButton>
+      <div className="flex flex-1 justify-end items-end">
+        <MdFilledButton
+          className="w-fit h-fit self-end"
+          onClick={() => {
+            moveToRouteBLStep();
+          }}
+        >
+          Next
+        </MdFilledButton>
+      </div>
     </div>
   );
 }
@@ -73,7 +138,7 @@ const ShipperInfo = () => {
   });
 
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => (
         <>
           <Disclosure.Button className={`flex w-full items-center gap-2`}>
@@ -346,7 +411,7 @@ const ConsigneeInfo = () => {
   });
 
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => (
         <div>
           <Disclosure.Button className={`flex w-full items-center gap-2`}>
@@ -998,7 +1063,7 @@ const NotifyPartyInfo = () => {
 
 const ReferencesInfo = () => {
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => (
         <>
           <Disclosure.Button className={`flex w-full items-center gap-2`}>

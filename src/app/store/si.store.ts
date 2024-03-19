@@ -3,6 +3,7 @@ import {
   ConsigneeProps,
   NotifyPartyProps,
   SIEditContactInformationType,
+  SIEditMarkDescriptionType,
   SIEditPartiesType,
   SIPartiesProps,
   SIRouteBLType,
@@ -47,9 +48,18 @@ export const SIEditStepState = atom({
 export const SIEditPartiesState = atom<SIEditPartiesType>({
   key: "siEditPartiesState",
   default: {
-    shipper: {} as SIPartiesProps,
-    consignee: {} as ConsigneeProps,
-    notifyParty: {} as NotifyPartyProps,
+    shipper: {
+      companyName: "",
+      fullAddress: "",
+    } as SIPartiesProps,
+    consignee: {
+      companyName: "",
+      fullAddress: "",
+    } as ConsigneeProps,
+    notifyParty: {
+      companyName: "",
+      fullAddress: "",
+    } as NotifyPartyProps,
     exportReference: "",
     forwardingAgentReference: "",
   },
@@ -81,3 +91,14 @@ export const SIEditContactInformationState = atom<SIEditContactInformationType>(
     },
   }
 );
+
+export const SIEditMarkDescriptionState = atom<SIEditMarkDescriptionType>({
+  key: "siEditMarkDescriptionState",
+  default: {
+    mark: "",
+    description: "",
+    hsCode: "",
+    descriptionFiles: [],
+    customsCommodity: "",
+  },
+});

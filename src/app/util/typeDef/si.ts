@@ -98,3 +98,11 @@ export type SIEditContactInformationType = {
     vesselAdvanceDelay: boolean;
   };
 };
+
+export type SIEditMarkDescriptionType = {
+  mark: string;
+  description: string;
+  hsCode: string;
+  descriptionFiles: File[];
+  customsCommodity: string;
+};

@@ -1,23 +1,53 @@
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { SIEditStepState } from "@/app/store/si.store";
+import {
+  SIEditMarkDescriptionState,
+  SIEditStepState,
+} from "@/app/store/si.store";
 import {
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { Upload, UploadFile } from "@mui/icons-material";
-import { useCallback, useRef } from "react";
-import { useSetRecoilState } from "recoil";
+import { useCallback, useEffect, useRef } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepMarkDescription() {
+  const [markDescriptionStore, setMarkDescriptionStore] = useRecoilState(
+    SIEditMarkDescriptionState
+  );
   const setSIEditStep = useSetRecoilState(SIEditStepState);
   const fileRef = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
     fileRef.current?.click();
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      const mergedFiles = files.concat(markDescriptionStore.descriptionFiles);
+      setMarkDescriptionStore((prev) => {
+        return {
+          ...prev,
+          descriptionFiles: mergedFiles,
+        };
+      });
+    }
+  };
+
+  useEffect(() => {
+    setSIEditStep((prev) => ({
+      ...prev,
+      markDescription: {
+        ...prev.markDescription,
+        isCompleted: !!markDescriptionStore.hsCode,
+      },
+    }));
+  }, [markDescriptionStore.hsCode, setSIEditStep]);
 
   const moveToContactInformationStep = useCallback(() => {
     setSIEditStep((prev) => ({
@@ -46,30 +76,78 @@ export default function StepMarkDescription() {
             type="textarea"
             rows={10}
             className="resize-y"
+            value={markDescriptionStore.mark}
+            onInput={(e) => {
+              setMarkDescriptionStore((prev) => ({
+                ...prev,
+                mark: e.currentTarget.value,
+              }));
+            }}
           />
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="Description" />
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <MdOutlinedButton onClick={handleUploadClick}>
               <div slot="icon">
                 <Upload fontSize="small" />
               </div>
               File Upload
             </MdOutlinedButton>
-            <MdChipSet></MdChipSet>
-            <input type="file" ref={fileRef} className="hidden" multiple />
+            <MdChipSet>
+              {markDescriptionStore.descriptionFiles.map((file, index) => (
+                <MdInputChip
+                  key={file.name}
+                  label={file.name}
+                  selected
+                  handleTrailingActionFocus={() => {
+                    setMarkDescriptionStore((prev) => {
+                      return {
+                        ...prev,
+                        descriptionFiles: prev.descriptionFiles.filter(
+                          (item) => item.name !== file.name
+                        ),
+                      };
+                    });
+                  }}
+                />
+              ))}
+            </MdChipSet>
+            <input
+              type="file"
+              ref={fileRef}
+              className="hidden"
+              multiple
+              onInput={handleFileChange}
+            />
           </div>
           <MdOutlinedTextField
             placeholder="Description"
             type="textarea"
             rows={10}
             className="resize-y"
+            value={markDescriptionStore.description}
+            onInput={(e) => {
+              setMarkDescriptionStore((prev) => ({
+                ...prev,
+                description: e.currentTarget.value,
+              }));
+            }}
           />
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="HS Code" />
-          <NAOutlinedTextField required label="HS Code" />
+          <NAOutlinedTextField
+            required
+            label="HS Code"
+            value={markDescriptionStore.hsCode}
+            handleValueChange={(value) => {
+              setMarkDescriptionStore((prev) => ({
+                ...prev,
+                hsCode: value,
+              }));
+            }}
+          />
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="Customs Commodity" />
@@ -78,6 +156,13 @@ export default function StepMarkDescription() {
             type="textarea"
             rows={3}
             className="resize-y"
+            value={markDescriptionStore.customsCommodity}
+            onInput={(e) => {
+              setMarkDescriptionStore((prev) => ({
+                ...prev,
+                customsCommodity: e.currentTarget.value,
+              }));
+            }}
           />
         </div>
         <div className="flex flex-col gap-2">

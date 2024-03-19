@@ -3,7 +3,10 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { SIEditContactInformationState } from "@/app/store/si.store";
+import {
+  SIEditContactInformationState,
+  SIEditStepState,
+} from "@/app/store/si.store";
 import {
   MdCheckbox,
   MdChipSet,
@@ -20,10 +23,11 @@ import {
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { DeleteOutline, MailOutline } from "@mui/icons-material";
-import { useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useMemo, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepContactInformation() {
+  const setSIEditStep = useSetRecoilState(SIEditStepState);
   const [contactInformationStore, setContactInformationStore] = useRecoilState(
     SIEditContactInformationState
   );
@@ -42,6 +46,26 @@ export default function StepContactInformation() {
   const [newEmailRecipients, setNewEmailRecipients] = useState<Array<string>>(
     []
   );
+
+  useEffect(() => {
+    setSIEditStep((prev) => ({
+      ...prev,
+      contactInformation: {
+        ...prev.contactInformation,
+        isCompleted:
+          !!contactInformationStore.name &&
+          !!contactInformationStore.telNumber &&
+          !!contactInformationStore.phone &&
+          !!contactInformationStore.fax,
+      },
+    }));
+  }, [
+    contactInformationStore.fax,
+    contactInformationStore.name,
+    contactInformationStore.phone,
+    contactInformationStore.telNumber,
+    setSIEditStep,
+  ]);
 
   return (
     <div className="w-full flex flex-col">

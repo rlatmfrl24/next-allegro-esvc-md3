@@ -11,7 +11,7 @@ import { MdFilledButton, MdOutlinedTextField, MdRadio } from "@/app/util/md3";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { PlaceOutlined } from "@mui/icons-material";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepRouteBL() {
@@ -33,6 +33,36 @@ export default function StepRouteBL() {
       };
     });
   }, [setSIEditStep]);
+
+  const ValidateRequired = useMemo(() => {
+    return (
+      !!routeBLStore.vesselVoyage &&
+      !!routeBLStore.preCarriageBy &&
+      !!routeBLStore.por?.yardName &&
+      !!routeBLStore.pol?.yardName &&
+      !!routeBLStore.pod?.yardName &&
+      !!routeBLStore.del?.yardName
+    );
+  }, [
+    routeBLStore.del?.yardName,
+    routeBLStore.pod?.yardName,
+    routeBLStore.pol?.yardName,
+    routeBLStore.por?.yardName,
+    routeBLStore.preCarriageBy,
+    routeBLStore.vesselVoyage,
+  ]);
+
+  useEffect(() => {
+    setSIEditStep((prev) => {
+      return {
+        ...prev,
+        routeBL: {
+          ...prev.routeBL,
+          isCompleted: ValidateRequired,
+        },
+      };
+    });
+  }, [ValidateRequired, setSIEditStep]);
 
   const tempPortList = useMemo(() => {
     return Array.from({ length: 100 }, (_, i) => {
