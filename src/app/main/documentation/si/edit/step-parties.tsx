@@ -3,7 +3,7 @@ import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { MdOutlinedTextField } from "@/app/util/md3";
+import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
 import { ArrowDropDown, InfoOutlined } from "@mui/icons-material";
@@ -51,6 +51,7 @@ export default function StepParties() {
           </div>
         </div>
       </div>
+      <MdFilledButton className="w-fit self-end">Next</MdFilledButton>
     </div>
   );
 }
