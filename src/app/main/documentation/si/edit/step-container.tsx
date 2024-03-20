@@ -10,6 +10,8 @@ import ReeferContainerImage from "@/../public/img_reefer_container.svg";
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 import ContainerTypeInputComponent from "./components/container-type-input";
 import { getEmptySIEditContainerData } from "@/app/main/util";
+import LabelChip from "@/app/components/label-chip";
+import { DividerComponent } from "@/app/main/booking/information/components/base";
 
 export default function StepContainer() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
@@ -92,10 +94,46 @@ export default function StepContainer() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="flex items-center">
-        <MdTypography variant="title" size="large" className="mb-6">
+      <div className="flex items-center justify-between mb-6">
+        <MdTypography variant="title" size="large">
           Container
         </MdTypography>
+        <div className="bg-surfaceContainerHigh rounded-2xl px-4 py-1 flex items-center">
+          <MdTypography
+            variant="body"
+            size="medium"
+            prominent
+            className="text-primary"
+          >
+            123123
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-outline ml-2"
+          >
+            KGS
+          </MdTypography>
+          <DividerComponent
+            orientation="vertical"
+            className="mx-4 h-4 flex items-center"
+          />
+          <MdTypography
+            variant="body"
+            size="medium"
+            prominent
+            className="text-primary"
+          >
+            123123
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-outline ml-2"
+          >
+            CBM
+          </MdTypography>
+        </div>
       </div>
       <div className="flex gap-4">
         <ContainerToggleButton

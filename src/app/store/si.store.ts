@@ -4,6 +4,7 @@ import {
   NotifyPartyProps,
   SIContainerInputProps,
   SIEditContactInformationType,
+  SIEditDataType,
   SIEditMarkDescriptionType,
   SIEditPartiesType,
   SIPartiesProps,
@@ -120,5 +121,23 @@ export const SIEditContainerState = atom<{
     tank: [],
     flatrack: [],
     bulk: [],
+  },
+});
+
+export const CurrentSIConditionState = atom<SIEditDataType>({
+  key: "currentSIConditionState",
+  default: {
+    parties: {} as SIEditPartiesType,
+    routeBL: {} as SIRouteBLType,
+    container: {
+      dry: [],
+      reefer: [],
+      opentop: [],
+      tank: [],
+      flatrack: [],
+      bulk: [],
+    },
+    markDescription: {} as SIEditMarkDescriptionType,
+    contactInformation: {} as SIEditContactInformationType,
   },
 });

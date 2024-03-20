@@ -2,6 +2,16 @@ import { DateTime } from "luxon";
 import { PlaceInformationType, VesselInfoType } from "./schedule";
 import { ContainerType } from "./boooking";
 
+export enum SealKind {
+  Shipper,
+  Carrier,
+  Consolidator,
+  Customs,
+  Unknown,
+  "Quarantine Agency",
+  "Terminal Agency",
+}
+
 export enum SIState {
   None = "None",
   TemporarySaved = "Temporary Saved",
@@ -150,12 +160,17 @@ export type CargoManifestType = {
   };
 };
 
-export enum SealKind {
-  Shipper,
-  Carrier,
-  Consolidator,
-  Customs,
-  Unknown,
-  "Quarantine Agency",
-  "Terminal Agency",
-}
+export type SIEditDataType = {
+  parties: SIEditPartiesType;
+  routeBL: SIRouteBLType;
+  contactInformation: SIEditContactInformationType;
+  markDescription: SIEditMarkDescriptionType;
+  container: {
+    dry: SIContainerInputProps[];
+    reefer: SIContainerInputProps[];
+    opentop: SIContainerInputProps[];
+    tank: SIContainerInputProps[];
+    flatrack: SIContainerInputProps[];
+    bulk: SIContainerInputProps[];
+  };
+};
