@@ -147,10 +147,55 @@ export default function SIPreview() {
                 {siBaseData.bookingNumber}
               </MdTypography>
             </div>
-            <div className="flex-1">Booking</div>
-            <div className="flex-1">Booking</div>
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                Document No.
+              </MdTypography>
+              <MdTypography variant="body" size="medium">
+                {siBaseData.blNumber}
+              </MdTypography>
+            </div>
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                Export Doc
+              </MdTypography>
+              <MdTypography variant="body" size="medium">
+                {`?`}
+              </MdTypography>
+            </div>
           </div>
-          <div className="bg-surface col-span-2">Export References</div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Export References
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {partiesData.exportReference.split("\n").map((line, index) => {
+                return (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                );
+              })}
+            </MdTypography>
+          </div>
           <div className="bg-surface col-span-2">Consignee</div>
           <div className="bg-surface col-span-2">
             Forwarding Agent References

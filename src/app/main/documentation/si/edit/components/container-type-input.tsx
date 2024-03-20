@@ -47,7 +47,7 @@ const ContainerTypeInputComponent = ({
                   ...prev,
                   [typeKey]: [
                     ...prev[typeKey],
-                    getEmptySIEditContainerData(type, siContainerIndexCounter),
+                    getEmptySIEditContainerData(type),
                   ],
                 }));
               }}

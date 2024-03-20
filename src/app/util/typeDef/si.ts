@@ -120,7 +120,6 @@ export type SIEditMarkDescriptionType = {
 
 export interface SIContainerInputProps {
   uuid: string;
-  initialIndex: number;
   containerType: ContainerType;
   containerNumber: string;
   containerSize: "20" | "40" | "45" | "53";
@@ -147,7 +146,6 @@ export interface SIContainerInputProps {
 
 export type CargoManifestType = {
   uuid: string;
-  initialIndex: number;
   cargoInformation: {
     wpmStatus: "Y" | "N" | "N/A";
     combo: string;

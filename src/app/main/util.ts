@@ -44,13 +44,9 @@ export function getEmptyCargoManifest() {
   };
 }
 
-export function getEmptySIEditContainerData(
-  type: ContainerType,
-  initialIndex: number | undefined = 0
-) {
+export function getEmptySIEditContainerData(type: ContainerType) {
   return {
     uuid: faker.string.uuid(),
-    initialIndex: initialIndex,
     containerType: type,
     containerSize: "20",
     containerNumber: "",

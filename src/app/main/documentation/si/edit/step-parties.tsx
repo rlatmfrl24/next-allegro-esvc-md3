@@ -1062,6 +1062,8 @@ const NotifyPartyInfo = () => {
 };
 
 const ReferencesInfo = () => {
+  const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
+
   return (
     <Disclosure defaultOpen>
       {({ open }) => (
@@ -1080,11 +1082,29 @@ const ReferencesInfo = () => {
               label="Export References"
               type="textarea"
               rows={5}
+              value={partiesStore.exportReference || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    exportReference: value,
+                  };
+                });
+              }}
             />
             <NAOutlinedTextField
               label="Forwarding Agent References"
               type="textarea"
               rows={5}
+              value={partiesStore.forwardingAgentReference || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    forwardingAgentReference: value,
+                  };
+                });
+              }}
             />
           </Disclosure.Panel>
         </>
