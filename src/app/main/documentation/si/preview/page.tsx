@@ -23,6 +23,21 @@ import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
+const StringToSplit = (props: { text: string }) => {
+  return (
+    <>
+      {props.text.split("\n").map((line, index) => {
+        return (
+          <span key={index}>
+            {line}
+            <br />
+          </span>
+        );
+      })}
+    </>
+  );
+};
+
 export default function SIPreview() {
   const partiesData = useRecoilValue(SIEditPartiesState);
   const routeBLData = useRecoilValue(SIEditRouteBLState);
@@ -186,41 +201,278 @@ export default function SIPreview() {
               Export References
             </MdTypography>
             <MdTypography variant="body" size="medium">
-              {partiesData.exportReference.split("\n").map((line, index) => {
-                return (
-                  <span key={index}>
-                    {line}
-                    <br />
-                  </span>
-                );
-              })}
+              {StringToSplit({ text: partiesData.exportReference })}
             </MdTypography>
           </div>
-          <div className="bg-surface col-span-2">Consignee</div>
-          <div className="bg-surface col-span-2">
-            Forwarding Agent References
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Consignee
+            </MdTypography>
           </div>
-          <div className="bg-surface col-span-2">Notify Party</div>
-          <div className="bg-surface col-span-2">Also Notify</div>
-          <div className="bg-surface">Vessel Voyage</div>
-          <div className="bg-surface">Pre Carriage By</div>
-          <div className="bg-surface col-span-2">Type of Move</div>
-          <div className="bg-surface">Pier or Place of Receipt</div>
-          <div className="bg-surface">Port of Loading</div>
-          <div className="bg-surface col-span-2">
-            Point and Country of Origin
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Forwarding Agent References
+            </MdTypography>
           </div>
-          <div className="bg-surface">Port of Discharge</div>
-          <div className="bg-surface">Place of delivery</div>
-          <div className="bg-surface col-span-2">Final Destination</div>
-          <div className="bg-surface col-span-2">Weight</div>
-          <div className="bg-surface col-span-2">HS Code</div>
-          <div className="bg-surface">Container No</div>
-          <div className="bg-surface">Mark & Nos</div>
-          <div className="bg-surface col-span-2">Kind of Packages</div>
-          <div className="bg-surface col-span-2">B/L Information</div>
-          <div className="bg-surface col-span-2">
-            Email Notification Subscription
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Notify Party
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Also Notify (Name and full address) / Domestic Routing
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Vessel Voyage
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              PRE_Carrige by
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Type of Move
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Pier or Place of Receipt
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Port of Loading
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Point and Country of Origin
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Port of Discharge
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Place of Delivery (by on Carrier) *
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Final Destination (For the merchant&apos;s reference only)
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-row")}
+          >
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                Total Gross Weight
+              </MdTypography>
+            </div>
+            <DividerComponent
+              orientation="vertical"
+              className="border-dotted mx-4"
+            />
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                Total Measurement
+              </MdTypography>
+            </div>
+            <DividerComponent
+              orientation="vertical"
+              className="border-dotted mx-4"
+            />
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                Total Package
+              </MdTypography>
+            </div>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "flex-row col-span-2")}
+          >
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                HS Code
+              </MdTypography>
+            </div>
+            <DividerComponent
+              orientation="vertical"
+              className="border-dotted mx-4"
+            />
+            <div className="flex-1">
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="mb-2"
+              >
+                Custom Commodity
+              </MdTypography>
+            </div>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Container No.
+            </MdTypography>
+          </div>
+          <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Mark & Nos.
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "flex-col col-span-2")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Kind of Packages: Description of Goods
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              B/L Information
+            </MdTypography>
+          </div>
+          <div
+            className={cx(siStyles["preview-section"], "flex-col col-span-2")}
+          >
+            <MdTypography
+              variant="body"
+              size="large"
+              prominent
+              className="mb-2"
+            >
+              Email Notification Subscription
+            </MdTypography>
           </div>
         </div>
       </div>
