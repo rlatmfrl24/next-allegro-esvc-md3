@@ -29,9 +29,28 @@ export function getRoutePath(paths: string[]) {
   return routes;
 }
 
-export function getEmptySIEditContainerData(type: ContainerType) {
+export function getEmptyCargoManifest() {
+  return {
+    cargoInformation: {
+      wpmStatus: "N",
+      combo: "",
+      description: "",
+    },
+    commodityCode: {
+      htsCodeUS: "",
+      hisCodeEUASIA: "",
+      ncmCode: "",
+    },
+  };
+}
+
+export function getEmptySIEditContainerData(
+  type: ContainerType,
+  initialIndex: number | undefined = 0
+) {
   return {
     uuid: faker.string.uuid(),
+    initialIndex: initialIndex,
     containerType: type,
     containerSize: "20",
     containerNumber: "",

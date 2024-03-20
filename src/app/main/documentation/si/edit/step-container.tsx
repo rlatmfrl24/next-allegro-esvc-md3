@@ -8,7 +8,7 @@ import { ContainerType } from "@/app/util/typeDef/boooking";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
-import ContainerInput from "./components/container-input";
+import ContainerTypeInputComponent from "./components/container-type-input";
 import { getEmptySIEditContainerData } from "@/app/main/util";
 
 export default function StepContainer() {
@@ -170,42 +170,42 @@ export default function StepContainer() {
           return (
             <div key={type}>
               {type === ContainerType.dry && (
-                <ContainerInput
+                <ContainerTypeInputComponent
                   title="Dry Container"
                   type={ContainerType.dry}
                   list={siContainerStore.dry}
                 />
               )}
               {type === ContainerType.reefer && (
-                <ContainerInput
+                <ContainerTypeInputComponent
                   title="Reefer Container"
                   type={ContainerType.reefer}
                   list={siContainerStore.reefer}
                 />
               )}
               {type === ContainerType.opentop && (
-                <ContainerInput
+                <ContainerTypeInputComponent
                   title="Open Top Container"
                   type={ContainerType.opentop}
                   list={siContainerStore.opentop}
                 />
               )}
               {type === ContainerType.flatrack && (
-                <ContainerInput
+                <ContainerTypeInputComponent
                   title="Flat Rack Container"
                   type={ContainerType.flatrack}
                   list={siContainerStore.flatrack}
                 />
               )}
               {type === ContainerType.tank && (
-                <ContainerInput
+                <ContainerTypeInputComponent
                   title="Tank Container"
                   type={ContainerType.tank}
                   list={siContainerStore.tank}
                 />
               )}
               {type === ContainerType.bulk && (
-                <ContainerInput
+                <ContainerTypeInputComponent
                   title="Bulk Container"
                   type={ContainerType.bulk}
                   list={siContainerStore.bulk}
