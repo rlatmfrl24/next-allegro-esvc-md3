@@ -40,7 +40,7 @@ const ContainerTypeInputComponent = ({
           </Disclosure.Button>
           <Disclosure.Panel className={`flex gap-4`}>
             <MdFilledTonalIconButton
-              className="mt-8 min-w-[40px] min-h-[40px]"
+              className="mt-20 min-w-[40px] min-h-[40px]"
               onClick={() => {
                 setSIContainerIndexCounter(siContainerIndexCounter + 1);
                 setSIEditContainerStore((prev) => ({

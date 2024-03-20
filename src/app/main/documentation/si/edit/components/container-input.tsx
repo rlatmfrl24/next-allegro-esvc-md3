@@ -1,3 +1,4 @@
+import LabelChip from "@/app/components/label-chip";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
@@ -10,6 +11,7 @@ import {
   MdOutlinedIconButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
+import { ContainerType } from "@/app/util/typeDef/boooking";
 import { SIContainerInputProps, SealKind } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { Add, DeleteOutline } from "@mui/icons-material";
@@ -120,6 +122,22 @@ export default function ContainerInput({
       {!isLastItem && (
         <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
       )}
+      <LabelChip
+        label={`${
+          container.containerType === ContainerType.dry
+            ? "Dry"
+            : container.containerType === ContainerType.reefer
+            ? "Reefer"
+            : container.containerType === ContainerType.opentop
+            ? "Open Top"
+            : container.containerType === ContainerType.flatrack
+            ? "Flat Rack"
+            : container.containerType === ContainerType.tank
+            ? "Tank"
+            : "Bulk"
+        } #${containerIndex + 1}`}
+        className="bg-surfaceContainerHigh w-fit"
+      />
       <div className="flex gap-2 items-start">
         <NAOutlinedTextField
           label="Container No."
