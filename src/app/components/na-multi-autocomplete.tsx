@@ -242,7 +242,7 @@ export default function NAMultiAutoComplete({
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
         <div slot="trailing-icon" className="mr-2">
-          {query !== "" && (
+          {query !== "" && !props.readOnly && (
             <MdIconButton
               onClick={() => {
                 handleItemSelect({ key: "", value: "" });

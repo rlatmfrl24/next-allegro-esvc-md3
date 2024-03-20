@@ -7,7 +7,7 @@ import { MdTypography } from "@/app/components/typography";
 import {
   BookingRequestStepState,
   LocationScheduleState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import {
   MdFilledButton,
   MdFilledTonalButton,

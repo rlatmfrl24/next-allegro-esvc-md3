@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   BookingRequestStepState,
   PartiesState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
@@ -177,10 +177,13 @@ export default function PartiesStep() {
         <NaToggleButton
           label="Same as Shipper"
           state={
-            partiesData.shipper.name !== "" &&
-            partiesData.shipper.address !== "" &&
-            partiesData.freightForwarder.name === partiesData.shipper.name &&
-            partiesData.freightForwarder.address === partiesData.shipper.address
+            partiesData.shipper.name === "" &&
+            partiesData.shipper.address === ""
+              ? "disabled"
+              : partiesData.freightForwarder.name ===
+                  partiesData.shipper.name &&
+                partiesData.freightForwarder.address ===
+                  partiesData.shipper.address
               ? "checked"
               : "unchecked"
           }

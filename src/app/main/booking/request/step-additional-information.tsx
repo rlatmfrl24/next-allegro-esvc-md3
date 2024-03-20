@@ -11,7 +11,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   AdditionalInformationState,
   BookingRequestStepState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { Upload } from "@mui/icons-material";
 import { SubTitle } from "@/app/components/title-components";

@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   BookingRequestStepState,
   ContactInformationState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import {
   MdCheckbox,
   MdChipSet,

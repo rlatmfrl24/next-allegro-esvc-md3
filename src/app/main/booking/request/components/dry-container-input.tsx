@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
-import { ContainerState } from "@/app/store/booking-request.store";
+import { ContainerState } from "@/app/store/booking.store";
 import {
   MdFilledTonalIconButton,
   MdIconButton,
@@ -20,7 +20,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { DetailTitle } from "@/app/components/title-components";
 
-const DryContainerInputContainer = ({
+const DryContainerInput = ({
   list,
 }: {
   list: DryContainerInformationType[];
@@ -148,4 +148,4 @@ const DryContainerInputContainer = ({
   );
 };
 
-export default DryContainerInputContainer;
+export default DryContainerInput;

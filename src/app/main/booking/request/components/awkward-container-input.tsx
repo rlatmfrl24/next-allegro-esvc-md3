@@ -1,6 +1,6 @@
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import NaToggleButton from "@/app/components/na-toggle-button";
-import { ContainerState } from "@/app/store/booking-request.store";
+import { ContainerState } from "@/app/store/booking.store";
 import { MdOutlinedTextField } from "@/app/util/md3";
 import {
   ContainerType,

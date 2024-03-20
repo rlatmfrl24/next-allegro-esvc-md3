@@ -405,7 +405,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
                       <MdTypography
                         variant="body"
                         size="medium"
-                        className={`text-onSurface h-16 flex items-center gap-2 p-2 ${
+                        className={`text-onSurface flex h-full gap-2 p-2 ${
                           index === data.detailInfo.cargoDetail.length - 1
                             ? ""
                             : "border-b border-b-outlineVariant"
@@ -416,23 +416,25 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
                       <MdTypography
                         variant="body"
                         size="medium"
-                        className={`text-onSurface flex gap-2 h-16 items-center p-2 ${
+                        className={`text-onSurface flex h-full gap-2 p-2  ${
                           index === data.detailInfo.cargoDetail.length - 1
                             ? ""
                             : "border-b border-b-outlineVariant"
                         }`}
                       >
-                        {detail.date > DateTime.now() ? (
-                          <EstimatedDateIcon />
-                        ) : (
-                          <ActualDateIcon />
-                        )}
+                        <span className="pt-0.5">
+                          {detail.date > DateTime.now() ? (
+                            <EstimatedDateIcon />
+                          ) : (
+                            <ActualDateIcon />
+                          )}
+                        </span>
                         {detail.date.toFormat("yyyy-MM-dd HH:mm")}
                       </MdTypography>
                       <MdTypography
                         variant="body"
                         size="medium"
-                        className={`text-onSurface h-16 flex items-center gap-2 p-2 underline cursor-pointer ${
+                        className={`text-onSurface flex h-full gap-2 p-2 underline cursor-pointer ${
                           index === data.detailInfo.cargoDetail.length - 1
                             ? ""
                             : "border-b border-b-outlineVariant"

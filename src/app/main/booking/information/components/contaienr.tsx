@@ -4,7 +4,7 @@ import ReeferContainerImage from "@/../public/img_reefer_container.svg";
 import EmptyContainerImage from "@/../public/img_empty_container.svg";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
-import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 import {
   BulkContainerInformationType,

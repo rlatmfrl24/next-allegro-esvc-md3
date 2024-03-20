@@ -1,7 +1,7 @@
 import { MdTypography } from "@/app/components/typography";
 import { Section } from "./base";
 import { useSetRecoilState } from "recoil";
-import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 import { CargoPickUpReturnType } from "@/app/util/typeDef/boooking";
 

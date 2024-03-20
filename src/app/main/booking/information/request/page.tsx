@@ -12,7 +12,7 @@ import ContactInformationSection from "../components/contact-information";
 import ContainerSection from "../components/contaienr";
 import LocationScheduleSection from "../components/location-schedule";
 import PartiesSection from "../components/parties";
-import { BookingInformationState } from "@/app/store/booking-request.store";
+import { BookingInformationState } from "@/app/store/booking.store";
 import { useRecoilValue } from "recoil";
 import { MdOutlinedTextField } from "@/app/util/md3";
 import { useEffect } from "react";

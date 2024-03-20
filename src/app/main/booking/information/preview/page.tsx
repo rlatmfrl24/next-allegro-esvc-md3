@@ -28,7 +28,7 @@ import {
   BookingRequestStepState,
   BookingInformationState,
   ContainerState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 

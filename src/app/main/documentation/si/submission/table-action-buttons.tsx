@@ -19,6 +19,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const ActionButtons = ({
@@ -45,7 +46,11 @@ const ActionButtons = ({
               states.includes(SIState.Confirmed) ||
               states.includes(SIState.Rejected) ||
               states.includes(SIState.Submit)) &&
-              states.length === 1 && <MdTextButton>Edit</MdTextButton>}
+              states.length === 1 && (
+                <Link href={`/main/documentation/si/edit`}>
+                  <MdTextButton>Edit</MdTextButton>
+                </Link>
+              )}
 
             {(states.includes(SIState.ChangeRequested) ||
               states.includes(SIState.ChangeRequestedRejected) ||
