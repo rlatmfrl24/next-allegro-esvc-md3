@@ -294,6 +294,7 @@ export default function ContainerInput({
           if (container.cargoManifest.length === 0) {
             addNewCargoManifestToContainer();
           }
+          setSelectedCargoManifestUuid("");
         }}
       />
       {container.hasCargoManifest && (
