@@ -16,8 +16,16 @@ import {
   OpenTopContainerInformationType,
   FlatRackContainerInformationType,
   BulkContainerInformationType,
+  BookingStatusTableProps,
 } from "../util/typeDef/boooking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
+
+export const CurrentBookingDataState = atom<
+  BookingStatusTableProps | undefined
+>({
+  key: "currentBookingDataState",
+  default: undefined,
+});
 
 export const BookingRequestStepState = atom({
   key: "bookingRequestStepState",

@@ -7,7 +7,6 @@ import { useRecoilState } from "recoil";
 
 import { BasicTable } from "@/app/components/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import { CurrentBookingDataState } from "@/app/store/booking-status.store";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
@@ -28,6 +27,7 @@ import {
 } from "@/app/util/typeDef/boooking";
 import StatusFilterComponent from "@/app/components/status-filter";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { CurrentBookingDataState } from "@/app/store/booking.store";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();

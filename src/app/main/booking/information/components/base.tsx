@@ -1,3 +1,4 @@
+import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { MdRippleEffect } from "@/app/util/md3";
 import { EditOutlined } from "@mui/icons-material";
@@ -17,10 +18,7 @@ export const Section = ({
   return (
     <div className="flex flex-col gap-4 flex-1">
       <div className="flex items-center gap-2">
-        <div className="w-1 h-4 bg-primary rounded-r-sm"></div>
-        <MdTypography variant="body" size="large" prominent className="flex-1">
-          {title}
-        </MdTypography>
+        <DetailTitle title={title} className="flex-1" />
         {hasEdit && (
           <button
             className="relative border border-outlineVariant rounded-full py-1 pl-2 pr-4 flex items-center text-primary gap-0.5"

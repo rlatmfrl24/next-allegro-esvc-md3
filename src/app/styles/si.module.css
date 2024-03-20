@@ -1,0 +1,3 @@
+.preview-section {
+  @apply bg-surface p-4 relative flex;
+}

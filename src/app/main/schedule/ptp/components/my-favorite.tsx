@@ -86,7 +86,7 @@ export default function MyFavorite({
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.1 }}
             >
-              <MdElevatedCard className="flex flex-col min-w-[720px]">
+              <MdElevatedCard className="flex flex-col min-w-[500px] max-w-[680px]">
                 <MdTypography
                   variant="headline"
                   size="small"
@@ -106,9 +106,9 @@ export default function MyFavorite({
                         }}
                       >
                         <div slot="headline" className="px-2">
-                          {favorite.origin.join(", ") +
-                            " - " +
-                            favorite.destination.join(", ")}
+                          {favorite.origin.join(" / ") +
+                            " → " +
+                            favorite.destination.join(" / ")}
                         </div>
                         <div slot="end">
                           <MdIconButton

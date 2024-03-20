@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import {
   AdditionalInformationState,
   BookingInformationState,
@@ -13,7 +13,7 @@ import {
   ContainerState,
   LocationScheduleState,
   PartiesState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import {
   MdElevation,

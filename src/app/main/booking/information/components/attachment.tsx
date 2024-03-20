@@ -3,7 +3,7 @@ import { Section } from "./base";
 import { MdChipSet } from "@/app/util/md3";
 import LabelChip from "@/app/components/label-chip";
 import { useSetRecoilState } from "recoil";
-import { BookingRequestStepState } from "@/app/store/booking-request.store";
+import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 
 export default function AttachmentSection({

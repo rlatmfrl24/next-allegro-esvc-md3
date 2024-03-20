@@ -36,6 +36,7 @@ import {
   PlaceInformationType,
   CutOffDataType,
 } from "@/app/util/typeDef/schedule";
+import { DetailTitle } from "@/app/components/title-components";
 
 export default function ListItem({ item }: { item: PtPScheduleType }) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
@@ -451,17 +452,6 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
     </div>
   );
 }
-
-const DetailTitle = ({ title }: { title: string }) => {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="h-4 w-1 bg-primary rounded-r-sm"></div>
-      <MdTypography variant="body" size="large" prominent>
-        {title}
-      </MdTypography>
-    </div>
-  );
-};
 
 const BasicDetailItem = ({
   title,

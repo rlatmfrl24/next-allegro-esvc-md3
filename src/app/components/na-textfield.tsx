@@ -27,6 +27,8 @@ export const NAOutlinedTextField = ({
   useEffect(() => {
     if (!props.value || props.value.length === 0) {
       setHasValue(false);
+    } else {
+      setHasValue(true);
     }
   }, [props.value]);
 

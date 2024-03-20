@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
-import { ContainerState } from "@/app/store/booking-request.store";
+import { ContainerState } from "@/app/store/booking.store";
 import {
   MdFilledTonalIconButton,
   MdIconButton,
@@ -18,8 +18,9 @@ import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
+import { DetailTitle } from "@/app/components/title-components";
 
-const DryContainerInputContainer = ({
+const DryContainerInput = ({
   list,
 }: {
   list: DryContainerInformationType[];
@@ -31,10 +32,7 @@ const DryContainerInputContainer = ({
       {({ open }) => (
         <>
           <Disclosure.Button className={`flex w-full items-center gap-2`}>
-            <div className="w-1 h-4 bg-primary"></div>
-            <MdTypography variant="body" size="large" prominent>
-              Dry Container
-            </MdTypography>
+            <DetailTitle title="Dry Container" />
             <div className="flex-1 border-b border-b-outlineVariant"></div>
             <ArrowDropDown
               className={`transform transition-transform ${
@@ -150,4 +148,4 @@ const DryContainerInputContainer = ({
   );
 };
 
-export default DryContainerInputContainer;
+export default DryContainerInput;

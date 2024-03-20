@@ -139,6 +139,30 @@ export const menuItems: MenuItemType[] = [
 
 export const cardList: DashboardCardInfoType[] = [
   {
+    id: "bl_information",
+    title: "B/L Information",
+    size: 1,
+    type: "statistic",
+  },
+  {
+    id: "booking",
+    title: "Booking",
+    size: 1,
+    type: "chart",
+  },
+  {
+    id: "shipping_instruction",
+    title: "Shipping Instruction",
+    size: 1,
+    type: "chart",
+  },
+  {
+    id: "checklist",
+    title: "Checklist",
+    size: 1,
+    type: "etc",
+  },
+  {
     id: "bl_status",
     title: "B/L Status",
     size: 1,
@@ -162,24 +186,7 @@ export const cardList: DashboardCardInfoType[] = [
     size: 1,
     type: "input",
   },
-  {
-    id: "bl_information",
-    title: "B/L Information",
-    size: 1,
-    type: "statistic",
-  },
-  {
-    id: "booking",
-    title: "Booking",
-    size: 1,
-    type: "chart",
-  },
-  {
-    id: "shipping_instruction",
-    title: "Shipping Instruction",
-    size: 1,
-    type: "chart",
-  },
+
   {
     id: "tracking",
     title: "Tracking",
@@ -187,21 +194,15 @@ export const cardList: DashboardCardInfoType[] = [
     type: "etc",
   },
   {
-    id: "attachment",
-    title: "Attachment",
-    size: 2,
+    id: "schedule",
+    title: "Schedule",
+    size: 4,
     type: "etc",
   },
   {
     id: "notice",
     title: "Notice",
     size: 2,
-    type: "etc",
-  },
-  {
-    id: "schedule",
-    title: "Schedule",
-    size: 4,
     type: "etc",
   },
 ];

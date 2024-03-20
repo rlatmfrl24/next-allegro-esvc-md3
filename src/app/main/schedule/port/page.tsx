@@ -17,7 +17,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import { createDummyPortSchedules } from "../util";
 import PortResultTable from "./result-table";
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import {
   PortScheduleSearchConditionType,
   PortScheduleType,

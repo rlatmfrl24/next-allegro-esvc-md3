@@ -1,6 +1,6 @@
 "use client";
 
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 
 export default function BookingTemplate() {

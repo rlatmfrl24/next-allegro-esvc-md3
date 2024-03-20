@@ -11,5 +11,5 @@
 }
 
 .area.row-direction {
-  @apply flex-row;
+  @apply flex-row gap-0;
 }

@@ -1,23 +1,25 @@
+import { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+
+import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
+import DryContainerImage from "@/../public/img_dry_container.svg";
+import ReeferContainerImage from "@/../public/img_reefer_container.svg";
 import { MdTypography } from "@/app/components/typography";
 import {
   BookingRequestStepState,
   ContainerState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import { MdFilledButton } from "@/app/util/md3";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import DryContainerImage from "@/../public/img_dry_container.svg";
-import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import { use, useEffect, useState } from "react";
 import { ContainerType } from "@/app/util/typeDef/boooking";
-import ContainerToggleButton from "./components/container-toggle-button";
-import DryContainerInputContainer from "./components/dry-container-input";
-import ReeferContainerInput from "./components/reefer-container-input";
+
 import { getEmptyContainerData } from "../../util";
-import OpenTopContainerInput from "./components/opentop-container-input";
-import FlatRackContainerInput from "./components/flatrack-container-input";
-import TankContainerInputContainer from "./components/tank-container-input";
 import BulkContainerInput from "./components/bulk-container-input";
-import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
+import ContainerToggleButton from "./components/container-toggle-button";
+import DryContainerInput from "./components/dry-container-input";
+import FlatRackContainerInput from "./components/flatrack-container-input";
+import OpenTopContainerInput from "./components/opentop-container-input";
+import ReeferContainerInput from "./components/reefer-container-input";
+import TankContainerInput from "./components/tank-container-input";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -188,7 +190,7 @@ export default function ContainerStep() {
           return (
             <div key={type}>
               {type === ContainerType.dry && (
-                <DryContainerInputContainer list={containerInformation.dry} />
+                <DryContainerInput list={containerInformation.dry} />
               )}
               {type === ContainerType.reefer && (
                 <ReeferContainerInput list={containerInformation.reefer} />
@@ -200,7 +202,7 @@ export default function ContainerStep() {
                 <FlatRackContainerInput list={containerInformation.flatrack} />
               )}
               {type === ContainerType.tank && (
-                <TankContainerInputContainer list={containerInformation.tank} />
+                <TankContainerInput list={containerInformation.tank} />
               )}
               {type === ContainerType.bulk && (
                 <BulkContainerInput list={containerInformation.bulk} />

@@ -1,6 +1,6 @@
 "use client";
 
-import PageTitle from "@/app/components/page-title";
+import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
 import { DividerComponent, Section } from "../components/base";
@@ -28,7 +28,7 @@ import {
   BookingRequestStepState,
   BookingInformationState,
   ContainerState,
-} from "@/app/store/booking-request.store";
+} from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 

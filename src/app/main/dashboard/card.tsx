@@ -92,7 +92,7 @@ export function DashboardCardConstructor({
     return (
       <InputCard
         title={item.title}
-        buttonText="Inquiry"
+        buttonText="Search"
         description="Enter a B/L number to inquiry the B/L status"
         placeholder="B/L Number"
       />
@@ -112,8 +112,8 @@ export function DashboardCardConstructor({
   } else {
     if (item.id === "notice") {
       return (
-        <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
-          <div className="px-6 flex-1 flex flex-col justify-center">
+        <DashboardCard title={item.title} cardSize={2}>
+          <div className="px-4 gap-4 flex-1 flex flex-col justify-center">
             <QuickNotice />
           </div>
         </DashboardCard>
@@ -123,8 +123,8 @@ export function DashboardCardConstructor({
     if (item.id === "tracking") {
       return (
         <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
-          <div className="px-6 flex-1 flex flex-col justify-center">
-            <QuickTracking rows={3} />
+          <div className="px-4 flex-1 flex flex-col justify-center gap-4">
+            <QuickTracking />
           </div>
         </DashboardCard>
       );
@@ -148,6 +148,49 @@ export function DashboardCardConstructor({
           </div>
         </DashboardCard>
       );
+    }
+
+    if (item.id === "checklist") {
+      {
+        return (
+          <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
+            <div className="flex flex-1 py-12">
+              <div className="flex-1 flex flex-col gap-2 items-center  border-r border-dotted border-outline">
+                <MdTypography
+                  variant="display"
+                  size="medium"
+                  className="text-secondary"
+                >
+                  5
+                </MdTypography>
+                <MdTypography
+                  variant="label"
+                  size="medium"
+                  className="text-outline text-balance w-fit text-center"
+                >
+                  Submit Shipping Instructions
+                </MdTypography>
+              </div>
+              <div className="flex-1 flex flex-col gap-2 items-center ">
+                <MdTypography
+                  variant="display"
+                  size="medium"
+                  className="text-secondary"
+                >
+                  5
+                </MdTypography>
+                <MdTypography
+                  variant="label"
+                  size="medium"
+                  className="text-outline text-balance w-fit text-center"
+                >
+                  Submit VGM
+                </MdTypography>
+              </div>
+            </div>
+          </DashboardCard>
+        );
+      }
     }
 
     return (
