@@ -1,7 +1,7 @@
 import { MdTypography } from "@/app/components/typography";
 import { SIEditContainerState, SIEditStepState } from "@/app/store/si.store";
 import { MdFilledButton } from "@/app/util/md3";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import ContainerToggleButton from "./components/container-toggle-button";
 import { ContainerType } from "@/app/util/typeDef/boooking";
@@ -54,15 +54,78 @@ export default function StepContainer() {
     const emptyContainerData = getEmptySIEditContainerData(type);
 
     if (siContainerStore[typeKey].length === 0) {
+      if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
       setSIEditContainerStore((prev) => ({
         ...prev,
-        [typeKey]: [
-          ...prev[type.toLowerCase() as keyof typeof prev],
-          emptyContainerData,
-        ],
+        [typeKey]: [...prev[typeKey], emptyContainerData],
       }));
     }
   }
+
+  const sumContainerWeight = useMemo(() => {
+    let sum = 0;
+
+    // get all type of container
+    const allContainer = [
+      ...siContainerStore.dry,
+      ...siContainerStore.reefer,
+      ...siContainerStore.opentop,
+      ...siContainerStore.flatrack,
+      ...siContainerStore.tank,
+      ...siContainerStore.bulk,
+    ];
+
+    // sum all package weight
+    allContainer.forEach((container) => {
+      sum += container.packageWeight;
+    });
+
+    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }, [siContainerStore]);
+
+  const sumContainerMeasurement = useMemo(() => {
+    let sum = 0;
+
+    // get all type of container
+    const allContainer = [
+      ...siContainerStore.dry,
+      ...siContainerStore.reefer,
+      ...siContainerStore.opentop,
+      ...siContainerStore.flatrack,
+      ...siContainerStore.tank,
+      ...siContainerStore.bulk,
+    ];
+
+    // sum all package weight
+    allContainer.forEach((container) => {
+      sum += container.packageMeasurement;
+    });
+
+    // return with , separator
+    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }, [siContainerStore]);
+
+  const sumContainerPackageQuantity = useMemo(() => {
+    let sum = 0;
+
+    // get all type of container
+    const allContainer = [
+      ...siContainerStore.dry,
+      ...siContainerStore.reefer,
+      ...siContainerStore.opentop,
+      ...siContainerStore.flatrack,
+      ...siContainerStore.tank,
+      ...siContainerStore.bulk,
+    ];
+
+    // sum all package weight
+    allContainer.forEach((container) => {
+      sum += container.packageQuantity;
+    });
+
+    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }, [siContainerStore]);
 
   useEffect(() => {
     siContainerStore.dry.length === 0 &&
@@ -105,14 +168,7 @@ export default function StepContainer() {
             prominent
             className="text-primary"
           >
-            123123
-          </MdTypography>
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-outline ml-2"
-          >
-            KGS
+            {sumContainerPackageQuantity}
           </MdTypography>
           <DividerComponent
             orientation="vertical"
@@ -124,14 +180,33 @@ export default function StepContainer() {
             prominent
             className="text-primary"
           >
-            123123
+            {sumContainerWeight}
           </MdTypography>
           <MdTypography
             variant="body"
             size="medium"
             className="text-outline ml-2"
           >
-            CBM
+            {siContainerStore.weightUnit}
+          </MdTypography>
+          <DividerComponent
+            orientation="vertical"
+            className="mx-4 h-4 flex items-center"
+          />
+          <MdTypography
+            variant="body"
+            size="medium"
+            prominent
+            className="text-primary"
+          >
+            {sumContainerMeasurement}
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-outline ml-2"
+          >
+            {siContainerStore.measurementUnit}
           </MdTypography>
         </div>
       </div>
