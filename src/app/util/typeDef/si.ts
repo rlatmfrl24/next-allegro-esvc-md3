@@ -114,7 +114,7 @@ export type SIEditMarkDescriptionType = {
   mark: string;
   description: string;
   hsCode: string;
-  descriptionFiles: File[];
+  descriptionFile: File | null;
   customsCommodity: string;
 };
 

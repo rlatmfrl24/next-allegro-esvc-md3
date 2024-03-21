@@ -102,7 +102,7 @@ export const SIEditMarkDescriptionState = atom<SIEditMarkDescriptionType>({
     mark: "",
     description: "",
     hsCode: "",
-    descriptionFiles: [],
+    descriptionFile: null,
     customsCommodity: "",
   },
 });
