@@ -12,7 +12,11 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { ContainerType } from "@/app/util/typeDef/boooking";
-import { SIContainerInputProps, SealKind } from "@/app/util/typeDef/si";
+import {
+  CargoManifestType,
+  SIContainerInputProps,
+  SealKind,
+} from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import { set } from "lodash";
@@ -43,14 +47,10 @@ export default function ContainerInput({
     );
   }, []);
 
-  function getLastIndexCargoManifest(container: SIContainerInputProps) {
-    return container.cargoManifest.reduce((prev, current) => {
-      return prev > current.initialIndex ? prev : current.initialIndex;
-    }, 0);
-  }
-
   function addNewCargoManifestToContainer() {
     // add empty CarogManifest to Container
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, i) =>
@@ -61,7 +61,6 @@ export default function ContainerInput({
                 ...c.cargoManifest,
                 {
                   uuid: faker.string.uuid(),
-                  initialIndex: getLastIndexCargoManifest(container) + 1,
                   cargoInformation: {
                     wpmStatus: "N",
                     combo: "",
@@ -72,7 +71,7 @@ export default function ContainerInput({
                     hisCodeEUASIA: "",
                     ncmCode: "",
                   },
-                },
+                } as CargoManifestType,
               ],
             }
           : c
@@ -82,6 +81,8 @@ export default function ContainerInput({
 
   function removeCargoManifestFromContainer(uuid: string) {
     // delete CargoManifest from Container by uuid
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) => {
@@ -109,6 +110,8 @@ export default function ContainerInput({
     newData: any
   ) {
     // update ContainerStore by uuid
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) =>
@@ -170,6 +173,9 @@ export default function ContainerInput({
           className="mt-2"
           onClick={() => {
             // delete Container
+            if (typeKey === "weightUnit" || typeKey === "measurementUnit")
+              return;
+
             setSIEditContainerStore((prev) => ({
               ...prev,
               [typeKey]: prev[typeKey].filter((c, i) => i !== containerIndex),
@@ -271,10 +277,13 @@ export default function ContainerInput({
             }}
           />
           <NAOutlinedListBox
-            initialValue={container.pacakgeWeightUnit}
+            initialValue={SIEditContainerStore.weightUnit}
             options={["KGS", "LBS"]}
             onSelection={(value) => {
-              updateContainerStore(container, "pacakgeWeightUnit", value);
+              setSIEditContainerStore((prev) => ({
+                ...prev,
+                weightUnit: value as "KGS" | "LBS",
+              }));
             }}
           />
         </div>
@@ -295,10 +304,13 @@ export default function ContainerInput({
             }}
           />
           <NAOutlinedListBox
-            initialValue={container.packageMeasurementUnit}
+            initialValue={SIEditContainerStore.measurementUnit}
             options={["CBM", "CBF"]}
             onSelection={(value) => {
-              updateContainerStore(container, "packageMeasurementUnit", value);
+              setSIEditContainerStore((prev) => ({
+                ...prev,
+                measurementUnit: value as "CBM" | "CBF",
+              }));
             }}
           />
         </div>
@@ -333,7 +345,7 @@ export default function ContainerInput({
                   return (
                     <MdFilterChip
                       key={cargo.uuid}
-                      label={`Cargo #${cargo.initialIndex}`}
+                      label={`Cargo #${i + 1}`}
                       selected={selectedCargoManifestUuid === cargo.uuid}
                       onClick={() => {
                         if (selectedCargoManifestUuid === cargo.uuid) {

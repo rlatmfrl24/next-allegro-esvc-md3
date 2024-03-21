@@ -35,6 +35,7 @@ import ActionButtons from "./table-action-buttons";
 import StatusFilterComponent from "@/app/components/status-filter";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { set } from "lodash";
+import Link from "next/link";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -164,9 +165,13 @@ export default function SITable() {
       cell: (info) => {
         return (
           <span className="flex justify-between items-center gap-2">
-            <MdTypography variant="body" size="medium" className="underline">
-              {info.getValue()}
-            </MdTypography>
+            <Link
+              href={`/main/documentation/si/preview?reqNo=` + info.getValue()}
+            >
+              <MdTypography variant="body" size="medium" className="underline">
+                {info.getValue()}
+              </MdTypography>
+            </Link>
             {info.row.original.remarks && (
               <MdIconButton
                 onClick={(e) => {
