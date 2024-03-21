@@ -39,7 +39,7 @@ export const NAOutlinedTextField = ({
       <MdOutlinedTextFieldBase
         {...props}
         ref={inputRef}
-        type="text"
+        type={props.type === "number" ? "text" : props.type}
         className={`flex-1 ${props.type === "number" ? "text-right" : ""}`}
         onInput={(e) => {
           setHasValue(e.currentTarget.value.length > 0);
