@@ -118,7 +118,7 @@ export default function CargoStep() {
               return {
                 ...prev,
                 commodity: {
-                  code: "",
+                  code: "-",
                   description: query,
                 },
               };

@@ -1,7 +1,8 @@
-import { useSetRecoilState } from "recoil";
+import { useMemo } from "react";
+import { useRecoilState } from "recoil";
 
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { MdTypography } from "@/app/components/typography";
+import { DetailTitle } from "@/app/components/title-components";
 import { getEmptyContainerData } from "@/app/main/util";
 import { ContainerState } from "@/app/store/booking.store";
 import {
@@ -10,7 +11,6 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import {
-  ContainerInformationType,
   ContainerType,
   DryContainerInformationType,
 } from "@/app/util/typeDef/boooking";
@@ -18,14 +18,28 @@ import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
-import { DetailTitle } from "@/app/components/title-components";
 
 const DryContainerInput = ({
   list,
 }: {
   list: DryContainerInformationType[];
 }) => {
-  const setContainerInformation = useSetRecoilState(ContainerState);
+  const [containerInformation, setContainerInformation] =
+    useRecoilState(ContainerState);
+
+  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+
+  const selectableContainerSizeOptions = useMemo(() => {
+    // if container size is already selected, remove it from the options
+    containerInformation.dry.forEach((container) => {
+      const index = defaultContainerSizeOptions.indexOf(container.size);
+      if (index !== -1) defaultContainerSizeOptions.splice(index, 1);
+    });
+
+    return [...defaultContainerSizeOptions];
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerInformation.dry]);
 
   return (
     <Disclosure defaultOpen>
@@ -43,6 +57,10 @@ const DryContainerInput = ({
           <Disclosure.Panel className={`flex gap-4`}>
             <MdFilledTonalIconButton
               className="mt-8 min-w-[40px] min-h-[40px]"
+              disabled={
+                containerInformation.dry.length ===
+                defaultContainerSizeOptions.length
+              }
               onClick={() => {
                 setContainerInformation((prev) => ({
                   ...prev,
@@ -70,7 +88,14 @@ const DryContainerInput = ({
                       className="w-52 text-right"
                       suffixText="ft"
                       initialValue={container.size}
-                      options={["20", "40", "45", "53"]}
+                      options={
+                        container.size !== ""
+                          ? [
+                              container.size,
+                              ...selectableContainerSizeOptions,
+                            ].sort()
+                          : selectableContainerSizeOptions
+                      }
                       onSelection={(size) => {
                         setContainerInformation((prev) => ({
                           ...prev,

@@ -1,4 +1,4 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdTypography } from "@/app/components/typography";
@@ -18,13 +18,29 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { DetailTitle } from "@/app/components/title-components";
+import { useMemo } from "react";
 
 const TankContainerInput = ({
   list,
 }: {
   list: TankContainerInformationType[];
 }) => {
-  const setContainerInformation = useSetRecoilState(ContainerState);
+  const [containerInformation, setContainerInformation] =
+    useRecoilState(ContainerState);
+
+  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+
+  const selectableContainerSizeOptions = useMemo(() => {
+    // if container size is already selected, remove it from the options
+    containerInformation.tank.forEach((container) => {
+      const index = defaultContainerSizeOptions.indexOf(container.size);
+      if (index !== -1) defaultContainerSizeOptions.splice(index, 1);
+    });
+
+    return [...defaultContainerSizeOptions];
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerInformation.tank]);
 
   return (
     <Disclosure defaultOpen>
@@ -42,6 +58,10 @@ const TankContainerInput = ({
           <Disclosure.Panel className={`flex gap-4`}>
             <MdFilledTonalIconButton
               className="mt-8 min-w-[40px] min-h-[40px]"
+              disabled={
+                defaultContainerSizeOptions.length === 0 ||
+                containerInformation.tank.length === 4
+              }
               onClick={() => {
                 setContainerInformation((prev) => ({
                   ...prev,
@@ -68,8 +88,15 @@ const TankContainerInput = ({
                       label="Size"
                       className="w-52 text-right"
                       suffixText="ft"
-                      initialValue={container.size.replaceAll("ft", "")}
-                      options={["20", "40", "45", "53"]}
+                      initialValue={container.size}
+                      options={
+                        container.size !== ""
+                          ? [
+                              container.size,
+                              ...selectableContainerSizeOptions,
+                            ].sort()
+                          : selectableContainerSizeOptions
+                      }
                       onSelection={(size) => {
                         setContainerInformation((prev) => ({
                           ...prev,

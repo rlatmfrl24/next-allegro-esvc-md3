@@ -969,34 +969,36 @@ export default function SIPreview() {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
-        <div
-          className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
-          style={
-            {
-              "--md-elevation-level": 4,
-            } as CSSProperties
-          }
-        >
-          <MdElevation />
-          <MdFilledButton
-            onClick={() => {
-              const newSICondition = {
-                parties: partiesData,
-                routeBL: routeBLData,
-                container: containerData,
-                markDescription: markDescriptionData,
-                contactInformation: contactInformationData,
-              } as SIEditDataType;
-              console.log(newSICondition);
-              setCurrentSICondition(newSICondition);
-              router.push("/main/documentation/si/submission");
-            }}
+      {!requestNumber && (
+        <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
+          <div
+            className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
+            style={
+              {
+                "--md-elevation-level": 4,
+              } as CSSProperties
+            }
           >
-            Submit
-          </MdFilledButton>
+            <MdElevation />
+            <MdFilledButton
+              onClick={() => {
+                const newSICondition = {
+                  parties: partiesData,
+                  routeBL: routeBLData,
+                  container: containerData,
+                  markDescription: markDescriptionData,
+                  contactInformation: contactInformationData,
+                } as SIEditDataType;
+                console.log(newSICondition);
+                setCurrentSICondition(newSICondition);
+                router.push("/main/documentation/si/submission");
+              }}
+            >
+              Submit
+            </MdFilledButton>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

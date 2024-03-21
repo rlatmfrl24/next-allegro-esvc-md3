@@ -13,17 +13,33 @@ import {
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import AwkwardContainerInput from "./awkward-container-input";
 import { DetailTitle } from "@/app/components/title-components";
+import { useMemo } from "react";
 
 const OpenTopContainerInput = ({
   list,
 }: {
   list: OpenTopContainerInformationType[];
 }) => {
-  const setContainerInformation = useSetRecoilState(ContainerState);
+  const [containerInformation, setContainerInformation] =
+    useRecoilState(ContainerState);
+
+  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+
+  const selectableContainerSizeOptions = useMemo(() => {
+    // if container size is already selected, remove it from the options
+    containerInformation.opentop.forEach((container) => {
+      const index = defaultContainerSizeOptions.indexOf(container.size);
+      if (index !== -1) defaultContainerSizeOptions.splice(index, 1);
+    });
+
+    return [...defaultContainerSizeOptions];
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerInformation.opentop]);
 
   return (
     <Disclosure defaultOpen>
@@ -42,6 +58,10 @@ const OpenTopContainerInput = ({
             <Disclosure.Panel className={`flex gap-4`}>
               <MdFilledTonalIconButton
                 className="mt-8 min-w-[40px] min-h-[40px]"
+                disabled={
+                  containerInformation.opentop.length ===
+                  defaultContainerSizeOptions.length
+                }
                 onClick={() => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -71,8 +91,15 @@ const OpenTopContainerInput = ({
                           label="Size"
                           className="w-52 text-right"
                           suffixText="ft"
-                          initialValue={container.size.replaceAll("ft", "")}
-                          options={["20", "40", "45", "53"]}
+                          initialValue={container.size}
+                          options={
+                            container.size !== ""
+                              ? [
+                                  container.size,
+                                  ...selectableContainerSizeOptions,
+                                ].sort()
+                              : selectableContainerSizeOptions
+                          }
                           onSelection={(size) => {
                             setContainerInformation((prev) => ({
                               ...prev,
