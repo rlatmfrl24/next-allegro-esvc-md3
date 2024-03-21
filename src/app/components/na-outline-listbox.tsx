@@ -126,7 +126,7 @@ export default function NAOutlinedListBox({
           <ArrowDropDown fontSize="small" />
         </div>
       </MdOutlinedTextField>
-      {isMounted && (
+      {isMounted && options.length > 0 && (
         <div
           ref={refs.setFloating}
           style={

@@ -61,6 +61,7 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
     notifyParty: {
       companyName: "",
       fullAddress: "",
+      alsoNotify: "",
     } as NotifyPartyProps,
     exportReference: "",
     forwardingAgentReference: "",
@@ -70,6 +71,7 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
 export const SIEditRouteBLState = atom<SIRouteBLType>({
   key: "siEditRouteBLState",
   default: {
+    remarks: "",
     blType: "none",
     freightTerms: "prepaid",
     houseBLInvovled: "none",
@@ -100,7 +102,7 @@ export const SIEditMarkDescriptionState = atom<SIEditMarkDescriptionType>({
     mark: "",
     description: "",
     hsCode: "",
-    descriptionFiles: [],
+    descriptionFile: null,
     customsCommodity: "",
   },
 });
@@ -112,6 +114,8 @@ export const SIEditContainerState = atom<{
   tank: SIContainerInputProps[];
   flatrack: SIContainerInputProps[];
   bulk: SIContainerInputProps[];
+  weightUnit: "KGS" | "LBS";
+  measurementUnit: "CBM" | "CBF";
 }>({
   key: "siEditContainerState",
   default: {
@@ -121,6 +125,8 @@ export const SIEditContainerState = atom<{
     tank: [],
     flatrack: [],
     bulk: [],
+    weightUnit: "KGS",
+    measurementUnit: "CBM",
   },
 });
 

@@ -114,13 +114,12 @@ export type SIEditMarkDescriptionType = {
   mark: string;
   description: string;
   hsCode: string;
-  descriptionFiles: File[];
+  descriptionFile: File | null;
   customsCommodity: string;
 };
 
 export interface SIContainerInputProps {
   uuid: string;
-  initialIndex: number;
   containerType: ContainerType;
   containerNumber: string;
   containerSize: "20" | "40" | "45" | "53";
@@ -138,16 +137,13 @@ export interface SIContainerInputProps {
   packageType: string;
   packageQuantity: number;
   packageWeight: number;
-  pacakgeWeightUnit: "KGS" | "LBS";
   packageMeasurement: number;
-  packageMeasurementUnit: "CBM" | "CBF";
   hasCargoManifest: boolean;
   cargoManifest: CargoManifestType[];
 }
 
 export type CargoManifestType = {
   uuid: string;
-  initialIndex: number;
   cargoInformation: {
     wpmStatus: "Y" | "N" | "N/A";
     combo: string;

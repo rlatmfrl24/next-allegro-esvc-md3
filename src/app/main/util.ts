@@ -44,13 +44,9 @@ export function getEmptyCargoManifest() {
   };
 }
 
-export function getEmptySIEditContainerData(
-  type: ContainerType,
-  initialIndex: number | undefined = 0
-) {
+export function getEmptySIEditContainerData(type: ContainerType) {
   return {
     uuid: faker.string.uuid(),
-    initialIndex: initialIndex,
     containerType: type,
     containerSize: "20",
     containerNumber: "",
@@ -68,9 +64,7 @@ export function getEmptySIEditContainerData(
     packageType: "",
     packageQuantity: 0,
     packageWeight: 0,
-    pacakgeWeightUnit: "KGS",
     packageMeasurement: 0,
-    packageMeasurementUnit: "CBM",
     hasCargoManifest: false,
     cargoManifest: [],
   } as SIContainerInputProps;
@@ -82,7 +76,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.dry,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isDangerous: false,
@@ -99,7 +93,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.reefer,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         temperature: 0,
@@ -123,7 +117,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.opentop,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isAwkward: false,
@@ -158,7 +152,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.flatrack,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isAwkward: false,
@@ -193,7 +187,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.tank,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isDangerous: false,
@@ -227,4 +221,31 @@ export function getEmptyContainerData(type: ContainerType) {
     default:
       return {} as ContainerInformationType;
   }
+}
+
+export function sumContainerWeight(siContainers: SIContainerInputProps[]) {
+  return siContainers
+    .reduce((acc, container) => {
+      return acc + container.packageWeight;
+    }, 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function sumContainerQuantity(siContainers: SIContainerInputProps[]) {
+  return siContainers
+    .reduce((acc, container) => {
+      return acc + container.packageQuantity;
+    }, 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function sumContainerMeasurement(siContainers: SIContainerInputProps[]) {
+  return siContainers
+    .reduce((acc, container) => {
+      return acc + container.packageMeasurement;
+    }, 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

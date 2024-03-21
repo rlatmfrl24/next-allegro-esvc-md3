@@ -12,15 +12,22 @@ import ContactInformationSection from "../components/contact-information";
 import ContainerSection from "../components/contaienr";
 import LocationScheduleSection from "../components/location-schedule";
 import PartiesSection from "../components/parties";
-import { BookingInformationState } from "@/app/store/booking.store";
+import {
+  BookingInformationState,
+  CurrentBookingDataState,
+} from "@/app/store/booking.store";
 import { useRecoilValue } from "recoil";
 import { MdOutlinedTextField } from "@/app/util/md3";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import RequestNumberSection from "../components/request-number";
+import { BookingStatus } from "@/app/util/typeDef/boooking";
 
 export default function BookingRequestInformation() {
+  const currentBookingData = useRecoilValue(CurrentBookingDataState);
   const dataSet = useRecoilValue(BookingInformationState);
   const router = useRouter();
+  const cx = classNames.bind(styles);
 
   useEffect(() => {
     if (dataSet.length === 0) {
@@ -28,8 +35,6 @@ export default function BookingRequestInformation() {
       router.push("/main/booking/request");
     }
   }, [dataSet.length, router]);
-
-  const cx = classNames.bind(styles);
 
   return dataSet.length === 0 ? (
     <></>
@@ -39,6 +44,13 @@ export default function BookingRequestInformation() {
 
       <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
         <div className="bg-secondaryContainer h-4"></div>
+        <RequestNumberSection
+          bookingStatus={currentBookingData?.status || BookingStatus.Requested}
+          requestNumber={currentBookingData?.requestNo || ""}
+          specialInstruction={
+            dataSet[0].additionalInformation.specialInstruction
+          }
+        />
         <div className="px-6 pt-4 pb-8">
           <LocationScheduleSection data={dataSet[0].locationSchedule} />
           <DividerComponent className="my-8" />
@@ -60,12 +72,13 @@ export default function BookingRequestInformation() {
               orientation="vertical"
             />
             <AttachmentSection
-              files={dataSet[0].additionalInformation.attachments}
+              file={dataSet[0].additionalInformation.attachment}
               specialInstruction={
                 dataSet[0].additionalInformation.specialInstruction
               }
             />
           </div>
+
           <DividerComponent className="my-8" />
           <div className="flex items-stretch">
             <Section title="Duplicate reservation">

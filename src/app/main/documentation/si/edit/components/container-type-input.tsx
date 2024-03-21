@@ -4,10 +4,9 @@ import { SIEditContainerState } from "@/app/store/si.store";
 import { MdFilledTonalIconButton } from "@/app/util/md3";
 import { ContainerType } from "@/app/util/typeDef/boooking";
 import { SIContainerInputProps } from "@/app/util/typeDef/si";
-import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown } from "@mui/icons-material";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import ContainerInput from "./container-input";
 
@@ -23,7 +22,6 @@ const ContainerTypeInputComponent = ({
   const [siContainerStore, setSIEditContainerStore] =
     useRecoilState(SIEditContainerState);
   const typeKey = type.toLowerCase() as keyof typeof siContainerStore;
-  const [siContainerIndexCounter, setSIContainerIndexCounter] = useState(1);
 
   return (
     <Disclosure defaultOpen>
@@ -42,12 +40,14 @@ const ContainerTypeInputComponent = ({
             <MdFilledTonalIconButton
               className="mt-20 min-w-[40px] min-h-[40px]"
               onClick={() => {
-                setSIContainerIndexCounter(siContainerIndexCounter + 1);
+                if (typeKey === "weightUnit" || typeKey === "measurementUnit")
+                  return;
+
                 setSIEditContainerStore((prev) => ({
                   ...prev,
                   [typeKey]: [
                     ...prev[typeKey],
-                    getEmptySIEditContainerData(type, siContainerIndexCounter),
+                    getEmptySIEditContainerData(type),
                   ],
                 }));
               }}

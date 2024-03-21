@@ -18,7 +18,11 @@ export const Section = ({
   return (
     <div className="flex flex-col gap-4 flex-1">
       <div className="flex items-center gap-2">
-        <DetailTitle title={title} className="flex-1" />
+        {title !== "" ? (
+          <DetailTitle title={title} className="flex-1" />
+        ) : (
+          <div className="h-4"></div>
+        )}
         {hasEdit && (
           <button
             className="relative border border-outlineVariant rounded-full py-1 pl-2 pr-4 flex items-center text-primary gap-0.5"

@@ -199,10 +199,6 @@ const ShipperInfo = () => {
                           ...prev.shipper,
                           companyName: item.name,
                           fullAddress: item.address,
-                          addressCountry: addressArray[2].trim(),
-                          addressCityState: addressArray[1].trim(),
-                          addressZipCode: addressArray[3].trim(),
-                          addressStreet: addressArray[0].trim(),
                         },
                       };
                     });
@@ -437,6 +433,7 @@ const ConsigneeInfo = () => {
                         ...prev.consignee,
                         isToOrder: false,
                         companyName: "",
+                        fullAddress: "",
                       },
                     };
                   });
@@ -448,7 +445,6 @@ const ConsigneeInfo = () => {
                         ...prev.consignee,
                         isToOrder: true,
                         companyName: "To Order",
-                        fullAddress: "",
                       },
                     };
                   });
@@ -460,7 +456,6 @@ const ConsigneeInfo = () => {
                 label="Company"
                 className="flex-1"
                 required
-                readOnly={partiesStore.consignee.isToOrder}
                 isAllowOnlyListItems={false}
                 itemList={companyList.map((company) => {
                   return {
@@ -504,10 +499,6 @@ const ConsigneeInfo = () => {
                           ...prev.consignee,
                           companyName: item.name,
                           fullAddress: item.address,
-                          addressCountry: addressArray[2].trim(),
-                          addressCityState: addressArray[1].trim(),
-                          addressZipCode: addressArray[3].trim(),
-                          addressStreet: addressArray[0].trim(),
                         },
                       };
                     });
@@ -515,7 +506,6 @@ const ConsigneeInfo = () => {
                 }}
               />
               <NAOutlinedTextField
-                disabled={partiesStore.consignee.isToOrder}
                 required
                 label="Address"
                 className="flex-1"
@@ -749,18 +739,22 @@ const NotifyPartyInfo = () => {
             <NaToggleButton
               label="Same as Consignee"
               state={
-                partiesStore.consignee.companyName ===
-                  partiesStore.notifyParty.companyName &&
-                partiesStore.consignee.fullAddress ===
-                  partiesStore.notifyParty.fullAddress &&
-                partiesStore.consignee.addressCountry ===
-                  partiesStore.notifyParty.addressCountry &&
-                partiesStore.consignee.addressCityState ===
-                  partiesStore.notifyParty.addressCityState &&
-                partiesStore.consignee.addressZipCode ===
-                  partiesStore.notifyParty.addressZipCode &&
-                partiesStore.consignee.addressStreet ===
-                  partiesStore.notifyParty.addressStreet
+                partiesStore.consignee.isToOrder ||
+                partiesStore.consignee.companyName === "" ||
+                partiesStore.consignee.fullAddress === ""
+                  ? "disabled"
+                  : partiesStore.consignee.companyName ===
+                      partiesStore.notifyParty.companyName &&
+                    partiesStore.consignee.fullAddress ===
+                      partiesStore.notifyParty.fullAddress &&
+                    partiesStore.consignee.addressCountry ===
+                      partiesStore.notifyParty.addressCountry &&
+                    partiesStore.consignee.addressCityState ===
+                      partiesStore.notifyParty.addressCityState &&
+                    partiesStore.consignee.addressZipCode ===
+                      partiesStore.notifyParty.addressZipCode &&
+                    partiesStore.consignee.addressStreet ===
+                      partiesStore.notifyParty.addressStreet
                   ? "checked"
                   : "unchecked"
               }
@@ -848,10 +842,6 @@ const NotifyPartyInfo = () => {
                           ...prev.notifyParty,
                           companyName: item.name,
                           fullAddress: item.address,
-                          addressCountry: addressArray[2].trim(),
-                          addressCityState: addressArray[1].trim(),
-                          addressZipCode: addressArray[3].trim(),
-                          addressStreet: addressArray[0].trim(),
                         },
                       };
                     });
@@ -1062,6 +1052,8 @@ const NotifyPartyInfo = () => {
 };
 
 const ReferencesInfo = () => {
+  const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
+
   return (
     <Disclosure defaultOpen>
       {({ open }) => (
@@ -1080,11 +1072,29 @@ const ReferencesInfo = () => {
               label="Export References"
               type="textarea"
               rows={5}
+              value={partiesStore.exportReference || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    exportReference: value,
+                  };
+                });
+              }}
             />
             <NAOutlinedTextField
               label="Forwarding Agent References"
               type="textarea"
               rows={5}
+              value={partiesStore.forwardingAgentReference || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    forwardingAgentReference: value,
+                  };
+                });
+              }}
             />
           </Disclosure.Panel>
         </>

@@ -15,10 +15,12 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 
 export const NAOutlinedTextField = ({
   handleValueChange,
+  enableClearButton = true,
   className,
   ...props
 }: {
   handleValueChange?: (value: string) => void;
+  enableClearButton?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) => {
   const [hasValue, setHasValue] = useState(false);
@@ -37,26 +39,35 @@ export const NAOutlinedTextField = ({
       <MdOutlinedTextFieldBase
         {...props}
         ref={inputRef}
-        className="flex-1"
+        type={props.type === "number" ? "text" : props.type}
+        className={`flex-1 ${props.type === "number" ? "text-right" : ""}`}
         onInput={(e) => {
           setHasValue(e.currentTarget.value.length > 0);
+          if (props.type === "number") {
+            let intValue = parseInt(e.currentTarget.value);
+            if (isNaN(intValue)) intValue = 0;
+            e.currentTarget.value = intValue.toString();
+          }
           handleValueChange?.((e.target as HTMLInputElement).value);
         }}
         required={false}
       >
-        <MdIconButton
-          slot="trailing-icon"
-          className={!props.disabled && hasValue ? "visible" : "invisible"}
-          onClick={() => {
-            if (inputRef.current) (inputRef.current as any).value = "";
-            setHasValue(false);
-            handleValueChange?.("");
-          }}
-        >
-          <MdIcon>
-            <CancelIcon />
-          </MdIcon>
-        </MdIconButton>
+        {!(props.type === "number" || props.type === "textarea") &&
+          enableClearButton && (
+            <MdIconButton
+              slot="trailing-icon"
+              className={!props.disabled && hasValue ? "visible" : "invisible"}
+              onClick={() => {
+                if (inputRef.current) (inputRef.current as any).value = "";
+                setHasValue(false);
+                handleValueChange?.("");
+              }}
+            >
+              <MdIcon>
+                <CancelIcon />
+              </MdIcon>
+            </MdIconButton>
+          )}
       </MdOutlinedTextFieldBase>
       {props.required && (
         <MdTypography

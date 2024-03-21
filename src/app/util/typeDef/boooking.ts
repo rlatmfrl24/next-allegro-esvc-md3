@@ -91,7 +91,7 @@ export type ContactInformationType = {
 };
 
 export type AdditionalInformatioType = {
-  attachments: File[];
+  attachment: File | null;
   specialInstruction: string;
   duplicateCount: number;
   emailSubscription: {

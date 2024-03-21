@@ -98,6 +98,7 @@ export default function ContainerSection({
             soc={container.soc}
           />
         ))}
+        {data.bulk.length > 0 && <ContainerItem type="bulk" />}
       </div>
     </Section>
   );
@@ -109,63 +110,67 @@ const ContainerItem = ({
   quantity,
   soc,
 }: {
-  type:
-    | "dry"
-    | "reefer"
-    | "empty"
-    | "flatrack"
-    | "open-top"
-    | "tank"
-    | "other"
-    | "bulk";
-  size: string;
-  quantity: number;
-  soc: number;
+  type: "dry" | "reefer" | "empty" | "flatrack" | "open-top" | "tank" | "bulk";
+  size?: string;
+  quantity?: number;
+  soc?: number;
 }) => {
   return (
     <div className="flex flex-1 border rounded-lg border-outlineVariant p-4 gap-4">
-      {type === "dry" ? (
-        <DryContainerImage />
-      ) : type === "reefer" ? (
-        <ReeferContainerImage />
+      <div className="w-24 flex justify-center">
+        {type === "dry" ? (
+          <DryContainerImage />
+        ) : type === "reefer" ? (
+          <ReeferContainerImage />
+        ) : (
+          <EmptyContainerImage />
+        )}
+      </div>
+      {type !== "bulk" ? (
+        <>
+          <div>
+            <MdTypography variant="body" size="medium">
+              {
+                {
+                  dry: "Dry",
+                  reefer: "Reefer",
+                  empty: "Empty",
+                  flatrack: "Flatrack",
+                  "open-top": "Open Top",
+                  tank: "Tank",
+                  other: "Other",
+                  bulk: "Bulk",
+                }[type]
+              }
+            </MdTypography>
+            <div className="flex gap-1">
+              <MdTypography variant="body" size="large" prominent>
+                {size}
+              </MdTypography>
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="text-outlineVariant"
+              >
+                X
+              </MdTypography>
+              <MdTypography variant="body" size="large" prominent>
+                {quantity}
+              </MdTypography>
+            </div>
+            <MdTypography variant="body" size="small" className="text-outline">
+              SOC: {soc}
+            </MdTypography>
+          </div>
+        </>
       ) : (
-        <EmptyContainerImage />
-      )}
-      <div>
-        <MdTypography variant="body" size="medium">
-          {
-            {
-              dry: "Dry",
-              reefer: "Reefer",
-              empty: "Empty",
-              flatrack: "Flatrack",
-              "open-top": "Open Top",
-              tank: "Tank",
-              other: "Other",
-              bulk: "Bulk",
-            }[type]
-          }
-        </MdTypography>
-        <div className="flex gap-1">
+        <div className="flex items-center">
           <MdTypography variant="body" size="large" prominent>
-            {size}
-          </MdTypography>
-          <MdTypography
-            variant="body"
-            size="large"
-            prominent
-            className="text-outlineVariant"
-          >
-            X
-          </MdTypography>
-          <MdTypography variant="body" size="large" prominent>
-            {quantity}
+            Bulk
           </MdTypography>
         </div>
-        <MdTypography variant="body" size="small" className="text-outline">
-          SOC: {soc}
-        </MdTypography>
-      </div>
+      )}
     </div>
   );
 };
