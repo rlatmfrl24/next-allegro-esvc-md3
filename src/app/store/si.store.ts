@@ -61,6 +61,7 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
     notifyParty: {
       companyName: "",
       fullAddress: "",
+      alsoNotify: "",
     } as NotifyPartyProps,
     exportReference: "",
     forwardingAgentReference: "",
@@ -70,6 +71,7 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
 export const SIEditRouteBLState = atom<SIRouteBLType>({
   key: "siEditRouteBLState",
   default: {
+    remarks: "",
     blType: "none",
     freightTerms: "prepaid",
     houseBLInvovled: "none",

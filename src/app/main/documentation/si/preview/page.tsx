@@ -1,6 +1,7 @@
 "use client";
 
 import LabelChip from "@/app/components/label-chip";
+import NaToggleButton from "@/app/components/na-toggle-button";
 import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
@@ -21,7 +22,7 @@ import { Fax, Mail, Phone } from "@mui/icons-material";
 import classNames from "classnames";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const StringToSplit = (props: { text: string }) => {
   return (
@@ -43,7 +44,9 @@ export default function SIPreview() {
   const routeBLData = useRecoilValue(SIEditRouteBLState);
   const containerData = useRecoilValue(SIEditContainerState);
   const markDescriptionData = useRecoilValue(SIEditMarkDescriptionState);
-  const contactInformationData = useRecoilValue(SIEditContactInformationState);
+  const [contactInformationData, setContactInformationData] = useRecoilState(
+    SIEditContactInformationState
+  );
 
   const setSIEditStep = useSetRecoilState(SIEditStepState);
   const cx = classNames.bind(styles);
@@ -75,14 +78,66 @@ export default function SIPreview() {
     };
   }, []);
 
+  function combineAddress(
+    street?: string,
+    cityState?: string,
+    zipCode?: string,
+    country?: string
+  ) {
+    return [country, street, cityState, zipCode].filter((x) => x).join(", ");
+  }
+
+  const ContactInfo = ({
+    phoneNumber,
+    faxNumber,
+    email,
+  }: {
+    phoneNumber?: string;
+    faxNumber?: string;
+    email?: string;
+  }) => {
+    return (
+      <div className="flex items-center gap-2">
+        {phoneNumber && (
+          <>
+            <MdTypography variant="body" size="medium">
+              <Phone
+                sx={{ fontSize: 16 }}
+                className="text-outlineVariant mr-1"
+              />
+              {phoneNumber}
+            </MdTypography>
+            {(faxNumber || email) && (
+              <DividerComponent orientation="vertical" className="h-4" />
+            )}
+          </>
+        )}
+        {faxNumber && (
+          <>
+            <MdTypography variant="body" size="medium">
+              <Fax sx={{ fontSize: 16 }} className="text-outlineVariant mr-1" />
+              {faxNumber}
+            </MdTypography>
+            {email && (
+              <DividerComponent orientation="vertical" className="h-4" />
+            )}
+          </>
+        )}
+        {email && (
+          <MdTypography variant="body" size="medium">
+            <Mail sx={{ fontSize: 16 }} className="text-outlineVariant mr-1" />
+            {email}
+          </MdTypography>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Shipping Instruction Preview" />
       <div className={styles.area}>
-        <div
-          aria-label="title-area"
-          className="flex items-center justify-between"
-        >
+        <div aria-label="title-area" className="flex justify-between">
           <MdTypography
             variant="headline"
             size="medium"
@@ -90,43 +145,53 @@ export default function SIPreview() {
           >
             Shipping Instruction
           </MdTypography>
-          <div className="flex items-center gap-2">
-            <LabelChip
-              label="Contact Info."
-              className="bg-surfaceContainerHigh"
-            />
-            <MdTypography variant="body" size="medium" prominent>
-              {contactInformationData.name}
-            </MdTypography>
-            <DividerComponent orientation="vertical" className="h-4" />
-            <MdTypography variant="body" size="medium">
-              <Phone
-                sx={{ fontSize: 16 }}
-                className="text-outlineVariant mr-1"
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <LabelChip
+                label="Contact Info."
+                className="bg-surfaceContainerHigh"
               />
-              {contactInformationData.telNumber}
-            </MdTypography>
-            <DividerComponent orientation="vertical" className="h-4" />
-            <MdTypography variant="body" size="medium">
-              <Phone
-                sx={{ fontSize: 16 }}
-                className="text-outlineVariant mr-1"
-              />
-              {contactInformationData.phone}
-            </MdTypography>
-            <DividerComponent orientation="vertical" className="h-4" />
-            <MdTypography variant="body" size="medium">
-              <Fax sx={{ fontSize: 16 }} className="text-outlineVariant mr-1" />
-              {contactInformationData.phone}
-            </MdTypography>
-            <DividerComponent orientation="vertical" className="h-4" />
-            <MdTypography variant="body" size="medium">
-              <Mail
-                sx={{ fontSize: 16 }}
-                className="text-outlineVariant mr-1"
-              />
-              {contactInformationData.emailRecipient[0]}
-            </MdTypography>
+              <MdTypography variant="body" size="medium" prominent>
+                {contactInformationData.name}
+              </MdTypography>
+              {contactInformationData.emailRecipient.length > 0 && (
+                <>
+                  <DividerComponent orientation="vertical" className="h-4" />
+                  <Mail
+                    sx={{ fontSize: 16 }}
+                    className="text-outlineVariant mr-1"
+                  />
+                  <MdTypography variant="body" size="medium">
+                    {contactInformationData.emailRecipient.join(", ")}
+                  </MdTypography>
+                </>
+              )}
+            </div>
+            <div className="flex justify-end items-center gap-2">
+              <MdTypography variant="body" size="medium">
+                <Phone
+                  sx={{ fontSize: 16 }}
+                  className="text-outlineVariant mr-1"
+                />
+                {contactInformationData.telNumber}
+              </MdTypography>
+              <DividerComponent orientation="vertical" className="h-4" />
+              <MdTypography variant="body" size="medium">
+                <Phone
+                  sx={{ fontSize: 16 }}
+                  className="text-outlineVariant mr-1"
+                />
+                {contactInformationData.phone}
+              </MdTypography>
+              <DividerComponent orientation="vertical" className="h-4" />
+              <MdTypography variant="body" size="medium">
+                <Fax
+                  sx={{ fontSize: 16 }}
+                  className="text-outlineVariant mr-1"
+                />
+                {contactInformationData.phone}
+              </MdTypography>
+            </div>
           </div>
         </div>
         <div className="w-full grid grid-cols-4 bg-primary gap-px border-y border-y-primary mt-4">
@@ -147,6 +212,37 @@ export default function SIPreview() {
             <MdTypography variant="body" size="medium" prominent>
               {partiesData.shipper.companyName}
             </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {partiesData.shipper.fullAddress}
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {combineAddress(
+                partiesData.shipper.addressStreet,
+                partiesData.shipper.addressCityState,
+                partiesData.shipper.addressZipCode,
+                partiesData.shipper.addressCountry
+              ) || ""}
+            </MdTypography>
+            {partiesData.shipper.eoriNumber && (
+              <MdTypography variant="body" size="medium">
+                {`EORI No: ` + partiesData.shipper.eoriNumber}
+              </MdTypography>
+            )}
+            {partiesData.shipper.usccNumber && (
+              <MdTypography variant="body" size="medium">
+                {`USCC No: ` + partiesData.shipper.usccNumber}
+              </MdTypography>
+            )}
+            {partiesData.shipper.taxID && (
+              <MdTypography variant="body" size="medium">
+                {`Tax ID: ` + partiesData.shipper.taxID}
+              </MdTypography>
+            )}
+            <ContactInfo
+              phoneNumber={partiesData.shipper.phone}
+              faxNumber={partiesData.shipper.fax}
+              email={partiesData.shipper.email}
+            />
           </div>
           <div className={cx(siStyles["preview-section"], "col-span-2")}>
             <div className="flex-1">
@@ -215,6 +311,45 @@ export default function SIPreview() {
             >
               Consignee
             </MdTypography>
+            <MdTypography variant="body" size="medium" prominent>
+              {partiesData.consignee.companyName}
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {partiesData.consignee.fullAddress}
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {combineAddress(
+                partiesData.consignee.addressStreet,
+                partiesData.consignee.addressCityState,
+                partiesData.consignee.addressZipCode,
+                partiesData.consignee.addressCountry
+              ) || ""}
+            </MdTypography>
+            {partiesData.consignee.eoriNumber && (
+              <MdTypography variant="body" size="medium">
+                {`EORI No: ` + partiesData.consignee.eoriNumber}
+              </MdTypography>
+            )}
+            {partiesData.consignee.usccNumber && (
+              <MdTypography variant="body" size="medium">
+                {`USCC No: ` + partiesData.consignee.usccNumber}
+              </MdTypography>
+            )}
+            {partiesData.consignee.taxID && (
+              <MdTypography variant="body" size="medium">
+                {`Tax ID: ` + partiesData.consignee.taxID}
+              </MdTypography>
+            )}
+            {partiesData.consignee.contactPerson && (
+              <MdTypography variant="body" size="medium">
+                {`Contact Person: ` + partiesData.consignee.contactPerson}
+              </MdTypography>
+            )}
+            <ContactInfo
+              phoneNumber={partiesData.consignee.phone}
+              faxNumber={partiesData.consignee.fax}
+              email={partiesData.consignee.email}
+            />
           </div>
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
@@ -226,6 +361,9 @@ export default function SIPreview() {
               className="mb-2"
             >
               Forwarding Agent References
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {StringToSplit({ text: partiesData.forwardingAgentReference })}
             </MdTypography>
           </div>
           <div
@@ -239,6 +377,40 @@ export default function SIPreview() {
             >
               Notify Party
             </MdTypography>
+            <MdTypography variant="body" size="medium" prominent>
+              {partiesData.notifyParty.companyName}
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {partiesData.notifyParty.fullAddress}
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {combineAddress(
+                partiesData.notifyParty.addressStreet,
+                partiesData.notifyParty.addressCityState,
+                partiesData.notifyParty.addressZipCode,
+                partiesData.notifyParty.addressCountry
+              ) || ""}
+            </MdTypography>
+            {partiesData.notifyParty.eoriNumber && (
+              <MdTypography variant="body" size="medium">
+                {`EORI No: ` + partiesData.notifyParty.eoriNumber}
+              </MdTypography>
+            )}
+            {partiesData.notifyParty.usccNumber && (
+              <MdTypography variant="body" size="medium">
+                {`USCC No: ` + partiesData.notifyParty.usccNumber}
+              </MdTypography>
+            )}
+            {partiesData.notifyParty.taxID && (
+              <MdTypography variant="body" size="medium">
+                {`Tax ID: ` + partiesData.notifyParty.taxID}
+              </MdTypography>
+            )}
+            <ContactInfo
+              phoneNumber={partiesData.notifyParty.phone}
+              faxNumber={partiesData.notifyParty.fax}
+              email={partiesData.notifyParty.email}
+            />
           </div>
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
@@ -251,6 +423,9 @@ export default function SIPreview() {
             >
               Also Notify (Name and full address) / Domestic Routing
             </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {StringToSplit({ text: partiesData.notifyParty.alsoNotify })}
+            </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <MdTypography
@@ -261,6 +436,9 @@ export default function SIPreview() {
             >
               Vessel Voyage
             </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.vesselVoyage}
+            </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <MdTypography
@@ -270,6 +448,9 @@ export default function SIPreview() {
               className="mb-2"
             >
               PRE_Carrige by
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.preCarriageBy}
             </MdTypography>
           </div>
           <div
@@ -283,6 +464,13 @@ export default function SIPreview() {
             >
               Type of Move
             </MdTypography>
+            {routeBLData.serviceTypeFrom && routeBLData.serviceTypeTo && (
+              <MdTypography variant="body" size="medium">
+                {`${routeBLData.serviceTypeFrom === "cy" ? "CY" : "Door"} - ${
+                  routeBLData.serviceTypeTo === "cy" ? "CY" : "Door"
+                }`}
+              </MdTypography>
+            )}
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <MdTypography
@@ -293,6 +481,9 @@ export default function SIPreview() {
             >
               Pier or Place of Receipt
             </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.por?.yardName}
+            </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <MdTypography
@@ -302,6 +493,9 @@ export default function SIPreview() {
               className="mb-2"
             >
               Port of Loading
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.pol?.yardName}
             </MdTypography>
           </div>
           <div
@@ -315,6 +509,9 @@ export default function SIPreview() {
             >
               Point and Country of Origin
             </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.pointAndCountryOfOrigin}
+            </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <MdTypography
@@ -325,6 +522,9 @@ export default function SIPreview() {
             >
               Port of Discharge
             </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.pod?.yardName}
+            </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <MdTypography
@@ -334,6 +534,9 @@ export default function SIPreview() {
               className="mb-2"
             >
               Place of Delivery (by on Carrier) *
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.del?.yardName}
             </MdTypography>
           </div>
           <div
@@ -346,6 +549,9 @@ export default function SIPreview() {
               className="mb-2"
             >
               Final Destination (For the merchant&apos;s reference only)
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {routeBLData.finalDestination}
             </MdTypography>
           </div>
           <div
@@ -402,6 +608,9 @@ export default function SIPreview() {
               >
                 HS Code
               </MdTypography>
+              <MdTypography variant="body" size="medium">
+                {markDescriptionData.hsCode}
+              </MdTypography>
             </div>
             <DividerComponent
               orientation="vertical"
@@ -415,6 +624,9 @@ export default function SIPreview() {
                 className="mb-2"
               >
                 Custom Commodity
+              </MdTypography>
+              <MdTypography variant="body" size="medium">
+                {markDescriptionData.customsCommodity}
               </MdTypography>
             </div>
           </div>
@@ -437,6 +649,13 @@ export default function SIPreview() {
             >
               Mark & Nos.
             </MdTypography>
+            <MdTypography
+              variant="body"
+              size="medium"
+              className="border border-outlineVariant border-dashed p-2"
+            >
+              {StringToSplit({ text: markDescriptionData.mark })}
+            </MdTypography>
           </div>
           <div
             className={cx(siStyles["preview-section"], "flex-col col-span-2")}
@@ -448,6 +667,9 @@ export default function SIPreview() {
               className="mb-2"
             >
               Kind of Packages: Description of Goods
+            </MdTypography>
+            <MdTypography variant="body" size="medium">
+              {StringToSplit({ text: markDescriptionData.description })}
             </MdTypography>
           </div>
           <div
@@ -461,6 +683,81 @@ export default function SIPreview() {
             >
               B/L Information
             </MdTypography>
+
+            <div className="flex">
+              <div className="flex-1">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  prominent
+                  className="mb-2"
+                >
+                  B/L No.
+                </MdTypography>
+                <MdTypography variant="body" size="medium">
+                  {siBaseData.blNumber}
+                </MdTypography>
+              </div>
+              <DividerComponent
+                orientation="vertical"
+                className="border-dotted mx-4"
+              />
+              <div className="flex-1">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  prominent
+                  className="mb-2"
+                >
+                  B/L Type
+                </MdTypography>
+                <MdTypography variant="body" size="medium">
+                  {
+                    {
+                      originalBL: "Original B/L",
+                      seaWaybill: "Sea Waybill",
+                      surrender: "Surrender",
+                      none: "None",
+                    }[routeBLData.blType]
+                  }
+                </MdTypography>
+              </div>
+              <DividerComponent
+                orientation="vertical"
+                className="border-dotted mx-4"
+              />
+              <div className="flex-1">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  prominent
+                  className="mb-2"
+                >
+                  Freight Terms
+                </MdTypography>
+                <MdTypography variant="body" size="medium">
+                  {
+                    {
+                      prepaid: "Prepaid",
+                      collect: "Collect",
+                    }[routeBLData.freightTerms]
+                  }
+                </MdTypography>
+              </div>
+            </div>
+            <div>
+              <MdTypography
+                variant="body"
+                size="medium"
+                prominent
+                className="mb-2 mt-5"
+              >
+                Remark
+              </MdTypography>
+              <MdTypography variant="body" size="medium">
+                {StringToSplit({ text: routeBLData.remarks })}
+              </MdTypography>
+            </div>
           </div>
           <div
             className={cx(siStyles["preview-section"], "flex-col col-span-2")}
@@ -473,6 +770,66 @@ export default function SIPreview() {
             >
               Email Notification Subscription
             </MdTypography>
+            <div className="flex flex-col gap-1">
+              <NaToggleButton
+                label="Roll-Over (Including T/S)"
+                state={
+                  contactInformationData.subscrition.rollOver
+                    ? "checked"
+                    : "unchecked"
+                }
+                onClick={() => {
+                  setContactInformationData((prev) => {
+                    return {
+                      ...prev,
+                      subscrition: {
+                        ...prev.subscrition,
+                        rollOver: !prev.subscrition.rollOver,
+                      },
+                    };
+                  });
+                }}
+              />
+              <NaToggleButton
+                label="Vessel Departure"
+                state={
+                  contactInformationData.subscrition.vesselDeparture
+                    ? "checked"
+                    : "unchecked"
+                }
+                onClick={() => {
+                  setContactInformationData((prev) => {
+                    return {
+                      ...prev,
+                      subscrition: {
+                        ...prev.subscrition,
+                        vesselDeparture: !prev.subscrition.vesselDeparture,
+                      },
+                    };
+                  });
+                }}
+              />
+              <NaToggleButton
+                label="Vessel Advance / Delay"
+                state={
+                  contactInformationData.subscrition.vesselAdvanceDelay
+                    ? "checked"
+                    : "unchecked"
+                }
+                onClick={() => {
+                  setContactInformationData((prev) => {
+                    return {
+                      ...prev,
+                      subscrition: {
+                        ...prev.subscrition,
+                        vesselAdvanceDelay:
+                          !prev.subscrition.vesselAdvanceDelay,
+                      },
+                    };
+                  });
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
