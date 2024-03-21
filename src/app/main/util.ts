@@ -64,9 +64,7 @@ export function getEmptySIEditContainerData(type: ContainerType) {
     packageType: "",
     packageQuantity: 0,
     packageWeight: 0,
-    pacakgeWeightUnit: "KGS",
     packageMeasurement: 0,
-    packageMeasurementUnit: "CBM",
     hasCargoManifest: false,
     cargoManifest: [],
   } as SIContainerInputProps;

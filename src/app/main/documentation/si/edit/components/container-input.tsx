@@ -49,6 +49,8 @@ export default function ContainerInput({
 
   function addNewCargoManifestToContainer() {
     // add empty CarogManifest to Container
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, i) =>
@@ -79,6 +81,8 @@ export default function ContainerInput({
 
   function removeCargoManifestFromContainer(uuid: string) {
     // delete CargoManifest from Container by uuid
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) => {
@@ -106,6 +110,8 @@ export default function ContainerInput({
     newData: any
   ) {
     // update ContainerStore by uuid
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) =>
@@ -167,6 +173,9 @@ export default function ContainerInput({
           className="mt-2"
           onClick={() => {
             // delete Container
+            if (typeKey === "weightUnit" || typeKey === "measurementUnit")
+              return;
+
             setSIEditContainerStore((prev) => ({
               ...prev,
               [typeKey]: prev[typeKey].filter((c, i) => i !== containerIndex),
@@ -268,10 +277,13 @@ export default function ContainerInput({
             }}
           />
           <NAOutlinedListBox
-            initialValue={container.pacakgeWeightUnit}
+            initialValue={SIEditContainerStore.weightUnit}
             options={["KGS", "LBS"]}
             onSelection={(value) => {
-              updateContainerStore(container, "pacakgeWeightUnit", value);
+              setSIEditContainerStore((prev) => ({
+                ...prev,
+                weightUnit: value as "KGS" | "LBS",
+              }));
             }}
           />
         </div>
@@ -292,10 +304,13 @@ export default function ContainerInput({
             }}
           />
           <NAOutlinedListBox
-            initialValue={container.packageMeasurementUnit}
+            initialValue={SIEditContainerStore.measurementUnit}
             options={["CBM", "CBF"]}
             onSelection={(value) => {
-              updateContainerStore(container, "packageMeasurementUnit", value);
+              setSIEditContainerStore((prev) => ({
+                ...prev,
+                measurementUnit: value as "CBM" | "CBF",
+              }));
             }}
           />
         </div>

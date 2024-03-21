@@ -114,6 +114,8 @@ export const SIEditContainerState = atom<{
   tank: SIContainerInputProps[];
   flatrack: SIContainerInputProps[];
   bulk: SIContainerInputProps[];
+  weightUnit: "KGS" | "LBS";
+  measurementUnit: "CBM" | "CBF";
 }>({
   key: "siEditContainerState",
   default: {
@@ -123,6 +125,8 @@ export const SIEditContainerState = atom<{
     tank: [],
     flatrack: [],
     bulk: [],
+    weightUnit: "KGS",
+    measurementUnit: "CBM",
   },
 });
 

@@ -137,9 +137,7 @@ export interface SIContainerInputProps {
   packageType: string;
   packageQuantity: number;
   packageWeight: number;
-  pacakgeWeightUnit: "KGS" | "LBS";
   packageMeasurement: number;
-  packageMeasurementUnit: "CBM" | "CBF";
   hasCargoManifest: boolean;
   cargoManifest: CargoManifestType[];
 }
