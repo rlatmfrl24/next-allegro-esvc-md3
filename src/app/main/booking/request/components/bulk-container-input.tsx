@@ -1,4 +1,5 @@
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
@@ -61,12 +62,12 @@ const BulkContainerInput = ({
                   )}
                   <div className="flex gap-4">
                     <div className="flex gap-2">
-                      <MdOutlinedTextField
+                      <NAOutlinedTextField
                         className="w-[120px] min-w-[120px]"
                         label="Package"
+                        type="number"
                         value={container.package.toString()}
-                        onInput={(e) => {
-                          const value = e.currentTarget.value;
+                        handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
@@ -103,12 +104,12 @@ const BulkContainerInput = ({
                       />
                     </div>
                     <div className="flex gap-2">
-                      <MdOutlinedTextField
+                      <NAOutlinedTextField
                         className="w-[120px] min-w-[120px]"
                         label="Gross Weight"
+                        type="number"
                         value={container.grossWeight.toString()}
-                        onInput={(e) => {
-                          const value = e.currentTarget.value;
+                        handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
@@ -169,13 +170,13 @@ const BulkContainerInput = ({
                     </MdIconButton>
                   </div>
                   <div className="flex gap-4">
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       className="w-36 min-w-36"
                       suffixText="cm"
                       label="Length"
+                      type="number"
                       value={container.length.toString()}
-                      onInput={(e) => {
-                        const value = e.currentTarget.value;
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           bulk: prev.bulk.map((c) =>
@@ -186,13 +187,13 @@ const BulkContainerInput = ({
                         }));
                       }}
                     />
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       className="w-36 min-w-36"
                       suffixText="cm"
                       label="Width"
+                      type="number"
                       value={container.width.toString()}
-                      onInput={(e) => {
-                        const value = e.currentTarget.value;
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           bulk: prev.bulk.map((c) =>
@@ -203,13 +204,13 @@ const BulkContainerInput = ({
                         }));
                       }}
                     />
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       className="w-36 min-w-36"
                       suffixText="cm"
                       label="Height"
+                      type="number"
                       value={container.height.toString()}
-                      onInput={(e) => {
-                        const value = e.currentTarget.value;
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           bulk: prev.bulk.map((c) =>
@@ -220,13 +221,13 @@ const BulkContainerInput = ({
                         }));
                       }}
                     />
-                    <MdOutlinedTextField
-                      className="flex-1"
+                    <NAOutlinedTextField
                       label="Total Measure"
                       suffixText="CBM"
+                      type="number"
+                      className="flex-1"
                       value={container.totalMeasurement.toString()}
-                      onInput={(e) => {
-                        const value = e.currentTarget.value;
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           bulk: prev.bulk.map((c) =>

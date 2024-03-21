@@ -18,6 +18,7 @@ import DangerousCargoInput from "./dangerous-cargo-input";
 import AwkwardContainerInput from "./awkward-container-input";
 import { DetailTitle } from "@/app/components/title-components";
 import { useMemo } from "react";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const OpenTopContainerInput = ({
   list,
@@ -91,6 +92,7 @@ const OpenTopContainerInput = ({
                           label="Size"
                           className="w-52 text-right"
                           suffixText="ft"
+                          required
                           initialValue={container.size}
                           options={
                             container.size !== ""
@@ -109,15 +111,12 @@ const OpenTopContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Quantity / Total"
-                          className="text-right"
+                          type="number"
+                          required
                           value={container.quantity.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
-                            const intValue = parseInt(value);
-                            if (isNaN(intValue)) return;
-
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               opentop: prev.opentop.map((c, i) =>
@@ -129,17 +128,13 @@ const OpenTopContainerInput = ({
                             e.target.value = container.quantity.toString();
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Quantity / SOC"
-                          className="text-right"
+                          type="number"
                           value={container.soc.toString()}
                           error={container.soc > container.quantity}
                           errorText="SOC cannot be greater than Quantity"
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
-                            const intValue = parseInt(value);
-                            if (isNaN(intValue)) return;
-
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               opentop: prev.opentop.map((c, i) =>

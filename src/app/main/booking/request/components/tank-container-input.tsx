@@ -19,6 +19,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { DetailTitle } from "@/app/components/title-components";
 import { useMemo } from "react";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const TankContainerInput = ({
   list,
@@ -88,6 +89,7 @@ const TankContainerInput = ({
                       label="Size"
                       className="w-52 text-right"
                       suffixText="ft"
+                      required
                       initialValue={container.size}
                       options={
                         container.size !== ""
@@ -106,15 +108,12 @@ const TankContainerInput = ({
                         }));
                       }}
                     />
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       label="Quantity / Total"
-                      className="text-right"
+                      type="number"
+                      required
                       value={container.quantity.toString()}
-                      onInput={(e) => {
-                        const value = (e.target as HTMLInputElement).value;
-                        const intValue = parseInt(value);
-                        if (isNaN(intValue)) return;
-
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           tank: prev.tank.map((c, i) =>
@@ -122,30 +121,20 @@ const TankContainerInput = ({
                           ),
                         }));
                       }}
-                      onBlur={(e) => {
-                        e.target.value = container.quantity.toString();
-                      }}
                     />
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       label="Quantity / SOC"
-                      className="text-right"
+                      type="number"
                       value={container.soc.toString()}
                       error={container.soc > container.quantity}
                       errorText="SOC cannot be greater than Quantity"
-                      onInput={(e) => {
-                        const value = (e.target as HTMLInputElement).value;
-                        const intValue = parseInt(value);
-                        if (isNaN(intValue)) return;
-
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           tank: prev.tank.map((c, i) =>
                             i === index ? { ...c, soc: +value } : c
                           ),
                         }));
-                      }}
-                      onBlur={(e) => {
-                        e.target.value = container.soc.toString();
                       }}
                     />
                     <MdIconButton
