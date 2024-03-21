@@ -898,9 +898,13 @@ export default function SIPreview() {
               <NaToggleButton
                 label="Roll-Over (Including T/S)"
                 state={
-                  contactInformationData.subscrition.rollOver
-                    ? "checked"
-                    : "unchecked"
+                  !requestNumber
+                    ? contactInformationData.subscrition.rollOver
+                      ? "checked"
+                      : "unchecked"
+                    : contactInformationData.subscrition.rollOver
+                    ? "disabled-checked"
+                    : "disabled"
                 }
                 onClick={() => {
                   setContactInformationData((prev) => {
@@ -917,9 +921,13 @@ export default function SIPreview() {
               <NaToggleButton
                 label="Vessel Departure"
                 state={
-                  contactInformationData.subscrition.vesselDeparture
-                    ? "checked"
-                    : "unchecked"
+                  !requestNumber
+                    ? contactInformationData.subscrition.vesselDeparture
+                      ? "checked"
+                      : "unchecked"
+                    : contactInformationData.subscrition.vesselDeparture
+                    ? "disabled-checked"
+                    : "disabled"
                 }
                 onClick={() => {
                   setContactInformationData((prev) => {
@@ -936,9 +944,13 @@ export default function SIPreview() {
               <NaToggleButton
                 label="Vessel Advance / Delay"
                 state={
-                  contactInformationData.subscrition.vesselAdvanceDelay
-                    ? "checked"
-                    : "unchecked"
+                  !requestNumber
+                    ? contactInformationData.subscrition.vesselAdvanceDelay
+                      ? "checked"
+                      : "unchecked"
+                    : contactInformationData.subscrition.vesselAdvanceDelay
+                    ? "disabled-checked"
+                    : "disabled"
                 }
                 onClick={() => {
                   setContactInformationData((prev) => {

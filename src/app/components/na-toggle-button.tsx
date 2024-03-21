@@ -34,7 +34,11 @@ export default function NaToggleButton({
       <MdCheckbox
         className="m-1.5"
         checked={
-          state === "checked" ? true : state === "unchecked" ? false : undefined
+          state === "checked" || state === "disabled-checked"
+            ? true
+            : state === "unchecked" || state === "disabled"
+            ? false
+            : undefined
         }
         indeterminate={state === "indetermine"}
         disabled={state === "disabled" || state === "disabled-checked"}
