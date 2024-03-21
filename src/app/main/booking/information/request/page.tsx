@@ -60,7 +60,7 @@ export default function BookingRequestInformation() {
               orientation="vertical"
             />
             <AttachmentSection
-              files={dataSet[0].additionalInformation.attachments}
+              file={dataSet[0].additionalInformation.attachment}
               specialInstruction={
                 dataSet[0].additionalInformation.specialInstruction
               }

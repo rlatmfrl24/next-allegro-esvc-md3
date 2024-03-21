@@ -34,7 +34,7 @@ export default function AdditionalInformationStep() {
       setAdditionalInformationData((prev) => {
         return {
           ...prev,
-          attachments: file,
+          attachment: file,
         };
       });
     }
@@ -79,17 +79,17 @@ export default function AdditionalInformationStep() {
           File Upload
         </MdOutlinedButton>
         <MdChipSet>
-          {AdditionalInformationData.attachments && (
+          {AdditionalInformationData.attachment && (
             <MdInputChip
               key={faker.string.uuid()}
-              label={AdditionalInformationData.attachments.name}
+              label={AdditionalInformationData.attachment.name}
               selected
               handleTrailingActionFocus={() => {
                 console.log("delete");
                 setAdditionalInformationData((prev) => {
                   return {
                     ...prev,
-                    attachments: null,
+                    attachment: null,
                   };
                 });
               }}
