@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
@@ -27,15 +27,48 @@ export default function ContainerStep() {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
 
+  function ValidateContainerInput() {
+    // if container's type is "" or container's number is 0, return false
+    if (typeSelections.length === 0) {
+      return false;
+    }
+
+    let isValid = true;
+    typeSelections.forEach((type) => {
+      const typeKey = type.toLowerCase() as keyof typeof containerInformation;
+      const containerList = containerInformation[typeKey];
+      containerList.forEach((container) => {
+        if (
+          container.type === ContainerType.dry ||
+          container.type === ContainerType.reefer ||
+          container.type === ContainerType.opentop ||
+          container.type === ContainerType.flatrack ||
+          container.type === ContainerType.tank
+        ) {
+          if (container.size === "" || container.quantity === 0) {
+            isValid = false;
+          }
+        }
+      });
+    });
+
+    return isValid;
+  }
+
+  const isValid = useCallback(ValidateContainerInput, [
+    containerInformation,
+    typeSelections,
+  ]);
+
   useEffect(() => {
     setBookingRequestStep((prev) => ({
       ...prev,
       container: {
         ...prev.container,
-        isCompleted: true,
+        isCompleted: isValid(),
       },
     }));
-  }, [setBookingRequestStep]);
+  }, [isValid, setBookingRequestStep]);
 
   const moveToAdditionalInformationStep = () => {
     setBookingRequestStep((prev) => ({
