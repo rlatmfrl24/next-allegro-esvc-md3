@@ -28,36 +28,43 @@ export default function ContainerStep() {
     useRecoilState(ContainerState);
 
   function ValidateContainerInput() {
-    // if container's type is "" or container's number is 0, return false
-    if (typeSelections.length === 0) {
-      return false;
-    }
-
     let isValid = true;
-    typeSelections.forEach((type) => {
-      const typeKey = type.toLowerCase() as keyof typeof containerInformation;
-      const containerList = containerInformation[typeKey];
-      containerList.forEach((container) => {
-        if (
-          container.type === ContainerType.dry ||
-          container.type === ContainerType.reefer ||
-          container.type === ContainerType.opentop ||
-          container.type === ContainerType.flatrack ||
-          container.type === ContainerType.tank
-        ) {
-          if (container.size === "" || container.quantity === 0) {
-            isValid = false;
-          }
-        }
-      });
+
+    containerInformation.dry.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.reefer.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.opentop.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.flatrack.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.tank.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
     });
 
     return isValid;
   }
 
   const isValid = useCallback(ValidateContainerInput, [
-    containerInformation,
-    typeSelections,
+    containerInformation.dry,
+    containerInformation.flatrack,
+    containerInformation.opentop,
+    containerInformation.reefer,
+    containerInformation.tank,
   ]);
 
   useEffect(() => {
