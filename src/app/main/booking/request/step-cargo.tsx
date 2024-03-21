@@ -97,16 +97,6 @@ export default function CargoStep() {
       </MdTypography>
       <SubTitle title="Cargo" className="mb-4" />
       <div className="flex gap-4">
-        {/* <CommodityAutoComplete
-          className="flex-1"
-          required
-          defaultSelection={cargoPickUpReturnData.commodity}
-          onSelectionChange={(value) => {
-            setCargoPickUpReturnData((prev) => {
-              return { ...prev, commodity: value };
-            });
-          }}
-        /> */}
         <NAMultiAutoComplete
           required
           initialValue={cargoPickUpReturnData.commodity}
@@ -132,9 +122,13 @@ export default function CargoStep() {
         />
 
         <NAOutlinedTextField
-          value={cargoPickUpReturnData.grossWeight}
+          value={cargoPickUpReturnData.grossWeight.toString()}
           className="flex-1 text-right"
           required
+          enableClearButton={false}
+          onFocus={(e) => {
+            e.currentTarget.value = "";
+          }}
           onKeyDown={(e) => {
             //block non numeric input
             if (
@@ -143,6 +137,13 @@ export default function CargoStep() {
               e.key !== "."
             ) {
               e.preventDefault();
+            }
+          }}
+          handleValueChange={(value) => {
+            if (value === "") {
+              setCargoPickUpReturnData((prev) => {
+                return { ...prev, grossWeight: "0.000" };
+              });
             }
           }}
           onBlur={(e) => {

@@ -15,10 +15,12 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 
 export const NAOutlinedTextField = ({
   handleValueChange,
+  enableClearButton = true,
   className,
   ...props
 }: {
   handleValueChange?: (value: string) => void;
+  enableClearButton?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) => {
   const [hasValue, setHasValue] = useState(false);
@@ -50,21 +52,22 @@ export const NAOutlinedTextField = ({
         }}
         required={false}
       >
-        {!(props.type === "number" || props.type === "textarea") && (
-          <MdIconButton
-            slot="trailing-icon"
-            className={!props.disabled && hasValue ? "visible" : "invisible"}
-            onClick={() => {
-              if (inputRef.current) (inputRef.current as any).value = "";
-              setHasValue(false);
-              handleValueChange?.("");
-            }}
-          >
-            <MdIcon>
-              <CancelIcon />
-            </MdIcon>
-          </MdIconButton>
-        )}
+        {!(props.type === "number" || props.type === "textarea") &&
+          enableClearButton && (
+            <MdIconButton
+              slot="trailing-icon"
+              className={!props.disabled && hasValue ? "visible" : "invisible"}
+              onClick={() => {
+                if (inputRef.current) (inputRef.current as any).value = "";
+                setHasValue(false);
+                handleValueChange?.("");
+              }}
+            >
+              <MdIcon>
+                <CancelIcon />
+              </MdIcon>
+            </MdIconButton>
+          )}
       </MdOutlinedTextFieldBase>
       {props.required && (
         <MdTypography
