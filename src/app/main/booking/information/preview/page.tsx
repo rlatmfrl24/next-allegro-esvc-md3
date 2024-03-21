@@ -115,7 +115,7 @@ export default function BookingRequestPreview() {
               />
               <AttachmentSection
                 hasEdit
-                files={etcValue.attachments}
+                file={etcValue.attachments}
                 specialInstruction={etcValue.specialInstruction}
               />
             </div>

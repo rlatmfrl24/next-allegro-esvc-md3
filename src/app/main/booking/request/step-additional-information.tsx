@@ -15,6 +15,7 @@ import {
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { Upload } from "@mui/icons-material";
 import { SubTitle } from "@/app/components/title-components";
+import { faker } from "@faker-js/faker";
 
 export default function AdditionalInformationStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -25,16 +26,19 @@ export default function AdditionalInformationStep() {
     fileRef.current?.click();
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const mergedFiles = files.concat(AdditionalInformationData.attachments);
+    // change attachment to selected single file
+    const file = e.target.files?.[0];
+    console.log(file);
+
+    if (file) {
       setAdditionalInformationData((prev) => {
         return {
           ...prev,
-          attachments: mergedFiles,
+          attachments: file,
         };
       });
     }
+    e.target.value = "";
   };
 
   useEffect(() => {
@@ -75,30 +79,28 @@ export default function AdditionalInformationStep() {
           File Upload
         </MdOutlinedButton>
         <MdChipSet>
-          {AdditionalInformationData.attachments.map((file, index) => (
+          {AdditionalInformationData.attachments && (
             <MdInputChip
-              key={file.name}
-              label={file.name}
+              key={faker.string.uuid()}
+              label={AdditionalInformationData.attachments.name}
               selected
               handleTrailingActionFocus={() => {
+                console.log("delete");
                 setAdditionalInformationData((prev) => {
                   return {
                     ...prev,
-                    attachments: prev.attachments.filter(
-                      (item) => item.name !== file.name
-                    ),
+                    attachments: null,
                   };
                 });
               }}
             />
-          ))}
+          )}
         </MdChipSet>
       </div>
       <input
         type="file"
         ref={fileRef}
         className="hidden"
-        multiple
         onInput={handleFileChange}
       />
 
