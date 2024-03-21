@@ -76,7 +76,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.dry,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isDangerous: false,
@@ -93,7 +93,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.reefer,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         temperature: 0,
@@ -117,7 +117,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.opentop,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isAwkward: false,
@@ -152,7 +152,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.flatrack,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isAwkward: false,
@@ -187,7 +187,7 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.tank,
-        size: "20",
+        size: "",
         soc: 0,
         quantity: 0,
         isDangerous: false,

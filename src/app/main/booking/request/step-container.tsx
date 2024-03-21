@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
@@ -27,15 +27,55 @@ export default function ContainerStep() {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
 
+  function ValidateContainerInput() {
+    let isValid = true;
+
+    containerInformation.dry.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.reefer.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.opentop.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.flatrack.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+    containerInformation.tank.forEach((container) => {
+      if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+
+    return isValid;
+  }
+
+  const isValid = useCallback(ValidateContainerInput, [
+    containerInformation.dry,
+    containerInformation.flatrack,
+    containerInformation.opentop,
+    containerInformation.reefer,
+    containerInformation.tank,
+  ]);
+
   useEffect(() => {
     setBookingRequestStep((prev) => ({
       ...prev,
       container: {
         ...prev.container,
-        isCompleted: true,
+        isCompleted: isValid(),
       },
     }));
-  }, [setBookingRequestStep]);
+  }, [isValid, setBookingRequestStep]);
 
   const moveToAdditionalInformationStep = () => {
     setBookingRequestStep((prev) => ({

@@ -194,9 +194,11 @@ export default function SITable() {
     columnHelper.accessor("bookingNumber", {
       header: "Booking No.",
       cell: (info) => (
-        <MdTypography variant="body" size="medium" className="underline">
-          {info.getValue()}
-        </MdTypography>
+        <Link href={`/main/booking/information/confirmation`}>
+          <MdTypography variant="body" size="medium" className="underline">
+            {info.getValue()}
+          </MdTypography>
+        </Link>
       ),
       size: 160,
       minSize: 160,

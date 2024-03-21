@@ -7,12 +7,12 @@ import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 
 export default function AttachmentSection({
-  files,
+  file,
   specialInstruction,
   hasEdit,
 }: {
   hasEdit?: boolean;
-  files: File[];
+  file: File | null;
   specialInstruction: string;
 }) {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -41,11 +41,7 @@ export default function AttachmentSection({
         <MdTypography variant="body" size="medium" className="text-outline">
           Attachment
         </MdTypography>
-        <MdChipSet>
-          {files.map((file, index) => (
-            <LabelChip key={index} label={file.name} />
-          ))}
-        </MdChipSet>
+        <MdChipSet>{file && <LabelChip label={file.name} />}</MdChipSet>
         <MdTypography variant="body" size="medium" className="text-outline">
           Special Instruction
         </MdTypography>

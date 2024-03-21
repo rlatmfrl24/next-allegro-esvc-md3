@@ -151,7 +151,7 @@ export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
 export const AdditionalInformationState = atom<AdditionalInformatioType>({
   key: "etcDataState",
   default: {
-    attachments: [] as File[],
+    attachment: null,
     specialInstruction: "",
     duplicateCount: 1,
     emailSubscription: {

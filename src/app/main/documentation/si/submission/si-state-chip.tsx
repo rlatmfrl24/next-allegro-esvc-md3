@@ -6,7 +6,7 @@ export default function SIStateChip({ state }: { state: SIState }) {
     <MdTypography
       variant="label"
       size="medium"
-      className={`px-2 py-1 text-center rounded-lg w-fit ${
+      className={`px-2 py-1 text-left rounded-lg w-fit ${
         {
           None: "bg-surfaceContainerHigh text-onSurface",
           "Temporary Saved": "bg-surfaceContainerHigh text-onSurface",

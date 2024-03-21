@@ -27,16 +27,18 @@ export default function StepMarkDescription() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const mergedFiles = files.concat(markDescriptionStore.descriptionFiles);
+    // change attachment to selected single file
+    const file = e.target.files?.[0];
+
+    if (file) {
       setMarkDescriptionStore((prev) => {
         return {
           ...prev,
-          descriptionFiles: mergedFiles,
+          descriptionFile: file,
         };
       });
     }
+    e.target.value = "";
   };
 
   useEffect(() => {
@@ -95,29 +97,26 @@ export default function StepMarkDescription() {
               File Upload
             </MdOutlinedButton>
             <MdChipSet>
-              {markDescriptionStore.descriptionFiles.map((file, index) => (
+              {markDescriptionStore.descriptionFile && (
                 <MdInputChip
-                  key={file.name}
-                  label={file.name}
+                  key={markDescriptionStore.descriptionFile.name}
+                  label={markDescriptionStore.descriptionFile.name}
                   selected
                   handleTrailingActionFocus={() => {
                     setMarkDescriptionStore((prev) => {
                       return {
                         ...prev,
-                        descriptionFiles: prev.descriptionFiles.filter(
-                          (item) => item.name !== file.name
-                        ),
+                        descriptionFile: null,
                       };
                     });
                   }}
                 />
-              ))}
+              )}
             </MdChipSet>
             <input
               type="file"
               ref={fileRef}
               className="hidden"
-              multiple
               onInput={handleFileChange}
             />
           </div>

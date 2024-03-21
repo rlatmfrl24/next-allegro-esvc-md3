@@ -12,17 +12,34 @@ import {
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { DetailTitle } from "@/app/components/title-components";
+import { useMemo } from "react";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const ReeferContainerInput = ({
   list,
 }: {
   list: ReeferContainerInformationType[];
 }) => {
-  const setContainerInformation = useSetRecoilState(ContainerState);
+  const [containerInformation, setContainerInformation] =
+    useRecoilState(ContainerState);
+
+  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+
+  const selectableContainerSizeOptions = useMemo(() => {
+    // if container size is already selected, remove it from the options
+    containerInformation.reefer.forEach((container) => {
+      const index = defaultContainerSizeOptions.indexOf(container.size);
+      if (index !== -1) defaultContainerSizeOptions.splice(index, 1);
+    });
+
+    return [...defaultContainerSizeOptions];
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerInformation.reefer]);
 
   return (
     <Disclosure defaultOpen>
@@ -41,6 +58,10 @@ const ReeferContainerInput = ({
             <Disclosure.Panel className={`flex gap-4`}>
               <MdFilledTonalIconButton
                 className="mt-8 min-w-[40px] min-h-[40px]"
+                disabled={
+                  containerInformation.reefer.length ===
+                  defaultContainerSizeOptions.length
+                }
                 onClick={() => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -70,8 +91,16 @@ const ReeferContainerInput = ({
                           label="Size"
                           className="w-52 text-right"
                           suffixText="ft"
-                          initialValue={container.size.replaceAll("ft", "")}
-                          options={["20", "40", "45", "53"]}
+                          required
+                          initialValue={container.size}
+                          options={
+                            container.size !== ""
+                              ? [
+                                  container.size,
+                                  ...selectableContainerSizeOptions,
+                                ].sort()
+                              : selectableContainerSizeOptions
+                          }
                           onSelection={(size) => {
                             setContainerInformation((prev) => ({
                               ...prev,
@@ -81,11 +110,12 @@ const ReeferContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Quantity / Total"
+                          type="number"
+                          required
                           value={container.quantity.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               reefer: prev.reefer.map((c, i) =>
@@ -94,11 +124,11 @@ const ReeferContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Quantity / SOC"
+                          type="number"
                           value={container.soc.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               reefer: prev.reefer.map((c, i) =>
@@ -121,15 +151,11 @@ const ReeferContainerInput = ({
                       </div>
                       <div className="flex gap-4 items-start">
                         <div className="flex gap-2">
-                          <MdOutlinedTextField
+                          <NAOutlinedTextField
                             label="Degree"
+                            type="number"
                             value={container.temperature.toString()}
-                            onInput={(e) => {
-                              const value = (e.target as HTMLInputElement)
-                                .value;
-                              const intValue = parseInt(value);
-                              if (isNaN(intValue)) return;
-
+                            handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
@@ -156,15 +182,11 @@ const ReeferContainerInput = ({
                           />
                         </div>
                         <div className="flex gap-2">
-                          <MdOutlinedTextField
+                          <NAOutlinedTextField
                             label="Ventilation"
+                            type="number"
                             value={container.ventilation.toString()}
-                            onInput={(e) => {
-                              const value = (e.target as HTMLInputElement)
-                                .value;
-                              const intValue = parseInt(value);
-                              if (isNaN(intValue)) return;
-
+                            handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
@@ -213,15 +235,12 @@ const ReeferContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Humidity"
                           suffixText="%"
+                          type="number"
                           value={container.humidity.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
-                            const intValue = parseInt(value);
-                            if (isNaN(intValue)) return;
-
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               reefer: prev.reefer.map((c, i) =>
