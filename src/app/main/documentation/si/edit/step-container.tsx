@@ -9,7 +9,12 @@ import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 import ContainerTypeInputComponent from "./components/container-type-input";
-import { getEmptySIEditContainerData } from "@/app/main/util";
+import {
+  getEmptySIEditContainerData,
+  sumContainerMeasurement,
+  sumContainerQuantity,
+  sumContainerWeight,
+} from "@/app/main/util";
 import LabelChip from "@/app/components/label-chip";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 
@@ -63,70 +68,6 @@ export default function StepContainer() {
     }
   }
 
-  const sumContainerWeight = useMemo(() => {
-    let sum = 0;
-
-    // get all type of container
-    const allContainer = [
-      ...siContainerStore.dry,
-      ...siContainerStore.reefer,
-      ...siContainerStore.opentop,
-      ...siContainerStore.flatrack,
-      ...siContainerStore.tank,
-      ...siContainerStore.bulk,
-    ];
-
-    // sum all package weight
-    allContainer.forEach((container) => {
-      sum += container.packageWeight;
-    });
-
-    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }, [siContainerStore]);
-
-  const sumContainerMeasurement = useMemo(() => {
-    let sum = 0;
-
-    // get all type of container
-    const allContainer = [
-      ...siContainerStore.dry,
-      ...siContainerStore.reefer,
-      ...siContainerStore.opentop,
-      ...siContainerStore.flatrack,
-      ...siContainerStore.tank,
-      ...siContainerStore.bulk,
-    ];
-
-    // sum all package weight
-    allContainer.forEach((container) => {
-      sum += container.packageMeasurement;
-    });
-
-    // return with , separator
-    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }, [siContainerStore]);
-
-  const sumContainerPackageQuantity = useMemo(() => {
-    let sum = 0;
-
-    // get all type of container
-    const allContainer = [
-      ...siContainerStore.dry,
-      ...siContainerStore.reefer,
-      ...siContainerStore.opentop,
-      ...siContainerStore.flatrack,
-      ...siContainerStore.tank,
-      ...siContainerStore.bulk,
-    ];
-
-    // sum all package weight
-    allContainer.forEach((container) => {
-      sum += container.packageQuantity;
-    });
-
-    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }, [siContainerStore]);
-
   useEffect(() => {
     siContainerStore.dry.length === 0 &&
       setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.dry));
@@ -168,7 +109,14 @@ export default function StepContainer() {
             prominent
             className="text-primary"
           >
-            {sumContainerPackageQuantity}
+            {sumContainerQuantity([
+              ...siContainerStore.dry,
+              ...siContainerStore.reefer,
+              ...siContainerStore.opentop,
+              ...siContainerStore.flatrack,
+              ...siContainerStore.tank,
+              ...siContainerStore.bulk,
+            ])}
           </MdTypography>
           <DividerComponent
             orientation="vertical"
@@ -180,7 +128,14 @@ export default function StepContainer() {
             prominent
             className="text-primary"
           >
-            {sumContainerWeight}
+            {sumContainerWeight([
+              ...siContainerStore.dry,
+              ...siContainerStore.reefer,
+              ...siContainerStore.opentop,
+              ...siContainerStore.flatrack,
+              ...siContainerStore.tank,
+              ...siContainerStore.bulk,
+            ])}
           </MdTypography>
           <MdTypography
             variant="body"
@@ -199,7 +154,14 @@ export default function StepContainer() {
             prominent
             className="text-primary"
           >
-            {sumContainerMeasurement}
+            {sumContainerMeasurement([
+              ...siContainerStore.dry,
+              ...siContainerStore.reefer,
+              ...siContainerStore.opentop,
+              ...siContainerStore.flatrack,
+              ...siContainerStore.tank,
+              ...siContainerStore.bulk,
+            ])}
           </MdTypography>
           <MdTypography
             variant="body"

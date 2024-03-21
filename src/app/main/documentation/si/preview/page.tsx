@@ -1,5 +1,11 @@
 "use client";
 
+import classNames from "classnames";
+import { DateTime } from "luxon";
+import { useRouter, useSearchParams } from "next/navigation";
+import { CSSProperties, useMemo } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
 import LabelChip from "@/app/components/label-chip";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import PageTitle from "@/app/components/title-components";
@@ -7,6 +13,12 @@ import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
+  sumContainerMeasurement,
+  sumContainerQuantity,
+  sumContainerWeight,
+} from "@/app/main/util";
+import {
+  CurrentSIConditionState,
   SIEditContactInformationState,
   SIEditContainerState,
   SIEditMarkDescriptionState,
@@ -16,13 +28,15 @@ import {
 } from "@/app/store/si.store";
 import styles from "@/app/styles/base.module.css";
 import siStyles from "@/app/styles/si.module.css";
-import { SIState } from "@/app/util/typeDef/si";
+import {
+  MdElevation,
+  MdFilledButton,
+  MdFilledTonalButton,
+  MdFilledTonalIconButton,
+} from "@/app/util/md3";
+import { SIEditDataType, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { Fax, Mail, Phone } from "@mui/icons-material";
-import classNames from "classnames";
-import { DateTime } from "luxon";
-import { useMemo } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { EditOutlined, Fax, Mail, Phone } from "@mui/icons-material";
 
 const StringToSplit = (props: { text: string }) => {
   return (
@@ -49,11 +63,18 @@ export default function SIPreview() {
   );
 
   const setSIEditStep = useSetRecoilState(SIEditStepState);
+  const setCurrentSICondition = useSetRecoilState(CurrentSIConditionState);
   const cx = classNames.bind(styles);
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const requestNumber = searchParams.get("reqNo");
 
   const siBaseData = useMemo(() => {
     return {
-      requestNumber: `R${faker.string.numeric(10)}`,
+      requestNumber: requestNumber
+        ? requestNumber
+        : `R${faker.string.numeric(10)}`,
       bookingNumber: faker.string.alphanumeric(12).toUpperCase(),
       blState: faker.helpers.arrayElement(Object.values(SIState)),
       blNumber: faker.string.alphanumeric(12).toUpperCase(),
@@ -76,6 +97,8 @@ export default function SIPreview() {
       blType: faker.helpers.arrayElement(["", "FCL", "LCL"]),
       remarks: faker.helpers.maybe(() => faker.lorem.sentence()),
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function combineAddress(
@@ -133,9 +156,49 @@ export default function SIPreview() {
     );
   };
 
+  const EditButton = ({ target }: { target: string }) => {
+    return (
+      !requestNumber && (
+        <MdFilledTonalIconButton
+          className="absolute w-6 h-6 top-2 right-2"
+          onClick={() => {
+            setSIEditStep((prev) => {
+              const newArray = Object.keys(prev).map((k) => {
+                return {
+                  ...prev[k as keyof typeof prev],
+                  isSelected: k === target,
+                };
+              });
+              const newObject: typeof prev = newArray.reduce((prev, curr) => {
+                prev[curr.id as keyof typeof prev] = curr;
+                return prev;
+              }, {} as typeof prev);
+
+              return newObject;
+            });
+            router.push(`/main/documentation/si/edit?targetStep=${target}`);
+          }}
+        >
+          <EditOutlined
+            sx={{
+              fontSize: 16,
+            }}
+          />
+        </MdFilledTonalIconButton>
+      )
+    );
+  };
+
   return (
-    <div aria-label="container" className={styles.container}>
-      <PageTitle title="Shipping Instruction Preview" />
+    <div aria-label="container" className={cx(styles.container, "mb-11")}>
+      {requestNumber ? (
+        <MdTypography variant="title" size="large">
+          <span className="text-outline">Request No. </span>
+          {requestNumber}
+        </MdTypography>
+      ) : (
+        <PageTitle title="Shipping Instruction Preview" />
+      )}
       <div className={styles.area}>
         <div aria-label="title-area" className="flex justify-between">
           <MdTypography
@@ -154,18 +217,18 @@ export default function SIPreview() {
               <MdTypography variant="body" size="medium" prominent>
                 {contactInformationData.name}
               </MdTypography>
-              {contactInformationData.emailRecipient.length > 0 && (
-                <>
-                  <DividerComponent orientation="vertical" className="h-4" />
-                  <Mail
-                    sx={{ fontSize: 16 }}
-                    className="text-outlineVariant mr-1"
-                  />
-                  <MdTypography variant="body" size="medium">
-                    {contactInformationData.emailRecipient.join(", ")}
-                  </MdTypography>
-                </>
-              )}
+              <>
+                <DividerComponent orientation="vertical" className="h-4" />
+                <Mail
+                  sx={{ fontSize: 16 }}
+                  className="text-outlineVariant mr-1"
+                />
+                <MdTypography variant="body" size="medium">
+                  {contactInformationData.emailRecipient.length === 0
+                    ? "-"
+                    : contactInformationData.emailRecipient.join(", ")}
+                </MdTypography>
+              </>
             </div>
             <div className="flex justify-end items-center gap-2">
               <MdTypography variant="body" size="medium">
@@ -201,6 +264,7 @@ export default function SIPreview() {
               "col-span-2 row-span-2 flex-col"
             )}
           >
+            <EditButton target="parties" />
             <MdTypography
               variant="body"
               size="large"
@@ -288,6 +352,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="parties" />
             <MdTypography
               variant="body"
               size="large"
@@ -303,6 +368,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="parties" />
             <MdTypography
               variant="body"
               size="large"
@@ -354,6 +420,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="parties" />
             <MdTypography
               variant="body"
               size="large"
@@ -369,6 +436,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="parties" />
             <MdTypography
               variant="body"
               size="large"
@@ -415,6 +483,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="parties" />
             <MdTypography
               variant="body"
               size="large"
@@ -428,6 +497,7 @@ export default function SIPreview() {
             </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -441,6 +511,7 @@ export default function SIPreview() {
             </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -456,6 +527,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -473,6 +545,7 @@ export default function SIPreview() {
             )}
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -486,6 +559,7 @@ export default function SIPreview() {
             </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -501,6 +575,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -514,6 +589,7 @@ export default function SIPreview() {
             </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -527,6 +603,7 @@ export default function SIPreview() {
             </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -542,6 +619,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -558,6 +636,7 @@ export default function SIPreview() {
             className={cx(siStyles["preview-section"], "col-span-2 flex-row")}
           >
             <div className="flex-1">
+              <EditButton target="container" />
               <MdTypography
                 variant="body"
                 size="large"
@@ -565,6 +644,19 @@ export default function SIPreview() {
                 className="mb-2"
               >
                 Total Gross Weight
+              </MdTypography>
+              <MdTypography variant="body" size="medium" className="text-right">
+                <span className="font-semibold mr-1">
+                  {sumContainerWeight([
+                    ...containerData.dry,
+                    ...containerData.reefer,
+                    ...containerData.opentop,
+                    ...containerData.flatrack,
+                    ...containerData.tank,
+                    ...containerData.bulk,
+                  ])}
+                </span>
+                <span className="text-outline">{containerData.weightUnit}</span>
               </MdTypography>
             </div>
             <DividerComponent
@@ -580,6 +672,21 @@ export default function SIPreview() {
               >
                 Total Measurement
               </MdTypography>
+              <MdTypography variant="body" size="medium" className="text-right">
+                <span className="font-semibold mr-1">
+                  {sumContainerMeasurement([
+                    ...containerData.dry,
+                    ...containerData.reefer,
+                    ...containerData.opentop,
+                    ...containerData.flatrack,
+                    ...containerData.tank,
+                    ...containerData.bulk,
+                  ])}
+                </span>
+                <span className="text-outline">
+                  {containerData.measurementUnit}
+                </span>
+              </MdTypography>
             </div>
             <DividerComponent
               orientation="vertical"
@@ -594,11 +701,24 @@ export default function SIPreview() {
               >
                 Total Package
               </MdTypography>
+              <MdTypography variant="body" size="medium" className="text-right">
+                <span className="font-semibold mr-1">
+                  {sumContainerQuantity([
+                    ...containerData.dry,
+                    ...containerData.reefer,
+                    ...containerData.opentop,
+                    ...containerData.flatrack,
+                    ...containerData.tank,
+                    ...containerData.bulk,
+                  ])}
+                </span>
+              </MdTypography>
             </div>
           </div>
           <div
             className={cx(siStyles["preview-section"], "flex-row col-span-2")}
           >
+            <EditButton target="markDescription" />
             <div className="flex-1">
               <MdTypography
                 variant="body"
@@ -631,6 +751,7 @@ export default function SIPreview() {
             </div>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="container" />
             <MdTypography
               variant="body"
               size="large"
@@ -641,6 +762,7 @@ export default function SIPreview() {
             </MdTypography>
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
+            <EditButton target="markDescription" />
             <MdTypography
               variant="body"
               size="large"
@@ -660,6 +782,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "flex-col col-span-2")}
           >
+            <EditButton target="markDescription" />
             <MdTypography
               variant="body"
               size="large"
@@ -675,6 +798,7 @@ export default function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "col-span-2 flex-col")}
           >
+            <EditButton target="routeBL" />
             <MdTypography
               variant="body"
               size="large"
@@ -831,6 +955,34 @@ export default function SIPreview() {
               />
             </div>
           </div>
+        </div>
+      </div>
+      <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
+        <div
+          className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
+          style={
+            {
+              "--md-elevation-level": 4,
+            } as CSSProperties
+          }
+        >
+          <MdElevation />
+          <MdFilledButton
+            onClick={() => {
+              const newSICondition = {
+                parties: partiesData,
+                routeBL: routeBLData,
+                container: containerData,
+                markDescription: markDescriptionData,
+                contactInformation: contactInformationData,
+              } as SIEditDataType;
+              console.log(newSICondition);
+              setCurrentSICondition(newSICondition);
+              router.push("/main/documentation/si/submission");
+            }}
+          >
+            Submit
+          </MdFilledButton>
         </div>
       </div>
     </div>

@@ -222,3 +222,30 @@ export function getEmptyContainerData(type: ContainerType) {
       return {} as ContainerInformationType;
   }
 }
+
+export function sumContainerWeight(siContainers: SIContainerInputProps[]) {
+  return siContainers
+    .reduce((acc, container) => {
+      return acc + container.packageWeight;
+    }, 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function sumContainerQuantity(siContainers: SIContainerInputProps[]) {
+  return siContainers
+    .reduce((acc, container) => {
+      return acc + container.packageQuantity;
+    }, 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function sumContainerMeasurement(siContainers: SIContainerInputProps[]) {
+  return siContainers
+    .reduce((acc, container) => {
+      return acc + container.packageMeasurement;
+    }, 0)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
