@@ -17,6 +17,7 @@ import DangerousCargoInput from "./dangerous-cargo-input";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { DetailTitle } from "@/app/components/title-components";
 import { useMemo } from "react";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const ReeferContainerInput = ({
   list,
@@ -90,6 +91,7 @@ const ReeferContainerInput = ({
                           label="Size"
                           className="w-52 text-right"
                           suffixText="ft"
+                          required
                           initialValue={container.size}
                           options={
                             container.size !== ""
@@ -108,11 +110,12 @@ const ReeferContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Quantity / Total"
+                          type="number"
+                          required
                           value={container.quantity.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               reefer: prev.reefer.map((c, i) =>
@@ -121,11 +124,11 @@ const ReeferContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Quantity / SOC"
+                          type="number"
                           value={container.soc.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               reefer: prev.reefer.map((c, i) =>
@@ -148,15 +151,11 @@ const ReeferContainerInput = ({
                       </div>
                       <div className="flex gap-4 items-start">
                         <div className="flex gap-2">
-                          <MdOutlinedTextField
+                          <NAOutlinedTextField
                             label="Degree"
+                            type="number"
                             value={container.temperature.toString()}
-                            onInput={(e) => {
-                              const value = (e.target as HTMLInputElement)
-                                .value;
-                              const intValue = parseInt(value);
-                              if (isNaN(intValue)) return;
-
+                            handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
@@ -183,15 +182,11 @@ const ReeferContainerInput = ({
                           />
                         </div>
                         <div className="flex gap-2">
-                          <MdOutlinedTextField
+                          <NAOutlinedTextField
                             label="Ventilation"
+                            type="number"
                             value={container.ventilation.toString()}
-                            onInput={(e) => {
-                              const value = (e.target as HTMLInputElement)
-                                .value;
-                              const intValue = parseInt(value);
-                              if (isNaN(intValue)) return;
-
+                            handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
@@ -240,15 +235,12 @@ const ReeferContainerInput = ({
                             }));
                           }}
                         />
-                        <MdOutlinedTextField
+                        <NAOutlinedTextField
                           label="Humidity"
                           suffixText="%"
+                          type="number"
                           value={container.humidity.toString()}
-                          onInput={(e) => {
-                            const value = (e.target as HTMLInputElement).value;
-                            const intValue = parseInt(value);
-                            if (isNaN(intValue)) return;
-
+                          handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               reefer: prev.reefer.map((c, i) =>

@@ -18,6 +18,7 @@ import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const DryContainerInput = ({
   list,
@@ -85,6 +86,7 @@ const DryContainerInput = ({
                   <div className="flex gap-4 items-start">
                     <NAOutlinedListBox
                       label="Size"
+                      required
                       className="w-52 text-right"
                       suffixText="ft"
                       initialValue={container.size}
@@ -105,15 +107,12 @@ const DryContainerInput = ({
                         }));
                       }}
                     />
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       label="Quantity / Total"
-                      className="text-right"
+                      required
+                      type="number"
                       value={container.quantity.toString()}
-                      onInput={(e) => {
-                        const value = (e.target as HTMLInputElement).value;
-                        const intValue = parseInt(value);
-                        if (isNaN(intValue)) return;
-
+                      handleValueChange={(value) => {
                         setContainerInformation((prev) => ({
                           ...prev,
                           dry: prev.dry.map((c, i) =>
@@ -125,21 +124,20 @@ const DryContainerInput = ({
                         e.target.value = container.quantity.toString();
                       }}
                     />
-                    <MdOutlinedTextField
+                    <NAOutlinedTextField
                       label="Quantity / SOC"
-                      className="text-right"
                       value={container.soc.toString()}
                       error={container.soc > container.quantity}
                       errorText="SOC cannot be greater than Quantity"
-                      onInput={(e) => {
-                        const value = (e.target as HTMLInputElement).value;
-                        const intValue = parseInt(value);
-                        if (isNaN(intValue)) return;
+                      type="number"
+                      handleValueChange={(value) => {
+                        let intValue = parseInt(value);
+                        if (isNaN(intValue)) intValue = 0;
 
                         setContainerInformation((prev) => ({
                           ...prev,
                           dry: prev.dry.map((c, i) =>
-                            i === index ? { ...c, soc: +value } : c
+                            i === index ? { ...c, soc: +intValue } : c
                           ),
                         }));
                       }}
