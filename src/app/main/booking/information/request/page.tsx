@@ -26,8 +26,8 @@ import { BookingStatus } from "@/app/util/typeDef/boooking";
 export default function BookingRequestInformation() {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
   const dataSet = useRecoilValue(BookingInformationState);
-
   const router = useRouter();
+  const cx = classNames.bind(styles);
 
   useEffect(() => {
     if (dataSet.length === 0) {
@@ -35,10 +35,6 @@ export default function BookingRequestInformation() {
       router.push("/main/booking/request");
     }
   }, [dataSet.length, router]);
-
-  const cx = classNames.bind(styles);
-
-  console.log(currentBookingData, dataSet);
 
   return dataSet.length === 0 ? (
     <></>
@@ -82,6 +78,7 @@ export default function BookingRequestInformation() {
               }
             />
           </div>
+
           <DividerComponent className="my-8" />
           <div className="flex items-stretch">
             <Section title="Duplicate reservation">

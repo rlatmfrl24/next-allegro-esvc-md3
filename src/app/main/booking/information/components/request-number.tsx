@@ -12,7 +12,7 @@ export default function RequestNumberSection({
   specialInstruction: string;
 }) {
   return (
-    <div className="flex justify-center items-center flex-col border-b border-outlineVariant mx-4 gap-2 pt-2 pb-4">
+    <div className="flex justify-center items-center flex-col border-b border-outlineVariant mx-6 gap-2 pt-4 pb-4">
       <div className="flex gap-4 items-center">
         <BookingStatusChip status={bookingStatus} />
         <MdTypography
