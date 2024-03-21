@@ -123,7 +123,7 @@ export function DashboardCardConstructor({
     if (item.id === "tracking") {
       return (
         <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
-          <div className="px-4 flex-1 flex flex-col justify-center gap-4">
+          <div className="px-4 flex-1 flex flex-col justify-center gap-4 py-4">
             <QuickTracking />
           </div>
         </DashboardCard>
