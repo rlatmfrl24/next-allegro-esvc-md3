@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import { DateTime } from "luxon";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, Suspense, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import LabelChip from "@/app/components/label-chip";
@@ -38,22 +38,15 @@ import { SIEditDataType, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { EditOutlined, Fax, Mail, Phone } from "@mui/icons-material";
 
-const StringToSplit = (props: { text: string }) => {
+export default function PreviewPage() {
   return (
-    <>
-      {props.text.split("\n").map((line, index) => {
-        return (
-          <span key={index}>
-            {line}
-            <br />
-          </span>
-        );
-      })}
-    </>
+    <Suspense>
+      <SIPreview />
+    </Suspense>
   );
-};
+}
 
-export default function SIPreview() {
+function SIPreview() {
   const partiesData = useRecoilValue(SIEditPartiesState);
   const routeBLData = useRecoilValue(SIEditRouteBLState);
   const containerData = useRecoilValue(SIEditContainerState);
@@ -199,6 +192,7 @@ export default function SIPreview() {
       ) : (
         <PageTitle title="Shipping Instruction Preview" />
       )}
+
       <div className={styles.area}>
         <div aria-label="title-area" className="flex justify-between">
           <MdTypography
@@ -1002,3 +996,18 @@ export default function SIPreview() {
     </div>
   );
 }
+
+const StringToSplit = (props: { text: string }) => {
+  return (
+    <>
+      {props.text.split("\n").map((line, index) => {
+        return (
+          <span key={index}>
+            {line}
+            <br />
+          </span>
+        );
+      })}
+    </>
+  );
+};
