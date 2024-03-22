@@ -1,6 +1,6 @@
 "use client";
 
-import { MdFilledButton } from "../util/md3";
+import { MdCircularProgress, MdFilledButton } from "../util/md3";
 import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import CommodityAutoComplete from "../main/booking/request/components/commodity-search";
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "../components/na-multi-autocomplete";
+import EmptyResultPlaceholder from "../components/empty-placeholder";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -104,6 +105,15 @@ export default function Test() {
         >
           Clear Cookie
         </MdFilledButton>
+      </div>
+      <div className="flex gap-2">
+        <MdCircularProgress indeterminate />
+        <MdCircularProgress value={0.3} />
+        <MdCircularProgress value={0.6} />
+        <MdCircularProgress value={0.9} />
+      </div>
+      <div className="flex gap-2 justify-center">
+        <EmptyResultPlaceholder text="No Data Found." />
       </div>
     </div>
   );
