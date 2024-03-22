@@ -5,7 +5,7 @@ import styles from "@/app/styles/base.module.css";
 export default function EmptyResultPlaceholder({ text }: { text?: string }) {
   return (
     <div className={styles.area + ` flex items-center`}>
-      <div className="my-10">
+      <div className="my-10 flex flex-col items-center">
         <EmptyResultIcon className="mb-8" />
         <MdTypography
           variant="headline"

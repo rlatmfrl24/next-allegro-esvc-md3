@@ -29,16 +29,24 @@ import {
 import styles from "@/app/styles/base.module.css";
 import siStyles from "@/app/styles/si.module.css";
 import {
+  MdAssistChip,
   MdElevation,
   MdFilledButton,
   MdFilledTonalButton,
   MdFilledTonalIconButton,
+  MdIcon,
 } from "@/app/util/md3";
 import { SIEditDataType, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { EditOutlined, Fax, Mail, Phone } from "@mui/icons-material";
+import {
+  AttachFile,
+  EditOutlined,
+  Fax,
+  Mail,
+  Phone,
+} from "@mui/icons-material";
 
-export default function PreviewPage() {
+export default function SIPreviewPage() {
   return (
     <Suspense>
       <SIPreview />
@@ -785,7 +793,19 @@ function SIPreview() {
             >
               Kind of Packages: Description of Goods
             </MdTypography>
-            <MdTypography variant="body" size="medium">
+            {markDescriptionData.descriptionFile && (
+              <MdAssistChip
+                hasIcon
+                label={markDescriptionData.descriptionFile.name}
+                className="w-fit"
+              >
+                <MdIcon slot="icon">
+                  <AttachFile sx={{ fontSize: 18 }} />
+                </MdIcon>
+              </MdAssistChip>
+            )}
+
+            <MdTypography variant="body" size="medium" className="mt-2">
               {StringToSplit({ text: markDescriptionData.description })}
             </MdTypography>
           </div>
@@ -859,6 +879,30 @@ function SIPreview() {
                       prepaid: "Prepaid",
                       collect: "Collect",
                     }[routeBLData.freightTerms]
+                  }
+                </MdTypography>
+              </div>
+              <DividerComponent
+                orientation="vertical"
+                className="border-dotted mx-4"
+              />
+
+              <div className="flex-1">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  prominent
+                  className="mb-2"
+                >
+                  House B/L Involve
+                </MdTypography>
+                <MdTypography variant="body" size="medium">
+                  {
+                    {
+                      none: "None",
+                      console: "Console (Exist)",
+                      simple: "Simple (Do not Exist)",
+                    }[routeBLData.houseBLInvovled]
                   }
                 </MdTypography>
               </div>

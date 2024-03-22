@@ -12,6 +12,7 @@ import {
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
+import { faker } from "@faker-js/faker";
 import { Upload, UploadFile } from "@mui/icons-material";
 import { useCallback, useEffect, useRef } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -38,7 +39,7 @@ export default function StepMarkDescription() {
         };
       });
     }
-    e.target.value = "";
+    e.currentTarget.value = "";
   };
 
   useEffect(() => {
@@ -99,7 +100,7 @@ export default function StepMarkDescription() {
             <MdChipSet>
               {markDescriptionStore.descriptionFile && (
                 <MdInputChip
-                  key={markDescriptionStore.descriptionFile.name}
+                  key={faker.string.uuid()}
                   label={markDescriptionStore.descriptionFile.name}
                   selected
                   handleTrailingActionFocus={() => {
@@ -116,8 +117,8 @@ export default function StepMarkDescription() {
             <input
               type="file"
               ref={fileRef}
-              className="hidden"
               onInput={handleFileChange}
+              hidden
             />
           </div>
           <MdOutlinedTextField
