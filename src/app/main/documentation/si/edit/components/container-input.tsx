@@ -236,6 +236,56 @@ export default function ContainerInput({
       </div>
       <div className="flex gap-2">
         <NAOutlinedListBox
+          label="Kind"
+          options={[
+            "Shipper",
+            "Carrier",
+            "Consolidator",
+            "Customs",
+            "Unknown",
+            "Quarantine Agency",
+            "Terminal Agency",
+          ]}
+          className="w-52"
+          initialValue={SealKind[container.secondSeal.kind]}
+          onSelection={(value) => {
+            updateContainerStore(container, "secondSeal", {
+              ...container.secondSeal,
+              kind: SealKind[value as keyof typeof SealKind],
+            });
+          }}
+        />
+        <NAOutlinedListBox
+          label="Seal No. 02"
+          options={["Merchanical Seal", "Electronic Seal"]}
+          className="w-52"
+          initialValue={
+            container.secondSeal.type === "merchanical"
+              ? "Merchanical Seal"
+              : "Electronic Seal"
+          }
+          onSelection={(value) => {
+            updateContainerStore(container, "secondSeal", {
+              ...container.secondSeal,
+              type: value === "Merchanical Seal" ? "merchanical" : "electronic",
+            });
+          }}
+        />
+        <NAOutlinedTextField
+          value={container.secondSeal.description}
+          placeholder="Seal No. 02"
+          className="flex-1"
+          handleValueChange={(value) => {
+            updateContainerStore(container, "secondSeal", {
+              ...container.secondSeal,
+              description: value,
+            });
+          }}
+        />
+      </div>
+
+      <div className="flex gap-2">
+        <NAOutlinedListBox
           label="Package"
           className="flex-1"
           options={tempPackageList}
@@ -244,36 +294,23 @@ export default function ContainerInput({
             updateContainerStore(container, "packageType", value);
           }}
         />
-        <MdOutlinedTextField
+        <NAOutlinedTextField
           value={container.packageQuantity.toString()}
-          className="w-52 text-right"
-          onBlur={(e) => {
-            e.target.value = container.packageQuantity.toString();
-          }}
-          onInput={(e) => {
-            const value = (e.target as HTMLInputElement).value;
-            const intValue = parseInt(value);
-            if (isNaN(intValue)) return;
-
-            updateContainerStore(container, "packageQuantity", intValue);
+          className="w-52"
+          type="number"
+          handleValueChange={(value) => {
+            updateContainerStore(container, "packageQuantity", parseInt(value));
           }}
         />
       </div>
       <div className="flex gap-4">
         <div className="flex gap-2">
-          <MdOutlinedTextField
+          <NAOutlinedTextField
             label="Weight"
             value={container.packageWeight.toString()}
-            className="text-right"
-            onBlur={(e) => {
-              e.target.value = container.packageWeight.toString();
-            }}
-            onInput={(e) => {
-              const value = (e.target as HTMLInputElement).value;
-              const intValue = parseInt(value);
-              if (isNaN(intValue)) return;
-
-              updateContainerStore(container, "packageWeight", intValue);
+            type="number"
+            handleValueChange={(value) => {
+              updateContainerStore(container, "packageWeight", parseInt(value));
             }}
           />
           <NAOutlinedListBox
@@ -288,19 +325,16 @@ export default function ContainerInput({
           />
         </div>
         <div className="flex gap-2">
-          <MdOutlinedTextField
+          <NAOutlinedTextField
             label="Measure"
             value={container.packageMeasurement.toString()}
-            className="text-right"
-            onBlur={(e) => {
-              e.target.value = container.packageMeasurement.toString();
-            }}
-            onInput={(e) => {
-              const value = (e.target as HTMLInputElement).value;
-              const intValue = parseInt(value);
-              if (isNaN(intValue)) return;
-
-              updateContainerStore(container, "packageMeasurement", intValue);
+            type="number"
+            handleValueChange={(value) => {
+              updateContainerStore(
+                container,
+                "packageMeasurement",
+                parseInt(value)
+              );
             }}
           />
           <NAOutlinedListBox

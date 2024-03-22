@@ -862,6 +862,30 @@ function SIPreview() {
                   }
                 </MdTypography>
               </div>
+              <DividerComponent
+                orientation="vertical"
+                className="border-dotted mx-4"
+              />
+
+              <div className="flex-1">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  prominent
+                  className="mb-2"
+                >
+                  House B/L Involve
+                </MdTypography>
+                <MdTypography variant="body" size="medium">
+                  {
+                    {
+                      none: "None",
+                      console: "Console (Exist)",
+                      simple: "Simple (Do not Exist)",
+                    }[routeBLData.houseBLInvovled]
+                  }
+                </MdTypography>
+              </div>
             </div>
             <div>
               <MdTypography

@@ -102,12 +102,19 @@ export default function StepContainer() {
         <MdTypography variant="title" size="large">
           Container
         </MdTypography>
-        <div className="bg-surfaceContainerHigh rounded-2xl px-4 py-1 flex items-center">
+        <div className="bg-surfaceContainerHigh rounded-2xl px-4 py-1 flex items-center relative">
+          <MdTypography
+            variant="label"
+            size="small"
+            className="text-outline absolute -top-1.5"
+          >
+            Total
+          </MdTypography>
           <MdTypography
             variant="body"
             size="medium"
             prominent
-            className="text-primary"
+            className="text-primary min-w-[88px] text-right"
           >
             {sumContainerQuantity([
               ...siContainerStore.dry,
@@ -126,7 +133,7 @@ export default function StepContainer() {
             variant="body"
             size="medium"
             prominent
-            className="text-primary"
+            className="text-primary min-w-16 text-right"
           >
             {sumContainerWeight([
               ...siContainerStore.dry,
@@ -152,7 +159,7 @@ export default function StepContainer() {
             variant="body"
             size="medium"
             prominent
-            className="text-primary"
+            className="text-primary min-w-16 text-right"
           >
             {sumContainerMeasurement([
               ...siContainerStore.dry,
