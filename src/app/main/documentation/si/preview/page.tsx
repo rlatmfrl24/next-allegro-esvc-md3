@@ -38,7 +38,7 @@ import { SIEditDataType, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { EditOutlined, Fax, Mail, Phone } from "@mui/icons-material";
 
-export default function PreviewPage() {
+export default function SIPreviewPage() {
   return (
     <Suspense>
       <SIPreview />
