@@ -67,25 +67,26 @@ const QuickSearch = () => {
           </MdTypography>
         </MdPrimaryTab>
       </MdTabs>
-      <div
-        id="schedule-panel"
-        className="flex flex-col flex-1 px-6 py-4"
-        role="tabpanel"
-        aria-labelledby="tab-schedule"
-        hidden={tabItemId !== "tab-schedule"}
-      >
-        <QuickSchedule />
-      </div>
-      <div
-        id="quick-tracking-panel"
-        className={`flex-1 flex px-6 py-4 gap-4 flex-col ${
-          tabItemId === "tab-quick-tracking" ? "flex" : "hidden"
-        }`}
-        role="tabpanel"
-        aria-labelledby="tab-quick-tracking"
-      >
-        <QuickTracking />
-      </div>
+      {tabItemId === "tab-schedule" && (
+        <div
+          id="schedule-panel"
+          className="flex flex-col flex-1 px-6 py-4"
+          role="tabpanel"
+          aria-labelledby="tab-schedule"
+        >
+          <QuickSchedule />
+        </div>
+      )}
+      {tabItemId === "tab-quick-tracking" && (
+        <div
+          id="quick-tracking-panel"
+          className={`flex-1 flex px-6 py-4 gap-4 flex-col`}
+          role="tabpanel"
+          aria-labelledby="tab-quick-tracking"
+        >
+          <QuickTracking />
+        </div>
+      )}
     </MdElevatedCard>
   );
 };

@@ -151,78 +151,77 @@ const ShipperInfo = () => {
             />
           </Disclosure.Button>
           <Disclosure.Panel className={`flex flex-col gap-4`}>
-            <div className="flex gap-4">
-              <NAMultiAutoComplete
-                label="Company"
-                required
-                className="flex-1"
-                initialValue={{
-                  name: partiesStore.shipper.companyName,
-                  address: partiesStore.shipper.fullAddress,
-                }}
-                isAllowOnlyListItems={false}
-                itemList={companyList.map((company) => {
+            <NAMultiAutoComplete
+              label="Company"
+              required
+              className="flex-1"
+              initialValue={{
+                name: partiesStore.shipper.companyName,
+                address: partiesStore.shipper.fullAddress,
+              }}
+              isAllowOnlyListItems={false}
+              itemList={companyList.map((company) => {
+                return {
+                  name: company.name,
+                  address: `${company.street}, ${company.city}, ${company.country}, ${company.postalCode}`,
+                };
+              })}
+              onQueryChange={(query) => {
+                setPartiesStore((prev) => {
                   return {
-                    name: company.name,
-                    address: `${company.street}, ${company.city}, ${company.country}, ${company.postalCode}`,
+                    ...prev,
+                    shipper: {
+                      ...prev.shipper,
+                      companyName: query,
+                    },
                   };
-                })}
-                onQueryChange={(query) => {
+                });
+              }}
+              onItemSelection={(item) => {
+                if (item.name === "") {
                   setPartiesStore((prev) => {
                     return {
                       ...prev,
                       shipper: {
                         ...prev.shipper,
-                        companyName: query,
+                        companyName: "",
                       },
                     };
                   });
-                }}
-                onItemSelection={(item) => {
-                  if (item.name === "") {
-                    setPartiesStore((prev) => {
-                      return {
-                        ...prev,
-                        shipper: {
-                          ...prev.shipper,
-                          companyName: "",
-                        },
-                      };
-                    });
-                  } else {
-                    setPartiesStore((prev) => {
-                      const addressArray = item.address.split(",");
+                } else {
+                  setPartiesStore((prev) => {
+                    const addressArray = item.address.split(",");
 
-                      return {
-                        ...prev,
-                        shipper: {
-                          ...prev.shipper,
-                          companyName: item.name,
-                          fullAddress: item.address,
-                        },
-                      };
-                    });
-                  }
-                }}
-              />
-              <NAOutlinedTextField
-                required
-                label="Address"
-                value={partiesStore.shipper.fullAddress || ""}
-                className="flex-1"
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
                     return {
                       ...prev,
                       shipper: {
                         ...prev.shipper,
-                        fullAddress: value,
+                        companyName: item.name,
+                        fullAddress: item.address,
                       },
                     };
                   });
-                }}
-              />
-            </div>
+                }
+              }}
+            />
+            <NAOutlinedTextField
+              required
+              label="Address"
+              type="textarea"
+              value={partiesStore.shipper.fullAddress || ""}
+              className="flex-1"
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    shipper: {
+                      ...prev.shipper,
+                      fullAddress: value,
+                    },
+                  };
+                });
+              }}
+            />
             <div className="flex gap-4">
               <NAOutlinedTextField
                 label="Country"
@@ -290,6 +289,7 @@ const ShipperInfo = () => {
             <div className="flex gap-4">
               <NAOutlinedTextField
                 label="EORI No"
+                className="flex-1"
                 value={partiesStore.shipper.eoriNumber || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -451,79 +451,78 @@ const ConsigneeInfo = () => {
                 }
               }}
             />
-            <div className="flex gap-4">
-              <NAMultiAutoComplete
-                label="Company"
-                className="flex-1"
-                required
-                isAllowOnlyListItems={false}
-                itemList={companyList.map((company) => {
+            <NAMultiAutoComplete
+              label="Company"
+              className="flex-1"
+              required
+              isAllowOnlyListItems={false}
+              itemList={companyList.map((company) => {
+                return {
+                  name: company.name,
+                  address: `${company.street}, ${company.city}, ${company.country}, ${company.postalCode}`,
+                };
+              })}
+              initialValue={{
+                name: partiesStore.consignee.companyName,
+                address: partiesStore.consignee.fullAddress,
+              }}
+              onQueryChange={(query) => {
+                setPartiesStore((prev) => {
                   return {
-                    name: company.name,
-                    address: `${company.street}, ${company.city}, ${company.country}, ${company.postalCode}`,
+                    ...prev,
+                    consignee: {
+                      ...prev.consignee,
+                      companyName: query,
+                    },
                   };
-                })}
-                initialValue={{
-                  name: partiesStore.consignee.companyName,
-                  address: partiesStore.consignee.fullAddress,
-                }}
-                onQueryChange={(query) => {
+                });
+              }}
+              onItemSelection={(item) => {
+                if (item.name === "") {
                   setPartiesStore((prev) => {
                     return {
                       ...prev,
                       consignee: {
                         ...prev.consignee,
-                        companyName: query,
+                        companyName: "",
                       },
                     };
                   });
-                }}
-                onItemSelection={(item) => {
-                  if (item.name === "") {
-                    setPartiesStore((prev) => {
-                      return {
-                        ...prev,
-                        consignee: {
-                          ...prev.consignee,
-                          companyName: "",
-                        },
-                      };
-                    });
-                  } else {
-                    setPartiesStore((prev) => {
-                      const addressArray = item.address.split(",");
+                } else {
+                  setPartiesStore((prev) => {
+                    const addressArray = item.address.split(",");
 
-                      return {
-                        ...prev,
-                        consignee: {
-                          ...prev.consignee,
-                          companyName: item.name,
-                          fullAddress: item.address,
-                        },
-                      };
-                    });
-                  }
-                }}
-              />
-              <NAOutlinedTextField
-                required
-                label="Address"
-                className="flex-1"
-                value={partiesStore.consignee.fullAddress || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
                     return {
                       ...prev,
                       consignee: {
                         ...prev.consignee,
-                        fullAddress: value,
+                        companyName: item.name,
+                        fullAddress: item.address,
                       },
                     };
                   });
-                }}
-              />
-            </div>
-            <div className="flex gap-4">
+                }
+              }}
+            />
+            <NAOutlinedTextField
+              required
+              label="Address"
+              className="flex-1"
+              type="textarea"
+              value={partiesStore.consignee.fullAddress || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    consignee: {
+                      ...prev.consignee,
+                      fullAddress: value,
+                    },
+                  };
+                });
+              }}
+            />
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="Country"
                 value={partiesStore.consignee.addressCountry || ""}
@@ -586,9 +585,10 @@ const ConsigneeInfo = () => {
                 });
               }}
             />
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="EORI No"
+                className="flex-1"
                 value={partiesStore.consignee.eoriNumber || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -619,7 +619,7 @@ const ConsigneeInfo = () => {
                 }}
               />
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="Tax ID"
                 value={partiesStore.consignee.taxID || ""}
@@ -668,10 +668,11 @@ const ConsigneeInfo = () => {
                 }}
               />
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="Email"
                 type="email"
+                className="flex-1"
                 value={partiesStore.consignee.email || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -687,6 +688,7 @@ const ConsigneeInfo = () => {
               />
               <NAOutlinedTextField
                 label="Contact Person"
+                className="flex-1"
                 value={partiesStore.consignee.contactPerson || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -794,79 +796,78 @@ const NotifyPartyInfo = () => {
                 }
               }}
             />
-            <div className="flex gap-4">
-              <NAMultiAutoComplete
-                label="Company"
-                className="flex-1"
-                required
-                isAllowOnlyListItems={false}
-                itemList={companyList.map((company) => {
+            <NAMultiAutoComplete
+              label="Company"
+              className="flex-1"
+              required
+              isAllowOnlyListItems={false}
+              itemList={companyList.map((company) => {
+                return {
+                  name: company.name,
+                  address: `${company.street}, ${company.city}, ${company.country}, ${company.postalCode}`,
+                };
+              })}
+              initialValue={{
+                name: partiesStore.notifyParty.companyName,
+                address: partiesStore.notifyParty.fullAddress,
+              }}
+              onQueryChange={(query) => {
+                setPartiesStore((prev) => {
                   return {
-                    name: company.name,
-                    address: `${company.street}, ${company.city}, ${company.country}, ${company.postalCode}`,
+                    ...prev,
+                    notifyParty: {
+                      ...prev.notifyParty,
+                      companyName: query,
+                    },
                   };
-                })}
-                initialValue={{
-                  name: partiesStore.notifyParty.companyName,
-                  address: partiesStore.notifyParty.fullAddress,
-                }}
-                onQueryChange={(query) => {
+                });
+              }}
+              onItemSelection={(item) => {
+                if (item.name === "") {
                   setPartiesStore((prev) => {
                     return {
                       ...prev,
                       notifyParty: {
                         ...prev.notifyParty,
-                        companyName: query,
+                        companyName: "",
                       },
                     };
                   });
-                }}
-                onItemSelection={(item) => {
-                  if (item.name === "") {
-                    setPartiesStore((prev) => {
-                      return {
-                        ...prev,
-                        notifyParty: {
-                          ...prev.notifyParty,
-                          companyName: "",
-                        },
-                      };
-                    });
-                  } else {
-                    setPartiesStore((prev) => {
-                      const addressArray = item.address.split(",");
+                } else {
+                  setPartiesStore((prev) => {
+                    const addressArray = item.address.split(",");
 
-                      return {
-                        ...prev,
-                        notifyParty: {
-                          ...prev.notifyParty,
-                          companyName: item.name,
-                          fullAddress: item.address,
-                        },
-                      };
-                    });
-                  }
-                }}
-              />
-              <NAOutlinedTextField
-                required
-                label="Address"
-                className="flex-1"
-                value={partiesStore.notifyParty.fullAddress || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
                     return {
                       ...prev,
                       notifyParty: {
                         ...prev.notifyParty,
-                        fullAddress: value,
+                        companyName: item.name,
+                        fullAddress: item.address,
                       },
                     };
                   });
-                }}
-              />
-            </div>
-            <div className="flex gap-4">
+                }
+              }}
+            />
+            <NAOutlinedTextField
+              required
+              label="Address"
+              className="flex-1"
+              type="textarea"
+              value={partiesStore.notifyParty.fullAddress || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    notifyParty: {
+                      ...prev.notifyParty,
+                      fullAddress: value,
+                    },
+                  };
+                });
+              }}
+            />
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="Country"
                 value={partiesStore.notifyParty.addressCountry || ""}
@@ -929,9 +930,10 @@ const NotifyPartyInfo = () => {
                 });
               }}
             />
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="EORI No"
+                className="flex-1"
                 value={partiesStore.notifyParty.eoriNumber || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -962,7 +964,7 @@ const NotifyPartyInfo = () => {
                 }}
               />
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <NAOutlinedTextField
                 label="Tax ID"
                 value={partiesStore.notifyParty.taxID || ""}

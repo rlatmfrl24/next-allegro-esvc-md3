@@ -57,7 +57,7 @@ export function getEmptySIEditContainerData(type: ContainerType) {
       description: "",
     },
     secondSeal: {
-      kind: SealKind.Carrier,
+      kind: SealKind.Shipper,
       type: "merchanical",
       description: "",
     },
