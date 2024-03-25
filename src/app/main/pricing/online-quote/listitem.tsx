@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
+import SubsumIndicaotrIcon from "@/../public/icon_subsum_indicator.svg";
 import VesselIcon from "@/../public/icon_vessel.svg";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
@@ -10,6 +11,7 @@ import {
   MdIcon,
   MdIconButton,
 } from "@/app/util/md3";
+import { QuotationContainerType } from "@/app/util/typeDef/pricing";
 import {
   PlaceInformationType,
   VesselInfoType,
@@ -32,9 +34,6 @@ import {
   createDummyPlaceInformation,
   createDummyVesselInformation,
 } from "../../schedule/util";
-import { QuotationContainerType } from "@/app/util/typeDef/pricing";
-import SubsumIndicaotrIcon from "@/../public/icon_subsum_indicator.svg";
-import { get } from "lodash";
 
 export const QuotationListItem = ({
   etd,
@@ -54,7 +53,7 @@ export const QuotationListItem = ({
     quantity: number;
   }[];
 }) => {
-  const [isDetailOpen, setIsDetailOpen] = useState(true);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
   const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
   const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);

@@ -114,15 +114,18 @@ export default function QuotationList({
             Download
           </MdTextButton>
         </div>
-        <div className="flex flex-col">
-          <QuotationListItem
-            eta={DateTime.fromJSDate(faker.date.future())}
-            etd={DateTime.fromJSDate(faker.date.past())}
-            origin={quotationTerms.origin}
-            destination={quotationTerms.destination}
-            vessel={createDummyVesselInformation()}
-            containers={quotationTerms.containers}
-          />
+        <div className="flex flex-col gap-4">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <QuotationListItem
+              key={index}
+              eta={DateTime.fromJSDate(faker.date.future())}
+              etd={DateTime.fromJSDate(faker.date.past())}
+              origin={quotationTerms.origin}
+              destination={quotationTerms.destination}
+              vessel={createDummyVesselInformation()}
+              containers={quotationTerms.containers}
+            />
+          ))}
         </div>
       </div>
     </>
