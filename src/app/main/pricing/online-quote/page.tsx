@@ -7,11 +7,11 @@ import { createDummyPlaceInformation } from "../../schedule/util";
 import { faker } from "@faker-js/faker";
 import Condition from "./condition";
 import QuotationList from "./list";
+import QuotationSelection from "./[contract]/page";
+import { DateTime } from "luxon";
 
 export default function OnlineQuote() {
-  const [pageState, setPageState] = useState<
-    "condition" | "list" | "selection"
-  >("condition");
+  const [pageState, setPageState] = useState<"condition" | "list">("condition");
 
   return (
     <div aria-label="container" className={styles.container}>
@@ -25,7 +25,6 @@ export default function OnlineQuote() {
             />
           ),
           list: <QuotationList onResearch={() => setPageState("condition")} />,
-          selection: <div>selection</div>,
         }[pageState]
       }
     </div>

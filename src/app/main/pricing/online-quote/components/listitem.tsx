@@ -19,6 +19,7 @@ import { createDummyVesselInformation } from "../../../schedule/util";
 import { getNumberWithCommas } from "../../../util";
 import { PricePanel } from "./price-panel";
 import { RoutePanel } from "./route-panel";
+import Link from "next/link";
 
 export const QuotationListItem = ({
   etd,
@@ -170,7 +171,14 @@ export const QuotationListItem = ({
           </div>
 
           <div className="flex flex-col gap-2">
-            <MdFilledButton>Accept</MdFilledButton>
+            <Link
+              className="w-full"
+              href={
+                `/main/pricing/online-quote/` + faker.string.alphanumeric(12)
+              }
+            >
+              <MdFilledButton>Accept</MdFilledButton>
+            </Link>
             <MdElevationButton
               hasIcon
               onClick={() => {
