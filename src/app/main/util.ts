@@ -249,3 +249,7 @@ export function sumContainerMeasurement(siContainers: SIContainerInputProps[]) {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export function getNumberWithCommas(num: number) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
