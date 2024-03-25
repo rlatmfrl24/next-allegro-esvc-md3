@@ -22,6 +22,7 @@ import { faker } from "@faker-js/faker";
 import { Add, DeleteOutline, PlaceOutlined } from "@mui/icons-material";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
+import { QuotationContainerType } from "@/app/util/typeDef/pricing";
 
 export default function Condition({
   onReset,
@@ -38,12 +39,7 @@ export default function Condition({
     });
   }, []);
 
-  const defaultContainerTypeOptions = [
-    "Dry 20",
-    "Dry 40",
-    "Reefer 20",
-    "Reefer 40",
-  ];
+  const defaultContainerTypeOptions = Object.values(QuotationContainerType);
   const [quotationTerms, setQuotationTerms] =
     useRecoilState(QuotationTermsState);
 
@@ -71,7 +67,7 @@ export default function Condition({
           required
           className="flex-1"
           icon={<PlaceOutlined />}
-          initialValue={quotationTerms.origin.yardName}
+          initialValue={quotationTerms.origin?.yardName || ""}
           itemList={tempPorts.map((name) => name.yardName)}
           onItemSelection={(item) => {
             setQuotationTerms((prev) => ({
@@ -95,7 +91,7 @@ export default function Condition({
         <NAOutlinedAutoComplete
           label="Port of Loading"
           itemList={tempPorts.map((name) => name.yardName)}
-          initialValue={quotationTerms.pol.yardName}
+          initialValue={quotationTerms.pol?.yardName || ""}
           onItemSelection={(item) => {
             setQuotationTerms((prev) => ({
               ...prev,
@@ -111,7 +107,7 @@ export default function Condition({
           className="flex-1"
           icon={<PlaceOutlined />}
           itemList={tempPorts.map((name) => name.yardName)}
-          initialValue={quotationTerms.destination.yardName}
+          initialValue={quotationTerms.destination?.yardName || ""}
           onItemSelection={(item) => {
             setQuotationTerms((prev) => ({
               ...prev,
@@ -134,7 +130,7 @@ export default function Condition({
         <NAOutlinedAutoComplete
           label="Port of Discharge"
           itemList={tempPorts.map((name) => name.yardName)}
-          initialValue={quotationTerms.pod.yardName}
+          initialValue={quotationTerms.pod?.yardName || ""}
           onItemSelection={(item) => {
             setQuotationTerms((prev) => ({
               ...prev,
@@ -213,12 +209,17 @@ export default function Condition({
                   ...selectableContainerTypeOptions,
                 ]}
                 onSelection={(item) => {
+                  const selection = item as QuotationContainerType;
+
                   setQuotationTerms((prev) => {
                     return {
                       ...prev,
                       containers: [
                         ...prev.containers.slice(0, index),
-                        { containerType: item, quantity: container.quantity },
+                        {
+                          containerType: selection,
+                          quantity: container.quantity,
+                        },
                         ...prev.containers.slice(index + 1),
                       ],
                     };

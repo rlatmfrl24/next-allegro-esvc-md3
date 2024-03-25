@@ -94,7 +94,7 @@ export default function QuotationList({
         </div>
       </div>
       <div className={styles.area}>
-        <div className="flex gap-4 justify-between">
+        <div className="flex gap-4 justify-between items-center ">
           <div className="flex gap-4 items-center ">
             <NAOutlinedListBox
               label="Sort By"
@@ -107,7 +107,7 @@ export default function QuotationList({
             />
             <MdFilterChip label="Direct Only" />
           </div>
-          <MdTextButton hasIcon>
+          <MdTextButton hasIcon className="h-fit">
             <MdIcon slot="icon">
               <Download fontSize="small" />
             </MdIcon>
@@ -118,7 +118,10 @@ export default function QuotationList({
           <QuotationListItem
             eta={DateTime.fromJSDate(faker.date.future())}
             etd={DateTime.fromJSDate(faker.date.past())}
+            origin={quotationTerms.origin}
+            destination={quotationTerms.destination}
             vessel={createDummyVesselInformation()}
+            containers={quotationTerms.containers}
           />
         </div>
       </div>
