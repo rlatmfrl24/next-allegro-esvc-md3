@@ -135,6 +135,19 @@ export const menuItems: MenuItemType[] = [
       },
     ],
   },
+  {
+    id: "pricing",
+    name: "Pricing",
+    link: "pricing",
+    subMenu: [
+      {
+        id: "online_quote",
+        name: "Online Quote",
+        link: "online-quote",
+        subMenu: [],
+      },
+    ],
+  },
 ];
 
 export const cardList: DashboardCardInfoType[] = [
