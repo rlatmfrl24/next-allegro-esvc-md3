@@ -177,7 +177,7 @@ export const QuotationListItem = ({
                 `/main/pricing/online-quote/` + faker.string.alphanumeric(12)
               }
             >
-              <MdFilledButton>Accept</MdFilledButton>
+              <MdFilledButton className="w-full">Accept</MdFilledButton>
             </Link>
             <MdElevationButton
               hasIcon

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -22,6 +22,8 @@ import SearchScheduleDialog from "./components/search-schedule-dialog";
 import { DateTime } from "luxon";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { useSearchParams } from "next/navigation";
+import { QuotationTermsState } from "@/app/store/pricing.store";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -40,6 +42,30 @@ export default function LoactionScheduleStep() {
       )
     );
   }, []);
+
+  // use Quote Data
+  const params = useSearchParams();
+  const quotationTerms = useRecoilValue(QuotationTermsState);
+
+  useEffect(() => {
+    if (params.has("quoteNumber")) {
+      setLoactionScheduleData((prev) => ({
+        ...prev,
+        searchType: "earliest",
+        originPort: quotationTerms.origin,
+        destinationPort: quotationTerms.destination,
+        originType: quotationTerms.originServiceTerm.toLowerCase() as
+          | "cy"
+          | "door",
+        destinationType: quotationTerms.destinationServiceTerm.toLowerCase() as
+          | "cy"
+          | "door",
+        pol: quotationTerms.pol,
+        pod: quotationTerms.pod,
+        departureDate: quotationTerms.departureDate,
+      }));
+    }
+  }, [params, quotationTerms, setLoactionScheduleData]);
 
   const bookingOfficeList = useMemo(() => {
     const newList = Array.from({ length: 5 }, (_, i) => faker.company.name());
@@ -157,6 +183,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               required
               label="Origin"
+              disabled={params.has("quoteNumber")}
               icon={<FmdGoodOutlined />}
               className="flex-1"
               recentCookieKey="recent-port"
@@ -176,6 +203,7 @@ export default function LoactionScheduleStep() {
             />
             <NAOutlinedListBox
               className="w-40"
+              disabled={params.has("quoteNumber")}
               initialValue={
                 locationScheduleData.originType === "cy" ? "CY" : "Door"
               }
@@ -191,6 +219,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               placeholder="Port of Loading"
               label="POL"
+              disabled={params.has("quoteNumber")}
               initialValue={locationScheduleData.pol.yardName}
               recentCookieKey="recent-port"
               onItemSelection={(value) => {
@@ -211,6 +240,7 @@ export default function LoactionScheduleStep() {
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
               required
+              disabled={params.has("quoteNumber")}
               label="Destination"
               icon={<FmdGoodOutlined />}
               className="flex-1"
@@ -233,6 +263,7 @@ export default function LoactionScheduleStep() {
             />
             <NAOutlinedListBox
               className="w-40"
+              disabled={params.has("quoteNumber")}
               initialValue={
                 locationScheduleData.destinationType === "cy" ? "CY" : "Door"
               }
@@ -248,6 +279,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               placeholder="Port of Discharging"
               label="POD"
+              disabled={params.has("quoteNumber")}
               initialValue={locationScheduleData.pod.yardName}
               recentCookieKey="recent-port"
               onItemSelection={(value) => {
@@ -289,6 +321,7 @@ export default function LoactionScheduleStep() {
             <div className="flex">
               <MdSingleDatePicker
                 label="Departure Date"
+                disabled={params.has("quoteNumber")}
                 defaultDate={locationScheduleData.departureDate}
                 handleDateChange={(date) => {
                   setLoactionScheduleData((prev) => ({

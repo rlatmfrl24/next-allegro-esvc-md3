@@ -141,7 +141,7 @@ export const RoutePanel = ({
                 prominent
                 className="text-primary text-left flex-1"
               >
-                {item.yardName.toUpperCase()}
+                {item.yardName?.toUpperCase() || "N/A"}
               </MdTypography>
               <MdTypography
                 variant="body"

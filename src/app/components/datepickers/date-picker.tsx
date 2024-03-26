@@ -41,6 +41,7 @@ export const MdSingleDatePicker = (props: {
   required?: boolean;
   handleDateChange?: (date: DateTime) => void;
   dateFormat?: string;
+  disabled?: boolean;
 }) => {
   const currentDateFormat = props.dateFormat || "yyyy-MM-dd";
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -129,6 +130,7 @@ export const MdSingleDatePicker = (props: {
         ref={inputEl}
         label={props.label}
         className="flex-1"
+        disabled={props.disabled}
         value={defaultDate.toFormat(currentDateFormat)}
         errorText="Invalid date format"
         error={invalid}

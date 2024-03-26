@@ -139,7 +139,14 @@ export default function Condition({
           }}
         />
       </div>
-      <MdSingleDatePicker label="Departure Date" className="w-fit" />
+      <MdSingleDatePicker
+        label="Departure Date"
+        className="w-fit"
+        defaultDate={quotationTerms.departureDate}
+        handleDateChange={(date) => {
+          setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
+        }}
+      />
       <SubTitle title="Cargo" className="mt-4" />
       <div className="flex">
         <NAOutlinedTextField

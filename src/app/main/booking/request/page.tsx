@@ -28,7 +28,7 @@ import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, Suspense, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
@@ -119,18 +119,20 @@ export default function BookingRequest() {
             );
           })}
         </div>
-        <div className="flex-1 flex p-6">
-          {
+        <Suspense>
+          <div className="flex-1 flex p-6">
             {
-              locationSchedule: <LoactionScheduleStep />,
-              parties: <PartiesStep />,
-              cargoPickUpReturn: <CargoStep />,
-              container: <ContainerStep />,
-              additionalInformation: <AdditionalInformationStep />,
-              contactInformation: <ContactInformationStep />,
-            }[getSelectedStepId() as keyof typeof bookingRequestStepState]
-          }
-        </div>
+              {
+                locationSchedule: <LoactionScheduleStep />,
+                parties: <PartiesStep />,
+                cargoPickUpReturn: <CargoStep />,
+                container: <ContainerStep />,
+                additionalInformation: <AdditionalInformationStep />,
+                contactInformation: <ContactInformationStep />,
+              }[getSelectedStepId() as keyof typeof bookingRequestStepState]
+            }
+          </div>
+        </Suspense>
       </div>
       <AnimatePresence>
         {AllStepsCompleted && (
