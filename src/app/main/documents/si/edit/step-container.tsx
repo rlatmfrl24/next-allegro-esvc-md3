@@ -1,28 +1,39 @@
-import { MdTypography } from "@/app/components/typography";
-import { SIEditContainerState, SIEditStepState } from "@/app/store/si.store";
-import { MdFilledButton } from "@/app/util/md3";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import ContainerToggleButton from "./components/container-toggle-button";
-import { ContainerType } from "@/app/util/typeDef/boooking";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
+import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
-import ContainerTypeInputComponent from "./components/container-type-input";
+import OpenTopContainerImage from "@/../public/img_open_top_container.svg";
+import FlatRackContainerImage from "@/../public/img_flat_rack_container.svg";
+import TankContainerImage from "@/../public/img_tank_container.svg";
+import BulkContainerImage from "@/../public/img_bulk_container.svg";
+import { MdTypography } from "@/app/components/typography";
+import { DividerComponent } from "@/app/main/booking/information/components/base";
 import {
   getEmptySIEditContainerData,
   sumContainerMeasurement,
   sumContainerQuantity,
   sumContainerWeight,
 } from "@/app/main/util";
-import LabelChip from "@/app/components/label-chip";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
+import {
+  SIContainerInputState,
+  SIEditContainerState,
+  SIEditStepState,
+} from "@/app/store/si.store";
+import { MdFilledButton } from "@/app/util/md3";
+import { ContainerType } from "@/app/util/typeDef/boooking";
+
+import ContainerToggleButton from "./components/container-toggle-button";
+import ContainerTypeInputComponent from "./components/container-type-input";
 
 export default function StepContainer() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
   const [typeSelections, setTypeSelections] = useState<ContainerType[]>([]);
   const [siContainerStore, setSIEditContainerStore] =
     useRecoilState(SIEditContainerState);
+
+  const containerInputStatstics = useRecoilValue(SIContainerInputState);
 
   useEffect(() => {
     setSIEditStep((prev) => ({
@@ -190,6 +201,22 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.dry.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.dry).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.dry[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
           image={<ReeferContainerImage />}
@@ -201,9 +228,25 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.reefer.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.reefer).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.reefer[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<OpenTopContainerImage />}
           isSelected={typeSelections.includes(ContainerType.opentop)}
           title="Open top"
           onClick={() => handleTypeSelections(ContainerType.opentop)}
@@ -212,9 +255,25 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.opentop.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.opentop).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.opentop[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<FlatRackContainerImage />}
           isSelected={typeSelections.includes(ContainerType.flatrack)}
           title="Flat rack"
           onClick={() => handleTypeSelections(ContainerType.flatrack)}
@@ -223,9 +282,25 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.flatrack.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.flatrack).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.flatrack[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<TankContainerImage />}
           isSelected={typeSelections.includes(ContainerType.tank)}
           title="Tank"
           onClick={() => handleTypeSelections(ContainerType.tank)}
@@ -234,9 +309,25 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.tank.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.tank).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.tank[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<BulkContainerImage />}
           isSelected={typeSelections.includes(ContainerType.bulk)}
           title="Bulk"
           onClick={() => handleTypeSelections(ContainerType.bulk)}
@@ -244,6 +335,22 @@ export default function StepContainer() {
             siContainerStore.bulk.length === 0
               ? undefined
               : siContainerStore.bulk.length
+          }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.bulk).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.bulk[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
           }
         />
       </div>

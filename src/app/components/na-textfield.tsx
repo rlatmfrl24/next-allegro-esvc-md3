@@ -42,7 +42,7 @@ export const NAOutlinedTextField = ({
         type={props.type === "number" ? "text" : props.type}
         className={`flex-1 resize-y ${
           props.type === "number" ? "text-right" : ""
-        }`}
+        } ${props.readOnly ? "bg-surfaceContainer" : ""}`}
         onInput={(e) => {
           setHasValue(e.currentTarget.value.length > 0);
           if (props.type === "number") {
@@ -54,7 +54,11 @@ export const NAOutlinedTextField = ({
         }}
         required={false}
       >
-        {!(props.type === "number" || props.type === "textarea") &&
+        {!(
+          props.type === "number" ||
+          props.type === "textarea" ||
+          props.readOnly
+        ) &&
           enableClearButton && (
             <MdIconButton
               slot="trailing-icon"

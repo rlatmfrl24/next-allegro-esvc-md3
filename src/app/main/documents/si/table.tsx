@@ -165,9 +165,7 @@ export default function SITable() {
       cell: (info) => {
         return (
           <span className="flex justify-between items-center gap-2">
-            <Link
-              href={`/main/documentation/si/preview?reqNo=` + info.getValue()}
-            >
+            <Link href={`/main/documents/si/preview?reqNo=` + info.getValue()}>
               <MdTypography variant="body" size="medium" className="underline">
                 {info.getValue()}
               </MdTypography>

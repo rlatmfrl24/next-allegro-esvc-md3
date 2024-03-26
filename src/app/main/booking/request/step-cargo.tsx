@@ -124,7 +124,7 @@ export default function CargoStep() {
           isAllowOnlyListItems={false}
           showAllonFocus={true}
           itemList={tempCommodities}
-          disabled={params.has("quoteNumber")}
+          readOnly={params.has("quoteNumber")}
           onQueryChange={(query) => {
             setCargoPickUpReturnData((prev) => {
               return {
@@ -147,7 +147,7 @@ export default function CargoStep() {
           value={cargoPickUpReturnData.grossWeight.toString()}
           className="flex-1 text-right"
           required
-          disabled={params.has("quoteNumber")}
+          readOnly={params.has("quoteNumber")}
           enableClearButton={false}
           onFocus={(e) => {
             e.currentTarget.value = "";
@@ -185,7 +185,7 @@ export default function CargoStep() {
         />
         <NAOutlinedListBox
           className="w-32"
-          disabled={params.has("quoteNumber")}
+          readOnly={params.has("quoteNumber")}
           initialValue={cargoPickUpReturnData.grossWeightUnit}
           options={["KGS", "LBS"]}
           onSelection={(value) => {
@@ -256,8 +256,8 @@ export default function CargoStep() {
           />
 
           <div className="flex-1 flex gap-4">
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Code"
               className="flex-1"
               value={cargoPickUpReturnData.emptyPickUpLocation.code || ""}
@@ -274,8 +274,8 @@ export default function CargoStep() {
               }}
             />
 
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Address"
               className="flex-1"
               value={cargoPickUpReturnData.emptyPickUpLocation.address || ""}
@@ -333,8 +333,8 @@ export default function CargoStep() {
           />
 
           <div className="flex-1 flex gap-4">
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Code"
               className="flex-1"
               value={cargoPickUpReturnData.fullReturnLocation.code || ""}
@@ -350,8 +350,8 @@ export default function CargoStep() {
                 });
               }}
             />
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Address"
               className="flex-1"
               value={cargoPickUpReturnData.fullReturnLocation.address || ""}

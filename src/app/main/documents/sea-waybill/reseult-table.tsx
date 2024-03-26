@@ -10,7 +10,7 @@ import {
   MdFilledButton,
   MdTextButton,
 } from "@/app/util/md3";
-import { ResultTableProps } from "@/app/util/typeDef/documentation";
+import { SeaWaybillTableProps } from "@/app/util/typeDef/documents";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
 import {
@@ -21,7 +21,7 @@ import {
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 
-export default function BLCheckResultTable() {
+export default function SeaWaybillResultTable() {
   const tempData = useMemo(() => {
     return Array.from(
       { length: 10 },
@@ -32,18 +32,19 @@ export default function BLCheckResultTable() {
           destination: faker.location.city(),
           vessel: createDummyVesselInformation(),
           onBoardDate: DateTime.fromJSDate(faker.date.recent()),
+          issueDate: DateTime.fromJSDate(faker.date.recent()),
           freight: faker.helpers.maybe(() => true),
-        } as ResultTableProps)
+        } as SeaWaybillTableProps)
     );
   }, []);
-  const [tableData, setTableData] = useState<ResultTableProps[]>([]);
+  const [tableData, setTableData] = useState<SeaWaybillTableProps[]>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
 
-  const columnHelper = createColumnHelper<ResultTableProps>();
+  const columnHelper = createColumnHelper<SeaWaybillTableProps>();
 
   const columns = [
     columnHelper.display({
@@ -94,7 +95,15 @@ export default function BLCheckResultTable() {
       header: "On Board Date",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue().toFormat("yyyy-MM-dd")}
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+        </MdTypography>
+      ),
+    }),
+    columnHelper.accessor("issueDate", {
+      header: "Issue Date",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
     }),

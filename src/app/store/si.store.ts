@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import {
   ConsigneeProps,
   NotifyPartyProps,
@@ -127,6 +127,80 @@ export const SIEditContainerState = atom<{
     bulk: [],
     weightUnit: "KGS",
     measurementUnit: "CBM",
+  },
+});
+
+export const SIContainerInputState = selector({
+  key: "siContainerInputState",
+  get: ({ get }) => {
+    // calculate all container types count
+    const containerState = get(SIEditContainerState);
+
+    const containerCount: {
+      dry: { [key: number]: number };
+      reefer: { [key: number]: number };
+      opentop: { [key: number]: number };
+      tank: { [key: number]: number };
+      flatrack: { [key: number]: number };
+      bulk: { [key: number]: number };
+    } = {
+      dry: {},
+      reefer: {},
+      opentop: {},
+      tank: {},
+      flatrack: {},
+      bulk: {},
+    };
+
+    containerState.dry.map((container) => {
+      if (containerCount.dry[container.containerSize]) {
+        containerCount.dry[container.containerSize] += 1;
+      } else {
+        containerCount.dry[container.containerSize] = 1;
+      }
+    });
+
+    containerState.reefer.map((container) => {
+      if (containerCount.reefer[container.containerSize]) {
+        containerCount.reefer[container.containerSize] += 1;
+      } else {
+        containerCount.reefer[container.containerSize] = 1;
+      }
+    });
+
+    containerState.opentop.map((container) => {
+      if (containerCount.opentop[container.containerSize]) {
+        containerCount.opentop[container.containerSize] += 1;
+      } else {
+        containerCount.opentop[container.containerSize] = 1;
+      }
+    });
+
+    containerState.tank.map((container) => {
+      if (containerCount.tank[container.containerSize]) {
+        containerCount.tank[container.containerSize] += 1;
+      } else {
+        containerCount.tank[container.containerSize] = 1;
+      }
+    });
+
+    containerState.flatrack.map((container) => {
+      if (containerCount.flatrack[container.containerSize]) {
+        containerCount.flatrack[container.containerSize] += 1;
+      } else {
+        containerCount.flatrack[container.containerSize] = 1;
+      }
+    });
+
+    containerState.bulk.map((container) => {
+      if (containerCount.bulk[container.containerSize]) {
+        containerCount.bulk[container.containerSize] += 1;
+      } else {
+        containerCount.bulk[container.containerSize] = 1;
+      }
+    });
+
+    return containerCount;
   },
 });
 

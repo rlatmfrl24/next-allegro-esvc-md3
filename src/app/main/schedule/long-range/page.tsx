@@ -10,7 +10,9 @@ import NAOutlinedSelect from "@/app/components/na-outlined-select";
 import styles from "@/app/styles/base.module.css";
 import { MdTypography } from "@/app/components/typography";
 import {
+  MdChipSet,
   MdFilledButton,
+  MdFilterChip,
   MdIcon,
   MdOutlinedButton,
   MdSelectOption,
@@ -23,6 +25,7 @@ import LongRangeTable from "./table";
 import { createDummyLongRangeSchedules } from "../util";
 import PageTitle, { SubTitle } from "@/app/components/title-components";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef/schedule";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -54,10 +57,25 @@ export default function LongRangeSchedule() {
     setPortList(portList);
   }, [hasDeparture]);
 
+  const [serviceLaneRoutes, setServiceLaneRoutes] = useState<string[]>();
+  const [selectedRoute, setSelectedRoute] = useState<string>();
+
+  useEffect(() => {
+    const routes = Array.from({
+      length: faker.number.int({
+        min: 1,
+        max: 5,
+      }),
+    }).map((_, index) => `Route #${index + 1}`);
+    setServiceLaneRoutes(routes);
+    setSelectedRoute(routes[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedServiceLane]);
+
   useEffect(() => {
     createDummyData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedServiceLane]);
+  }, [selectedRoute]);
 
   function checkValidAndSearch() {
     if (searchCondition.continentFrom === "") {
@@ -82,61 +100,52 @@ export default function LongRangeSchedule() {
     return `${faker.location.city()}-${faker.location.city()} SERVICE (${selectedServiceLane})`;
   }, [selectedServiceLane]);
 
+  const continentList = [
+    "Asia",
+    "Europe",
+    "North America",
+    "South America",
+    "Africa",
+    "Oceania",
+  ];
+
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Long Range Schedule" />
       <div className={styles.area} aria-label="search-condition-area">
         <div className="flex gap-4">
-          <NAOutlinedSelect
+          <NAOutlinedListBox
+            label="Continent From"
             required
+            icon={<PlaceOutlinedIcon />}
             error={errorState === "from"}
             errorText="Please select continent"
-            aria-label="continent-from-select"
-            label="Continent From"
-            className="w-80"
-            onchange={(e) => {
-              const target = e.target as HTMLSelectElement;
+            initialValue={searchCondition.continentFrom}
+            options={continentList}
+            onSelection={(value) => {
               setSearchCondition((prev) => ({
                 ...prev,
-                continentFrom: target.value,
+                continentFrom: value,
               }));
             }}
-          >
-            <MdIcon slot="leading-icon">
-              <PlaceOutlinedIcon />
-            </MdIcon>
-            <MdSelectOption value="asia">Asia</MdSelectOption>
-            <MdSelectOption value="europe">Europe</MdSelectOption>
-            <MdSelectOption value="north-america">North America</MdSelectOption>
-            <MdSelectOption value="south-america">South America</MdSelectOption>
-            <MdSelectOption value="africa">Africa</MdSelectOption>
-            <MdSelectOption value="oceania">Oceania</MdSelectOption>
-          </NAOutlinedSelect>
-          <NAOutlinedSelect
+          />
+
+          <NAOutlinedListBox
+            label="Continent To"
             required
+            icon={<PlaceOutlinedIcon />}
             error={errorState === "to"}
             errorText="Please select continent"
-            aria-label="continent-to-select"
-            label="Continent To"
-            className="w-80"
-            onchange={(e) => {
-              const target = e.target as HTMLSelectElement;
+            initialValue={searchCondition.continentTo}
+            options={continentList}
+            onSelection={(value) => {
               setSearchCondition((prev) => ({
                 ...prev,
-                continentTo: target.value,
+                continentTo: value,
               }));
             }}
-          >
-            <MdIcon slot="leading-icon">
-              <PlaceOutlinedIcon />
-            </MdIcon>
-            <MdSelectOption value="asia">Asia</MdSelectOption>
-            <MdSelectOption value="europe">Europe</MdSelectOption>
-            <MdSelectOption value="north-america">North America</MdSelectOption>
-            <MdSelectOption value="south-america">South America</MdSelectOption>
-            <MdSelectOption value="africa">Africa</MdSelectOption>
-            <MdSelectOption value="oceania">Oceania</MdSelectOption>
-          </NAOutlinedSelect>
+          />
+
           <MdOutlinedButton className="h-fit mt-2">
             <MdIcon slot="icon">
               <AddOutlinedIcon fontSize="small" />
@@ -152,16 +161,6 @@ export default function LongRangeSchedule() {
                 continentFrom: "",
                 continentTo: "",
               });
-
-              const continentFrom = document.querySelector(
-                'md-outlined-select[aria-label="continent-from-select"]'
-              ) as any;
-              continentFrom.reset();
-
-              const continentTo = document.querySelector(
-                'md-outlined-select[aria-label="continent-to-select"]'
-              ) as any;
-              continentTo.reset();
             }}
           >
             Reset
@@ -187,6 +186,18 @@ export default function LongRangeSchedule() {
           />
           <div className="p-6">
             <SubTitle title={tempServiceLaneTitle} className="mb-2" />
+            <MdChipSet className="mb-4">
+              {serviceLaneRoutes?.map((route, index) => (
+                <MdFilterChip
+                  key={index}
+                  label={route}
+                  selected={route === selectedRoute}
+                  onClick={() => {
+                    setSelectedRoute(route);
+                  }}
+                />
+              ))}
+            </MdChipSet>
             <div className="flex gap-4 items-center justify-between mb-2">
               <MdTextButton>
                 <MdIcon slot="icon">

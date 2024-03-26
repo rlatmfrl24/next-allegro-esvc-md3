@@ -152,7 +152,7 @@ export default function Condition({
         <NAOutlinedTextField
           required
           value="FAK (Freight All Kinds)"
-          disabled
+          readOnly
           className="mr-4 w-96"
         />
         <NAOutlinedTextField

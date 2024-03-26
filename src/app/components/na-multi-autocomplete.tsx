@@ -227,7 +227,11 @@ export default function NAMultiAutoComplete({
   ]);
 
   return (
-    <div className={`relative ${className}`}>
+    <div
+      className={`relative ${className} ${
+        props.readOnly ? "bg-surfaceContainer" : ""
+      }`}
+    >
       <MdOutlinedTextFieldBase
         {...props}
         ref={refs.setReference}
