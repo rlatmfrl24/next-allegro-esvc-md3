@@ -30,6 +30,11 @@ import {
 } from "@floating-ui/react";
 import { MdTypography } from "./components/typography";
 import TariffIcon from "@/../public/icon_menu_pricing.svg";
+import QuickSurchargeSearchIcon from "@/../public/icon_quick_surcharge_search.svg";
+import QuickGuideIcon from "@/../public/icon_quick_guide.svg";
+import QuickSimpleSIIcon from "@/../public/icon_quick_simple_si.svg";
+import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
+import QuickSiteMapIcon from "@/../public/icon_quick_sitemap.svg";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -62,10 +67,10 @@ const HeaderSignComponent = () => {
           active={onHoverAt === 1}
         >
           <MdIcon slot="inactive-icon">
-            <TariffIcon />
+            <QuickSurchargeSearchIcon />
           </MdIcon>
           <MdIcon slot="active-icon">
-            <TariffIcon />
+            <QuickSurchargeSearchIcon />
           </MdIcon>
         </MdNavigationTab>
         <MdNavigationTab
@@ -76,10 +81,10 @@ const HeaderSignComponent = () => {
           active={onHoverAt === 2}
         >
           <MdIcon slot="inactive-icon">
-            <TariffIcon />
+            <QuickGuideIcon />
           </MdIcon>
           <MdIcon slot="active-icon">
-            <TariffIcon />
+            <QuickGuideIcon />
           </MdIcon>
         </MdNavigationTab>
         <MdNavigationTab
@@ -90,10 +95,10 @@ const HeaderSignComponent = () => {
           active={onHoverAt === 3}
         >
           <MdIcon slot="inactive-icon">
-            <TariffIcon />
+            <QuickSimpleSIIcon />
           </MdIcon>
           <MdIcon slot="active-icon">
-            <TariffIcon />
+            <QuickSimpleSIIcon />
           </MdIcon>
         </MdNavigationTab>
         <MdNavigationTab
@@ -104,10 +109,10 @@ const HeaderSignComponent = () => {
           active={onHoverAt === 4}
         >
           <MdIcon slot="inactive-icon">
-            <TariffIcon />
+            <QuickDEMDETTariffIcon />
           </MdIcon>
           <MdIcon slot="active-icon">
-            <TariffIcon />
+            <QuickDEMDETTariffIcon />
           </MdIcon>
         </MdNavigationTab>
         <MdNavigationTab
@@ -118,10 +123,10 @@ const HeaderSignComponent = () => {
           active={onHoverAt === 5}
         >
           <MdIcon slot="inactive-icon">
-            <TariffIcon />
+            <QuickSiteMapIcon />
           </MdIcon>
           <MdIcon slot="active-icon">
-            <TariffIcon />
+            <QuickSiteMapIcon />
           </MdIcon>
         </MdNavigationTab>
       </div>
