@@ -37,6 +37,31 @@ export const menuItems: MenuItemType[] = [
         link: "long-range",
         subMenu: [],
       },
+      {
+        id: "my",
+        name: "My Schedule",
+        link: "my",
+        subMenu: [],
+      },
+    ],
+  },
+  {
+    id: "pricing",
+    name: "Pricing",
+    link: "pricing",
+    subMenu: [
+      {
+        id: "online_quote",
+        name: "Online Quote",
+        link: "online-quote",
+        subMenu: [],
+      },
+      {
+        id: "surcharge",
+        name: "Surcharge Search",
+        link: "surchage-search",
+        subMenu: [],
+      },
     ],
   },
   {
@@ -62,12 +87,25 @@ export const menuItems: MenuItemType[] = [
         link: "template",
         subMenu: [],
       },
+      {
+        id: "special_cargo",
+        name: "Search Cargo Status Search",
+        link: "special-cargo",
+        subMenu: [],
+      },
+      {
+        id: "dg_restriction",
+        name: "DG Restriction Search",
+        link: "dg-restriction",
+        subMenu: [],
+      },
     ],
   },
+
   {
-    id: "documentation",
-    name: "Documentation",
-    link: "documentation",
+    id: "documents",
+    name: "Documents",
+    link: "documents",
     subMenu: [
       {
         id: "si",
@@ -131,19 +169,6 @@ export const menuItems: MenuItemType[] = [
         id: "overview",
         name: "Shipment Overview",
         link: "overview",
-        subMenu: [],
-      },
-    ],
-  },
-  {
-    id: "pricing",
-    name: "Pricing",
-    link: "pricing",
-    subMenu: [
-      {
-        id: "online_quote",
-        name: "Online Quote",
-        link: "online-quote",
         subMenu: [],
       },
     ],
