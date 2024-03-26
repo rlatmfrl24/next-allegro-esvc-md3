@@ -1055,7 +1055,7 @@ function SIPreview() {
                 } as SIEditDataType;
                 console.log(newSICondition);
                 setCurrentSICondition(newSICondition);
-                router.push("/main/documents/si/submission");
+                router.push("/main/documents/si");
               }}
             >
               Submit
