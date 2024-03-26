@@ -1,21 +1,30 @@
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
+import OpenTopContainerImage from "@/../public/img_open_top_container.svg";
+import FlatRackContainerImage from "@/../public/img_flat_rack_container.svg";
+import TankContainerImage from "@/../public/img_tank_container.svg";
+import BulkContainerImage from "@/../public/img_bulk_container.svg";
+import { SubTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import {
   BookingRequestStepState,
   ContainerState,
 } from "@/app/store/booking.store";
+import { QuotationTermsState } from "@/app/store/pricing.store";
 import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import {
   ContainerType,
   DryContainerInformationType,
 } from "@/app/util/typeDef/boooking";
+import { faker } from "@faker-js/faker";
 
 import { getEmptyContainerData } from "../../util";
+import { DividerComponent } from "../information/components/base";
 import BulkContainerInput from "./components/bulk-container-input";
 import ContainerToggleButton from "./components/container-toggle-button";
 import DryContainerInput from "./components/dry-container-input";
@@ -23,13 +32,6 @@ import FlatRackContainerInput from "./components/flatrack-container-input";
 import OpenTopContainerInput from "./components/opentop-container-input";
 import ReeferContainerInput from "./components/reefer-container-input";
 import TankContainerInput from "./components/tank-container-input";
-import { useSearchParams } from "next/navigation";
-import { QuotationTermsState } from "@/app/store/pricing.store";
-import { set } from "lodash";
-import { faker } from "@faker-js/faker";
-import { SubTitle } from "@/app/components/title-components";
-import { DividerComponent } from "../information/components/base";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -263,7 +265,7 @@ export default function ContainerStep() {
               }
             />
             <ContainerToggleButton
-              image={<DryContainerImage />}
+              image={<OpenTopContainerImage />}
               isSelected={typeSelections.includes(ContainerType.opentop)}
               onClick={() => {
                 handleTypeSelections(ContainerType.opentop);
@@ -276,7 +278,7 @@ export default function ContainerStep() {
               }
             />
             <ContainerToggleButton
-              image={<DryContainerImage />}
+              image={<FlatRackContainerImage />}
               isSelected={typeSelections.includes(ContainerType.flatrack)}
               onClick={() => {
                 handleTypeSelections(ContainerType.flatrack);
@@ -289,7 +291,7 @@ export default function ContainerStep() {
               }
             />
             <ContainerToggleButton
-              image={<DryContainerImage />}
+              image={<TankContainerImage />}
               isSelected={typeSelections.includes(ContainerType.tank)}
               onClick={() => {
                 handleTypeSelections(ContainerType.tank);
@@ -302,7 +304,7 @@ export default function ContainerStep() {
               }
             />
             <ContainerToggleButton
-              image={<DryContainerImage />}
+              image={<BulkContainerImage />}
               isSelected={typeSelections.includes(ContainerType.bulk)}
               onClick={() => {
                 handleTypeSelections(ContainerType.bulk);
@@ -360,7 +362,7 @@ export default function ContainerStep() {
         </>
       )}
 
-      <div className="flex flex-1 items-end justify-end mt-6">
+      <div className="flex items-end justify-end mt-6">
         <MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
           Next
         </MdFilledButton>

@@ -1,22 +1,27 @@
-import { MdTypography } from "@/app/components/typography";
-import { SIEditContainerState, SIEditStepState } from "@/app/store/si.store";
-import { MdFilledButton } from "@/app/util/md3";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import ContainerToggleButton from "./components/container-toggle-button";
-import { ContainerType } from "@/app/util/typeDef/boooking";
+
+import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
-import ContainerTypeInputComponent from "./components/container-type-input";
+import OpenTopContainerImage from "@/../public/img_open_top_container.svg";
+import FlatRackContainerImage from "@/../public/img_flat_rack_container.svg";
+import TankContainerImage from "@/../public/img_tank_container.svg";
+import BulkContainerImage from "@/../public/img_bulk_container.svg";
+import { MdTypography } from "@/app/components/typography";
+import { DividerComponent } from "@/app/main/booking/information/components/base";
 import {
   getEmptySIEditContainerData,
   sumContainerMeasurement,
   sumContainerQuantity,
   sumContainerWeight,
 } from "@/app/main/util";
-import LabelChip from "@/app/components/label-chip";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
+import { SIEditContainerState, SIEditStepState } from "@/app/store/si.store";
+import { MdFilledButton } from "@/app/util/md3";
+import { ContainerType } from "@/app/util/typeDef/boooking";
+
+import ContainerToggleButton from "./components/container-toggle-button";
+import ContainerTypeInputComponent from "./components/container-type-input";
 
 export default function StepContainer() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
@@ -203,7 +208,7 @@ export default function StepContainer() {
           }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<OpenTopContainerImage />}
           isSelected={typeSelections.includes(ContainerType.opentop)}
           title="Open top"
           onClick={() => handleTypeSelections(ContainerType.opentop)}
@@ -214,7 +219,7 @@ export default function StepContainer() {
           }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<FlatRackContainerImage />}
           isSelected={typeSelections.includes(ContainerType.flatrack)}
           title="Flat rack"
           onClick={() => handleTypeSelections(ContainerType.flatrack)}
@@ -225,7 +230,7 @@ export default function StepContainer() {
           }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<TankContainerImage />}
           isSelected={typeSelections.includes(ContainerType.tank)}
           title="Tank"
           onClick={() => handleTypeSelections(ContainerType.tank)}
@@ -236,7 +241,7 @@ export default function StepContainer() {
           }
         />
         <ContainerToggleButton
-          image={<DryContainerImage />}
+          image={<BulkContainerImage />}
           isSelected={typeSelections.includes(ContainerType.bulk)}
           title="Bulk"
           onClick={() => handleTypeSelections(ContainerType.bulk)}
