@@ -101,7 +101,6 @@ export const menuItems: MenuItemType[] = [
       },
     ],
   },
-
   {
     id: "documents",
     name: "Documents",
@@ -131,17 +130,78 @@ export const menuItems: MenuItemType[] = [
         link: "sea-waybill",
         subMenu: [],
       },
+      {
+        id: "vgm",
+        name: "VGM",
+        link: "vgm",
+        subMenu: [],
+      },
+      {
+        id: "tare",
+        name: "Container Tare Finder",
+        link: "tare",
+        subMenu: [],
+      },
+      {
+        id: "log",
+        name: "Advanced Manifest Log",
+        link: "log",
+        subMenu: [],
+      },
     ],
   },
   {
     id: "tracking",
-    name: "Tracking",
+    name: "Track & Trace",
     link: "tracking",
     subMenu: [
       {
         id: "cargo",
         name: "Cargo Tracking",
         link: "cargo",
+        subMenu: [],
+      },
+      {
+        id: "my",
+        name: "My Tracking",
+        link: "my",
+        subMenu: [],
+      },
+    ],
+  },
+  {
+    id: "import",
+    name: "Import (Inbound)",
+    link: "import",
+    subMenu: [
+      {
+        id: "master",
+        name: "Inbound Master",
+        link: "master",
+        subMenu: [],
+      },
+      {
+        id: "surrender",
+        name: "BL Surrender Check",
+        link: "surrunder",
+        subMenu: [],
+      },
+      {
+        id: "notice",
+        name: "Arrival Notice",
+        link: "notice",
+        subMenu: [],
+      },
+      {
+        id: "check",
+        name: "B/L Check",
+        link: "check",
+        subMenu: [],
+      },
+      {
+        id: "invoice",
+        name: "Invoice",
+        link: "invoice",
         subMenu: [],
       },
     ],
@@ -155,6 +215,43 @@ export const menuItems: MenuItemType[] = [
         id: "overview",
         name: "Shipment Overview",
         link: "overview",
+        subMenu: [],
+      },
+      {
+        id: "report",
+        name: "Report",
+        link: "report",
+        subMenu: [],
+      },
+      {
+        id: "my_report",
+        name: "My Report",
+        link: "my-report",
+        subMenu: [],
+      },
+    ],
+  },
+  {
+    id: "tariff",
+    name: "Detention & Demurrage",
+    link: "tariff",
+    subMenu: [
+      {
+        id: "dem_det",
+        name: "DEM/DET Tariff",
+        link: "dem-det",
+        subMenu: [],
+      },
+      {
+        id: "inquiry",
+        name: "Charge Inquiry",
+        link: "inquiry",
+        subMenu: [],
+      },
+      {
+        id: "status",
+        name: "Detention Status",
+        link: "status",
         subMenu: [],
       },
     ],
