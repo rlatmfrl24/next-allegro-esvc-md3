@@ -36,7 +36,12 @@ import {
   MdFilledTonalIconButton,
   MdIcon,
 } from "@/app/util/md3";
-import { SIEditDataType, SIState } from "@/app/util/typeDef/si";
+import {
+  SIContainerInputProps,
+  SIEditDataType,
+  SIState,
+  SealKind,
+} from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import {
   AttachFile,
@@ -67,6 +72,14 @@ function SIPreview() {
   const setCurrentSICondition = useSetRecoilState(CurrentSIConditionState);
   const cx = classNames.bind(styles);
   const router = useRouter();
+  const wholeContainerList = [
+    ...containerData.dry,
+    ...containerData.reefer,
+    ...containerData.opentop,
+    ...containerData.flatrack,
+    ...containerData.tank,
+    ...containerData.bulk,
+  ];
 
   const searchParams = useSearchParams();
   const requestNumber = searchParams.get("reqNo");
@@ -762,6 +775,16 @@ function SIPreview() {
             >
               Container No.
             </MdTypography>
+            {wholeContainerList.map((container, index) => {
+              return (
+                <>
+                  <ContainerPreview key={index} {...container} />
+                  {index !== wholeContainerList.length - 1 && (
+                    <DividerComponent className="my-4 border-dotted" />
+                  )}
+                </>
+              );
+            })}
           </div>
           <div className={cx(siStyles["preview-section"], "flex-col")}>
             <EditButton target="markDescription" />
@@ -1053,5 +1076,124 @@ const StringToSplit = (props: { text: string }) => {
         );
       })}
     </>
+  );
+};
+
+const ContainerPreview = (containerData: SIContainerInputProps) => {
+  const containerStore = useRecoilValue(SIEditContainerState);
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex items-center">
+        <MdTypography variant="body" size="large" prominent className="flex-1">
+          {containerData.containerNumber || "-"}
+        </MdTypography>
+        <MdTypography variant="body" size="small" prominent>
+          {containerData.containerSize +
+            " " +
+            containerData.containerType +
+            " "}
+        </MdTypography>
+      </div>
+      <div className="flex items-center gap-2">
+        <MdTypography
+          variant="body"
+          size="small"
+          prominent
+          className="text-primary"
+        >
+          Seal 01
+        </MdTypography>
+        <MdTypography variant="body" size="small" prominent className="flex-1">
+          {containerData.firstSeal.description || "-"}
+        </MdTypography>
+        <DividerComponent orientation="vertical" className="h-3" />
+        <MdTypography variant="label" size="small" className="text-outline">
+          {{
+            electronic: "Electronic Seal",
+            merchanical: "Merchanical Seal",
+          }[containerData.firstSeal.type] +
+            ", " +
+            {
+              [SealKind.Shipper]: "Shipper",
+              [SealKind.Carrier]: "Carrier",
+              [SealKind.Consolidator]: "Consolidator",
+              [SealKind.Customs]: "Customs",
+              [SealKind.Unknown]: "Unknown",
+              [SealKind["Quarantine Agency"]]: "Quarantine Agency",
+              [SealKind["Terminal Agency"]]: "Terminal Agency",
+            }[containerData.firstSeal.kind]}
+        </MdTypography>
+      </div>
+      {containerData.secondSeal.description && (
+        <div className="flex items-center gap-2">
+          <MdTypography
+            variant="body"
+            size="small"
+            prominent
+            className="text-primary"
+          >
+            Seal 02
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="small"
+            prominent
+            className="flex-1"
+          >
+            {containerData.secondSeal.description || "-"}
+          </MdTypography>
+          <DividerComponent orientation="vertical" className="h-3" />
+          <MdTypography variant="label" size="small" className="text-outline">
+            {{
+              electronic: "Electronic Seal",
+              merchanical: "Merchanical Seal",
+            }[containerData.secondSeal.type] +
+              ", " +
+              {
+                [SealKind.Shipper]: "Shipper",
+                [SealKind.Carrier]: "Carrier",
+                [SealKind.Consolidator]: "Consolidator",
+                [SealKind.Customs]: "Customs",
+                [SealKind.Unknown]: "Unknown",
+                [SealKind["Quarantine Agency"]]: "Quarantine Agency",
+                [SealKind["Terminal Agency"]]: "Terminal Agency",
+              }[containerData.secondSeal.kind]}
+          </MdTypography>
+        </div>
+      )}
+      <div className="bg-secondaryContainer rounded p-2 mt-2">
+        <div className="flex gap-2 items-center justify-end">
+          <MdTypography variant="body" size="small" prominent>
+            {containerData.packageQuantity}
+          </MdTypography>
+          {containerData.packageType && (
+            <MdTypography variant="body" size="small" className="text-outline">
+              {containerData.packageType}
+            </MdTypography>
+          )}
+        </div>
+        <DividerComponent className="my-2 border-dotted" />
+        <div className="flex items-center">
+          <div className="flex flex-1 gap-2 items-center justify-end">
+            <MdTypography variant="body" size="small" prominent>
+              {containerData.packageWeight}
+            </MdTypography>
+            <MdTypography variant="body" size="small" className="text-outline">
+              {containerStore.weightUnit}
+            </MdTypography>
+          </div>
+          <DividerComponent orientation="vertical" className="h-4 mx-4" />
+          <div className="flex flex-1 gap-2 items-center justify-end">
+            <MdTypography variant="body" size="small" prominent>
+              {containerData.packageMeasurement}
+            </MdTypography>
+            <MdTypography variant="body" size="small" className="text-outline">
+              {containerStore.measurementUnit}
+            </MdTypography>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
