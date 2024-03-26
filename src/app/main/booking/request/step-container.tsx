@@ -32,6 +32,7 @@ import FlatRackContainerInput from "./components/flatrack-container-input";
 import OpenTopContainerInput from "./components/opentop-container-input";
 import ReeferContainerInput from "./components/reefer-container-input";
 import TankContainerInput from "./components/tank-container-input";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export default function ContainerStep() {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -207,8 +208,8 @@ export default function ContainerStep() {
               return (
                 <>
                   <div className="flex gap-4">
-                    <MdOutlinedTextField
-                      disabled
+                    <NAOutlinedTextField
+                      readOnly
                       label="Size"
                       className="text-right"
                       value={
@@ -220,8 +221,8 @@ export default function ContainerStep() {
                       }
                       suffixText="ft"
                     />
-                    <MdOutlinedTextField
-                      disabled
+                    <NAOutlinedTextField
+                      readOnly
                       className="text-right"
                       label="Quantity / Total"
                       value={container.quantity.toString()}

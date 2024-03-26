@@ -17,6 +17,7 @@ import {
 
 import { Upload } from "@mui/icons-material";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const DangerousCargoInput = ({
   container,
@@ -117,9 +118,9 @@ const DangerousCargoInput = ({
               }}
             />
 
-            <MdOutlinedTextField
+            <NAOutlinedTextField
               label="Flash Point"
-              disabled
+              readOnly
               value={container.dangerousCargoInformation.flashPoint}
             />
             <NAOutlinedListBox

@@ -122,14 +122,16 @@ export default function NAOutlinedListBox({
         readOnly
         value={query}
         hasTrailingIcon
-        className="w-full cursor-none"
+        className={`w-full cursor-none ${
+          props.readOnly ? "bg-surfaceContainer" : ""
+        }`}
       >
         {icon && <div slot="leading-icon">{icon}</div>}
         <div slot="trailing-icon">
           <ArrowDropDown fontSize="small" />
         </div>
       </MdOutlinedTextField>
-      {isMounted && options.length > 0 && (
+      {isMounted && options.length > 0 && !props.readOnly && (
         <div
           ref={refs.setFloating}
           style={

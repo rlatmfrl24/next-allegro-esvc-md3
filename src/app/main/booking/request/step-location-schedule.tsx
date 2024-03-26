@@ -1,29 +1,25 @@
+import { DateTime } from "luxon";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
 import {
   BookingRequestStepState,
   LocationScheduleState,
 } from "@/app/store/booking.store";
-import {
-  MdFilledButton,
-  MdFilledTonalButton,
-  MdOutlinedTextField,
-  MdRadio,
-} from "@/app/util/md3";
+import { QuotationTermsState } from "@/app/store/pricing.store";
+import { MdFilledButton, MdFilledTonalButton, MdRadio } from "@/app/util/md3";
+import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { FmdGoodOutlined } from "@mui/icons-material";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
+
 import { createDummyPlaceInformation } from "../../schedule/util";
 import SearchScheduleDialog from "./components/search-schedule-dialog";
-import { DateTime } from "luxon";
-import { PlaceInformationType } from "@/app/util/typeDef/schedule";
-import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { useSearchParams } from "next/navigation";
-import { QuotationTermsState } from "@/app/store/pricing.store";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -148,6 +144,7 @@ export default function LoactionScheduleStep() {
                 value="schedule"
                 className="mr-2"
                 checked={locationScheduleData.searchType === "schedule"}
+                disabled={params.has("quoteNumber")}
                 onClick={() => {
                   setLoactionScheduleData({
                     ...locationScheduleData,
@@ -167,6 +164,7 @@ export default function LoactionScheduleStep() {
                 name="location-type"
                 value="earliest"
                 checked={locationScheduleData.searchType === "earliest"}
+                disabled={params.has("quoteNumber")}
                 onClick={() => {
                   setLoactionScheduleData({
                     ...locationScheduleData,
@@ -183,7 +181,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               required
               label="Origin"
-              disabled={params.has("quoteNumber")}
+              readOnly={params.has("quoteNumber")}
               icon={<FmdGoodOutlined />}
               className="flex-1"
               recentCookieKey="recent-port"
@@ -203,7 +201,7 @@ export default function LoactionScheduleStep() {
             />
             <NAOutlinedListBox
               className="w-40"
-              disabled={params.has("quoteNumber")}
+              readOnly={params.has("quoteNumber")}
               initialValue={
                 locationScheduleData.originType === "cy" ? "CY" : "Door"
               }
@@ -219,7 +217,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               placeholder="Port of Loading"
               label="POL"
-              disabled={params.has("quoteNumber")}
+              readOnly={params.has("quoteNumber")}
               initialValue={locationScheduleData.pol.yardName}
               recentCookieKey="recent-port"
               onItemSelection={(value) => {
@@ -240,7 +238,7 @@ export default function LoactionScheduleStep() {
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
               required
-              disabled={params.has("quoteNumber")}
+              readOnly={params.has("quoteNumber")}
               label="Destination"
               icon={<FmdGoodOutlined />}
               className="flex-1"
@@ -263,7 +261,7 @@ export default function LoactionScheduleStep() {
             />
             <NAOutlinedListBox
               className="w-40"
-              disabled={params.has("quoteNumber")}
+              readOnly={params.has("quoteNumber")}
               initialValue={
                 locationScheduleData.destinationType === "cy" ? "CY" : "Door"
               }
@@ -279,7 +277,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               placeholder="Port of Discharging"
               label="POD"
-              disabled={params.has("quoteNumber")}
+              readOnly={params.has("quoteNumber")}
               initialValue={locationScheduleData.pod.yardName}
               recentCookieKey="recent-port"
               onItemSelection={(value) => {
@@ -301,7 +299,7 @@ export default function LoactionScheduleStep() {
           {locationScheduleData.searchType === "schedule" && (
             <div className="flex gap-4">
               <NAOutlinedTextField
-                disabled
+                readOnly
                 className="bg-surfaceContainer rounded"
                 label="Estimated Time of Departure"
                 required
@@ -310,7 +308,7 @@ export default function LoactionScheduleStep() {
                 )}
               />
               <NAOutlinedTextField
-                disabled
+                readOnly
                 label="Vessel Voyage"
                 required
                 value={locationScheduleData.vessel.consortiumVoyage || ""}
@@ -321,7 +319,7 @@ export default function LoactionScheduleStep() {
             <div className="flex">
               <MdSingleDatePicker
                 label="Departure Date"
-                disabled={params.has("quoteNumber")}
+                readonly={params.has("quoteNumber")}
                 defaultDate={locationScheduleData.departureDate}
                 handleDateChange={(date) => {
                   setLoactionScheduleData((prev) => ({
