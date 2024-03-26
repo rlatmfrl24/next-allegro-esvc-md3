@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -18,6 +18,9 @@ import { faker } from "@faker-js/faker";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { SubTitle } from "@/app/components/title-components";
+import { useSearchParams } from "next/navigation";
+import { QuotationTermsState } from "@/app/store/pricing.store";
+import { getWeightText } from "../../tracking/cargo/util";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -90,6 +93,24 @@ export default function CargoStep() {
     }));
   }, []);
 
+  // use Quotation Data
+  const params = useSearchParams();
+  const quotationTerms = useRecoilValue(QuotationTermsState);
+
+  useEffect(() => {
+    if (params.has("quoteNumber")) {
+      setCargoPickUpReturnData((prev) => ({
+        ...prev,
+        commodity: {
+          code: "-",
+          description: "FAK (Freight of All Kinds)",
+        },
+        grossWeight: getWeightText(quotationTerms?.grossWeight || 0),
+        grossWeightUnit: quotationTerms?.weightUnit || "KGS",
+      }));
+    }
+  }, [quotationTerms, params, setCargoPickUpReturnData]);
+
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -103,6 +124,7 @@ export default function CargoStep() {
           isAllowOnlyListItems={false}
           showAllonFocus={true}
           itemList={tempCommodities}
+          readOnly={params.has("quoteNumber")}
           onQueryChange={(query) => {
             setCargoPickUpReturnData((prev) => {
               return {
@@ -125,6 +147,7 @@ export default function CargoStep() {
           value={cargoPickUpReturnData.grossWeight.toString()}
           className="flex-1 text-right"
           required
+          readOnly={params.has("quoteNumber")}
           enableClearButton={false}
           onFocus={(e) => {
             e.currentTarget.value = "";
@@ -162,6 +185,7 @@ export default function CargoStep() {
         />
         <NAOutlinedListBox
           className="w-32"
+          readOnly={params.has("quoteNumber")}
           initialValue={cargoPickUpReturnData.grossWeightUnit}
           options={["KGS", "LBS"]}
           onSelection={(value) => {
@@ -232,8 +256,8 @@ export default function CargoStep() {
           />
 
           <div className="flex-1 flex gap-4">
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Code"
               className="flex-1"
               value={cargoPickUpReturnData.emptyPickUpLocation.code || ""}
@@ -250,8 +274,8 @@ export default function CargoStep() {
               }}
             />
 
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Address"
               className="flex-1"
               value={cargoPickUpReturnData.emptyPickUpLocation.address || ""}
@@ -309,8 +333,8 @@ export default function CargoStep() {
           />
 
           <div className="flex-1 flex gap-4">
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Code"
               className="flex-1"
               value={cargoPickUpReturnData.fullReturnLocation.code || ""}
@@ -326,8 +350,8 @@ export default function CargoStep() {
                 });
               }}
             />
-            <MdOutlinedTextField
-              disabled
+            <NAOutlinedTextField
+              readOnly
               label="Address"
               className="flex-1"
               value={cargoPickUpReturnData.fullReturnLocation.address || ""}

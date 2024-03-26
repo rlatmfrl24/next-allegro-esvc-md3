@@ -1,4 +1,4 @@
-import { MdTextButton } from "@/app/util/md3";
+import { MdFilterChip, MdTextButton } from "@/app/util/md3";
 import { useState } from "react";
 import ListItem from "./components/listItem";
 import NaToggleButton from "@/app/components/na-toggle-button";
@@ -11,13 +11,6 @@ export default function PointToPointListResult({
 }: {
   list: PtPScheduleType[];
 }) {
-  const [listSort, setListSort] = useState<
-    | "earliest_departure"
-    | "latest_departure"
-    | "earliest_arrival"
-    | "latest_arrival"
-  >("earliest_departure");
-
   const [isDirectOnly, setIsDirectOnly] = useState<boolean>(true);
 
   return (
@@ -25,29 +18,15 @@ export default function PointToPointListResult({
       <div className="flex items-center gap-4">
         <NAOutlinedListBox
           label="Sort By"
-          initialValue={
-            listSort
-              .replace("_", " ")
-              .split(" ")
-              .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-              .join(" ") as any
-          }
+          initialValue="Earliest Departure"
           options={[
             "Earliest Departure",
-            "Latest Departure",
             "Earliest Arrival",
-            "Latest Arrival",
+            "Fatest Transit Time",
           ]}
-          onSelection={(value) => {
-            setListSort(value.toLowerCase().replace(" ", "_") as any);
-          }}
         />
 
-        <NaToggleButton
-          label="Direct Only"
-          state={isDirectOnly ? "checked" : "unchecked"}
-          onClick={() => setIsDirectOnly(!isDirectOnly)}
-        />
+        <MdFilterChip label="Direct Only" />
 
         <div className="flex-1"></div>
         <MdTextButton>

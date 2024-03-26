@@ -20,6 +20,7 @@ import { MdOutlinedTextField } from "@/app/util/md3";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export default function BookingConfirmationInformation() {
   const cx = classNames.bind(styles);
@@ -453,10 +454,10 @@ export default function BookingConfirmationInformation() {
                     Enter the number of bookings to duplicate. (Maximum 50)
                   </MdTypography>
                 </div>
-                <MdOutlinedTextField
+                <NAOutlinedTextField
                   value={dataSet[0].additionalInformation.duplicateCount.toString()}
                   className="w-fit text-right"
-                  disabled
+                  readOnly
                 />
                 <MdTypography
                   variant="body"

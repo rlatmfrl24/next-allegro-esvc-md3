@@ -44,11 +44,11 @@ const NavItem = ({
     Schedule: <ScheduleIcon />,
     Booking: <BookingIcon />,
     Pricing: <PricingIcon />,
-    Documentation: <DocumentsIcon />,
-    Tracking: <TrackTraceIcon />,
-    Import: <ImportIcon />,
+    Documents: <DocumentsIcon />,
+    "Track & Trace": <TrackTraceIcon />,
+    "Import (Inbound)": <ImportIcon />,
     "Manage Shipment": <ManageShipmentIcon />,
-    Dentention: <DententionIcon />,
+    "Detention & Demurrage": <DententionIcon />,
   }[item.name];
 
   return (
@@ -70,9 +70,7 @@ const NavItem = ({
         }}
       >
         <MdRippleEffect />
-        {depth === 1 && (
-          <MdIcon>{itemIcon ? itemIcon : <PlaceholdeIcon />}</MdIcon>
-        )}
+        {depth === 1 && <MdIcon>{itemIcon ? itemIcon : <></>}</MdIcon>}
         <MdTypography
           variant="label"
           size="large"

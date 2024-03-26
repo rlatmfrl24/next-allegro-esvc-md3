@@ -20,7 +20,7 @@ import {
 import { faker } from "@faker-js/faker";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import { set } from "lodash";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export default function ContainerInput({
@@ -42,8 +42,10 @@ export default function ContainerInput({
     container.containerType.toLowerCase() as keyof typeof SIEditContainerStore;
 
   const tempPackageList = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) =>
-      faker.commerce.productMaterial()
+    return (
+      Array.from({ length: 20 }, (_, i) => faker.commerce.productMaterial())
+        // remove duplicate packageType
+        .filter((value, index, self) => self.indexOf(value) === index)
     );
   }, []);
 
@@ -61,6 +63,10 @@ export default function ContainerInput({
                 ...c.cargoManifest,
                 {
                   uuid: faker.string.uuid(),
+                  packageType: "",
+                  packageQuantity: 0,
+                  weight: 0,
+                  measurement: 0,
                   cargoInformation: {
                     wpmStatus: "N",
                     combo: "",
@@ -119,6 +125,43 @@ export default function ContainerInput({
       ),
     }));
   }
+
+  useEffect(() => {
+    // calculate total weight and measurement and packageQuantity
+    if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
+
+    const totalWeight = container.cargoManifest.reduce(
+      (acc, cm) => acc + cm.weight,
+      0
+    );
+    const totalMeasurement = container.cargoManifest.reduce(
+      (acc, cm) => acc + cm.measurement,
+      0
+    );
+    const totalPackageQuantity = container.cargoManifest.reduce(
+      (acc, cm) => acc + cm.packageQuantity,
+      0
+    );
+
+    setSIEditContainerStore((prev) => ({
+      ...prev,
+      [typeKey]: prev[typeKey].map((c, j) =>
+        c.uuid === container.uuid
+          ? {
+              ...c,
+              packageWeight: totalWeight,
+              packageMeasurement: totalMeasurement,
+              packageQuantity: totalPackageQuantity,
+            }
+          : c
+      ),
+    }));
+  }, [
+    container.cargoManifest,
+    container.uuid,
+    setSIEditContainerStore,
+    typeKey,
+  ]);
 
   return (
     <div className="mt-6 flex flex-col gap-4">
@@ -410,6 +453,126 @@ export default function ContainerInput({
               >
                 Cargo Information
               </MdTypography>
+              <div className="flex gap-2">
+                <NAOutlinedListBox
+                  className="flex-1"
+                  label="Package"
+                  options={tempPackageList}
+                  initialValue={
+                    container.cargoManifest.find(
+                      (cm) => cm.uuid === selectedCargoManifestUuid
+                    )?.packageType || "-"
+                  }
+                  onSelection={(value) => {
+                    updateContainerStore(
+                      container,
+                      "cargoManifest",
+                      container.cargoManifest.map((cm) =>
+                        cm.uuid === selectedCargoManifestUuid
+                          ? {
+                              ...cm,
+                              packageType: value,
+                            }
+                          : cm
+                      )
+                    );
+                  }}
+                />
+                <NAOutlinedTextField
+                  type="number"
+                  value={
+                    container.cargoManifest
+                      .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                      ?.packageQuantity.toString() || ""
+                  }
+                  handleValueChange={(value) => {
+                    updateContainerStore(
+                      container,
+                      "cargoManifest",
+                      container.cargoManifest.map((cm) =>
+                        cm.uuid === selectedCargoManifestUuid
+                          ? {
+                              ...cm,
+                              packageQuantity: parseInt(value),
+                            }
+                          : cm
+                      )
+                    );
+                  }}
+                />
+              </div>
+              <div className="flex gap-4">
+                <div className="flex gap-2">
+                  <NAOutlinedTextField
+                    label="Weight"
+                    type="number"
+                    value={
+                      container.cargoManifest
+                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                        ?.weight.toString() || ""
+                    }
+                    handleValueChange={(value) => {
+                      updateContainerStore(
+                        container,
+                        "cargoManifest",
+                        container.cargoManifest.map((cm) =>
+                          cm.uuid === selectedCargoManifestUuid
+                            ? {
+                                ...cm,
+                                weight: parseInt(value),
+                              }
+                            : cm
+                        )
+                      );
+                    }}
+                  />
+                  <NAOutlinedListBox
+                    options={["KGS", "LBS"]}
+                    initialValue={SIEditContainerStore.weightUnit}
+                    onSelection={(value) => {
+                      setSIEditContainerStore((prev) => ({
+                        ...prev,
+                        weightUnit: value as "KGS" | "LBS",
+                      }));
+                    }}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <NAOutlinedTextField
+                    label="Measure"
+                    type="number"
+                    value={
+                      container.cargoManifest
+                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                        ?.measurement.toString() || ""
+                    }
+                    handleValueChange={(value) => {
+                      updateContainerStore(
+                        container,
+                        "cargoManifest",
+                        container.cargoManifest.map((cm) =>
+                          cm.uuid === selectedCargoManifestUuid
+                            ? {
+                                ...cm,
+                                measurement: parseInt(value),
+                              }
+                            : cm
+                        )
+                      );
+                    }}
+                  />
+                  <NAOutlinedListBox
+                    options={["CBM", "CBF"]}
+                    initialValue={SIEditContainerStore.measurementUnit}
+                    onSelection={(value) => {
+                      setSIEditContainerStore((prev) => ({
+                        ...prev,
+                        measurementUnit: value as "CBM" | "CBF",
+                      }));
+                    }}
+                  />
+                </div>
+              </div>
               <div className="flex gap-2">
                 <NAOutlinedListBox
                   options={["Y", "N", "N/A"]}

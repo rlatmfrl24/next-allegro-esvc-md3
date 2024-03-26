@@ -41,6 +41,8 @@ export const MdSingleDatePicker = (props: {
   required?: boolean;
   handleDateChange?: (date: DateTime) => void;
   dateFormat?: string;
+  disabled?: boolean;
+  readonly?: boolean;
 }) => {
   const currentDateFormat = props.dateFormat || "yyyy-MM-dd";
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -128,12 +130,16 @@ export const MdSingleDatePicker = (props: {
       <MdOutlinedTextField
         ref={inputEl}
         label={props.label}
-        className="flex-1"
+        className={`flex-1 ${props.readonly ? "bg-surfaceContainer" : ""}`}
+        disabled={props.disabled || false}
         value={defaultDate.toFormat(currentDateFormat)}
         errorText="Invalid date format"
         error={invalid}
         onBlur={(e) => {
           handleDateChange(e);
+        }}
+        onClick={() => {
+          setIsCalendarOpen(true);
         }}
         readOnly
       >
@@ -145,7 +151,11 @@ export const MdSingleDatePicker = (props: {
       </MdOutlinedTextField>
       <FloatingFocusManager context={context} modal={false}>
         <div
-          className={isCalendarOpen ? "visible z-20" : "invisible"}
+          className={
+            isCalendarOpen && !props.readonly && !props.disabled
+              ? "visible z-20"
+              : "invisible"
+          }
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}

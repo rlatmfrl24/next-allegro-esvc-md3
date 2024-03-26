@@ -36,6 +36,8 @@ export const MdRangeDatePicker = (props: {
   defaultEndDate?: DateTime;
   handleDateRangeSelected?: (dateRange: [DateTime, DateTime]) => void;
   dateFormat?: string;
+  disabled?: boolean;
+  readonly?: boolean;
 }) => {
   const currentDateFormat = props.dateFormat || "yyyy-MM-dd";
 
@@ -174,6 +176,13 @@ export const MdRangeDatePicker = (props: {
         onBlur={(e) => {
           handleDateChange(e);
         }}
+        onClick={
+          !props.disabled && !props.readonly
+            ? () => {
+                setIsCalendarOpen(true);
+              }
+            : undefined
+        }
         readOnly
       >
         <MdIconButton
@@ -190,7 +199,11 @@ export const MdRangeDatePicker = (props: {
       </MdOutlinedTextField>
       <FloatingFocusManager context={context} modal={true}>
         <div
-          className={isCalendarOpen ? "visible z-10" : "invisible"}
+          className={
+            isCalendarOpen && !props.readonly && !props.disabled
+              ? "visible z-10"
+              : "invisible"
+          }
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}

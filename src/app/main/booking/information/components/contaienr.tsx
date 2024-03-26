@@ -1,7 +1,10 @@
 import { Section } from "./base";
 import DryContainerImage from "@/../public/img_dry_container.svg";
 import ReeferContainerImage from "@/../public/img_reefer_container.svg";
-import EmptyContainerImage from "@/../public/img_empty_container.svg";
+import OpenTopContainerImage from "@/../public/img_open_top_container.svg";
+import TankContainerImage from "@/../public/img_tank_container.svg";
+import BulkContainerImage from "@/../public/img_bulk_container.svg";
+import FlatRackContainerImage from "@/../public/img_flat_rack_container.svg";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking.store";
@@ -110,21 +113,24 @@ const ContainerItem = ({
   quantity,
   soc,
 }: {
-  type: "dry" | "reefer" | "empty" | "flatrack" | "open-top" | "tank" | "bulk";
+  type: "dry" | "reefer" | "flatrack" | "open-top" | "tank" | "bulk";
   size?: string;
   quantity?: number;
   soc?: number;
 }) => {
   return (
-    <div className="flex flex-1 border rounded-lg border-outlineVariant p-4 gap-4">
-      <div className="w-24 flex justify-center">
-        {type === "dry" ? (
-          <DryContainerImage />
-        ) : type === "reefer" ? (
-          <ReeferContainerImage />
-        ) : (
-          <EmptyContainerImage />
-        )}
+    <div className="flex flex-1 items-center border rounded-lg border-outlineVariant p-4 gap-4">
+      <div className="w-24 flex justify-center items-center">
+        {
+          {
+            dry: <DryContainerImage />,
+            reefer: <ReeferContainerImage />,
+            "open-top": <OpenTopContainerImage />,
+            flatrack: <FlatRackContainerImage />,
+            tank: <TankContainerImage />,
+            bulk: <BulkContainerImage />,
+          }[type]
+        }
       </div>
       {type !== "bulk" ? (
         <>

@@ -144,6 +144,10 @@ export interface SIContainerInputProps {
 
 export type CargoManifestType = {
   uuid: string;
+  packageType: string;
+  packageQuantity: number;
+  weight: number;
+  measurement: number;
   cargoInformation: {
     wpmStatus: "Y" | "N" | "N/A";
     combo: string;

@@ -142,6 +142,10 @@ export default function NAOutlinedAutoComplete({
   }
 
   const showRecommand = useCallback(() => {
+    if (props.readOnly) {
+      return false;
+    }
+
     if (recentItems.length > 0) {
       return true;
     }
@@ -157,7 +161,7 @@ export default function NAOutlinedAutoComplete({
     }
 
     return false;
-  }, [itemList, query, recentItems.length]);
+  }, [itemList, props.readOnly, query, recentItems.length]);
 
   return (
     <div className={`relative ${className}`}>
@@ -166,7 +170,7 @@ export default function NAOutlinedAutoComplete({
         ref={refs.setReference}
         {...getReferenceProps()}
         value={query}
-        className="w-full"
+        className={`w-full ${props.readOnly ? "bg-surfaceContainer" : ""}`}
         required={false}
         onInput={(e) => {
           setQuery(e.currentTarget.value);

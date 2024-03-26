@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import RequestNumberSection from "../components/request-number";
 import { BookingStatus } from "@/app/util/typeDef/boooking";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export default function BookingRequestInformation() {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
@@ -99,10 +100,10 @@ export default function BookingRequestInformation() {
                     Enter the number of bookings to duplicate. (Maximum 50)
                   </MdTypography>
                 </div>
-                <MdOutlinedTextField
+                <NAOutlinedTextField
                   value={dataSet[0].additionalInformation.duplicateCount.toString()}
                   className="w-fit text-right"
-                  disabled
+                  readOnly
                 />
                 <MdTypography
                   variant="body"

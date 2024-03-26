@@ -10,7 +10,11 @@ import {
   ReeferContainerInformationType,
   TankContainerInformationType,
 } from "../util/typeDef/boooking";
-import { SIContainerInputProps, SealKind } from "../util/typeDef/si";
+import {
+  CargoManifestType,
+  SIContainerInputProps,
+  SealKind,
+} from "../util/typeDef/si";
 
 export function getRoutePath(paths: string[]) {
   let itemTree = menuItems;
@@ -31,6 +35,10 @@ export function getRoutePath(paths: string[]) {
 
 export function getEmptyCargoManifest() {
   return {
+    packageType: "",
+    packageQuantity: 0,
+    weight: 0,
+    measurement: 0,
     cargoInformation: {
       wpmStatus: "N",
       combo: "",
@@ -41,7 +49,7 @@ export function getEmptyCargoManifest() {
       hisCodeEUASIA: "",
       ncmCode: "",
     },
-  };
+  } as CargoManifestType;
 }
 
 export function getEmptySIEditContainerData(type: ContainerType) {
@@ -248,4 +256,8 @@ export function sumContainerMeasurement(siContainers: SIContainerInputProps[]) {
     }, 0)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function getNumberWithCommas(num: number) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
