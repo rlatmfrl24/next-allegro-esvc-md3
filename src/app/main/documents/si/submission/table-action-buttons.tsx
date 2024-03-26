@@ -47,7 +47,7 @@ const ActionButtons = ({
               states.includes(SIState.Rejected) ||
               states.includes(SIState.Submit)) &&
               states.length === 1 && (
-                <Link href={`/main/documentation/si/edit`}>
+                <Link href={`/main/documents/si/edit`}>
                   <MdTextButton>Edit</MdTextButton>
                 </Link>
               )}

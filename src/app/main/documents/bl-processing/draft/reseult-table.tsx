@@ -10,7 +10,7 @@ import {
   MdFilledButton,
   MdTextButton,
 } from "@/app/util/md3";
-import { ResultTableProps } from "@/app/util/typeDef/documentation";
+import { ResultTableProps } from "@/app/util/typeDef/documents";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
 import {

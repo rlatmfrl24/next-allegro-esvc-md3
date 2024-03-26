@@ -131,7 +131,7 @@ export default function SIEdit() {
                 <MdElevation />
                 <MdFilledTonalButton
                   onClick={() => {
-                    router.push("/main/documentation/si/preview");
+                    router.push("/main/documents/si/preview");
                   }}
                 >
                   Preview
@@ -147,7 +147,7 @@ export default function SIEdit() {
                     } as SIEditDataType;
                     console.log(newSICondition);
                     setCurrentSICondition(newSICondition);
-                    router.push("/main/documentation/si/submission");
+                    router.push("/main/documents/si/submission");
                   }}
                 >
                   Submit

@@ -193,7 +193,7 @@ function SIPreview() {
 
               return newObject;
             });
-            router.push(`/main/documentation/si/edit?targetStep=${target}`);
+            router.push(`/main/documents/si/edit?targetStep=${target}`);
           }}
         >
           <EditOutlined
@@ -1055,7 +1055,7 @@ function SIPreview() {
                 } as SIEditDataType;
                 console.log(newSICondition);
                 setCurrentSICondition(newSICondition);
-                router.push("/main/documentation/si/submission");
+                router.push("/main/documents/si/submission");
               }}
             >
               Submit
