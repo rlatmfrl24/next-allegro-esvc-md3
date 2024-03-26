@@ -29,11 +29,13 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 
 export default function NAOutlinedListBox({
   options,
+  icon,
   initialValue,
   onSelection,
   className,
   ...props
 }: {
+  icon?: React.ReactNode;
   options: string[];
   initialValue?: string;
   onSelection?: (value: string) => void;
@@ -45,7 +47,7 @@ export default function NAOutlinedListBox({
   const listRef = useRef<any[]>([]);
 
   useEffect(() => {
-    if (initialValue) {
+    if (initialValue || initialValue === "") {
       setQuery(initialValue);
     }
   }, [initialValue]);
@@ -122,6 +124,7 @@ export default function NAOutlinedListBox({
         hasTrailingIcon
         className="w-full cursor-none"
       >
+        {icon && <div slot="leading-icon">{icon}</div>}
         <div slot="trailing-icon">
           <ArrowDropDown fontSize="small" />
         </div>
