@@ -36,7 +36,7 @@ export default function QuotationList({
             >
               Origin
             </MdTypography>
-            <LabelChip label={quotationTerms.origin.yardName} />
+            <LabelChip label={quotationTerms.origin?.yardName} />
           </div>
           <SwapHorizOutlined className="mb-3 mx-4" />
           <div>
@@ -47,17 +47,17 @@ export default function QuotationList({
             >
               Destination
             </MdTypography>
-            <LabelChip label={quotationTerms.destination.yardName} />
+            <LabelChip label={quotationTerms.destination?.yardName} />
           </div>
         </div>
         <div className="flex justify-between">
           <TermsItem
             title="Port of Loading"
-            value={quotationTerms.pol.yardName || "-"}
+            value={quotationTerms.pol?.yardName || "-"}
           />
           <TermsItem
             title="Port of Discharge"
-            value={quotationTerms.pod.yardName || "-"}
+            value={quotationTerms.pod?.yardName || "-"}
           />
           <TermsItem
             title="Departure Date"
