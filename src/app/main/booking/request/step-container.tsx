@@ -417,17 +417,15 @@ export default function ContainerStep() {
               }
               hoverText={
                 <div>
-                  {/* {containerInformation.bulk.map((container, index) => (
-                    <div key={index} className="flex gap-4">
-                      <MdTypography
-                        variant="title"
-                        size="medium"
-                        className="text-white"
-                      >
-                        {container.size + " x" + container.quantity}
-                      </MdTypography>
-                    </div>
-                  ))} */}
+                  {containerInformation.bulk.length !== 0 && (
+                    <MdTypography
+                      variant="title"
+                      size="medium"
+                      className="text-white"
+                    >
+                      {"Bulk x" + containerInformation.bulk.length}
+                    </MdTypography>
+                  )}
                 </div>
               }
             />

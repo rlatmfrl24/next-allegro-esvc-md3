@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import EmptyContainerPlaceholder from "@/../public/image_empty_container_placeholder.svg";
 import DryContainerImage from "@/../public/img_dry_container.svg";
@@ -16,7 +16,11 @@ import {
   sumContainerQuantity,
   sumContainerWeight,
 } from "@/app/main/util";
-import { SIEditContainerState, SIEditStepState } from "@/app/store/si.store";
+import {
+  SIContainerInputState,
+  SIEditContainerState,
+  SIEditStepState,
+} from "@/app/store/si.store";
 import { MdFilledButton } from "@/app/util/md3";
 import { ContainerType } from "@/app/util/typeDef/boooking";
 
@@ -28,6 +32,8 @@ export default function StepContainer() {
   const [typeSelections, setTypeSelections] = useState<ContainerType[]>([]);
   const [siContainerStore, setSIEditContainerStore] =
     useRecoilState(SIEditContainerState);
+
+  const containerInputStatstics = useRecoilValue(SIContainerInputState);
 
   useEffect(() => {
     setSIEditStep((prev) => ({
@@ -195,6 +201,22 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.dry.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.dry).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.dry[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
           image={<ReeferContainerImage />}
@@ -205,6 +227,22 @@ export default function StepContainer() {
             siContainerStore.reefer.length === 0
               ? undefined
               : siContainerStore.reefer.length
+          }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.reefer).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.reefer[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
           }
         />
         <ContainerToggleButton
@@ -217,6 +255,22 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.opentop.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.opentop).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.opentop[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
           image={<FlatRackContainerImage />}
@@ -227,6 +281,22 @@ export default function StepContainer() {
             siContainerStore.flatrack.length === 0
               ? undefined
               : siContainerStore.flatrack.length
+          }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.flatrack).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.flatrack[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
           }
         />
         <ContainerToggleButton
@@ -239,6 +309,22 @@ export default function StepContainer() {
               ? undefined
               : siContainerStore.tank.length
           }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.tank).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.tank[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
+          }
         />
         <ContainerToggleButton
           image={<BulkContainerImage />}
@@ -249,6 +335,22 @@ export default function StepContainer() {
             siContainerStore.bulk.length === 0
               ? undefined
               : siContainerStore.bulk.length
+          }
+          hoverText={
+            <div>
+              {Object.keys(containerInputStatstics.bulk).map((key) => {
+                return (
+                  <div key={key} className="flex text-white">
+                    <MdTypography variant="title" size="medium">
+                      {key} x
+                    </MdTypography>
+                    <MdTypography variant="title" size="medium">
+                      {containerInputStatstics.bulk[key as any]}
+                    </MdTypography>
+                  </div>
+                );
+              })}
+            </div>
           }
         />
       </div>
