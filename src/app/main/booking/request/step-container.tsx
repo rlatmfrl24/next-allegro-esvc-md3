@@ -250,6 +250,26 @@ export default function ContainerStep() {
                   ? undefined
                   : containerInformation.dry.length
               }
+              hoverText={
+                <div>
+                  {containerInformation.dry.map((container, index) => {
+                    return (
+                      container.size &&
+                      container.quantity !== 0 && (
+                        <div key={index} className="flex gap-4">
+                          <MdTypography
+                            variant="title"
+                            size="medium"
+                            className="text-white"
+                          >
+                            {container.size + " x" + container.quantity}
+                          </MdTypography>
+                        </div>
+                      )
+                    );
+                  })}
+                </div>
+              }
             />
             <ContainerToggleButton
               image={<ReeferContainerImage />}
@@ -262,6 +282,26 @@ export default function ContainerStep() {
                 containerInformation.reefer.length === 0
                   ? undefined
                   : containerInformation.reefer.length
+              }
+              hoverText={
+                <div>
+                  {containerInformation.reefer.map((container, index) => {
+                    return (
+                      container.size &&
+                      container.quantity !== 0 && (
+                        <div key={index} className="flex gap-4">
+                          <MdTypography
+                            variant="title"
+                            size="medium"
+                            className="text-white"
+                          >
+                            {container.size + " x" + container.quantity}
+                          </MdTypography>
+                        </div>
+                      )
+                    );
+                  })}
+                </div>
               }
             />
             <ContainerToggleButton
@@ -276,6 +316,26 @@ export default function ContainerStep() {
                   ? undefined
                   : containerInformation.opentop.length
               }
+              hoverText={
+                <div>
+                  {containerInformation.opentop.map((container, index) => {
+                    return (
+                      container.size &&
+                      container.quantity !== 0 && (
+                        <div key={index} className="flex gap-4">
+                          <MdTypography
+                            variant="title"
+                            size="medium"
+                            className="text-white"
+                          >
+                            {container.size + " x" + container.quantity}
+                          </MdTypography>
+                        </div>
+                      )
+                    );
+                  })}
+                </div>
+              }
             />
             <ContainerToggleButton
               image={<FlatRackContainerImage />}
@@ -288,6 +348,26 @@ export default function ContainerStep() {
                 containerInformation.flatrack.length === 0
                   ? undefined
                   : containerInformation.flatrack.length
+              }
+              hoverText={
+                <div>
+                  {containerInformation.flatrack.map((container, index) => {
+                    return (
+                      container.size &&
+                      container.quantity !== 0 && (
+                        <div key={index} className="flex gap-4">
+                          <MdTypography
+                            variant="title"
+                            size="medium"
+                            className="text-white"
+                          >
+                            {container.size + " x" + container.quantity}
+                          </MdTypography>
+                        </div>
+                      )
+                    );
+                  })}
+                </div>
               }
             />
             <ContainerToggleButton
@@ -302,6 +382,26 @@ export default function ContainerStep() {
                   ? undefined
                   : containerInformation.tank.length
               }
+              hoverText={
+                <div>
+                  {containerInformation.tank.map((container, index) => {
+                    return (
+                      container.size &&
+                      container.quantity !== 0 && (
+                        <div key={index} className="flex gap-4">
+                          <MdTypography
+                            variant="title"
+                            size="medium"
+                            className="text-white"
+                          >
+                            {container.size + " x" + container.quantity}
+                          </MdTypography>
+                        </div>
+                      )
+                    );
+                  })}
+                </div>
+              }
             />
             <ContainerToggleButton
               image={<BulkContainerImage />}
@@ -314,6 +414,21 @@ export default function ContainerStep() {
                 containerInformation.bulk.length === 0
                   ? undefined
                   : containerInformation.bulk.length
+              }
+              hoverText={
+                <div>
+                  {/* {containerInformation.bulk.map((container, index) => (
+                    <div key={index} className="flex gap-4">
+                      <MdTypography
+                        variant="title"
+                        size="medium"
+                        className="text-white"
+                      >
+                        {container.size + " x" + container.quantity}
+                      </MdTypography>
+                    </div>
+                  ))} */}
+                </div>
               }
             />
           </div>
