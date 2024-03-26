@@ -47,6 +47,9 @@ import {
   AttachFile,
   EditOutlined,
   Fax,
+  Inventory,
+  Inventory2Outlined,
+  InventoryOutlined,
   Mail,
   Phone,
 } from "@mui/icons-material";
@@ -1088,12 +1091,33 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
         <MdTypography variant="body" size="large" prominent className="flex-1">
           {containerData.containerNumber || "-"}
         </MdTypography>
-        <MdTypography variant="body" size="small" prominent>
+        <MdTypography
+          variant="body"
+          size="small"
+          prominent
+          className="text-outline"
+        >
           {containerData.containerSize +
             " " +
             containerData.containerType +
             " "}
         </MdTypography>
+        {containerData.hasCargoManifest && (
+          <>
+            <MdTypography
+              variant="body"
+              size="small"
+              className="text-outline ml-2"
+            >
+              <Inventory2Outlined
+                sx={{
+                  fontSize: 12,
+                }}
+              />
+              {`x${containerData.cargoManifest.length}`}
+            </MdTypography>
+          </>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <MdTypography
