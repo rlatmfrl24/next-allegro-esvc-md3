@@ -5,6 +5,9 @@ import {
   useClick,
   useDismiss,
   useTransitionStyles,
+  flip,
+  offset,
+  shift,
 } from "@floating-ui/react";
 import { CSSProperties, useMemo, useState } from "react";
 import moduleStyles from "@/app/styles/base.module.css";
@@ -24,6 +27,8 @@ import { DateTime } from "luxon";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { createDummyVesselInformations } from "@/app/main/schedule/util";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import { basicDropdownStyles } from "@/app/util/constants";
+import { off } from "process";
 
 const filterOptions = ["Vessel", "Booking Via"];
 
@@ -159,6 +164,7 @@ export default function SISearchCondition() {
 
   const { refs, floatingStyles, context } = useFloating({
     open: isFilterDetailsOpen,
+    middleware: [offset(3), flip(), shift()],
     onOpenChange: setIsFilterDetailsOpen,
     whileElementsMounted: autoUpdate,
   });
@@ -168,7 +174,10 @@ export default function SISearchCondition() {
     useDismiss(context),
   ]);
 
-  const { isMounted, styles } = useTransitionStyles(context);
+  const { isMounted, styles } = useTransitionStyles(
+    context,
+    basicDropdownStyles
+  );
 
   return (
     <>

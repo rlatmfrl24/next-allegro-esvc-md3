@@ -22,6 +22,7 @@ import {
 import { ArrowDropDown } from "@mui/icons-material";
 import { MdTypography } from "./typography";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { basicDropdownStyles } from "../util/constants";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextField
@@ -88,27 +89,10 @@ export default function NAOutlinedListBox({
     [focus, click, dismiss, listNavigation]
   );
 
-  const { isMounted, styles } = useTransitionStyles(context, {
-    duration: {
-      open: 200,
-      close: 100,
-    },
-    initial: {
-      opacity: 0,
-      transformOrigin: "top",
-      transform: "scaleY(0.55) translateY(-10px)",
-    },
-    open: {
-      opacity: 1,
-      transformOrigin: "top",
-      transform: "scaleY(1) translateY(0)",
-    },
-    close: {
-      opacity: 0,
-      transformOrigin: "top",
-      transform: "scaleY(0.55) translateY(-10px)",
-    },
-  });
+  const { isMounted, styles } = useTransitionStyles(
+    context,
+    basicDropdownStyles
+  );
 
   return (
     <div

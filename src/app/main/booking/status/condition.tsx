@@ -35,6 +35,7 @@ import {
   VesselInfoType,
 } from "@/app/util/typeDef/schedule";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { basicPopoverStyles } from "@/app/util/constants";
 
 const filterOptions = [
   {
@@ -260,16 +261,15 @@ export default function BookingStatusCondition() {
   const { refs, floatingStyles, context } = useFloating({
     open: isFilterDetailsOpen,
     onOpenChange: setIsFilterDetailsOpen,
-    placement: "bottom-start",
+    placement: "bottom-end",
     middleware: [offset(4), shift()],
     whileElementsMounted: autoUpdate,
   });
 
-  const { isMounted, styles } = useTransitionStyles(context, {
-    initial: { opacity: 0, transform: "translateY(-8px)" },
-    open: { opacity: 1, transform: "translateY(0px)" },
-    close: { opacity: 0, transform: "translateY(-8px)" },
-  });
+  const { isMounted, styles } = useTransitionStyles(
+    context,
+    basicPopoverStyles
+  );
   const click = useClick(context);
   const dismiss = useDismiss(context);
   const { getFloatingProps, getReferenceProps } = useInteractions([
