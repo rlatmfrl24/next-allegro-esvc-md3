@@ -129,9 +129,9 @@ export default function NAOutlinedAutoComplete({
     setDefaultValue(initialValue || "");
   }, [initialValue]);
 
-  useEffect(() => {
-    onQueryChange?.(query);
-  }, [query, onQueryChange]);
+  // useEffect(() => {
+  //   onQueryChange?.(query);
+  // }, [query, onQueryChange]);
 
   function handleItemSelect(item: string) {
     setQuery(item);
@@ -174,6 +174,7 @@ export default function NAOutlinedAutoComplete({
         required={false}
         onInput={(e) => {
           setQuery(e.currentTarget.value);
+          onQueryChange?.(e.currentTarget.value);
         }}
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}

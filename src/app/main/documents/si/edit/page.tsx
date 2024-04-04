@@ -118,7 +118,7 @@ export default function SIEdit() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ type: "spring" }}
-              className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10"
+              className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-50"
             >
               <div
                 className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
