@@ -150,14 +150,14 @@ export type CargoManifestType = {
   weight: number;
   measurement: number;
   cargoInformation: {
-    wpmStatus: "Y" | "N" | "N/A";
-    combo: string;
+    // wpmStatus: "Y" | "N" | "N/A";
+    // combo: string;
     description: string;
   };
   commodityCode: {
     htsCodeUS: string;
     hisCodeEUASIA: string;
-    ncmCode: string;
+    // ncmCode: string;
   };
 };
 

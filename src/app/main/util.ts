@@ -40,14 +40,11 @@ export function getEmptyCargoManifest() {
     weight: 0,
     measurement: 0,
     cargoInformation: {
-      wpmStatus: "N",
-      combo: "",
       description: "",
     },
     commodityCode: {
       htsCodeUS: "",
       hisCodeEUASIA: "",
-      ncmCode: "",
     },
   } as CargoManifestType;
 }
