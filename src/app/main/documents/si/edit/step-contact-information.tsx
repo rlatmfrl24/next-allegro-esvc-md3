@@ -91,8 +91,8 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
-            label="Email"
-            type="email"
+            label="Phone"
+            type="tel"
             value={contactInformationStore.phone}
             handleValueChange={(value) => {
               setContactInformationStore((prev) => {
