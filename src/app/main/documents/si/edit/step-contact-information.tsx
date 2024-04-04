@@ -55,15 +55,17 @@ export default function StepContactInformation() {
         isCompleted:
           !!contactInformationStore.name &&
           !!contactInformationStore.telNumber &&
-          !!contactInformationStore.phone &&
+          !!contactInformationStore.email &&
+          !!contactInformationStore.address &&
           !!contactInformationStore.fax,
       },
     }));
   }, [
     contactInformationStore.fax,
     contactInformationStore.name,
-    contactInformationStore.phone,
     contactInformationStore.telNumber,
+    contactInformationStore.email,
+    contactInformationStore.address,
     setSIEditStep,
   ]);
 
@@ -89,6 +91,20 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
+            label="Email"
+            type="email"
+            value={contactInformationStore.email}
+            handleValueChange={(value) => {
+              setContactInformationStore((prev) => {
+                return {
+                  ...prev,
+                  email: value,
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            required
             label="Tel No."
             type="tel"
             value={contactInformationStore.telNumber}
@@ -103,20 +119,6 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
-            label="Phone"
-            type="tel"
-            value={contactInformationStore.phone}
-            handleValueChange={(value) => {
-              setContactInformationStore((prev) => {
-                return {
-                  ...prev,
-                  phone: value,
-                };
-              });
-            }}
-          />
-          <NAOutlinedTextField
-            required
             label="Fax"
             type="tel"
             value={contactInformationStore.fax}
@@ -125,6 +127,21 @@ export default function StepContactInformation() {
                 return {
                   ...prev,
                   fax: value,
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            required
+            className="col-span-2"
+            type="textarea"
+            label="Address"
+            value={contactInformationStore.address}
+            handleValueChange={(value) => {
+              setContactInformationStore((prev) => {
+                return {
+                  ...prev,
+                  address: value,
                 };
               });
             }}
@@ -173,7 +190,8 @@ export default function StepContactInformation() {
             </MdTypography>
           </button>
         </div>
-        <div className="flex flex-col gap-4">
+
+        {/* <div className="flex flex-col gap-4">
           <DetailTitle title="Email Notification Subscription" />
           <div className="flex flex-col gap-1">
             <NaToggleButton
@@ -235,6 +253,7 @@ export default function StepContactInformation() {
             />
           </div>
         </div>
+         */}
       </div>
       <Portal selector="#main-container">
         <MdDialog

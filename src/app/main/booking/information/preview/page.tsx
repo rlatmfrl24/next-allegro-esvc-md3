@@ -119,7 +119,7 @@ export default function BookingRequestPreview() {
                 specialInstruction={etcValue.specialInstruction}
               />
             </div>
-            <DividerComponent className="my-8" />
+            {/* <DividerComponent className="my-8" />
             <div className="flex items-stretch">
               <Section title="Duplicate reservation">
                 <div className="flex flex-col gap-4">
@@ -275,7 +275,7 @@ export default function BookingRequestPreview() {
                   />
                 </div>
               </Section>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-20">

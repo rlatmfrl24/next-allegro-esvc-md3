@@ -80,7 +80,7 @@ export default function BookingRequestInformation() {
             />
           </div>
 
-          <DividerComponent className="my-8" />
+          {/* <DividerComponent className="my-8" />
           <div className="flex items-stretch">
             <Section title="Duplicate reservation">
               <div className="flex flex-col gap-4">
@@ -149,7 +149,7 @@ export default function BookingRequestInformation() {
                 />
               </div>
             </Section>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

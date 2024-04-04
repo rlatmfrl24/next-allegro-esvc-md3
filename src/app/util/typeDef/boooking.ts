@@ -87,7 +87,8 @@ export type ContactInformationType = {
   address: string;
   telNo: string;
   faxNo: string;
-  email: string[];
+  email: string;
+  emailRecipient: string[];
 };
 
 export type AdditionalInformatioType = {

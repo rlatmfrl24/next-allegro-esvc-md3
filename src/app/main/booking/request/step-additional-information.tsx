@@ -120,7 +120,7 @@ export default function AdditionalInformationStep() {
           });
         }}
       />
-
+      {/* 
       <SubTitle
         title="Do you want to make duplicate bookings for the same vessel?"
         className="mt-6"
@@ -247,7 +247,7 @@ export default function AdditionalInformationStep() {
             });
           }}
         />
-      </div>
+      </div> */}
       <div className="flex-1 flex items-end justify-end">
         <MdFilledButton onClick={() => moveToContactInformationStep()}>
           Next

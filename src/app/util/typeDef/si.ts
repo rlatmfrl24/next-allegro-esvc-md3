@@ -99,9 +99,10 @@ export type SIRouteBLType = {
 
 export type SIEditContactInformationType = {
   name: string;
-  phone: string;
   telNumber: string;
   fax: string;
+  address: string;
+  email: string;
   emailRecipient: string[];
   subscrition: {
     rollOver: boolean;
