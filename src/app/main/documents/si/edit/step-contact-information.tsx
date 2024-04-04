@@ -55,7 +55,7 @@ export default function StepContactInformation() {
         isCompleted:
           !!contactInformationStore.name &&
           !!contactInformationStore.telNumber &&
-          !!contactInformationStore.email &&
+          !!contactInformationStore.phone &&
           !!contactInformationStore.address &&
           !!contactInformationStore.fax,
       },
@@ -64,7 +64,7 @@ export default function StepContactInformation() {
     contactInformationStore.fax,
     contactInformationStore.name,
     contactInformationStore.telNumber,
-    contactInformationStore.email,
+    contactInformationStore.phone,
     contactInformationStore.address,
     setSIEditStep,
   ]);
@@ -93,12 +93,12 @@ export default function StepContactInformation() {
             required
             label="Email"
             type="email"
-            value={contactInformationStore.email}
+            value={contactInformationStore.phone}
             handleValueChange={(value) => {
               setContactInformationStore((prev) => {
                 return {
                   ...prev,
-                  email: value,
+                  phone: value,
                 };
               });
             }}

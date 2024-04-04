@@ -86,7 +86,7 @@ export const SIEditContactInformationState = atom<SIEditContactInformationType>(
       telNumber: "",
       fax: "",
       address: "",
-      email: "",
+      phone: "",
       emailRecipient: [],
       subscrition: {
         rollOver: false,
