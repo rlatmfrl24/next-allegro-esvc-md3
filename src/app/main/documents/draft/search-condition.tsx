@@ -12,6 +12,8 @@ import {
   MdFilledButton,
   MdIconButton,
   MdInputChip,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
 import { InfoOutlined } from "@mui/icons-material";
@@ -41,7 +43,7 @@ export default function BLCheckSearchCondition({
   const [blNumberList, setBlNumberList] = useState<string[]>([]);
   const [searchType, setSearchType] = useState<
     "B/L No." | "Vessel" | "On Board Date"
-  >("On Board Date");
+  >("B/L No.");
 
   const vesselList = useMemo(() => {
     return createDummyVesselInformations(30);
@@ -96,22 +98,26 @@ export default function BLCheckSearchCondition({
 
   return (
     <div className={styles.area}>
+      <MdOutlinedSegmentedButtonSet>
+        {["B/L No.", "Vessel", "On Board Date"].map((type) => (
+          <MdOutlinedSegmentedButton
+            key={type}
+            label={type}
+            selected={searchType === type}
+            onClick={() => setSearchType(type as any)}
+          >
+            {type}
+          </MdOutlinedSegmentedButton>
+        ))}
+      </MdOutlinedSegmentedButtonSet>
       <div className="flex gap-2">
-        <NAOutlinedListBox
-          className="w-56"
-          options={["B/L No.", "Vessel", "On Board Date"]}
-          initialValue={searchType}
-          onSelection={(value) => {
-            setSearchType(value as "B/L No." | "Vessel" | "On Board Date");
-          }}
-        />
         {
           {
             "B/L No.": (
-              <div className="flex-1 flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <div className="flex gap-2">
                   <NAOutlinedTextField
-                    className="flex-1"
+                    className="w-96"
                     value={blQuery}
                     placeholder="Multi B/L No. or Booking No."
                     handleValueChange={(value) => {
@@ -173,10 +179,10 @@ export default function BLCheckSearchCondition({
               </div>
             ),
             Vessel: (
-              <div className="flex-1 flex gap-2">
+              <div className="flex gap-2">
                 <NAOutlinedAutoComplete
                   label="Vessel Name"
-                  className="flex-1"
+                  className="w-96"
                   recentCookieKey="recent-vessel"
                   initialValue={vesselCondition.vesselName}
                   itemList={vesselList.map((vessel) => vessel.vesselName)}
@@ -213,6 +219,7 @@ export default function BLCheckSearchCondition({
             ),
             "On Board Date": (
               <MdRangeDatePicker
+                label="On Board Date"
                 defaultStartDate={boardDateCondition.from}
                 defaultEndDate={boardDateCondition.to}
                 handleDateRangeSelected={(dateRange) => {
