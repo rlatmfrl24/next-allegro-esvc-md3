@@ -1,41 +1,21 @@
-import {
-  useFloating,
-  autoUpdate,
-  useInteractions,
-  useClick,
-  useDismiss,
-  useTransitionStyles,
-  flip,
-  offset,
-  shift,
-} from "@floating-ui/react";
-import { CSSProperties, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import moduleStyles from "@/app/styles/base.module.css";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import {
-  MdCheckbox,
-  MdElevation,
   MdFilledButton,
-  MdList,
-  MdListItem,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
-import { MdTypography } from "@/app/components/typography";
 import { DateTime } from "luxon";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { createDummyVesselInformations } from "@/app/main/schedule/util";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import { basicDropdownStyles } from "@/app/util/constants";
-import { DateRange } from "@mui/icons-material";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
-
-const filterOptions = ["Vessel", "Booking Via"];
 
 export default function SISearchCondition() {
   const [conditionType, setConditionType] = useState<
