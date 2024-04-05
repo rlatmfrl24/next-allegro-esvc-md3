@@ -7,10 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import PortIcon from "@/../public/icon_port.svg";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import NaToggleButton from "@/app/components/na-toggle-button";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
-import { MdFilledButton, MdIcon, MdTextButton } from "@/app/util/md3";
+import {
+  MdFilledButton,
+  MdFilterChip,
+  MdIcon,
+  MdTextButton,
+} from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import DownloadIcon from "@mui/icons-material/Download";
 
@@ -37,7 +41,6 @@ export default function PortSchedule() {
   const [portScheduls] = useState<PortScheduleType[]>(
     createDummyPortSchedules()
   );
-  const [isOceanVesselOnly, setIsOceanVesselOnly] = useState(false);
 
   useEffect(() => {
     if (scrollRef.current) initialize(scrollRef.current);
@@ -117,13 +120,7 @@ export default function PortSchedule() {
                 Download
               </MdTextButton>
               <DividerComponent orientation="vertical" className="h-8 mx-2" />
-              <NaToggleButton
-                label="Ocean Vessel Only"
-                state={isOceanVesselOnly ? "checked" : "unchecked"}
-                onClick={() => {
-                  setIsOceanVesselOnly((prev) => !prev);
-                }}
-              />
+              <MdFilterChip label="Ocean Vessel Only" />
             </div>
 
             <div className="flex items-center gap-6">

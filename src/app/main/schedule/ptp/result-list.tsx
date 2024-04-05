@@ -33,16 +33,6 @@ export default function PointToPointListResult({
             ]}
           />
 
-          <NAOutlinedListBox
-            label="Sort By"
-            initialValue="Earliest Departure"
-            options={[
-              "Earliest Departure",
-              "Earliest Arrival",
-              "Fatest Transit Time",
-            ]}
-          />
-
           <MdFilterChip label="Direct Only" />
         </div>
 
