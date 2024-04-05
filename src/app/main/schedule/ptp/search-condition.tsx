@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import { MdTypography } from "@/app/components/typography";
@@ -23,6 +23,8 @@ import { SearchTextField } from "./components/search-textfield";
 import { createDummyPortList } from "../util";
 import { PtPSearchConditionType } from "@/app/util/typeDef/schedule";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 export default function SearchCondition({
   searchAction,
@@ -62,6 +64,18 @@ export default function SearchCondition({
   const [favoriteList, setFavoriteList] = useRecoilState(
     FavoriteRouteListState
   );
+
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
+  // function focusOnResult() {
+  //   if (scrollState.instance) {
+  //     scrollState.instance()?.elements().viewport?.scrollTo({
+  //       top: 300,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // }
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -168,7 +182,7 @@ export default function SearchCondition({
   }
 
   return (
-    <div aria-label="search-panel" className={styles.area}>
+    <div ref={areaRef} aria-label="search-panel" className={styles.area}>
       <div className="flex gap-6 h-10">
         <MdTypography
           tag="label"
@@ -304,7 +318,10 @@ export default function SearchCondition({
         </MdTextButton>
         <MdFilledButton
           onClick={() => {
-            Validation() && searchAction(currentCondition);
+            if (Validation()) {
+              searchAction(currentCondition);
+              FocusOnResult(areaRef, scrollState.instance);
+            }
           }}
         >
           Search

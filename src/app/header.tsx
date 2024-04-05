@@ -35,6 +35,7 @@ import QuickGuideIcon from "@/../public/icon_quick_guide.svg";
 import QuickSimpleSIIcon from "@/../public/icon_quick_simple_si.svg";
 import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
 import QuickSiteMapIcon from "@/../public/icon_quick_sitemap.svg";
+import { basicPopoverStyles } from "./util/constants";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -189,15 +190,10 @@ const HeaderMainComponent = () => {
     useRole(context),
   ]);
 
-  const { isMounted, styles } = useTransitionStyles(context, {
-    duration: {
-      open: 200,
-      close: 100,
-    },
-    initial: { opacity: 0, transform: "translateY(-8px)" },
-    open: { opacity: 1, transform: "translateY(0)" },
-    close: { opacity: 0, transform: "translateY(-8px)" },
-  });
+  const { isMounted, styles } = useTransitionStyles(
+    context,
+    basicPopoverStyles
+  );
 
   return (
     <div className="flex gap-3">

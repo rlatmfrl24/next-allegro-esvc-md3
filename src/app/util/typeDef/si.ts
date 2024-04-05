@@ -99,9 +99,10 @@ export type SIRouteBLType = {
 
 export type SIEditContactInformationType = {
   name: string;
-  phone: string;
   telNumber: string;
   fax: string;
+  email: string;
+  address: string;
   emailRecipient: string[];
   subscrition: {
     rollOver: boolean;
@@ -149,14 +150,14 @@ export type CargoManifestType = {
   weight: number;
   measurement: number;
   cargoInformation: {
-    wpmStatus: "Y" | "N" | "N/A";
-    combo: string;
+    // wpmStatus: "Y" | "N" | "N/A";
+    // combo: string;
     description: string;
   };
   commodityCode: {
     htsCodeUS: string;
     hisCodeEUASIA: string;
-    ncmCode: string;
+    // ncmCode: string;
   };
 };
 

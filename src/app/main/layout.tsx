@@ -4,6 +4,7 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { ScrollState } from "../store/global.store";
+import { set } from "lodash";
 
 export default function MainLayout({
   children,
@@ -13,14 +14,15 @@ export default function MainLayout({
   const scrollRef = useRef<any>();
   const setScrollState = useSetRecoilState(ScrollState);
   const [initialize, instance] = useOverlayScrollbars({
+    defer: true,
     events: {
       scroll: (instance) => {
         const viewport = instance.elements().viewport;
-        setScrollState({
+        setScrollState((prevState) => ({
+          ...prevState,
           xPosition: viewport.scrollLeft,
           yPosition: viewport.scrollTop,
-          viewPort: viewport,
-        });
+        }));
       },
     },
   });
@@ -29,7 +31,12 @@ export default function MainLayout({
     if (scrollRef.current) {
       initialize(scrollRef.current);
     }
-  }, [initialize]);
+
+    setScrollState((prevState) => ({
+      ...prevState,
+      instance: instance,
+    }));
+  }, [initialize, instance, setScrollState]);
 
   return (
     <div className="relative flex h-full mx-1 py-2">

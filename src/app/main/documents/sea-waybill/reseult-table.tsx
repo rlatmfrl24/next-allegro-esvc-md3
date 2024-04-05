@@ -18,6 +18,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 
@@ -108,11 +109,35 @@ export default function SeaWaybillResultTable() {
       ),
     }),
     columnHelper.accessor("freight", {
-      header: "Freight",
+      header: () => (
+        <NaToggleButton
+          label="Freight"
+          state={
+            tableData.every((row) => row.freight) ? "checked" : "unchecked"
+          }
+          onClick={() => {
+            setTableData(
+              tableData.map((row) => {
+                return set(row, "freight", true);
+              })
+            );
+          }}
+        />
+      ),
       cell: (info) => (
         <NaToggleButton
           label="Include"
           state={info.getValue() ? "checked" : "unchecked"}
+          onClick={() => {
+            setTableData(
+              tableData.map((row, index) => {
+                if (index === info.row.index) {
+                  return set(row, "freight", !info.getValue());
+                }
+                return row;
+              })
+            );
+          }}
         />
       ),
       size: 100,
@@ -150,7 +175,8 @@ export default function SeaWaybillResultTable() {
       </div>
       <BasicTable
         table={table}
-        onRowSelction={(row) => {
+        onRowSelction={(row, columnId) => {
+          if (columnId === "freight") return;
           row.toggleSelected();
         }}
       />

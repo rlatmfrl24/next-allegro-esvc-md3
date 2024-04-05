@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -12,6 +12,8 @@ import {
   MdFilledButton,
   MdIconButton,
   MdInputChip,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
 import { InfoOutlined } from "@mui/icons-material";
@@ -28,6 +30,9 @@ import {
   RichTooltipContainer,
   RichTooltipItem,
 } from "@/app/components/tooltip";
+import { ScrollState } from "@/app/store/global.store";
+import { useRecoilValue } from "recoil";
+import { FocusOnResult } from "../../util";
 
 export default function SeaWaybillSearchCondition({
   onSearch,
@@ -41,7 +46,7 @@ export default function SeaWaybillSearchCondition({
   const [blNumberList, setBlNumberList] = useState<string[]>([]);
   const [searchType, setSearchType] = useState<
     "B/L No." | "Vessel" | "On Board Date"
-  >("On Board Date");
+  >("B/L No.");
 
   const vesselList = useMemo(() => {
     return createDummyVesselInformations(30);
@@ -94,24 +99,31 @@ export default function SeaWaybillSearchCondition({
     }),
   ]);
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
-    <div className={styles.area}>
+    <div ref={areaRef} className={styles.area}>
+      <MdOutlinedSegmentedButtonSet>
+        {["B/L No.", "Vessel", "On Board Date"].map((type) => (
+          <MdOutlinedSegmentedButton
+            key={type}
+            label={type}
+            selected={searchType === type}
+            onClick={() => setSearchType(type as any)}
+          >
+            {type}
+          </MdOutlinedSegmentedButton>
+        ))}
+      </MdOutlinedSegmentedButtonSet>
       <div className="flex gap-2">
-        <NAOutlinedListBox
-          className="w-56"
-          options={["B/L No.", "Vessel", "On Board Date"]}
-          initialValue={searchType}
-          onSelection={(value) => {
-            setSearchType(value as "B/L No." | "Vessel" | "On Board Date");
-          }}
-        />
         {
           {
             "B/L No.": (
-              <div className="flex-1 flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <div className="flex gap-2">
                   <NAOutlinedTextField
-                    className="flex-1"
+                    className="w-96"
                     value={blQuery}
                     placeholder="Multi B/L No."
                     handleValueChange={(value) => {
@@ -173,10 +185,10 @@ export default function SeaWaybillSearchCondition({
               </div>
             ),
             Vessel: (
-              <div className="flex-1 flex gap-2">
+              <div className="flex gap-2">
                 <NAOutlinedAutoComplete
                   label="Vessel Name"
-                  className="flex-1"
+                  className="w-96"
                   recentCookieKey="recent-vessel"
                   initialValue={vesselCondition.vesselName}
                   itemList={vesselList.map((vessel) => vessel.vesselName)}
@@ -252,6 +264,7 @@ export default function SeaWaybillSearchCondition({
             else console.log(boardDateCondition);
 
             onSearch();
+            FocusOnResult(areaRef, scrollState.instance);
           }}
         >
           Search
