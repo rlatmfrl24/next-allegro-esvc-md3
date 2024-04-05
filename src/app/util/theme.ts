@@ -111,6 +111,7 @@ export function applyPresetTheme(presetName: string, isDarkMode?: boolean) {
       css = defaultTheme;
       break;
   }
+
   const target = document.body;
   const theme = JSON.parse(JSON.stringify(css));
 

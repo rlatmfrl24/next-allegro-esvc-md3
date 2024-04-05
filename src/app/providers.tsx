@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect, useLayoutEffect } from "react";
 import { RecoilRoot } from "recoil";
 import { applyPresetTheme, createMDTheme } from "./util/theme";
 
@@ -9,8 +9,7 @@ export default function Providers({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useEffect(() => {
-    // createMDTheme("#008E86");
+  useLayoutEffect(() => {
     applyPresetTheme("default");
   }, []);
 
