@@ -1,17 +1,28 @@
 "use client";
 
-import { Suspense, useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
-import { applyPresetTheme, createMDTheme } from "./util/theme";
+import { applyPresetTheme } from "./util/theme";
+import { MdCircularProgress } from "./util/md3";
 
 export default function Providers({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // When mounted on client, now we can show the UI
+  const [isMounted, setIsMounted] = useState(false);
   useLayoutEffect(() => {
-    applyPresetTheme("default");
+    applyPresetTheme("default", false, () => {
+      setIsMounted(true);
+    });
   }, []);
 
-  return <RecoilRoot>{children}</RecoilRoot>;
+  return isMounted ? (
+    <RecoilRoot>{children}</RecoilRoot>
+  ) : (
+    <div className="flex items-center justify-center h-screen">
+      <MdCircularProgress indeterminate />
+    </div>
+  );
 }
