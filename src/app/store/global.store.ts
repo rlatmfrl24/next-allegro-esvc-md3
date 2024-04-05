@@ -21,7 +21,7 @@ const ScrollState = atom({
   default: {
     xPosition: 0,
     yPosition: 0,
-    viewPort: null as HTMLElement | null,
+    instance: null as any,
   },
 });
 

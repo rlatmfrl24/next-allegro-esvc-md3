@@ -49,7 +49,12 @@ export default function PointToPointSchedule() {
   }, [scrollState]);
 
   function ScrollToTop() {
-    scrollState.viewPort?.scrollTo({ top: 0, behavior: "smooth" });
+    if (scrollState.instance) {
+      scrollState.instance()?.elements().viewport?.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   }
 
   return (
