@@ -2,7 +2,6 @@ import { Column, Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
 import { CSSProperties } from "react";
-import { on } from "events";
 
 const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
   const isPinned = column.getIsPinned();
@@ -32,7 +31,7 @@ export const BasicTable = ({
   onRowSelction,
 }: {
   table: Table<any>;
-  onRowSelction?: (row: Row<any>) => void;
+  onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
 }) => {
   return (
     <table className={styles.table}>
@@ -70,7 +69,7 @@ export const BasicTable = ({
                     }}
                     className="group-hover:bg-surfaceContainer p-2"
                     onClick={(e) => {
-                      onRowSelction?.(row);
+                      onRowSelction?.(row, cell.column.id);
                     }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

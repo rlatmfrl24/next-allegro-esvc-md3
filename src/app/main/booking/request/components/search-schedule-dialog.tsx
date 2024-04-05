@@ -3,6 +3,7 @@ import { createDummyPtPScheduleData } from "../../../schedule/util";
 import {
   MdDialog,
   MdFilledButton,
+  MdFilterChip,
   MdRadio,
   MdTextButton,
 } from "@/app/util/md3";
@@ -17,6 +18,9 @@ import {
   PtPScheduleType,
   PtPSearchConditionType,
 } from "@/app/util/typeDef/schedule";
+import { FilterChipMenu } from "@/app/components/filter-chip-menu";
+import { faker } from "@faker-js/faker";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 
 export default function SearchScheduleDialog({
   open,
@@ -50,46 +54,48 @@ export default function SearchScheduleDialog({
       },
       size: 48,
     }),
-    columnHelper.accessor("berthingDate", {
-      header: () => (
-        <span className="whitespace-nowrap">Cargo Closing Time</span>
-      ),
-      cell: (info) => info.getValue().toFormat("yyyy-MM-dd"),
-    }),
-    columnHelper.accessor("origin", {
-      header: "Loading Port",
-      cell: (info) => info.getValue().code,
+    columnHelper.accessor("origin.yardName", {
+      header: "Departure",
+      cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("departureDate", {
-      header: "Departure Date",
-      cell: (info) => info.getValue().toFormat("yyyy-MM-dd"),
+      header: "ETD",
+      cell: (info) => info.getValue().toFormat("yyyy-MM-dd HH:mm"),
     }),
     columnHelper.accessor("destination", {
-      header: "Discharge Port",
-      cell: (info) => info.getValue().code,
+      header: "Arrival",
+      cell: (info) => info.getValue().yardName,
     }),
     columnHelper.accessor("arrivalDate", {
-      header: "Arrival Date",
-      cell: (info) => info.getValue().toFormat("yyyy-MM-dd"),
+      header: "ETA",
+      cell: (info) => info.getValue().toFormat("yyyy-MM-dd HH:mm"),
+    }),
+    columnHelper.accessor("vesselInfo", {
+      header: "Vessel",
+      cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("serviceLane", {
       header: "Lane",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("vesselInfo", {
-      header: "Vessel",
-      cell: (info) => (
-        <span className="whitespace-nowrap">{info.getValue().vesselName}</span>
-      ),
-    }),
     columnHelper.display({
-      header: "Oceans",
-      id: "oceans",
-      cell: (info) => 0,
+      header: "Transshipment",
+      id: "transshipment",
+      cell: (info) => {
+        const ts = faker.number.int({
+          min: 0,
+          max: 3,
+        });
+        return ts === 0 ? "Direct" : `${ts} T/S`;
+      },
     }),
     columnHelper.accessor("transitTime", {
-      header: "T/T",
-      cell: (info) => info.getValue(),
+      header: "Transit Time",
+      cell: (info) => info.getValue() + " Days",
+    }),
+    columnHelper.accessor("berthingDate", {
+      header: "Cargo Closing Time",
+      cell: (info) => info.getValue().toFormat("yyyy-MM-dd HH:mm"),
     }),
   ];
 
@@ -120,7 +126,18 @@ export default function SearchScheduleDialog({
         className="min-w-[1280px]"
       >
         <div slot="headline">Search Schedule</div>
-        <div slot="content">
+        <div slot="content" className="flex flex-col gap-4">
+          <div className="flex items-center gap-4 relative">
+            <FilterChipMenu
+              initialValue="Earliest Departure"
+              options={[
+                "Earliest Departure",
+                "Earliest Arrival",
+                "Fatest Transit Time",
+              ]}
+            />
+            <MdFilterChip label="Direct Only" />
+          </div>
           <BasicTable
             table={table}
             onRowSelction={(row) => {

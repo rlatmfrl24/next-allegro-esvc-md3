@@ -35,9 +35,9 @@ export default function ContactInformationStep() {
       faker.internet.email(),
       faker.internet.email(),
       faker.internet.email(),
-      ...contactInformationData.email,
+      ...contactInformationData.emailRecipient,
     ];
-  }, [contactInformationData.email]);
+  }, [contactInformationData.emailRecipient]);
 
   const [isManageEmailDialogOpen, setIsManageEmailDialogOpen] = useState(false);
   const [emailRecipients, setEmailRecipients] =
@@ -52,7 +52,7 @@ export default function ContactInformationStep() {
       contactInformationData.name === "" ||
       contactInformationData.address === "" ||
       contactInformationData.telNo === "" ||
-      contactInformationData.faxNo === ""
+      contactInformationData.email === ""
     ) {
       return false;
     } else {
@@ -101,17 +101,18 @@ export default function ContactInformationStep() {
         />
         <NAOutlinedTextField
           required
-          value={contactInformationData.address}
-          label="Address"
+          value={contactInformationData.email}
+          label="Email"
           handleValueChange={(value) => {
             setContactInformationData((prev) => {
               return {
                 ...prev,
-                address: value,
+                email: value,
               };
             });
           }}
         />
+
         <NAOutlinedTextField
           required
           value={contactInformationData.telNo}
@@ -126,7 +127,6 @@ export default function ContactInformationStep() {
           }}
         />
         <NAOutlinedTextField
-          required
           value={contactInformationData.faxNo}
           label="Fax No."
           handleValueChange={(value) => {
@@ -138,10 +138,25 @@ export default function ContactInformationStep() {
             });
           }}
         />
+        <NAOutlinedTextField
+          className="col-span-2"
+          required
+          type="textarea"
+          value={contactInformationData.address}
+          label="Address"
+          handleValueChange={(value) => {
+            setContactInformationData((prev) => {
+              return {
+                ...prev,
+                address: value,
+              };
+            });
+          }}
+        />
       </div>
       <SubTitle title="Email Recipient" className="mt-6 mb-4" />
       <MdChipSet>
-        {contactInformationData.email.map((email) => {
+        {contactInformationData.emailRecipient.map((email) => {
           return (
             <MdInputChip
               key={email}
@@ -150,7 +165,9 @@ export default function ContactInformationStep() {
                 setContactInformationData((prev) => {
                   return {
                     ...prev,
-                    email: prev.email.filter((e) => e !== email),
+                    emailRecipient: prev.emailRecipient.filter(
+                      (e) => e !== email
+                    ),
                   };
                 });
               }}
@@ -180,7 +197,7 @@ export default function ContactInformationStep() {
           className="min-w-[720px]"
           open={isManageEmailDialogOpen}
           opened={() => {
-            setNewEmailRecipients(contactInformationData.email);
+            setNewEmailRecipients(contactInformationData.emailRecipient);
           }}
           closed={() => {
             setIsManageEmailDialogOpen(false);
@@ -277,7 +294,7 @@ export default function ContactInformationStep() {
                 setContactInformationData((prev) => {
                   return {
                     ...prev,
-                    email: newEmailRecipients,
+                    emailRecipient: newEmailRecipients,
                   };
                 });
                 setIsManageEmailDialogOpen(false);

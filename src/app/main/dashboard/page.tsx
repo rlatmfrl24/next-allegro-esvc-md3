@@ -19,7 +19,7 @@ export default function MainPage() {
   }
 
   return (
-    <OverlayScrollbarsComponent className="flex-1">
+    <OverlayScrollbarsComponent className="flex-1 w-full">
       <div className="w-full p-4 relative overflow-x-hidden">
         <div className="flex items-center justify-between gap-3 pb-6">
           <PageTitle title="Dashboard" />

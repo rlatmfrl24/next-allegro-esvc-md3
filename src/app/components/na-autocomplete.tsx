@@ -39,6 +39,7 @@ export default function NAOutlinedAutoComplete({
   onQueryChange,
   isAllowOnlyListItems = true,
   className,
+  showAllonFocus = false,
   maxListHeight = 600,
   ...props
 }: {
@@ -51,6 +52,7 @@ export default function NAOutlinedAutoComplete({
   onQueryChange?: (value: string) => void;
   isAllowOnlyListItems?: boolean;
   maxListHeight?: number;
+  showAllonFocus?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) {
   const [query, setQuery] = useState<string>("");
@@ -129,9 +131,9 @@ export default function NAOutlinedAutoComplete({
     setDefaultValue(initialValue || "");
   }, [initialValue]);
 
-  useEffect(() => {
-    onQueryChange?.(query);
-  }, [query, onQueryChange]);
+  // useEffect(() => {
+  //   onQueryChange?.(query);
+  // }, [query, onQueryChange]);
 
   function handleItemSelect(item: string) {
     setQuery(item);
@@ -150,7 +152,7 @@ export default function NAOutlinedAutoComplete({
       return true;
     }
 
-    if (query.length > 2) {
+    if (query.length > 2 || showAllonFocus) {
       const queryResult = itemList.filter((value) => {
         return value.toLowerCase().includes(query.toLowerCase());
       });
@@ -161,7 +163,7 @@ export default function NAOutlinedAutoComplete({
     }
 
     return false;
-  }, [itemList, props.readOnly, query, recentItems.length]);
+  }, [itemList, props.readOnly, query, recentItems.length, showAllonFocus]);
 
   return (
     <div className={`relative ${className}`}>
@@ -174,6 +176,7 @@ export default function NAOutlinedAutoComplete({
         required={false}
         onInput={(e) => {
           setQuery(e.currentTarget.value);
+          onQueryChange?.(e.currentTarget.value);
         }}
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
@@ -247,7 +250,7 @@ export default function NAOutlinedAutoComplete({
                     className="h-px w-full bg-outlineVariant"
                   ></div>
                 )}
-              {query.length > 2 &&
+              {(showAllonFocus || query.length > 2) &&
                 itemList
                   .filter((item) => {
                     return item.toLowerCase().includes(query.toLowerCase());

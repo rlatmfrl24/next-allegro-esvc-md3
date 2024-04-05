@@ -1,3 +1,4 @@
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
@@ -137,6 +138,11 @@ const ShipperInfo = () => {
     };
   });
 
+  const countryList = Array.from({ length: 100 }, (_, i) => {
+    const location = faker.location;
+    return location.country();
+  }).filter((value, index, self) => self.indexOf(value) === index);
+
   return (
     <Disclosure defaultOpen>
       {({ open }) => (
@@ -190,8 +196,6 @@ const ShipperInfo = () => {
                   });
                 } else {
                   setPartiesStore((prev) => {
-                    const addressArray = item.address.split(",");
-
                     return {
                       ...prev,
                       shipper: {
@@ -223,16 +227,29 @@ const ShipperInfo = () => {
               }}
             />
             <div className="flex gap-4">
-              <NAOutlinedTextField
+              <NAOutlinedAutoComplete
                 label="Country"
-                value={partiesStore.shipper.addressCountry || ""}
-                handleValueChange={(value) => {
+                itemList={countryList}
+                isAllowOnlyListItems={false}
+                initialValue={partiesStore.shipper.addressCountry || ""}
+                onQueryChange={(query) => {
                   setPartiesStore((prev) => {
                     return {
                       ...prev,
                       shipper: {
                         ...prev.shipper,
-                        addressCountry: value,
+                        addressCountry: query,
+                      },
+                    };
+                  });
+                }}
+                onItemSelection={(country) => {
+                  setPartiesStore((prev) => {
+                    return {
+                      ...prev,
+                      shipper: {
+                        ...prev.shipper,
+                        addressCountry: country,
                       },
                     };
                   });
@@ -406,6 +423,11 @@ const ConsigneeInfo = () => {
     };
   });
 
+  const countryList = Array.from({ length: 100 }, (_, i) => {
+    const location = faker.location;
+    return location.country();
+  }).filter((value, index, self) => self.indexOf(value) === index);
+
   return (
     <Disclosure defaultOpen>
       {({ open }) => (
@@ -490,8 +512,6 @@ const ConsigneeInfo = () => {
                   });
                 } else {
                   setPartiesStore((prev) => {
-                    const addressArray = item.address.split(",");
-
                     return {
                       ...prev,
                       consignee: {
@@ -523,21 +543,35 @@ const ConsigneeInfo = () => {
               }}
             />
             <div className="flex gap-2">
-              <NAOutlinedTextField
+              <NAOutlinedAutoComplete
                 label="Country"
-                value={partiesStore.consignee.addressCountry || ""}
-                handleValueChange={(value) => {
+                itemList={countryList}
+                isAllowOnlyListItems={false}
+                initialValue={partiesStore.consignee.addressCountry || ""}
+                onQueryChange={(query) => {
                   setPartiesStore((prev) => {
                     return {
                       ...prev,
                       consignee: {
                         ...prev.consignee,
-                        addressCountry: value,
+                        addressCountry: query,
+                      },
+                    };
+                  });
+                }}
+                onItemSelection={(country) => {
+                  setPartiesStore((prev) => {
+                    return {
+                      ...prev,
+                      consignee: {
+                        ...prev.consignee,
+                        addressCountry: country,
                       },
                     };
                   });
                 }}
               />
+
               <NAOutlinedTextField
                 label="City / State"
                 value={partiesStore.consignee.addressCityState || ""}
@@ -724,6 +758,11 @@ const NotifyPartyInfo = () => {
     };
   });
 
+  const countryList = Array.from({ length: 100 }, (_, i) => {
+    const location = faker.location;
+    return location.country();
+  }).filter((value, index, self) => self.indexOf(value) === index);
+
   return (
     <Disclosure defaultOpen>
       {({ open }) => (
@@ -868,16 +907,29 @@ const NotifyPartyInfo = () => {
               }}
             />
             <div className="flex gap-2">
-              <NAOutlinedTextField
+              <NAOutlinedAutoComplete
                 label="Country"
-                value={partiesStore.notifyParty.addressCountry || ""}
-                handleValueChange={(value) => {
+                itemList={countryList}
+                isAllowOnlyListItems={false}
+                initialValue={partiesStore.notifyParty.addressCountry || ""}
+                onQueryChange={(query) => {
                   setPartiesStore((prev) => {
                     return {
                       ...prev,
                       notifyParty: {
                         ...prev.notifyParty,
-                        addressCountry: value,
+                        addressCountry: query,
+                      },
+                    };
+                  });
+                }}
+                onItemSelection={(country) => {
+                  setPartiesStore((prev) => {
+                    return {
+                      ...prev,
+                      notifyParty: {
+                        ...prev.notifyParty,
+                        addressCountry: country,
                       },
                     };
                   });

@@ -1,19 +1,27 @@
 import { DateTime } from "luxon";
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useMemo, useRef, useState } from "react";
 
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { MdTypography } from "@/app/components/typography";
 import moduleStyles from "@/app/styles/base.module.css";
+import { basicPopoverStyles } from "@/app/util/constants";
 import {
   MdCheckbox,
   MdElevation,
   MdFilledButton,
   MdList,
   MdListItem,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
+import {
+  PlaceInformationType,
+  VesselInfoType,
+} from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import {
   autoUpdate,
@@ -30,20 +38,15 @@ import {
   createDummyPlaceInformation,
   createDummyVesselInformations,
 } from "../../schedule/util";
-import {
-  PlaceInformationType,
-  VesselInfoType,
-} from "@/app/util/typeDef/schedule";
-import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { DividerComponent } from "../information/components/base";
+import { useRecoilValue } from "recoil";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 const filterOptions = [
   {
-    id: "vesselVoyage",
-    label: "Vessel & Voyage",
-  },
-  {
-    id: "bookingVia",
-    label: "Booking Via",
+    id: "referenceNo",
+    label: "Reference No.",
   },
   {
     id: "origin",
@@ -53,19 +56,23 @@ const filterOptions = [
     id: "destination",
     label: "Destination",
   },
+  {
+    id: "bookingVia",
+    label: "Booking Via",
+  },
 ];
 
 export default function BookingStatusCondition() {
   const [stateCondition, setStateCondition] = useState<
-    "requestNo" | "bookingNo"
-  >("requestNo");
+    "requestDate" | "vessel"
+  >("requestDate");
   const [isFilterDetailsOpen, setIsFilterDetailsOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [searchCondition, setSearchCondition] = useState({
     requestDateStart: DateTime.now(),
     requestDateEnd: DateTime.now(),
     requestNo: "",
-    bookingNo: "",
+    referenceNo: "",
     vesselInfo: {} as VesselInfoType,
     voyage: "",
     direction: "" as "east" | "west" | "north" | "south",
@@ -79,15 +86,13 @@ export default function BookingStatusCondition() {
       requestDateStart: searchCondition.requestDateStart,
       requestDateEnd: searchCondition.requestDateEnd,
       requestNo: searchCondition.requestNo,
-      bookingNo: searchCondition.bookingNo,
+      referenceNo: searchCondition.referenceNo,
     };
 
-    if (activeFilters.includes("vesselVoyage")) {
+    if (activeFilters.includes("referenceNo")) {
       baseCondition = {
         ...baseCondition,
-        vesselInfo: searchCondition.vesselInfo,
-        voyage: searchCondition.voyage,
-        direction: searchCondition.direction,
+        referenceNo: searchCondition.referenceNo,
       };
     }
 
@@ -257,19 +262,33 @@ export default function BookingStatusCondition() {
     );
   }, []);
 
+  const ReferenceNumberFilter = useMemo(() => {
+    return (
+      <NAOutlinedTextField
+        label="Reference No."
+        value={searchCondition.referenceNo}
+        handleValueChange={(value) => {
+          setSearchCondition((prev) => ({
+            ...prev,
+            referenceNo: value,
+          }));
+        }}
+      />
+    );
+  }, [searchCondition.referenceNo]);
+
   const { refs, floatingStyles, context } = useFloating({
     open: isFilterDetailsOpen,
     onOpenChange: setIsFilterDetailsOpen,
-    placement: "bottom-start",
+    placement: "bottom-end",
     middleware: [offset(4), shift()],
     whileElementsMounted: autoUpdate,
   });
 
-  const { isMounted, styles } = useTransitionStyles(context, {
-    initial: { opacity: 0, transform: "translateY(-8px)" },
-    open: { opacity: 1, transform: "translateY(0px)" },
-    close: { opacity: 0, transform: "translateY(-8px)" },
-  });
+  const { isMounted, styles } = useTransitionStyles(
+    context,
+    basicPopoverStyles
+  );
   const click = useClick(context);
   const dismiss = useDismiss(context);
   const { getFloatingProps, getReferenceProps } = useInteractions([
@@ -277,59 +296,56 @@ export default function BookingStatusCondition() {
     click,
   ]);
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
-    <div className={moduleStyles.area}>
-      <div className="flex gap-4">
-        <MdRangeDatePicker
+    <div ref={areaRef} className={moduleStyles.area}>
+      <MdOutlinedSegmentedButtonSet>
+        <MdOutlinedSegmentedButton
           label="Request Date"
-          defaultStartDate={searchCondition.requestDateStart}
-          defaultEndDate={searchCondition.requestDateEnd}
-          handleDateRangeSelected={(dateRange) => {
-            setSearchCondition({
-              ...searchCondition,
-              requestDateStart: dateRange[0],
-              requestDateEnd: dateRange[1],
-            });
+          id="requestDate"
+          selected={stateCondition === "requestDate"}
+          onClick={() => {
+            setStateCondition("requestDate");
           }}
         />
-        <div className="flex gap-2">
-          <NAOutlinedListBox
-            label="Search On"
-            initialValue={
-              stateCondition === "requestNo" ? "Request No." : "Booking No."
-            }
-            options={["Request No.", "Booking No."]}
-            onSelection={(value) => {
-              setStateCondition(
-                value === "Request No." ? "requestNo" : "bookingNo"
-              );
-              setSearchCondition({
-                ...searchCondition,
-                requestNo: "",
-                bookingNo: "",
-              });
-            }}
-          />
-
-          <NAOutlinedTextField
-            placeholder={
-              stateCondition === "requestNo" ? "Request No." : "Booking No."
-            }
-            value={searchCondition[stateCondition]}
-            handleValueChange={(value) => {
-              setSearchCondition({
-                ...searchCondition,
-                [stateCondition]: value,
-              });
-            }}
-          />
-        </div>
+        <MdOutlinedSegmentedButton
+          label="Vessel"
+          selected={stateCondition === "vessel"}
+          onClick={() => {
+            setStateCondition("vessel");
+          }}
+        />
+      </MdOutlinedSegmentedButtonSet>
+      <div>
+        {stateCondition === "requestDate" ? (
+          <div className="flex items-center">
+            <MdRangeDatePicker
+              label="Request Date"
+              defaultStartDate={searchCondition.requestDateStart}
+              defaultEndDate={searchCondition.requestDateEnd}
+              handleDateRangeSelected={(dateRange) => {
+                setSearchCondition({
+                  ...searchCondition,
+                  requestDateStart: dateRange[0],
+                  requestDateEnd: dateRange[1],
+                });
+              }}
+            />
+          </div>
+        ) : (
+          <>{VesselVoyageFilter}</>
+        )}
       </div>
+      {activeFilters.length > 0 && (
+        <DividerComponent className="border-dotted" />
+      )}
       <div className="flex gap-4 flex-wrap">
-        {activeFilters.includes("vesselVoyage") && VesselVoyageFilter}
-        {activeFilters.includes("bookingVia") && BookingViaFilter}
+        {activeFilters.includes("referenceNo") && ReferenceNumberFilter}
         {activeFilters.includes("origin") && OriginPortFilter}
         {activeFilters.includes("destination") && DestinationPortFilter}
+        {activeFilters.includes("bookingVia") && BookingViaFilter}
       </div>
       <div className="flex gap-4 justify-end">
         <MdTextButton>Reset</MdTextButton>
@@ -338,12 +354,13 @@ export default function BookingStatusCondition() {
           {...getReferenceProps()}
           className={isFilterDetailsOpen ? "bg-secondaryFixed" : ""}
         >
-          Filter Details
+          More Filter
         </MdTextButton>
 
         <MdFilledButton
           onClick={() => {
             console.log(getCondition());
+            FocusOnResult(areaRef, scrollState.instance);
           }}
         >
           Search
@@ -367,7 +384,7 @@ export default function BookingStatusCondition() {
           >
             <MdElevation />
             <MdTypography variant="headline" size="small" className="p-6">
-              Filter Details
+              More Filter
             </MdTypography>
             <MdList className="bg-surfaceContainerHigh">
               {filterOptions.map((item) => (

@@ -19,6 +19,7 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { ArrowDropDown, Check } from "@mui/icons-material";
+import { basicPopoverStyles } from "../util/constants";
 
 const StatusFilterComponent = ({
   statusOptions,
@@ -38,11 +39,7 @@ const StatusFilterComponent = ({
     whileElementsMounted: autoUpdate,
   });
 
-  const transitionProps = useTransitionStyles(context, {
-    initial: { opacity: 0, transform: "translateY(-8px)" },
-    open: { opacity: 1, transform: "translateY(0)" },
-    close: { opacity: 0, transform: "translateY(-8px)" },
-  });
+  const transitionProps = useTransitionStyles(context, basicPopoverStyles);
   const dismiss = useDismiss(context);
   const click = useClick(context);
 

@@ -73,10 +73,11 @@ export const ContactInformationState = atom<ContactInformationType>({
   key: "contactInformationState",
   default: {
     name: "",
+    email: "",
     address: "",
     telNo: "",
     faxNo: "",
-    email: [],
+    emailRecipient: [],
   },
 });
 

@@ -327,3 +327,35 @@ export const cardList: DashboardCardInfoType[] = [
     type: "etc",
   },
 ];
+
+export const basicDropdownStyles = {
+  duration: {
+    open: 200,
+    close: 100,
+  },
+  initial: {
+    opacity: 0,
+    transformOrigin: "top",
+    transform: "scaleY(0.55) translateY(-10px)",
+  },
+  open: {
+    opacity: 1,
+    transformOrigin: "top",
+    transform: "scaleY(1) translateY(0)",
+  },
+  close: {
+    opacity: 0,
+    transformOrigin: "top",
+    transform: "scaleY(0.55) translateY(-10px)",
+  },
+};
+
+export const basicPopoverStyles = {
+  duration: {
+    open: 200,
+    close: 150,
+  },
+  initial: { opacity: 0, transform: "translateY(-8px)" },
+  open: { opacity: 1, transform: "translateY(0px)" },
+  close: { opacity: 0, transform: "translateY(-8px)" },
+};
