@@ -120,6 +120,7 @@ export default function CargoStep() {
       <div className="flex gap-4">
         <NAMultiAutoComplete
           required
+          label="Commodity"
           initialValue={cargoPickUpReturnData.commodity}
           isAllowOnlyListItems={false}
           showAllonFocus={true}
@@ -145,7 +146,8 @@ export default function CargoStep() {
 
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight.toString()}
-          className="flex-1 text-right"
+          className="text-right"
+          label="Gross Weight"
           required
           readOnly={params.has("quoteNumber")}
           enableClearButton={false}

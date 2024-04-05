@@ -16,6 +16,24 @@ import {
   SealKind,
 } from "../util/typeDef/si";
 
+export function FocusOnResult(
+  areaRef: React.RefObject<HTMLDivElement>,
+  scrollInstance: any,
+  additionalHeight?: number
+) {
+  const areaHeight = areaRef.current?.clientHeight || 200;
+  setTimeout(() => {
+    if (scrollInstance) {
+      scrollInstance()
+        ?.elements()
+        .viewport?.scrollTo({
+          top: areaHeight + (additionalHeight || 80),
+          behavior: "smooth",
+        });
+    }
+  }, 100);
+}
+
 export function getRoutePath(paths: string[]) {
   let itemTree = menuItems;
   let pathList = Object.assign([], paths).slice(2);

@@ -15,7 +15,7 @@ import {
   MdIcon,
   MdTextButton,
 } from "@/app/util/md3";
-import { faker } from "@faker-js/faker";
+import { ar, faker } from "@faker-js/faker";
 import DownloadIcon from "@mui/icons-material/Download";
 
 import EmptyResultPlaceholder from "../../../components/empty-placeholder";
@@ -27,9 +27,11 @@ import {
   PortScheduleType,
 } from "@/app/util/typeDef/schedule";
 import { DividerComponent } from "../../booking/information/components/base";
+import { useRecoilValue } from "recoil";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 export default function PortSchedule() {
-  const scrollRef = useRef<any>();
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [portQuery, setPortQuery] = useState<PortScheduleSearchConditionType>({
     portName: "",
@@ -37,14 +39,9 @@ export default function PortSchedule() {
     endDate: DateTime.now(),
   });
 
-  const [initialize, instance] = useOverlayScrollbars();
   const [portScheduls] = useState<PortScheduleType[]>(
     createDummyPortSchedules()
   );
-
-  useEffect(() => {
-    if (scrollRef.current) initialize(scrollRef.current);
-  }, [initialize]);
 
   function resetPortQuery() {
     setPortQuery({
@@ -54,10 +51,17 @@ export default function PortSchedule() {
     });
   }
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Port Schedule" />
-      <div aria-label="condition-container" className={styles.area}>
+      <div
+        ref={areaRef}
+        aria-label="condition-container"
+        className={styles.area}
+      >
         <div className="flex gap-4 items-start">
           <NAOutlinedAutoComplete
             label="Port Name"
@@ -101,6 +105,7 @@ export default function PortSchedule() {
           <MdFilledButton
             onClick={() => {
               setPageState("search");
+              FocusOnResult(areaRef, scrollState.instance);
             }}
           >
             Search

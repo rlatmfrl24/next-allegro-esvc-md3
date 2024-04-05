@@ -52,8 +52,7 @@ export default function ContactInformationStep() {
       contactInformationData.name === "" ||
       contactInformationData.address === "" ||
       contactInformationData.telNo === "" ||
-      contactInformationData.email === "" ||
-      contactInformationData.faxNo === ""
+      contactInformationData.email === ""
     ) {
       return false;
     } else {
@@ -128,7 +127,6 @@ export default function ContactInformationStep() {
           }}
         />
         <NAOutlinedTextField
-          required
           value={contactInformationData.faxNo}
           label="Fax No."
           handleValueChange={(value) => {

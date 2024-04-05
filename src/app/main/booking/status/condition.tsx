@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useMemo, useRef, useState } from "react";
 
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -39,6 +39,9 @@ import {
   createDummyVesselInformations,
 } from "../../schedule/util";
 import { DividerComponent } from "../information/components/base";
+import { useRecoilValue } from "recoil";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 const filterOptions = [
   {
@@ -293,8 +296,11 @@ export default function BookingStatusCondition() {
     click,
   ]);
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
-    <div className={moduleStyles.area}>
+    <div ref={areaRef} className={moduleStyles.area}>
       <MdOutlinedSegmentedButtonSet>
         <MdOutlinedSegmentedButton
           label="Request Date"
@@ -354,6 +360,7 @@ export default function BookingStatusCondition() {
         <MdFilledButton
           onClick={() => {
             console.log(getCondition());
+            FocusOnResult(areaRef, scrollState.instance);
           }}
         >
           Search

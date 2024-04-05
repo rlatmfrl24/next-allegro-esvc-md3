@@ -9,7 +9,7 @@ import {
   offset,
   shift,
 } from "@floating-ui/react";
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useMemo, useRef, useState } from "react";
 import moduleStyles from "@/app/styles/base.module.css";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
@@ -31,6 +31,9 @@ import { createDummyVesselInformations } from "@/app/main/schedule/util";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { basicDropdownStyles } from "@/app/util/constants";
 import { DateRange } from "@mui/icons-material";
+import { useRecoilValue } from "recoil";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 const filterOptions = ["Vessel", "Booking Via"];
 
@@ -276,9 +279,12 @@ export default function SISearchCondition() {
     );
   }, [BookingViaFilter, searchCondition.bookingNo]);
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
     <>
-      <div className={moduleStyles.area}>
+      <div ref={areaRef} className={moduleStyles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
             label="Request Date"
@@ -348,6 +354,7 @@ export default function SISearchCondition() {
           <MdFilledButton
             onClick={() => {
               console.log(getCondition());
+              FocusOnResult(areaRef, scrollState.instance);
             }}
           >
             Search

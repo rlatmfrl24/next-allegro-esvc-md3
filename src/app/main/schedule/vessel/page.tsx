@@ -1,7 +1,7 @@
 "use client";
 
 import { MdFilledButton, MdTextButton } from "@/app/util/md3";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import ConditionSummary from "./condition-summary";
 import EmptyResultPlaceholder from "../../../components/empty-placeholder";
@@ -19,6 +19,7 @@ import {
   VesselInfoType,
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
+import { FocusOnResult } from "../../util";
 
 export default function VesselSchedule() {
   const emptyVesselData: VesselInfoType = {
@@ -40,8 +41,8 @@ export default function VesselSchedule() {
     portOfRegistry: "",
   };
 
+  const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
-  const vesselList = useMemo(() => createDummyVesselInformations(400), []);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
     useState(false);
   const [vesselQuery, setVesselQuery] = useState<string>("");
@@ -50,6 +51,8 @@ export default function VesselSchedule() {
   const [vesselSchedules] = useState<VesselScheduleType[]>(
     createDummaryVesselSchedules()
   );
+
+  const vesselList = useMemo(() => createDummyVesselInformations(400), []);
 
   useEffect(() => {
     if (scrollState.yPosition > 150) {
@@ -80,7 +83,7 @@ export default function VesselSchedule() {
       className={styles.container + " relative"}
     >
       <PageTitle title="Vessel Schedule" />
-      <div className={styles.area}>
+      <div ref={areaRef} className={styles.area}>
         <NAOutlinedAutoComplete
           label="Vessel Name"
           required
@@ -107,6 +110,7 @@ export default function VesselSchedule() {
                   (vessel) => vessel.vesselName === vesselQuery
                 ) || emptyVesselData
               );
+              FocusOnResult(areaRef, scrollState.instance);
             }}
           >
             Search

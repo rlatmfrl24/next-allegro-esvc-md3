@@ -2,7 +2,7 @@
 
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Download } from "@mui/icons-material";
 import { faker } from "@faker-js/faker";
 
@@ -26,6 +26,9 @@ import { createDummyLongRangeSchedules } from "../util";
 import PageTitle, { SubTitle } from "@/app/components/title-components";
 import { LongRangeSearchConditionType } from "@/app/util/typeDef/schedule";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { useRecoilValue } from "recoil";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 export default function LongRangeSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -109,10 +112,17 @@ export default function LongRangeSchedule() {
     "Oceania",
   ];
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Long Range Schedule" />
-      <div className={styles.area} aria-label="search-condition-area">
+      <div
+        ref={areaRef}
+        className={styles.area}
+        aria-label="search-condition-area"
+      >
         <div className="flex gap-4">
           <NAOutlinedListBox
             label="Continent From"
@@ -168,6 +178,7 @@ export default function LongRangeSchedule() {
           <MdFilledButton
             onClick={() => {
               checkValidAndSearch();
+              FocusOnResult(areaRef, scrollState.instance);
             }}
           >
             Search
