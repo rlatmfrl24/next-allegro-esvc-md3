@@ -20,6 +20,8 @@ import {
   MdFilledButton,
   MdList,
   MdListItem,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
 import { MdTypography } from "@/app/components/typography";
@@ -28,50 +30,104 @@ import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { createDummyVesselInformations } from "@/app/main/schedule/util";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { basicDropdownStyles } from "@/app/util/constants";
-import { off } from "process";
+import { DateRange } from "@mui/icons-material";
 
 const filterOptions = ["Vessel", "Booking Via"];
 
 export default function SISearchCondition() {
-  const [isFilterDetailsOpen, setIsFilterDetailsOpen] = useState(false);
-  const [activeFilterOptions, setActiveFilterOptions] = useState<string[]>([]);
+  const [conditionType, setConditionType] = useState<
+    | "Request Date"
+    | "Departure Date"
+    | "Booking Date"
+    | "Vessel"
+    | "Booking No."
+  >("Request Date");
+
   const [searchCondition, setSearchCondition] = useState({
-    date: "Request Date",
+    conditionType: "Request Date",
     bookingNo: "",
     startDate: DateTime.now(),
     endDate: DateTime.now(),
     vesselInfo: {} as VesselInfoType,
     voyage: "",
     direction: "",
-    bookingVia: "general" as "general" | "edi" | "web",
+    bookingVia: "all" as "all" | "general" | "edi" | "web",
   });
 
   function getCondition() {
     let baseCondition: Object = {
-      date: searchCondition.date,
-      bookingNo: searchCondition.bookingNo,
-      startDate: searchCondition.startDate,
-      endDate: searchCondition.endDate,
+      date: searchCondition.conditionType,
     };
-
-    if (activeFilterOptions.includes("Vessel")) {
-      baseCondition = {
-        ...baseCondition,
-        vesselInfo: searchCondition.vesselInfo,
-        voyage: searchCondition.voyage,
-        direction: searchCondition.direction,
-      };
+    switch (searchCondition.conditionType) {
+      case "Request Date":
+        baseCondition = {
+          ...baseCondition,
+          startDate: searchCondition.startDate,
+          endDate: searchCondition.endDate,
+          bookingVia: searchCondition.bookingVia,
+        };
+        break;
+      case "Departure Date":
+        baseCondition = {
+          ...baseCondition,
+          startDate: searchCondition.startDate,
+          endDate: searchCondition.endDate,
+          bookingVia: searchCondition.bookingVia,
+        };
+        break;
+      case "Booking Date":
+        baseCondition = {
+          ...baseCondition,
+          startDate: searchCondition.startDate,
+          endDate: searchCondition.endDate,
+          bookingVia: searchCondition.bookingVia,
+        };
+        break;
+      case "Vessel":
+        baseCondition = {
+          ...baseCondition,
+          vesselInfo: searchCondition.vesselInfo,
+          voyage: searchCondition.voyage,
+          direction: searchCondition.direction,
+          bookingVia: searchCondition.bookingVia,
+        };
+        break;
+      case "Booking No.":
+        baseCondition = {
+          ...baseCondition,
+          bookingNo: searchCondition.bookingNo,
+          bookingVia: searchCondition.bookingVia,
+        };
+        break;
     }
-
-    if (activeFilterOptions.includes("Booking Via")) {
-      baseCondition = {
-        ...baseCondition,
-        bookingVia: searchCondition.bookingVia,
-      };
-    }
-
     return baseCondition;
   }
+  const BookingViaFilter = useMemo(() => {
+    return (
+      <NAOutlinedListBox
+        label="Booking Via"
+        options={["All", "General", "EDI", "Web"]}
+        initialValue={
+          {
+            all: "All",
+            general: "General",
+            edi: "EDI",
+            web: "Web",
+          }[searchCondition.bookingVia]
+        }
+        onSelection={(bookingVia) => {
+          setSearchCondition((prev) => ({
+            ...prev,
+            bookingVia: bookingVia.toLowerCase() as
+              | "all"
+              | "general"
+              | "edi"
+              | "web",
+          }));
+        }}
+      />
+    );
+  }, [searchCondition.bookingVia]);
 
   const VesselVoyageFilter = useMemo(() => {
     const vesselInfos = createDummyVesselInformations(50);
@@ -132,100 +188,151 @@ export default function SISearchCondition() {
             }));
           }}
         />
+        {BookingViaFilter}
       </div>
     );
   }, [
+    BookingViaFilter,
     searchCondition.direction,
     searchCondition.vesselInfo.vesselName,
     searchCondition.voyage,
   ]);
 
-  const BookingViaFilter = useMemo(() => {
+  const BookingDateFilter = useMemo(() => {
     return (
-      <NAOutlinedListBox
-        label="Booking Via"
-        options={["General", "EDI", "Web"]}
-        initialValue={
-          {
-            general: "General",
-            edi: "EDI",
-            web: "Web",
-          }[searchCondition.bookingVia]
-        }
-        onSelection={(bookingVia) => {
-          setSearchCondition((prev) => ({
-            ...prev,
-            bookingVia: bookingVia.toLowerCase() as "general" | "edi" | "web",
-          }));
-        }}
-      />
+      <>
+        <MdRangeDatePicker
+          label="Booking Date"
+          defaultStartDate={searchCondition.startDate}
+          defaultEndDate={searchCondition.endDate}
+          handleDateRangeSelected={(DateRange) => {
+            setSearchCondition((prev) => ({
+              ...prev,
+              startDate: DateRange[0],
+              endDate: DateRange[1],
+            }));
+          }}
+        />
+        {BookingViaFilter}
+      </>
     );
-  }, [searchCondition.bookingVia]);
+  }, [BookingViaFilter, searchCondition.endDate, searchCondition.startDate]);
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: isFilterDetailsOpen,
-    middleware: [offset(3), flip(), shift()],
-    onOpenChange: setIsFilterDetailsOpen,
-    whileElementsMounted: autoUpdate,
-  });
+  const DepartureDateFilter = useMemo(() => {
+    return (
+      <>
+        <MdRangeDatePicker
+          label="Departure Date"
+          defaultStartDate={searchCondition.startDate}
+          defaultEndDate={searchCondition.endDate}
+          handleDateRangeSelected={(DateRange) => {
+            setSearchCondition((prev) => ({
+              ...prev,
+              startDate: DateRange[0],
+              endDate: DateRange[1],
+            }));
+          }}
+        />
+        {BookingViaFilter}
+      </>
+    );
+  }, [BookingViaFilter, searchCondition.endDate, searchCondition.startDate]);
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    useClick(context),
-    useDismiss(context),
-  ]);
+  const RequestDateFilter = useMemo(() => {
+    return (
+      <>
+        <MdRangeDatePicker
+          label="Request Date"
+          defaultStartDate={searchCondition.startDate}
+          defaultEndDate={searchCondition.endDate}
+          handleDateRangeSelected={(DateRange) => {
+            setSearchCondition((prev) => ({
+              ...prev,
+              startDate: DateRange[0],
+              endDate: DateRange[1],
+            }));
+          }}
+        />
+        {BookingViaFilter}
+      </>
+    );
+  }, [BookingViaFilter, searchCondition.endDate, searchCondition.startDate]);
 
-  const { isMounted, styles } = useTransitionStyles(
-    context,
-    basicDropdownStyles
-  );
+  const BookingNumberFilter = useMemo(() => {
+    return (
+      <>
+        <NAOutlinedTextField
+          label="Booking No."
+          value={searchCondition.bookingNo}
+          handleValueChange={(bookingNo) => {
+            setSearchCondition((prev) => ({
+              ...prev,
+              bookingNo,
+            }));
+          }}
+        />
+        {BookingViaFilter}
+      </>
+    );
+  }, [BookingViaFilter, searchCondition.bookingNo]);
 
   return (
     <>
       <div className={moduleStyles.area}>
+        <MdOutlinedSegmentedButtonSet>
+          <MdOutlinedSegmentedButton
+            label="Request Date"
+            selected={conditionType === "Request Date"}
+            onClick={() => {
+              setConditionType("Request Date");
+            }}
+          />
+          <MdOutlinedSegmentedButton
+            label="Departure Date"
+            selected={conditionType === "Departure Date"}
+            onClick={() => {
+              setConditionType("Departure Date");
+            }}
+          />
+          <MdOutlinedSegmentedButton
+            label="Booking Date"
+            selected={conditionType === "Booking Date"}
+            onClick={() => {
+              setConditionType("Booking Date");
+            }}
+          />
+          <MdOutlinedSegmentedButton
+            label="Vessel"
+            selected={conditionType === "Vessel"}
+            onClick={() => {
+              setConditionType("Vessel");
+            }}
+          />
+          <MdOutlinedSegmentedButton
+            label="Booking No."
+            selected={conditionType === "Booking No."}
+            onClick={() => {
+              setConditionType("Booking No.");
+            }}
+          />
+        </MdOutlinedSegmentedButtonSet>
         <div className="flex gap-4">
-          <NAOutlinedListBox
-            label="Date"
-            initialValue={searchCondition.date}
-            options={["Request Date", "Booking Date", "Departure Date"]}
-            onSelection={(date) => {
-              setSearchCondition((prev) => ({
-                ...prev,
-                date,
-              }));
-            }}
-          />
-          <MdRangeDatePicker
-            defaultStartDate={searchCondition.startDate}
-            defaultEndDate={searchCondition.endDate}
-            handleDateRangeSelected={(dateRange) => {
-              setSearchCondition((prev) => ({
-                ...prev,
-                startDate: dateRange[0],
-                endDate: dateRange[1],
-              }));
-            }}
-          />
-          <NAOutlinedTextField
-            label="Booking No"
-            value={searchCondition.bookingNo}
-            handleValueChange={(bookingNo) => {
-              setSearchCondition((prev) => ({
-                ...prev,
-                bookingNo,
-              }));
-            }}
-          />
-        </div>
-        <div className="flex gap-4 flex-wrap">
-          {activeFilterOptions.includes("Vessel") && VesselVoyageFilter}
-          {activeFilterOptions.includes("Booking Via") && BookingViaFilter}
+          {
+            {
+              "Request Date": RequestDateFilter,
+              "Departure Date": DepartureDateFilter,
+              "Booking Date": BookingDateFilter,
+              Vessel: VesselVoyageFilter,
+              "Booking No.": BookingNumberFilter,
+            }[conditionType]
+          }
         </div>
 
         <div className="flex gap-4 justify-end">
           <MdTextButton
             onClick={() => {
               setSearchCondition({
-                date: "Request Date",
+                conditionType: "Request Date",
                 bookingNo: "",
                 startDate: DateTime.now(),
                 endDate: DateTime.now(),
@@ -238,13 +345,6 @@ export default function SISearchCondition() {
           >
             Reset
           </MdTextButton>
-          <MdTextButton
-            ref={refs.setReference}
-            {...getReferenceProps()}
-            className={isFilterDetailsOpen ? "bg-secondaryFixed" : ""}
-          >
-            Filter Detils
-          </MdTextButton>
           <MdFilledButton
             onClick={() => {
               console.log(getCondition());
@@ -253,69 +353,6 @@ export default function SISearchCondition() {
             Search
           </MdFilledButton>
         </div>
-      </div>
-      <div
-        aria-label="filter-details-popover"
-        {...getFloatingProps()}
-        ref={refs.setFloating}
-        style={floatingStyles}
-        className="z-10"
-      >
-        {isMounted && (
-          <div
-            style={
-              {
-                "--md-elevation-level": 2,
-                ...styles,
-              } as CSSProperties
-            }
-            className="bg-surfaceContainer rounded-3xl relative w-72"
-          >
-            <MdElevation />
-            <MdTypography variant="headline" size="small" className="p-6">
-              Filter Details
-            </MdTypography>
-            <MdList className="bg-surfaceContainerHigh">
-              {filterOptions.map((option) => (
-                <MdListItem
-                  key={option}
-                  type="button"
-                  className="border-b border-outlineVariant"
-                  onClick={() => {
-                    if (activeFilterOptions.includes(option)) {
-                      setActiveFilterOptions(
-                        activeFilterOptions.filter(
-                          (filter) => filter !== option
-                        )
-                      );
-                    } else {
-                      setActiveFilterOptions([...activeFilterOptions, option]);
-                    }
-                  }}
-                >
-                  <div
-                    slot="start"
-                    className="w-6 h-6 flex items-center justify-center"
-                  >
-                    <MdCheckbox
-                      checked={activeFilterOptions.includes(option)}
-                    />
-                  </div>
-                  <div slot="headline">{option}</div>
-                </MdListItem>
-              ))}
-            </MdList>
-            <div className="p-6 flex justify-end">
-              <MdTextButton
-                onClick={() => {
-                  setIsFilterDetailsOpen(false);
-                }}
-              >
-                Close
-              </MdTextButton>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
