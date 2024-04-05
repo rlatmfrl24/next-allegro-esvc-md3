@@ -65,7 +65,12 @@ export default function VesselSchedule() {
   }
 
   function ScrollToTop() {
-    scrollState.viewPort?.scrollTo({ top: 0, behavior: "smooth" });
+    if (scrollState.instance) {
+      scrollState.instance()?.elements().viewport?.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   }
 
   return (

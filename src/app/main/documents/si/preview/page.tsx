@@ -46,12 +46,14 @@ import { faker } from "@faker-js/faker";
 import {
   AttachFile,
   EditOutlined,
+  Email,
   Fax,
   Inventory,
   Inventory2Outlined,
   InventoryOutlined,
   Mail,
   Phone,
+  Place,
 } from "@mui/icons-material";
 
 export default function SIPreviewPage() {
@@ -242,9 +244,10 @@ function SIPreview() {
                   className="text-outlineVariant mr-1"
                 />
                 <MdTypography variant="body" size="medium">
-                  {contactInformationData.emailRecipient.length === 0
+                  {/* {contactInformationData.emailRecipient.length === 0
                     ? "-"
-                    : contactInformationData.emailRecipient.join(", ")}
+                    : contactInformationData.emailRecipient.join(", ")} */}
+                  {contactInformationData.email}
                 </MdTypography>
               </>
             </div>
@@ -256,21 +259,25 @@ function SIPreview() {
                 />
                 {contactInformationData.telNumber}
               </MdTypography>
+              {contactInformationData.fax && (
+                <>
+                  <DividerComponent orientation="vertical" className="h-4" />
+                  <MdTypography variant="body" size="medium">
+                    <Fax
+                      sx={{ fontSize: 16 }}
+                      className="text-outlineVariant mr-1"
+                    />
+                    {contactInformationData.fax}
+                  </MdTypography>
+                </>
+              )}
               <DividerComponent orientation="vertical" className="h-4" />
               <MdTypography variant="body" size="medium">
-                <Phone
+                <Place
                   sx={{ fontSize: 16 }}
                   className="text-outlineVariant mr-1"
                 />
-                {contactInformationData.phone}
-              </MdTypography>
-              <DividerComponent orientation="vertical" className="h-4" />
-              <MdTypography variant="body" size="medium">
-                <Fax
-                  sx={{ fontSize: 16 }}
-                  className="text-outlineVariant mr-1"
-                />
-                {contactInformationData.phone}
+                {contactInformationData.address}
               </MdTypography>
             </div>
           </div>

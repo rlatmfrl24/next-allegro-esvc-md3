@@ -101,7 +101,7 @@ export type SIEditContactInformationType = {
   name: string;
   telNumber: string;
   fax: string;
-  phone: string;
+  email: string;
   address: string;
   emailRecipient: string[];
   subscrition: {

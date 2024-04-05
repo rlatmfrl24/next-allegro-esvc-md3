@@ -30,7 +30,7 @@ export default function ConditionSummary({
         />
       )}
       <SummaryContainer open={open} collapseSize={300}>
-        <div className="max-w-[1400px] w-full py-6 flex flex-col flex-1 mx-6">
+        <div className="w-full py-6 flex flex-col flex-1 mx-6">
           <div className="flex text-primary justify-between items-center gap-2 mb-4">
             <div
               className="flex items-center gap-2"

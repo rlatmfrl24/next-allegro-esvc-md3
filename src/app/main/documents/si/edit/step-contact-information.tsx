@@ -55,16 +55,14 @@ export default function StepContactInformation() {
         isCompleted:
           !!contactInformationStore.name &&
           !!contactInformationStore.telNumber &&
-          !!contactInformationStore.phone &&
           !!contactInformationStore.address &&
-          !!contactInformationStore.fax,
+          !!contactInformationStore.email,
       },
     }));
   }, [
-    contactInformationStore.fax,
     contactInformationStore.name,
     contactInformationStore.telNumber,
-    contactInformationStore.phone,
+    contactInformationStore.email,
     contactInformationStore.address,
     setSIEditStep,
   ]);
@@ -91,14 +89,14 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
-            label="Phone"
-            type="tel"
-            value={contactInformationStore.phone}
+            label="Email"
+            type="email"
+            value={contactInformationStore.email}
             handleValueChange={(value) => {
               setContactInformationStore((prev) => {
                 return {
                   ...prev,
-                  phone: value,
+                  email: value,
                 };
               });
             }}
@@ -118,7 +116,6 @@ export default function StepContactInformation() {
             }}
           />
           <NAOutlinedTextField
-            required
             label="Fax"
             type="tel"
             value={contactInformationStore.fax}
