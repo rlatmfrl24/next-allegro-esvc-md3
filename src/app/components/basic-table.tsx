@@ -2,7 +2,6 @@ import { Column, Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
 import { CSSProperties, useEffect } from "react";
-import { DividerComponent } from "../main/booking/information/components/base";
 
 const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
   const isPinned = column.getIsPinned();
@@ -34,11 +33,6 @@ export const BasicTable = ({
   table: Table<any>;
   onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
 }) => {
-  useEffect(() => {
-    console.log(table.getState().columnSizing);
-    console.log(table.getState().columnSizingInfo);
-  }, [table]);
-
   return (
     <table
       className={styles.table}
@@ -62,6 +56,7 @@ export const BasicTable = ({
                   <MdTypography
                     variant="body"
                     size="medium"
+                    prominent
                     className="p-2 flex-1 select-none"
                   >
                     {flexRender(
@@ -71,11 +66,15 @@ export const BasicTable = ({
                   </MdTypography>
 
                   <div
-                    {...{
-                      onMouseDown: header.getResizeHandler(),
-                      onTouchStart: header.getResizeHandler(),
+                    onMouseDown={(e) => {
+                      table.resetRowSelection();
+                      header.getResizeHandler()(e);
                     }}
-                    className="w-2 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant"
+                    onTouchStart={(e) => {
+                      table.resetRowSelection();
+                      header.getResizeHandler()(e);
+                    }}
+                    className={`w-2 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
                   ></div>
                 </div>
               </th>

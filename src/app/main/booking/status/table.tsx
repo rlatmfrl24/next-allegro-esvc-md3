@@ -15,7 +15,6 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
-  ColumnResizeMode,
 } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
@@ -34,7 +33,7 @@ export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 50 }, (_, i) => ({
+    return Array.from({ length: 3 }, (_, i) => ({
       requestNo: `R${faker.string.numeric(12)}`,
       status: faker.helpers.arrayElement(
         Object.values(BookingStatus)
@@ -85,10 +84,7 @@ export default function BookingStatusTable() {
           <MdRadio
             name="requestNo"
             className="mr-2"
-            checked={
-              !info.column.getIsResizing() &&
-              currentBookingData?.requestNo === info.getValue()
-            }
+            checked={info.row.getIsSelected()}
           />
           <Link href={`/main/booking/information/request`}>
             <MdTypography
@@ -142,6 +138,8 @@ export default function BookingStatusTable() {
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
+      size: 130,
+      minSize: 130,
     }),
 
     columnHelper.accessor("vessel", {
@@ -159,6 +157,8 @@ export default function BookingStatusTable() {
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
+      size: 130,
+      minSize: 130,
     }),
     columnHelper.accessor("estimatedTimeofDeparture", {
       header: "Estimated Time of Departure",
@@ -315,6 +315,8 @@ export default function BookingStatusTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setCurrentBookingData, table.getSelectedRowModel().rows]);
 
+  useEffect(() => {}, [table]);
+
   return (
     <>
       <MdChipSet>
@@ -334,8 +336,12 @@ export default function BookingStatusTable() {
             </div>
             Download
           </MdTextButton>
-          <div className="w-px h-6 bg-outlineVariant"></div>
-          <MdTextButton>Copy</MdTextButton>
+          {table.getSelectedRowModel().rows.length > 0 && (
+            <>
+              <div className="w-px h-6 bg-outlineVariant"></div>
+              <MdTextButton>Copy</MdTextButton>
+            </>
+          )}
           {currentBookingData?.status === "Requested" ||
           currentBookingData?.status === "Change Requested" ||
           currentBookingData?.status === "Accepted" ? (
