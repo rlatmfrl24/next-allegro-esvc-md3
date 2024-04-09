@@ -40,17 +40,39 @@ export const NAOutlinedTextField = ({
         {...props}
         ref={inputRef}
         type={props.type === "number" ? "text" : props.type}
-        className={`flex-1 resize-y ${
+        className={`flex-1 resize-y [&::-webkit-inner-spin-button]:appearance-none ${
           props.type === "number" ? "text-right" : ""
         } ${props.readOnly ? "bg-surfaceContainer" : ""}`}
-        onInput={(e) => {
-          setHasValue(e.currentTarget.value.length > 0);
+        onFocus={(e) => {
           if (props.type === "number") {
-            let intValue = parseInt(e.currentTarget.value);
+            e.currentTarget.select();
+          }
+        }}
+        onKeyDown={(e) => {
+          if (props.type === "number") {
+            if (
+              !(
+                (e.key >= "0" && e.key <= "9") ||
+                e.key === "-" ||
+                e.key === "." ||
+                e.key === "Backspace" ||
+                e.key === "Delete" ||
+                e.key === "ArrowLeft" ||
+                e.key === "ArrowRight" ||
+                e.key === "Tab"
+              )
+            ) {
+              e.preventDefault();
+            }
+          }
+        }}
+        onBlur={(e) => {
+          if (props.type === "number") {
+            let intValue = parseFloat(e.currentTarget.value);
             if (isNaN(intValue)) intValue = 0;
             e.currentTarget.value = intValue.toString();
           }
-          handleValueChange?.((e.target as HTMLInputElement).value);
+          handleValueChange?.(e.currentTarget.value);
         }}
         required={false}
       >

@@ -103,7 +103,7 @@ export default function BLCheckSearchCondition({
   const scrollState = useRecoilValue(ScrollState);
 
   return (
-    <div className={styles.area}>
+    <div ref={areaRef} className={styles.area}>
       <MdOutlinedSegmentedButtonSet>
         {["B/L No.", "Vessel", "On Board Date"].map((type) => (
           <MdOutlinedSegmentedButton
