@@ -145,44 +145,16 @@ export default function CargoStep() {
         />
 
         <NAOutlinedTextField
-          value={cargoPickUpReturnData.grossWeight.toString()}
+          value={cargoPickUpReturnData.grossWeight}
           className="text-right"
           label="Gross Weight"
           required
           readOnly={params.has("quoteNumber")}
-          enableClearButton={false}
-          onFocus={(e) => {
-            e.currentTarget.value = "";
-          }}
-          onKeyDown={(e) => {
-            //block non numeric input
-            if (
-              isNaN(Number(e.key)) &&
-              e.key !== "Backspace" &&
-              e.key !== "."
-            ) {
-              e.preventDefault();
-            }
-          }}
+          type="number"
           handleValueChange={(value) => {
-            if (value === "") {
-              setCargoPickUpReturnData((prev) => {
-                return { ...prev, grossWeight: "0.000" };
-              });
-            }
-          }}
-          onBlur={(e) => {
-            const numbericData = Number(e.currentTarget.value);
-            if (isNaN(numbericData)) {
-              e.currentTarget.value = "0.000";
-              setCargoPickUpReturnData((prev) => {
-                return { ...prev, grossWeight: "0.000" };
-              });
-            } else {
-              setCargoPickUpReturnData((prev) => {
-                return { ...prev, grossWeight: numbericData.toFixed(3) };
-              });
-            }
+            setCargoPickUpReturnData((prev) => {
+              return { ...prev, grossWeight: value };
+            });
           }}
         />
         <NAOutlinedListBox
