@@ -95,7 +95,11 @@ export function applyFixedStyles(theme: Theme): void {
   }
 }
 
-export function applyPresetTheme(presetName: string, isDarkMode?: boolean) {
+export function applyPresetTheme(
+  presetName: string,
+  isDarkMode?: boolean,
+  afterApply?: () => void
+) {
   let css = {};
   switch (presetName) {
     case "preset_1":
@@ -111,6 +115,7 @@ export function applyPresetTheme(presetName: string, isDarkMode?: boolean) {
       css = defaultTheme;
       break;
   }
+
   const target = document.body;
   const theme = JSON.parse(JSON.stringify(css));
 
@@ -135,6 +140,10 @@ export function applyPresetTheme(presetName: string, isDarkMode?: boolean) {
       }
     }
   });
+
+  if (afterApply) {
+    afterApply();
+  }
 
   // target.style.setProperty(key, theme[key]);
   // if (key.includes("--m3-sys-light-")) {

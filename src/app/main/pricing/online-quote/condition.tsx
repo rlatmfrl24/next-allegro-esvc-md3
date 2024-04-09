@@ -57,9 +57,6 @@ export default function Condition({
 
   return (
     <div className={styles.area}>
-      <MdTypography variant="title" size="large">
-        Terms of Quotation
-      </MdTypography>
       <SubTitle title="Route " />
       <div className="flex gap-4">
         <NAOutlinedAutoComplete

@@ -144,7 +144,7 @@ export default function StepContactInformation() {
             }}
           />
         </div>
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <DetailTitle title="Email Recipient" />
           {contactInformationStore.emailRecipient.length > 0 && (
             <MdChipSet>
@@ -186,7 +186,7 @@ export default function StepContactInformation() {
               Manage Email
             </MdTypography>
           </button>
-        </div>
+        </div> */}
 
         {/* <div className="flex flex-col gap-4">
           <DetailTitle title="Email Notification Subscription" />
@@ -252,7 +252,7 @@ export default function StepContactInformation() {
         </div>
          */}
       </div>
-      <Portal selector="#main-container">
+      {/* <Portal selector="#main-container">
         <MdDialog
           className="min-w-[720px]"
           open={isManageEmailDialogOpen}
@@ -364,7 +364,7 @@ export default function StepContactInformation() {
             </MdFilledButton>
           </div>
         </MdDialog>
-      </Portal>
+      </Portal> */}
     </div>
   );
 }

@@ -154,7 +154,7 @@ export default function ContactInformationStep() {
           }}
         />
       </div>
-      <SubTitle title="Email Recipient" className="mt-6 mb-4" />
+      {/* <SubTitle title="Email Recipient" className="mt-6 mb-4" />
       <MdChipSet>
         {contactInformationData.emailRecipient.map((email) => {
           return (
@@ -191,8 +191,8 @@ export default function ContactInformationStep() {
           />
           Manage Email
         </MdTypography>
-      </button>
-      <Portal selector="#main-container">
+      </button> */}
+      {/* <Portal selector="#main-container">
         <MdDialog
           className="min-w-[720px]"
           open={isManageEmailDialogOpen}
@@ -304,7 +304,7 @@ export default function ContactInformationStep() {
             </MdFilledButton>
           </div>
         </MdDialog>
-      </Portal>
+      </Portal> */}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -30,6 +30,9 @@ import {
   useDismiss,
   useRole,
 } from "@floating-ui/react";
+import { useRecoilValue } from "recoil";
+import { ScrollState } from "@/app/store/global.store";
+import { FocusOnResult } from "../../util";
 
 export default function BLCheckSearchCondition({
   onSearch,
@@ -96,8 +99,11 @@ export default function BLCheckSearchCondition({
     }),
   ]);
 
+  const areaRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRecoilValue(ScrollState);
+
   return (
-    <div className={styles.area}>
+    <div ref={areaRef} className={styles.area}>
       <MdOutlinedSegmentedButtonSet>
         {["B/L No.", "Vessel", "On Board Date"].map((type) => (
           <MdOutlinedSegmentedButton
@@ -259,6 +265,7 @@ export default function BLCheckSearchCondition({
             else console.log(boardDateCondition);
 
             onSearch();
+            FocusOnResult(areaRef, scrollState.instance);
           }}
         >
           Search
