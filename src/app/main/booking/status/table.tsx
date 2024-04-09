@@ -15,6 +15,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
+  ColumnResizeMode,
 } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
@@ -33,7 +34,7 @@ export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) => ({
+    return Array.from({ length: 50 }, (_, i) => ({
       requestNo: `R${faker.string.numeric(12)}`,
       status: faker.helpers.arrayElement(
         Object.values(BookingStatus)
@@ -84,7 +85,10 @@ export default function BookingStatusTable() {
           <MdRadio
             name="requestNo"
             className="mr-2"
-            checked={currentBookingData?.requestNo === info.getValue()}
+            checked={
+              !info.column.getIsResizing() &&
+              currentBookingData?.requestNo === info.getValue()
+            }
           />
           <Link href={`/main/booking/information/request`}>
             <MdTypography
@@ -128,6 +132,7 @@ export default function BookingStatusTable() {
     }),
     columnHelper.accessor("requestDate", {
       header: "Request Date",
+      enableResizing: true,
       cell: (info) => (
         <MdTypography
           variant="body"
@@ -137,8 +142,6 @@ export default function BookingStatusTable() {
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
-      size: 120,
-      minSize: 120,
     }),
 
     columnHelper.accessor("vessel", {
@@ -156,16 +159,14 @@ export default function BookingStatusTable() {
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
-      size: 120,
-      minSize: 120,
     }),
     columnHelper.accessor("estimatedTimeofDeparture", {
       header: "Estimated Time of Departure",
       cell: (info) => {
         return EstimatedTimeofDepartureCell(info.row.original);
       },
-      size: 120,
-      minSize: 120,
+      size: 130,
+      minSize: 130,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
@@ -286,7 +287,11 @@ export default function BookingStatusTable() {
 
   const table = useReactTable({
     columns,
+    debugTable: true,
     data: tableData,
+    enableColumnResizing: true,
+    columnResizeMode: "onChange",
+    columnResizeDirection: "ltr",
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,

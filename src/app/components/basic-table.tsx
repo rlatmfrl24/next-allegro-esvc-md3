@@ -1,7 +1,8 @@
 import { Column, Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect } from "react";
+import { DividerComponent } from "../main/booking/information/components/base";
 
 const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
   const isPinned = column.getIsPinned();
@@ -33,8 +34,18 @@ export const BasicTable = ({
   table: Table<any>;
   onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
 }) => {
+  useEffect(() => {
+    console.log(table.getState().columnSizing);
+    console.log(table.getState().columnSizingInfo);
+  }, [table]);
+
   return (
-    <table className={styles.table}>
+    <table
+      className={styles.table}
+      style={{
+        width: table.getCenterTotalSize(),
+      }}
+    >
       {table.getHeaderGroups().map((headerGroup) => (
         <thead key={headerGroup.id}>
           <tr>
@@ -43,14 +54,30 @@ export const BasicTable = ({
                 key={header.id}
                 style={{
                   ...getCommonPinningStyles(header.column),
+                  width: header.getSize(),
                 }}
+                className="max-h-14 h-14"
               >
-                <MdTypography variant="body" size="medium" className="p-2">
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </MdTypography>
+                <div className="h-full flex items-center">
+                  <MdTypography
+                    variant="body"
+                    size="medium"
+                    className="p-2 flex-1 select-none"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </MdTypography>
+
+                  <div
+                    {...{
+                      onMouseDown: header.getResizeHandler(),
+                      onTouchStart: header.getResizeHandler(),
+                    }}
+                    className="w-2 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant"
+                  ></div>
+                </div>
               </th>
             ))}
           </tr>
@@ -65,6 +92,7 @@ export const BasicTable = ({
                   <td
                     key={cell.id}
                     style={{
+                      width: cell.column.getSize(),
                       ...getCommonPinningStyles(cell.column),
                     }}
                     className="group-hover:bg-surfaceContainer p-2"
