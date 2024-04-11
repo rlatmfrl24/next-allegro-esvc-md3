@@ -103,6 +103,7 @@ export default function BookingStatusTable() {
       filterFn: (row, id, filterValue) => {
         return filterValue.includes(row.original.status);
       },
+      minSize: 140,
     }),
     columnHelper.accessor("bookingNo", {
       id: "bookingNo",

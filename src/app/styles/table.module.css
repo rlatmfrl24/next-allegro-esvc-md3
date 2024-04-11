@@ -1,5 +1,5 @@
 .table {
-  @apply font-normal text-sm text-onSurfaceVariant min-w-fit flex-1 table-fixed;
+  @apply font-normal text-sm text-onSurfaceVariant min-w-fit flex-1 table-fixed w-full;
 }
 
 .table thead {
