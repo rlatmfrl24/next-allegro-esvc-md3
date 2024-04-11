@@ -1,6 +1,5 @@
 import {
   Header,
-  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -224,16 +223,16 @@ const HeaderComponent = ({
               console.log("clicked");
               header.column.toggleSorting();
             }}
-            className="z-10 min-w-8"
+            className="z-10 min-w-10"
           >
             <ArrowUpward
               fontSize="small"
               className={`${
-                header.column.getIsSorted()
-                  ? header.column.getNextSortingOrder() === "asc"
-                    ? "rotate-0 text-primary"
-                    : "rotate-180 text-primary"
-                  : "text-onSurfaceVariant"
+                header.column.getIsSorted() === false
+                  ? "text-gray-400"
+                  : header.column.getIsSorted() === "asc"
+                  ? "rotate-0 text-primary"
+                  : "rotate-180 text-primary"
               }`}
             />
           </MdIconButton>

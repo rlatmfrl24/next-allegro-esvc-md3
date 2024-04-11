@@ -9,12 +9,7 @@ import { MdTypography } from "@/app/components/typography";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
@@ -189,8 +184,6 @@ export default function BookingStatusTable() {
           {info.getValue()}
         </MdTypography>
       ),
-      size: 120,
-      minSize: 120,
     }),
     columnHelper.accessor("destination", {
       id: "destination",
@@ -204,8 +197,6 @@ export default function BookingStatusTable() {
           {info.getValue()}
         </MdTypography>
       ),
-      size: 120,
-      minSize: 120,
     }),
     columnHelper.accessor("cargoClosingTime", {
       id: "cargoClosingTime",
