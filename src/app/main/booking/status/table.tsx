@@ -68,9 +68,7 @@ export default function BookingStatusTable() {
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [columnOrder, setColumnOrder] = useState<string[]>(() =>
-    columns.map((c: any) => c.id!)
-  );
+
   const [currentBookingData, setCurrentBookingData] = useRecoilState(
     CurrentBookingDataState
   );
@@ -287,6 +285,10 @@ export default function BookingStatusTable() {
       ),
     }),
   ];
+
+  const [columnOrder, setColumnOrder] = useState<string[]>(() =>
+    columns.map((c: any) => c.id!)
+  );
 
   const table = useReactTable({
     columns,
