@@ -1,0 +1,46 @@
+import { Table, Row, flexRender } from "@tanstack/react-table";
+import { getCommonPinningStyles } from "./util";
+import { memo } from "react";
+
+export const TableBody = ({
+  table,
+  onRowSelction,
+}: {
+  table: Table<any>;
+  onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
+}) => {
+  return (
+    <tbody>
+      {table.getRowModel().rows.map((row) => {
+        return (
+          <tr key={row.id} className="group">
+            {row.getVisibleCells().map((cell) => {
+              return (
+                <td
+                  key={cell.id}
+                  style={{
+                    // width: cell.column.getSize(),
+                    width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
+                    ...getCommonPinningStyles(cell.column),
+                  }}
+                  className="group-hover:bg-surfaceContainer p-2"
+                  onClick={(e) => {
+                    onRowSelction?.(row, cell.column.id);
+                  }}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              );
+            })}
+          </tr>
+        );
+      })}
+    </tbody>
+  );
+};
+
+// Upgrade Performance by memoizing the TableBody component
+export const MemoizedTableBody = memo(
+  TableBody,
+  (prev, next) => prev.table.options.data === next.table.options.data
+) as typeof TableBody;

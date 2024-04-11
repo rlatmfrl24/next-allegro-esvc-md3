@@ -5,7 +5,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { BasicTable } from "@/app/components/basic-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
@@ -68,6 +68,9 @@ export default function BookingStatusTable() {
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [columnOrder, setColumnOrder] = useState<string[]>(() =>
+    columns.map((c) => c.id!)
+  );
   const [currentBookingData, setCurrentBookingData] = useRecoilState(
     CurrentBookingDataState
   );
@@ -295,12 +298,14 @@ export default function BookingStatusTable() {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
+    onColumnOrderChange: setColumnOrder,
     initialState: {
       columnPinning: {
         left: ["requestNo", "status"],
       },
     },
     state: {
+      columnOrder: columnOrder,
       rowSelection: rowSelection,
     },
     enableMultiRowSelection: false,
@@ -314,8 +319,6 @@ export default function BookingStatusTable() {
     setCurrentBookingData(selectedRow?.original);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setCurrentBookingData, table.getSelectedRowModel().rows]);
-
-  useEffect(() => {}, [table]);
 
   return (
     <>
@@ -363,7 +366,7 @@ export default function BookingStatusTable() {
       </div>
 
       <div className="relative overflow-auto w-full max-w-full">
-        <OverlayScrollbarsComponent>
+        <OverlayScrollbarsComponent defer>
           <BasicTable
             table={table}
             onRowSelction={(row) => {

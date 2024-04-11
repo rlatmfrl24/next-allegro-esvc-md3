@@ -3,7 +3,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
 
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
-import { BasicTable } from "@/app/components/basic-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
