@@ -51,6 +51,9 @@ export const NewBasicTable = ({
   const table = useReactTable({
     data,
     columns,
+    enableColumnResizing: true,
+    columnResizeMode: "onChange",
+    columnResizeDirection: "ltr",
     getCoreRowModel: getCoreRowModel(),
     initialState: {
       columnPinning: {
@@ -62,7 +65,6 @@ export const NewBasicTable = ({
     },
     onColumnOrderChange: setColumnOrder,
     enableMultiRowSelection: !isSingleSelect,
-    debugAll: true,
   });
 
   const columnSizeVars = useMemo(() => {
@@ -107,7 +109,7 @@ export const NewBasicTable = ({
           <thead key={headerGroup.id}>
             <tr>
               <SortableContext
-                items={columns.map((column) => column.id)}
+                items={columnOrder}
                 strategy={horizontalListSortingStrategy}
               >
                 {headerGroup.headers.map((header) => (
@@ -159,9 +161,6 @@ const HeaderComponent = ({
 
   return (
     <th
-      {...attributes}
-      {...listeners}
-      ref={setNodeRef}
       style={{
         ...headerStyles,
         // width: header.getSize(),
@@ -170,14 +169,16 @@ const HeaderComponent = ({
       className="max-h-14 h-14"
     >
       <div className="h-full flex items-center">
-        <MdTypography
-          variant="body"
-          size="medium"
-          prominent
-          className="p-2 flex-1 select-none"
-        >
-          {flexRender(header.column.columnDef.header, header.getContext())}
-        </MdTypography>
+        <div className="flex-1" {...attributes} {...listeners} ref={setNodeRef}>
+          <MdTypography
+            variant="body"
+            size="medium"
+            prominent
+            className="p-2 flex-1 select-none"
+          >
+            {flexRender(header.column.columnDef.header, header.getContext())}
+          </MdTypography>
+        </div>
 
         <div
           onMouseDown={(e) => {

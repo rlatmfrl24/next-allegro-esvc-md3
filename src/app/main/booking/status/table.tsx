@@ -80,6 +80,7 @@ export default function BookingStatusTable() {
 
   const columns = [
     columnHelper.accessor("requestNo", {
+      id: "requestNo",
       header: "Request No",
       cell: (info) => (
         <>
@@ -104,6 +105,7 @@ export default function BookingStatusTable() {
       minSize: 180,
     }),
     columnHelper.accessor("status", {
+      id: "status",
       header: "Status",
       cell: (info) => <BookingStatusChip status={info.getValue()} />,
       filterFn: (row, id, filterValue) => {
@@ -113,6 +115,7 @@ export default function BookingStatusTable() {
       minSize: 140,
     }),
     columnHelper.accessor("bookingNo", {
+      id: "bookingNo",
       header: "Booking No",
       cell: (info) => (
         <Link href={`/main/booking/information/confirmation`}>
@@ -129,6 +132,7 @@ export default function BookingStatusTable() {
       minSize: 140,
     }),
     columnHelper.accessor("requestDate", {
+      id: "requestDate",
       header: "Request Date",
       enableResizing: true,
       cell: (info) => (
@@ -145,10 +149,12 @@ export default function BookingStatusTable() {
     }),
 
     columnHelper.accessor("vessel", {
+      id: "vessel",
       header: "Vessel",
       cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("requestDepartureTime", {
+      id: "requestDepartureTime",
       header: "Request Departure Time",
       cell: (info) => (
         <MdTypography
@@ -163,6 +169,7 @@ export default function BookingStatusTable() {
       minSize: 130,
     }),
     columnHelper.accessor("estimatedTimeofDeparture", {
+      id: "estimatedTimeofDeparture",
       header: "Estimated Time of Departure",
       cell: (info) => {
         return EstimatedTimeofDepartureCell(info.row.original);
@@ -171,6 +178,7 @@ export default function BookingStatusTable() {
       minSize: 130,
     }),
     columnHelper.accessor("origin", {
+      id: "origin",
       header: "Origin",
       cell: (info) => (
         <MdTypography
@@ -185,6 +193,7 @@ export default function BookingStatusTable() {
       minSize: 120,
     }),
     columnHelper.accessor("destination", {
+      id: "destination",
       header: "Destination",
       cell: (info) => (
         <MdTypography
@@ -199,6 +208,7 @@ export default function BookingStatusTable() {
       minSize: 120,
     }),
     columnHelper.accessor("cargoClosingTime", {
+      id: "cargoClosingTime",
       header: "Cargo Closing Time",
       cell: (info) => (
         <MdTypography
@@ -213,6 +223,7 @@ export default function BookingStatusTable() {
       minSize: 120,
     }),
     columnHelper.accessor("docClosingTime", {
+      id: "docClosingTime",
       header: "Doc Closing Time",
       cell: (info) => (
         <MdTypography
@@ -227,6 +238,7 @@ export default function BookingStatusTable() {
       minSize: 120,
     }),
     columnHelper.accessor("vgmCutOffTime", {
+      id: "vgmCutOffTime",
       header: "VGM Cut Off Time",
       cell: (info) => (
         <MdTypography
@@ -241,6 +253,7 @@ export default function BookingStatusTable() {
       minSize: 120,
     }),
     columnHelper.accessor("actualShipper", {
+      id: "actualShipper",
       header: "Actual Shipper",
       cell: (info) => (
         <MdTypography
@@ -255,6 +268,7 @@ export default function BookingStatusTable() {
       minSize: 150,
     }),
     columnHelper.accessor("via", {
+      id: "via",
       header: "Via",
       cell: (info) => (
         <MdTypography
@@ -274,6 +288,7 @@ export default function BookingStatusTable() {
       minSize: 80,
     }),
     columnHelper.accessor("qty", {
+      id: "qty",
       header: "Qty",
       cell: (info) => (
         <MdTypography
