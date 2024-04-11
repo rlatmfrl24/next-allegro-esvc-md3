@@ -1,6 +1,7 @@
 import {
   Header,
   SortingState,
+  Table,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -59,6 +60,7 @@ import {
 import { basicPopoverStyles } from "@/app/util/constants";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { flushSync } from "react-dom";
+import { useScroll } from "framer-motion";
 
 export const NewBasicTable = ({
   data,
@@ -155,7 +157,7 @@ export const NewBasicTable = ({
           <MdTypography variant="label" size="large" className="text-outline">
             Total: {data.length}
           </MdTypography>
-          <ColumnFilterButton headers={table.getFlatHeaders()} />
+          <ColumnFilterButton table={table} />
         </div>
       </div>
       <OverlayScrollbarsComponent defer>
@@ -204,21 +206,27 @@ export const NewBasicTable = ({
   );
 };
 
-const ColumnFilterButton = ({
-  headers,
-}: {
-  headers: Header<any, unknown>[];
-}) => {
+const ColumnFilterButton = ({ table }: { table: Table<any> }) => {
+  const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [isColumnFilterOpen, setIsColumnFilterOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState<number>(0);
+
+  useEffect(() => {
+    setVisibleColumns(
+      table
+        .getAllColumns()
+        .filter((column) => column.getIsVisible())
+        .map((col) => col.id)
+    );
+  }, [table, isColumnFilterOpen]);
 
   const { refs, floatingStyles, context, middlewareData } = useFloating({
     open: isColumnFilterOpen,
     onOpenChange: setIsColumnFilterOpen,
     middleware: [
+      hide(),
       offset(6),
       shift(),
-      hide(),
       size({
         apply({ availableHeight }) {
           flushSync(() => setMaxHeight(availableHeight));
@@ -267,14 +275,37 @@ const ColumnFilterButton = ({
                   className="bg-surfaceContainerLow overflow-y-auto"
                 >
                   <MdListItem type="button">
-                    <MdCheckbox slot="start" />
+                    <MdCheckbox
+                      slot="start"
+                      checked={
+                        table.getAllColumns().length === visibleColumns.length
+                      }
+                    />
                     Select All
                   </MdListItem>
                   <DividerComponent />
-                  {headers.map((header) => (
-                    <MdListItem key={header.id} type="button">
-                      <MdCheckbox slot="start" />
-                      {header.column.columnDef.header as string}
+                  {table.getAllColumns().map((column) => (
+                    <MdListItem
+                      key={column.id}
+                      type="button"
+                      onClick={() => {
+                        setVisibleColumns((prev) => {
+                          if (prev.includes(column.id)) {
+                            return prev.filter((col) => col !== column.id);
+                          } else {
+                            return [...prev, column.id];
+                          }
+                        });
+                      }}
+                    >
+                      <MdCheckbox
+                        slot="start"
+                        checked={
+                          visibleColumns.includes(column.id) ||
+                          table.getAllColumns().length === visibleColumns.length
+                        }
+                      />
+                      {column.columnDef.header as string}
                     </MdListItem>
                   ))}
                 </MdList>
@@ -282,9 +313,21 @@ const ColumnFilterButton = ({
                   aria-label="column-filter-actions"
                   className="flex gap-2 p-6 justify-end"
                 >
-                  <MdTextButton>Reset</MdTextButton>
+                  <MdTextButton
+                    onClick={() => {
+                      table.toggleAllColumnsVisible(true);
+                      setIsColumnFilterOpen(false);
+                    }}
+                  >
+                    Reset
+                  </MdTextButton>
                   <MdFilledButton
                     onClick={() => {
+                      table.getAllColumns().forEach((column) => {
+                        column.toggleVisibility(
+                          visibleColumns.includes(column.id)
+                        );
+                      });
                       setIsColumnFilterOpen(false);
                     }}
                   >
