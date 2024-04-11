@@ -1,8 +1,6 @@
-import { Table, Row, flexRender, Cell } from "@tanstack/react-table";
+import { Table, flexRender } from "@tanstack/react-table";
 import { getCommonPinningStyles } from "./util";
-import { CSSProperties, memo } from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { memo } from "react";
 
 export const TableBody = ({ table }: { table: Table<any> }) => {
   return (

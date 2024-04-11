@@ -5,7 +5,6 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
@@ -152,6 +151,7 @@ export default function BookingStatusTable() {
       id: "vessel",
       header: "Vessel",
       cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      size: 300,
     }),
     columnHelper.accessor("requestDepartureTime", {
       id: "requestDepartureTime",
@@ -302,49 +302,13 @@ export default function BookingStatusTable() {
     }),
   ];
 
-  const [columnOrder, setColumnOrder] = useState<string[]>(() =>
-    columns.map((c: any) => c.id!)
-  );
-
-  const table = useReactTable({
-    columns,
-    debugTable: true,
-    data: tableData,
-    enableColumnResizing: true,
-    columnResizeMode: "onChange",
-    columnResizeDirection: "ltr",
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
-    onColumnOrderChange: setColumnOrder,
-    initialState: {
-      columnPinning: {
-        left: ["requestNo", "status"],
-      },
-    },
-    state: {
-      columnOrder: columnOrder,
-      rowSelection: rowSelection,
-    },
-    enableMultiRowSelection: false,
-  });
-
-  useEffect(() => {
-    const selectedRow = table
-      .getSelectedRowModel()
-      .rows.find((row) => row.getIsSelected());
-
-    setCurrentBookingData(selectedRow?.original);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setCurrentBookingData, table.getSelectedRowModel().rows]);
-
   return (
     <>
       <MdChipSet>
         <StatusFilterComponent
           statusOptions={Object.values(BookingStatus)}
           onChange={(states) => {
-            table.getColumn("status")?.setFilterValue(states);
+            setTableData(tempData.filter((row) => states.includes(row.status)));
           }}
         />
         <MdFilterChip label="My Booking" />
@@ -357,7 +321,7 @@ export default function BookingStatusTable() {
             </div>
             Download
           </MdTextButton>
-          {table.getSelectedRowModel().rows.length > 0 && (
+          {currentBookingData && (
             <>
               <div className="w-px h-6 bg-outlineVariant"></div>
               <MdTextButton>Copy</MdTextButton>
@@ -379,29 +343,10 @@ export default function BookingStatusTable() {
           ) : null}
         </div>
         <MdTypography variant="label" size="large" className="text-outline">
-          Total: {table.getRowModel().rows.length}
+          Total: {tableData.length}
         </MdTypography>
       </div>
 
-      <div className="relative overflow-auto w-full max-w-full">
-        {/* <OverlayScrollbarsComponent defer>
-          <BasicTable
-            table={table}
-            onRowSelction={(row) => {
-              if (row.getIsSelected()) {
-                return;
-              } else {
-                row.toggleSelected();
-              }
-            }}
-          />
-        </OverlayScrollbarsComponent> */}
-      </div>
-
-      <MdTypography variant="body" size="small">
-        If there is time difference between the changed departure time and the
-        time previously notified, it will marked as below.
-      </MdTypography>
       <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent defer>
           <NewBasicTable
@@ -409,9 +354,17 @@ export default function BookingStatusTable() {
             columns={columns}
             isSingleSelect={true}
             pinningColumns={["requestNo", "status"]}
+            getSelectionRows={(rows: any[]) => {
+              setCurrentBookingData(rows[0]);
+            }}
           />
         </OverlayScrollbarsComponent>
       </div>
+
+      <MdTypography variant="body" size="small">
+        If there is time difference between the changed departure time and the
+        time previously notified, it will marked as below.
+      </MdTypography>
     </>
   );
 }

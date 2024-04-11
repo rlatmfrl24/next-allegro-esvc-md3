@@ -1,7 +1,10 @@
 import {
   Header,
+  Row,
+  SortingState,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
@@ -27,21 +30,28 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
+import { MdIconButton } from "@/app/util/md3";
+import { ArrowUpward } from "@mui/icons-material";
 
 export const NewBasicTable = ({
   data,
   columns,
   pinningColumns = [],
   isSingleSelect = false,
+  getSelectionRows,
 }: {
   data: any[];
   columns: any[];
   pinningColumns?: string[];
   isSingleSelect?: boolean;
+  getSelectionRows?: (Rows: any[]) => void;
 }) => {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [selectedRows, setSelectedRows] = useState({});
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((column) => column.id)
   );
+
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
@@ -55,17 +65,31 @@ export const NewBasicTable = ({
     columnResizeMode: "onChange",
     columnResizeDirection: "ltr",
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     initialState: {
       columnPinning: {
         left: pinningColumns,
       },
     },
     state: {
+      rowSelection: selectedRows,
       columnOrder,
+      sorting,
     },
+    onRowSelectionChange: setSelectedRows,
     onColumnOrderChange: setColumnOrder,
+    onSortingChange: setSorting,
     enableMultiRowSelection: !isSingleSelect,
+    // enableMultiSort: true,
   });
+
+  useEffect(() => {
+    getSelectionRows &&
+      getSelectionRows(
+        Object.keys(selectedRows).map((key) => data[parseInt(key)])
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRows]);
 
   const columnSizeVars = useMemo(() => {
     const headers = table.getFlatHeaders();
@@ -94,8 +118,8 @@ export const NewBasicTable = ({
   return (
     <DndContext
       collisionDetection={closestCenter}
-      sensors={sensors}
       modifiers={[restrictToHorizontalAxis]}
+      sensors={sensors}
       onDragEnd={handleDragEnd}
     >
       <table
@@ -116,6 +140,7 @@ export const NewBasicTable = ({
                   <HeaderComponent
                     key={header.id}
                     header={header}
+                    disabled={!header.column.getCanSort()}
                     isPinned={header.column.getIsPinned() !== false}
                   />
                 ))}
@@ -136,11 +161,15 @@ export const NewBasicTable = ({
 
 const HeaderComponent = ({
   header,
+  disabled,
   isPinned = false,
 }: {
   header: Header<any, any>;
+  disabled: boolean;
   isPinned?: boolean;
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   // const headerStyles = isPinned ? getCommonPinningStyles(header.column) :
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useSortable({
@@ -166,10 +195,17 @@ const HeaderComponent = ({
         // width: header.getSize(),
         width: `calc(var(--header-${header?.id}-size) * 1px)`,
       }}
-      className="max-h-14 h-14"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="max-h-14 h-14 "
     >
       <div className="h-full flex items-center">
-        <div className="flex-1" {...attributes} {...listeners} ref={setNodeRef}>
+        <div
+          className="flex-1 flex justify-between items-center h-full"
+          {...attributes}
+          {...listeners}
+          ref={setNodeRef}
+        >
           <MdTypography
             variant="body"
             size="medium"
@@ -179,6 +215,29 @@ const HeaderComponent = ({
             {flexRender(header.column.columnDef.header, header.getContext())}
           </MdTypography>
         </div>
+        {(isHovered || header.column.getIsSorted()) && (
+          <MdIconButton
+            disabled={disabled}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log("clicked");
+              header.column.toggleSorting();
+            }}
+            className="z-10 min-w-8"
+          >
+            <ArrowUpward
+              fontSize="small"
+              className={`${
+                header.column.getIsSorted()
+                  ? header.column.getNextSortingOrder() === "asc"
+                    ? "rotate-0 text-primary"
+                    : "rotate-180 text-primary"
+                  : "text-onSurfaceVariant"
+              }`}
+            />
+          </MdIconButton>
+        )}
 
         <div
           onMouseDown={(e) => {
