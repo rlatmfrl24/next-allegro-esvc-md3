@@ -1,16 +1,14 @@
 import {
-  Header,
+  PaginationState,
   SortingState,
-  Table,
-  flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "@/app/styles/table.module.css";
 import { MemoizedTableBody, TableBody } from "./table-body";
-import { getCommonPinningStyles } from "./util";
 import { MdTypography } from "../typography";
 import {
   DndContext,
@@ -26,42 +24,12 @@ import {
   SortableContext,
   arrayMove,
   horizontalListSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  MdCheckbox,
-  MdElevatedCard,
-  MdFilledButton,
-  MdIcon,
-  MdIconButton,
-  MdList,
-  MdListItem,
-  MdOutlinedIconButton,
-  MdTextButton,
-} from "@/app/util/md3";
-import { ArrowUpward, Settings } from "@mui/icons-material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { HeaderComponent } from "./header";
-import {
-  FloatingFocusManager,
-  autoUpdate,
-  hide,
-  offset,
-  shift,
-  size,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useTransitionStyles,
-} from "@floating-ui/react";
-import { basicPopoverStyles } from "@/app/util/constants";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
-import { flushSync } from "react-dom";
-import { useScroll } from "framer-motion";
 import { ColumnFilterButton } from "./column-filter";
+import { TablePaginator } from "./paginator";
 
 export const NewBasicTable = ({
   data,
@@ -78,6 +46,10 @@ export const NewBasicTable = ({
   getSelectionRows?: (Rows: any[]) => void;
   actionComponent?: React.ReactNode;
 }) => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [columnVisibility, setColumnVisibility] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedRows, setSelectedRows] = useState({});
@@ -99,6 +71,7 @@ export const NewBasicTable = ({
     columnResizeDirection: "ltr",
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       columnPinning: {
         left: pinningColumns,
@@ -109,11 +82,13 @@ export const NewBasicTable = ({
       columnOrder,
       sorting,
       columnVisibility,
+      pagination,
     },
     onRowSelectionChange: setSelectedRows,
     onColumnOrderChange: setColumnOrder,
     onColumnVisibilityChange: setColumnVisibility,
     onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
   });
@@ -155,6 +130,7 @@ export const NewBasicTable = ({
       <div className="flex items-end ">
         {actionComponent}
         <div className="flex gap-2 items-center h-10 z-20">
+          <TablePaginator table={table} />
           <MdTypography variant="label" size="large" className="text-outline">
             Total: {data.length}
           </MdTypography>

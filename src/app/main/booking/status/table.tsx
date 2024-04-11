@@ -1,12 +1,20 @@
 "use client";
 
 import { DateTime } from "luxon";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
+import StatusFilterComponent from "@/app/components/status-filter";
+import { NewBasicTable } from "@/app/components/table/new-table";
 import { MdTypography } from "@/app/components/typography";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { CurrentBookingDataState } from "@/app/store/booking.store";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
+import {
+  BookingStatus,
+  BookingStatusTableProps,
+} from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -14,21 +22,12 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import EstimatedTimeofDepartureCell from "./components/estimated-time-of-departure-cell";
-import Link from "next/link";
-import {
-  BookingStatusTableProps,
-  BookingStatus,
-} from "@/app/util/typeDef/boooking";
-import StatusFilterComponent from "@/app/components/status-filter";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
-import { CurrentBookingDataState } from "@/app/store/booking.store";
-import { NewBasicTable } from "@/app/components/table/new-table";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 30 }, (_, i) => ({
+    return Array.from({ length: 900 }, (_, i) => ({
       requestNo: `R${faker.string.numeric(12)}`,
       status: faker.helpers.arrayElement(
         Object.values(BookingStatus)
