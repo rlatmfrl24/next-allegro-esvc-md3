@@ -105,8 +105,6 @@ export default function BookingStatusTable() {
       filterFn: (row, id, filterValue) => {
         return filterValue.includes(row.original.status);
       },
-      size: 140,
-      minSize: 140,
     }),
     columnHelper.accessor("bookingNo", {
       id: "bookingNo",
@@ -295,61 +293,61 @@ export default function BookingStatusTable() {
 
   return (
     <>
-      <MdChipSet>
-        <StatusFilterComponent
-          statusOptions={Object.values(BookingStatus)}
-          onChange={(states) => {
-            setTableData(tempData.filter((row) => states.includes(row.status)));
+      <div className="relative w-full max-w-full">
+        <NewBasicTable
+          actionComponent={
+            <div className="flex-1 flex flex-col gap-4">
+              <MdChipSet className="z-40">
+                <StatusFilterComponent
+                  statusOptions={Object.values(BookingStatus)}
+                  onChange={(states) => {
+                    setTableData(
+                      tempData.filter((row) => states.includes(row.status))
+                    );
+                  }}
+                />
+                <MdFilterChip label="My Booking" />
+              </MdChipSet>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MdTextButton>
+                    <div slot="icon">
+                      <Download fontSize="small" />
+                    </div>
+                    Download
+                  </MdTextButton>
+                  {currentBookingData && (
+                    <>
+                      <div className="w-px h-6 bg-outlineVariant"></div>
+                      <MdTextButton>Copy</MdTextButton>
+                    </>
+                  )}
+                  {currentBookingData?.status === "Requested" ||
+                  currentBookingData?.status === "Change Requested" ||
+                  currentBookingData?.status === "Accepted" ? (
+                    <>
+                      <MdTextButton>Edit</MdTextButton>
+                      <MdTextButton>Cancel</MdTextButton>
+                    </>
+                  ) : null}
+                  {currentBookingData?.status === "Accepted" ? (
+                    <>
+                      <MdTextButton>S/I</MdTextButton>
+                      <MdTextButton>Print Receipt</MdTextButton>
+                    </>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          }
+          data={tableData}
+          columns={columns}
+          isSingleSelect={true}
+          pinningColumns={["requestNo", "status"]}
+          getSelectionRows={(rows: any[]) => {
+            setCurrentBookingData(rows[0]);
           }}
         />
-        <MdFilterChip label="My Booking" />
-      </MdChipSet>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <MdTextButton>
-            <div slot="icon">
-              <Download fontSize="small" />
-            </div>
-            Download
-          </MdTextButton>
-          {currentBookingData && (
-            <>
-              <div className="w-px h-6 bg-outlineVariant"></div>
-              <MdTextButton>Copy</MdTextButton>
-            </>
-          )}
-          {currentBookingData?.status === "Requested" ||
-          currentBookingData?.status === "Change Requested" ||
-          currentBookingData?.status === "Accepted" ? (
-            <>
-              <MdTextButton>Edit</MdTextButton>
-              <MdTextButton>Cancel</MdTextButton>
-            </>
-          ) : null}
-          {currentBookingData?.status === "Accepted" ? (
-            <>
-              <MdTextButton>S/I</MdTextButton>
-              <MdTextButton>Print Receipt</MdTextButton>
-            </>
-          ) : null}
-        </div>
-        <MdTypography variant="label" size="large" className="text-outline">
-          Total: {tableData.length}
-        </MdTypography>
-      </div>
-
-      <div className="relative overflow-auto w-full max-w-full">
-        <OverlayScrollbarsComponent defer>
-          <NewBasicTable
-            data={tableData}
-            columns={columns}
-            isSingleSelect={true}
-            pinningColumns={["requestNo", "status"]}
-            getSelectionRows={(rows: any[]) => {
-              setCurrentBookingData(rows[0]);
-            }}
-          />
-        </OverlayScrollbarsComponent>
       </div>
 
       <MdTypography variant="body" size="small">

@@ -29,8 +29,27 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
-import { MdIconButton } from "@/app/util/md3";
-import { ArrowUpward } from "@mui/icons-material";
+import {
+  MdElevatedCard,
+  MdIcon,
+  MdIconButton,
+  MdOutlinedIconButton,
+} from "@/app/util/md3";
+import { ArrowUpward, Settings } from "@mui/icons-material";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { HeaderComponent } from "./header";
+import {
+  FloatingFocusManager,
+  autoUpdate,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useTransitionStyles,
+} from "@floating-ui/react";
+import { basicPopoverStyles } from "@/app/util/constants";
 
 export const NewBasicTable = ({
   data,
@@ -38,13 +57,16 @@ export const NewBasicTable = ({
   pinningColumns = [],
   isSingleSelect = false,
   getSelectionRows,
+  actionComponent,
 }: {
   data: any[];
   columns: any[];
   pinningColumns?: string[];
   isSingleSelect?: boolean;
   getSelectionRows?: (Rows: any[]) => void;
+  actionComponent?: React.ReactNode;
 }) => {
+  const [columnVisibility, setColumnVisibility] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedRows, setSelectedRows] = useState({});
   const [columnOrder, setColumnOrder] = useState<string[]>(
@@ -74,9 +96,11 @@ export const NewBasicTable = ({
       rowSelection: selectedRows,
       columnOrder,
       sorting,
+      columnVisibility,
     },
     onRowSelectionChange: setSelectedRows,
     onColumnOrderChange: setColumnOrder,
+    onColumnVisibilityChange: setColumnVisibility,
     onSortingChange: setSorting,
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
@@ -114,142 +138,99 @@ export const NewBasicTable = ({
     }
   }
 
-  return (
-    <DndContext
-      collisionDetection={closestCenter}
-      modifiers={[restrictToHorizontalAxis]}
-      sensors={sensors}
-      onDragEnd={handleDragEnd}
-    >
-      <table
-        className={styles.table}
-        style={{
-          ...columnSizeVars,
-          width: table.getCenterTotalSize(),
-        }}
-      >
-        {table.getHeaderGroups().map((headerGroup) => (
-          <thead key={headerGroup.id}>
-            <tr>
-              <SortableContext
-                items={columnOrder}
-                strategy={horizontalListSortingStrategy}
-              >
-                {headerGroup.headers.map((header) => (
-                  <HeaderComponent
-                    key={header.id}
-                    header={header}
-                    disabled={!header.column.getCanSort()}
-                    isPinned={header.column.getIsPinned() !== false}
-                  />
-                ))}
-              </SortableContext>
-            </tr>
-          </thead>
-        ))}
+  const [isColumnFilterOpen, setIsColumnFilterOpen] = useState(false);
 
-        {table.getState().columnSizingInfo.isResizingColumn ? (
-          <MemoizedTableBody table={table} />
-        ) : (
-          <TableBody table={table} />
-        )}
-      </table>
-    </DndContext>
+  const { refs, floatingStyles, context } = useFloating({
+    open: isColumnFilterOpen,
+    onOpenChange: setIsColumnFilterOpen,
+    middleware: [offset(6), shift()],
+    placement: "bottom-end",
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(
+    context,
+    basicPopoverStyles
   );
-};
 
-const HeaderComponent = ({
-  header,
-  disabled,
-  isPinned = false,
-}: {
-  header: Header<any, any>;
-  disabled: boolean;
-  isPinned?: boolean;
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  // const headerStyles = isPinned ? getCommonPinningStyles(header.column) :
-  const { attributes, isDragging, listeners, setNodeRef, transform } =
-    useSortable({
-      id: header.column.id,
-    });
-
-  const draggableStyles: CSSProperties = {
-    opacity: isDragging ? 0.8 : 1,
-    position: "relative",
-    transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
-    transition: "width transform 0.2s ease-in-out",
-    zIndex: isDragging ? 1 : 0,
-  };
-
-  const headerStyles = isPinned
-    ? getCommonPinningStyles(header.column)
-    : draggableStyles;
+  const { getFloatingProps, getReferenceProps } = useInteractions([
+    useClick(context),
+    useDismiss(context),
+  ]);
 
   return (
-    <th
-      style={{
-        ...headerStyles,
-        // width: header.getSize(),
-        width: `calc(var(--header-${header?.id}-size) * 1px)`,
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="max-h-14 h-14 "
-    >
-      <div className="h-full flex items-center">
-        <div
-          className="flex-1 flex justify-between items-center h-full"
-          {...attributes}
-          {...listeners}
-          ref={setNodeRef}
-        >
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="p-2 flex-1 select-none"
-          >
-            {flexRender(header.column.columnDef.header, header.getContext())}
+    <div className="relative flex flex-col gap-4">
+      <div className="flex items-end ">
+        {actionComponent}
+        <div className="flex gap-2 items-center h-10 z-20">
+          <MdTypography variant="label" size="large" className="text-outline">
+            Total: {data.length}
           </MdTypography>
-        </div>
-        {(isHovered || header.column.getIsSorted()) && (
-          <MdIconButton
-            disabled={disabled}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log("clicked");
-              header.column.toggleSorting();
-            }}
-            className="z-10 min-w-10"
+          <MdOutlinedIconButton
+            ref={refs.setReference}
+            {...getReferenceProps()}
           >
-            <ArrowUpward
-              fontSize="small"
-              className={`${
-                header.column.getIsSorted() === false
-                  ? "text-gray-400"
-                  : header.column.getIsSorted() === "asc"
-                  ? "rotate-0 text-primary"
-                  : "rotate-180 text-primary"
-              }`}
-            />
-          </MdIconButton>
-        )}
-
-        <div
-          onMouseDown={(e) => {
-            // table.resetRowSelection();
-            header.getResizeHandler()(e);
-          }}
-          onTouchStart={(e) => {
-            // table.resetRowSelection();
-            header.getResizeHandler()(e);
-          }}
-          className={`w-2 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
-        ></div>
+            <MdIcon>
+              <Settings />
+            </MdIcon>
+          </MdOutlinedIconButton>
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
+          >
+            {isMounted && (
+              <FloatingFocusManager context={context}>
+                <div style={transitionStyles}>
+                  <MdElevatedCard className="p-3">123123</MdElevatedCard>
+                </div>
+              </FloatingFocusManager>
+            )}
+          </div>
+        </div>
       </div>
-    </th>
+      <OverlayScrollbarsComponent defer>
+        <DndContext
+          collisionDetection={closestCenter}
+          modifiers={[restrictToHorizontalAxis]}
+          sensors={sensors}
+          onDragEnd={handleDragEnd}
+        >
+          <table
+            className={styles.table}
+            style={{
+              ...columnSizeVars,
+              width: table.getCenterTotalSize(),
+            }}
+          >
+            {table.getHeaderGroups().map((headerGroup) => (
+              <thead key={headerGroup.id}>
+                <tr>
+                  <SortableContext
+                    items={columnOrder}
+                    strategy={horizontalListSortingStrategy}
+                  >
+                    {headerGroup.headers.map((header) => (
+                      <HeaderComponent
+                        key={header.id}
+                        header={header}
+                        disabled={!header.column.getCanSort()}
+                        isPinned={header.column.getIsPinned() !== false}
+                      />
+                    ))}
+                  </SortableContext>
+                </tr>
+              </thead>
+            ))}
+
+            {table.getState().columnSizingInfo.isResizingColumn ? (
+              <MemoizedTableBody table={table} />
+            ) : (
+              <TableBody table={table} />
+            )}
+          </table>
+        </DndContext>
+      </OverlayScrollbarsComponent>
+    </div>
   );
 };
