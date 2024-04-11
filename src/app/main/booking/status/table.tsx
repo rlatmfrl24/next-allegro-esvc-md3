@@ -33,7 +33,7 @@ export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 3 }, (_, i) => ({
+    return Array.from({ length: 30 }, (_, i) => ({
       requestNo: `R${faker.string.numeric(12)}`,
       status: faker.helpers.arrayElement(
         Object.values(BookingStatus)
@@ -107,8 +107,8 @@ export default function BookingStatusTable() {
       filterFn: (row, id, filterValue) => {
         return filterValue.includes(row.original.status);
       },
-      size: 120,
-      minSize: 120,
+      size: 140,
+      minSize: 140,
     }),
     columnHelper.accessor("bookingNo", {
       header: "Booking No",

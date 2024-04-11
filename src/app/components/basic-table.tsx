@@ -1,7 +1,7 @@
 import { Column, Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "./typography";
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, memo, useEffect, useMemo } from "react";
 
 const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
   const isPinned = column.getIsPinned();
@@ -33,10 +33,23 @@ export const BasicTable = ({
   table: Table<any>;
   onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
 }) => {
+  const columnSizeVars = useMemo(() => {
+    const headers = table.getFlatHeaders();
+    const colSizes: { [key: string]: number } = {};
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i]!;
+      colSizes[`--header-${header.id}-size`] = header.getSize();
+      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
+    }
+    return colSizes;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table.getState().columnSizingInfo]);
+
   return (
     <table
       className={styles.table}
       style={{
+        ...columnSizeVars,
         width: table.getCenterTotalSize(),
       }}
     >
@@ -48,7 +61,8 @@ export const BasicTable = ({
                 key={header.id}
                 style={{
                   ...getCommonPinningStyles(header.column),
-                  width: header.getSize(),
+                  // width: header.getSize(),
+                  width: `calc(var(--header-${header?.id}-size) * 1px)`,
                 }}
                 className="max-h-14 h-14"
               >
@@ -67,11 +81,11 @@ export const BasicTable = ({
 
                   <div
                     onMouseDown={(e) => {
-                      table.resetRowSelection();
+                      // table.resetRowSelection();
                       header.getResizeHandler()(e);
                     }}
                     onTouchStart={(e) => {
-                      table.resetRowSelection();
+                      // table.resetRowSelection();
                       header.getResizeHandler()(e);
                     }}
                     className={`w-2 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
@@ -82,31 +96,54 @@ export const BasicTable = ({
           </tr>
         </thead>
       ))}
-      <tbody>
-        {table.getRowModel().rows.map((row) => {
-          return (
-            <tr key={row.id} className="group">
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <td
-                    key={cell.id}
-                    style={{
-                      width: cell.column.getSize(),
-                      ...getCommonPinningStyles(cell.column),
-                    }}
-                    className="group-hover:bg-surfaceContainer p-2"
-                    onClick={(e) => {
-                      onRowSelction?.(row, cell.column.id);
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
+      {table.getState().columnSizingInfo.isResizingColumn ? (
+        <MemoizedTableBody table={table} onRowSelction={onRowSelction} />
+      ) : (
+        <TableBody table={table} onRowSelction={onRowSelction} />
+      )}
     </table>
   );
 };
+
+const TableBody = ({
+  table,
+  onRowSelction,
+}: {
+  table: Table<any>;
+  onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
+}) => {
+  return (
+    <tbody>
+      {table.getRowModel().rows.map((row) => {
+        return (
+          <tr key={row.id} className="group">
+            {row.getVisibleCells().map((cell) => {
+              return (
+                <td
+                  key={cell.id}
+                  style={{
+                    // width: cell.column.getSize(),
+                    width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
+                    ...getCommonPinningStyles(cell.column),
+                  }}
+                  className="group-hover:bg-surfaceContainer p-2"
+                  onClick={(e) => {
+                    onRowSelction?.(row, cell.column.id);
+                  }}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              );
+            })}
+          </tr>
+        );
+      })}
+    </tbody>
+  );
+};
+
+// Upgrade Performance by memoizing the TableBody component
+const MemoizedTableBody = memo(
+  TableBody,
+  (prev, next) => prev.table.options.data === next.table.options.data
+) as typeof TableBody;
