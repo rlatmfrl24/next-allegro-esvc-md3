@@ -102,9 +102,9 @@ export const BasicTable = ({
           </thead>
         ))}
         {table.getState().columnSizingInfo.isResizingColumn ? (
-          <MemoizedTableBody table={table} onRowSelction={onRowSelction} />
+          <MemoizedTableBody table={table} />
         ) : (
-          <TableBody table={table} onRowSelction={onRowSelction} />
+          <TableBody table={table} />
         )}
       </table>
     </DndContext>

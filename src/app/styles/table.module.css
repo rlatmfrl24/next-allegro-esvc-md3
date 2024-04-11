@@ -3,11 +3,11 @@
 }
 
 .table thead {
-  @apply bg-surfaceVariant h-12;
+  @apply bg-surfaceVariant h-12 select-none;
 }
 
 .table th {
-  @apply font-normal text-left bg-surfaceVariant;
+  @apply font-normal text-left bg-surfaceVariant select-none;
 }
 
 .table tbody tr {

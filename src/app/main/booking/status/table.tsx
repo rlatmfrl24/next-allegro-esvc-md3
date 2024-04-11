@@ -28,6 +28,7 @@ import {
 import StatusFilterComponent from "@/app/components/status-filter";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
+import { NewBasicTable } from "@/app/components/table/new-table";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
@@ -83,7 +84,7 @@ export default function BookingStatusTable() {
       cell: (info) => (
         <>
           <MdRadio
-            name="requestNo"
+            // name="requestNo"
             className="mr-2"
             checked={info.row.getIsSelected()}
           />
@@ -368,7 +369,7 @@ export default function BookingStatusTable() {
       </div>
 
       <div className="relative overflow-auto w-full max-w-full">
-        <OverlayScrollbarsComponent defer>
+        {/* <OverlayScrollbarsComponent defer>
           <BasicTable
             table={table}
             onRowSelction={(row) => {
@@ -379,13 +380,23 @@ export default function BookingStatusTable() {
               }
             }}
           />
-        </OverlayScrollbarsComponent>
+        </OverlayScrollbarsComponent> */}
       </div>
 
       <MdTypography variant="body" size="small">
         If there is time difference between the changed departure time and the
         time previously notified, it will marked as below.
       </MdTypography>
+      <div className="relative overflow-auto w-full max-w-full">
+        <OverlayScrollbarsComponent defer>
+          <NewBasicTable
+            data={tableData}
+            columns={columns}
+            isSingleSelect={true}
+            pinningColumns={["requestNo", "status"]}
+          />
+        </OverlayScrollbarsComponent>
+      </div>
     </>
   );
 }

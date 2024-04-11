@@ -2,13 +2,7 @@ import { Table, Row, flexRender } from "@tanstack/react-table";
 import { getCommonPinningStyles } from "./util";
 import { memo } from "react";
 
-export const TableBody = ({
-  table,
-  onRowSelction,
-}: {
-  table: Table<any>;
-  onRowSelction?: (row: Row<any>, columnId: string | undefined) => void;
-}) => {
+export const TableBody = ({ table }: { table: Table<any> }) => {
   return (
     <tbody>
       {table.getRowModel().rows.map((row) => {
@@ -25,7 +19,7 @@ export const TableBody = ({
                   }}
                   className="group-hover:bg-surfaceContainer p-2"
                   onClick={(e) => {
-                    onRowSelction?.(row, cell.column.id);
+                    row.toggleSelected();
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
