@@ -69,7 +69,7 @@ export default function BookingStatusTable() {
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnOrder, setColumnOrder] = useState<string[]>(() =>
-    columns.map((c) => c.id!)
+    columns.map((c: any) => c.id!)
   );
   const [currentBookingData, setCurrentBookingData] = useRecoilState(
     CurrentBookingDataState
