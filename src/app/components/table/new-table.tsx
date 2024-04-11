@@ -30,10 +30,15 @@ import {
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import {
+  MdCheckbox,
   MdElevatedCard,
+  MdFilledButton,
   MdIcon,
   MdIconButton,
+  MdList,
+  MdListItem,
   MdOutlinedIconButton,
+  MdTextButton,
 } from "@/app/util/md3";
 import { ArrowUpward, Settings } from "@mui/icons-material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
@@ -41,8 +46,10 @@ import { HeaderComponent } from "./header";
 import {
   FloatingFocusManager,
   autoUpdate,
+  hide,
   offset,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
@@ -50,6 +57,8 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { basicPopoverStyles } from "@/app/util/constants";
+import { DividerComponent } from "@/app/main/booking/information/components/base";
+import { flushSync } from "react-dom";
 
 export const NewBasicTable = ({
   data,
@@ -138,26 +147,6 @@ export const NewBasicTable = ({
     }
   }
 
-  const [isColumnFilterOpen, setIsColumnFilterOpen] = useState(false);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: isColumnFilterOpen,
-    onOpenChange: setIsColumnFilterOpen,
-    middleware: [offset(6), shift()],
-    placement: "bottom-end",
-    whileElementsMounted: autoUpdate,
-  });
-
-  const { isMounted, styles: transitionStyles } = useTransitionStyles(
-    context,
-    basicPopoverStyles
-  );
-
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    useClick(context),
-    useDismiss(context),
-  ]);
-
   return (
     <div className="relative flex flex-col gap-4">
       <div className="flex items-end ">
@@ -166,27 +155,7 @@ export const NewBasicTable = ({
           <MdTypography variant="label" size="large" className="text-outline">
             Total: {data.length}
           </MdTypography>
-          <MdOutlinedIconButton
-            ref={refs.setReference}
-            {...getReferenceProps()}
-          >
-            <MdIcon>
-              <Settings />
-            </MdIcon>
-          </MdOutlinedIconButton>
-          <div
-            ref={refs.setFloating}
-            style={floatingStyles}
-            {...getFloatingProps()}
-          >
-            {isMounted && (
-              <FloatingFocusManager context={context}>
-                <div style={transitionStyles}>
-                  <MdElevatedCard className="p-3">123123</MdElevatedCard>
-                </div>
-              </FloatingFocusManager>
-            )}
-          </div>
+          <ColumnFilterButton headers={table.getFlatHeaders()} />
         </div>
       </div>
       <OverlayScrollbarsComponent defer>
@@ -232,5 +201,101 @@ export const NewBasicTable = ({
         </DndContext>
       </OverlayScrollbarsComponent>
     </div>
+  );
+};
+
+const ColumnFilterButton = ({
+  headers,
+}: {
+  headers: Header<any, unknown>[];
+}) => {
+  const [isColumnFilterOpen, setIsColumnFilterOpen] = useState(false);
+  const [maxHeight, setMaxHeight] = useState<number>(0);
+
+  const { refs, floatingStyles, context, middlewareData } = useFloating({
+    open: isColumnFilterOpen,
+    onOpenChange: setIsColumnFilterOpen,
+    middleware: [
+      offset(6),
+      shift(),
+      hide(),
+      size({
+        apply({ availableHeight }) {
+          flushSync(() => setMaxHeight(availableHeight));
+        },
+      }),
+    ],
+    placement: "bottom-end",
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(
+    context,
+    basicPopoverStyles
+  );
+
+  const { getFloatingProps, getReferenceProps } = useInteractions([
+    useClick(context),
+    useDismiss(context),
+  ]);
+  return (
+    <>
+      <MdOutlinedIconButton ref={refs.setReference} {...getReferenceProps()}>
+        <MdIcon>
+          <Settings />
+        </MdIcon>
+      </MdOutlinedIconButton>
+      <div
+        ref={refs.setFloating}
+        style={{
+          ...floatingStyles,
+          visibility: middlewareData.hide?.referenceHidden
+            ? "hidden"
+            : "visible",
+        }}
+        {...getFloatingProps()}
+      >
+        {isMounted && (
+          <FloatingFocusManager context={context}>
+            <div style={transitionStyles}>
+              <MdElevatedCard>
+                <MdTypography variant="title" size="large" className="p-6">
+                  Grid Column Setting
+                </MdTypography>
+                <MdList
+                  style={{ maxHeight: maxHeight - 200 }}
+                  className="bg-surfaceContainerLow overflow-y-auto"
+                >
+                  <MdListItem type="button">
+                    <MdCheckbox slot="start" />
+                    Select All
+                  </MdListItem>
+                  <DividerComponent />
+                  {headers.map((header) => (
+                    <MdListItem key={header.id} type="button">
+                      <MdCheckbox slot="start" />
+                      {header.column.columnDef.header as string}
+                    </MdListItem>
+                  ))}
+                </MdList>
+                <div
+                  aria-label="column-filter-actions"
+                  className="flex gap-2 p-6 justify-end"
+                >
+                  <MdTextButton>Reset</MdTextButton>
+                  <MdFilledButton
+                    onClick={() => {
+                      setIsColumnFilterOpen(false);
+                    }}
+                  >
+                    Apply
+                  </MdFilledButton>
+                </div>
+              </MdElevatedCard>
+            </div>
+          </FloatingFocusManager>
+        )}
+      </div>
+    </>
   );
 };

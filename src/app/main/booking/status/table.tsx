@@ -62,8 +62,6 @@ export default function BookingStatusTable() {
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
-  const [rowSelection, setRowSelection] = useState({});
-
   const [currentBookingData, setCurrentBookingData] = useRecoilState(
     CurrentBookingDataState
   );
