@@ -49,6 +49,7 @@ export default function VesselResultTable({
   const columns = [
     columnHelper.accessor("port", {
       header: "Port",
+      id: "port",
       cell: (info) => {
         return (
           <MdTypography variant="body" size="medium">
@@ -59,6 +60,7 @@ export default function VesselResultTable({
     }),
     columnHelper.accessor("terminal", {
       header: "Terminal",
+      id: "terminal",
       cell: (info) => (
         <div
           className="underline cursor-pointer"
@@ -75,6 +77,7 @@ export default function VesselResultTable({
     }),
     columnHelper.accessor("arrivalDate", {
       header: "Arrival Date",
+      id: "arrivalDate",
       cell: (info) => (
         <DateCell
           info={info.getValue()}
@@ -88,6 +91,7 @@ export default function VesselResultTable({
     }),
     columnHelper.accessor("berthingDate", {
       header: "Berthing Date",
+      id: "berthingDate",
       cell: (info) => (
         <DateCell
           info={info.getValue()}
@@ -101,6 +105,7 @@ export default function VesselResultTable({
     }),
     columnHelper.accessor("departureDate", {
       header: "Departure Date",
+      id: "departureDate",
       cell: (info) => (
         <DateCell
           info={info.getValue()}
