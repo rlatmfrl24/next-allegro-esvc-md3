@@ -1,33 +1,30 @@
 import { Cell, Row, Table, flexRender } from "@tanstack/react-table";
 import { getCommonPinningStyles } from "./util";
-import { CSSProperties, memo, use, useEffect, useState } from "react";
+import {
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+  memo,
+  use,
+  useEffect,
+  useState,
+} from "react";
 
-export const TableBody = ({ table }: { table: Table<any> }) => {
+export const TableBody = ({
+  table,
+  selectedCell,
+  onCellSelected,
+}: {
+  table: Table<any>;
+  selectedCell: Cell<any, unknown> | null;
+  onCellSelected: Dispatch<SetStateAction<any>>;
+}) => {
   const [hoverInfo, setHoverInfo] = useState<{
     row: Row<any>;
     cell: Cell<any, unknown>;
   } | null>(null);
 
-  const [selectInfo, setSelectInfo] = useState<{
-    row: Row<any>;
-    cell: Cell<any, unknown>;
-  } | null>(null);
-
-  useEffect(() => {
-    setHoverInfo(null);
-    setSelectInfo(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [table.getState().pagination]);
-
-  useEffect(() => {
-    console.log(hoverInfo);
-  }, [hoverInfo]);
-
-  useEffect(() => {
-    console.log(selectInfo);
-  }, [selectInfo]);
-
-  function getBgColor(
+  function getStyles(
     isSelected: boolean,
     isHovered: boolean,
     type: "cell" | "row"
@@ -35,23 +32,35 @@ export const TableBody = ({ table }: { table: Table<any> }) => {
     if (type === "cell") {
       // Cell Style
       if (isSelected) {
-        return `color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)`;
+        return {
+          backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)`,
+          border: `2px solid var(--md-sys-color-primary)`,
+        } as CSSProperties;
       } else {
         if (isHovered) {
-          return `color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)`;
+          return {
+            backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)`,
+            border: `1px solid var(--md-sys-color-outline)`,
+          } as CSSProperties;
         } else {
-          return ``;
+          return {} as CSSProperties;
         }
       }
     } else {
       // Row Style
       if (isSelected) {
-        return `color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent)`;
+        return {
+          backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent)`,
+        } as CSSProperties;
       } else {
         if (isHovered) {
-          return `color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)`;
+          return {
+            backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)`,
+          } as CSSProperties;
         } else {
-          return `var(--md-sys-color-surface)`;
+          return {
+            backgroundColor: `var(--md-sys-color-surface)`,
+          } as CSSProperties;
         }
       }
     }
@@ -63,13 +72,11 @@ export const TableBody = ({ table }: { table: Table<any> }) => {
         return (
           <tr
             key={row.id}
-            style={{
-              backgroundColor: getBgColor(
-                row === selectInfo?.row,
-                row === hoverInfo?.row,
-                "row"
-              ),
-            }}
+            style={getStyles(
+              row.getIsSelected(),
+              hoverInfo?.row === row,
+              "row"
+            )}
           >
             {row.getVisibleCells().map((cell) => {
               return (
@@ -79,9 +86,9 @@ export const TableBody = ({ table }: { table: Table<any> }) => {
                     // width: cell.column.getSize(),
                     width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
                     ...getCommonPinningStyles(cell.column),
-                    backgroundColor: getBgColor(
-                      cell === selectInfo?.cell,
-                      cell === hoverInfo?.cell,
+                    ...getStyles(
+                      selectedCell?.id === cell.id,
+                      hoverInfo?.cell === cell,
                       "cell"
                     ),
                   }}
@@ -93,7 +100,7 @@ export const TableBody = ({ table }: { table: Table<any> }) => {
                     setHoverInfo((prev) => (prev?.row === row ? null : prev));
                   }}
                   onClick={(e) => {
-                    setSelectInfo({ row, cell });
+                    onCellSelected(cell);
                     row.toggleSelected();
                   }}
                 >

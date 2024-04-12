@@ -1,4 +1,5 @@
 import {
+  Cell,
   PaginationState,
   SortingState,
   getCoreRowModel,
@@ -55,6 +56,9 @@ export const NewBasicTable = ({
   const [selectedRows, setSelectedRows] = useState({});
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((column) => column.id)
+  );
+  const [selectedCell, setSelectedCell] = useState<Cell<any, unknown> | null>(
+    null
   );
 
   const sensors = useSensors(
@@ -172,9 +176,17 @@ export const NewBasicTable = ({
             ))}
 
             {table.getState().columnSizingInfo.isResizingColumn ? (
-              <MemoizedTableBody table={table} />
+              <MemoizedTableBody
+                table={table}
+                selectedCell={selectedCell}
+                onCellSelected={setSelectedCell}
+              />
             ) : (
-              <TableBody table={table} />
+              <TableBody
+                table={table}
+                selectedCell={selectedCell}
+                onCellSelected={setSelectedCell}
+              />
             )}
           </table>
         </DndContext>
