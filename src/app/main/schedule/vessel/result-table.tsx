@@ -114,12 +114,6 @@ export default function VesselResultTable({
     }),
   ];
 
-  // const table = useReactTable({
-  //   data,
-  //   columns,
-  //   getCoreRowModel: getCoreRowModel(),
-  // });
-
   return (
     <>
       <div className=" mt-1">

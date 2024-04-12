@@ -29,6 +29,10 @@ export const TableBody = ({
       if (cell.row.getIsSelected()) {
         return {
           backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 8%, white)`,
+          borderTop: `1px solid color-mix(in srgb, var(--md-sys-color-primary) 8%, white)`,
+          borderLeft: `1px solid color-mix(in srgb, var(--md-sys-color-primary) 8%, white)`,
+          borderRight: `1px solid color-mix(in srgb, var(--md-sys-color-primary) 8%, white)`,
+          borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
         } as CSSProperties;
       } else {
         if (hoverInfo?.cell === cell) {
@@ -40,10 +44,15 @@ export const TableBody = ({
           if (hoverInfo?.row === cell.row) {
             return {
               backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 8%, white)`,
+              borderTop: `1px solid color-mix(in srgb, var(--md-sys-color-on-surface) 8%, white)`,
+              borderLeft: `1px solid color-mix(in srgb, var(--md-sys-color-on-surface) 8%, white)`,
+              borderRight: `1px solid color-mix(in srgb, var(--md-sys-color-on-surface) 8%, white)`,
+              borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
             } as CSSProperties;
           } else {
             return {
               backgroundColor: `var(--md-sys-color-surface)`,
+              borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
             } as CSSProperties;
           }
         }
@@ -55,7 +64,12 @@ export const TableBody = ({
     <tbody>
       {table.getRowModel().rows.map((row) => {
         return (
-          <tr key={row.id}>
+          <tr
+            key={row.id}
+            style={{
+              borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
+            }}
+          >
             {row.getVisibleCells().map((cell) => {
               return (
                 <td

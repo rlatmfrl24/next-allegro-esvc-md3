@@ -1,17 +1,16 @@
-import NaToggleButton from "@/app/components/na-toggle-button";
-import { MdTypography } from "@/app/components/typography";
-import VesselResultTable from "./result-table";
-import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
-import DownloadIcon from "@mui/icons-material/Download";
-import VesselInformationDialog from "../popup/vessel-information";
+
+import { MdTypography } from "@/app/components/typography";
+import { MdIcon, MdTextButton } from "@/app/util/md3";
 import {
   VesselInfoType,
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
-import { DividerComponent } from "../../booking/information/components/base";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
+import VesselInformationDialog from "../popup/vessel-information";
+import VesselResultTable from "./result-table";
 
 export function VesselScheduleResult({
   vesselData,
@@ -20,7 +19,6 @@ export function VesselScheduleResult({
   vesselData: VesselInfoType;
   vesselSchedules: VesselScheduleType[];
 }) {
-  const [isDirectOnly, setIsDirectOnly] = useState(false);
   const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
 
   return (
