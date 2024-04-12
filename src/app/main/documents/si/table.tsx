@@ -1,10 +1,12 @@
 import { DateTime } from "luxon";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import Link from "next/link";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
 
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
-import { BasicTable } from "@/app/components/unused/basic-table";
+import StatusFilterComponent from "@/app/components/status-filter";
+import { NewBasicTable } from "@/app/components/table/new-table";
 import { MdTypography } from "@/app/components/typography";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -13,30 +15,17 @@ import {
   MdFilterChip,
   MdIcon,
   MdIconButton,
-  MdListItem,
   MdMenuItem,
   MdTextButton,
 } from "@/app/util/md3";
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
-import { faker, fi } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { Menu } from "@headlessui/react";
 import { ArrowDropDown, Download } from "@mui/icons-material";
-import {
-  Row,
-  createColumnHelper,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 
 import SIStateChip from "./si-state-chip";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import ActionButtons from "./table-action-buttons";
-import StatusFilterComponent from "@/app/components/status-filter";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
-import { set } from "lodash";
-import Link from "next/link";
-import { NewBasicTable } from "@/app/components/table/new-table";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
