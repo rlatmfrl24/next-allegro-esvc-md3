@@ -1,19 +1,19 @@
 .table {
-  @apply font-normal text-sm text-onSurfaceVariant min-w-fit flex-1;
+  @apply font-normal text-sm text-onSurfaceVariant min-w-fit flex-1 table-fixed border-separate border-spacing-0 w-full;
 }
 
 .table thead {
-  @apply bg-surfaceVariant h-12;
+  @apply bg-surfaceVariant h-12 select-none;
 }
 
 .table th {
-  @apply font-normal text-left bg-surfaceVariant;
+  @apply font-normal text-left bg-surfaceVariant select-none hover:bg-surfaceDim;
 }
 
 .table tbody tr {
-  @apply h-12 border-b border-b-outlineVariant;
+  @apply h-12;
 }
 
 .table tbody td {
-  @apply bg-surface;
+  @apply border-b border-b-outlineVariant;
 }

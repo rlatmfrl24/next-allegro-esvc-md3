@@ -70,7 +70,7 @@ export const FilterChipMenu = (props: {
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
-          className="z-20"
+          className="z-10"
         >
           <MdElevatedCard
             style={{

@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import PlaceInformationDialog from "../popup/place-information";
-import { BasicTable } from "@/app/components/basic-table";
+import { BasicTable } from "@/app/components/unused/basic-table";
 import { DateTime } from "luxon";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
@@ -14,6 +14,10 @@ import {
   VesselScheduleType,
   PlaceInformationType,
 } from "@/app/util/typeDef/schedule";
+import { NewBasicTable } from "@/app/components/table/new-table";
+import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
+import { Download } from "@mui/icons-material";
+import { DividerComponent } from "../../booking/information/components/base";
 
 const DateCell = ({
   info,
@@ -45,6 +49,7 @@ export default function VesselResultTable({
   const columns = [
     columnHelper.accessor("port", {
       header: "Port",
+      id: "port",
       cell: (info) => {
         return (
           <MdTypography variant="body" size="medium">
@@ -52,10 +57,10 @@ export default function VesselResultTable({
           </MdTypography>
         );
       },
-      size: undefined,
     }),
     columnHelper.accessor("terminal", {
       header: "Terminal",
+      id: "terminal",
       cell: (info) => (
         <div
           className="underline cursor-pointer"
@@ -69,10 +74,10 @@ export default function VesselResultTable({
           </MdTypography>
         </div>
       ),
-      size: undefined,
     }),
     columnHelper.accessor("arrivalDate", {
       header: "Arrival Date",
+      id: "arrivalDate",
       cell: (info) => (
         <DateCell
           info={info.getValue()}
@@ -83,10 +88,10 @@ export default function VesselResultTable({
           }
         />
       ),
-      size: 200,
     }),
     columnHelper.accessor("berthingDate", {
       header: "Berthing Date",
+      id: "berthingDate",
       cell: (info) => (
         <DateCell
           info={info.getValue()}
@@ -97,10 +102,10 @@ export default function VesselResultTable({
           }
         />
       ),
-      size: 200,
     }),
     columnHelper.accessor("departureDate", {
       header: "Departure Date",
+      id: "departureDate",
       cell: (info) => (
         <DateCell
           info={info.getValue()}
@@ -111,20 +116,40 @@ export default function VesselResultTable({
           }
         />
       ),
-      size: 200,
     }),
   ];
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
     <>
-      <div className="flex mt-1">
-        <BasicTable table={table} />
+      <div className=" mt-1">
+        <NewBasicTable
+          actionComponent={
+            <div className="flex justify-between items-center flex-1">
+              <div className="flex items-center gap-2">
+                <MdTextButton>
+                  <MdIcon slot="icon">
+                    <Download fontSize="small" />
+                  </MdIcon>
+                  Download
+                </MdTextButton>
+                <DividerComponent orientation="vertical" className="h-8 mx-2" />
+                <MdFilterChip label="Direct Only" />
+              </div>
+              <MdTypography
+                variant="label"
+                size="large"
+                className="text-outline"
+              >
+                Total:{data.length}
+              </MdTypography>
+            </div>
+          }
+          columns={columns}
+          data={data}
+          isSingleSelect
+        />
+
+        {/* <BasicTable table={table} /> */}
       </div>
       {placeInformation && (
         <PlaceInformationDialog
