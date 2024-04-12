@@ -25,7 +25,6 @@ import {
 import {
   SortableContext,
   arrayMove,
-  arraySwap,
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
@@ -143,7 +142,7 @@ export const NewBasicTable = ({
           <MdTypography variant="label" size="large" className="text-outline">
             Total: {data.length}
           </MdTypography>
-          <ColumnFilterButton table={table} />
+          <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
       <OverlayScrollbarsComponent defer>

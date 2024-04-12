@@ -29,7 +29,13 @@ import {
 } from "@/app/util/md3";
 import { Settings } from "@mui/icons-material";
 
-export const ColumnFilterButton = ({ table }: { table: Table<any> }) => {
+export const ColumnFilterButton = ({
+  table,
+  expectColumnIds = [],
+}: {
+  table: Table<any>;
+  expectColumnIds?: string[];
+}) => {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [isColumnFilterOpen, setIsColumnFilterOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState<number>(0);
@@ -118,30 +124,34 @@ export const ColumnFilterButton = ({ table }: { table: Table<any> }) => {
                     Select All
                   </MdListItem>
                   <DividerComponent />
-                  {table.getAllColumns().map((column) => (
-                    <MdListItem
-                      key={column.id}
-                      type="button"
-                      onClick={() => {
-                        setVisibleColumns((prev) => {
-                          if (prev.includes(column.id)) {
-                            return prev.filter((col) => col !== column.id);
-                          } else {
-                            return [...prev, column.id];
+                  {table
+                    .getAllColumns()
+                    .filter((column) => !expectColumnIds.includes(column.id))
+                    .map((column) => (
+                      <MdListItem
+                        key={column.id}
+                        type="button"
+                        onClick={() => {
+                          setVisibleColumns((prev) => {
+                            if (prev.includes(column.id)) {
+                              return prev.filter((col) => col !== column.id);
+                            } else {
+                              return [...prev, column.id];
+                            }
+                          });
+                        }}
+                      >
+                        <MdCheckbox
+                          slot="start"
+                          checked={
+                            visibleColumns.includes(column.id) ||
+                            table.getAllColumns().length ===
+                              visibleColumns.length
                           }
-                        });
-                      }}
-                    >
-                      <MdCheckbox
-                        slot="start"
-                        checked={
-                          visibleColumns.includes(column.id) ||
-                          table.getAllColumns().length === visibleColumns.length
-                        }
-                      />
-                      {column.columnDef.header as string}
-                    </MdListItem>
-                  ))}
+                        />
+                        {column.columnDef.header as string}
+                      </MdListItem>
+                    ))}
                 </MdList>
                 <div
                   aria-label="column-filter-actions"
