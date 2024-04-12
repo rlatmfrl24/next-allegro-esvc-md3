@@ -14,6 +14,7 @@ import {
   VesselScheduleType,
   PlaceInformationType,
 } from "@/app/util/typeDef/schedule";
+import { NewBasicTable } from "@/app/components/table/new-table";
 
 const DateCell = ({
   info,
@@ -52,7 +53,6 @@ export default function VesselResultTable({
           </MdTypography>
         );
       },
-      size: undefined,
     }),
     columnHelper.accessor("terminal", {
       header: "Terminal",
@@ -69,7 +69,6 @@ export default function VesselResultTable({
           </MdTypography>
         </div>
       ),
-      size: undefined,
     }),
     columnHelper.accessor("arrivalDate", {
       header: "Arrival Date",
@@ -83,7 +82,6 @@ export default function VesselResultTable({
           }
         />
       ),
-      size: 200,
     }),
     columnHelper.accessor("berthingDate", {
       header: "Berthing Date",
@@ -97,7 +95,6 @@ export default function VesselResultTable({
           }
         />
       ),
-      size: 200,
     }),
     columnHelper.accessor("departureDate", {
       header: "Departure Date",
@@ -111,20 +108,21 @@ export default function VesselResultTable({
           }
         />
       ),
-      size: 200,
     }),
   ];
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  // const table = useReactTable({
+  //   data,
+  //   columns,
+  //   getCoreRowModel: getCoreRowModel(),
+  // });
 
   return (
     <>
-      <div className="flex mt-1">
-        <BasicTable table={table} />
+      <div className="block mt-1">
+        <NewBasicTable columns={columns} data={data} />
+
+        {/* <BasicTable table={table} /> */}
       </div>
       {placeInformation && (
         <PlaceInformationDialog

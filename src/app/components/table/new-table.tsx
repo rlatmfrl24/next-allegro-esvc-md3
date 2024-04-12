@@ -134,7 +134,7 @@ export const NewBasicTable = ({
     <div className="relative flex flex-col gap-4">
       <div className="flex items-end ">
         {actionComponent}
-        <div className="flex gap-2 items-center h-10 z-20">
+        <div className="flex gap-2 items-center h-10 z-10">
           <TablePaginator table={table} />
           <MdTypography variant="label" size="large" className="text-outline">
             Total: {data.length}
@@ -153,7 +153,7 @@ export const NewBasicTable = ({
             className={styles.table}
             style={{
               ...columnSizeVars,
-              width: table.getCenterTotalSize(),
+              // width: table.getCenterTotalSize(),
             }}
           >
             <thead>
