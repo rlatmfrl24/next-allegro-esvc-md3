@@ -11,9 +11,8 @@
 }
 
 .table tbody tr {
-  @apply h-12 border-b border-b-outlineVariant;
+  @apply h-12 border-b border-b-outlineVariant relative;
 }
 
 .table tbody td {
-  @apply bg-surface;
 }
