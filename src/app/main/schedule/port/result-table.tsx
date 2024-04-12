@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
-import { BasicTable } from "@/app/components/table/basic-table";
+import { BasicTable } from "@/app/components/unused/basic-table";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import { MdFilledTonalButton } from "@/app/util/md3";

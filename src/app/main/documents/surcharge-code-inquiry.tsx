@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
-import { BasicTable } from "@/app/components/table/basic-table";
+import { BasicTable } from "@/app/components/unused/basic-table";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import Portal from "@/app/components/portal";
 import { MdDialog, MdTextButton } from "@/app/util/md3";

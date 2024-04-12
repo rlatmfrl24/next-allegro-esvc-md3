@@ -2,11 +2,10 @@ import { Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "../typography";
 import { useMemo } from "react";
-import { getCommonPinningStyles } from "./util";
-import { MemoizedTableBody, TableBody } from "./table-body";
+import { getCommonPinningStyles } from "../table/util";
+import { MemoizedTableBody, TableBody } from "../table/table-body";
 import {
   DndContext,
-  DragEndEvent,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
@@ -14,13 +13,9 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 
+// This component will be deprecated in the future
 export const BasicTable = ({
   table,
   onRowSelction,

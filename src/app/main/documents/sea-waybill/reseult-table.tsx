@@ -1,4 +1,4 @@
-import { BasicTable } from "@/app/components/table/basic-table";
+import { BasicTable } from "@/app/components/unused/basic-table";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
