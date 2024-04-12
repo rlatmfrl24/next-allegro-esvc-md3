@@ -45,7 +45,7 @@ export const HeaderComponent = ({
       ref={setNodeRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="max-h-14 h-14 "
+      className="max-h-14 h-14"
     >
       <div className="h-full flex items-center">
         <div
@@ -62,29 +62,30 @@ export const HeaderComponent = ({
             {flexRender(header.column.columnDef.header, header.getContext())}
           </MdTypography>
         </div>
-        {(isHovered || header.column.getIsSorted()) && (
-          <MdIconButton
-            disabled={disabled}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log("clicked");
-              header.column.toggleSorting();
-            }}
-            className="z-10 min-w-10"
-          >
-            <ArrowUpward
-              fontSize="small"
-              className={`${
-                header.column.getIsSorted() === false
-                  ? "text-gray-400"
-                  : header.column.getIsSorted() === "asc"
-                  ? "rotate-0 text-primary"
-                  : "rotate-180 text-primary"
-              }`}
-            />
-          </MdIconButton>
-        )}
+        {header.column.getCanSort() &&
+          (isHovered || header.column.getIsSorted()) && (
+            <MdIconButton
+              disabled={disabled}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("clicked");
+                header.column.toggleSorting();
+              }}
+              className="z-10 min-w-10"
+            >
+              <ArrowUpward
+                fontSize="small"
+                className={`${
+                  header.column.getIsSorted() === false
+                    ? "text-gray-400"
+                    : header.column.getIsSorted() === "asc"
+                    ? "rotate-0 text-primary"
+                    : "rotate-180 text-primary"
+                }`}
+              />
+            </MdIconButton>
+          )}
 
         <div
           onMouseDown={(e) => {

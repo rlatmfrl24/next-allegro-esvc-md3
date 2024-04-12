@@ -114,8 +114,24 @@ export default function SITable() {
               ? true
               : false
           }
+          indeterminate={
+            selectedRows.length !== 0 &&
+            selectedRows.length !==
+              tableData.filter((row) => {
+                return row.blState === SIState.Rejected ||
+                  row.blState === SIState.Pending ||
+                  row.blState === SIState.BLIssuePending ||
+                  row.blState === SIState.BLIssueClosed
+                  ? false
+                  : true;
+              }).length
+              ? true
+              : false
+          }
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
+            console.log(selectedRows);
             if (selectedRows.length !== 0) {
               setSelectedRows([]);
             } else {
@@ -139,7 +155,6 @@ export default function SITable() {
           checked={
             // if selectedRows includes the current row, return true
             selectedRows.includes(info.row.original) ? true : false
-            // info.row.getIsSelected()
           }
           onClick={(e) => {
             e.preventDefault();
@@ -440,6 +455,7 @@ export default function SITable() {
         }
         columns={columns}
         data={tableData}
+        controlColumns={["select"]}
         pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
         getSelectionRows={(rows) => {
           console.log(rows[0]);

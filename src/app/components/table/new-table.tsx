@@ -2,6 +2,7 @@ import {
   Cell,
   PaginationState,
   SortingState,
+  flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -32,11 +33,13 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { HeaderComponent } from "./header";
 import { ColumnFilterButton } from "./column-filter";
 import { TablePaginator } from "./paginator";
+import { getCommonPinningStyles } from "./util";
 
 export const NewBasicTable = ({
   data,
   columns,
   pinningColumns = [],
+  controlColumns = [],
   isSingleSelect = false,
   getSelectionRows,
   actionComponent,
@@ -44,6 +47,7 @@ export const NewBasicTable = ({
   data: any[];
   columns: any[];
   pinningColumns?: string[];
+  controlColumns?: string[];
   isSingleSelect?: boolean;
   getSelectionRows?: (Rows: any[]) => void;
   actionComponent?: React.ReactNode;
@@ -163,14 +167,30 @@ export const NewBasicTable = ({
                     items={columnOrder}
                     strategy={horizontalListSortingStrategy}
                   >
-                    {headerGroup.headers.map((header) => (
-                      <HeaderComponent
-                        key={header.id}
-                        header={header}
-                        disabled={!header.column.getCanSort()}
-                        isPinned={header.column.getIsPinned() !== false}
-                      />
-                    ))}
+                    {headerGroup.headers.map((header) =>
+                      controlColumns.includes(header.id) ? (
+                        <th
+                          key={header.id}
+                          style={{
+                            width: `calc(var(--header-${header?.id}-size) * 1px)`,
+                            ...getCommonPinningStyles(header.column),
+                          }}
+                          className="max-h-14 h-14 p-2"
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </th>
+                      ) : (
+                        <HeaderComponent
+                          key={header.id}
+                          header={header}
+                          disabled={!header.column.getCanSort()}
+                          isPinned={header.column.getIsPinned() !== false}
+                        />
+                      )
+                    )}
                   </SortableContext>
                 </tr>
               ))}
