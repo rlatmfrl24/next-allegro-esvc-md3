@@ -21,6 +21,7 @@ import {
 import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
+import { NewBasicTable } from "@/app/components/table/new-table";
 
 export default function SeaWaybillResultTable() {
   const tempData = useMemo(() => {
@@ -50,6 +51,7 @@ export default function SeaWaybillResultTable() {
   const columns = [
     columnHelper.display({
       id: "checkbox",
+      enableSorting: false,
       header: (info) => (
         <MdCheckbox
           className="ml-2"
@@ -66,6 +68,7 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
+      id: "blNumber",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -74,6 +77,7 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
+      id: "origin",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -82,6 +86,7 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("destination", {
       header: "Destination",
+      id: "destination",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -90,10 +95,12 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
+      id: "vessel",
       cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("onBoardDate", {
       header: "On Board Date",
+      id: "onBoardDate",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -102,6 +109,7 @@ export default function SeaWaybillResultTable() {
     }),
     columnHelper.accessor("issueDate", {
       header: "Issue Date",
+      id: "issueDate",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -109,6 +117,8 @@ export default function SeaWaybillResultTable() {
       ),
     }),
     columnHelper.accessor("freight", {
+      id: "freight",
+      enableSorting: false,
       header: () => (
         <NaToggleButton
           label="Freight"
@@ -144,41 +154,25 @@ export default function SeaWaybillResultTable() {
     }),
   ];
 
-  const table = useReactTable({
-    data: tableData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection,
-    },
-  });
-
   return (
     <>
-      <div className="flex justify-between items-center">
-        <MdTextButton
-          onClick={() => {
-            setPrintDialogOpen(true);
-          }}
-        >
-          <div slot="icon">
-            <Print fontSize="small" />
+      <NewBasicTable
+        actionComponent={
+          <div className="flex flex-1 items-center">
+            <MdTextButton
+              onClick={() => {
+                setPrintDialogOpen(true);
+              }}
+            >
+              <div slot="icon">
+                <Print fontSize="small" />
+              </div>
+              Print
+            </MdTextButton>
           </div>
-          Print
-        </MdTextButton>
-        <div>
-          <MdTypography variant="label" size="large" className="text-outline">
-            Total: {tableData.length}
-          </MdTypography>
-        </div>
-      </div>
-      <BasicTable
-        table={table}
-        onRowSelction={(row, columnId) => {
-          if (columnId === "freight") return;
-          row.toggleSelected();
-        }}
+        }
+        columns={columns}
+        data={tableData}
       />
       <Portal selector="#main-container">
         <BLPrintDialog
