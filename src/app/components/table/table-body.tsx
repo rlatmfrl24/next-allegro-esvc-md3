@@ -16,8 +16,8 @@ export const TableBody = ({
   onCellSelected,
 }: {
   table: Table<any>;
-  selectedCell: Cell<any, unknown> | null;
-  onCellSelected: Dispatch<SetStateAction<any>>;
+  selectedCell?: Cell<any, unknown> | null;
+  onCellSelected?: Dispatch<SetStateAction<any>>;
 }) => {
   const [hoverInfo, setHoverInfo] = useState<{
     row: Row<any>;
@@ -100,7 +100,7 @@ export const TableBody = ({
                     setHoverInfo((prev) => (prev?.row === row ? null : prev));
                   }}
                   onClick={(e) => {
-                    onCellSelected(cell);
+                    onCellSelected?.(cell);
                     row.toggleSelected();
                   }}
                 >
