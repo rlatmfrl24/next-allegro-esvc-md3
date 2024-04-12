@@ -201,7 +201,7 @@ export const MdRangeDatePicker = (props: {
         <div
           className={
             isCalendarOpen && !props.readonly && !props.disabled
-              ? "visible z-10"
+              ? "visible z-50"
               : "invisible"
           }
           ref={refs.setFloating}

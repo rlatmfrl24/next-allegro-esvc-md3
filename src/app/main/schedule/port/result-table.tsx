@@ -3,10 +3,15 @@ import { useState } from "react";
 
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
-import { BasicTable } from "@/app/components/basic-table";
+import { BasicTable } from "@/app/components/unused/basic-table";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import { MdFilledTonalButton } from "@/app/util/md3";
+import {
+  MdFilledTonalButton,
+  MdFilterChip,
+  MdIcon,
+  MdTextButton,
+} from "@/app/util/md3";
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -21,6 +26,10 @@ import {
   VesselInfoType,
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
+import { NewBasicTable } from "@/app/components/table/new-table";
+import { DividerComponent } from "../../booking/information/components/base";
+import { Download } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 export default function PortResultTable({
   data,
@@ -35,6 +44,8 @@ export default function PortResultTable({
   const [vesselSchedules, setVesselSchedules] =
     useState<VesselScheduleType[]>();
   const columnHelper = createColumnHelper<PortScheduleType>();
+
+  const router = useRouter();
 
   const columns = [
     columnHelper.accessor("vesselInfo", {
@@ -138,20 +149,39 @@ export default function PortResultTable({
     }),
     columnHelper.accessor("vesselInfo.vesselName", {
       header: "Action",
-      cell: () => <MdFilledTonalButton>Booking</MdFilledTonalButton>,
+      cell: () => (
+        <MdFilledTonalButton
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push("/main/booking/request");
+          }}
+        >
+          Booking
+        </MdFilledTonalButton>
+      ),
       size: undefined,
     }),
   ];
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
     <div className="flex mt-1">
-      <BasicTable table={table} />
+      <NewBasicTable
+        actionComponent={
+          <div className="flex items-center flex-1">
+            <MdTextButton>
+              <MdIcon slot="icon">
+                <Download fontSize="small" />
+              </MdIcon>
+              Download
+            </MdTextButton>
+            <DividerComponent orientation="vertical" className="h-8 mx-2" />
+            <MdFilterChip label="Ocean Vessel Only" />
+          </div>
+        }
+        columns={columns}
+        data={data}
+        isSingleSelect
+      />
       <Portal selector="#main-container">
         {placeInformation && (
           <PlaceInformationDialog

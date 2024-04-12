@@ -12,7 +12,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { BasicTable } from "@/app/components/basic-table";
+import { BasicTable } from "@/app/components/unused/basic-table";
 import { useEffect, useMemo, useState } from "react";
 import {
   PtPScheduleType,

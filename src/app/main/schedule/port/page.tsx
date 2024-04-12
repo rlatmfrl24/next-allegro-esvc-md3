@@ -116,30 +116,6 @@ export default function PortSchedule() {
         <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
         <div className={styles.area}>
-          <div className="flex justify-between">
-            <div className="flex items-center">
-              <MdTextButton>
-                <MdIcon slot="icon">
-                  <DownloadIcon fontSize="small" />
-                </MdIcon>
-                Download
-              </MdTextButton>
-              <DividerComponent orientation="vertical" className="h-8 mx-2" />
-              <MdFilterChip label="Ocean Vessel Only" />
-            </div>
-
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <MdTypography
-                  variant="label"
-                  size="large"
-                  className="text-outline"
-                >
-                  Total: {portScheduls.length}
-                </MdTypography>
-              </div>
-            </div>
-          </div>
           <PortResultTable data={portScheduls} />
         </div>
       )}
