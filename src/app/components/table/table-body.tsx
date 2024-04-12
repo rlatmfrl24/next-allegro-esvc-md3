@@ -24,43 +24,34 @@ export const TableBody = ({
     cell: Cell<any, unknown>;
   } | null>(null);
 
-  function getStyles(
-    isSelected: boolean,
-    isHovered: boolean,
-    type: "cell" | "row"
-  ) {
-    if (type === "cell") {
-      // Cell Style
-      if (isSelected) {
+  function getCellStyles(cell: Cell<any, unknown>) {
+    if (selectedCell?.id === cell.id) {
+      return {
+        backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 12%, white)`,
+        border: `2px solid var(--md-sys-color-primary)`,
+        zIndex: 10,
+      } as CSSProperties;
+    } else {
+      if (cell.row.getIsSelected()) {
         return {
-          backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)`,
-          border: `2px solid var(--md-sys-color-primary)`,
+          backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 8%, white)`,
         } as CSSProperties;
       } else {
-        if (isHovered) {
+        if (hoverInfo?.cell === cell) {
           return {
-            backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent)`,
+            backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 12%, white)`,
             border: `1px solid var(--md-sys-color-outline)`,
           } as CSSProperties;
         } else {
-          return {} as CSSProperties;
-        }
-      }
-    } else {
-      // Row Style
-      if (isSelected) {
-        return {
-          backgroundColor: `color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent)`,
-        } as CSSProperties;
-      } else {
-        if (isHovered) {
-          return {
-            backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent)`,
-          } as CSSProperties;
-        } else {
-          return {
-            backgroundColor: `var(--md-sys-color-surface)`,
-          } as CSSProperties;
+          if (hoverInfo?.row === cell.row) {
+            return {
+              backgroundColor: `color-mix(in srgb, var(--md-sys-color-on-surface) 8%, white)`,
+            } as CSSProperties;
+          } else {
+            return {
+              backgroundColor: `var(--md-sys-color-surface)`,
+            } as CSSProperties;
+          }
         }
       }
     }
@@ -70,14 +61,7 @@ export const TableBody = ({
     <tbody>
       {table.getRowModel().rows.map((row) => {
         return (
-          <tr
-            key={row.id}
-            style={getStyles(
-              row.getIsSelected(),
-              hoverInfo?.row === row,
-              "row"
-            )}
-          >
+          <tr key={row.id}>
             {row.getVisibleCells().map((cell) => {
               return (
                 <td
@@ -85,12 +69,8 @@ export const TableBody = ({
                   style={{
                     // width: cell.column.getSize(),
                     width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
+                    ...getCellStyles(cell),
                     ...getCommonPinningStyles(cell.column),
-                    ...getStyles(
-                      selectedCell?.id === cell.id,
-                      hoverInfo?.cell === cell,
-                      "cell"
-                    ),
                   }}
                   className="p-2"
                   onMouseEnter={(e) => {
@@ -100,7 +80,9 @@ export const TableBody = ({
                     setHoverInfo((prev) => (prev?.row === row ? null : prev));
                   }}
                   onClick={(e) => {
-                    onCellSelected?.(cell);
+                    row.getIsSelected()
+                      ? onCellSelected?.(null)
+                      : onCellSelected?.(cell);
                     row.toggleSelected();
                   }}
                 >
