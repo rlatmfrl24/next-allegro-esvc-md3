@@ -86,26 +86,7 @@ export function VesselScheduleResult({
         aria-label="divider"
         className="h-px w-full border-b border-dashed border-outlineVariant"
       ></div>
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <MdTextButton>
-            <MdIcon slot="icon">
-              <DownloadIcon fontSize="small" />
-            </MdIcon>
-            Download
-          </MdTextButton>
-          <DividerComponent orientation="vertical" className="h-8 mx-2" />
-          <MdFilterChip
-            label="Direct Only"
-            onClick={() => {
-              setIsDirectOnly((prev) => !prev);
-            }}
-          />
-        </div>
-        <MdTypography variant="label" size="large" className="text-outline">
-          Total:{vesselSchedules.length}
-        </MdTypography>
-      </div>
+
       <VesselResultTable data={vesselSchedules} />
       <VesselInformationDialog
         open={isVesselInformationOpen}

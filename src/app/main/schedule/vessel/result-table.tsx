@@ -15,6 +15,9 @@ import {
   PlaceInformationType,
 } from "@/app/util/typeDef/schedule";
 import { NewBasicTable } from "@/app/components/table/new-table";
+import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
+import { Download } from "@mui/icons-material";
+import { DividerComponent } from "../../booking/information/components/base";
 
 const DateCell = ({
   info,
@@ -119,8 +122,33 @@ export default function VesselResultTable({
 
   return (
     <>
-      <div className="block mt-1">
-        <NewBasicTable columns={columns} data={data} />
+      <div className=" mt-1">
+        <NewBasicTable
+          actionComponent={
+            <div className="flex justify-between items-center flex-1">
+              <div className="flex items-center gap-2">
+                <MdTextButton>
+                  <MdIcon slot="icon">
+                    <Download fontSize="small" />
+                  </MdIcon>
+                  Download
+                </MdTextButton>
+                <DividerComponent orientation="vertical" className="h-8 mx-2" />
+                <MdFilterChip label="Direct Only" />
+              </div>
+              <MdTypography
+                variant="label"
+                size="large"
+                className="text-outline"
+              >
+                Total:{data.length}
+              </MdTypography>
+            </div>
+          }
+          columns={columns}
+          data={data}
+          isSingleSelect
+        />
 
         {/* <BasicTable table={table} /> */}
       </div>
