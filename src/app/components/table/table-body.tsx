@@ -66,9 +66,9 @@ export const TableBody = ({
         return (
           <tr
             key={row.id}
-            style={{
-              borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
-            }}
+            // style={{
+            //   borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
+            // }}
           >
             {row.getVisibleCells().map((cell) => {
               return (
@@ -80,7 +80,7 @@ export const TableBody = ({
                     ...getCommonPinningStyles(cell.column),
                     ...getCellStyles(cell),
                   }}
-                  className="p-2"
+                  className="p-2 border-box border-x border-x-transparent border-y border-y-transparent"
                   onMouseEnter={(e) => {
                     setHoverInfo({ row, cell });
                   }}
