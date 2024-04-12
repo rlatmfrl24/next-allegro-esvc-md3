@@ -61,7 +61,9 @@ export default function BLCheckResultTable() {
       cell: (info) => (
         <MdCheckbox className="ml-2" checked={info.row.getIsSelected()} />
       ),
-      size: 44,
+      size: 36,
+      minSize: 36,
+      maxSize: 36,
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
@@ -138,7 +140,6 @@ export default function BLCheckResultTable() {
           }}
         />
       ),
-      size: 100,
     }),
   ];
 
@@ -161,14 +162,8 @@ export default function BLCheckResultTable() {
         }
         columns={columns}
         data={tableData}
+        controlColumns={["checkbox", "freight"]}
       />
-      {/* <BasicTable
-        table={table}
-        onRowSelction={(row, columnId) => {
-          if (columnId === "freight") return;
-          row.toggleSelected();
-        }}
-      /> */}
       <Portal selector="#main-container">
         <BLPrintDialog
           open={printDialogOpen}

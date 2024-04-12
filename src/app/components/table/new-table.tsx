@@ -175,7 +175,7 @@ export const NewBasicTable = ({
                             width: `calc(var(--header-${header?.id}-size) * 1px)`,
                             ...getCommonPinningStyles(header.column),
                           }}
-                          className="max-h-14 h-14 p-2"
+                          className="max-h-14 h-14 p-2 min-w-fit "
                         >
                           {flexRender(
                             header.column.columnDef.header,

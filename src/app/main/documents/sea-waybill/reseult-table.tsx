@@ -64,7 +64,9 @@ export default function SeaWaybillResultTable() {
       cell: (info) => (
         <MdCheckbox className="ml-2" checked={info.row.getIsSelected()} />
       ),
-      size: 44,
+      size: 36,
+      minSize: 36,
+      maxSize: 36,
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
@@ -150,7 +152,6 @@ export default function SeaWaybillResultTable() {
           }}
         />
       ),
-      size: 100,
     }),
   ];
 
@@ -173,6 +174,7 @@ export default function SeaWaybillResultTable() {
         }
         columns={columns}
         data={tableData}
+        controlColumns={["checkbox", "freight"]}
       />
       <Portal selector="#main-container">
         <BLPrintDialog
