@@ -36,6 +36,7 @@ import StatusFilterComponent from "@/app/components/status-filter";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { set } from "lodash";
 import Link from "next/link";
+import { NewBasicTable } from "@/app/components/table/new-table";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -65,19 +66,17 @@ function createDummySITableData(count: number = 10) {
 }
 
 export default function SITable() {
-  function handleSITableRowSelection(newRow: Row<SISearchTableProps>) {
-    if (selectedRows.includes(newRow.original)) {
-      setSelectedRows(
-        selectedRows.filter((selected) => selected !== newRow.original)
-      );
+  function handleSITableRowSelection(newRow: SISearchTableProps) {
+    if (selectedRows.includes(newRow)) {
+      setSelectedRows(selectedRows.filter((selected) => selected !== newRow));
     } else {
       if (
-        newRow.original.blState === SIState.Rejected ||
-        newRow.original.blState === SIState.Pending ||
-        newRow.original.blState === SIState.BLIssuePending ||
-        newRow.original.blState === SIState.BLIssueClosed
+        newRow.blState === SIState.Rejected ||
+        newRow.blState === SIState.Pending ||
+        newRow.blState === SIState.BLIssuePending ||
+        newRow.blState === SIState.BLIssueClosed
       ) {
-        setSelectedRows([newRow.original]);
+        setSelectedRows([newRow]);
       } else {
         if (
           selectedRows.length > 0 &&
@@ -86,16 +85,16 @@ export default function SITable() {
             selectedRows[0].blState === SIState.BLIssuePending ||
             selectedRows[0].blState === SIState.BLIssueClosed)
         ) {
-          setSelectedRows([newRow.original]);
+          setSelectedRows([newRow]);
         } else {
-          setSelectedRows([...selectedRows, newRow.original]);
+          setSelectedRows([...selectedRows, newRow]);
         }
       }
     }
   }
 
   const tempTableData: SISearchTableProps[] = useMemo(
-    () => createDummySITableData(30),
+    () => createDummySITableData(900),
     []
   );
   const [tableData, setTableData] = useState<SISearchTableProps[]>([]);
@@ -151,6 +150,7 @@ export default function SITable() {
           checked={
             // if selectedRows includes the current row, return true
             selectedRows.includes(info.row.original) ? true : false
+            // info.row.getIsSelected()
           }
           onClick={(e) => {
             e.preventDefault();
@@ -161,6 +161,7 @@ export default function SITable() {
       minSize: 52,
     }),
     columnHelper.accessor("requestNumber", {
+      id: "requestNumber",
       header: "Request No.",
       cell: (info) => {
         return (
@@ -190,6 +191,7 @@ export default function SITable() {
       minSize: 165,
     }),
     columnHelper.accessor("bookingNumber", {
+      id: "bookingNumber",
       header: "Booking No.",
       cell: (info) => (
         <Link href={`/main/booking/information/confirmation`}>
@@ -202,6 +204,7 @@ export default function SITable() {
       minSize: 160,
     }),
     columnHelper.accessor("blState", {
+      id: "blState",
       header: "B/L Status",
       cell: (info) =>
         info.getValue() === SIState.None ? (
@@ -217,6 +220,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("blNumber", {
       header: "B/L No.",
+      id: "blNumber",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -224,6 +228,7 @@ export default function SITable() {
       ),
     }),
     columnHelper.accessor("requestBlType", {
+      id: "requestBlType",
       header: "Request B/L Type",
       cell: (info) => {
         const isDisabled =
@@ -299,6 +304,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("actualShipper", {
       header: "Actual Shipper",
+      id: "actualShipper",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -309,6 +315,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("SiCutOffTime", {
       header: "S/I Cut Off Time",
+      id: "SiCutOffTime",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -319,6 +326,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("requestUpdateDate", {
       header: "Request (Update) Date",
+      id: "requestUpdateDate",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -329,10 +337,12 @@ export default function SITable() {
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
+      id: "vessel",
       cell: (info) => <VesselInfoCell {...info.getValue()} />,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
+      id: "origin",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -343,6 +353,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("destination", {
       header: "Destination",
+      id: "destination",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -353,6 +364,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("bookingVia", {
       header: "Booking Via",
+      id: "bookingVia",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {
@@ -367,6 +379,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("estimatedTimeofBerth", {
       header: "Estimated Time of Berth",
+      id: "estimatedTimeofBerth",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -377,6 +390,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("estimatedTimeofDeparture", {
       header: "Estimated Time of Departure",
+      id: "estimatedTimeofDeparture",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -387,6 +401,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("estimatedTimeofArrival", {
       header: "Estimated Time of Arrival",
+      id: "estimatedTimeofArrival",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -397,6 +412,7 @@ export default function SITable() {
     }),
     columnHelper.accessor("blType", {
       header: "B/L Type",
+      id: "blType",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -407,49 +423,47 @@ export default function SITable() {
     }),
   ];
 
-  const table = useReactTable({
-    columns,
-    data: tableData,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    initialState: {
-      columnPinning: {
-        left: ["select", "requestNumber", "bookingNumber", "blState"],
-      },
-    },
-    enableMultiRowSelection: false,
-  });
-
   return (
     <>
       <MdChipSet>
         <StatusFilterComponent
           statusOptions={Object.values(SIState)}
           onChange={(states) => {
-            table.getColumn("blState")?.setFilterValue(states);
+            setTableData(
+              tempTableData.filter((row) => states.includes(row.blState))
+            );
           }}
         />
         <MdFilterChip label="My Shipment " />
       </MdChipSet>
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex gap-2 items-center">
-          <MdTextButton>
-            <div slot="icon">
-              <Download fontSize="small" />
-            </div>
-            Download
-          </MdTextButton>
-          <ActionButtons selectionList={selectedRows} />
-        </div>
 
-        <div>
-          <MdTypography variant="label" size="large" className="text-outline">
-            Total: {tableData.length}
-          </MdTypography>
-        </div>
-      </div>
+      <NewBasicTable
+        actionComponent={
+          <div className="flex flex-1 gap-2 items-center">
+            <MdTextButton>
+              <div slot="icon">
+                <Download fontSize="small" />
+              </div>
+              Download
+            </MdTextButton>
+            <ActionButtons selectionList={selectedRows} />
+          </div>
+        }
+        columns={columns}
+        data={tableData}
+        pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
+        getSelectionRows={(rows) => {
+          console.log(rows[0]);
+          if (rows[0]) {
+            handleSITableRowSelection(rows[0]);
+          }
 
-      <div className="relative overflow-auto w-full max-w-full">
+          // handleSITableRowSelection(rows[0]);
+        }}
+        isSingleSelect
+      />
+
+      {/* <div className="relative overflow-auto w-full max-w-full">
         <OverlayScrollbarsComponent>
           <BasicTable
             table={table}
@@ -458,7 +472,7 @@ export default function SITable() {
             }}
           />
         </OverlayScrollbarsComponent>
-      </div>
+      </div> */}
     </>
   );
 }
