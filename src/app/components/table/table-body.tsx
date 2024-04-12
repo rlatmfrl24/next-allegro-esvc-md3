@@ -1,14 +1,8 @@
-import { Cell, Row, Table, flexRender } from "@tanstack/react-table";
+import { CSSProperties, Dispatch, memo, SetStateAction, useState } from "react";
+
+import { Cell, flexRender, Row, Table } from "@tanstack/react-table";
+
 import { getCommonPinningStyles } from "./util";
-import {
-  CSSProperties,
-  Dispatch,
-  SetStateAction,
-  memo,
-  use,
-  useEffect,
-  useState,
-} from "react";
 
 export const TableBody = ({
   table,
@@ -69,8 +63,8 @@ export const TableBody = ({
                   style={{
                     // width: cell.column.getSize(),
                     width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
-                    ...getCellStyles(cell),
                     ...getCommonPinningStyles(cell.column),
+                    ...getCellStyles(cell),
                   }}
                   className="p-2"
                   onMouseEnter={(e) => {

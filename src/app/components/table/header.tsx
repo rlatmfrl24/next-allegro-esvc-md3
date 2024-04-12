@@ -39,9 +39,10 @@ export const HeaderComponent = ({
   return (
     <th
       style={{
-        ...headerStyles,
         width: `calc(var(--header-${header?.id}-size) * 1px)`,
+        ...headerStyles,
       }}
+      ref={setNodeRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="max-h-14 h-14 "
@@ -51,7 +52,6 @@ export const HeaderComponent = ({
           className="flex-1 flex justify-between items-center h-full"
           {...attributes}
           {...listeners}
-          ref={setNodeRef}
         >
           <MdTypography
             variant="body"

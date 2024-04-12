@@ -24,6 +24,7 @@ import {
 import {
   SortableContext,
   arrayMove,
+  arraySwap,
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
@@ -62,9 +63,9 @@ export const NewBasicTable = ({
   );
 
   const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
+    useSensor(MouseSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
   );
 
   const table = useReactTable({
@@ -145,8 +146,8 @@ export const NewBasicTable = ({
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
-          sensors={sensors}
           onDragEnd={handleDragEnd}
+          sensors={sensors}
         >
           <table
             className={styles.table}
@@ -155,9 +156,9 @@ export const NewBasicTable = ({
               width: table.getCenterTotalSize(),
             }}
           >
-            {table.getHeaderGroups().map((headerGroup) => (
-              <thead key={headerGroup.id}>
-                <tr>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
                   <SortableContext
                     items={columnOrder}
                     strategy={horizontalListSortingStrategy}
@@ -172,8 +173,8 @@ export const NewBasicTable = ({
                     ))}
                   </SortableContext>
                 </tr>
-              </thead>
-            ))}
+              ))}
+            </thead>
 
             {table.getState().columnSizingInfo.isResizingColumn ? (
               <MemoizedTableBody
