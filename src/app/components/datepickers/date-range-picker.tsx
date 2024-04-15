@@ -372,6 +372,12 @@ export const DateRangePicker = ({
                                   selectedRange.start &&
                                 DateTime.fromJSDate(value) < selectedRange.end;
 
+                              const startBackground =
+                                "linear-gradient(90deg, transparent 50%, var(--md-sys-color-secondary-container) 50%)";
+
+                              const endBackground =
+                                "linear-gradient(90deg, var(--md-sys-color-secondary-container) 50%, transparent 50%)";
+
                               return (
                                 <div
                                   key={key}
@@ -379,17 +385,20 @@ export const DateRangePicker = ({
                                 >
                                   {isCurrentMonth ? (
                                     <div
+                                      style={{
+                                        background: `${
+                                          diffStart && !diffEnd
+                                            ? startBackground
+                                            : ""
+                                        } ${
+                                          diffEnd && !diffStart
+                                            ? endBackground
+                                            : ""
+                                        }`,
+                                      }}
                                       className={`w-full flex justify-center ${
-                                        isBetween ? "bg-primaryContainer" : ""
-                                      } ${
-                                        diffStart && !diffEnd
-                                          ? "bg-primaryContainer rounded-l-full bg-gradient-to-r from-white to-primaryContainer"
-                                          : ""
-                                      } ${
-                                        diffEnd && !diffStart
-                                          ? "bg-primaryContainer rounded-r-full bg-gradient-to-l from-white to-primaryContainer"
-                                          : ""
-                                      } ${diffStart && diffEnd ? "" : ""}`}
+                                        isBetween ? "bg-secondaryContainer" : ""
+                                      }`}
                                     >
                                       <MdIconButton
                                         className={`${
