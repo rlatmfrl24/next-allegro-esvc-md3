@@ -32,7 +32,7 @@ import ListSelector from "./list-selector";
 import { motion } from "framer-motion";
 import { DateSelector } from "./date-selector";
 import styles from "@/app/styles/datepicker.module.css";
-import { MdTypography } from "../typography";
+import { MdTypography } from "../../typography";
 
 export const MdSingleDatePicker = (props: {
   label?: string;

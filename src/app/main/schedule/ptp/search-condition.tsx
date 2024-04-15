@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { MdRangeDatePicker } from "@/app/components/datepickers/old/range-picker";
 import { MdTypography } from "@/app/components/typography";
 import { FavoriteRouteListState } from "@/app/store/ptp.store";
 import styles from "@/app/styles/base.module.css";

@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { motion } from "framer-motion";
-import { MdTypography } from "../typography";
+import { MdTypography } from "../../typography";
 import { MdIconButton } from "@/app/util/md3";
 import { MdTextButton } from "@/app/util/md3";
 import { useEffect, useState } from "react";

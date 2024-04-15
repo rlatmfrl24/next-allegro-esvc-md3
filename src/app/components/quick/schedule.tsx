@@ -13,7 +13,7 @@ import {
 import { faker } from "@faker-js/faker";
 import { PlaceOutlined } from "@mui/icons-material";
 import NAOutlinedListBox from "../na-outline-listbox";
-import { MdRangeDatePicker } from "../datepickers/range-picker";
+import { MdRangeDatePicker } from "../datepickers/old/range-picker";
 import Link from "next/link";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import PortIcon from "@/../public/icon_port.svg";

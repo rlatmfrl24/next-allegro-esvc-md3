@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
+import { MdSingleDatePicker } from "@/app/components/datepickers/old/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
