@@ -28,6 +28,7 @@ import { useCalendar } from "@h6s/calendar";
 import {
   ArrowDropDown,
   CalendarTodayOutlined,
+  Check,
   ChevronLeft,
   ChevronRight,
 } from "@mui/icons-material";
@@ -37,6 +38,7 @@ import { flushSync } from "react-dom";
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { motion } from "framer-motion";
 
 type DateRange = {
   start: DateTime | undefined;
@@ -66,14 +68,22 @@ export const DateRangePicker = ({
   const [inputMode, setInputMode] = useState<"start" | "end">("start");
 
   const { headers, body, view, cursorDate, navigation } = useCalendar();
+  const [beforeCursorDate, setBeforeCursorDate] = useState<Date>(cursorDate);
+
+  useEffect(() => {
+    if (cursorDate.toDateString() !== beforeCursorDate.toDateString()) {
+      setBeforeCursorDate(cursorDate);
+    }
+  }, [beforeCursorDate, cursorDate]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isCalendarOpen,
     onOpenChange: setIsCalendarOpen,
     middleware: [
       offset(8),
-      flip(),
-      shift(),
+      shift({
+        crossAxis: true,
+      }),
       size({
         apply({ availableHeight }) {
           flushSync(() => setMaxHeight(availableHeight - 100));
@@ -173,117 +183,115 @@ export const DateRangePicker = ({
             <div style={floatingTransitionStyles}>
               <MdElevatedCard className="flex">
                 <div className="flex">
-                  <>
+                  {
                     {
-                      {
-                        before: (
-                          <MdList className="rounded-l-xl w-40">
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now(),
-                                  end: DateTime.now().plus({ week: 1 }),
-                                });
-                              }}
-                            >
-                              1 Week
-                            </MdListItem>
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now(),
-                                  end: DateTime.now().plus({ week: 2 }),
-                                });
-                              }}
-                            >
-                              2 Weeks
-                            </MdListItem>
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now(),
-                                  end: DateTime.now().plus({ week: 3 }),
-                                });
-                              }}
-                            >
-                              3 Weeks
-                            </MdListItem>
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now(),
-                                  end: DateTime.now().plus({ week: 4 }),
-                                });
-                              }}
-                            >
-                              4 Weeks
-                            </MdListItem>
-                          </MdList>
-                        ),
-                        after: (
-                          <MdList className="rounded-l-xl w-40">
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now(),
-                                  end: DateTime.now(),
-                                });
-                              }}
-                            >
-                              Today
-                            </MdListItem>
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now().minus({ week: 1 }),
-                                  end: DateTime.now(),
-                                });
-                              }}
-                            >
-                              - 1 Week
-                            </MdListItem>
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now().minus({ week: 2 }),
-                                  end: DateTime.now(),
-                                });
-                              }}
-                            >
-                              - 2 Weeks
-                            </MdListItem>
-                            <MdListItem
-                              type="button"
-                              onClick={() => {
-                                navigation.setToday();
-                                setSelectedRange({
-                                  start: DateTime.now().minus({ day: 30 }),
-                                  end: DateTime.now(),
-                                });
-                              }}
-                            >
-                              - 30 days
-                            </MdListItem>
-                          </MdList>
-                        ),
-                        none: <></>,
-                      }[buttonMode]
-                    }
-                  </>
+                      before: (
+                        <MdList className="rounded-l-xl w-40">
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now(),
+                                end: DateTime.now().plus({ week: 1 }),
+                              });
+                            }}
+                          >
+                            1 Week
+                          </MdListItem>
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now(),
+                                end: DateTime.now().plus({ week: 2 }),
+                              });
+                            }}
+                          >
+                            2 Weeks
+                          </MdListItem>
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now(),
+                                end: DateTime.now().plus({ week: 3 }),
+                              });
+                            }}
+                          >
+                            3 Weeks
+                          </MdListItem>
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now(),
+                                end: DateTime.now().plus({ week: 4 }),
+                              });
+                            }}
+                          >
+                            4 Weeks
+                          </MdListItem>
+                        </MdList>
+                      ),
+                      after: (
+                        <MdList className="rounded-l-xl w-40">
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now(),
+                                end: DateTime.now(),
+                              });
+                            }}
+                          >
+                            Today
+                          </MdListItem>
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now().minus({ week: 1 }),
+                                end: DateTime.now(),
+                              });
+                            }}
+                          >
+                            - 1 Week
+                          </MdListItem>
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now().minus({ week: 2 }),
+                                end: DateTime.now(),
+                              });
+                            }}
+                          >
+                            - 2 Weeks
+                          </MdListItem>
+                          <MdListItem
+                            type="button"
+                            onClick={() => {
+                              navigation.setToday();
+                              setSelectedRange({
+                                start: DateTime.now().minus({ day: 30 }),
+                                end: DateTime.now(),
+                              });
+                            }}
+                          >
+                            - 30 days
+                          </MdListItem>
+                        </MdList>
+                      ),
+                      none: <></>,
+                    }[buttonMode]
+                  }
                   <div className="flex flex-col">
                     <div className="flex justify-between p-2">
                       <div aria-label="month-selector" className="flex h-fit">
@@ -405,7 +413,21 @@ export const DateRangePicker = ({
                     </div>
                     {selectionMode === "day" && (
                       <>
-                        <div className="grid grid-cols-7 mx-2">
+                        <motion.div
+                          key={cursorDate.toDateString()}
+                          animate={{ opacity: 1, x: 0 }}
+                          initial={{
+                            opacity: 0,
+                            x:
+                              cursorDate === beforeCursorDate
+                                ? 0
+                                : cursorDate > beforeCursorDate
+                                ? 40
+                                : -40,
+                          }}
+                          transition={{ duration: 0.2 }}
+                          className="grid grid-cols-7 mx-2"
+                        >
                           {headers.weekDays.map(({ key, value }) => {
                             const weekHead = DateTime.fromJSDate(value)
                               .toFormat("EEE")
@@ -520,7 +542,7 @@ export const DateRangePicker = ({
                               );
                             });
                           })}
-                        </div>
+                        </motion.div>
                         <div className="p-2 flex gap-2 justify-end ">
                           <MdOutlinedButton
                             onClick={() => {
@@ -548,12 +570,31 @@ export const DateRangePicker = ({
                         style={{ maxHeight }}
                         className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
                       >
-                        <OverlayScrollbarsComponent defer>
+                        <OverlayScrollbarsComponent
+                          defer
+                          events={{
+                            initialized: (instance) => {
+                              // move to selected
+                              const selected = instance
+                                .elements()
+                                .viewport.querySelector(".bg-surfaceVariant");
+                              if (!selected) return;
+                              instance.elements().viewport.scroll({
+                                top: (selected as HTMLElement).offsetTop - 100,
+                              });
+                            },
+                          }}
+                        >
                           {MonthList.map((month, idx) => {
                             return (
                               <MdListItem
                                 key={idx}
                                 type="button"
+                                className={`${
+                                  cursorDate.getMonth() === idx
+                                    ? "bg-surfaceVariant"
+                                    : ""
+                                }`}
                                 onClick={() => {
                                   navigation.setDate(
                                     DateTime.fromJSDate(cursorDate)
@@ -563,6 +604,11 @@ export const DateRangePicker = ({
                                   setSelectionMode("day");
                                 }}
                               >
+                                {cursorDate.getMonth() === idx && (
+                                  <MdIcon slot="start">
+                                    <Check />
+                                  </MdIcon>
+                                )}
                                 {month}
                               </MdListItem>
                             );
@@ -575,12 +621,31 @@ export const DateRangePicker = ({
                         style={{ maxHeight }}
                         className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
                       >
-                        <OverlayScrollbarsComponent defer>
+                        <OverlayScrollbarsComponent
+                          defer
+                          events={{
+                            initialized: (instance) => {
+                              // move to selected
+                              const selected = instance
+                                .elements()
+                                .viewport.querySelector(".bg-surfaceVariant");
+                              if (!selected) return;
+                              instance.elements().viewport.scroll({
+                                top: (selected as HTMLElement).offsetTop - 100,
+                              });
+                            },
+                          }}
+                        >
                           {Array.from({ length: 100 }, (_, idx) => {
                             const year = DateTime.now().year;
                             return (
                               <MdListItem
                                 key={idx}
+                                className={`${
+                                  cursorDate.getFullYear() === year + idx - 50
+                                    ? "bg-surfaceVariant"
+                                    : ""
+                                }`}
                                 type="button"
                                 onClick={() => {
                                   navigation.setDate(
@@ -591,6 +656,12 @@ export const DateRangePicker = ({
                                   setSelectionMode("day");
                                 }}
                               >
+                                {cursorDate.getFullYear() ===
+                                  year + idx - 50 && (
+                                  <MdIcon slot="start">
+                                    <Check />
+                                  </MdIcon>
+                                )}
                                 {year + idx - 50}
                               </MdListItem>
                             );

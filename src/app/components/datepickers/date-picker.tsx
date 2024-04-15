@@ -39,6 +39,7 @@ import {
 
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
+import { motion } from "framer-motion";
 
 export const DatePicker = ({
   format = "yyyy-MM-dd",
@@ -59,6 +60,13 @@ export const DatePicker = ({
   );
 
   const { headers, body, view, cursorDate, navigation } = useCalendar();
+  const [beforeCursorDate, setBeforeCursorDate] = useState<Date>(cursorDate);
+
+  useEffect(() => {
+    if (cursorDate.toDateString() !== beforeCursorDate.toDateString()) {
+      setBeforeCursorDate(cursorDate);
+    }
+  }, [beforeCursorDate, cursorDate]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isCalendarOpen,
@@ -250,7 +258,21 @@ export const DatePicker = ({
                   </div>
                   {selectionMode === "day" && (
                     <>
-                      <div className="grid grid-cols-7">
+                      <motion.div
+                        key={cursorDate.toDateString()}
+                        animate={{ opacity: 1, x: 0 }}
+                        initial={{
+                          opacity: 0,
+                          x:
+                            cursorDate === beforeCursorDate
+                              ? 0
+                              : cursorDate > beforeCursorDate
+                              ? 40
+                              : -40,
+                        }}
+                        transition={{ duration: 0.2 }}
+                        className="grid grid-cols-7"
+                      >
                         {headers.weekDays.map(({ key, value }) => {
                           const weekHead = DateTime.fromJSDate(value)
                             .toFormat("EEE")
@@ -324,7 +346,7 @@ export const DatePicker = ({
                             );
                           });
                         })}
-                      </div>
+                      </motion.div>
                       <div className="p-2 flex gap-2 justify-end ">
                         <MdOutlinedButton
                           onClick={() => {
