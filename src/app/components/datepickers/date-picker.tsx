@@ -337,6 +337,8 @@ export const DatePicker = ({
                         <MdFilledButton
                           onClick={() => {
                             setIsCalendarOpen(false);
+                            selectedDate &&
+                              navigation.setDate(selectedDate.toJSDate());
                             onChange?.(selectedDate as DateTime);
                           }}
                         >

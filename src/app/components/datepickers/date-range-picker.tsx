@@ -178,10 +178,54 @@ export const DateRangePicker = ({
                       {
                         before: (
                           <MdList className="rounded-l-xl w-40">
-                            <MdListItem type="button">1 Week</MdListItem>
-                            <MdListItem type="button">2 Weeks</MdListItem>
-                            <MdListItem type="button">3 Weeks</MdListItem>
-                            <MdListItem type="button">4 Weeks</MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now(),
+                                  end: DateTime.now().plus({ week: 1 }),
+                                });
+                              }}
+                            >
+                              1 Week
+                            </MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now(),
+                                  end: DateTime.now().plus({ week: 2 }),
+                                });
+                              }}
+                            >
+                              2 Weeks
+                            </MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now(),
+                                  end: DateTime.now().plus({ week: 3 }),
+                                });
+                              }}
+                            >
+                              3 Weeks
+                            </MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now(),
+                                  end: DateTime.now().plus({ week: 4 }),
+                                });
+                              }}
+                            >
+                              4 Weeks
+                            </MdListItem>
                           </MdList>
                         ),
                         after: (
@@ -190,13 +234,50 @@ export const DateRangePicker = ({
                               type="button"
                               onClick={() => {
                                 navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now(),
+                                  end: DateTime.now(),
+                                });
                               }}
                             >
                               Today
                             </MdListItem>
-                            <MdListItem type="button">- 1 Week</MdListItem>
-                            <MdListItem type="button">- 2 Weeks</MdListItem>
-                            <MdListItem type="button">- 30 days</MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now().minus({ week: 1 }),
+                                  end: DateTime.now(),
+                                });
+                              }}
+                            >
+                              - 1 Week
+                            </MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now().minus({ week: 2 }),
+                                  end: DateTime.now(),
+                                });
+                              }}
+                            >
+                              - 2 Weeks
+                            </MdListItem>
+                            <MdListItem
+                              type="button"
+                              onClick={() => {
+                                navigation.setToday();
+                                setSelectedRange({
+                                  start: DateTime.now().minus({ day: 30 }),
+                                  end: DateTime.now(),
+                                });
+                              }}
+                            >
+                              - 30 days
+                            </MdListItem>
                           </MdList>
                         ),
                         none: <></>,
@@ -353,17 +434,17 @@ export const DateRangePicker = ({
                               const { key, isCurrentMonth, value } = day;
                               const diffStart =
                                 selectedRange.start &&
-                                DateTime.fromJSDate(value).diff(
+                                DateTime.fromJSDate(value).hasSame(
                                   selectedRange.start,
-                                  "days"
-                                ).days === 0;
+                                  "day"
+                                );
 
                               const diffEnd =
                                 selectedRange.end &&
-                                DateTime.fromJSDate(value).diff(
+                                DateTime.fromJSDate(value).hasSame(
                                   selectedRange.end,
-                                  "days"
-                                ).days === 0;
+                                  "day"
+                                );
 
                               const isBetween =
                                 selectedRange.start &&
