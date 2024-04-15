@@ -33,6 +33,7 @@ import { useCalendar } from "@h6s/calendar";
 import {
   ArrowDropDown,
   CalendarTodayOutlined,
+  Check,
   ChevronLeft,
   ChevronRight,
 } from "@mui/icons-material";
@@ -74,7 +75,9 @@ export const DatePicker = ({
     middleware: [
       offset(8),
       flip(),
-      shift(),
+      shift({
+        crossAxis: true,
+      }),
       size({
         apply({ availableHeight }) {
           flushSync(() => setMaxHeight(availableHeight - 100));
@@ -374,11 +377,30 @@ export const DatePicker = ({
                       style={{ maxHeight }}
                       className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
                     >
-                      <OverlayScrollbarsComponent defer>
+                      <OverlayScrollbarsComponent
+                        defer
+                        events={{
+                          initialized: (instance) => {
+                            // move to selected
+                            const selected = instance
+                              .elements()
+                              .viewport.querySelector(".bg-surfaceVariant");
+                            if (!selected) return;
+                            instance.elements().viewport.scroll({
+                              top: (selected as HTMLElement).offsetTop - 100,
+                            });
+                          },
+                        }}
+                      >
                         {MonthList.map((month, idx) => {
                           return (
                             <MdListItem
                               key={idx}
+                              className={`${
+                                cursorDate.getMonth() === idx
+                                  ? "bg-surfaceVariant"
+                                  : ""
+                              }`}
                               type="button"
                               onClick={() => {
                                 navigation.setDate(
@@ -389,6 +411,11 @@ export const DatePicker = ({
                                 setSelectionMode("day");
                               }}
                             >
+                              {cursorDate.getMonth() === idx && (
+                                <MdIcon slot="start">
+                                  <Check />
+                                </MdIcon>
+                              )}
                               {month}
                             </MdListItem>
                           );
@@ -401,12 +428,31 @@ export const DatePicker = ({
                       style={{ maxHeight }}
                       className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
                     >
-                      <OverlayScrollbarsComponent defer>
+                      <OverlayScrollbarsComponent
+                        defer
+                        events={{
+                          initialized: (instance) => {
+                            // move to selected
+                            const selected = instance
+                              .elements()
+                              .viewport.querySelector(".bg-surfaceVariant");
+                            if (!selected) return;
+                            instance.elements().viewport.scroll({
+                              top: (selected as HTMLElement).offsetTop - 100,
+                            });
+                          },
+                        }}
+                      >
                         {Array.from({ length: 100 }, (_, idx) => {
                           const year = DateTime.now().year;
                           return (
                             <MdListItem
                               key={idx}
+                              className={`${
+                                cursorDate.getFullYear() === year + idx - 50
+                                  ? "bg-surfaceVariant"
+                                  : ""
+                              }`}
                               type="button"
                               onClick={() => {
                                 navigation.setDate(
@@ -417,6 +463,11 @@ export const DatePicker = ({
                                 setSelectionMode("day");
                               }}
                             >
+                              {cursorDate.getFullYear() === year + idx - 50 && (
+                                <MdIcon slot="start">
+                                  <Check />
+                                </MdIcon>
+                              )}
                               {year + idx - 50}
                             </MdListItem>
                           );
