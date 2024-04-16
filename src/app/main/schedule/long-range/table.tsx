@@ -14,7 +14,7 @@ import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 
 import VesselScheduleDialog from "../popup/vessel-schedule";
-import { createDummaryVesselSchedules } from "../util";
+import { createDummyVesselSchedules } from "../util";
 import {
   autoUpdate,
   offset,
@@ -77,7 +77,7 @@ export default function LongRangeTable({
           open={isVesselScheduleDialogOpen}
           handleOpen={setIsVesselScheduleDialogOpen}
           vesselInfo={selectedVesselInfo}
-          vesselSchedules={createDummaryVesselSchedules()}
+          vesselSchedules={createDummyVesselSchedules()}
         />
       )}
       <div className="w-fit flex flex-col border-r border-r-onSurfaceVariant">

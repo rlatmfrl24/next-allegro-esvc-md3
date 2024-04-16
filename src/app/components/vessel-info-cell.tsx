@@ -1,7 +1,7 @@
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import VesselScheduleDialog from "@/app/main/schedule/popup/vessel-schedule";
-import { createDummaryVesselSchedules } from "@/app/main/schedule/util";
+import { createDummyVesselSchedules } from "@/app/main/schedule/util";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { useState } from "react";
 
@@ -28,7 +28,7 @@ const VesselInfoCell = (vessel: VesselInfoType) => {
           open={isVesselScheduleDialogOpen}
           handleOpen={setIsVesselScheduleDialogOpen}
           vesselInfo={vessel}
-          vesselSchedules={createDummaryVesselSchedules()}
+          vesselSchedules={createDummyVesselSchedules()}
         />
       </Portal>
     </div>

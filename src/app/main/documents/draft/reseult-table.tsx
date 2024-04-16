@@ -1,8 +1,6 @@
-import { BasicTable } from "@/app/components/unused/basic-table";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -13,15 +11,12 @@ import {
 import { ResultTableProps } from "@/app/util/typeDef/documents";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 import { NewBasicTable } from "@/app/components/table/new-table";
+import VesselInfoCell from "@/app/components/vessel-info-cell";
 
 export default function BLCheckResultTable() {
   const tempData = useMemo(() => {

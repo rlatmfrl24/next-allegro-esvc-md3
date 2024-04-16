@@ -8,7 +8,7 @@ import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import styles from "@/app/styles/base.module.css";
 import {
-  createDummaryVesselSchedules,
+  createDummyVesselSchedules,
   createDummyVesselInformations,
 } from "../util";
 import { useRecoilValue } from "recoil";
@@ -49,7 +49,7 @@ export default function VesselSchedule() {
   const [vesselData, setVesselData] = useState<VesselInfoType>(emptyVesselData);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [vesselSchedules] = useState<VesselScheduleType[]>(
-    createDummaryVesselSchedules()
+    createDummyVesselSchedules()
   );
 
   const vesselList = useMemo(() => createDummyVesselInformations(400), []);
