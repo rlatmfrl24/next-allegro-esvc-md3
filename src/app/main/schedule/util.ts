@@ -61,7 +61,7 @@ export function createDummyVesselInformations(
   return Array.from({ length: number }, () => createDummyVesselInformation());
 }
 
-export function createDummaryVesselSchedules(): VesselScheduleType[] {
+export function createDummyVesselSchedules(): VesselScheduleType[] {
   return Array.from({ length: 10 }, (_, i) => {
     const tempDate =
       i > 5
@@ -93,7 +93,7 @@ export function createDummyPortSchedules(): PortScheduleType[] {
       destination: createDummyPlaceInformation(faker.location.city()),
       terminal: createDummyPlaceInformation(faker.location.city()),
       vesselInfo: createDummyVesselInformation(),
-      vesselSchedules: createDummaryVesselSchedules(),
+      vesselSchedules: createDummyVesselSchedules(),
       departureDate: tempDate,
       berthingDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
       arrivalDate: tempDate.plus({ days: faker.number.int({ max: 10 }) }),
@@ -190,7 +190,7 @@ export function createDummyLongRangeSchedule(
 ): LongRangeScheduleType {
   return {
     vesselInfo: createDummyVesselInformation(),
-    vesselSchedules: createDummaryVesselSchedules(),
+    vesselSchedules: createDummyVesselSchedules(),
     remarkInfo: faker.helpers.maybe(() => faker.lorem.paragraph(1)),
     longRangeDates: portList.map((port) => {
       return {
