@@ -26,7 +26,7 @@ import PlaceInformationDialog from "../../popup/place-information";
 import VesselInformationDialog from "../../popup/vessel-information";
 import VesselScheduleDialog from "../../popup/vessel-schedule";
 import {
-  createDummaryVesselSchedules,
+  createDummyVesselSchedules,
   createDummyPlaceInformation,
   createDummyVesselInformation,
 } from "../../util";
@@ -239,7 +239,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
   }, []);
 
   const tempVesselSchedules = useMemo(() => {
-    return createDummaryVesselSchedules();
+    return createDummyVesselSchedules();
   }, []);
 
   useEffect(() => {

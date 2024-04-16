@@ -5,7 +5,7 @@ import VesselInformationDialog from "@/app/main/schedule/popup/vessel-informatio
 import VesselScheduleDialog from "@/app/main/schedule/popup/vessel-schedule";
 import {
   createDummyVesselInformation,
-  createDummaryVesselSchedules,
+  createDummyVesselSchedules,
   createDummyPlaceInformation,
 } from "@/app/main/schedule/util";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
@@ -42,7 +42,7 @@ export const RoutePanel = ({
   }, []);
 
   const tempVesselSchedules = useMemo(() => {
-    return createDummaryVesselSchedules();
+    return createDummyVesselSchedules();
   }, []);
 
   const VesselRouteComponent = () => {

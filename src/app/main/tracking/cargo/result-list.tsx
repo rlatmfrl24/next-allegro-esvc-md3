@@ -5,7 +5,11 @@ import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
-import { PlaceInformationType } from "@/app/util/typeDef/schedule";
+import {
+  PlaceInformationType,
+  VesselInfoType,
+  VesselScheduleType,
+} from "@/app/util/typeDef/schedule";
 import { CargoTrackingProps } from "@/app/util/typeDef/tracking";
 import {
   ArrowDropDown,
@@ -21,6 +25,11 @@ import { BasicTrackingInfo } from "./components/basic-tracking-info";
 import { CargoDetailInfo } from "./components/cargo-detail-info";
 import { TrackingProcessInfo } from "./components/tracking-process-info";
 import { createDummyCargoTrackingData } from "./util";
+import VesselInformationDialog from "../../schedule/popup/vessel-information";
+import {
+  createDummyVesselSchedules,
+  createDummyLongRangeSchedules,
+} from "../../schedule/util";
 
 export default function TrackingDataList() {
   const tempData: CargoTrackingProps[] = useMemo(() => {
@@ -40,8 +49,14 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isPlaceInformationDialogOpen, setIsPlaceInformationDialogOpen] =
     useState(false);
+  const [isVesselInformationDialogOpen, setIsVesselInformationDialogOpen] =
+    useState(false);
   const [currentPlaceInformation, setCurrentPlaceInformation] =
     useState<PlaceInformationType>();
+  const [currentVesselInformation, setCurrentVesselInformation] =
+    useState<VesselInfoType>();
+  const [currentVesselSchedule, setCurrentVesselSchedule] =
+    useState<VesselScheduleType[]>();
 
   return (
     <div>
@@ -51,6 +66,13 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
             open={isPlaceInformationDialogOpen}
             handleOpen={setIsPlaceInformationDialogOpen}
             data={currentPlaceInformation}
+          />
+        )}
+        {currentVesselInformation && (
+          <VesselInformationDialog
+            open={isVesselInformationDialogOpen}
+            handleOpen={setIsVesselInformationDialogOpen}
+            data={currentVesselInformation}
           />
         )}
       </Portal>
@@ -131,6 +153,11 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
                                         variant="body"
                                         size="large"
                                         className="text-onSurfaceVariant underline flex-1 cursor-pointer"
+                                        onClick={() => {
+                                          setCurrentVesselSchedule(
+                                            createDummyVesselSchedules()
+                                          );
+                                        }}
                                       >
                                         {
                                           data.detailInfo.cargoSailingVessel[
@@ -138,7 +165,18 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
                                           ].vesselName
                                         }
                                       </MdTypography>
-                                      <MdIconButton>
+                                      <MdIconButton
+                                        onClick={() => {
+                                          setCurrentVesselInformation(
+                                            data.detailInfo.cargoSailingVessel[
+                                              index
+                                            ]
+                                          );
+                                          setIsVesselInformationDialogOpen(
+                                            true
+                                          );
+                                        }}
+                                      >
                                         <MdIcon>
                                           <InfoOutlined />
                                         </MdIcon>
