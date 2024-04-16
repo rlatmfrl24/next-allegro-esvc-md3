@@ -1,7 +1,6 @@
 import {
   CargoDetailType,
   CargoTrackingProps,
-  TrackingStatus,
 } from "@/app/util/typeDef/tracking";
 import { faker } from "@faker-js/faker";
 import {
@@ -17,7 +16,7 @@ export function createDummyCargoTrackingData() {
   const pod = createDummyPlaceInformation(
     faker.location.city() + ", " + faker.location.country()
   );
-  const sailingCount = faker.number.int({ min: 3, max: 8 });
+  const sailingCount = faker.number.int({ min: 0, max: 5 });
 
   return {
     id: faker.string.uuid(),
@@ -58,7 +57,7 @@ export function createDummyCargoTrackingData() {
       }),
       cargoSailingVessel: createDummyVesselInformations(sailingCount - 1),
       cargoDetail: Array.from(
-        { length: faker.number.int({ min: 3, max: 8 }) },
+        { length: faker.number.int({ min: 0, max: 5 }) },
         () => {
           return {
             description: faker.lorem.sentence(),
@@ -73,24 +72,14 @@ export function createDummyCargoTrackingData() {
   } as CargoTrackingProps;
 }
 
-export const getStatusText = (status: TrackingStatus) => {
-  switch (status) {
-    case TrackingStatus.Departed:
-      return "Departure from Port of Receipt";
-    case TrackingStatus.ArrivedAtPOL:
-      return "Arrived at Port of Loading";
-    case TrackingStatus.TransitToPOD:
-      return "Transit to Port of Discharge";
-    case TrackingStatus.ArrivedAtPOD:
-      return "Arrived at Port of Discharge";
-    case TrackingStatus.TransitToDEL:
-      return "Transit to Destination";
-    case TrackingStatus.ArrivedAtDEL:
-      return "Arrived at Destination";
-  }
-};
-
 export const getWeightText = (number: number) => {
   //add , to number and fixed to 3 decimal
   return number.toFixed(3).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 };
+
+export function getLastActualInfo(dataset: CargoDetailType[]) {
+  return dataset
+    .filter((data) => data.date < DateTime.now())
+    .sort((a, b) => b.date.toMillis() - a.date.toMillis())
+    .pop();
+}

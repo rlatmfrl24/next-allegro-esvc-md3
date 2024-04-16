@@ -1,15 +1,6 @@
 import { DateTime } from "luxon";
 import { PlaceInformationType, VesselInfoType } from "./schedule";
 
-export enum TrackingStatus {
-  "Departed",
-  "ArrivedAtPOL",
-  "TransitToPOD",
-  "ArrivedAtPOD",
-  "TransitToDEL",
-  "ArrivedAtDEL",
-}
-
 export enum TransitType {
   "Truck",
   "Train",
