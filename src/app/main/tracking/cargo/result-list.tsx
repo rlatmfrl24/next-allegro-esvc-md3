@@ -26,10 +26,8 @@ import { CargoDetailInfo } from "./components/cargo-detail-info";
 import { TrackingProcessInfo } from "./components/tracking-process-info";
 import { createDummyCargoTrackingData } from "./util";
 import VesselInformationDialog from "../../schedule/popup/vessel-information";
-import {
-  createDummyVesselSchedules,
-  createDummyLongRangeSchedules,
-} from "../../schedule/util";
+import { createDummyVesselSchedules } from "../../schedule/util";
+import VesselScheduleDialog from "../../schedule/popup/vessel-schedule";
 
 export default function TrackingDataList() {
   const tempData: CargoTrackingProps[] = useMemo(() => {
@@ -51,6 +49,9 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
     useState(false);
   const [isVesselInformationDialogOpen, setIsVesselInformationDialogOpen] =
     useState(false);
+  const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
+    useState(false);
+
   const [currentPlaceInformation, setCurrentPlaceInformation] =
     useState<PlaceInformationType>();
   const [currentVesselInformation, setCurrentVesselInformation] =
@@ -73,6 +74,14 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
             open={isVesselInformationDialogOpen}
             handleOpen={setIsVesselInformationDialogOpen}
             data={currentVesselInformation}
+          />
+        )}
+        {currentVesselSchedule && currentVesselInformation && (
+          <VesselScheduleDialog
+            open={isVesselScheduleDialogOpen}
+            handleOpen={setIsVesselScheduleDialogOpen}
+            vesselInfo={currentVesselInformation}
+            vesselSchedules={currentVesselSchedule}
           />
         )}
       </Portal>
@@ -152,11 +161,17 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
                                       <MdTypography
                                         variant="body"
                                         size="large"
-                                        className="text-onSurfaceVariant underline flex-1 cursor-pointer"
+                                        className="text-onSurfaceVariant underline cursor-pointer"
                                         onClick={() => {
                                           setCurrentVesselSchedule(
                                             createDummyVesselSchedules()
                                           );
+                                          setCurrentVesselInformation(
+                                            data.detailInfo.cargoSailingVessel[
+                                              index
+                                            ]
+                                          );
+                                          setIsVesselScheduleDialogOpen(true);
                                         }}
                                       >
                                         {
@@ -165,6 +180,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
                                           ].vesselName
                                         }
                                       </MdTypography>
+                                      <div className="flex-1"></div>
                                       <MdIconButton
                                         onClick={() => {
                                           setCurrentVesselInformation(
