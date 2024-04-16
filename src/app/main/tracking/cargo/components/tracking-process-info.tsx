@@ -9,6 +9,7 @@ import TransitPortIcon from "@/../public/icon_transit_port.svg";
 import TransitShipIcon from "@/../public/icon_transit_ship.svg";
 import TransitTrainIcon from "@/../public/icon_transit_train.svg";
 import TransitTruckIcon from "@/../public/icon_transit_truck.svg";
+import { PlainTooltip } from "@/app/components/tooltip";
 
 function getIconByTransitType(type: TransitType) {
   switch (type) {
@@ -23,6 +24,51 @@ function getIconByTransitType(type: TransitType) {
   }
 }
 
+const TrackingPoint = ({
+  data,
+  position,
+}: {
+  data: CargoTrackingProps;
+  position: "start" | "end";
+}) => {
+  const { refs, floatingStyles } = useFloating({
+    middleware: [offset(4)],
+    placement: position === "start" ? "top-start" : "top-end",
+  });
+
+  const showTooltip =
+    (data.ratio <= 5 && position === "start") ||
+    (data.ratio >= 95 && position === "end");
+
+  return (
+    <>
+      <Place
+        ref={refs.setReference}
+        className={
+          (data.ratio > 5 && position === "start") ||
+          (data.ratio > 95 && position === "end")
+            ? "text-primary"
+            : "text-outlineVariant"
+        }
+        sx={{
+          fontSize: "32px",
+        }}
+      />
+      {showTooltip && (
+        <div ref={refs.setFloating} style={floatingStyles}>
+          {getLastActualInfo(data.detailInfo.cargoDetail) !== undefined && (
+            <PlainTooltip
+              label={
+                getLastActualInfo(data.detailInfo.cargoDetail)!.description
+              }
+            />
+          )}
+        </div>
+      )}
+    </>
+  );
+};
+
 export const TrackingProcessInfo = ({ data }: { data: CargoTrackingProps }) => {
   const wholeBarRef = useRef<HTMLDivElement>(null);
   const leftBarRef = useRef<HTMLDivElement>(null);
@@ -31,7 +77,7 @@ export const TrackingProcessInfo = ({ data }: { data: CargoTrackingProps }) => {
   const [rightOver, setRightOver] = useState(0);
   const [isTooltipOpen, setIsTooltipOpen] = useState(true);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles } = useFloating({
     open: isTooltipOpen,
     onOpenChange: setIsTooltipOpen,
     placement: "top",
@@ -66,14 +112,12 @@ export const TrackingProcessInfo = ({ data }: { data: CargoTrackingProps }) => {
   }, [leftOver, rightOver, refs.floating]);
 
   return (
-    <div className="flex flex-col flex-1 justify-center pr-8" ref={wholeBarRef}>
+    <div
+      className="flex flex-col flex-1 justify-center pr-12"
+      ref={wholeBarRef}
+    >
       <div className="relative flex w-full items-center">
-        <Place
-          className={data.ratio === 0 ? "text-outlineVariant" : "text-primary"}
-          sx={{
-            fontSize: "32px",
-          }}
-        />
+        <TrackingPoint data={data} position="start" />
         <DividerComponent
           orientation="horizontal"
           className="h-1 border-b-2 border-b-outlineVariant border-dotted mx-2"
@@ -89,14 +133,7 @@ export const TrackingProcessInfo = ({ data }: { data: CargoTrackingProps }) => {
           />
         </div>
 
-        <Place
-          className={
-            data.ratio === 100 ? "text-primary" : "text-outlineVariant"
-          }
-          sx={{
-            fontSize: "32px",
-          }}
-        />
+        <TrackingPoint data={data} position="end" />
 
         {data.ratio < 95 && data.ratio > 5 && (
           <>
