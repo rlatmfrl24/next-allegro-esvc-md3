@@ -86,7 +86,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
             <FavoriteBorder className="text-onSurface" fontSize="small" />
           )}
         </MdIconButton>
-        <div className="flex flex-col pr-4 mr-4 border-r border-dotted border-outlineVariant w-[180px]">
+        <div className="flex flex-col pr-4 mr-4 border-r border-dotted border-outlineVariant w-60">
           <MdTypography variant="label" size="small" className="text-outline">
             BKG No.
           </MdTypography>
@@ -99,7 +99,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
             {data.bookingNumber}
           </MdTypography>
         </div>
-        <div className="flex flex-col w-72 border-r border-dotted border-outlineVariant mr-4">
+        <div className="flex flex-col border-r border-dotted border-outlineVariant mr-4 w-80">
           <MdTypography variant="label" size="small" className="text-outline">
             Container No.
           </MdTypography>
@@ -125,20 +125,15 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
             {getStatusText(data.trackingStatus)}
           </MdTypography>
           <MdTypography
-            variant="body"
+            variant="label"
             size="medium"
             className="flex items-center mt-4"
           >
-            <Place
-              className="text-primary"
-              sx={{
-                fontSize: "20px",
-              }}
-            />
+            <Place className="text-primary" fontSize="small" />
             {getLastLocation(data).yardName}
           </MdTypography>
           <MdTypography variant="body" size="small" className="text-outline">
-            {getLastLocationTime(data).toLocaleString()}
+            {getLastLocationTime(data).toFormat("yyyy-MM-dd HH:mm")}
           </MdTypography>
         </div>
         <div className="flex-1 grid grid-cols-4">
