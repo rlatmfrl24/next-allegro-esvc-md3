@@ -41,6 +41,8 @@ import {
 
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
+import styles from "@/app/styles/datepicker.module.css";
+import classNames from "classnames";
 
 export const DatePicker = ({
   format = "yyyy-MM-dd",
@@ -107,6 +109,8 @@ export const DatePicker = ({
     useRole(context),
   ]);
 
+  const cx = classNames.bind(styles);
+
   useEffect(() => {
     if (!isCalendarOpen) {
       setTimeout(() => {
@@ -120,6 +124,122 @@ export const DatePicker = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
+
+  const MonthHeader = () => {
+    return (
+      <div aria-label="month-selector" className="flex h-fit ">
+        <MdIconButton
+          className={selectionMode !== "day" ? "invisible" : "visible"}
+          onClick={() => {
+            navigation.toPrev();
+          }}
+        >
+          <MdIcon>
+            <ChevronLeft />
+          </MdIcon>
+        </MdIconButton>
+        <MdTextButton
+          trailingIcon
+          onClick={() => {
+            if (selectionMode === "day") {
+              setSelectionMode("month");
+            } else {
+              setSelectionMode("day");
+            }
+          }}
+          disabled={selectionMode === "year"}
+        >
+          <MdTypography variant="label" size="large">
+            {DateTime.fromJSDate(cursorDate).toFormat("MMM")}
+          </MdTypography>
+          <MdIcon
+            slot="icon"
+            className={cx(
+              styles["select-mode-button"],
+              {
+                day: "",
+                month: "rotate-180",
+                year: "invisible",
+              }[selectionMode]
+            )}
+          >
+            <ArrowDropDown fontSize="small" />
+          </MdIcon>
+        </MdTextButton>
+        <MdIconButton
+          className={selectionMode !== "day" ? "invisible" : "visible"}
+          onClick={() => {
+            navigation.toNext();
+          }}
+        >
+          <MdIcon>
+            <ChevronRight />
+          </MdIcon>
+        </MdIconButton>
+      </div>
+    );
+  };
+
+  const YearHeader = () => {
+    return (
+      <div aria-label="year-selector">
+        <MdIconButton
+          className={selectionMode !== "day" ? "invisible" : "visible"}
+          onClick={() => {
+            //navigation to previos year
+            navigation.setDate(
+              DateTime.fromJSDate(cursorDate).minus({ year: 1 }).toJSDate()
+            );
+          }}
+        >
+          <MdIcon>
+            <ChevronLeft />
+          </MdIcon>
+        </MdIconButton>
+        <MdTextButton
+          disabled={selectionMode === "month"}
+          trailingIcon
+          onClick={() => {
+            if (selectionMode === "day") {
+              setSelectionMode("year");
+            } else {
+              setSelectionMode("day");
+            }
+          }}
+        >
+          <MdTypography variant="label" size="large">
+            {DateTime.fromJSDate(cursorDate).toFormat("yyyy")}
+          </MdTypography>
+          <MdIcon
+            slot="icon"
+            className={cx(
+              styles["select-mode-button"],
+              {
+                day: "",
+                month: "invisible",
+                year: "rotate-180",
+              }[selectionMode]
+            )}
+          >
+            <ArrowDropDown fontSize="small" />
+          </MdIcon>
+        </MdTextButton>
+        <MdIconButton
+          className={selectionMode !== "day" ? "invisible" : "visible"}
+          onClick={() => {
+            //navigation to next year
+            navigation.setDate(
+              DateTime.fromJSDate(cursorDate).plus({ year: 1 }).toJSDate()
+            );
+          }}
+        >
+          <MdIcon>
+            <ChevronRight />
+          </MdIcon>
+        </MdIconButton>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -158,127 +278,10 @@ export const DatePicker = ({
           <FloatingFocusManager context={context}>
             <div style={floatingTransitionStyles}>
               <MdElevatedCard className="flex">
-                <div className="flex flex-col">
+                <div className="flex flex-col bg-surfaceContainerHigh rounded-xl">
                   <div className="flex justify-between p-2">
-                    <div aria-label="month-selector" className="flex h-fit ">
-                      <MdIconButton
-                        className={
-                          selectionMode !== "day" ? "invisible" : "visible"
-                        }
-                        onClick={() => {
-                          navigation.toPrev();
-                        }}
-                      >
-                        <MdIcon>
-                          <ChevronLeft />
-                        </MdIcon>
-                      </MdIconButton>
-                      <MdTextButton
-                        trailingIcon
-                        onClick={() => {
-                          console.log(beforeCursorDate);
-                          console.log(cursorDate);
-
-                          if (selectionMode === "day") {
-                            setSelectionMode("month");
-                          } else {
-                            setSelectionMode("day");
-                          }
-                        }}
-                        disabled={selectionMode === "year"}
-                      >
-                        <MdTypography variant="label" size="large">
-                          {DateTime.fromJSDate(cursorDate).toFormat("MMM")}
-                        </MdTypography>
-                        <MdIcon
-                          slot="icon"
-                          className={`transform transition-transform duration-300 ease-in-out ${
-                            {
-                              day: "",
-                              month: "rotate-180",
-                              year: "invisible",
-                            }[selectionMode]
-                          }`}
-                        >
-                          <ArrowDropDown fontSize="small" />
-                        </MdIcon>
-                      </MdTextButton>
-                      <MdIconButton
-                        className={
-                          selectionMode !== "day" ? "invisible" : "visible"
-                        }
-                        onClick={() => {
-                          navigation.toNext();
-                        }}
-                      >
-                        <MdIcon>
-                          <ChevronRight />
-                        </MdIcon>
-                      </MdIconButton>
-                    </div>
-                    <div aria-label="year-selector">
-                      <MdIconButton
-                        className={
-                          selectionMode !== "day" ? "invisible" : "visible"
-                        }
-                        onClick={() => {
-                          //navigation to previos year
-                          navigation.setDate(
-                            DateTime.fromJSDate(cursorDate)
-                              .minus({ year: 1 })
-                              .toJSDate()
-                          );
-                        }}
-                      >
-                        <MdIcon>
-                          <ChevronLeft />
-                        </MdIcon>
-                      </MdIconButton>
-                      <MdTextButton
-                        disabled={selectionMode === "month"}
-                        trailingIcon
-                        onClick={() => {
-                          if (selectionMode === "day") {
-                            setSelectionMode("year");
-                          } else {
-                            setSelectionMode("day");
-                          }
-                        }}
-                      >
-                        <MdTypography variant="label" size="large">
-                          {DateTime.fromJSDate(cursorDate).toFormat("yyyy")}
-                        </MdTypography>
-                        <MdIcon
-                          slot="icon"
-                          className={`transform transition-transform duration-300 ease-in-out ${
-                            {
-                              day: "",
-                              month: "invisible",
-                              year: "rotate-180",
-                            }[selectionMode]
-                          }`}
-                        >
-                          <ArrowDropDown fontSize="small" />
-                        </MdIcon>
-                      </MdTextButton>
-                      <MdIconButton
-                        className={
-                          selectionMode !== "day" ? "invisible" : "visible"
-                        }
-                        onClick={() => {
-                          //navigation to next year
-                          navigation.setDate(
-                            DateTime.fromJSDate(cursorDate)
-                              .plus({ year: 1 })
-                              .toJSDate()
-                          );
-                        }}
-                      >
-                        <MdIcon>
-                          <ChevronRight />
-                        </MdIcon>
-                      </MdIconButton>
-                    </div>
+                    <MonthHeader />
+                    <YearHeader />
                   </div>
                   {selectionMode === "day" && (
                     <>
@@ -328,7 +331,7 @@ export const DatePicker = ({
                             return (
                               <div
                                 key={key}
-                                className={`flex items-center justify-center w-12 h-12 select-none`}
+                                className={cx(styles["date-cell"])}
                               >
                                 {isCurrentMonth ? (
                                   <MdIconButton
@@ -397,7 +400,7 @@ export const DatePicker = ({
                   {selectionMode === "month" && (
                     <MdList
                       style={{ maxHeight }}
-                      className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
+                      className={cx(styles["list-box"])}
                     >
                       <OverlayScrollbarsComponent
                         defer
@@ -448,7 +451,7 @@ export const DatePicker = ({
                   {selectionMode === "year" && (
                     <MdList
                       style={{ maxHeight }}
-                      className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
+                      className={cx(styles["list-box"])}
                     >
                       <OverlayScrollbarsComponent
                         defer
