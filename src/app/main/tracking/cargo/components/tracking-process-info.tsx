@@ -111,12 +111,13 @@ export const TrackingProcessInfo = ({ data }: { data: CargoTrackingProps }) => {
               ref={refs.setFloating}
               style={{
                 ...floatingStyles,
-                backgroundColor:
-                  leftOver > 0
-                    ? "red"
-                    : rightOver > 0
-                    ? "blue"
-                    : "var(--md-sys-color-inverse-surface)",
+                // backgroundColor:
+                //   leftOver > 0
+                //     ? "red"
+                //     : rightOver > 0
+                //     ? "blue"
+                //     : "var(--md-sys-color-inverse-surface)",
+                backgroundColor: "var(--md-sys-color-inverse-surface)",
                 visibility:
                   getLastActualInfo(data.detailInfo.cargoDetail) === undefined
                     ? "hidden"

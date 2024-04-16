@@ -64,6 +64,8 @@ export const NAOutlinedTextField = ({
             ) {
               e.preventDefault();
             }
+          } else {
+            props.onKeyDown?.(e);
           }
         }}
         onBlur={(e) => {
