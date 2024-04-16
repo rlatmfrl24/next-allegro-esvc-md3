@@ -33,7 +33,7 @@ import {
   ChevronRight,
 } from "@mui/icons-material";
 import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
@@ -49,11 +49,13 @@ export const DateRangePicker = ({
   format = "yyyy-MM-dd",
   initial,
   buttonMode = "none",
+  ...props
 }: {
   format?: string;
   initial?: DateRange;
   buttonMode?: "none" | "before" | "after";
-}) => {
+  props?: ComponentProps<typeof MdOutlinedTextField>;
+} & ComponentProps<typeof MdOutlinedTextField>) => {
   const [maxHeight, setMaxHeight] = useState(0);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [selectedRange, setSelectedRange] = useState<DateRange>(
@@ -156,6 +158,7 @@ export const DateRangePicker = ({
   return (
     <>
       <MdOutlinedTextField
+        {...props}
         ref={refs.setReference}
         {...getReferenceProps()}
         readOnly
