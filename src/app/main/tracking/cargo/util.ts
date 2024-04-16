@@ -18,6 +18,7 @@ export function createDummyCargoTrackingData() {
   const pod = createDummyPlaceInformation(
     faker.location.city() + ", " + faker.location.country()
   );
+  const sailingCount = faker.number.int({ min: 3, max: 8 });
 
   return {
     id: faker.string.uuid(),
@@ -32,36 +33,31 @@ export function createDummyCargoTrackingData() {
       "Bulk",
     ]),
     containerSize: faker.helpers.arrayElement(["20", "40", "45"]),
-    por: createDummyPlaceInformation(
-      faker.location.city() + ", " + faker.location.country()
-    ),
-    pol: pol,
-    pod: pod,
-    del: createDummyPlaceInformation(
-      faker.location.city() + ", " + faker.location.country()
-    ),
-    porTime: DateTime.fromJSDate(faker.date.recent()),
-    polTime: DateTime.fromJSDate(faker.date.recent()),
-    podTime: DateTime.fromJSDate(faker.date.recent()),
-    delTime: DateTime.fromJSDate(faker.date.recent()),
-    trackingStatus: faker.number.int({
-      min: 0,
-      max: 5,
-    }),
+    start: pol,
+    end: pod,
+    ratio: faker.number.float({ min: 0, max: 1 }),
     transitType: faker.number.int({
       min: 0,
       max: 2,
     }),
+    sealNumber: faker.string.alphanumeric(8).toUpperCase(),
+    weight: faker.number.float({ min: 100, max: 10000 }),
+    weightUnit: faker.helpers.arrayElement(["KGS", "LBS"]),
     isFavorite: faker.helpers.maybe(() => true),
+    lastPort: createDummyPlaceInformation(
+      faker.location.city() + ", " + faker.location.country()
+    ),
+    lastPortTime: DateTime.fromJSDate(faker.date.anytime()),
     detailInfo: {
-      cargoSailingInfo: {
-        pod: pod,
-        pol: pol,
-        sealNumber: faker.string.alphanumeric(8).toUpperCase(),
-        weight: faker.number.float({ min: 100, max: 10000 }),
-        weightUnit: faker.helpers.arrayElement(["KGS", "LBS"]),
-        vessels: createDummyVesselInformations(3),
-      },
+      cargoSailingInfo: Array.from({ length: sailingCount }, () => {
+        return {
+          port: createDummyPlaceInformation(
+            faker.location.city() + ", " + faker.location.country()
+          ),
+          time: DateTime.fromJSDate(faker.date.anytime()),
+        };
+      }),
+      cargoSailingVessel: createDummyVesselInformations(sailingCount - 1),
       cargoDetail: Array.from(
         { length: faker.number.int({ min: 3, max: 8 }) },
         () => {
@@ -92,40 +88,6 @@ export const getStatusText = (status: TrackingStatus) => {
       return "Transit to Destination";
     case TrackingStatus.ArrivedAtDEL:
       return "Arrived at Destination";
-  }
-};
-
-export const getLastLocation = (data: CargoTrackingProps) => {
-  switch (data.trackingStatus) {
-    case TrackingStatus.Departed:
-      return data.por;
-    case TrackingStatus.ArrivedAtPOL:
-      return data.pol;
-    case TrackingStatus.TransitToPOD:
-      return data.pol;
-    case TrackingStatus.ArrivedAtPOD:
-      return data.pod;
-    case TrackingStatus.TransitToDEL:
-      return data.pod;
-    case TrackingStatus.ArrivedAtDEL:
-      return data.del;
-  }
-};
-
-export const getLastLocationTime = (data: CargoTrackingProps) => {
-  switch (data.trackingStatus) {
-    case TrackingStatus.Departed:
-      return data.porTime;
-    case TrackingStatus.ArrivedAtPOL:
-      return data.polTime;
-    case TrackingStatus.TransitToPOD:
-      return data.polTime;
-    case TrackingStatus.ArrivedAtPOD:
-      return data.podTime;
-    case TrackingStatus.TransitToDEL:
-      return data.podTime;
-    case TrackingStatus.ArrivedAtDEL:
-      return data.delTime;
   }
 };
 

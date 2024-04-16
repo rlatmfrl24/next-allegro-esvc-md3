@@ -14,6 +14,7 @@ export enum TransitType {
   "Truck",
   "Train",
   "Ship",
+  "Port",
 }
 
 export interface CargoTrackingProps {
@@ -22,30 +23,26 @@ export interface CargoTrackingProps {
   contaienrNumber: string;
   containerType: string;
   containerSize: string;
-  por: PlaceInformationType;
-  pol: PlaceInformationType;
-  pod: PlaceInformationType;
-  del: PlaceInformationType;
-  porTime: DateTime;
-  polTime: DateTime;
-  podTime: DateTime;
-  delTime: DateTime;
-  trackingStatus: TrackingStatus;
+  sealNumber: string;
+  weight: number;
+  weightUnit: string;
+  start: PlaceInformationType;
+  lastPort: PlaceInformationType;
+  lastPortTime: DateTime;
+  end: PlaceInformationType;
+  ratio: number;
   transitType: TransitType;
   isFavorite: boolean;
   detailInfo: {
-    cargoSailingInfo: CargoSailingInfoType;
+    cargoSailingInfo: CargoSailingInfoType[];
+    cargoSailingVessel: VesselInfoType[];
     cargoDetail: CargoDetailType[];
   };
 }
 
 export type CargoSailingInfoType = {
-  pol: PlaceInformationType;
-  pod: PlaceInformationType;
-  sealNumber: string;
-  weight: number;
-  weightUnit: string;
-  vessels: VesselInfoType[];
+  port: PlaceInformationType;
+  time: DateTime;
 };
 
 export type CargoDetailType = {
