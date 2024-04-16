@@ -268,12 +268,14 @@ export default function PartiesStep() {
           }));
         }}
       />
-      <MdFilledButton
-        className="self-end mt-4"
-        onClick={() => moveToCargoStep()}
-      >
-        Next
-      </MdFilledButton>
+      <div className="flex-1 flex justify-end items-end">
+        <MdFilledButton
+          className="self-end mt-4"
+          onClick={() => moveToCargoStep()}
+        >
+          Next
+        </MdFilledButton>
+      </div>
     </div>
   );
 }

@@ -81,7 +81,7 @@ export default function SIEdit() {
           styles["area"],
           styles["no-padding"],
           styles["row-direction"],
-          "min-h-[792px] mb-12"
+          "min-h-[720px]"
         )}
       >
         <div className="flex flex-col gap-4 py-6 px-4 border-r border-r-outlineVariant">
