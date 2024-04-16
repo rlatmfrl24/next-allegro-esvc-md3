@@ -1,3 +1,9 @@
+import { motion } from "framer-motion";
+import { DateTime } from "luxon";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { ComponentProps, useEffect, useState } from "react";
+import { flushSync } from "react-dom";
+
 import { basicPopoverStyles } from "@/app/util/constants";
 import {
   MdElevatedCard,
@@ -11,9 +17,9 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import {
-  FloatingFocusManager,
   autoUpdate,
-  flip,
+  FloatingFocusManager,
+  hide,
   offset,
   shift,
   size,
@@ -32,13 +38,9 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "@mui/icons-material";
-import { DateTime } from "luxon";
-import { ComponentProps, useEffect, useState } from "react";
-import { flushSync } from "react-dom";
+
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { motion } from "framer-motion";
 
 type DateRange = {
   start: DateTime | undefined;
@@ -48,12 +50,16 @@ type DateRange = {
 export const DateRangePicker = ({
   format = "yyyy-MM-dd",
   initial,
+  readonly = false,
   buttonMode = "none",
+  onDateChange,
   ...props
 }: {
   format?: string;
   initial?: DateRange;
   buttonMode?: "none" | "before" | "after";
+  readonly?: boolean;
+  onDateChange?: (date: DateRange) => void;
   props?: ComponentProps<typeof MdOutlinedTextField>;
 } & ComponentProps<typeof MdOutlinedTextField>) => {
   const [maxHeight, setMaxHeight] = useState(0);
@@ -78,11 +84,12 @@ export const DateRangePicker = ({
     }
   }, [beforeCursorDate, cursorDate]);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles, context, middlewareData } = useFloating({
     open: isCalendarOpen,
     onOpenChange: setIsCalendarOpen,
     middleware: [
       offset(8),
+      hide(),
       shift({
         crossAxis: true,
       }),
@@ -124,10 +131,6 @@ export const DateRangePicker = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCalendarOpen]);
 
-  useEffect(() => {
-    console.log(selectedRange);
-  }, [selectedRange]);
-
   function handleSelection(value: Date) {
     if (inputMode === "start") {
       setSelectedRange({
@@ -157,27 +160,43 @@ export const DateRangePicker = ({
 
   return (
     <>
-      <MdOutlinedTextField
-        {...props}
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        readOnly
-        placeholder="Select Date Range"
-        value={
-          selectedRange.start && selectedRange.end
-            ? `${selectedRange.start.toFormat(
-                format
-              )} ~ ${selectedRange.end.toFormat(format)}`
-            : ""
-        }
-      >
-        <MdIcon slot="trailing-icon">
-          <CalendarTodayOutlined />
-        </MdIcon>
-      </MdOutlinedTextField>
+      <div className={`relative ${props.className}`}>
+        <MdOutlinedTextField
+          {...props}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+          readOnly
+          required={false}
+          className={`w-full ${readonly ? "bg-surfaceContainer" : ""} `}
+          placeholder="Select Date Range"
+          value={
+            selectedRange.start && selectedRange.end
+              ? `${selectedRange.start.toFormat(
+                  format
+                )} ~ ${selectedRange.end.toFormat(format)}`
+              : ""
+          }
+        >
+          <MdIcon slot="trailing-icon">
+            <CalendarTodayOutlined />
+          </MdIcon>
+        </MdOutlinedTextField>
+        {props.required && (
+          <MdTypography
+            variant="label"
+            size="large"
+            className="text-error absolute top-0.5 left-1.5"
+          >
+            *
+          </MdTypography>
+        )}
+      </div>
       <div
+        hidden={middlewareData.hide?.referenceHidden}
         ref={refs.setFloating}
-        style={floatingStyles}
+        style={{
+          ...floatingStyles,
+        }}
         {...getFloatingProps()}
         className="z-50"
       >
@@ -560,6 +579,7 @@ export const DateRangePicker = ({
                           </MdOutlinedButton>
                           <MdFilledButton
                             onClick={() => {
+                              onDateChange?.(selectedRange);
                               setIsCalendarOpen(false);
                             }}
                           >

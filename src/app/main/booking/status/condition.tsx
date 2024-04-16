@@ -42,6 +42,7 @@ import { DividerComponent } from "../information/components/base";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
+import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 
 const filterOptions = [
   {
@@ -321,16 +322,19 @@ export default function BookingStatusCondition() {
       <div>
         {stateCondition === "requestDate" ? (
           <div className="flex items-center">
-            <MdRangeDatePicker
+            <DateRangePicker
               label="Request Date"
-              defaultStartDate={searchCondition.requestDateStart}
-              defaultEndDate={searchCondition.requestDateEnd}
-              handleDateRangeSelected={(dateRange) => {
-                setSearchCondition({
-                  ...searchCondition,
-                  requestDateStart: dateRange[0],
-                  requestDateEnd: dateRange[1],
-                });
+              initial={{
+                start: searchCondition.requestDateStart,
+                end: searchCondition.requestDateEnd,
+              }}
+              onDateChange={(dateRange) => {
+                if (dateRange.start && dateRange.end)
+                  setSearchCondition({
+                    ...searchCondition,
+                    requestDateStart: dateRange.start,
+                    requestDateEnd: dateRange.end,
+                  });
               }}
             />
           </div>
@@ -370,7 +374,7 @@ export default function BookingStatusCondition() {
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="z-10"
+        className="z-20"
       >
         {isMounted && (
           <div

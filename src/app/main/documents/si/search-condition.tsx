@@ -16,6 +16,7 @@ import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
+import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 
 export default function SISearchCondition() {
   const [conditionType, setConditionType] = useState<
@@ -184,15 +185,17 @@ export default function SISearchCondition() {
   const BookingDateFilter = useMemo(() => {
     return (
       <>
-        <MdRangeDatePicker
+        <DateRangePicker
           label="Booking Date"
-          defaultStartDate={searchCondition.startDate}
-          defaultEndDate={searchCondition.endDate}
-          handleDateRangeSelected={(DateRange) => {
+          initial={{
+            start: searchCondition.startDate,
+            end: searchCondition.endDate,
+          }}
+          onDateChange={(dateRange) => {
             setSearchCondition((prev) => ({
               ...prev,
-              startDate: DateRange[0],
-              endDate: DateRange[1],
+              startDate: dateRange.start!,
+              endDate: dateRange.end!,
             }));
           }}
         />
@@ -204,15 +207,17 @@ export default function SISearchCondition() {
   const DepartureDateFilter = useMemo(() => {
     return (
       <>
-        <MdRangeDatePicker
+        <DateRangePicker
           label="Departure Date"
-          defaultStartDate={searchCondition.startDate}
-          defaultEndDate={searchCondition.endDate}
-          handleDateRangeSelected={(DateRange) => {
+          initial={{
+            start: searchCondition.startDate,
+            end: searchCondition.endDate,
+          }}
+          onDateChange={(dateRange) => {
             setSearchCondition((prev) => ({
               ...prev,
-              startDate: DateRange[0],
-              endDate: DateRange[1],
+              startDate: dateRange.start!,
+              endDate: dateRange.end!,
             }));
           }}
         />
@@ -224,15 +229,17 @@ export default function SISearchCondition() {
   const RequestDateFilter = useMemo(() => {
     return (
       <>
-        <MdRangeDatePicker
+        <DateRangePicker
           label="Request Date"
-          defaultStartDate={searchCondition.startDate}
-          defaultEndDate={searchCondition.endDate}
-          handleDateRangeSelected={(DateRange) => {
+          initial={{
+            start: searchCondition.startDate,
+            end: searchCondition.endDate,
+          }}
+          onDateChange={(dateRange) => {
             setSearchCondition((prev) => ({
               ...prev,
-              startDate: DateRange[0],
-              endDate: DateRange[1],
+              startDate: dateRange.start!,
+              endDate: dateRange.end!,
             }));
           }}
         />

@@ -21,6 +21,7 @@ import { SubTitle } from "@/app/components/title-components";
 import { useSearchParams } from "next/navigation";
 import { QuotationTermsState } from "@/app/store/pricing.store";
 import { getWeightText } from "../../tracking/cargo/util";
+import { DatePicker } from "@/app/components/datepickers/date-picker";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -172,17 +173,18 @@ export default function CargoStep() {
       <SubTitle title="Container Pick Up/Return Place" className="mt-6 mb-4" />
       <div className="flex flex-col gap-6">
         <div className="flex gap-4">
-          <MdSingleDatePicker
+          <DatePicker
             className="flex-1"
             label="Empty Pick Up Date"
             required
-            defaultDate={cargoPickUpReturnData.emptyPickUpDate}
-            handleDateChange={(date) => {
+            initialDate={cargoPickUpReturnData.emptyPickUpDate}
+            onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {
                 return { ...prev, emptyPickUpDate: date };
               });
             }}
           />
+
           <div className="flex-1">
             <MdOutlinedTextField
               type="time"
@@ -268,13 +270,13 @@ export default function CargoStep() {
           </div>
         </div>
         <div className="flex gap-4">
-          <MdSingleDatePicker
+          <DatePicker
             className="flex-1"
-            label="Full Cargo Return Date"
-            defaultDate={cargoPickUpReturnData.fullReturnDate}
-            handleDateChange={(date) => {
+            label="Full Cargo Pick Up Date"
+            initialDate={cargoPickUpReturnData.fullReturnDate}
+            onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {
-                return { ...prev, fullReturnDate: date };
+                return { ...prev, fullPickUpDate: date };
               });
             }}
           />

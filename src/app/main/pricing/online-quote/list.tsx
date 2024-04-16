@@ -16,6 +16,7 @@ import { QuotationListItem } from "./components/listitem";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 import { createDummyVesselInformation } from "../../schedule/util";
+import { FilterChipMenu } from "@/app/components/filter-chip-menu";
 
 export default function QuotationList({
   onResearch,
@@ -96,8 +97,7 @@ export default function QuotationList({
       <div className={styles.area}>
         <div className="flex gap-4 justify-between items-center ">
           <div className="flex gap-4 items-center ">
-            <NAOutlinedListBox
-              label="Sort By"
+            <FilterChipMenu
               initialValue="Earliest Departure"
               options={[
                 "Earliest Departure",

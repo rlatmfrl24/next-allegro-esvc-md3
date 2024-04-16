@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { DateTime } from "luxon";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { ComponentProps, useEffect, useState } from "react";
@@ -40,16 +41,19 @@ import {
 
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
-import { motion } from "framer-motion";
 
 export const DatePicker = ({
   format = "yyyy-MM-dd",
   initialDate,
-  onChange,
+  onDateChange,
+  readonly = false,
+  ...props
 }: {
   format?: string;
   initialDate?: DateTime;
-  onChange?: (date: DateTime) => void;
+  onDateChange?: (date: DateTime) => void;
+  readonly?: boolean;
+  props?: ComponentProps<typeof MdOutlinedTextField>;
 } & ComponentProps<typeof MdOutlinedTextField>) => {
   const [maxHeight, setMaxHeight] = useState(0);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -119,24 +123,38 @@ export const DatePicker = ({
 
   return (
     <>
-      <MdOutlinedTextField
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        readOnly
-        placeholder="Select Date"
-        value={selectedDate?.toFormat(format) || ""}
-      >
-        <MdIcon slot="trailing-icon">
-          <CalendarTodayOutlined />
-        </MdIcon>
-      </MdOutlinedTextField>
+      <div className={`relative ${props.className}`}>
+        <MdOutlinedTextField
+          {...props}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+          readOnly
+          required={false}
+          className={`w-full ${readonly ? "bg-surfaceContainer" : ""} `}
+          placeholder="Select Date"
+          value={selectedDate?.toFormat(format) || ""}
+        >
+          <MdIcon slot="trailing-icon">
+            <CalendarTodayOutlined />
+          </MdIcon>
+        </MdOutlinedTextField>
+        {props.required && (
+          <MdTypography
+            variant="label"
+            size="large"
+            className="text-error absolute top-0.5 left-1.5"
+          >
+            *
+          </MdTypography>
+        )}
+      </div>
       <div
         ref={refs.setFloating}
         style={{ ...floatingStyles }}
         {...getFloatingProps()}
         className="z-50"
       >
-        {isMounted && (
+        {isMounted && !readonly && (
           <FloatingFocusManager context={context}>
             <div style={floatingTransitionStyles}>
               <MdElevatedCard className="flex">
@@ -158,6 +176,9 @@ export const DatePicker = ({
                       <MdTextButton
                         trailingIcon
                         onClick={() => {
+                          console.log(beforeCursorDate);
+                          console.log(cursorDate);
+
                           if (selectionMode === "day") {
                             setSelectionMode("month");
                           } else {
@@ -266,14 +287,15 @@ export const DatePicker = ({
                         animate={{ opacity: 1, x: 0 }}
                         initial={{
                           opacity: 0,
-                          x:
-                            cursorDate === beforeCursorDate
-                              ? 0
-                              : cursorDate > beforeCursorDate
-                              ? 40
-                              : -40,
+                          x: DateTime.fromJSDate(cursorDate).hasSame(
+                            DateTime.fromJSDate(beforeCursorDate),
+                            "day"
+                          )
+                            ? 0
+                            : cursorDate > beforeCursorDate
+                            ? 40
+                            : -40,
                         }}
-                        transition={{ duration: 0.2 }}
                         className="grid grid-cols-7"
                       >
                         {headers.weekDays.map(({ key, value }) => {
@@ -364,7 +386,7 @@ export const DatePicker = ({
                             setIsCalendarOpen(false);
                             selectedDate &&
                               navigation.setDate(selectedDate.toJSDate());
-                            onChange?.(selectedDate as DateTime);
+                            onDateChange?.(selectedDate as DateTime);
                           }}
                         >
                           OK

@@ -154,7 +154,15 @@ const PortSearch = () => {
         icon={<PortIcon />}
         itemList={tempPorts.map((port) => port.yardName)}
       />
-      <MdRangeDatePicker label="Date" className="w-fit" />
+      {/* <MdRangeDatePicker label="Date" className="w-fit" /> */}
+      <DateRangePicker
+        label="Date"
+        className="w-fit"
+        initial={{
+          start: DateTime.now(),
+          end: DateTime.now().plus({ days: 7 }),
+        }}
+      />
       <div className="flex-1 flex justify-end items-end h-full gap-2">
         <MdTextButton>Reset</MdTextButton>
         <Link href={`/main/schedule/port`}>

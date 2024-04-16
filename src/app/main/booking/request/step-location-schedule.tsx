@@ -20,6 +20,7 @@ import { FmdGoodOutlined } from "@mui/icons-material";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
 import SearchScheduleDialog from "./components/search-schedule-dialog";
+import { DatePicker } from "@/app/components/datepickers/date-picker";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -317,11 +318,11 @@ export default function LoactionScheduleStep() {
           )}
           {locationScheduleData.searchType === "earliest" && (
             <div className="flex">
-              <MdSingleDatePicker
+              <DatePicker
                 label="Departure Date"
                 readonly={params.has("quoteNumber")}
-                defaultDate={locationScheduleData.departureDate}
-                handleDateChange={(date) => {
+                initialDate={locationScheduleData.departureDate}
+                onDateChange={(date) => {
                   setLoactionScheduleData((prev) => ({
                     ...prev,
                     departureDate: date,

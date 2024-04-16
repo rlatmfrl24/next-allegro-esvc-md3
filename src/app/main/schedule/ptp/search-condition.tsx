@@ -25,6 +25,7 @@ import { PtPSearchConditionType } from "@/app/util/typeDef/schedule";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
+import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 
 export default function SearchCondition({
   searchAction,
@@ -67,15 +68,6 @@ export default function SearchCondition({
 
   const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
-
-  // function focusOnResult() {
-  //   if (scrollState.instance) {
-  //     scrollState.instance()?.elements().viewport?.scrollTo({
-  //       top: 300,
-  //       behavior: "smooth",
-  //     });
-  //   }
-  // }
 
   useEffect(() => {
     if (searchCondition === "single") {
@@ -298,12 +290,16 @@ export default function SearchCondition({
             setSearchOn(value.toLowerCase() as "departure" | "arrival");
           }}
         />
-        <MdRangeDatePicker
+        <DateRangePicker
           label="Date"
-          defaultStartDate={dateRange[0]}
-          defaultEndDate={dateRange[1]}
-          handleDateRangeSelected={(range) => {
-            setDateRange(range);
+          initial={{
+            start: dateRange[0],
+            end: dateRange[1],
+          }}
+          onDateChange={(range) => {
+            if (range.start && range.end) {
+              setDateRange([range.start, range.end]);
+            }
           }}
         />
       </div>

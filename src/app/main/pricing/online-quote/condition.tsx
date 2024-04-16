@@ -23,6 +23,7 @@ import { Add, DeleteOutline, PlaceOutlined } from "@mui/icons-material";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { QuotationContainerType } from "@/app/util/typeDef/pricing";
+import { DatePicker } from "@/app/components/datepickers/date-picker";
 
 export default function Condition({
   onReset,
@@ -136,14 +137,16 @@ export default function Condition({
           }}
         />
       </div>
-      <MdSingleDatePicker
-        label="Departure Date"
+      <DatePicker
         className="w-fit"
-        defaultDate={quotationTerms.departureDate}
-        handleDateChange={(date) => {
-          setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
+        label="Departure Date"
+        initialDate={quotationTerms.departureDate}
+        onDateChange={(date) => {
+          date &&
+            setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
         }}
       />
+
       <SubTitle title="Cargo" className="mt-4" />
       <div className="flex">
         <NAOutlinedTextField
