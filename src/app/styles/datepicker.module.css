@@ -5,3 +5,37 @@
   max-height: 480px;
   @apply bg-surfaceContainerHigh rounded-2xl flex flex-col;
 }
+
+.select-mode-button {
+  @apply transform transition-transform duration-300 ease-in-out;
+}
+
+.date-cell {
+  @apply flex items-center justify-center w-12 h-12 select-none overflow-hidden scale-[1.03];
+}
+
+.list-box {
+  @apply overflow-auto rounded-b-xl border-t border-t-outlineVariant bg-surfaceContainerHigh;
+}
+
+.diff-start {
+  background: linear-gradient(
+    90deg,
+    transparent 50%,
+    var(--md-sys-color-secondary-container) 50%
+  );
+  @apply w-full flex justify-center;
+}
+
+.diff-end {
+  background: linear-gradient(
+    90deg,
+    var(--md-sys-color-secondary-container) 50%,
+    transparent 50%
+  );
+  @apply w-full flex justify-center;
+}
+
+.between {
+  @apply w-full flex justify-center bg-secondaryContainer;
+}

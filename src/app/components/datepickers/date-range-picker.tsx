@@ -41,6 +41,8 @@ import {
 
 import { MdTypography } from "../typography";
 import { MonthList } from "./util";
+import styles from "@/app/styles/datepicker.module.css";
+import classNames from "classnames";
 
 type DateRange = {
   start: DateTime | undefined;
@@ -120,6 +122,8 @@ export const DateRangePicker = ({
     }),
     useRole(context),
   ]);
+
+  const cx = classNames.bind(styles);
 
   useEffect(() => {
     if (!isCalendarOpen) {
@@ -208,7 +212,7 @@ export const DateRangePicker = ({
                   {
                     {
                       before: (
-                        <MdList className="rounded-l-xl w-40">
+                        <MdList className="rounded-l-xl w-40 bg-surfaceContainer">
                           <MdListItem
                             type="button"
                             onClick={() => {
@@ -260,7 +264,7 @@ export const DateRangePicker = ({
                         </MdList>
                       ),
                       after: (
-                        <MdList className="rounded-l-xl w-40">
+                        <MdList className="rounded-l-xl w-40 bg-surfaceContainer">
                           <MdListItem
                             type="button"
                             onClick={() => {
@@ -314,7 +318,7 @@ export const DateRangePicker = ({
                       none: <></>,
                     }[buttonMode]
                   }
-                  <div className="flex flex-col">
+                  <div className="flex flex-col bg-surfaceContainerHigh rounded-xl">
                     <div className="flex justify-between p-2">
                       <div aria-label="month-selector" className="flex h-fit">
                         <MdIconButton
@@ -345,13 +349,14 @@ export const DateRangePicker = ({
                           </MdTypography>
                           <MdIcon
                             slot="icon"
-                            className={`transform transition-transform duration-300 ease-in-out ${
+                            className={cx(
+                              styles["select-mode-button"],
                               {
                                 day: "",
                                 month: "rotate-180",
                                 year: "invisible",
                               }[selectionMode]
-                            }`}
+                            )}
                           >
                             <ArrowDropDown fontSize="small" />
                           </MdIcon>
@@ -403,13 +408,14 @@ export const DateRangePicker = ({
                           </MdTypography>
                           <MdIcon
                             slot="icon"
-                            className={`transform transition-transform duration-300 ease-in-out ${
+                            className={cx(
+                              styles["select-mode-button"],
                               {
                                 day: "",
                                 month: "invisible",
                                 year: "rotate-180",
                               }[selectionMode]
-                            }`}
+                            )}
                           >
                             <ArrowDropDown fontSize="small" />
                           </MdIcon>
@@ -493,37 +499,27 @@ export const DateRangePicker = ({
                               const isBetween =
                                 selectedRange.start &&
                                 selectedRange.end &&
-                                DateTime.fromJSDate(value) >
-                                  selectedRange.start &&
-                                DateTime.fromJSDate(value) < selectedRange.end;
-
-                              const startBackground =
-                                "linear-gradient(90deg, transparent 50%, var(--md-sys-color-secondary-container) 50%)";
-
-                              const endBackground =
-                                "linear-gradient(90deg, var(--md-sys-color-secondary-container) 50%, transparent 50%)";
+                                DateTime.fromJSDate(value).startOf("day") >
+                                  selectedRange.start.startOf("day") &&
+                                DateTime.fromJSDate(value).startOf("day") <
+                                  selectedRange.end.startOf("day");
 
                               return (
                                 <div
                                   key={key}
-                                  className={`flex items-center justify-center w-12 h-12 select-none overflow-hidden scale-[1.03]`}
+                                  className={cx(styles["date-cell"])}
                                 >
                                   {isCurrentMonth ? (
                                     <div
-                                      style={{
-                                        background: `${
-                                          diffStart && !diffEnd
-                                            ? startBackground
-                                            : ""
-                                        } ${
-                                          diffEnd && !diffStart
-                                            ? endBackground
-                                            : ""
-                                        }`,
-                                      }}
-                                      className={`w-full flex justify-center ${
-                                        isBetween ? "bg-secondaryContainer" : ""
-                                      }`}
+                                      className={cx(
+                                        diffStart &&
+                                          !diffEnd &&
+                                          styles["diff-start"],
+                                        diffEnd &&
+                                          !diffStart &&
+                                          styles["diff-end"],
+                                        isBetween && styles["between"]
+                                      )}
                                     >
                                       <MdIconButton
                                         className={`${
@@ -591,7 +587,7 @@ export const DateRangePicker = ({
                     {selectionMode === "month" && (
                       <MdList
                         style={{ maxHeight }}
-                        className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
+                        className={cx(styles["list-box"])}
                       >
                         <OverlayScrollbarsComponent
                           defer
@@ -642,7 +638,7 @@ export const DateRangePicker = ({
                     {selectionMode === "year" && (
                       <MdList
                         style={{ maxHeight }}
-                        className="overflow-auto rounded-b-xl border-t border-t-outlineVariant"
+                        className={cx(styles["list-box"])}
                       >
                         <OverlayScrollbarsComponent
                           defer
