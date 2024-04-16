@@ -2,7 +2,6 @@ import {
   CargoDetailType,
   CargoTrackingProps,
   TrackingStatus,
-  TransitType,
 } from "@/app/util/typeDef/tracking";
 import { faker } from "@faker-js/faker";
 import {
@@ -35,10 +34,10 @@ export function createDummyCargoTrackingData() {
     containerSize: faker.helpers.arrayElement(["20", "40", "45"]),
     start: pol,
     end: pod,
-    ratio: faker.number.float({ min: 0, max: 1 }),
+    ratio: faker.number.int({ min: 0, max: 100 }),
     transitType: faker.number.int({
       min: 0,
-      max: 2,
+      max: 3,
     }),
     sealNumber: faker.string.alphanumeric(8).toUpperCase(),
     weight: faker.number.float({ min: 100, max: 10000 }),
@@ -69,7 +68,7 @@ export function createDummyCargoTrackingData() {
             ),
           } as CargoDetailType;
         }
-      ),
+      ).sort((a, b) => a.date.toMillis() - b.date.toMillis()),
     },
   } as CargoTrackingProps;
 }
