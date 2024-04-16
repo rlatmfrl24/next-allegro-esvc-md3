@@ -10,6 +10,8 @@ import CommodityAutoComplete from "../main/booking/request/components/commodity-
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "../components/na-multi-autocomplete";
 import EmptyResultPlaceholder from "../components/empty-placeholder";
+import { DatePicker } from "../components/datepickers/date-picker";
+import { DateRangePicker } from "../components/datepickers/date-range-picker";
 
 export default function Test() {
   const [color, setColor] = useState("#009FE8");
@@ -60,6 +62,12 @@ export default function Test() {
       </div>
 
       <HexTest />
+      <div className="flex gap-2">
+        <DatePicker />
+        <DateRangePicker />
+        <DateRangePicker buttonMode="before" />
+        <DateRangePicker buttonMode="after" />
+      </div>
 
       <div className="flex gap-2">
         <button

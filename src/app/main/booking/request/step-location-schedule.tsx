@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
+import { MdSingleDatePicker } from "@/app/components/datepickers/old/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -20,6 +20,7 @@ import { FmdGoodOutlined } from "@mui/icons-material";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
 import SearchScheduleDialog from "./components/search-schedule-dialog";
+import { DatePicker } from "@/app/components/datepickers/date-picker";
 
 export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
@@ -317,11 +318,11 @@ export default function LoactionScheduleStep() {
           )}
           {locationScheduleData.searchType === "earliest" && (
             <div className="flex">
-              <MdSingleDatePicker
+              <DatePicker
                 label="Departure Date"
                 readonly={params.has("quoteNumber")}
-                defaultDate={locationScheduleData.departureDate}
-                handleDateChange={(date) => {
+                initialDate={locationScheduleData.departureDate}
+                onDateChange={(date) => {
                   setLoactionScheduleData((prev) => ({
                     ...prev,
                     departureDate: date,

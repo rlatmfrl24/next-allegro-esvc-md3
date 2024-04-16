@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { useRecoilState } from "recoil";
 
-import { MdSingleDatePicker } from "@/app/components/datepickers/date-picker";
+import { MdSingleDatePicker } from "@/app/components/datepickers/old/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -23,6 +23,7 @@ import { Add, DeleteOutline, PlaceOutlined } from "@mui/icons-material";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { QuotationContainerType } from "@/app/util/typeDef/pricing";
+import { DatePicker } from "@/app/components/datepickers/date-picker";
 
 export default function Condition({
   onReset,
@@ -136,14 +137,16 @@ export default function Condition({
           }}
         />
       </div>
-      <MdSingleDatePicker
-        label="Departure Date"
+      <DatePicker
         className="w-fit"
-        defaultDate={quotationTerms.departureDate}
-        handleDateChange={(date) => {
-          setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
+        label="Departure Date"
+        initialDate={quotationTerms.departureDate}
+        onDateChange={(date) => {
+          date &&
+            setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
         }}
       />
+
       <SubTitle title="Cargo" className="mt-4" />
       <div className="flex">
         <NAOutlinedTextField

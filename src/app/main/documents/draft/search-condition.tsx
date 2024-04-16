@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { MdRangeDatePicker } from "@/app/components/datepickers/old/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -33,6 +33,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
+import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 
 export default function BLCheckSearchCondition({
   onSearch,
@@ -224,14 +225,16 @@ export default function BLCheckSearchCondition({
               </div>
             ),
             "On Board Date": (
-              <MdRangeDatePicker
+              <DateRangePicker
                 label="On Board Date"
-                defaultStartDate={boardDateCondition.from}
-                defaultEndDate={boardDateCondition.to}
-                handleDateRangeSelected={(dateRange) => {
+                initial={{
+                  start: boardDateCondition.from,
+                  end: boardDateCondition.to,
+                }}
+                onDateChange={(dateRange) => {
                   setBoardDateCondition({
-                    from: dateRange[0],
-                    to: dateRange[1],
+                    from: dateRange.start!,
+                    to: dateRange.end!,
                   });
                 }}
               />

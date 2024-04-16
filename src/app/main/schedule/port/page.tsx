@@ -5,7 +5,7 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
 
 import PortIcon from "@/../public/icon_port.svg";
-import { MdRangeDatePicker } from "@/app/components/datepickers/range-picker";
+import { MdRangeDatePicker } from "@/app/components/datepickers/old/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
@@ -30,6 +30,7 @@ import { DividerComponent } from "../../booking/information/components/base";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
+import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 
 export default function PortSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -78,15 +79,19 @@ export default function PortSchedule() {
               }
             }}
           />
-          <MdRangeDatePicker
-            defaultStartDate={portQuery.startDate}
-            defaultEndDate={portQuery.endDate}
-            handleDateRangeSelected={([start, end]) => {
-              setPortQuery({
-                ...portQuery,
-                startDate: start,
-                endDate: end,
-              });
+          <DateRangePicker
+            className="w-80"
+            initial={{
+              start: portQuery.startDate,
+              end: portQuery.endDate,
+            }}
+            onDateChange={(range) => {
+              if (range.start && range.end)
+                setPortQuery({
+                  ...portQuery,
+                  startDate: range.start,
+                  endDate: range.end,
+                });
             }}
           />
         </div>

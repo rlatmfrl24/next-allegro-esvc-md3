@@ -13,10 +13,12 @@ import {
 import { faker } from "@faker-js/faker";
 import { PlaceOutlined } from "@mui/icons-material";
 import NAOutlinedListBox from "../na-outline-listbox";
-import { MdRangeDatePicker } from "../datepickers/range-picker";
+import { MdRangeDatePicker } from "../datepickers/old/range-picker";
 import Link from "next/link";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import PortIcon from "@/../public/icon_port.svg";
+import { DateRangePicker } from "../datepickers/date-range-picker";
+import { DateTime } from "luxon";
 
 export default function QuickSchedule() {
   const [mode, setMode] = useState("point-to-point");
@@ -96,7 +98,14 @@ const PtpSearch = () => {
           initialValue="Departure"
           options={["Departure", "Arrival"]}
         />
-        <MdRangeDatePicker label="Date" />
+        <DateRangePicker
+          label="Date"
+          initial={{
+            start: DateTime.now(),
+            end: DateTime.now().plus({ days: 7 }),
+          }}
+        />
+        {/* <MdRangeDatePicker label="Date" /> */}
       </div>
       <div className="flex-1 flex justify-end items-end h-full gap-2">
         <MdTextButton>Reset</MdTextButton>
@@ -145,7 +154,15 @@ const PortSearch = () => {
         icon={<PortIcon />}
         itemList={tempPorts.map((port) => port.yardName)}
       />
-      <MdRangeDatePicker label="Date" className="w-fit" />
+      {/* <MdRangeDatePicker label="Date" className="w-fit" /> */}
+      <DateRangePicker
+        label="Date"
+        className="w-fit"
+        initial={{
+          start: DateTime.now(),
+          end: DateTime.now().plus({ days: 7 }),
+        }}
+      />
       <div className="flex-1 flex justify-end items-end h-full gap-2">
         <MdTextButton>Reset</MdTextButton>
         <Link href={`/main/schedule/port`}>

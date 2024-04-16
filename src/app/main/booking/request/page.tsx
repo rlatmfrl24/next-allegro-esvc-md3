@@ -85,7 +85,7 @@ export default function BookingRequest() {
   }
 
   return (
-    <div aria-label="container" className={styles.container + " h-fit"}>
+    <div aria-label="container" className={styles.container + ""}>
       <div className="flex items-center justify-between">
         <PageTitle title="Booking Request" />
         <Link href={`/main/booking/template`}>
@@ -97,7 +97,7 @@ export default function BookingRequest() {
           styles["area"],
           styles["no-padding"],
           styles["row-direction"],
-          "min-h-[792px] mb-12"
+          "min-h-[720px] "
         )}
       >
         <div className="flex flex-col gap-4 py-6 px-4 border-r border-r-outlineVariant">

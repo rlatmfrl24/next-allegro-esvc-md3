@@ -1,6 +1,6 @@
 import { MdIcon, MdRippleEffect } from "@/app/util/md3";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { MdTypography } from "../typography";
+import { MdTypography } from "../../typography";
 import CheckIcon from "@mui/icons-material/Check";
 import { motion } from "framer-motion";
 
