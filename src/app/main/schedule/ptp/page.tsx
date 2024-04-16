@@ -4,12 +4,17 @@ import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
+import PageTitle from "@/app/components/title-components";
 import { ScrollState } from "@/app/store/global.store";
 import styles from "@/app/styles/base.module.css";
 import {
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
 } from "@/app/util/md3";
+import {
+  PtPScheduleType,
+  PtPSearchConditionType,
+} from "@/app/util/typeDef/schedule";
 
 import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import { createDummyPtPScheduleData } from "../util";
@@ -17,11 +22,6 @@ import ConditionSummary from "./components/condition-summary";
 import PointToPointCalendarResult from "./result-calendar";
 import PointToPointListResult from "./result-list";
 import SearchCondition from "./search-condition";
-import PageTitle from "@/app/components/title-components";
-import {
-  PtPSearchConditionType,
-  PtPScheduleType,
-} from "@/app/util/typeDef/schedule";
 
 export default function PointToPointSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
