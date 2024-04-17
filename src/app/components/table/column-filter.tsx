@@ -1,4 +1,3 @@
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { basicPopoverStyles } from "@/app/util/constants";
 import {
   useFloating,
@@ -28,6 +27,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { Settings } from "@mui/icons-material";
+import { DividerComponent } from "@/app/main/booking/information/components/base";
 
 export const ColumnFilterButton = ({
   table,

@@ -8,7 +8,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import styles from "@/app/styles/table.module.css";
 import { MemoizedTableBody, TableBody } from "./table-body";
 import { MdTypography } from "../typography";
@@ -39,17 +39,25 @@ export const NewBasicTable = ({
   columns,
   pinningColumns = [],
   controlColumns = [],
+  ignoreSelectionColumns = [],
+  disableColumns = [],
+  editableColumns = [],
   isSingleSelect = false,
   getSelectionRows,
   actionComponent,
+  updater,
 }: {
   data: any[];
   columns: any[];
   pinningColumns?: string[];
   controlColumns?: string[];
+  ignoreSelectionColumns?: string[];
+  disableColumns?: string[];
+  editableColumns?: string[];
   isSingleSelect?: boolean;
   getSelectionRows?: (Rows: any[]) => void;
   actionComponent?: React.ReactNode;
+  updater?: Dispatch<SetStateAction<any[]>>;
 }) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -99,7 +107,30 @@ export const NewBasicTable = ({
     onPaginationChange: setPagination,
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
+    meta: {
+      updateData: (rowIndex: string, columnIndex: string, value: string) => {},
+    },
   });
+
+  function handleCellUpdate(
+    rowIndex: string,
+    columnIndex: string,
+    value: string
+  ) {
+    updater &&
+      updater((prev) => {
+        // const updatedIndex = prev.findIndex((row) => row.id === rowIndex);
+        const updatedIndex = parseInt(rowIndex);
+        return [
+          ...prev.slice(0, updatedIndex),
+          {
+            ...prev[updatedIndex],
+            [columnIndex]: value,
+          },
+          ...prev.slice(updatedIndex + 1),
+        ];
+      });
+  }
 
   useEffect(() => {
     getSelectionRows &&
@@ -200,12 +231,24 @@ export const NewBasicTable = ({
                 table={table}
                 selectedCell={selectedCell}
                 onCellSelected={setSelectedCell}
+                ignoreSelectionColumns={ignoreSelectionColumns}
+                disableColumns={disableColumns}
+                editableColumns={editableColumns}
+                onCellEdit={(rowId, columnId, value) => {
+                  handleCellUpdate(rowId, columnId, value);
+                }}
               />
             ) : (
               <TableBody
                 table={table}
                 selectedCell={selectedCell}
                 onCellSelected={setSelectedCell}
+                ignoreSelectionColumns={ignoreSelectionColumns}
+                disableColumns={disableColumns}
+                editableColumns={editableColumns}
+                onCellEdit={(rowId, columnId, value) => {
+                  handleCellUpdate(rowId, columnId, value);
+                }}
               />
             )}
           </table>

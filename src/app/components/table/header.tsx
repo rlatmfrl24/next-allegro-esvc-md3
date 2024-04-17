@@ -69,7 +69,6 @@ export const HeaderComponent = ({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log("clicked");
                 header.column.toggleSorting();
               }}
               className="z-10 min-w-10"
