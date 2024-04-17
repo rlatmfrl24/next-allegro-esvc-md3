@@ -462,22 +462,9 @@ export default function SITable() {
           if (rows[0]) {
             handleSITableRowSelection(rows[0]);
           }
-
-          // handleSITableRowSelection(rows[0]);
         }}
         isSingleSelect
       />
-
-      {/* <div className="relative overflow-auto w-full max-w-full">
-        <OverlayScrollbarsComponent>
-          <BasicTable
-            table={table}
-            onRowSelction={(row) => {
-              handleSITableRowSelection(row);
-            }}
-          />
-        </OverlayScrollbarsComponent>
-      </div> */}
     </>
   );
 }
