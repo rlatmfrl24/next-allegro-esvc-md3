@@ -5,7 +5,7 @@ import {
   MdIcon,
   MdIconButton,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
-} from "@/util/md3";
+} from "@/app/util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { MdTypography } from "./typography";
 
