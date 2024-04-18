@@ -107,6 +107,7 @@ const DryContainerInput = ({
                         }));
                       }}
                     />
+
                     <NAOutlinedTextField
                       label="Quantity / Total"
                       required
