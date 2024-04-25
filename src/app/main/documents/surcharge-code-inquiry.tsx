@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
-import { BasicTable } from "@/app/components/unused/basic-table";
+import { BasicTable } from "@/app/components/table/simple-table";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import Portal from "@/app/components/portal";
 import { MdDialog, MdTextButton } from "@/app/util/md3";
@@ -91,7 +91,7 @@ export default function SurchargeCodeInquiry({
           onOpenChange(false);
         }}
         ref={dialogRef}
-        className="w-[632px] min-h-[720px]"
+        className="w-[632px] min-h-[720px] min-w-fit"
       >
         <div slot="headline">Surcharge Code Inquiry</div>
         <div slot="content" className="flex flex-col gap-4 ">
