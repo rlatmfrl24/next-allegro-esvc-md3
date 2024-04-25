@@ -1,14 +1,24 @@
 import {
   Cell,
   PaginationState,
+  RowData,
   SortingState,
+  Table,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styles from "@/app/styles/table.module.css";
 import { MemoizedTableBody, TableBody } from "./table-body";
 import { MdTypography } from "../typography";
@@ -34,17 +44,41 @@ import { ColumnFilterButton } from "./column-filter";
 import { TablePaginator } from "./paginator";
 import { getCommonPinningStyles } from "./util";
 
-export const NewBasicTable = ({
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+    updateRow: (rowIndex: number, value: unknown) => void;
+  }
+}
+
+function useSkipper() {
+  const shouldSkipRef = useRef(true);
+  const shouldSkip = shouldSkipRef.current;
+
+  // Wrap a function with this to skip a pagination reset temporarily
+  const skip = useCallback(() => {
+    shouldSkipRef.current = false;
+  }, []);
+
+  useEffect(() => {
+    shouldSkipRef.current = true;
+  });
+
+  return [shouldSkip, skip] as const;
+}
+
+export const BasicTable = ({
   data,
   columns,
   pinningColumns = [],
   controlColumns = [],
   ignoreSelectionColumns = [],
   disableColumns = [],
+  requiredColumns = [],
   editableColumns = [],
   isSingleSelect = false,
   getSelectionRows,
-  actionComponent,
+  ActionComponent,
   updater,
 }: {
   data: any[];
@@ -52,13 +86,15 @@ export const NewBasicTable = ({
   pinningColumns?: string[];
   controlColumns?: string[];
   ignoreSelectionColumns?: string[];
+  requiredColumns?: string[];
   disableColumns?: string[];
   editableColumns?: string[];
   isSingleSelect?: boolean;
   getSelectionRows?: (Rows: any[]) => void;
-  actionComponent?: React.ReactNode;
+  ActionComponent?: (table: Table<any>) => React.ReactNode;
   updater?: Dispatch<SetStateAction<any[]>>;
 }) => {
+  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -107,30 +143,35 @@ export const NewBasicTable = ({
     onPaginationChange: setPagination,
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
+    autoResetPageIndex,
     meta: {
-      updateData: (rowIndex: string, columnIndex: string, value: string) => {},
+      updateData: (rowIndex, columnId, value) => {
+        updater?.((old) => {
+          skipAutoResetPageIndex();
+          return old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex]!,
+                [columnId]: value,
+              };
+            }
+            return row;
+          });
+        });
+      },
+      updateRow: (rowIndex, value) => {
+        updater?.((old) => {
+          skipAutoResetPageIndex();
+          return old.map((row, index) => {
+            if (index === rowIndex) {
+              return value;
+            }
+            return row;
+          });
+        });
+      },
     },
   });
-
-  function handleCellUpdate(
-    rowIndex: string,
-    columnIndex: string,
-    value: string
-  ) {
-    updater &&
-      updater((prev) => {
-        // const updatedIndex = prev.findIndex((row) => row.id === rowIndex);
-        const updatedIndex = parseInt(rowIndex);
-        return [
-          ...prev.slice(0, updatedIndex),
-          {
-            ...prev[updatedIndex],
-            [columnIndex]: value,
-          },
-          ...prev.slice(updatedIndex + 1),
-        ];
-      });
-  }
 
   useEffect(() => {
     getSelectionRows &&
@@ -166,8 +207,8 @@ export const NewBasicTable = ({
 
   return (
     <div className="relative flex flex-col gap-4">
-      <div className="flex items-end ">
-        {actionComponent}
+      <div className="flex items-end">
+        {ActionComponent && <ActionComponent {...table} />}
         <div className="flex gap-2 items-center h-10 z-10">
           <TablePaginator table={table} />
           <MdTypography variant="label" size="large" className="text-outline">
@@ -176,7 +217,7 @@ export const NewBasicTable = ({
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
-      <OverlayScrollbarsComponent defer>
+      <OverlayScrollbarsComponent defer className="overflow-hidden">
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
@@ -216,6 +257,7 @@ export const NewBasicTable = ({
                         <HeaderComponent
                           key={header.id}
                           header={header}
+                          required={requiredColumns.includes(header.id)}
                           disabled={!header.column.getCanSort()}
                           isPinned={header.column.getIsPinned() !== false}
                         />
@@ -234,9 +276,6 @@ export const NewBasicTable = ({
                 ignoreSelectionColumns={ignoreSelectionColumns}
                 disableColumns={disableColumns}
                 editableColumns={editableColumns}
-                onCellEdit={(rowId, columnId, value) => {
-                  handleCellUpdate(rowId, columnId, value);
-                }}
               />
             ) : (
               <TableBody
@@ -246,9 +285,6 @@ export const NewBasicTable = ({
                 ignoreSelectionColumns={ignoreSelectionColumns}
                 disableColumns={disableColumns}
                 editableColumns={editableColumns}
-                onCellEdit={(rowId, columnId, value) => {
-                  handleCellUpdate(rowId, columnId, value);
-                }}
               />
             )}
           </table>

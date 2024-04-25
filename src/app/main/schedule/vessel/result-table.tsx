@@ -5,7 +5,6 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import PlaceInformationDialog from "../popup/place-information";
-import { BasicTable } from "@/app/components/unused/basic-table";
 import { DateTime } from "luxon";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
@@ -14,7 +13,7 @@ import {
   VesselScheduleType,
   PlaceInformationType,
 } from "@/app/util/typeDef/schedule";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
 import { Download } from "@mui/icons-material";
 import { DividerComponent } from "../../booking/information/components/base";
@@ -122,28 +121,33 @@ export default function VesselResultTable({
   return (
     <>
       <div className=" mt-1">
-        <NewBasicTable
-          actionComponent={
-            <div className="flex justify-between items-center flex-1">
-              <div className="flex items-center gap-2">
-                <MdTextButton>
-                  <MdIcon slot="icon">
-                    <Download fontSize="small" />
-                  </MdIcon>
-                  Download
-                </MdTextButton>
-                <DividerComponent orientation="vertical" className="h-8 mx-2" />
-                <MdFilterChip label="Direct Only" />
+        <BasicTable
+          ActionComponent={() => {
+            return (
+              <div className="flex justify-between items-center flex-1">
+                <div className="flex items-center gap-2">
+                  <MdTextButton>
+                    <MdIcon slot="icon">
+                      <Download fontSize="small" />
+                    </MdIcon>
+                    Download
+                  </MdTextButton>
+                  <DividerComponent
+                    orientation="vertical"
+                    className="h-8 mx-2"
+                  />
+                  <MdFilterChip label="Direct Only" />
+                </div>
+                <MdTypography
+                  variant="label"
+                  size="large"
+                  className="text-outline"
+                >
+                  Total:{data.length}
+                </MdTypography>
               </div>
-              <MdTypography
-                variant="label"
-                size="large"
-                className="text-outline"
-              >
-                Total:{data.length}
-              </MdTypography>
-            </div>
-          }
+            );
+          }}
           columns={columns}
           data={data}
           isSingleSelect

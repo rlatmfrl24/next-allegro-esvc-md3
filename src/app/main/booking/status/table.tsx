@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import StatusFilterComponent from "@/app/components/status-filter";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
@@ -292,52 +292,55 @@ export default function BookingStatusTable() {
   return (
     <>
       <div className="relative w-full max-w-full">
-        <NewBasicTable
-          actionComponent={
-            <div className="flex-1 flex flex-col gap-4">
-              <MdChipSet className="z-40">
-                <StatusFilterComponent
-                  statusOptions={Object.values(BookingStatus)}
-                  onChange={(states) => {
-                    setTableData(
-                      tempData.filter((row) => states.includes(row.status))
-                    );
-                  }}
-                />
-                <MdFilterChip label="My Booking" />
-              </MdChipSet>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <MdTextButton>
-                    <div slot="icon">
-                      <Download fontSize="small" />
-                    </div>
-                    Download
-                  </MdTextButton>
-                  {currentBookingData && (
-                    <>
-                      <div className="w-px h-6 bg-outlineVariant"></div>
-                      <MdTextButton>Copy</MdTextButton>
-                    </>
-                  )}
-                  {currentBookingData?.status === "Requested" ||
-                  currentBookingData?.status === "Change Requested" ||
-                  currentBookingData?.status === "Accepted" ? (
-                    <>
-                      <MdTextButton>Edit</MdTextButton>
-                      <MdTextButton>Cancel</MdTextButton>
-                    </>
-                  ) : null}
-                  {currentBookingData?.status === "Accepted" ? (
-                    <>
-                      <MdTextButton>S/I</MdTextButton>
-                      <MdTextButton>Print Receipt</MdTextButton>
-                    </>
-                  ) : null}
+        <BasicTable
+          ActionComponent={() => {
+            return (
+              <div className="flex-1 flex flex-col gap-4">
+                <MdChipSet className="z-40">
+                  <StatusFilterComponent
+                    statusOptions={Object.values(BookingStatus)}
+                    onChange={(states) => {
+                      console.log(states);
+                      setTableData(
+                        tempData.filter((row) => states.includes(row.status))
+                      );
+                    }}
+                  />
+                  <MdFilterChip label="My Booking" />
+                </MdChipSet>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MdTextButton>
+                      <div slot="icon">
+                        <Download fontSize="small" />
+                      </div>
+                      Download
+                    </MdTextButton>
+                    {currentBookingData && (
+                      <>
+                        <div className="w-px h-6 bg-outlineVariant"></div>
+                        <MdTextButton>Copy</MdTextButton>
+                      </>
+                    )}
+                    {currentBookingData?.status === "Requested" ||
+                    currentBookingData?.status === "Change Requested" ||
+                    currentBookingData?.status === "Accepted" ? (
+                      <>
+                        <MdTextButton>Edit</MdTextButton>
+                        <MdTextButton>Cancel</MdTextButton>
+                      </>
+                    ) : null}
+                    {currentBookingData?.status === "Accepted" ? (
+                      <>
+                        <MdTextButton>S/I</MdTextButton>
+                        <MdTextButton>Print Receipt</MdTextButton>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               </div>
-            </div>
-          }
+            );
+          }}
           data={tableData}
           columns={columns}
           isSingleSelect={true}
