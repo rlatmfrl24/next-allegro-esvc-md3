@@ -152,8 +152,6 @@ export default function VesselResultTable({
           data={data}
           isSingleSelect
         />
-
-        {/* <BasicTable table={table} /> */}
       </div>
       {placeInformation && (
         <PlaceInformationDialog
