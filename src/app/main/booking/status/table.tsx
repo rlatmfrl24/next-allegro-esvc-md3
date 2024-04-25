@@ -289,25 +289,44 @@ export default function BookingStatusTable() {
     }),
   ];
 
+  function getActivatedActionButton(status: BookingStatus) {
+    switch (status) {
+      case BookingStatus.Requested:
+      case BookingStatus.ChangeRequested:
+        return ["Copy", "Edit", "Cancel"];
+      case BookingStatus.CancelRequested:
+      case BookingStatus.Cancelled:
+        return ["Copy"];
+      case BookingStatus.Accepted:
+        return ["Copy", "Edit", "Cancel", "S/I", "Print Receipt"];
+      case BookingStatus.Rejected:
+      case BookingStatus.Pending:
+      case BookingStatus.ChangeRequestedRejected:
+        return ["Copy", "Edit"];
+      default:
+        return [];
+    }
+  }
+
   return (
     <>
       <div className="relative w-full max-w-full">
+        <MdChipSet className="mb-4">
+          <StatusFilterComponent
+            statusOptions={Object.values(BookingStatus)}
+            onChange={(states) => {
+              console.log(states);
+              setTableData(
+                tempData.filter((row) => states.includes(row.status))
+              );
+            }}
+          />
+          <MdFilterChip label="My Booking" />
+        </MdChipSet>
         <BasicTable
           ActionComponent={() => {
             return (
               <div className="flex-1 flex flex-col gap-4">
-                <MdChipSet className="z-40">
-                  <StatusFilterComponent
-                    statusOptions={Object.values(BookingStatus)}
-                    onChange={(states) => {
-                      console.log(states);
-                      setTableData(
-                        tempData.filter((row) => states.includes(row.status))
-                      );
-                    }}
-                  />
-                  <MdFilterChip label="My Booking" />
-                </MdChipSet>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <MdTextButton>
@@ -316,26 +335,31 @@ export default function BookingStatusTable() {
                       </div>
                       Download
                     </MdTextButton>
-                    {currentBookingData && (
-                      <>
-                        <div className="w-px h-6 bg-outlineVariant"></div>
-                        <MdTextButton>Copy</MdTextButton>
-                      </>
-                    )}
-                    {currentBookingData?.status === "Requested" ||
-                    currentBookingData?.status === "Change Requested" ||
-                    currentBookingData?.status === "Accepted" ? (
-                      <>
-                        <MdTextButton>Edit</MdTextButton>
-                        <MdTextButton>Cancel</MdTextButton>
-                      </>
-                    ) : null}
-                    {currentBookingData?.status === "Accepted" ? (
-                      <>
-                        <MdTextButton>S/I</MdTextButton>
-                        <MdTextButton>Print Receipt</MdTextButton>
-                      </>
-                    ) : null}
+                    {currentBookingData &&
+                      getActivatedActionButton(currentBookingData.status).map(
+                        (action) =>
+                          ((
+                            {
+                              Copy: (
+                                <MdTextButton key={action}>Copy</MdTextButton>
+                              ),
+                              Edit: (
+                                <MdTextButton key={action}>Edit</MdTextButton>
+                              ),
+                              Cancel: (
+                                <MdTextButton key={action}>Cancel</MdTextButton>
+                              ),
+                              "S/I": (
+                                <MdTextButton key={action}>S/I</MdTextButton>
+                              ),
+                              "Print Receipt": (
+                                <MdTextButton key={action}>
+                                  Print Receipt
+                                </MdTextButton>
+                              ),
+                            } as Record<string, JSX.Element>
+                          )[action])
+                      )}
                   </div>
                 </div>
               </div>
