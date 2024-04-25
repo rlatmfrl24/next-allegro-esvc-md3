@@ -265,16 +265,23 @@ export default function BookingStatusCondition() {
 
   const ReferenceNumberFilter = useMemo(() => {
     return (
-      <NAOutlinedTextField
-        label="Reference No."
-        value={searchCondition.referenceNo}
-        handleValueChange={(value) => {
-          setSearchCondition((prev) => ({
-            ...prev,
-            referenceNo: value,
-          }));
-        }}
-      />
+      <div className="flex gap-2">
+        <NAOutlinedListBox
+          label="Reference No."
+          initialValue="Request No."
+          options={["Request No.", "Booking No."]}
+        />
+        <NAOutlinedTextField
+          placeholder="Enter Reference No."
+          value={searchCondition.referenceNo}
+          handleValueChange={(value) => {
+            setSearchCondition((prev) => ({
+              ...prev,
+              referenceNo: value,
+            }));
+          }}
+        />
+      </div>
     );
   }, [searchCondition.referenceNo]);
 
