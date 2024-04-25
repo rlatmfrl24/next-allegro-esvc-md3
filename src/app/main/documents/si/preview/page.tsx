@@ -35,6 +35,7 @@ import {
   MdFilledTonalButton,
   MdFilledTonalIconButton,
   MdIcon,
+  MdOutlinedButton,
 } from "@/app/util/md3";
 import {
   SIContainerInputProps,
@@ -45,6 +46,7 @@ import {
 import { faker } from "@faker-js/faker";
 import {
   AttachFile,
+  ChevronLeft,
   EditOutlined,
   Email,
   Fax,
@@ -210,14 +212,26 @@ function SIPreview() {
 
   return (
     <div aria-label="container" className={cx(styles.container, "mb-11")}>
-      {requestNumber ? (
-        <MdTypography variant="title" size="large">
-          <span className="text-outline">Request No. </span>
-          {requestNumber}
-        </MdTypography>
-      ) : (
-        <PageTitle title="Shipping Instruction Preview" />
-      )}
+      <div className="flex gap-4 items-center">
+        <MdOutlinedButton
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <MdIcon slot="icon">
+            <ChevronLeft fontSize="small" />
+          </MdIcon>
+          Back
+        </MdOutlinedButton>
+        {requestNumber ? (
+          <MdTypography variant="title" size="large">
+            <span className="text-outline">Request No. </span>
+            {requestNumber}
+          </MdTypography>
+        ) : (
+          <PageTitle title="Shipping Instruction Preview" />
+        )}
+      </div>
 
       <div className={styles.area}>
         <div aria-label="title-area" className="flex justify-between">
