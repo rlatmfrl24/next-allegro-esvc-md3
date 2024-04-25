@@ -53,10 +53,20 @@ export default function BookingStatusTable() {
         | "web"
         | "general"
         | "edi",
-      qty: `${faker.string.numeric(3)} ${faker.helpers.arrayElement([
-        "TEU",
-        "FEU",
-      ])}`,
+      qty: Array.from(
+        { length: faker.number.int(4) },
+        (_, i) =>
+          `${faker.helpers.arrayElement([
+            "Dry 20:",
+            "Dry 40:",
+            "Reefer 20:",
+            "Reefer 40:",
+          ])} ${faker.number.int(9)}`
+      ).join("\n"),
+      // qty: `${faker.string.numeric(3)} ${faker.helpers.arrayElement([
+      //   "TEU",
+      //   "FEU",
+      // ])}`,
     }));
   }, []);
 
@@ -281,9 +291,16 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant whitespace-nowrap"
+          className="text-onSurfaceVariant flex flex-col gap-1"
         >
-          {info.getValue()}
+          {info
+            .getValue()
+            .split("\n")
+            .map((item, index) => (
+              <span key={index} className="block">
+                {item}
+              </span>
+            ))}
         </MdTypography>
       ),
     }),
