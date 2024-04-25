@@ -1057,7 +1057,7 @@ function SIPreview() {
           </div> */}
         </div>
       </div>
-      {!requestNumber && (
+      {!requestNumber ? (
         <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
           <div
             className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
@@ -1068,6 +1068,7 @@ function SIPreview() {
             }
           >
             <MdElevation />
+            <MdFilledTonalButton>Temparary Save</MdFilledTonalButton>
             <MdFilledButton
               onClick={() => {
                 const newSICondition = {
@@ -1084,6 +1085,21 @@ function SIPreview() {
             >
               Submit
             </MdFilledButton>
+          </div>
+        </div>
+      ) : (
+        <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
+          <div
+            className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
+            style={
+              {
+                "--md-elevation-level": 4,
+              } as CSSProperties
+            }
+          >
+            <MdElevation />
+            <MdOutlinedButton>Print</MdOutlinedButton>
+            <MdOutlinedButton>B/L View</MdOutlinedButton>
           </div>
         </div>
       )}

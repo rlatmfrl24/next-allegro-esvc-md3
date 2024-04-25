@@ -72,7 +72,7 @@ export const SIEditRouteBLState = atom<SIRouteBLType>({
   key: "siEditRouteBLState",
   default: {
     remarks: "",
-    blType: "none",
+    blType: "originalBL",
     freightTerms: "prepaid",
     houseBLInvovled: "none",
   } as SIRouteBLType,

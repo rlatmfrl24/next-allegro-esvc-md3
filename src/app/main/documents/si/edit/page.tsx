@@ -75,7 +75,10 @@ export default function SIEdit() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Shipping Instruction" />
+      <div className="flex justify-between">
+        <PageTitle title="Shipping Instruction" />
+        <MdFilledTonalButton>Temporary Save </MdFilledTonalButton>
+      </div>
       <div
         className={cx(
           styles["area"],

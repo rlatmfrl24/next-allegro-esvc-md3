@@ -47,10 +47,16 @@ export default function StepMarkDescription() {
       ...prev,
       markDescription: {
         ...prev.markDescription,
-        isCompleted: !!markDescriptionStore.hsCode,
+        isCompleted:
+          !!markDescriptionStore.hsCode &&
+          !!markDescriptionStore.customsCommodity,
       },
     }));
-  }, [markDescriptionStore.hsCode, setSIEditStep]);
+  }, [
+    markDescriptionStore.customsCommodity,
+    markDescriptionStore.hsCode,
+    setSIEditStep,
+  ]);
 
   const moveToContactInformationStep = useCallback(() => {
     setSIEditStep((prev) => ({
@@ -151,16 +157,17 @@ export default function StepMarkDescription() {
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="Customs Commodity" />
-          <MdOutlinedTextField
+          <NAOutlinedTextField
+            required
             placeholder="Customs Commodity"
             type="textarea"
             rows={3}
             className="resize-y"
             value={markDescriptionStore.customsCommodity}
-            onInput={(e) => {
+            handleValueChange={(value) => {
               setMarkDescriptionStore((prev) => ({
                 ...prev,
-                customsCommodity: e.currentTarget.value,
+                customsCommodity: value,
               }));
             }}
           />
