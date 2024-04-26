@@ -6,7 +6,9 @@ import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import VesselInfoCell, {
+  useVesselInfoCell,
+} from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -88,6 +90,8 @@ export default function SITable() {
   );
   const [tableData, setTableData] = useState<SISearchTableProps[]>([]);
   const [selectedRows, setSelectedRows] = useState<SISearchTableProps[]>([]);
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselInfoCell({});
 
   useEffect(() => {
     setTableData(tempTableData);
@@ -342,7 +346,22 @@ export default function SITable() {
     columnHelper.accessor("vessel", {
       header: "Vessel",
       id: "vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      // cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="underline cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
+        </MdTypography>
+      ),
+      size: 300,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
@@ -429,6 +448,7 @@ export default function SITable() {
 
   return (
     <>
+      {renderDialog()}
       <MdChipSet>
         <StatusFilterComponent
           statusOptions={Object.values(SIState)}

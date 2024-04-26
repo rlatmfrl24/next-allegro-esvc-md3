@@ -48,14 +48,14 @@ export const useVesselInfoCell = ({
 
   function renderDialog() {
     return (
-      <Portal selector="#main-container">
-        <VesselScheduleDialog
-          open={isVesselScheduleDialogOpen}
-          handleOpen={setIsVesselScheduleDialogOpen}
-          vesselInfo={currentVessel}
-          vesselSchedules={createDummyVesselSchedules()}
-        />
-      </Portal>
+      <VesselScheduleDialog
+        open={isVesselScheduleDialogOpen}
+        handleOpen={setIsVesselScheduleDialogOpen}
+        vesselInfo={currentVessel}
+        vesselSchedules={createDummyVesselSchedules()}
+      />
+      // <Portal selector="#main-container">
+      // </Portal>
     );
   }
 
