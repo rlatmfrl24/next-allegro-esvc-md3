@@ -20,7 +20,8 @@ import {
 } from "@/app/util/typeDef/schedule";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
 import { faker } from "@faker-js/faker";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { useVesselInfoCell } from "@/app/components/vessel-info-cell";
+import { MdTypography } from "@/app/components/typography";
 
 export default function SearchScheduleDialog({
   open,
@@ -38,6 +39,8 @@ export default function SearchScheduleDialog({
   }, [condition]);
   const columnHelper = createColumnHelper<PtPScheduleType>();
   const [selectedScheduleIndex, setSelectedScheduleIndex] = useState({});
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselInfoCell();
 
   const columns = [
     columnHelper.display({
@@ -72,7 +75,20 @@ export default function SearchScheduleDialog({
     }),
     columnHelper.accessor("vesselInfo", {
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="underline cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("serviceLane", {
       header: "Lane",
@@ -118,6 +134,7 @@ export default function SearchScheduleDialog({
 
   return (
     <Portal selector="#main-container">
+      {renderDialog()}
       <MdDialog
         open={open}
         closed={() => {

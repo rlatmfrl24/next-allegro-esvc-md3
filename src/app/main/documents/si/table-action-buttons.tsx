@@ -1,7 +1,7 @@
 import { BasicTable } from "@/app/components/table/simple-table";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { useVesselInfoCell } from "@/app/components/vessel-info-cell";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
@@ -266,6 +266,8 @@ const BLCombine = ({
   }, []);
   const columnHelper = createColumnHelper<TableProps>();
   const [rowSelection, setRowSelection] = useState({});
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselInfoCell();
 
   const columns = [
     columnHelper.display({
@@ -290,7 +292,20 @@ const BLCombine = ({
     }),
     columnHelper.accessor("vessel", {
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="underline cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
@@ -325,6 +340,7 @@ const BLCombine = ({
       }}
       className="min-w-fit"
     >
+      {renderDialog()}
       <div slot="headline">B/L Combine</div>
       <div slot="content" className="flex flex-col">
         <div className="flex items-center">

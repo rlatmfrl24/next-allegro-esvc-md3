@@ -6,9 +6,7 @@ import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell, {
-  useVesselInfoCell,
-} from "@/app/components/vessel-info-cell";
+import { useVesselInfoCell } from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
