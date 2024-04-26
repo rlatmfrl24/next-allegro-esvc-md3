@@ -35,12 +35,8 @@ export default function BLCheckResultTable() {
   }, []);
   const [tableData, setTableData] = useState<ResultTableProps[]>([]);
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
-  const {
-    renderDialog,
-    currentVessel,
-    setCurrentVessel,
-    setIsVesselScheduleDialogOpen,
-  } = useVesselScheduleDialog();
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselScheduleDialog();
 
   useEffect(() => {
     setTableData(tempData);

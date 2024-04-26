@@ -4,6 +4,14 @@ import { createDummyVesselSchedules } from "@/app/main/schedule/util";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { useState } from "react";
 
+export const usePlaceInfoDialog = () => {
+  //TODO: Implement Place Info Dialog logic here
+};
+
+export const useVesselInfoDialog = () => {
+  //TODO: Implement Vessel Info Dialog logic here
+};
+
 export const useVesselScheduleDialog = () => {
   const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
     useState(false);
