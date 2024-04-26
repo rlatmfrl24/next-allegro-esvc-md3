@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import StatusFilterComponent from "@/app/components/status-filter";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
@@ -53,10 +53,20 @@ export default function BookingStatusTable() {
         | "web"
         | "general"
         | "edi",
-      qty: `${faker.string.numeric(3)} ${faker.helpers.arrayElement([
-        "TEU",
-        "FEU",
-      ])}`,
+      qty: Array.from(
+        { length: faker.number.int(4) },
+        (_, i) =>
+          `${faker.helpers.arrayElement([
+            "Dry 20:",
+            "Dry 40:",
+            "Reefer 20:",
+            "Reefer 40:",
+          ])} ${faker.number.int(9)}`
+      ).join("\n"),
+      // qty: `${faker.string.numeric(3)} ${faker.helpers.arrayElement([
+      //   "TEU",
+      //   "FEU",
+      // ])}`,
     }));
   }, []);
 
@@ -281,63 +291,97 @@ export default function BookingStatusTable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="text-onSurfaceVariant whitespace-nowrap"
+          className="text-onSurfaceVariant flex flex-col gap-1"
         >
-          {info.getValue()}
+          {info
+            .getValue()
+            .split("\n")
+            .map((item, index) => (
+              <span key={index} className="block">
+                {item}
+              </span>
+            ))}
         </MdTypography>
       ),
     }),
   ];
 
+  function getActivatedActionButton(status: BookingStatus) {
+    switch (status) {
+      case BookingStatus.Requested:
+      case BookingStatus.ChangeRequested:
+        return ["Copy", "Edit", "Cancel"];
+      case BookingStatus.CancelRequested:
+      case BookingStatus.Cancelled:
+        return ["Copy"];
+      case BookingStatus.Accepted:
+        return ["Copy", "Edit", "Cancel", "S/I", "Print Receipt"];
+      case BookingStatus.Rejected:
+      case BookingStatus.Pending:
+      case BookingStatus.ChangeRequestedRejected:
+        return ["Copy", "Edit"];
+      default:
+        return [];
+    }
+  }
+
   return (
     <>
       <div className="relative w-full max-w-full">
-        <NewBasicTable
-          actionComponent={
-            <div className="flex-1 flex flex-col gap-4">
-              <MdChipSet className="z-40">
-                <StatusFilterComponent
-                  statusOptions={Object.values(BookingStatus)}
-                  onChange={(states) => {
-                    setTableData(
-                      tempData.filter((row) => states.includes(row.status))
-                    );
-                  }}
-                />
-                <MdFilterChip label="My Booking" />
-              </MdChipSet>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <MdTextButton>
-                    <div slot="icon">
-                      <Download fontSize="small" />
-                    </div>
-                    Download
-                  </MdTextButton>
-                  {currentBookingData && (
-                    <>
-                      <div className="w-px h-6 bg-outlineVariant"></div>
-                      <MdTextButton>Copy</MdTextButton>
-                    </>
-                  )}
-                  {currentBookingData?.status === "Requested" ||
-                  currentBookingData?.status === "Change Requested" ||
-                  currentBookingData?.status === "Accepted" ? (
-                    <>
-                      <MdTextButton>Edit</MdTextButton>
-                      <MdTextButton>Cancel</MdTextButton>
-                    </>
-                  ) : null}
-                  {currentBookingData?.status === "Accepted" ? (
-                    <>
-                      <MdTextButton>S/I</MdTextButton>
-                      <MdTextButton>Print Receipt</MdTextButton>
-                    </>
-                  ) : null}
+        <MdChipSet className="mb-4">
+          <StatusFilterComponent
+            statusOptions={Object.values(BookingStatus)}
+            onChange={(states) => {
+              console.log(states);
+              setTableData(
+                tempData.filter((row) => states.includes(row.status))
+              );
+            }}
+          />
+          <MdFilterChip label="My Booking" />
+        </MdChipSet>
+        <BasicTable
+          ActionComponent={() => {
+            return (
+              <div className="flex-1 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MdTextButton>
+                      <div slot="icon">
+                        <Download fontSize="small" />
+                      </div>
+                      Download
+                    </MdTextButton>
+                    {currentBookingData &&
+                      getActivatedActionButton(currentBookingData.status).map(
+                        (action) =>
+                          ((
+                            {
+                              Copy: (
+                                <MdTextButton key={action}>Copy</MdTextButton>
+                              ),
+                              Edit: (
+                                <MdTextButton key={action}>Edit</MdTextButton>
+                              ),
+                              Cancel: (
+                                <MdTextButton key={action}>Cancel</MdTextButton>
+                              ),
+                              "S/I": (
+                                <MdTextButton key={action}>S/I</MdTextButton>
+                              ),
+                              "Print Receipt": (
+                                <MdTextButton key={action}>
+                                  Print Receipt
+                                </MdTextButton>
+                              ),
+                            } as Record<string, JSX.Element>
+                          )[action])
+                      )}
+                  </div>
                 </div>
               </div>
-            </div>
-          }
+            );
+          }}
           data={tableData}
           columns={columns}
           isSingleSelect={true}

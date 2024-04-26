@@ -1,4 +1,3 @@
-import { BasicTable } from "@/app/components/unused/basic-table";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
@@ -21,7 +20,7 @@ import {
 import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 
 export default function SeaWaybillResultTable() {
   const tempData = useMemo(() => {
@@ -157,21 +156,23 @@ export default function SeaWaybillResultTable() {
 
   return (
     <>
-      <NewBasicTable
-        actionComponent={
-          <div className="flex flex-1 items-center">
-            <MdTextButton
-              onClick={() => {
-                setPrintDialogOpen(true);
-              }}
-            >
-              <div slot="icon">
-                <Print fontSize="small" />
-              </div>
-              Print
-            </MdTextButton>
-          </div>
-        }
+      <BasicTable
+        ActionComponent={() => {
+          return (
+            <div className="flex flex-1 items-center">
+              <MdTextButton
+                onClick={() => {
+                  setPrintDialogOpen(true);
+                }}
+              >
+                <div slot="icon">
+                  <Print fontSize="small" />
+                </div>
+                Print
+              </MdTextButton>
+            </div>
+          );
+        }}
         columns={columns}
         data={tableData}
         controlColumns={["checkbox", "freight"]}

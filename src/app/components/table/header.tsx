@@ -10,10 +10,12 @@ import { CSS } from "@dnd-kit/utilities";
 export const HeaderComponent = ({
   header,
   disabled,
+  required = false,
   isPinned = false,
 }: {
   header: Header<any, any>;
   disabled: boolean;
+  required?: boolean;
   isPinned?: boolean;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -45,7 +47,7 @@ export const HeaderComponent = ({
       ref={setNodeRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="max-h-14 h-14"
+      className="relative max-h-14 h-14"
     >
       <div className="h-full flex items-center">
         <div
@@ -62,29 +64,33 @@ export const HeaderComponent = ({
             {flexRender(header.column.columnDef.header, header.getContext())}
           </MdTypography>
         </div>
-        {header.column.getCanSort() &&
-          (isHovered || header.column.getIsSorted()) && (
-            <MdIconButton
-              disabled={disabled}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                header.column.toggleSorting();
-              }}
-              className="z-10 min-w-10"
-            >
-              <ArrowUpward
-                fontSize="small"
-                className={`${
-                  header.column.getIsSorted() === false
-                    ? "text-gray-400"
-                    : header.column.getIsSorted() === "asc"
-                    ? "rotate-0 text-primary"
-                    : "rotate-180 text-primary"
-                }`}
-              />
-            </MdIconButton>
-          )}
+
+        {header.column.getCanSort() && (
+          <MdIconButton
+            disabled={disabled}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              header.column.toggleSorting();
+            }}
+            className={`z-10 min-w-10 ${
+              header.column.getIsSorted() === false && !isHovered
+                ? "opacity-0"
+                : "opacity-100"
+            }`}
+          >
+            <ArrowUpward
+              fontSize="small"
+              className={`${
+                header.column.getIsSorted() === false
+                  ? "text-gray-400"
+                  : header.column.getIsSorted() === "asc"
+                  ? "rotate-0 text-primary"
+                  : "rotate-180 text-primary"
+              }`}
+            />
+          </MdIconButton>
+        )}
 
         <div
           onMouseDown={(e) => {
@@ -95,8 +101,17 @@ export const HeaderComponent = ({
             // table.resetRowSelection();
             header.getResizeHandler()(e);
           }}
-          className={`w-2 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
+          className={`absolute right-0 z-20 w-3 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
         ></div>
+        {required && (
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="absolute top-2 left-2 text-error"
+          >
+            *
+          </MdTypography>
+        )}
       </div>
     </th>
   );

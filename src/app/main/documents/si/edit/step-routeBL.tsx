@@ -37,19 +37,21 @@ export default function StepRouteBL() {
   const ValidateRequired = useMemo(() => {
     return (
       !!routeBLStore.vesselVoyage &&
-      !!routeBLStore.preCarriageBy &&
       !!routeBLStore.por?.yardName &&
       !!routeBLStore.pol?.yardName &&
       !!routeBLStore.pod?.yardName &&
-      !!routeBLStore.del?.yardName
+      !!routeBLStore.del?.yardName &&
+      !!routeBLStore.serviceTypeFrom &&
+      !!routeBLStore.serviceTypeTo
     );
   }, [
     routeBLStore.del?.yardName,
     routeBLStore.pod?.yardName,
     routeBLStore.pol?.yardName,
     routeBLStore.por?.yardName,
-    routeBLStore.preCarriageBy,
     routeBLStore.vesselVoyage,
+    routeBLStore.serviceTypeFrom,
+    routeBLStore.serviceTypeTo,
   ]);
 
   useEffect(() => {
@@ -88,7 +90,6 @@ export default function StepRouteBL() {
             }
           />
           <NAOutlinedTextField
-            required
             label="Pre-Carriage By"
             value={routeBLStore.preCarriageBy || ""}
             handleValueChange={(value) =>
@@ -233,6 +234,7 @@ export default function StepRouteBL() {
           <div></div>
           <div className="flex gap-2">
             <NAOutlinedListBox
+              required
               options={["CY", "Door"]}
               initialValue={
                 routeBLStore.serviceTypeFrom === "cy"
@@ -250,6 +252,7 @@ export default function StepRouteBL() {
               }
             />
             <NAOutlinedListBox
+              required
               options={["CY", "Door"]}
               initialValue={
                 routeBLStore.serviceTypeTo === "cy"
@@ -274,18 +277,6 @@ export default function StepRouteBL() {
             <DividerComponent className="flex-1" />
           </div>
           <form className="flex gap-9">
-            <MdTypography
-              tag="label"
-              variant="label"
-              size="large"
-              className="flex items-center gap-2"
-              onClick={() =>
-                setRouteBLStore((prev) => ({ ...prev, blType: "none" }))
-              }
-            >
-              <MdRadio name="blType" checked={routeBLStore.blType === "none"} />
-              None
-            </MdTypography>
             <MdTypography
               tag="label"
               variant="label"

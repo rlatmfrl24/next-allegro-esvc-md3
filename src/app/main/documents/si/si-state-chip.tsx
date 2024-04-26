@@ -12,7 +12,8 @@ export default function SIStateChip({ state }: { state: SIState }) {
           "Temporary Saved": "bg-surfaceContainerHigh text-onSurface",
           Submit: "bg-surfaceContainerHigh text-onSurface",
           "Change Requested": "bg-surfaceContainerHigh text-onSurface",
-          "Change Requested Rejected": "bg-surfaceContainerHigh text-onSurface",
+          "Change Requested Rejected":
+            "bg-errorContainer text-onErrorContainer",
           Confirmed: "bg-extendGoodContainer text-extendOnGoodContainer",
           Rejected: "bg-errorContainer text-onErrorContainer",
           Pending: "bg-extendPendingContainer text-extendOnPendingContainer",

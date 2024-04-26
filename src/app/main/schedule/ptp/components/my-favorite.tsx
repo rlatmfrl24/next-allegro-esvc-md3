@@ -141,10 +141,6 @@ export default function MyFavorite({
           </div>
         )}
       </AnimatePresence>
-      {/* <FloatingFocusManager
-        context={context}
-        modal={true}
-      ></FloatingFocusManager> */}
     </>
   );
 }

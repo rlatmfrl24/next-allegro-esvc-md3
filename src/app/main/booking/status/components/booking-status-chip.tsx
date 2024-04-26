@@ -10,7 +10,7 @@ export default function BookingStatusChip({
     <MdTypography
       variant="label"
       size="medium"
-      className={`px-2 py-1 rounded-lg whitespace-nowrap w-fit ${
+      className={`px-2 py-1 rounded-lg w-fit ${
         {
           Requested: "bg-surfaceContainerHigh text-onSurface",
           "Change Requested": "bg-surfaceContainerHigh text-onSurface",
@@ -19,6 +19,8 @@ export default function BookingStatusChip({
           Accepted: "bg-extendGoodContainer text-extendOnGoodContainer",
           Rejected: "bg-errorContainer text-onErrorContainer",
           Pending: "bg-extendPendingContainer text-extendOnPendingContainer",
+          "Change Requested Rejected":
+            "bg-errorContainer text-onErrorContainer",
         }[status]
       }`}
     >

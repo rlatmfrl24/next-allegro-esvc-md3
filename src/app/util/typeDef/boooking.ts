@@ -18,6 +18,7 @@ export enum BookingStatus {
   Accepted = "Accepted",
   Rejected = "Rejected",
   Pending = "Pending",
+  ChangeRequestedRejected = "Change Requested Rejected",
 }
 
 export type CommodityType = {
