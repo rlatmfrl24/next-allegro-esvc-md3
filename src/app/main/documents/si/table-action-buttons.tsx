@@ -1,7 +1,7 @@
 import { BasicTable } from "@/app/components/table/simple-table";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
@@ -267,7 +267,7 @@ const BLCombine = ({
   const columnHelper = createColumnHelper<TableProps>();
   const [rowSelection, setRowSelection] = useState({});
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
-    useVesselInfoCell();
+    useVesselScheduleDialog();
 
   const columns = [
     columnHelper.display({

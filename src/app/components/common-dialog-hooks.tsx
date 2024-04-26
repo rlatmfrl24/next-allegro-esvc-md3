@@ -4,7 +4,7 @@ import { createDummyVesselSchedules } from "@/app/main/schedule/util";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
 import { useState } from "react";
 
-export const useVesselInfoCell = () => {
+export const useVesselScheduleDialog = () => {
   const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
     useState(false);
   const [currentVessel, setCurrentVessel] = useState<VesselInfoType>(

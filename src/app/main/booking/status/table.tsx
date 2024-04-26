@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import {
@@ -74,7 +74,7 @@ export default function BookingStatusTable() {
     renderDialog: renderVesselInfoDialog,
     setCurrentVessel,
     setIsVesselScheduleDialogOpen,
-  } = useVesselInfoCell();
+  } = useVesselScheduleDialog();
 
   const {
     renderDialog: renderEstimatedTimeofDepartureDialog,

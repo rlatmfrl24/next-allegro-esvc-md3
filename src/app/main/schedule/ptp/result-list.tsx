@@ -4,7 +4,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { PtPScheduleType, VesselInfoType } from "@/app/util/typeDef/schedule";
 import { MdTypography } from "@/app/components/typography";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
-import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 
 export default function PointToPointListResult({
   list,
@@ -12,7 +12,7 @@ export default function PointToPointListResult({
   list: PtPScheduleType[];
 }) {
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
-    useVesselInfoCell();
+    useVesselScheduleDialog();
 
   function handleVesselInfoClick(vessel: VesselInfoType) {
     setCurrentVessel(vessel);

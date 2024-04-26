@@ -1,7 +1,7 @@
 import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -37,7 +37,7 @@ export default function SeaWaybillResultTable() {
   const [tableData, setTableData] = useState<SeaWaybillTableProps[]>([]);
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
-    useVesselInfoCell();
+    useVesselScheduleDialog();
 
   useEffect(() => {
     setTableData(tempData);

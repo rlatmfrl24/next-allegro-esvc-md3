@@ -16,7 +16,7 @@ import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 import { BasicTable } from "@/app/components/table/basic-table";
-import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 
 export default function BLCheckResultTable() {
   const tempData = useMemo(() => {
@@ -40,7 +40,7 @@ export default function BLCheckResultTable() {
     currentVessel,
     setCurrentVessel,
     setIsVesselScheduleDialogOpen,
-  } = useVesselInfoCell();
+  } = useVesselScheduleDialog();
 
   useEffect(() => {
     setTableData(tempData);

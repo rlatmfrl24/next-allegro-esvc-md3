@@ -20,7 +20,7 @@ import {
 } from "@/app/util/typeDef/schedule";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
 import { faker } from "@faker-js/faker";
-import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { MdTypography } from "@/app/components/typography";
 
 export default function SearchScheduleDialog({
@@ -40,7 +40,7 @@ export default function SearchScheduleDialog({
   const columnHelper = createColumnHelper<PtPScheduleType>();
   const [selectedScheduleIndex, setSelectedScheduleIndex] = useState({});
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
-    useVesselInfoCell();
+    useVesselScheduleDialog();
 
   const columns = [
     columnHelper.display({
