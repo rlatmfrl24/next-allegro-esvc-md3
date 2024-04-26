@@ -38,12 +38,8 @@ export default function SeaWaybillResultTable() {
   }, []);
   const [tableData, setTableData] = useState<SeaWaybillTableProps[]>([]);
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
-  const {
-    renderDialog,
-    currentVessel,
-    setCurrentVessel,
-    setIsVesselScheduleDialogOpen,
-  } = useVesselInfoCell({});
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselInfoCell();
 
   useEffect(() => {
     setTableData(tempData);

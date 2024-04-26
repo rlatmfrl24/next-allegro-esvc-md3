@@ -74,7 +74,7 @@ export default function BookingStatusTable() {
     renderDialog: renderVesselInfoDialog,
     setCurrentVessel,
     setIsVesselScheduleDialogOpen,
-  } = useVesselInfoCell({});
+  } = useVesselInfoCell();
 
   const {
     renderDialog: renderEstimatedTimeofDepartureDialog,

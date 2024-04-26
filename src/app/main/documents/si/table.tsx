@@ -91,7 +91,7 @@ export default function SITable() {
   const [tableData, setTableData] = useState<SISearchTableProps[]>([]);
   const [selectedRows, setSelectedRows] = useState<SISearchTableProps[]>([]);
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
-    useVesselInfoCell({});
+    useVesselInfoCell();
 
   useEffect(() => {
     setTableData(tempTableData);

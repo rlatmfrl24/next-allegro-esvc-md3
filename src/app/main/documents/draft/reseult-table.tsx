@@ -40,7 +40,7 @@ export default function BLCheckResultTable() {
     currentVessel,
     setCurrentVessel,
     setIsVesselScheduleDialogOpen,
-  } = useVesselInfoCell({});
+  } = useVesselInfoCell();
 
   useEffect(() => {
     setTableData(tempData);
