@@ -16,12 +16,12 @@ import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
 import { BasicTable } from "@/app/components/table/basic-table";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { useVesselInfoCell } from "@/app/components/vessel-info-cell";
 
 export default function BLCheckResultTable() {
   const tempData = useMemo(() => {
     return Array.from(
-      { length: 10 },
+      { length: 900 },
       (_, i) =>
         ({
           blNumber: faker.string.alphanumeric(10).toUpperCase(),
@@ -35,12 +35,18 @@ export default function BLCheckResultTable() {
   }, []);
   const [tableData, setTableData] = useState<ResultTableProps[]>([]);
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
+  const {
+    renderDialog,
+    currentVessel,
+    setCurrentVessel,
+    setIsVesselScheduleDialogOpen,
+  } = useVesselInfoCell({});
+
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
 
   const columnHelper = createColumnHelper<ResultTableProps>();
-
   const columns = [
     columnHelper.display({
       id: "checkbox",
@@ -90,7 +96,20 @@ export default function BLCheckResultTable() {
     columnHelper.accessor("vessel", {
       header: "Vessel",
       id: "vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="underline cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("onBoardDate", {
       header: "On Board Date",
@@ -140,6 +159,7 @@ export default function BLCheckResultTable() {
 
   return (
     <>
+      {renderDialog()}
       <BasicTable
         ActionComponent={() => {
           return (

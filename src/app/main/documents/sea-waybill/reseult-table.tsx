@@ -1,7 +1,9 @@
 import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import VesselInfoCell, {
+  useVesselInfoCell,
+} from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -12,11 +14,7 @@ import {
 import { SeaWaybillTableProps } from "@/app/util/typeDef/documents";
 import { faker } from "@faker-js/faker";
 import { Print } from "@mui/icons-material";
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
@@ -25,7 +23,7 @@ import { BasicTable } from "@/app/components/table/basic-table";
 export default function SeaWaybillResultTable() {
   const tempData = useMemo(() => {
     return Array.from(
-      { length: 10 },
+      { length: 900 },
       (_, i) =>
         ({
           blNumber: faker.string.alphanumeric(10).toUpperCase(),
@@ -39,8 +37,14 @@ export default function SeaWaybillResultTable() {
     );
   }, []);
   const [tableData, setTableData] = useState<SeaWaybillTableProps[]>([]);
-  const [rowSelection, setRowSelection] = useState({});
   const [printDialogOpen, setPrintDialogOpen] = useState(false);
+  const {
+    renderDialog,
+    currentVessel,
+    setCurrentVessel,
+    setIsVesselScheduleDialogOpen,
+  } = useVesselInfoCell({});
+
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
@@ -97,7 +101,20 @@ export default function SeaWaybillResultTable() {
     columnHelper.accessor("vessel", {
       header: "Vessel",
       id: "vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="underline cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("onBoardDate", {
       header: "On Board Date",
@@ -156,6 +173,7 @@ export default function SeaWaybillResultTable() {
 
   return (
     <>
+      {renderDialog()}
       <BasicTable
         ActionComponent={() => {
           return (

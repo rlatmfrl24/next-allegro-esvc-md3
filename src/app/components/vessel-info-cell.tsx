@@ -35,4 +35,36 @@ const VesselInfoCell = (vessel: VesselInfoType) => {
   );
 };
 
+export const useVesselInfoCell = ({
+  initialVessel,
+}: {
+  initialVessel?: VesselInfoType;
+}) => {
+  const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
+    useState(false);
+  const [currentVessel, setCurrentVessel] = useState<VesselInfoType>(
+    initialVessel || ({} as VesselInfoType)
+  );
+
+  function renderDialog() {
+    return (
+      <Portal selector="#main-container">
+        <VesselScheduleDialog
+          open={isVesselScheduleDialogOpen}
+          handleOpen={setIsVesselScheduleDialogOpen}
+          vesselInfo={currentVessel}
+          vesselSchedules={createDummyVesselSchedules()}
+        />
+      </Portal>
+    );
+  }
+
+  return {
+    renderDialog,
+    currentVessel,
+    setCurrentVessel,
+    setIsVesselScheduleDialogOpen,
+  };
+};
+
 export default VesselInfoCell;
