@@ -35,13 +35,19 @@ import {
   PtPScheduleType,
   PlaceInformationType,
   CutOffDataType,
+  VesselInfoType,
 } from "@/app/util/typeDef/schedule";
 import { DetailTitle } from "@/app/components/title-components";
 
-export default function ListItem({ item }: { item: PtPScheduleType }) {
+export default function ListItem({
+  item,
+  onVesselInfoClick,
+}: {
+  item: PtPScheduleType;
+  onVesselInfoClick?: (vessel: VesselInfoType) => void;
+}) {
   const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
   const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
-  const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceInformationType>();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
@@ -147,7 +153,7 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
           </MdIcon>
           <div
             onClick={() => {
-              setIsVesselScheduleOpen(true);
+              onVesselInfoClick?.(tempVesselInfo);
             }}
           >
             <MdTypography
@@ -290,7 +296,8 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
                 <span
                   className="border-b border-onSurface cursor-pointer"
                   onClick={() => {
-                    setIsVesselScheduleOpen(true);
+                    // setIsVesselScheduleOpen(true);
+                    onVesselInfoClick?.(tempVesselInfo);
                   }}
                 >
                   {item.vesselInfo.vesselName}
@@ -369,12 +376,12 @@ export default function ListItem({ item }: { item: PtPScheduleType }) {
           handleOpen={setIsVesselInformationOpen}
           data={tempVesselInfo}
         />
-        <VesselScheduleDialog
+        {/* <VesselScheduleDialog
           open={isVesselScheduleOpen}
           handleOpen={setIsVesselScheduleOpen}
           vesselInfo={tempVesselInfo}
           vesselSchedules={tempVesselSchedules}
-        />
+        /> */}
       </Portal>
       <>
         {isDetailOpen && (

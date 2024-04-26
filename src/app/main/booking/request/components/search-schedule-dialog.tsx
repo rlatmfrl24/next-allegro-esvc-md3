@@ -20,7 +20,7 @@ import {
 } from "@/app/util/typeDef/schedule";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
 import { faker } from "@faker-js/faker";
-import { useVesselInfoCell } from "@/app/components/vessel-info-cell";
+import { useVesselInfoCell } from "@/app/components/common-dialog-hooks";
 import { MdTypography } from "@/app/components/typography";
 
 export default function SearchScheduleDialog({
