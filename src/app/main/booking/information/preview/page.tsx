@@ -10,6 +10,8 @@ import PartiesSection from "../components/parties";
 import {
   MdElevation,
   MdFilledButton,
+  MdIcon,
+  MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { CSSProperties, useEffect } from "react";
@@ -31,6 +33,7 @@ import {
 } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
+import { ChevronLeft } from "@mui/icons-material";
 
 export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);
@@ -85,7 +88,19 @@ export default function BookingRequestPreview() {
   return (
     <>
       <div aria-label="container" className={cx(styles.container, "mb-12")}>
-        <PageTitle title="Booking Request Preview" />
+        <div className="flex gap-4">
+          <MdOutlinedButton
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <MdIcon slot="icon">
+              <ChevronLeft fontSize="small" />
+            </MdIcon>
+            Back
+          </MdOutlinedButton>
+          <PageTitle title="Booking Request Preview" hasFavorite={false} />
+        </div>
         <div
           className={cx(styles.area, styles["no-padding"], "overflow-hidden")}
         >

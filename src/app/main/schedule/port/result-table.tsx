@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
-import { BasicTable } from "@/app/components/unused/basic-table";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import {
@@ -26,7 +25,7 @@ import {
   VesselInfoType,
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { DividerComponent } from "../../booking/information/components/base";
 import { Download } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
@@ -165,19 +164,21 @@ export default function PortResultTable({
 
   return (
     <div className="flex mt-1">
-      <NewBasicTable
-        actionComponent={
-          <div className="flex items-center flex-1">
-            <MdTextButton>
-              <MdIcon slot="icon">
-                <Download fontSize="small" />
-              </MdIcon>
-              Download
-            </MdTextButton>
-            <DividerComponent orientation="vertical" className="h-8 mx-2" />
-            <MdFilterChip label="Ocean Vessel Only" />
-          </div>
-        }
+      <BasicTable
+        ActionComponent={() => {
+          return (
+            <div className="flex items-center flex-1">
+              <MdTextButton>
+                <MdIcon slot="icon">
+                  <Download fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
+              <DividerComponent orientation="vertical" className="h-8 mx-2" />
+              <MdFilterChip label="Ocean Vessel Only" />
+            </div>
+          );
+        }}
         columns={columns}
         data={data}
         isSingleSelect

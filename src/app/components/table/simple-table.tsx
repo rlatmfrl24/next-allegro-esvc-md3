@@ -2,8 +2,8 @@ import { Row, Table, flexRender } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
 import { MdTypography } from "../typography";
 import { useMemo } from "react";
-import { getCommonPinningStyles } from "../table/util";
-import { MemoizedTableBody, TableBody } from "../table/table-body";
+import { getCommonPinningStyles } from "./util";
+import { MemoizedTableBody, TableBody } from "./table-body";
 import {
   DndContext,
   KeyboardSensor,

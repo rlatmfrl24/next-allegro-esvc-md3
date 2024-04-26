@@ -46,7 +46,9 @@ export default function AttachmentSection({
           Special Instruction
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          {specialInstruction}
+          {specialInstruction.split("\n").map((line, index) => (
+            <div key={index}>{line}</div>
+          ))}
         </MdTypography>
       </div>
     </Section>

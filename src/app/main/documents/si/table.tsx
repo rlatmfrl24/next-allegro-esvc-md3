@@ -4,7 +4,7 @@ import { CSSProperties, useEffect, useMemo, useState } from "react";
 
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import StatusFilterComponent from "@/app/components/status-filter";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
@@ -441,18 +441,20 @@ export default function SITable() {
         <MdFilterChip label="My Shipment " />
       </MdChipSet>
 
-      <NewBasicTable
-        actionComponent={
-          <div className="flex flex-1 gap-2 items-center">
-            <MdTextButton>
-              <div slot="icon">
-                <Download fontSize="small" />
-              </div>
-              Download
-            </MdTextButton>
-            <ActionButtons selectionList={selectedRows} />
-          </div>
-        }
+      <BasicTable
+        ActionComponent={() => {
+          return (
+            <div className="flex flex-1 gap-2 items-center">
+              <MdTextButton>
+                <div slot="icon">
+                  <Download fontSize="small" />
+                </div>
+                Download
+              </MdTextButton>
+              <ActionButtons selectionList={selectedRows} />
+            </div>
+          );
+        }}
         columns={columns}
         data={tableData}
         controlColumns={["select"]}
@@ -462,22 +464,9 @@ export default function SITable() {
           if (rows[0]) {
             handleSITableRowSelection(rows[0]);
           }
-
-          // handleSITableRowSelection(rows[0]);
         }}
         isSingleSelect
       />
-
-      {/* <div className="relative overflow-auto w-full max-w-full">
-        <OverlayScrollbarsComponent>
-          <BasicTable
-            table={table}
-            onRowSelction={(row) => {
-              handleSITableRowSelection(row);
-            }}
-          />
-        </OverlayScrollbarsComponent>
-      </div> */}
     </>
   );
 }

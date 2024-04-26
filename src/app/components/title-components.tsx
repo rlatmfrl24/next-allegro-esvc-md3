@@ -2,7 +2,13 @@ import { MdIcon, MdIconButton } from "../util/md3";
 import { MdTypography } from "./typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-export default function PageTitle({ title }: { title: string }) {
+export default function PageTitle({
+  title,
+  hasFavorite = true,
+}: {
+  title: string;
+  hasFavorite?: boolean;
+}) {
   return (
     <div
       aria-label="page-title"
@@ -11,11 +17,13 @@ export default function PageTitle({ title }: { title: string }) {
       <MdTypography variant="title" size="large">
         {title}
       </MdTypography>
-      <MdIconButton>
-        <MdIcon>
-          <FavoriteBorderIcon />
-        </MdIcon>
-      </MdIconButton>
+      {hasFavorite && (
+        <MdIconButton>
+          <MdIcon>
+            <FavoriteBorderIcon />
+          </MdIcon>
+        </MdIconButton>
+      )}
     </div>
   );
 }

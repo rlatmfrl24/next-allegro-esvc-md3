@@ -105,7 +105,6 @@ const PtpSearch = () => {
             end: DateTime.now().plus({ days: 7 }),
           }}
         />
-        {/* <MdRangeDatePicker label="Date" /> */}
       </div>
       <div className="flex-1 flex justify-end items-end h-full gap-2">
         <MdTextButton>Reset</MdTextButton>
@@ -154,7 +153,6 @@ const PortSearch = () => {
         icon={<PortIcon />}
         itemList={tempPorts.map((port) => port.yardName)}
       />
-      {/* <MdRangeDatePicker label="Date" className="w-fit" /> */}
       <DateRangePicker
         label="Date"
         className="w-fit"

@@ -16,11 +16,12 @@ import LocationScheduleSection from "../components/location-schedule";
 import { DividerComponent, Section } from "../components/base";
 import ContainerSection from "../components/contaienr";
 import { MdTypography } from "@/app/components/typography";
-import { MdOutlinedTextField } from "@/app/util/md3";
+import { MdIcon, MdOutlinedButton, MdOutlinedTextField } from "@/app/util/md3";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { ChevronLeft } from "@mui/icons-material";
 
 export default function BookingConfirmationInformation() {
   const cx = classNames.bind(styles);
@@ -39,16 +40,30 @@ export default function BookingConfirmationInformation() {
     <></>
   ) : (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Booking Confirmation Information" />
+      <div className="flex gap-4">
+        <MdOutlinedButton
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <MdIcon slot="icon">
+            <ChevronLeft fontSize="small" />
+          </MdIcon>
+          Back
+        </MdOutlinedButton>
+        <PageTitle
+          title="Booking Confirmation Information"
+          hasFavorite={false}
+        />
+      </div>
       <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
         <div className="bg-secondaryContainer h-4"></div>
         <RequestNumberSection
           bookingStatus={currentBookingData?.status || BookingStatus.Requested}
           requestNumber={currentBookingData?.requestNo || ""}
-          specialInstruction={
-            dataSet[0].additionalInformation.specialInstruction
-          }
+          title="Booking No."
         />
+        <DividerComponent className="my-2" />
         <div className="px-6 pt-4 pb-8">
           <LocationScheduleSection data={dataSet[0].locationSchedule} />
           <DividerComponent className="my-8" />
@@ -432,6 +447,21 @@ export default function BookingConfirmationInformation() {
                     "-"}
                 </MdTypography>
               </div>
+            </Section>
+            <DividerComponent
+              className="mx-8 border-dotted"
+              orientation="vertical"
+            />
+            <Section title="Special Instruction on Booking">
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="flex-1 flex flex-col"
+              >
+                {dataSet[0].additionalInformation.specialInstruction
+                  .split("\n")
+                  .map((line, index) => <div key={index}>{line}</div>) || "-"}
+              </MdTypography>
             </Section>
           </div>
           {/* <DividerComponent className="my-8" />

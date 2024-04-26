@@ -5,7 +5,7 @@ import {
   MdIcon,
   MdIconButton,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
-} from "../util/md3";
+} from "@/app/util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { MdTypography } from "./typography";
 
@@ -24,7 +24,7 @@ export const NAOutlinedTextField = ({
   className?: string;
 } & MdOutlinedTextFieldProps) => {
   const [hasValue, setHasValue] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<any>(null);
 
   useEffect(() => {
     if (!props.value || props.value.length === 0) {
@@ -60,12 +60,27 @@ export const NAOutlinedTextField = ({
                 e.key === "ArrowLeft" ||
                 e.key === "ArrowRight" ||
                 e.key === "Tab"
-              )
+              ) ||
+              (e.key === "-" && e.currentTarget.selectionStart !== 0) ||
+              (e.key === "." && e.currentTarget.value.includes(".")) ||
+              (e.key === "0" &&
+                e.currentTarget.value === "0" &&
+                e.currentTarget.selectionStart === 1)
             ) {
               e.preventDefault();
             }
           } else {
             props.onKeyDown?.(e);
+          }
+        }}
+        onInput={(e) => {
+          if (props.type !== "number") {
+            handleValueChange?.(e.currentTarget.value);
+          }
+          if (e.currentTarget.value.length > 0) {
+            setHasValue(true);
+          } else {
+            setHasValue(false);
           }
         }}
         onBlur={(e) => {

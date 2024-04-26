@@ -17,12 +17,13 @@ import {
   CurrentBookingDataState,
 } from "@/app/store/booking.store";
 import { useRecoilValue } from "recoil";
-import { MdOutlinedTextField } from "@/app/util/md3";
+import { MdIcon, MdOutlinedButton, MdOutlinedTextField } from "@/app/util/md3";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import RequestNumberSection from "../components/request-number";
 import { BookingStatus } from "@/app/util/typeDef/boooking";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { ChevronLeft } from "@mui/icons-material";
 
 export default function BookingRequestInformation() {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
@@ -41,17 +42,28 @@ export default function BookingRequestInformation() {
     <></>
   ) : (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Booking Request Information" />
+      <div className="flex gap-4">
+        <MdOutlinedButton
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <MdIcon slot="icon">
+            <ChevronLeft fontSize="small" />
+          </MdIcon>
+          Back
+        </MdOutlinedButton>
+
+        <PageTitle title="Booking Request Information" hasFavorite={false} />
+      </div>
 
       <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
         <div className="bg-secondaryContainer h-4"></div>
         <RequestNumberSection
-          bookingStatus={currentBookingData?.status || BookingStatus.Requested}
+          bookingStatus={undefined}
           requestNumber={currentBookingData?.requestNo || ""}
-          specialInstruction={
-            dataSet[0].additionalInformation.specialInstruction
-          }
         />
+        <DividerComponent className="my-2" />
         <div className="px-6 pt-4 pb-8">
           <LocationScheduleSection data={dataSet[0].locationSchedule} />
           <DividerComponent className="my-8" />

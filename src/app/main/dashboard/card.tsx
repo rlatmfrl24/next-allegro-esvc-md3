@@ -1,5 +1,5 @@
 import { MdTypography } from "@/app/components/typography";
-import { MdIcon } from "@/app/util/md3";
+import { MdIcon, MdTextButton } from "@/app/util/md3";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { motion } from "framer-motion";
 import QuickInquiry from "@/app/components/quick/inquiry";
@@ -13,6 +13,7 @@ import {
   DashboardStatisticCardDataType,
   DashboardCardInfoType,
 } from "@/app/util/typeDef/generic";
+import Link from "next/link";
 
 export function InputCard(props: DashboardInputCardDataType) {
   return (
@@ -51,11 +52,13 @@ export function DashboardCardPlaceholder({
 export function DashboardCard({
   title,
   hasTooltip,
+  actionButton,
   children,
   cardSize = 1,
 }: {
   title: string;
   hasTooltip?: boolean;
+  actionButton?: React.ReactNode;
   children: React.ReactNode;
   cardSize?: 1 | 2 | 4;
 }) {
@@ -76,6 +79,7 @@ export function DashboardCard({
             <InfoOutlinedIcon />
           </MdIcon>
         )}
+        {actionButton && actionButton}
       </div>
       {children}
     </motion.div>
@@ -112,7 +116,15 @@ export function DashboardCardConstructor({
   } else {
     if (item.id === "notice") {
       return (
-        <DashboardCard title={item.title} cardSize={2}>
+        <DashboardCard
+          title={item.title}
+          cardSize={2}
+          actionButton={
+            <Link href="/main/import/notice">
+              <MdTextButton>More</MdTextButton>
+            </Link>
+          }
+        >
           <div className="px-4 gap-4 flex-1 flex flex-col justify-center">
             <QuickNotice />
           </div>

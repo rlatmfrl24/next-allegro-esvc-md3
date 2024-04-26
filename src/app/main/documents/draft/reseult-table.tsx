@@ -15,7 +15,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { set } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
-import { NewBasicTable } from "@/app/components/table/new-table";
+import { BasicTable } from "@/app/components/table/basic-table";
 import VesselInfoCell from "@/app/components/vessel-info-cell";
 
 export default function BLCheckResultTable() {
@@ -140,21 +140,23 @@ export default function BLCheckResultTable() {
 
   return (
     <>
-      <NewBasicTable
-        actionComponent={
-          <div className="flex flex-1 items-center">
-            <MdTextButton
-              onClick={() => {
-                setPrintDialogOpen(true);
-              }}
-            >
-              <div slot="icon">
-                <Print fontSize="small" />
-              </div>
-              Print
-            </MdTextButton>
-          </div>
-        }
+      <BasicTable
+        ActionComponent={() => {
+          return (
+            <div className="flex flex-1 items-center">
+              <MdTextButton
+                onClick={() => {
+                  setPrintDialogOpen(true);
+                }}
+              >
+                <div slot="icon">
+                  <Print fontSize="small" />
+                </div>
+                Print
+              </MdTextButton>
+            </div>
+          );
+        }}
         columns={columns}
         data={tableData}
         controlColumns={["checkbox", "freight"]}

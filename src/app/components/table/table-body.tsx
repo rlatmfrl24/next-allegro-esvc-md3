@@ -1,22 +1,45 @@
-import { CSSProperties, Dispatch, memo, SetStateAction, useState } from "react";
+import {
+  CSSProperties,
+  Dispatch,
+  memo,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { Cell, flexRender, Row, Table } from "@tanstack/react-table";
 
 import { getCommonPinningStyles } from "./util";
+import { MdOutlinedTextField } from "@/app/util/md3";
 
 export const TableBody = ({
   table,
   selectedCell,
   onCellSelected,
+  ignoreSelectionColumns,
+  disableColumns,
+  editableColumns,
+  onCellEdit,
 }: {
   table: Table<any>;
   selectedCell?: Cell<any, unknown> | null;
   onCellSelected?: Dispatch<SetStateAction<any>>;
+  ignoreSelectionColumns?: string[];
+  disableColumns?: string[];
+  editableColumns?: string[];
+  onCellEdit?: (rowId: string, columnId: string, value: string) => void;
 }) => {
+  const inputRef = useRef<any>(null);
   const [hoverInfo, setHoverInfo] = useState<{
     row: Row<any>;
     cell: Cell<any, unknown>;
   } | null>(null);
+
+  const [currentEditCell, setCurrentEditCell] = useState<Cell<
+    any,
+    unknown
+  > | null>(null);
 
   function getCellStyles(cell: Cell<any, unknown>) {
     if (selectedCell?.id === cell.id) {
@@ -51,7 +74,9 @@ export const TableBody = ({
             } as CSSProperties;
           } else {
             return {
-              backgroundColor: `var(--md-sys-color-surface)`,
+              backgroundColor: disableColumns?.includes(cell.column.id)
+                ? `var(--md-sys-color-surface-container-low)`
+                : `var(--md-sys-color-surface)`,
               borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
             } as CSSProperties;
           }
@@ -64,14 +89,9 @@ export const TableBody = ({
     <tbody>
       {table.getRowModel().rows.map((row) => {
         return (
-          <tr
-            key={row.id}
-            // style={{
-            //   borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
-            // }}
-          >
+          <tr key={row.id}>
             {row.getVisibleCells().map((cell) => {
-              return (
+              return cell.id !== currentEditCell?.id ? (
                 <td
                   key={cell.id}
                   style={{
@@ -87,7 +107,18 @@ export const TableBody = ({
                   onMouseLeave={(e) => {
                     setHoverInfo((prev) => (prev?.row === row ? null : prev));
                   }}
+                  onDoubleClick={(e) => {
+                    row.toggleSelected();
+                    row.getIsSelected()
+                      ? onCellSelected?.(null)
+                      : onCellSelected?.(cell);
+                    if (editableColumns?.includes(cell.column.id))
+                      setCurrentEditCell(cell);
+                  }}
                   onClick={(e) => {
+                    if (ignoreSelectionColumns?.includes(cell.column.id))
+                      return;
+                    // if (editableColumns?.includes(cell.column.id)) return;
                     row.getIsSelected()
                       ? onCellSelected?.(null)
                       : onCellSelected?.(cell);
@@ -95,6 +126,27 @@ export const TableBody = ({
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ) : (
+                <td className="h-full relative">
+                  <div className="absolute flex top-0 w-full h-full left-0 p-px">
+                    <input
+                      autoFocus
+                      ref={inputRef}
+                      className="flex-1 px-4 outline-primary"
+                      defaultValue={
+                        (cell.getContext().getValue() as string) || ""
+                      }
+                      onBlur={() => {
+                        onCellEdit?.(
+                          row.id,
+                          cell.column.id,
+                          inputRef.current.value
+                        );
+                        setCurrentEditCell(null);
+                      }}
+                    />
+                  </div>
                 </td>
               );
             })}

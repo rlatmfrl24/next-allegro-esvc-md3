@@ -35,6 +35,7 @@ import {
   MdFilledTonalButton,
   MdFilledTonalIconButton,
   MdIcon,
+  MdOutlinedButton,
 } from "@/app/util/md3";
 import {
   SIContainerInputProps,
@@ -45,6 +46,7 @@ import {
 import { faker } from "@faker-js/faker";
 import {
   AttachFile,
+  ChevronLeft,
   EditOutlined,
   Email,
   Fax,
@@ -210,14 +212,26 @@ function SIPreview() {
 
   return (
     <div aria-label="container" className={cx(styles.container, "mb-11")}>
-      {requestNumber ? (
-        <MdTypography variant="title" size="large">
-          <span className="text-outline">Request No. </span>
-          {requestNumber}
-        </MdTypography>
-      ) : (
-        <PageTitle title="Shipping Instruction Preview" />
-      )}
+      <div className="flex gap-4 items-center">
+        <MdOutlinedButton
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <MdIcon slot="icon">
+            <ChevronLeft fontSize="small" />
+          </MdIcon>
+          Back
+        </MdOutlinedButton>
+        {requestNumber ? (
+          <MdTypography variant="title" size="large">
+            <span className="text-outline">Request No. </span>
+            {requestNumber}
+          </MdTypography>
+        ) : (
+          <PageTitle title="Shipping Instruction Preview" />
+        )}
+      </div>
 
       <div className={styles.area}>
         <div aria-label="title-area" className="flex justify-between">
@@ -1043,7 +1057,7 @@ function SIPreview() {
           </div> */}
         </div>
       </div>
-      {!requestNumber && (
+      {!requestNumber ? (
         <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
           <div
             className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
@@ -1054,6 +1068,7 @@ function SIPreview() {
             }
           >
             <MdElevation />
+            <MdFilledTonalButton>Temparary Save</MdFilledTonalButton>
             <MdFilledButton
               onClick={() => {
                 const newSICondition = {
@@ -1070,6 +1085,21 @@ function SIPreview() {
             >
               Submit
             </MdFilledButton>
+          </div>
+        </div>
+      ) : (
+        <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-10">
+          <div
+            className="relative w-full bg-surfaceContainerHigh rounded-full flex gap-4 p-2 justify-end"
+            style={
+              {
+                "--md-elevation-level": 4,
+              } as CSSProperties
+            }
+          >
+            <MdElevation />
+            <MdOutlinedButton>Print</MdOutlinedButton>
+            <MdOutlinedButton>B/L View</MdOutlinedButton>
           </div>
         </div>
       )}

@@ -91,7 +91,7 @@ export type SIRouteBLType = {
   finalDestination: string;
   serviceTypeFrom: "cy" | "door";
   serviceTypeTo: "cy" | "door";
-  blType: "none" | "originalBL" | "surrender" | "seaWaybill";
+  blType: "originalBL" | "surrender" | "seaWaybill";
   freightTerms: "prepaid" | "collect";
   remarks: string;
   houseBLInvovled: "none" | "console" | "simple";
