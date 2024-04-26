@@ -41,13 +41,17 @@ import { DetailTitle } from "@/app/components/title-components";
 
 export default function ListItem({
   item,
-  onVesselInfoClick,
+  onVesselScheduleClick,
+  onPlaceInformationClick,
+  onVesselInformationClick,
 }: {
   item: PtPScheduleType;
-  onVesselInfoClick?: (vessel: VesselInfoType) => void;
+  onVesselScheduleClick?: (vessel: VesselInfoType) => void;
+  onPlaceInformationClick?: (place: PlaceInformationType) => void;
+  onVesselInformationClick?: (vessel: VesselInfoType) => void;
 }) {
-  const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
-  const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
+  // const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
+  // const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceInformationType>();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
@@ -91,8 +95,9 @@ export default function ListItem({
           <div
             className="w-fit"
             onClick={() => {
-              setSelectedPlace(item);
-              setIsPlaceInformationOpen(!isPlaceInformationOpen);
+              // setSelectedPlace(item);
+              // setIsPlaceInformationOpen(!isPlaceInformationOpen);
+              onPlaceInformationClick?.(item);
             }}
           >
             <MdTypography
@@ -153,7 +158,7 @@ export default function ListItem({
           </MdIcon>
           <div
             onClick={() => {
-              onVesselInfoClick?.(tempVesselInfo);
+              onVesselScheduleClick?.(tempVesselInfo);
             }}
           >
             <MdTypography
@@ -166,7 +171,8 @@ export default function ListItem({
           </div>
           <MdIconButton
             onClick={() => {
-              setIsVesselInformationOpen(true);
+              // setIsVesselInformationOpen(true);
+              onVesselInformationClick?.(tempVesselInfo);
             }}
           >
             <MdIcon>
@@ -275,8 +281,9 @@ export default function ListItem({
                 <span
                   className="border-b border-onSurface uppercase cursor-pointer"
                   onClick={() => {
-                    setSelectedPlace(item.origin);
-                    setIsPlaceInformationOpen(!isPlaceInformationOpen);
+                    // setSelectedPlace(item.origin);
+                    // setIsPlaceInformationOpen(!isPlaceInformationOpen);
+                    onPlaceInformationClick?.(item.origin);
                   }}
                 >
                   {item.origin.yardName}
@@ -297,7 +304,7 @@ export default function ListItem({
                   className="border-b border-onSurface cursor-pointer"
                   onClick={() => {
                     // setIsVesselScheduleOpen(true);
-                    onVesselInfoClick?.(tempVesselInfo);
+                    onVesselScheduleClick?.(tempVesselInfo);
                   }}
                 >
                   {item.vesselInfo.vesselName}
@@ -325,8 +332,9 @@ export default function ListItem({
                 <span
                   className="border-b border-onSurface uppercase cursor-pointer"
                   onClick={() => {
-                    setSelectedPlace(item.destination);
-                    setIsPlaceInformationOpen(!isPlaceInformationOpen);
+                    // setSelectedPlace(item.destination);
+                    // setIsPlaceInformationOpen(!isPlaceInformationOpen);
+                    onPlaceInformationClick?.(item.destination);
                   }}
                 >
                   {item.destination.yardName}
@@ -363,26 +371,7 @@ export default function ListItem({
           </MdElevationButton>
         </div>
       </div>
-      <Portal selector="#main-container">
-        {selectedPlace && (
-          <PlaceInformationDialog
-            open={isPlaceInformationOpen}
-            handleOpen={setIsPlaceInformationOpen}
-            data={selectedPlace}
-          />
-        )}
-        <VesselInformationDialog
-          open={isVesselInformationOpen}
-          handleOpen={setIsVesselInformationOpen}
-          data={tempVesselInfo}
-        />
-        {/* <VesselScheduleDialog
-          open={isVesselScheduleOpen}
-          handleOpen={setIsVesselScheduleOpen}
-          vesselInfo={tempVesselInfo}
-          vesselSchedules={tempVesselSchedules}
-        /> */}
-      </Portal>
+
       <>
         {isDetailOpen && (
           <div className="rounded-lg border border-outlineVariant py-6 px-4 bg-surfaceContainerLow">

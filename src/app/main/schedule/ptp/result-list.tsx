@@ -4,19 +4,46 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { PtPScheduleType, VesselInfoType } from "@/app/util/typeDef/schedule";
 import { MdTypography } from "@/app/components/typography";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
-import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
+import {
+  usePlaceInfoDialog,
+  useVesselInfoDialog,
+  useVesselScheduleDialog,
+} from "@/app/components/common-dialog-hooks";
 
 export default function PointToPointListResult({
   list,
 }: {
   list: PtPScheduleType[];
 }) {
-  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
-    useVesselScheduleDialog();
+  const {
+    renderDialog,
+    setCurrentVessel: setVesselForScheduleDialog,
+    setIsVesselScheduleDialogOpen,
+  } = useVesselScheduleDialog();
+  const {
+    renderDialog: renderPlaceDialog,
+    setCurrentPlace,
+    setIsPlaceInfoDialogOpen,
+  } = usePlaceInfoDialog();
+  const {
+    renderDialog: renderVesselDialog,
+    setCurrentVessel,
+    setIsVesselInfoDialogOpen,
+  } = useVesselInfoDialog();
+
+  function handleVesselScheduleClick(vessel: VesselInfoType) {
+    setVesselForScheduleDialog(vessel);
+    setIsVesselScheduleDialogOpen(true);
+  }
 
   function handleVesselInfoClick(vessel: VesselInfoType) {
     setCurrentVessel(vessel);
-    setIsVesselScheduleDialogOpen(true);
+    setIsVesselInfoDialogOpen(true);
+  }
+
+  function handlePlaceInfoClick(place: any) {
+    setCurrentPlace(place);
+    setIsPlaceInfoDialogOpen(true);
   }
 
   return (
@@ -47,13 +74,21 @@ export default function PointToPointListResult({
         </MdTypography>
       </div>
       {renderDialog()}
+      {renderPlaceDialog()}
+      {renderVesselDialog()}
       <div className="flex flex-col gap-4">
         {list.map((item, index) => (
           <ListItem
             key={index}
             item={item}
-            onVesselInfoClick={(vessel) => {
+            onVesselScheduleClick={(vessel) => {
+              handleVesselScheduleClick(vessel);
+            }}
+            onVesselInformationClick={(vessel) => {
               handleVesselInfoClick(vessel);
+            }}
+            onPlaceInformationClick={(place) => {
+              handlePlaceInfoClick(place);
             }}
           />
         ))}
