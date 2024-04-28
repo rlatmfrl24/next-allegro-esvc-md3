@@ -1,22 +1,14 @@
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
-import PlaceInformationDialog from "../popup/place-information";
+import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
 import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
 import { MdTypography } from "@/app/components/typography";
-import {
-  VesselScheduleType,
-  PlaceInformationType,
-} from "@/app/util/typeDef/schedule";
+import { VesselScheduleType } from "@/app/util/typeDef/schedule";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
 import { Download } from "@mui/icons-material";
 import { DividerComponent } from "../../booking/information/components/base";
+import { usePlaceInfoDialog } from "@/app/components/common-dialog-hooks";
 
 const DateCell = ({
   info,
@@ -35,15 +27,16 @@ const DateCell = ({
   );
 };
 
+// TODO: Convert use Custom Hook at PlaceInformationDialog
 export default function VesselResultTable({
   data,
 }: {
   data: VesselScheduleType[];
 }) {
-  const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
-  const [placeInformation, setPlaceInformation] =
-    useState<PlaceInformationType>();
   const columnHelper = createColumnHelper<VesselScheduleType>();
+
+  const { renderDialog, setCurrentPlace, setIsPlaceInfoDialogOpen } =
+    usePlaceInfoDialog();
 
   const columns = [
     columnHelper.accessor("port", {
@@ -64,8 +57,8 @@ export default function VesselResultTable({
         <div
           className="underline cursor-pointer"
           onClick={() => {
-            setPlaceInformation(info.getValue());
-            setIsPlaceInformationOpen(true);
+            setCurrentPlace(info.getValue());
+            setIsPlaceInfoDialogOpen(true);
           }}
         >
           <MdTypography variant="body" size="medium">
@@ -120,7 +113,7 @@ export default function VesselResultTable({
 
   return (
     <>
-      <div className=" mt-1">
+      <div className="mt-1">
         <BasicTable
           ActionComponent={() => {
             return (
@@ -153,13 +146,7 @@ export default function VesselResultTable({
           isSingleSelect
         />
       </div>
-      {placeInformation && (
-        <PlaceInformationDialog
-          open={isPlaceInformationOpen}
-          handleOpen={setIsPlaceInformationOpen}
-          data={placeInformation}
-        />
-      )}
+      {renderDialog()}
     </>
   );
 }

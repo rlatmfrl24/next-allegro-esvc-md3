@@ -29,6 +29,11 @@ import { BasicTable } from "@/app/components/table/basic-table";
 import { DividerComponent } from "../../booking/information/components/base";
 import { Download } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import {
+  usePlaceInfoDialog,
+  useVesselScheduleDialog,
+} from "@/app/components/common-dialog-hooks";
+import { set } from "lodash";
 
 export default function PortResultTable({
   data,
@@ -42,8 +47,19 @@ export default function PortResultTable({
   const [vesselInformation, setVesselInformation] = useState<VesselInfoType>();
   const [vesselSchedules, setVesselSchedules] =
     useState<VesselScheduleType[]>();
-  const columnHelper = createColumnHelper<PortScheduleType>();
 
+  const {
+    renderDialog: renderPlaceInformationDialog,
+    setCurrentPlace,
+    setIsPlaceInfoDialogOpen,
+  } = usePlaceInfoDialog();
+  const {
+    renderDialog: renderVesselScheduleDialog,
+    setCurrentVessel,
+    setIsVesselScheduleDialogOpen,
+  } = useVesselScheduleDialog();
+
+  const columnHelper = createColumnHelper<PortScheduleType>();
   const router = useRouter();
 
   const columns = [
@@ -54,12 +70,8 @@ export default function PortResultTable({
           <div
             className="underline cursor-pointer"
             onClick={() => {
-              setVesselInformation(info.getValue());
-              setVesselSchedules(
-                data.find((d) => d.vesselInfo === info.getValue())
-                  ?.vesselSchedules
-              );
-              setIsVesselScheduleOpen(true);
+              setCurrentVessel(info.getValue());
+              setIsVesselScheduleDialogOpen(true);
             }}
           >
             <MdTypography variant="body" size="medium">
@@ -76,8 +88,8 @@ export default function PortResultTable({
         <div
           className="underline cursor-pointer"
           onClick={() => {
-            setPlaceInformation(info.getValue());
-            setIsPlaceInformationOpen(true);
+            setCurrentPlace(info.getValue());
+            setIsPlaceInfoDialogOpen(true);
           }}
         >
           <MdTypography variant="body" size="medium">
@@ -183,23 +195,8 @@ export default function PortResultTable({
         data={data}
         isSingleSelect
       />
-      <Portal selector="#main-container">
-        {placeInformation && (
-          <PlaceInformationDialog
-            open={isPlaceInformationOpen}
-            handleOpen={setIsPlaceInformationOpen}
-            data={placeInformation}
-          />
-        )}
-        {vesselInformation && vesselSchedules && (
-          <VesselScheduleDialog
-            open={isVesselScheduleOpen}
-            handleOpen={setIsVesselScheduleOpen}
-            vesselInfo={vesselInformation}
-            vesselSchedules={vesselSchedules}
-          />
-        )}
-      </Portal>
+      {renderPlaceInformationDialog()}
+      {renderVesselScheduleDialog()}
     </div>
   );
 }
