@@ -31,7 +31,7 @@ export default function NaToggleButton({
           : "text-primary"
       }`}
       onClick={(e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
         onClick?.(state === "checked");
       }}
     >
