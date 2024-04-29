@@ -1,4 +1,11 @@
-import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   MdElevation,
   MdIcon,
@@ -60,9 +67,11 @@ export default function NAOutlinedAutoComplete({
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const recentItems = recentCookieKey
-    ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
-    : ([] as string[]);
+  const recentItems = useMemo(() => {
+    return recentCookieKey
+      ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
+      : ([] as string[]);
+  }, [recentCookieKey]);
 
   function setRecentItems(value: string) {
     const maxRecentItems = 5;
@@ -148,7 +157,11 @@ export default function NAOutlinedAutoComplete({
       return false;
     }
 
-    if (recentItems.length > 0) {
+    if (
+      recentItems.filter((item) => {
+        return item.toLowerCase().includes(query.toLowerCase());
+      }).length > 0
+    ) {
       return true;
     }
 
@@ -163,7 +176,7 @@ export default function NAOutlinedAutoComplete({
     }
 
     return false;
-  }, [itemList, props.readOnly, query, recentItems.length, showAllonFocus]);
+  }, [itemList, props.readOnly, query, recentItems, showAllonFocus]);
 
   return (
     <div className={`relative ${className}`}>
@@ -214,33 +227,39 @@ export default function NAOutlinedAutoComplete({
             <OverlayScrollbarsComponent defer>
               {recentItems &&
                 recentItems.length > 0 &&
-                recentItems.map((item, index) => (
-                  <MdListItem
-                    key={item}
-                    type="button"
-                    className="focus:bg-surfaceContainerHighest focus:outline-none "
-                    {...getItemProps()}
-                    tabIndex={activeIndex === index ? 0 : -1}
-                    ref={(node) => {
-                      listRef.current[index] = node;
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
+                recentItems
+                  .filter((item) => {
+                    return item.toLowerCase().includes(query.toLowerCase());
+                  })
+                  .map((item, index) => (
+                    <MdListItem
+                      key={item}
+                      type="button"
+                      className="focus:bg-surfaceContainerHighest focus:outline-none "
+                      {...getItemProps()}
+                      tabIndex={activeIndex === index ? 0 : -1}
+                      ref={(node) => {
+                        listRef.current[index] = node;
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleItemSelect(item);
+                        }
+                      }}
+                      onClick={() => {
                         handleItemSelect(item);
-                      }
-                    }}
-                    onClick={() => {
-                      handleItemSelect(item);
-                    }}
-                  >
-                    <MdIcon slot="start">
-                      <RestoreIcon />
-                    </MdIcon>
-                    {highlightText(item, query)}
-                  </MdListItem>
-                ))}
+                      }}
+                    >
+                      <MdIcon slot="start">
+                        <RestoreIcon />
+                      </MdIcon>
+                      {highlightText(item, query)}
+                    </MdListItem>
+                  ))}
               {recentItems &&
-                recentItems.length > 0 &&
+                recentItems.filter((item) => {
+                  return item.toLowerCase().includes(query.toLowerCase());
+                }).length > 0 &&
                 itemList.filter((item) => {
                   return item.toLowerCase().includes(query.toLowerCase());
                 }).length > 0 &&

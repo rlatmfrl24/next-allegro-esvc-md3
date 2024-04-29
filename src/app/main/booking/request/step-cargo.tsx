@@ -33,7 +33,7 @@ export default function CargoStep() {
     if (
       cargoPickUpReturnData.commodity.code === "" ||
       cargoPickUpReturnData.commodity.description === "" ||
-      cargoPickUpReturnData.grossWeight === "0.000"
+      cargoPickUpReturnData.grossWeight === "0"
     ) {
       return false;
     } else {
