@@ -16,7 +16,6 @@ export default function Logo({
           aria-label="company logo"
           src="/logo_tsline.svg"
           alt="logo"
-          sizes="100vw"
           width={0}
           height={0}
           style={{ width: "100%", height: "auto" }}

@@ -1,22 +1,13 @@
 "use client";
 
 import { DateTime } from "luxon";
-import { useOverlayScrollbars } from "overlayscrollbars-react";
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import PortIcon from "@/../public/icon_port.svg";
-import { MdRangeDatePicker } from "@/app/components/datepickers/old/range-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
-import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
-import {
-  MdFilledButton,
-  MdFilterChip,
-  MdIcon,
-  MdTextButton,
-} from "@/app/util/md3";
-import { ar, faker } from "@faker-js/faker";
-import DownloadIcon from "@mui/icons-material/Download";
+import { MdFilledButton, MdTextButton } from "@/app/util/md3";
+import { faker } from "@faker-js/faker";
 
 import EmptyResultPlaceholder from "../../../components/empty-placeholder";
 import { createDummyPortSchedules } from "../util";
@@ -26,7 +17,6 @@ import {
   PortScheduleSearchConditionType,
   PortScheduleType,
 } from "@/app/util/typeDef/schedule";
-import { DividerComponent } from "../../booking/information/components/base";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
@@ -40,9 +30,9 @@ export default function PortSchedule() {
     endDate: DateTime.now(),
   });
 
-  const [portScheduls] = useState<PortScheduleType[]>(
-    createDummyPortSchedules()
-  );
+  const tempPortSchedules = useMemo(() => {
+    return createDummyPortSchedules();
+  }, []);
 
   function resetPortQuery() {
     setPortQuery({
@@ -121,7 +111,7 @@ export default function PortSchedule() {
         <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
         <div className={styles.area}>
-          <PortResultTable data={portScheduls} />
+          <PortResultTable data={tempPortSchedules} />
         </div>
       )}
     </div>
