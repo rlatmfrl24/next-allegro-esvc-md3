@@ -69,6 +69,7 @@ export interface ConsigneeProps extends SIPartiesProps {
 }
 
 export interface NotifyPartyProps extends SIPartiesProps {
+  contactPerson: string;
   alsoNotify: string;
 }
 

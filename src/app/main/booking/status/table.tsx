@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import {
@@ -16,12 +16,12 @@ import {
   BookingStatusTableProps,
 } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
-import { Download } from "@mui/icons-material";
+import { Download, Info } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
-import EstimatedTimeofDepartureCell from "./components/estimated-time-of-departure-cell";
+import { useEstimatedTimeofDepartureDialog } from "./components/estimated-time-of-departure-dialog";
 
 export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
@@ -63,10 +63,6 @@ export default function BookingStatusTable() {
             "Reefer 40:",
           ])} ${faker.number.int(9)}`
       ).join("\n"),
-      // qty: `${faker.string.numeric(3)} ${faker.helpers.arrayElement([
-      //   "TEU",
-      //   "FEU",
-      // ])}`,
     }));
   }, []);
 
@@ -74,6 +70,17 @@ export default function BookingStatusTable() {
   const [currentBookingData, setCurrentBookingData] = useRecoilState(
     CurrentBookingDataState
   );
+  const {
+    renderDialog: renderVesselInfoDialog,
+    setCurrentVessel,
+    setIsVesselScheduleDialogOpen,
+  } = useVesselScheduleDialog();
+
+  const {
+    renderDialog: renderEstimatedTimeofDepartureDialog,
+    setBookingData,
+    setIsVesselStatusNotesDialogOpen,
+  } = useEstimatedTimeofDepartureDialog();
 
   useEffect(() => {
     setTableData(tempData);
@@ -151,7 +158,23 @@ export default function BookingStatusTable() {
     columnHelper.accessor("vessel", {
       id: "vessel",
       header: "Vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      // cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => {
+        return (
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="underline cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentVessel(info.getValue());
+              setIsVesselScheduleDialogOpen(true);
+            }}
+          >
+            {info.getValue().vesselName}
+          </MdTypography>
+        );
+      },
       size: 300,
     }),
     columnHelper.accessor("requestDepartureTime", {
@@ -172,9 +195,38 @@ export default function BookingStatusTable() {
     columnHelper.accessor("estimatedTimeofDeparture", {
       id: "estimatedTimeofDeparture",
       header: "Estimated Time of Departure",
-      cell: (info) => {
-        return EstimatedTimeofDepartureCell(info.row.original);
-      },
+      cell: (info) => (
+        <div
+          className="flex p-2 "
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsVesselStatusNotesDialogOpen(true);
+            setBookingData(info.row.original);
+          }}
+        >
+          <MdTypography
+            variant="body"
+            size="medium"
+            className={`text-onSurfaceVariant ${
+              info.getValue().status !== "normal"
+                ? "underline cursor-pointer"
+                : ""
+            }`}
+          >
+            {info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
+          </MdTypography>
+          {info.getValue().status !== "normal" && (
+            <Info
+              className={`m-0.5 ${
+                info.getValue().status === "early"
+                  ? "text-[#325BDA]"
+                  : "text-error"
+              }`}
+              sx={{ fontSize: "16px" }}
+            />
+          )}
+        </div>
+      ),
       size: 130,
       minSize: 130,
     }),
@@ -327,6 +379,8 @@ export default function BookingStatusTable() {
 
   return (
     <>
+      {renderEstimatedTimeofDepartureDialog()}
+      {renderVesselInfoDialog()}
       <div className="relative w-full max-w-full">
         <MdChipSet className="mb-4">
           <StatusFilterComponent

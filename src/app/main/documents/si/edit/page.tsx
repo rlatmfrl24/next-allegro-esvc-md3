@@ -19,7 +19,7 @@ import StepContainer from "./step-container";
 import StepMarkDescription from "./step-mark-description";
 import StepContactInformation from "./step-contact-information";
 import { AnimatePresence, motion } from "framer-motion";
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 import {
   MdElevation,
   MdFilledButton,
@@ -42,6 +42,7 @@ export default function SIEdit() {
   );
 
   const [siEditStep, setSiEditStep] = useRecoilState(SIEditStepState);
+  const [currentStep, setCurrentStep] = useState("parties");
   const router = useRouter();
 
   const AllStepsComplete = useMemo(() => {
@@ -64,12 +65,6 @@ export default function SIEdit() {
       }, {} as typeof prev);
 
       return newObject;
-    });
-  }
-  function getSelectedStepId() {
-    // return keyof typeof bookingRequestState
-    return Object.keys(siEditStep).find((key) => {
-      return siEditStep[key as keyof typeof siEditStep].isSelected;
     });
   }
 
@@ -97,13 +92,16 @@ export default function SIEdit() {
                 isSelected={item.isSelected}
                 isCompleted={item.isCompleted}
                 onClick={() => {
-                  if (getSelectedStepId() !== key) handleStepClick(key);
+                  if (currentStep !== key) {
+                    setCurrentStep(key);
+                    handleStepClick(key);
+                  }
                 }}
               />
             );
           })}
         </div>
-        <div className="flex-1 flex p-6">
+        <div className="flex-1 flex p-6 min-h-fit">
           {
             {
               parties: <StepParties />,
@@ -111,7 +109,7 @@ export default function SIEdit() {
               container: <StepContainer />,
               markDescription: <StepMarkDescription />,
               contactInformation: <StepContactInformation />,
-            }[getSelectedStepId() as keyof typeof siEditStep]
+            }[currentStep]
           }
         </div>
         <AnimatePresence>

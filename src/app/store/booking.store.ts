@@ -124,7 +124,7 @@ export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
       code: "",
       description: "",
     } as CommodityType,
-    grossWeight: "0.000",
+    grossWeight: "0",
     grossWeightUnit: "KGS",
     emptyPickUpDate: DateTime.now(),
     fullReturnDate: DateTime.now(),

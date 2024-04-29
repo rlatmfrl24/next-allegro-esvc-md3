@@ -29,22 +29,29 @@ import { BasicTable } from "@/app/components/table/basic-table";
 import { DividerComponent } from "../../booking/information/components/base";
 import { Download } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import {
+  usePlaceInfoDialog,
+  useVesselScheduleDialog,
+} from "@/app/components/common-dialog-hooks";
+import { set } from "lodash";
 
 export default function PortResultTable({
   data,
 }: {
   data: PortScheduleType[];
 }) {
-  const [isPlaceInformationOpen, setIsPlaceInformationOpen] = useState(false);
-  const [placeInformation, setPlaceInformation] =
-    useState<PlaceInformationType>();
-  const [isVesselScheduleOpen, setIsVesselScheduleOpen] = useState(false);
-  const [vesselInformation, setVesselInformation] = useState<VesselInfoType>();
-  const [vesselSchedules, setVesselSchedules] =
-    useState<VesselScheduleType[]>();
-  const columnHelper = createColumnHelper<PortScheduleType>();
+  const {
+    renderDialog: renderPlaceInformationDialog,
+    setCurrentPlace,
+    setIsPlaceInfoDialogOpen,
+  } = usePlaceInfoDialog();
+  const {
+    renderDialog: renderVesselScheduleDialog,
+    setCurrentVessel,
+    setIsVesselScheduleDialogOpen,
+  } = useVesselScheduleDialog();
 
-  const router = useRouter();
+  const columnHelper = createColumnHelper<PortScheduleType>();
 
   const columns = [
     columnHelper.accessor("vesselInfo", {
@@ -54,12 +61,8 @@ export default function PortResultTable({
           <div
             className="underline cursor-pointer"
             onClick={() => {
-              setVesselInformation(info.getValue());
-              setVesselSchedules(
-                data.find((d) => d.vesselInfo === info.getValue())
-                  ?.vesselSchedules
-              );
-              setIsVesselScheduleOpen(true);
+              setCurrentVessel(info.getValue());
+              setIsVesselScheduleDialogOpen(true);
             }}
           >
             <MdTypography variant="body" size="medium">
@@ -76,8 +79,8 @@ export default function PortResultTable({
         <div
           className="underline cursor-pointer"
           onClick={() => {
-            setPlaceInformation(info.getValue());
-            setIsPlaceInformationOpen(true);
+            setCurrentPlace(info.getValue());
+            setIsPlaceInfoDialogOpen(true);
           }}
         >
           <MdTypography variant="body" size="medium">
@@ -146,20 +149,20 @@ export default function PortResultTable({
       },
       size: 200,
     }),
-    columnHelper.accessor("vesselInfo.vesselName", {
-      header: "Action",
-      cell: () => (
-        <MdFilledTonalButton
-          onClick={(e) => {
-            e.stopPropagation();
-            router.push("/main/booking/request");
-          }}
-        >
-          Booking
-        </MdFilledTonalButton>
-      ),
-      size: undefined,
-    }),
+    // columnHelper.accessor("vesselInfo.vesselName", {
+    //   header: "Action",
+    //   cell: () => (
+    //     <MdFilledTonalButton
+    //       onClick={(e) => {
+    //         e.stopPropagation();
+    //         router.push("/main/booking/request");
+    //       }}
+    //     >
+    //       Booking
+    //     </MdFilledTonalButton>
+    //   ),
+    //   size: undefined,
+    // }),
   ];
 
   return (
@@ -183,23 +186,8 @@ export default function PortResultTable({
         data={data}
         isSingleSelect
       />
-      <Portal selector="#main-container">
-        {placeInformation && (
-          <PlaceInformationDialog
-            open={isPlaceInformationOpen}
-            handleOpen={setIsPlaceInformationOpen}
-            data={placeInformation}
-          />
-        )}
-        {vesselInformation && vesselSchedules && (
-          <VesselScheduleDialog
-            open={isVesselScheduleOpen}
-            handleOpen={setIsVesselScheduleOpen}
-            vesselInfo={vesselInformation}
-            vesselSchedules={vesselSchedules}
-          />
-        )}
-      </Portal>
+      {renderPlaceInformationDialog()}
+      {renderVesselScheduleDialog()}
     </div>
   );
 }

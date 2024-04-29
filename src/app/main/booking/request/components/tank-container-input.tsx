@@ -20,6 +20,8 @@ import DangerousCargoInput from "./dangerous-cargo-input";
 import { DetailTitle } from "@/app/components/title-components";
 import { useMemo } from "react";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { AnimatePresence, motion } from "framer-motion";
+import { containerVariant } from "./base";
 
 const TankContainerInput = ({
   list,
@@ -78,83 +80,92 @@ const TankContainerInput = ({
               <Add fontSize="small" />
             </MdFilledTonalIconButton>
             <div className="flex flex-col-reverse">
-              {list.map((container, index) => (
-                <div key={container.uuid} className="mt-6 flex flex-col gap-4">
-                  {list.length - 1 !== index && (
-                    <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                  )}
+              <AnimatePresence>
+                {list.map((container, index) => (
+                  <motion.div
+                    key={container.uuid}
+                    variants={containerVariant}
+                    initial="initial"
+                    exit="remove"
+                    animate="add"
+                    className="mt-6 flex flex-col gap-4"
+                  >
+                    {list.length - 1 !== index && (
+                      <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                    )}
 
-                  <div className="flex gap-4 items-start">
-                    <NAOutlinedListBox
-                      label="Size"
-                      className="w-52 text-right"
-                      suffixText="ft"
-                      required
-                      initialValue={container.size}
-                      options={
-                        container.size !== ""
-                          ? [
-                              container.size,
-                              ...selectableContainerSizeOptions,
-                            ].sort()
-                          : selectableContainerSizeOptions
-                      }
-                      onSelection={(size) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          tank: prev.tank.map((c, i) =>
-                            i === index ? { ...c, size: size as any } : c
-                          ),
-                        }));
-                      }}
+                    <div className="flex gap-4 items-start">
+                      <NAOutlinedListBox
+                        label="Size"
+                        className="w-52 text-right"
+                        suffixText="ft"
+                        required
+                        initialValue={container.size}
+                        options={
+                          container.size !== ""
+                            ? [
+                                container.size,
+                                ...selectableContainerSizeOptions,
+                              ].sort()
+                            : selectableContainerSizeOptions
+                        }
+                        onSelection={(size) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            tank: prev.tank.map((c, i) =>
+                              i === index ? { ...c, size: size as any } : c
+                            ),
+                          }));
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        label="Quantity / Total"
+                        type="number"
+                        required
+                        value={container.quantity.toString()}
+                        handleValueChange={(value) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            tank: prev.tank.map((c, i) =>
+                              i === index ? { ...c, quantity: +value } : c
+                            ),
+                          }));
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        label="Quantity / SOC"
+                        type="number"
+                        value={container.soc.toString()}
+                        error={container.soc > container.quantity}
+                        errorText="SOC cannot be greater than Quantity"
+                        handleValueChange={(value) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            tank: prev.tank.map((c, i) =>
+                              i === index ? { ...c, soc: +value } : c
+                            ),
+                          }));
+                        }}
+                      />
+                      <MdIconButton
+                        className="mt-2"
+                        onClick={() => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            tank: prev.tank.filter((c, i) => i !== index),
+                          }));
+                        }}
+                      >
+                        <DeleteOutline fontSize="small" />
+                      </MdIconButton>
+                    </div>
+                    <DangerousCargoInput
+                      container={container}
+                      type={ContainerType.tank}
                     />
-                    <NAOutlinedTextField
-                      label="Quantity / Total"
-                      type="number"
-                      required
-                      value={container.quantity.toString()}
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          tank: prev.tank.map((c, i) =>
-                            i === index ? { ...c, quantity: +value } : c
-                          ),
-                        }));
-                      }}
-                    />
-                    <NAOutlinedTextField
-                      label="Quantity / SOC"
-                      type="number"
-                      value={container.soc.toString()}
-                      error={container.soc > container.quantity}
-                      errorText="SOC cannot be greater than Quantity"
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          tank: prev.tank.map((c, i) =>
-                            i === index ? { ...c, soc: +value } : c
-                          ),
-                        }));
-                      }}
-                    />
-                    <MdIconButton
-                      className="mt-2"
-                      onClick={() => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          tank: prev.tank.filter((c, i) => i !== index),
-                        }));
-                      }}
-                    >
-                      <DeleteOutline fontSize="small" />
-                    </MdIconButton>
-                  </div>
-                  <DangerousCargoInput
-                    container={container}
-                    type={ContainerType.tank}
-                  />
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </Disclosure.Panel>
         </>

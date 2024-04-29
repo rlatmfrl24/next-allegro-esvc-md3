@@ -19,6 +19,9 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { AnimatePresence, motion } from "framer-motion";
+import { init } from "next/dist/compiled/webpack/webpack";
+import { containerVariant } from "./base";
 
 const DryContainerInput = ({
   list,
@@ -77,93 +80,102 @@ const DryContainerInput = ({
               <Add fontSize="small" />
             </MdFilledTonalIconButton>
             <div className="flex flex-col-reverse">
-              {list.map((container, index) => (
-                <div key={container.uuid} className="mt-6 flex flex-col gap-4">
-                  {list.length - 1 !== index && (
-                    <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                  )}
+              <AnimatePresence>
+                {list.map((container, index) => (
+                  <motion.div
+                    key={container.uuid}
+                    variants={containerVariant}
+                    initial="initial"
+                    animate="add"
+                    exit="remove"
+                    className="mt-6 flex flex-col gap-4"
+                  >
+                    {list.length - 1 !== index && (
+                      <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                    )}
 
-                  <div className="flex gap-4 items-start">
-                    <NAOutlinedListBox
-                      label="Size"
-                      required
-                      className="w-52 text-right"
-                      suffixText="ft"
-                      initialValue={container.size}
-                      options={
-                        container.size !== ""
-                          ? [
-                              container.size,
-                              ...selectableContainerSizeOptions,
-                            ].sort()
-                          : selectableContainerSizeOptions
-                      }
-                      onSelection={(size) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          dry: prev.dry.map((c, i) =>
-                            i === index ? { ...c, size: size } : c
-                          ),
-                        }));
-                      }}
-                    />
+                    <div className="flex gap-4 items-start">
+                      <NAOutlinedListBox
+                        label="Size"
+                        required
+                        className="w-52 text-right"
+                        suffixText="ft"
+                        initialValue={container.size}
+                        options={
+                          container.size !== ""
+                            ? [
+                                container.size,
+                                ...selectableContainerSizeOptions,
+                              ].sort()
+                            : selectableContainerSizeOptions
+                        }
+                        onSelection={(size) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            dry: prev.dry.map((c, i) =>
+                              i === index ? { ...c, size: size } : c
+                            ),
+                          }));
+                        }}
+                      />
 
-                    <NAOutlinedTextField
-                      label="Quantity / Total"
-                      required
-                      type="number"
-                      value={container.quantity.toString()}
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          dry: prev.dry.map((c, i) =>
-                            i === index ? { ...c, quantity: +value } : c
-                          ),
-                        }));
-                      }}
-                      onBlur={(e) => {
-                        e.target.value = container.quantity.toString();
-                      }}
-                    />
-                    <NAOutlinedTextField
-                      label="Quantity / SOC"
-                      value={container.soc.toString()}
-                      error={container.soc > container.quantity}
-                      errorText="SOC cannot be greater than Quantity"
-                      type="number"
-                      handleValueChange={(value) => {
-                        let intValue = parseInt(value);
-                        if (isNaN(intValue)) intValue = 0;
+                      <NAOutlinedTextField
+                        label="Quantity / Total"
+                        required
+                        type="number"
+                        value={container.quantity.toString()}
+                        handleValueChange={(value) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            dry: prev.dry.map((c, i) =>
+                              i === index ? { ...c, quantity: +value } : c
+                            ),
+                          }));
+                        }}
+                        onBlur={(e) => {
+                          e.target.value = container.quantity.toString();
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        label="Quantity / SOC"
+                        value={container.soc.toString()}
+                        error={container.soc > container.quantity}
+                        errorText="SOC cannot be greater than Quantity"
+                        type="number"
+                        handleValueChange={(value) => {
+                          let intValue = parseInt(value);
+                          if (isNaN(intValue)) intValue = 0;
 
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          dry: prev.dry.map((c, i) =>
-                            i === index ? { ...c, soc: +intValue } : c
-                          ),
-                        }));
-                      }}
-                      onBlur={(e) => {
-                        e.target.value = container.soc.toString();
-                      }}
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            dry: prev.dry.map((c, i) =>
+                              i === index ? { ...c, soc: +intValue } : c
+                            ),
+                          }));
+                        }}
+                        onBlur={(e) => {
+                          e.target.value = container.soc.toString();
+                        }}
+                      />
+                      <MdIconButton
+                        className="mt-2"
+                        onClick={() => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            dry: prev.dry.filter((c, i) => i !== index),
+                          }));
+                        }}
+                      >
+                        <DeleteOutline fontSize="small" />
+                      </MdIconButton>
+                    </div>
+                    <DangerousCargoInput
+                      container={container}
+                      type={ContainerType.dry}
                     />
-                    <MdIconButton
-                      className="mt-2"
-                      onClick={() => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          dry: prev.dry.filter((c, i) => i !== index),
-                        }));
-                      }}
-                    >
-                      <DeleteOutline fontSize="small" />
-                    </MdIconButton>
-                  </div>
-                  <DangerousCargoInput
-                    container={container}
-                    type={ContainerType.dry}
-                  />
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </Disclosure.Panel>
         </>

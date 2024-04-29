@@ -85,9 +85,12 @@ export const NAOutlinedTextField = ({
         }}
         onBlur={(e) => {
           if (props.type === "number") {
-            let intValue = parseFloat(e.currentTarget.value);
+            let intValue = parseFloat(e.currentTarget.value.replace(/,/g, ""));
             if (isNaN(intValue)) intValue = 0;
-            e.currentTarget.value = intValue.toString();
+            e.currentTarget.value = intValue
+              .toString()
+              //add , each 3 digits
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }
           handleValueChange?.(e.currentTarget.value);
         }}

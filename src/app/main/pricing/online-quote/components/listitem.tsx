@@ -20,6 +20,7 @@ import { getNumberWithCommas } from "../../../util";
 import { PricePanel } from "./price-panel";
 import { RoutePanel } from "./route-panel";
 import Link from "next/link";
+import { CutOffTime } from "./cut-off-time";
 
 export const QuotationListItem = ({
   etd,
@@ -52,7 +53,8 @@ export const QuotationListItem = ({
         />
       </Portal>
       <div className="w-full">
-        <div className="p-6 border border-outlineVariant rounded-lg flex">
+        <div className="p-6 border border-outlineVariant rounded-lg flex relative">
+          <CutOffTime cutOffTime={etd.plus({ days: 3 })} />
           <div className="flex-1">
             <div className="flex flex-1 justify-between items-center gap-4 mb-4">
               <Place fontSize="small" className="text-primary" />

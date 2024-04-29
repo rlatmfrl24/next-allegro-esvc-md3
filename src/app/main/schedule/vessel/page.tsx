@@ -48,10 +48,8 @@ export default function VesselSchedule() {
   const [vesselQuery, setVesselQuery] = useState<string>("");
   const [vesselData, setVesselData] = useState<VesselInfoType>(emptyVesselData);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
-  const [vesselSchedules] = useState<VesselScheduleType[]>(
-    createDummyVesselSchedules()
-  );
 
+  const vesselSchedules = useMemo(() => createDummyVesselSchedules(), []);
   const vesselList = useMemo(() => createDummyVesselInformations(400), []);
 
   useEffect(() => {

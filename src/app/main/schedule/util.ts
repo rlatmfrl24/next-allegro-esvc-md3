@@ -62,7 +62,7 @@ export function createDummyVesselInformations(
 }
 
 export function createDummyVesselSchedules(): VesselScheduleType[] {
-  return Array.from({ length: 10 }, (_, i) => {
+  return Array.from({ length: 500 }, (_, i) => {
     const tempDate =
       i > 5
         ? DateTime.fromJSDate(faker.date.future())

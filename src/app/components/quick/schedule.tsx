@@ -71,7 +71,7 @@ export default function QuickSchedule() {
 
 const PtpSearch = () => {
   const tempPorts = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) =>
+    return Array.from({ length: 1200 }, (_, i) =>
       createDummyPlaceInformation(
         faker.location.city() + ", " + faker.location.country()
       )
@@ -84,13 +84,13 @@ const PtpSearch = () => {
         label="Origin"
         icon={<PlaceOutlined />}
         itemList={tempPorts.map((port) => port.yardName)}
-        maxListHeight={180}
+        maxListHeight={240}
       />
       <NAOutlinedAutoComplete
         label="Destination"
         icon={<PlaceOutlined />}
         itemList={tempPorts.map((port) => port.yardName)}
-        maxListHeight={180}
+        maxListHeight={240}
       />
       <div className="flex gap-4">
         <NAOutlinedListBox

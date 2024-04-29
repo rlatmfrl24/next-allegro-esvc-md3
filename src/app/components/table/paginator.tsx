@@ -80,17 +80,21 @@ export const TablePaginator = ({ table }: { table: Table<any> }) => {
                     <MdListItem
                       type="button"
                       key={size}
-                      className="text-center"
+                      className={`text-center ${
+                        size === table.getState().pagination.pageSize
+                          ? "bg-surfaceContainerHighest"
+                          : ""
+                      }`}
                       onClick={() => {
                         table.setPageSize(size);
                         setIsSizeOptionsOpen(false);
                       }}
                     >
-                      {size === table.getState().pagination.pageSize && (
+                      {/* {size === table.getState().pagination.pageSize && (
                         <MdIcon slot="start">
                           <Check fontSize="small" />
                         </MdIcon>
-                      )}
+                      )} */}
                       {size}
                     </MdListItem>
                   ))}

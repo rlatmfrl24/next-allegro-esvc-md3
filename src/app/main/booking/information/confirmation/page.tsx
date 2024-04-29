@@ -367,7 +367,7 @@ export default function BookingConfirmationInformation() {
                   size="medium"
                   className="text-outline"
                 >
-                  Contract
+                  Tel No.
                 </MdTypography>
                 <MdTypography
                   variant="body"
@@ -436,7 +436,7 @@ export default function BookingConfirmationInformation() {
                   size="medium"
                   className="text-outline"
                 >
-                  Contract
+                  Tel No.
                 </MdTypography>
                 <MdTypography
                   variant="body"

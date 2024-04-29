@@ -15,7 +15,9 @@ import {
 } from "@/app/util/typeDef/boooking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSetRecoilState } from "recoil";
+import { containerVariant } from "./base";
 
 const BulkContainerInput = ({
   list,
@@ -55,192 +57,201 @@ const BulkContainerInput = ({
               <Add fontSize="small" />
             </MdFilledTonalIconButton>
             <div className="flex flex-col-reverse">
-              {list.map((container, index) => (
-                <div key={container.uuid} className="mt-6 flex flex-col gap-4">
-                  {list.length - 1 !== index && (
-                    <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                  )}
-                  <div className="flex gap-4">
-                    <div className="flex gap-2">
-                      <NAOutlinedTextField
-                        className="w-[120px] min-w-[120px]"
-                        label="Package"
-                        type="number"
-                        value={container.package.toString()}
-                        handleValueChange={(value) => {
+              <AnimatePresence>
+                {list.map((container, index) => (
+                  <motion.div
+                    key={container.uuid}
+                    variants={containerVariant}
+                    initial="initial"
+                    animate="add"
+                    exit="remove"
+                    className="mt-6 flex flex-col gap-4"
+                  >
+                    {list.length - 1 !== index && (
+                      <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                    )}
+                    <div className="flex gap-4">
+                      <div className="flex gap-2">
+                        <NAOutlinedTextField
+                          className="w-[120px] min-w-[120px]"
+                          label="Package"
+                          type="number"
+                          value={container.package.toString()}
+                          handleValueChange={(value) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              bulk: prev.bulk.map((c) =>
+                                c.uuid === container.uuid
+                                  ? { ...c, package: +value }
+                                  : c
+                              ),
+                            }));
+                          }}
+                        />
+                        <NAOutlinedListBox
+                          options={[
+                            "Aerosol",
+                            "Bag",
+                            "Box",
+                            "Crate",
+                            "Drum",
+                            "Pallet",
+                            "Reel",
+                            "Roll",
+                            "Other",
+                          ]}
+                          initialValue={container.packageType}
+                          onSelection={(packageType) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              bulk: prev.bulk.map((c) =>
+                                c.uuid === container.uuid
+                                  ? { ...c, packageType }
+                                  : c
+                              ),
+                            }));
+                          }}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <NAOutlinedTextField
+                          className="w-[120px] min-w-[120px]"
+                          label="Gross Weight"
+                          type="number"
+                          value={container.grossWeight.toString()}
+                          handleValueChange={(value) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              bulk: prev.bulk.map((c) =>
+                                c.uuid === container.uuid
+                                  ? { ...c, grossWeight: +value }
+                                  : c
+                              ),
+                            }));
+                          }}
+                        />
+                        <NAOutlinedListBox
+                          className="w-[120px] min-w-[120px]"
+                          options={["KGS", "LBS"]}
+                          initialValue={container.grossWeightUnit}
+                          onSelection={(value) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              bulk: prev.bulk.map((c) =>
+                                c.uuid === container.uuid
+                                  ? { ...c, grossWeightUnit: value as any }
+                                  : c
+                              ),
+                            }));
+                          }}
+                        />
+                      </div>
+                      <MdOutlinedTextField
+                        label="Commodity"
+                        value={container.commodity.description}
+                        onInput={(e) => {
+                          const value = e.currentTarget.value;
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
                               c.uuid === container.uuid
-                                ? { ...c, package: +value }
+                                ? {
+                                    ...c,
+                                    commodity: {
+                                      ...c.commodity,
+                                      description: value,
+                                    },
+                                  }
                                 : c
                             ),
                           }));
                         }}
                       />
-                      <NAOutlinedListBox
-                        options={[
-                          "Aerosol",
-                          "Bag",
-                          "Box",
-                          "Crate",
-                          "Drum",
-                          "Pallet",
-                          "Reel",
-                          "Roll",
-                          "Other",
-                        ]}
-                        initialValue={container.packageType}
-                        onSelection={(packageType) => {
+                      <MdIconButton
+                        className="mt-2"
+                        onClick={() => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            bulk: prev.bulk.filter((c, i) => i !== index),
+                          }));
+                        }}
+                      >
+                        <DeleteOutline fontSize="small" />
+                      </MdIconButton>
+                    </div>
+                    <div className="flex gap-4">
+                      <NAOutlinedTextField
+                        className="w-36 min-w-36"
+                        suffixText="cm"
+                        label="Length"
+                        type="number"
+                        value={container.length.toString()}
+                        handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
                               c.uuid === container.uuid
-                                ? { ...c, packageType }
+                                ? { ...c, length: +value }
+                                : c
+                            ),
+                          }));
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        className="w-36 min-w-36"
+                        suffixText="cm"
+                        label="Width"
+                        type="number"
+                        value={container.width.toString()}
+                        handleValueChange={(value) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            bulk: prev.bulk.map((c) =>
+                              c.uuid === container.uuid
+                                ? { ...c, width: +value }
+                                : c
+                            ),
+                          }));
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        className="w-36 min-w-36"
+                        suffixText="cm"
+                        label="Height"
+                        type="number"
+                        value={container.height.toString()}
+                        handleValueChange={(value) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            bulk: prev.bulk.map((c) =>
+                              c.uuid === container.uuid
+                                ? { ...c, height: +value }
+                                : c
+                            ),
+                          }));
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        label="Total Measure"
+                        suffixText="CBM"
+                        type="number"
+                        className="flex-1"
+                        value={container.totalMeasurement.toString()}
+                        handleValueChange={(value) => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            bulk: prev.bulk.map((c) =>
+                              c.uuid === container.uuid
+                                ? { ...c, totalMeasurement: +value }
                                 : c
                             ),
                           }));
                         }}
                       />
                     </div>
-                    <div className="flex gap-2">
-                      <NAOutlinedTextField
-                        className="w-[120px] min-w-[120px]"
-                        label="Gross Weight"
-                        type="number"
-                        value={container.grossWeight.toString()}
-                        handleValueChange={(value) => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            bulk: prev.bulk.map((c) =>
-                              c.uuid === container.uuid
-                                ? { ...c, grossWeight: +value }
-                                : c
-                            ),
-                          }));
-                        }}
-                      />
-                      <NAOutlinedListBox
-                        className="w-[120px] min-w-[120px]"
-                        options={["KGS", "LBS"]}
-                        initialValue={container.grossWeightUnit}
-                        onSelection={(value) => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            bulk: prev.bulk.map((c) =>
-                              c.uuid === container.uuid
-                                ? { ...c, grossWeightUnit: value as any }
-                                : c
-                            ),
-                          }));
-                        }}
-                      />
-                    </div>
-                    <MdOutlinedTextField
-                      label="Commodity"
-                      value={container.commodity.description}
-                      onInput={(e) => {
-                        const value = e.currentTarget.value;
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          bulk: prev.bulk.map((c) =>
-                            c.uuid === container.uuid
-                              ? {
-                                  ...c,
-                                  commodity: {
-                                    ...c.commodity,
-                                    description: value,
-                                  },
-                                }
-                              : c
-                          ),
-                        }));
-                      }}
-                    />
-                    <MdIconButton
-                      className="mt-2"
-                      onClick={() => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          bulk: prev.bulk.filter((c, i) => i !== index),
-                        }));
-                      }}
-                    >
-                      <DeleteOutline fontSize="small" />
-                    </MdIconButton>
-                  </div>
-                  <div className="flex gap-4">
-                    <NAOutlinedTextField
-                      className="w-36 min-w-36"
-                      suffixText="cm"
-                      label="Length"
-                      type="number"
-                      value={container.length.toString()}
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          bulk: prev.bulk.map((c) =>
-                            c.uuid === container.uuid
-                              ? { ...c, length: +value }
-                              : c
-                          ),
-                        }));
-                      }}
-                    />
-                    <NAOutlinedTextField
-                      className="w-36 min-w-36"
-                      suffixText="cm"
-                      label="Width"
-                      type="number"
-                      value={container.width.toString()}
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          bulk: prev.bulk.map((c) =>
-                            c.uuid === container.uuid
-                              ? { ...c, width: +value }
-                              : c
-                          ),
-                        }));
-                      }}
-                    />
-                    <NAOutlinedTextField
-                      className="w-36 min-w-36"
-                      suffixText="cm"
-                      label="Height"
-                      type="number"
-                      value={container.height.toString()}
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          bulk: prev.bulk.map((c) =>
-                            c.uuid === container.uuid
-                              ? { ...c, height: +value }
-                              : c
-                          ),
-                        }));
-                      }}
-                    />
-                    <NAOutlinedTextField
-                      label="Total Measure"
-                      suffixText="CBM"
-                      type="number"
-                      className="flex-1"
-                      value={container.totalMeasurement.toString()}
-                      handleValueChange={(value) => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          bulk: prev.bulk.map((c) =>
-                            c.uuid === container.uuid
-                              ? { ...c, totalMeasurement: +value }
-                              : c
-                          ),
-                        }));
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </Disclosure.Panel>
         </>

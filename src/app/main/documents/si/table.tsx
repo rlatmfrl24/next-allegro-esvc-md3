@@ -6,7 +6,7 @@ import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import VesselInfoCell from "@/app/components/vessel-info-cell";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -88,6 +88,8 @@ export default function SITable() {
   );
   const [tableData, setTableData] = useState<SISearchTableProps[]>([]);
   const [selectedRows, setSelectedRows] = useState<SISearchTableProps[]>([]);
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselScheduleDialog();
 
   useEffect(() => {
     setTableData(tempTableData);
@@ -231,81 +233,81 @@ export default function SITable() {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("requestBlType", {
-      id: "requestBlType",
-      header: "Request B/L Type",
-      cell: (info) => {
-        const isDisabled =
-          info.row.original.blState ===
-          (SIState.Rejected ||
-            SIState.Pending ||
-            SIState.BLIssuePending ||
-            SIState.BLIssueClosed)
-            ? true
-            : false;
+    // columnHelper.accessor("requestBlType", {
+    //   id: "requestBlType",
+    //   header: "Request B/L Type",
+    //   cell: (info) => {
+    //     const isDisabled =
+    //       info.row.original.blState ===
+    //       (SIState.Rejected ||
+    //         SIState.Pending ||
+    //         SIState.BLIssuePending ||
+    //         SIState.BLIssueClosed)
+    //         ? true
+    //         : false;
 
-        return (
-          <Menu>
-            <Menu.Button
-              className={`w-full h-10 flex items-center justify-between ${
-                isDisabled ? "text-outlineVariant" : "cursor-pointer"
-              }`}
-              onClick={(e) => {
-                isDisabled ? e.preventDefault() : e.stopPropagation();
-              }}
-              disabled={isDisabled}
-            >
-              <MdTypography
-                variant="body"
-                size="medium"
-                className="flex-1 flex justify-start"
-              >
-                {info.getValue()}
-              </MdTypography>
-              <ArrowDropDown />
-            </Menu.Button>
-            <Menu.Items
-              style={
-                {
-                  "--md-elevation-level": 2,
-                } as CSSProperties
-              }
-              className={`absolute z-10 bg-surfaceContainerHigh rounded-lg py-2`}
-            >
-              <MdElevation />
-              {["None", "O.BL", "Surrender", "SeaWaybill"].map((option) => (
-                <Menu.Item key={option}>
-                  <MdMenuItem
-                    type="button"
-                    className={` ${
-                      info.getValue() === option ? "bg-secondaryContainer" : ""
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setTableData((prev) =>
-                        prev.map((row) => {
-                          if (row === info.row.original) {
-                            return {
-                              ...row,
-                              requestBlType: option,
-                            };
-                          }
-                          return row;
-                        })
-                      );
-                    }}
-                  >
-                    {option}
-                  </MdMenuItem>
-                </Menu.Item>
-              ))}
-            </Menu.Items>
-          </Menu>
-        );
-      },
-      size: 120,
-      minSize: 120,
-    }),
+    //     return (
+    //       <Menu>
+    //         <Menu.Button
+    //           className={`w-full h-10 flex items-center justify-between ${
+    //             isDisabled ? "text-outlineVariant" : "cursor-pointer"
+    //           }`}
+    //           onClick={(e) => {
+    //             isDisabled ? e.preventDefault() : e.stopPropagation();
+    //           }}
+    //           disabled={isDisabled}
+    //         >
+    //           <MdTypography
+    //             variant="body"
+    //             size="medium"
+    //             className="flex-1 flex justify-start"
+    //           >
+    //             {info.getValue()}
+    //           </MdTypography>
+    //           <ArrowDropDown />
+    //         </Menu.Button>
+    //         <Menu.Items
+    //           style={
+    //             {
+    //               "--md-elevation-level": 2,
+    //             } as CSSProperties
+    //           }
+    //           className={`absolute z-10 bg-surfaceContainerHigh rounded-lg py-2`}
+    //         >
+    //           <MdElevation />
+    //           {["None", "O.BL", "Surrender", "SeaWaybill"].map((option) => (
+    //             <Menu.Item key={option}>
+    //               <MdMenuItem
+    //                 type="button"
+    //                 className={` ${
+    //                   info.getValue() === option ? "bg-secondaryContainer" : ""
+    //                 }`}
+    //                 onClick={(e) => {
+    //                   e.stopPropagation();
+    //                   setTableData((prev) =>
+    //                     prev.map((row) => {
+    //                       if (row === info.row.original) {
+    //                         return {
+    //                           ...row,
+    //                           requestBlType: option,
+    //                         };
+    //                       }
+    //                       return row;
+    //                     })
+    //                   );
+    //                 }}
+    //               >
+    //                 {option}
+    //               </MdMenuItem>
+    //             </Menu.Item>
+    //           ))}
+    //         </Menu.Items>
+    //       </Menu>
+    //     );
+    //   },
+    //   size: 120,
+    //   minSize: 120,
+    // }),
     columnHelper.accessor("actualShipper", {
       header: "Actual Shipper",
       id: "actualShipper",
@@ -342,7 +344,22 @@ export default function SITable() {
     columnHelper.accessor("vessel", {
       header: "Vessel",
       id: "vessel",
-      cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      // cell: (info) => <VesselInfoCell {...info.getValue()} />,
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="underline cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
+        </MdTypography>
+      ),
+      size: 300,
     }),
     columnHelper.accessor("origin", {
       header: "Origin",
@@ -429,6 +446,7 @@ export default function SITable() {
 
   return (
     <>
+      {renderDialog()}
       <MdChipSet>
         <StatusFilterComponent
           statusOptions={Object.values(SIState)}

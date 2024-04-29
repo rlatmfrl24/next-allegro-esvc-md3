@@ -217,7 +217,7 @@ export const BasicTable = ({
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
-      <OverlayScrollbarsComponent defer className="overflow-hidden">
+      <OverlayScrollbarsComponent defer>
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
@@ -228,7 +228,7 @@ export const BasicTable = ({
             className={styles.table}
             style={{
               ...columnSizeVars,
-              // width: table.getCenterTotalSize(),
+              width: "99.8%", // to prevent horizontal scroll
             }}
           >
             <thead>
