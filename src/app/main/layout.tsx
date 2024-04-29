@@ -4,7 +4,6 @@ import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { ScrollState } from "../store/global.store";
-import { set } from "lodash";
 
 export default function MainLayout({
   children,

@@ -5,7 +5,11 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { SIEditPartiesState, SIEditStepState } from "@/app/store/si.store";
-import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdFilledButton,
+  MdOutlinedTextField,
+} from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
 import { ArrowDropDown, InfoOutlined } from "@mui/icons-material";
@@ -226,7 +230,7 @@ const ShipperInfo = () => {
                 });
               }}
             />
-            <div className="flex gap-4">
+            <div className="grid grid-cols-4 gap-4">
               <NAOutlinedAutoComplete
                 label="Country"
                 itemList={countryList}
@@ -270,138 +274,162 @@ const ShipperInfo = () => {
                   });
                 }}
               />
-              <NAOutlinedTextField
-                label="Zip Code"
-                value={partiesStore.shipper.addressZipCode || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
-                    return {
-                      ...prev,
-                      shipper: {
-                        ...prev.shipper,
-                        addressZipCode: value,
-                      },
-                    };
-                  });
-                }}
-              />
+              <div className="col-span-2 flex gap-4">
+                <NAOutlinedTextField
+                  label="Zip Code"
+                  className="w-36"
+                  value={partiesStore.shipper.addressZipCode || ""}
+                  handleValueChange={(value) => {
+                    setPartiesStore((prev) => {
+                      return {
+                        ...prev,
+                        shipper: {
+                          ...prev.shipper,
+                          addressZipCode: value,
+                        },
+                      };
+                    });
+                  }}
+                />
+                <NAOutlinedTextField
+                  label="Street / P.O Box"
+                  className="flex-1"
+                  value={partiesStore.shipper.addressStreet || ""}
+                  handleValueChange={(value) => {
+                    setPartiesStore((prev) => {
+                      return {
+                        ...prev,
+                        shipper: {
+                          ...prev.shipper,
+                          addressStreet: value,
+                        },
+                      };
+                    });
+                  }}
+                />
+              </div>
             </div>
-            <NAOutlinedTextField
-              label="Street / P.O Box"
-              className="flex-1"
-              value={partiesStore.shipper.addressStreet || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    shipper: {
-                      ...prev.shipper,
-                      addressStreet: value,
-                    },
-                  };
-                });
-              }}
-            />
-
-            <div className="flex gap-4">
-              <NAOutlinedTextField
-                label="EORI No"
-                className="flex-1"
-                value={partiesStore.shipper.eoriNumber || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
-                    return {
-                      ...prev,
-                      shipper: {
-                        ...prev.shipper,
-                        eoriNumber: value,
-                      },
-                    };
-                  });
-                }}
-              />
-              <NAOutlinedTextField
-                label="USCC No"
-                className="flex-1"
-                value={partiesStore.shipper.usccNumber || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
-                    return {
-                      ...prev,
-                      shipper: {
-                        ...prev.shipper,
-                        usccNumber: value,
-                      },
-                    };
-                  });
-                }}
-              />
-            </div>
-            <div className="flex gap-4">
-              <NAOutlinedTextField
-                label="Tax ID"
-                value={partiesStore.shipper.taxID || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
-                    return {
-                      ...prev,
-                      shipper: {
-                        ...prev.shipper,
-                        taxID: value,
-                      },
-                    };
-                  });
-                }}
-              />
-              <NAOutlinedTextField
-                label="Phone"
-                type="tel"
-                value={partiesStore.shipper.phone || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
-                    return {
-                      ...prev,
-                      shipper: {
-                        ...prev.shipper,
-                        phone: value,
-                      },
-                    };
-                  });
-                }}
-              />
-              <NAOutlinedTextField
-                label="Fax"
-                type="tel"
-                value={partiesStore.shipper.fax || ""}
-                handleValueChange={(value) => {
-                  setPartiesStore((prev) => {
-                    return {
-                      ...prev,
-                      shipper: {
-                        ...prev.shipper,
-                        fax: value,
-                      },
-                    };
-                  });
-                }}
-              />
-            </div>
-            <NAOutlinedTextField
-              label="Email"
-              type="email"
-              value={partiesStore.shipper.email || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    shipper: {
-                      ...prev.shipper,
-                      email: value,
-                    },
-                  };
-                });
-              }}
-            />
+            <Disclosure
+              defaultOpen={
+                Boolean(partiesStore.shipper.eoriNumber) ||
+                Boolean(partiesStore.shipper.usccNumber) ||
+                Boolean(partiesStore.shipper.taxID) ||
+                Boolean(partiesStore.shipper.phone) ||
+                Boolean(partiesStore.shipper.fax) ||
+                Boolean(partiesStore.shipper.email)
+              }
+            >
+              {({ open }) => (
+                <>
+                  <Disclosure.Button
+                    className={`w-fit p-2 flex items-center gap-3`}
+                  >
+                    <MdCheckbox checked={open} />
+                    <MdTypography variant="title" size="small">
+                      Additional Information
+                    </MdTypography>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className={`grid grid-cols-4 gap-4`}>
+                    <NAOutlinedTextField
+                      label="EORI No"
+                      className="col-span-2"
+                      value={partiesStore.shipper.eoriNumber || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            shipper: {
+                              ...prev.shipper,
+                              eoriNumber: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                    <NAOutlinedTextField
+                      label="USCC No"
+                      className="col-span-2"
+                      value={partiesStore.shipper.usccNumber || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            shipper: {
+                              ...prev.shipper,
+                              usccNumber: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                    <NAOutlinedTextField
+                      label="Tax ID"
+                      value={partiesStore.shipper.taxID || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            shipper: {
+                              ...prev.shipper,
+                              taxID: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                    <NAOutlinedTextField
+                      label="Phone"
+                      type="tel"
+                      value={partiesStore.shipper.phone || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            shipper: {
+                              ...prev.shipper,
+                              phone: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                    <NAOutlinedTextField
+                      label="Fax"
+                      type="tel"
+                      value={partiesStore.shipper.fax || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            shipper: {
+                              ...prev.shipper,
+                              fax: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                    <NAOutlinedTextField
+                      label="Email"
+                      type="email"
+                      className="col-span-2"
+                      value={partiesStore.shipper.email || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            shipper: {
+                              ...prev.shipper,
+                              email: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
           </Disclosure.Panel>
         </>
       )}
@@ -589,6 +617,7 @@ const ConsigneeInfo = () => {
               />
               <NAOutlinedTextField
                 label="Zip Code"
+                className="w-36"
                 value={partiesStore.consignee.addressZipCode || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -602,23 +631,23 @@ const ConsigneeInfo = () => {
                   });
                 }}
               />
+              <NAOutlinedTextField
+                label="Street / P.O Box"
+                className="flex-1"
+                value={partiesStore.consignee.addressStreet || ""}
+                handleValueChange={(value) => {
+                  setPartiesStore((prev) => {
+                    return {
+                      ...prev,
+                      consignee: {
+                        ...prev.consignee,
+                        addressStreet: value,
+                      },
+                    };
+                  });
+                }}
+              />
             </div>
-            <NAOutlinedTextField
-              label="Street / P.O Box"
-              className="flex-1"
-              value={partiesStore.consignee.addressStreet || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    consignee: {
-                      ...prev.consignee,
-                      addressStreet: value,
-                    },
-                  };
-                });
-              }}
-            />
             <div className="flex gap-2">
               <NAOutlinedTextField
                 label="EORI No"
@@ -952,6 +981,7 @@ const NotifyPartyInfo = () => {
               />
               <NAOutlinedTextField
                 label="Zip Code"
+                className="w-36"
                 value={partiesStore.notifyParty.addressZipCode || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -965,23 +995,23 @@ const NotifyPartyInfo = () => {
                   });
                 }}
               />
+              <NAOutlinedTextField
+                label="Street / P.O Box"
+                className="flex-1"
+                value={partiesStore.notifyParty.addressStreet || ""}
+                handleValueChange={(value) => {
+                  setPartiesStore((prev) => {
+                    return {
+                      ...prev,
+                      notifyParty: {
+                        ...prev.notifyParty,
+                        addressStreet: value,
+                      },
+                    };
+                  });
+                }}
+              />
             </div>
-            <NAOutlinedTextField
-              label="Street / P.O Box"
-              className="flex-1"
-              value={partiesStore.notifyParty.addressStreet || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    notifyParty: {
-                      ...prev.notifyParty,
-                      addressStreet: value,
-                    },
-                  };
-                });
-              }}
-            />
             <div className="flex gap-2">
               <NAOutlinedTextField
                 label="EORI No"
