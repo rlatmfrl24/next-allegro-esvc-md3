@@ -5,7 +5,12 @@ import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { QuotationTermsState } from "@/app/store/pricing.store";
 import styles from "@/app/styles/base.module.css";
-import { MdCheckbox, MdFilledButton } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdFilledButton,
+  MdIcon,
+  MdOutlinedButton,
+} from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
@@ -14,6 +19,7 @@ import VesselIcon from "@/../public/icon_ship_route.svg";
 import { RoutePanel } from "../components/route-panel";
 import { PricePanel } from "../components/price-panel";
 import { useRouter } from "next/navigation";
+import { ChevronLeft } from "@mui/icons-material";
 
 export default function QuotationSelection({
   params,
@@ -32,32 +38,37 @@ export default function QuotationSelection({
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Online Quote" />
+      <div className="flex items-center gap-4">
+        <MdOutlinedButton
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <MdIcon slot="icon">
+            <ChevronLeft fontSize="small" />
+          </MdIcon>
+          Back
+        </MdOutlinedButton>
+        <MdTypography variant="title" size="large" className="text-outline">
+          Contract No.{" "}
+          <span className="text-onSurface">
+            {params.contract.toUpperCase() || "N/A"}
+          </span>
+        </MdTypography>
+      </div>
       <div className={styles.area}>
         <div className="flex gap-8">
           <div className="flex flex-1 flex-col">
-            <div className="flex justify-between items-center ">
-              <MdTypography
-                variant="title"
-                size="large"
-                className="text-outline"
-              >
-                Contract No.{" "}
-                <span className="text-onSurface">
-                  {params.contract.toUpperCase() || "N/A"}
-                </span>
-              </MdTypography>
+            <div className="relative flex items-center justify-center flex-1 bg-surface border border-secondaryContainer rounded-lg">
               <MdTypography
                 variant="label"
                 size="small"
-                className="bg-surfaceContainerLow rounded-full px-4 py-2"
+                className="absolute top-2 right-2 bg-surfaceContainerLow rounded-full px-4 py-2"
               >
                 <span className="text-outline mr-2">Validity Date</span>
                 {tempCondition.etd.toFormat("yyyy-MM-dd")} ~{" "}
                 {tempCondition.eta.toFormat("yyyy-MM-dd")}
               </MdTypography>
-            </div>
-            <div className="flex items-center justify-center flex-1 bg-surface border border-secondaryContainer mt-4 rounded-lg">
               <div aria-label="route-origin" className="text-right">
                 <MdTypography
                   variant="headline"

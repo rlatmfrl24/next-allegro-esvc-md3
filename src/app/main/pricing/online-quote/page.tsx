@@ -2,31 +2,24 @@
 
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
-import { useMemo, useState } from "react";
-import { createDummyPlaceInformation } from "../../schedule/util";
-import { faker } from "@faker-js/faker";
+import { useState } from "react";
 import Condition from "./condition";
-import QuotationList from "./list";
-import QuotationSelection from "./[contract]/page";
-import { DateTime } from "luxon";
+import QuotationList from "./result/list";
+import { useRouter } from "next/navigation";
 
 export default function OnlineQuote() {
-  const [pageState, setPageState] = useState<"condition" | "list">("condition");
+  // const [pageState, setPageState] = useState<"condition" | "list">("condition");
+  const router = useRouter();
 
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Online Quote" />
-      {
-        {
-          condition: (
-            <Condition
-              onSearch={() => setPageState("list")}
-              onReset={() => setPageState("condition")}
-            />
-          ),
-          list: <QuotationList onResearch={() => setPageState("condition")} />,
-        }[pageState]
-      }
+      <Condition
+        onSearch={() => {
+          router.push("/main/pricing/online-quote/result");
+        }}
+        onReset={() => {}}
+      />
     </div>
   );
 }

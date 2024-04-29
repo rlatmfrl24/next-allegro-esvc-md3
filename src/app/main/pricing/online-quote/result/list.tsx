@@ -12,10 +12,10 @@ import {
 } from "@/app/util/md3";
 import { Download, SwapHorizOutlined } from "@mui/icons-material";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { QuotationListItem } from "./components/listitem";
+import { QuotationListItem } from "../components/listitem";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
-import { createDummyVesselInformation } from "../../schedule/util";
+import { createDummyVesselInformation } from "../../../schedule/util";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
 
 export default function QuotationList({
