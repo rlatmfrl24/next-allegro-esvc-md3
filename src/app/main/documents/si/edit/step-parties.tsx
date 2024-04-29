@@ -1073,7 +1073,17 @@ const NotifyPartyInfo = () => {
               </div>
             </div>
 
-            <Disclosure>
+            <Disclosure
+              defaultOpen={
+                Boolean(partiesStore.notifyParty.eoriNumber) ||
+                Boolean(partiesStore.notifyParty.usccNumber) ||
+                Boolean(partiesStore.notifyParty.taxID) ||
+                Boolean(partiesStore.notifyParty.phone) ||
+                Boolean(partiesStore.notifyParty.fax) ||
+                Boolean(partiesStore.notifyParty.email) ||
+                Boolean(partiesStore.notifyParty.contactPerson)
+              }
+            >
               {({ open }) => (
                 <>
                   <Disclosure.Button
@@ -1176,6 +1186,22 @@ const NotifyPartyInfo = () => {
                             notifyParty: {
                               ...prev.notifyParty,
                               email: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
+                    <NAOutlinedTextField
+                      label="Contact Person"
+                      className="col-span-2"
+                      value={partiesStore.notifyParty.contactPerson || ""}
+                      handleValueChange={(value) => {
+                        setPartiesStore((prev) => {
+                          return {
+                            ...prev,
+                            notifyParty: {
+                              ...prev.notifyParty,
+                              contactPerson: value,
                             },
                           };
                         });
