@@ -52,7 +52,6 @@ export default function PortResultTable({
   } = useVesselScheduleDialog();
 
   const columnHelper = createColumnHelper<PortScheduleType>();
-  const router = useRouter();
 
   const columns = [
     columnHelper.accessor("vesselInfo", {
@@ -104,50 +103,50 @@ export default function PortResultTable({
     }),
     columnHelper.accessor("arrivalDate", {
       header: "Arrival",
-      // cell: (info) => {
-      //   return (
-      //     <DateCell
-      //       info={info.getValue()}
-      //       flag={
-      //         info.getValue().diff(DateTime.now(), "days").days > 0
-      //           ? "estimate"
-      //           : "actual"
-      //       }
-      //     />
-      //   );
-      // },
+      cell: (info) => {
+        return (
+          <DateCell
+            info={info.getValue()}
+            flag={
+              info.getValue().diff(DateTime.now(), "days").days > 0
+                ? "estimate"
+                : "actual"
+            }
+          />
+        );
+      },
       size: 200,
     }),
     columnHelper.accessor("berthingDate", {
       header: "Berthing",
-      // cell: (info) => {
-      //   return (
-      //     <DateCell
-      //       info={info.getValue()}
-      //       flag={
-      //         info.getValue().diff(DateTime.now(), "days").days > 0
-      //           ? "estimate"
-      //           : "actual"
-      //       }
-      //     />
-      //   );
-      // },
+      cell: (info) => {
+        return (
+          <DateCell
+            info={info.getValue()}
+            flag={
+              info.getValue().diff(DateTime.now(), "days").days > 0
+                ? "estimate"
+                : "actual"
+            }
+          />
+        );
+      },
       size: 200,
     }),
     columnHelper.accessor("departureDate", {
       header: "Departure",
-      // cell: (info) => {
-      //   return (
-      //     <DateCell
-      //       info={info.getValue()}
-      //       flag={
-      //         info.getValue().diff(DateTime.now(), "days").days > 0
-      //           ? "estimate"
-      //           : "actual"
-      //       }
-      //     />
-      //   );
-      // },
+      cell: (info) => {
+        return (
+          <DateCell
+            info={info.getValue()}
+            flag={
+              info.getValue().diff(DateTime.now(), "days").days > 0
+                ? "estimate"
+                : "actual"
+            }
+          />
+        );
+      },
       size: 200,
     }),
     // columnHelper.accessor("vesselInfo.vesselName", {
@@ -193,19 +192,19 @@ export default function PortResultTable({
   );
 }
 
-// const DateCell = ({
-//   info,
-//   flag,
-// }: {
-//   info: DateTime;
-//   flag: "actual" | "estimate";
-// }) => {
-//   return (
-//     <MdTypography variant="body" size="medium" className="flex items-center">
-//       <div className="mr-2">
-//         {flag === "actual" ? <ActualScheduleIcon /> : <EstimateScheduleIcon />}
-//       </div>
-//       {info.toFormat("yyyy-MM-dd HH:mm:ss")}
-//     </MdTypography>
-//   );
-// };
+const DateCell = ({
+  info,
+  flag,
+}: {
+  info: DateTime;
+  flag: "actual" | "estimate";
+}) => {
+  return (
+    <MdTypography variant="body" size="medium" className="flex items-center">
+      <div className="mr-2">
+        {flag === "actual" ? <ActualScheduleIcon /> : <EstimateScheduleIcon />}
+      </div>
+      {info.toFormat("yyyy-MM-dd HH:mm:ss")}
+    </MdTypography>
+  );
+};
