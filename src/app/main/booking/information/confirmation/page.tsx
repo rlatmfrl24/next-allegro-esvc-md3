@@ -1,27 +1,29 @@
 "use client";
 
-import PageTitle from "@/app/components/title-components";
-import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
-import RequestNumberSection from "../components/request-number";
+import { DateTime } from "luxon";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
+
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import NaToggleButton from "@/app/components/na-toggle-button";
+import PageTitle from "@/app/components/title-components";
+import { MdTypography } from "@/app/components/typography";
 import {
   BookingInformationState,
   CurrentBookingDataState,
 } from "@/app/store/booking.store";
-import { useRouter } from "next/navigation";
+import styles from "@/app/styles/base.module.css";
+import { MdIcon, MdOutlinedButton, MdOutlinedTextField } from "@/app/util/md3";
 import { BookingStatus } from "@/app/util/typeDef/boooking";
-import { useEffect } from "react";
-import LocationScheduleSection from "../components/location-schedule";
+import { faker } from "@faker-js/faker";
+import { ChevronLeft } from "@mui/icons-material";
+
 import { DividerComponent, Section } from "../components/base";
 import ContainerSection from "../components/contaienr";
-import { MdTypography } from "@/app/components/typography";
-import { MdIcon, MdOutlinedButton, MdOutlinedTextField } from "@/app/util/md3";
-import NaToggleButton from "@/app/components/na-toggle-button";
-import { faker } from "@faker-js/faker";
-import { DateTime } from "luxon";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { ChevronLeft } from "@mui/icons-material";
+import LocationScheduleSection from "../components/location-schedule";
+import RequestNumberSection from "../components/request-number";
 
 export default function BookingConfirmationInformation() {
   const cx = classNames.bind(styles);
@@ -464,9 +466,9 @@ export default function BookingConfirmationInformation() {
               </MdTypography>
             </Section>
           </div>
-          {/* <DividerComponent className="my-8" />
+          <DividerComponent className="my-8" />
           <div className="flex items-stretch">
-            <Section title="Duplicate reservation">
+            {/* <Section title="Duplicate reservation">
               <div className="flex flex-col gap-4">
                 <div>
                   <MdTypography
@@ -502,7 +504,7 @@ export default function BookingConfirmationInformation() {
             <DividerComponent
               className="mx-8 border-dotted"
               orientation="vertical"
-            />
+            /> */}
             <Section title="Email Notification Subscription">
               <div className="flex flex-col">
                 <NaToggleButton
@@ -533,7 +535,7 @@ export default function BookingConfirmationInformation() {
                 />
               </div>
             </Section>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
