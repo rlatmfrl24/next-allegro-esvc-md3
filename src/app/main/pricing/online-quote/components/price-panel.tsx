@@ -31,7 +31,7 @@ export const PricePanel = ({
           variant="label"
           size="large"
           prominent
-          className="border-b border-outlineVariant pb-2 text-outline"
+          className="border-b border-outlineVariant pb-2 text-outline text-right"
         >
           Unit Price
         </MdTypography>
@@ -39,7 +39,7 @@ export const PricePanel = ({
           variant="label"
           size="large"
           prominent
-          className="border-b border-outlineVariant pb-2 text-outline"
+          className="border-b border-outlineVariant pb-2 text-outline text-right"
         >
           Quantity
         </MdTypography>
@@ -47,7 +47,7 @@ export const PricePanel = ({
           variant="label"
           size="large"
           prominent
-          className="border-b border-outlineVariant pb-2 text-outline"
+          className="border-b border-outlineVariant pb-2 text-outline text-right"
         >
           Total per Unit
         </MdTypography>
