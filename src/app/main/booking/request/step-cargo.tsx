@@ -234,8 +234,9 @@ export default function CargoStep() {
           <div className="flex-1 flex gap-4">
             <NAOutlinedTextField
               readOnly
-              label="Code"
+              label="Tel No."
               className="flex-1"
+              type="tel"
               value={cargoPickUpReturnData.emptyPickUpLocation.code || ""}
               onInput={(e) => {
                 setCargoPickUpReturnData((prev) => {
@@ -311,7 +312,8 @@ export default function CargoStep() {
           <div className="flex-1 flex gap-4">
             <NAOutlinedTextField
               readOnly
-              label="Code"
+              label="Tel No."
+              type="tel"
               className="flex-1"
               value={cargoPickUpReturnData.fullReturnLocation.code || ""}
               onInput={(e) => {

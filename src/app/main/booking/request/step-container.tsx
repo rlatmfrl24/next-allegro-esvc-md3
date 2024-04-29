@@ -476,7 +476,7 @@ export default function ContainerStep() {
         </>
       )}
 
-      <div className="flex items-end justify-end mt-6">
+      <div className="flex items-end justify-end mt-6 flex-1">
         <MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
           Next
         </MdFilledButton>
