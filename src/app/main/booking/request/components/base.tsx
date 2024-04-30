@@ -3,12 +3,16 @@ import { MdTypography } from "@/app/components/typography";
 export const SimpleItem = ({
   title,
   value,
+  noWrap = false,
+  className,
 }: {
   title: string;
   value: string;
+  noWrap?: boolean;
+  className?: string;
 }) => {
   return (
-    <div className="flex-1">
+    <div className={`flex-1 ${className ? className : ""}`}>
       <MdTypography
         variant="label"
         size="medium"
@@ -16,7 +20,11 @@ export const SimpleItem = ({
       >
         {title}
       </MdTypography>
-      <MdTypography variant="title" size="medium" className="text-onSurface">
+      <MdTypography
+        variant="title"
+        size="medium"
+        className={`text-onSurface ${noWrap ? "whitespace-nowrap" : ""}`}
+      >
         {value}
       </MdTypography>
     </div>

@@ -9,6 +9,8 @@ import {
   MdCircularProgress,
   MdDialog,
   MdFilledButton,
+  MdOutlinedButton,
+  MdOutlinedTextField,
   MdTextButton,
 } from "@/app/util/md3";
 import { VesselInfoType } from "@/app/util/typeDef/schedule";
@@ -20,12 +22,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { SimpleItem } from "../../booking/request/components/base";
+import { FmdGood } from "@mui/icons-material";
+import SIStateChip from "./si-state-chip";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 const ActionButtons = ({
   selectionList,
+  setTableData,
 }: {
   selectionList: SISearchTableProps[];
+  setTableData: Dispatch<SetStateAction<SISearchTableProps[]>>;
 }) => {
   const states = selectionList.map((item) => item.blState);
 
@@ -109,7 +117,23 @@ const ActionButtons = ({
         <BLIssueRequest
           open={isBLIssueRequestOpen}
           onOpenChange={setIsBLIssueRequestOpen}
-          flag={faker.helpers.maybe(() => false)}
+          rows={selectionList}
+          onConfirm={(rows) => {
+            setTableData((prev) =>
+              prev.map((item) =>
+                rows.some((row) => row.requestNumber === item.requestNumber)
+                  ? {
+                      ...item,
+                      // blState: SIState.BLIssueRequest,
+                      requestBlType:
+                        rows.find(
+                          (row) => row.requestNumber === item.requestNumber
+                        )?.requestBlType || "None",
+                    }
+                  : item
+              )
+            );
+          }}
         />
         {selectionList.length === 1 && (
           <BLCombine
@@ -153,86 +177,106 @@ const BLPreview = ({
 const BLIssueRequest = ({
   open,
   onOpenChange,
-  flag = true,
+  rows,
+  onConfirm,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  flag?: boolean;
+  rows: SISearchTableProps[];
+  onConfirm?: (rows: SISearchTableProps[]) => void;
 }) => {
-  const [currentState, setCurrentState] = useState<
-    "initial" | "loading" | "complete"
-  >("initial");
+  const [requestedBLs, setRequestedBLs] = useState<SISearchTableProps[]>(rows);
+  const validateConfirm = !requestedBLs.every(
+    (item) => item.requestBlType !== "None"
+  );
 
-  function dummy() {
-    setCurrentState("loading");
-    setTimeout(() => {
-      setCurrentState("complete");
-    }, 2000);
-  }
+  useEffect(() => {
+    setRequestedBLs(rows);
+  }, [rows, open]);
 
-  return flag ? (
+  return (
     <MdDialog
       open={open}
       closed={() => {
         onOpenChange(false);
-        setTimeout(() => {
-          setCurrentState("initial");
-        }, 500);
       }}
       className="min-w-fit"
     >
-      <div slot="headline">
-        {
-          {
-            initial: "Do you want to save the data?",
-            loading: "Waiting for server response...",
-            complete: "The data has been saved successfully.",
-          }[currentState]
-        }
-      </div>
-      <div slot="content">
-        {
-          {
-            initial: "Confirm Message",
-            loading: (
-              <div className="w-full flex justify-center">
-                <MdCircularProgress indeterminate />
-              </div>
-            ),
-            complete: "Allegro Message",
-          }[currentState]
-        }
-      </div>
-      {currentState !== "loading" && (
-        <div slot="actions">
-          <MdTextButton
-            onClick={() => {
-              onOpenChange(false);
-              setTimeout(() => {
-                setCurrentState("initial");
-              }, 500);
-            }}
+      <div slot="headline">B/L Issue Request</div>
+      <div slot="content" className="flex flex-col gap-6">
+        <MdTypography variant="body" size="medium">
+          Do you want to save the data?
+          <input autoFocus className="h-0" />
+        </MdTypography>
+        {requestedBLs.map((row, index) => (
+          <div
+            key={row.requestNumber}
+            className="px-6 py-4 flex flex-col gap-2 border border-outlineVariant rounded-2xl"
           >
-            Close
-          </MdTextButton>
-          {currentState === "initial" && (
-            <MdFilledButton onClick={() => dummy()}>Save</MdFilledButton>
-          )}
-        </div>
-      )}
-    </MdDialog>
-  ) : (
-    <MdDialog
-      open={open}
-      closed={() => onOpenChange(false)}
-      className="min-w-fit"
-    >
-      <div slot="headline">
-        You can’t submit S/I after expired cut-off time.
+            <div>
+              <SIStateChip state={row.blState} />
+            </div>
+            <div className="flex items-center gap-2">
+              <FmdGood className="text-primary" />
+              <MdTypography variant="body" size="large" prominent>
+                {row.origin}
+              </MdTypography>
+              <DividerComponent className="max-w-8 border-dotted border-b-2 mx-4" />
+              <FmdGood className="text-primary" />
+              <MdTypography variant="body" size="large" prominent>
+                {row.destination}
+              </MdTypography>
+            </div>
+            <div className="flex">
+              <SimpleItem
+                title="Request No."
+                value={row.requestNumber}
+                noWrap
+                className="min-w-fit flex-none"
+              />
+              <DividerComponent orientation="vertical" className="h-12 mx-4" />
+              <SimpleItem
+                title="Booking No."
+                value={row.bookingNumber}
+                noWrap
+                className="min-w-fit flex-none"
+              />
+              <DividerComponent orientation="vertical" className="h-12 mx-4" />
+              <SimpleItem title="Vessel" value={row.vessel.vesselName} noWrap />
+              <NAOutlinedListBox
+                className="w-40 ml-4"
+                label="Request B/L Type"
+                initialValue={row.requestBlType}
+                options={["Original B/L", "B/L Surrender", "Sea Waybill"]}
+                onSelection={(value) => {
+                  setRequestedBLs((prev) =>
+                    prev.map((item, i) =>
+                      i === index ? { ...item, requestBlType: value } : item
+                    )
+                  );
+                }}
+              />
+            </div>
+          </div>
+        ))}
       </div>
-      <div slot="content">Confirm Message</div>
       <div slot="actions">
-        <MdTextButton onClick={() => onOpenChange(false)}>Close</MdTextButton>
+        <MdOutlinedButton
+          onClick={() => {
+            onOpenChange(false);
+          }}
+        >
+          Cancel
+        </MdOutlinedButton>
+        <MdFilledButton
+          disabled={validateConfirm}
+          onClick={() => {
+            onOpenChange(false);
+            onConfirm?.(requestedBLs);
+          }}
+        >
+          Confirm
+        </MdFilledButton>
       </div>
     </MdDialog>
   );
