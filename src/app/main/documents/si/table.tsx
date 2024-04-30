@@ -161,6 +161,7 @@ export default function SITable() {
           }
           onClick={(e) => {
             e.preventDefault();
+            info.row.toggleSelected();
           }}
         />
       ),
@@ -408,6 +409,7 @@ export default function SITable() {
         columns={columns}
         data={tableData}
         controlColumns={["select"]}
+        ignoreSelectionColumns={["select"]}
         pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
         getSelectionRows={(rows) => {
           if (rows[0]) {
