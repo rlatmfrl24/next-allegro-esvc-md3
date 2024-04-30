@@ -4,7 +4,10 @@ import { useRecoilState } from "recoil";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { DetailTitle } from "@/app/components/title-components";
 import { getEmptyContainerData } from "@/app/main/util";
-import { ContainerState } from "@/app/store/booking.store";
+import {
+  BookingRequestStepState,
+  ContainerState,
+} from "@/app/store/booking.store";
 import {
   MdFilledTonalIconButton,
   MdIconButton,
@@ -30,6 +33,7 @@ const DryContainerInput = ({
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
+  const [bookingRequestStep] = useRecoilState(BookingRequestStepState);
 
   const defaultContainerSizeOptions = ["20", "40", "45", "53"];
 
@@ -98,6 +102,11 @@ const DryContainerInput = ({
                       <NAOutlinedListBox
                         label="Size"
                         required
+                        error={
+                          bookingRequestStep.container.visited &&
+                          container.size === ""
+                        }
+                        errorText="Size is required"
                         className="w-52 text-right"
                         suffixText="ft"
                         initialValue={container.size}
@@ -122,6 +131,11 @@ const DryContainerInput = ({
                       <NAOutlinedTextField
                         label="Quantity / Total"
                         required
+                        error={
+                          bookingRequestStep.container.visited &&
+                          container.quantity === 0
+                        }
+                        errorText="Quantity is required"
                         type="number"
                         value={container.quantity.toString()}
                         handleValueChange={(value) => {
@@ -131,9 +145,6 @@ const DryContainerInput = ({
                               i === index ? { ...c, quantity: +value } : c
                             ),
                           }));
-                        }}
-                        onBlur={(e) => {
-                          e.target.value = container.quantity.toString();
                         }}
                       />
                       <NAOutlinedTextField

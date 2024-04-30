@@ -35,10 +35,21 @@ import TankContainerInput from "./components/tank-container-input";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export default function ContainerStep() {
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const [typeSelections, setTypeSelections] = useState<ContainerType[]>([]);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
+  const [typeSelections, setTypeSelections] = useState<ContainerType[]>(
+    Object.keys(ContainerType).map(
+      (key) => ContainerType[key as keyof typeof ContainerType]
+    )
+  );
+
+  useEffect(() => {
+    console.log(typeSelections);
+  }, [typeSelections]);
 
   function ValidateContainerInput() {
     let isValid = true;
@@ -96,6 +107,7 @@ export default function ContainerStep() {
       container: {
         ...prev.container,
         isSelected: false,
+        visited: true,
       },
       additionalInformation: {
         ...prev.additionalInformation,
