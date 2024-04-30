@@ -26,7 +26,10 @@ export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
     LocationScheduleState
   );
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
     useState(locationScheduleData.contractNumber === "");
   const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
@@ -181,6 +184,11 @@ export default function LoactionScheduleStep() {
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
               required
+              error={
+                bookingRequestStep.locationSchedule.visited &&
+                locationScheduleData.originPort.yardName === undefined
+              }
+              errorText="Origin is required"
               label="Origin"
               readOnly={params.has("quoteNumber")}
               icon={<FmdGoodOutlined />}

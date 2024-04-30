@@ -13,6 +13,7 @@ import {
   ContainerState,
   LocationScheduleState,
   PartiesState,
+  clearBookingRequestState,
 } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import {
@@ -28,12 +29,13 @@ import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import { CSSProperties, Suspense, useMemo } from "react";
+import { CSSProperties, Suspense, use, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
+import { set } from "lodash";
 
 export default function BookingRequest() {
   const cx = classNames.bind(styles);
@@ -49,6 +51,33 @@ export default function BookingRequest() {
   const additionalInformation = useRecoilValue(AdditionalInformationState);
   const contactInformation = useRecoilValue(ContactInformationState);
   const setBookingInformations = useSetRecoilState(BookingInformationState);
+  // const clearBookingRequestStep = useSetRecoilState(clearBookingRequestState);
+
+  useEffect(() => {
+    return () => {
+      // set all step to visited false
+      setBookingRequestStepState((prev) => {
+        const newArray = Object.keys(prev).map((k) => {
+          return {
+            ...prev[k as keyof typeof prev],
+            visited: false,
+          };
+        });
+        const newObject: typeof prev = newArray.reduce((prev, curr) => {
+          prev[curr.id as keyof typeof prev] = curr;
+          return prev;
+        }, {} as typeof prev);
+
+        return newObject;
+      });
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    console.log("bookingRequestStepState", bookingRequestStepState);
+  }, [bookingRequestStepState]);
 
   const AllStepsCompleted = useMemo(() => {
     return Object.keys(bookingRequestStepState).every((key) => {
@@ -64,6 +93,7 @@ export default function BookingRequest() {
         return {
           ...prev[k as keyof typeof prev],
           isSelected: k === key,
+          visited: prev[k as keyof typeof prev].visited || k === key,
         };
       });
       const newObject: typeof prev = newArray.reduce((prev, curr) => {
