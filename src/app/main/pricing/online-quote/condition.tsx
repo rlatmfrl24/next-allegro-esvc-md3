@@ -88,6 +88,7 @@ export default function Condition({
         />
         <NAOutlinedAutoComplete
           label="Port of Loading"
+          disabled={!quotationTerms.origin?.yardName}
           itemList={tempPorts.map((name) => name.yardName)}
           initialValue={quotationTerms.pol?.yardName || ""}
           onItemSelection={(item) => {
@@ -127,6 +128,7 @@ export default function Condition({
         />
         <NAOutlinedAutoComplete
           label="Port of Discharge"
+          disabled={!quotationTerms.destination?.yardName}
           itemList={tempPorts.map((name) => name.yardName)}
           initialValue={quotationTerms.pod?.yardName || ""}
           onItemSelection={(item) => {
