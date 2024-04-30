@@ -231,6 +231,18 @@ export default function NAOutlinedAutoComplete({
                   .filter((item) => {
                     return item.toLowerCase().includes(query.toLowerCase());
                   })
+                  .sort((a, b) => {
+                    //sort by matched index
+                    const aIndex = a.toLowerCase().indexOf(query.toLowerCase());
+                    const bIndex = b.toLowerCase().indexOf(query.toLowerCase());
+                    if (aIndex < bIndex) {
+                      return -1;
+                    } else if (aIndex > bIndex) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
+                  })
                   .map((item, index) => (
                     <MdListItem
                       key={item}
@@ -273,6 +285,18 @@ export default function NAOutlinedAutoComplete({
                 itemList
                   .filter((item) => {
                     return item.toLowerCase().includes(query.toLowerCase());
+                  })
+                  .sort((a, b) => {
+                    //sort by matched index
+                    const aIndex = a.toLowerCase().indexOf(query.toLowerCase());
+                    const bIndex = b.toLowerCase().indexOf(query.toLowerCase());
+                    if (aIndex < bIndex) {
+                      return -1;
+                    } else if (aIndex > bIndex) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
                   })
                   .map((item, index) => (
                     <MdListItem

@@ -13,8 +13,6 @@ export const QuotationTermsState = atom<QuotationTermsType>({
     destination: {} as PlaceInformationType,
     originServiceTerm: "CY",
     destinationServiceTerm: "CY",
-    pol: {} as PlaceInformationType,
-    pod: {} as PlaceInformationType,
     departureDate: DateTime.now(),
     grossWeight: 0,
     weightUnit: "KGS",
