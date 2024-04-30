@@ -27,7 +27,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepContactInformation() {
-  const setSIEditStep = useSetRecoilState(SIEditStepState);
+  // const setSIEditStep = useSetRecoilState(SIEditStepState);
+  const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
   const [contactInformationStore, setContactInformationStore] = useRecoilState(
     SIEditContactInformationState
   );
@@ -76,6 +77,11 @@ export default function StepContactInformation() {
         <div className="grid grid-cols-2 gap-4">
           <NAOutlinedTextField
             required
+            error={
+              SIEditStep.contactInformation.visited &&
+              contactInformationStore.name === ""
+            }
+            errorText="Name is required"
             label="Name"
             value={contactInformationStore.name}
             handleValueChange={(value) => {
@@ -89,6 +95,11 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
+            error={
+              SIEditStep.contactInformation.visited &&
+              contactInformationStore.email === ""
+            }
+            errorText="Email is required"
             label="Email"
             type="email"
             value={contactInformationStore.email}
@@ -103,6 +114,11 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
+            error={
+              SIEditStep.contactInformation.visited &&
+              contactInformationStore.telNumber === ""
+            }
+            errorText="Tel No. is required"
             label="Tel No."
             type="tel"
             value={contactInformationStore.telNumber}
@@ -130,6 +146,11 @@ export default function StepContactInformation() {
           />
           <NAOutlinedTextField
             required
+            error={
+              SIEditStep.contactInformation.visited &&
+              contactInformationStore.address === ""
+            }
+            errorText="Address is required"
             className="col-span-2"
             type="textarea"
             label="Address"

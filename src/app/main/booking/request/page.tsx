@@ -13,7 +13,6 @@ import {
   ContainerState,
   LocationScheduleState,
   PartiesState,
-  clearBookingRequestState,
 } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import {

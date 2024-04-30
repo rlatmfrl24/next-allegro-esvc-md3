@@ -29,7 +29,11 @@ import ContainerTypeInputComponent from "./components/container-type-input";
 
 export default function StepContainer() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
-  const [typeSelections, setTypeSelections] = useState<ContainerType[]>([]);
+  const [typeSelections, setTypeSelections] = useState<ContainerType[]>(
+    Object.keys(ContainerType).map(
+      (key) => ContainerType[key as keyof typeof ContainerType]
+    )
+  );
   const [siContainerStore, setSIEditContainerStore] =
     useRecoilState(SIEditContainerState);
 
