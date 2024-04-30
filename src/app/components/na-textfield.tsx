@@ -35,7 +35,7 @@ export const NAOutlinedTextField = ({
   }, [props.value]);
 
   return (
-    <div className={`relative flex ${className}`}>
+    <div className={`relative flex h-fit ${className}`}>
       <MdOutlinedTextFieldBase
         {...props}
         ref={inputRef}

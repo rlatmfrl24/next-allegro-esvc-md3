@@ -18,7 +18,10 @@ import { SubTitle } from "@/app/components/title-components";
 import { faker } from "@faker-js/faker";
 
 export default function AdditionalInformationStep() {
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [BookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [AdditionalInformationData, setAdditionalInformationData] =
     useRecoilState(AdditionalInformationState);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -57,6 +60,7 @@ export default function AdditionalInformationStep() {
       additionalInformation: {
         ...prev.additionalInformation,
         isSelected: false,
+        visited: true,
       },
       contactInformation: {
         ...prev.contactInformation,

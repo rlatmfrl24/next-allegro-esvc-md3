@@ -93,7 +93,9 @@ export default function BookingRequest() {
         return {
           ...prev[k as keyof typeof prev],
           isSelected: k === key,
-          visited: prev[k as keyof typeof prev].visited || k === key,
+          visited:
+            prev[k as keyof typeof prev].visited ||
+            prev[k as keyof typeof prev].isSelected,
         };
       });
       const newObject: typeof prev = newArray.reduce((prev, curr) => {
