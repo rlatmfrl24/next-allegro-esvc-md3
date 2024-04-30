@@ -47,10 +47,6 @@ export default function ContainerStep() {
     )
   );
 
-  useEffect(() => {
-    console.log(typeSelections);
-  }, [typeSelections]);
-
   function ValidateContainerInput() {
     let isValid = true;
 

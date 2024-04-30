@@ -134,7 +134,6 @@ export default function SITable() {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log(selectedRows);
             if (selectedRows.length !== 0) {
               setSelectedRows([]);
             } else {

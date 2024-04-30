@@ -75,10 +75,6 @@ export default function BookingRequest() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log("bookingRequestStepState", bookingRequestStepState);
-  }, [bookingRequestStepState]);
-
   const AllStepsCompleted = useMemo(() => {
     return Object.keys(bookingRequestStepState).every((key) => {
       return bookingRequestStepState[

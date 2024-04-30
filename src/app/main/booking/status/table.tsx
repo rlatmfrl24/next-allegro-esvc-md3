@@ -386,7 +386,6 @@ export default function BookingStatusTable() {
           <StatusFilterComponent
             statusOptions={Object.values(BookingStatus)}
             onChange={(states) => {
-              console.log(states);
               setTableData(
                 tempData.filter((row) => states.includes(row.status))
               );
