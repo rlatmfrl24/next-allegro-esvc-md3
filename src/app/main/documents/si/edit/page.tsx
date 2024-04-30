@@ -45,6 +45,28 @@ export default function SIEdit() {
   const [currentStep, setCurrentStep] = useState("parties");
   const router = useRouter();
 
+  useEffect(() => {
+    return () => {
+      // set all step to visited false
+      setSiEditStep((prev) => {
+        const newArray = Object.keys(prev).map((k) => {
+          return {
+            ...prev[k as keyof typeof prev],
+            visited: false,
+          };
+        });
+        const newObject: typeof prev = newArray.reduce((prev, curr) => {
+          prev[curr.id as keyof typeof prev] = curr;
+          return prev;
+        }, {} as typeof prev);
+
+        return newObject;
+      });
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const AllStepsComplete = useMemo(() => {
     return Object.keys(siEditStep).every((key) => {
       return siEditStep[key as keyof typeof siEditStep].isCompleted;
@@ -57,6 +79,9 @@ export default function SIEdit() {
         return {
           ...prev[k as keyof typeof prev],
           isSelected: k === stepId,
+          visited:
+            prev[k as keyof typeof prev].visited ||
+            prev[k as keyof typeof prev].isSelected,
         };
       });
       const newObject: typeof prev = newArray.reduce((prev, curr) => {

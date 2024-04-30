@@ -67,7 +67,9 @@ export default function NAOutlinedListBox({
       middleware: [
         offset(2),
         shift(),
-        flip(),
+        flip({
+          padding: 20,
+        }),
         size({
           apply({ rects, elements, availableHeight }) {
             Object.assign(elements.floating.style, {
@@ -172,7 +174,7 @@ export default function NAOutlinedListBox({
             } as CSSProperties
           }
           {...getFloatingProps()}
-          className="z-50 rounded focus:outline-none  "
+          className="z-50 rounded focus:outline-none"
         >
           <MdList
             style={
@@ -181,6 +183,7 @@ export default function NAOutlinedListBox({
                   "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3) ",
                 ...styles,
                 maxHeight: maxHeight,
+                minHeight: "2rem",
               } as CSSProperties
             }
             className="relative overflow-y-auto rounded bg-surfaceContainerLow shadow"

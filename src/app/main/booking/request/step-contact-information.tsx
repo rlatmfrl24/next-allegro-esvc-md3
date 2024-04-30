@@ -25,7 +25,10 @@ import Portal from "@/app/components/portal";
 import { SubTitle } from "@/app/components/title-components";
 
 export default function ContactInformationStep() {
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [contactInformationData, setContactInformationData] = useRecoilState(
     ContactInformationState
   );
@@ -88,6 +91,11 @@ export default function ContactInformationStep() {
       <div className="grid grid-cols-2 gap-4 w-full">
         <NAOutlinedTextField
           required
+          error={
+            bookingRequestStep.contactInformation.visited &&
+            contactInformationData.name === ""
+          }
+          errorText="Name is required"
           value={contactInformationData.name}
           label="Name"
           handleValueChange={(value) => {
@@ -101,6 +109,11 @@ export default function ContactInformationStep() {
         />
         <NAOutlinedTextField
           required
+          error={
+            bookingRequestStep.contactInformation.visited &&
+            contactInformationData.email === ""
+          }
+          errorText="Email is required"
           value={contactInformationData.email}
           label="Email"
           handleValueChange={(value) => {
@@ -115,6 +128,11 @@ export default function ContactInformationStep() {
 
         <NAOutlinedTextField
           required
+          error={
+            bookingRequestStep.contactInformation.visited &&
+            contactInformationData.telNo === ""
+          }
+          errorText="Tel No. is required"
           value={contactInformationData.telNo}
           label="Tel No."
           handleValueChange={(value) => {
@@ -141,6 +159,11 @@ export default function ContactInformationStep() {
         <NAOutlinedTextField
           className="col-span-2"
           required
+          error={
+            bookingRequestStep.contactInformation.visited &&
+            contactInformationData.address === ""
+          }
+          errorText="Address is required"
           type="textarea"
           value={contactInformationData.address}
           label="Address"

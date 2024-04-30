@@ -35,7 +35,7 @@ export const NAOutlinedTextField = ({
   }, [props.value]);
 
   return (
-    <div className={`relative flex ${className}`}>
+    <div className={`relative flex h-fit ${className}`}>
       <MdOutlinedTextFieldBase
         {...props}
         ref={inputRef}
@@ -87,13 +87,21 @@ export const NAOutlinedTextField = ({
           if (props.type === "number") {
             let intValue = parseFloat(e.currentTarget.value.replace(/,/g, ""));
             if (isNaN(intValue)) intValue = 0;
-            e.currentTarget.value = intValue
-              .toString()
-              //add , each 3 digits
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            handleValueChange?.(intValue.toString());
+          } else {
+            handleValueChange?.(e.currentTarget.value);
           }
-          handleValueChange?.(e.currentTarget.value);
         }}
+        value={
+          props.type === "number"
+            ? props.value
+                ?.toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                .split(".")
+                .map((v, i) => (i === 0 ? v : v.replaceAll(",", "")))
+                .join(".")
+            : props.value
+        }
         required={false}
       >
         {!(

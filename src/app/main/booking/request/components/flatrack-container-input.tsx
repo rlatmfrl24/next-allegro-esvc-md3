@@ -1,7 +1,10 @@
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
-import { ContainerState } from "@/app/store/booking.store";
+import {
+  BookingRequestStepState,
+  ContainerState,
+} from "@/app/store/booking.store";
 import {
   MdFilledTonalIconButton,
   MdIconButton,
@@ -30,6 +33,7 @@ const FlatRackContainerInput = ({
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
+  const [bookingRequestStep] = useRecoilState(BookingRequestStepState);
 
   const defaultContainerSizeOptions = ["20", "40", "45", "53"];
 
@@ -101,6 +105,11 @@ const FlatRackContainerInput = ({
                             className="w-52 text-right"
                             suffixText="ft"
                             required
+                            error={
+                              bookingRequestStep.container.visited &&
+                              container.size === ""
+                            }
+                            errorText="Size is required"
                             initialValue={container.size}
                             options={
                               container.size !== ""
@@ -123,6 +132,11 @@ const FlatRackContainerInput = ({
                             label="Quantity / Total"
                             type="number"
                             required
+                            error={
+                              bookingRequestStep.container.visited &&
+                              container.quantity === 0
+                            }
+                            errorText="Quantity is required"
                             value={container.quantity.toString()}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({

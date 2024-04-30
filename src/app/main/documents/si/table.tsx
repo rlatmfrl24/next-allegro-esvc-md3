@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import Link from "next/link";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
 import StatusFilterComponent from "@/app/components/status-filter";
@@ -11,17 +11,14 @@ import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
   MdChipSet,
-  MdElevation,
   MdFilterChip,
   MdIcon,
   MdIconButton,
-  MdMenuItem,
   MdTextButton,
 } from "@/app/util/md3";
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { Menu } from "@headlessui/react";
-import { ArrowDropDown, Download } from "@mui/icons-material";
+import { Download } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 
 import SIStateChip from "./si-state-chip";
@@ -34,9 +31,9 @@ function createDummySITableData(count: number = 10) {
     blState: faker.helpers.arrayElement(Object.values(SIState)),
     blNumber: faker.string.alphanumeric(12).toUpperCase(),
     requestBlType: faker.helpers.arrayElement([
-      "O.BL",
-      "SeaWaybill",
-      "Surrender",
+      "Original B/L",
+      "Sea Waybill",
+      "B/L Surrender",
       "None",
     ]),
     actualShipper: faker.person.fullName(),
@@ -95,6 +92,10 @@ export default function SITable() {
     setTableData(tempTableData);
   }, [tempTableData]);
 
+  useEffect(() => {
+    setSelectedRows([]);
+  }, [tableData]);
+
   const columnHelper = createColumnHelper<SISearchTableProps>();
   const columns = [
     columnHelper.display({
@@ -133,7 +134,6 @@ export default function SITable() {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log(selectedRows);
             if (selectedRows.length !== 0) {
               setSelectedRows([]);
             } else {
@@ -160,6 +160,7 @@ export default function SITable() {
           }
           onClick={(e) => {
             e.preventDefault();
+            info.row.toggleSelected();
           }}
         />
       ),
@@ -233,81 +234,10 @@ export default function SITable() {
         </MdTypography>
       ),
     }),
-    // columnHelper.accessor("requestBlType", {
-    //   id: "requestBlType",
-    //   header: "Request B/L Type",
-    //   cell: (info) => {
-    //     const isDisabled =
-    //       info.row.original.blState ===
-    //       (SIState.Rejected ||
-    //         SIState.Pending ||
-    //         SIState.BLIssuePending ||
-    //         SIState.BLIssueClosed)
-    //         ? true
-    //         : false;
-
-    //     return (
-    //       <Menu>
-    //         <Menu.Button
-    //           className={`w-full h-10 flex items-center justify-between ${
-    //             isDisabled ? "text-outlineVariant" : "cursor-pointer"
-    //           }`}
-    //           onClick={(e) => {
-    //             isDisabled ? e.preventDefault() : e.stopPropagation();
-    //           }}
-    //           disabled={isDisabled}
-    //         >
-    //           <MdTypography
-    //             variant="body"
-    //             size="medium"
-    //             className="flex-1 flex justify-start"
-    //           >
-    //             {info.getValue()}
-    //           </MdTypography>
-    //           <ArrowDropDown />
-    //         </Menu.Button>
-    //         <Menu.Items
-    //           style={
-    //             {
-    //               "--md-elevation-level": 2,
-    //             } as CSSProperties
-    //           }
-    //           className={`absolute z-10 bg-surfaceContainerHigh rounded-lg py-2`}
-    //         >
-    //           <MdElevation />
-    //           {["None", "O.BL", "Surrender", "SeaWaybill"].map((option) => (
-    //             <Menu.Item key={option}>
-    //               <MdMenuItem
-    //                 type="button"
-    //                 className={` ${
-    //                   info.getValue() === option ? "bg-secondaryContainer" : ""
-    //                 }`}
-    //                 onClick={(e) => {
-    //                   e.stopPropagation();
-    //                   setTableData((prev) =>
-    //                     prev.map((row) => {
-    //                       if (row === info.row.original) {
-    //                         return {
-    //                           ...row,
-    //                           requestBlType: option,
-    //                         };
-    //                       }
-    //                       return row;
-    //                     })
-    //                   );
-    //                 }}
-    //               >
-    //                 {option}
-    //               </MdMenuItem>
-    //             </Menu.Item>
-    //           ))}
-    //         </Menu.Items>
-    //       </Menu>
-    //     );
-    //   },
-    //   size: 120,
-    //   minSize: 120,
-    // }),
+    columnHelper.accessor("requestBlType", {
+      id: "requestBlType",
+      header: "Request B/L Type",
+    }),
     columnHelper.accessor("actualShipper", {
       header: "Actual Shipper",
       id: "actualShipper",
@@ -344,7 +274,6 @@ export default function SITable() {
     columnHelper.accessor("vessel", {
       header: "Vessel",
       id: "vessel",
-      // cell: (info) => <VesselInfoCell {...info.getValue()} />,
       cell: (info) => (
         <MdTypography
           variant="body"
@@ -469,16 +398,19 @@ export default function SITable() {
                 </div>
                 Download
               </MdTextButton>
-              <ActionButtons selectionList={selectedRows} />
+              <ActionButtons
+                selectionList={selectedRows}
+                setTableData={setTableData}
+              />
             </div>
           );
         }}
         columns={columns}
         data={tableData}
         controlColumns={["select"]}
+        ignoreSelectionColumns={["select"]}
         pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
         getSelectionRows={(rows) => {
-          console.log(rows[0]);
           if (rows[0]) {
             handleSITableRowSelection(rows[0]);
           }

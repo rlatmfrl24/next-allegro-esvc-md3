@@ -18,7 +18,10 @@ import { SubTitle } from "@/app/components/title-components";
 import { faker } from "@faker-js/faker";
 
 export default function AdditionalInformationStep() {
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [BookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [AdditionalInformationData, setAdditionalInformationData] =
     useRecoilState(AdditionalInformationState);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -57,6 +60,7 @@ export default function AdditionalInformationStep() {
       additionalInformation: {
         ...prev.additionalInformation,
         isSelected: false,
+        visited: true,
       },
       contactInformation: {
         ...prev.contactInformation,
@@ -183,7 +187,7 @@ export default function AdditionalInformationStep() {
             });
           }
         }}
-      />
+      /> */}
       <SubTitle title="Email Notification Subscription" className="mt-6" />
       <div className="flex flex-col">
         <NaToggleButton
@@ -247,7 +251,7 @@ export default function AdditionalInformationStep() {
             });
           }}
         />
-      </div> */}
+      </div>
       <div className="flex-1 flex items-end justify-end">
         <MdFilledButton onClick={() => moveToContactInformationStep()}>
           Next

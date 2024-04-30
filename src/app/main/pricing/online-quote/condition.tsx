@@ -19,7 +19,12 @@ import {
 } from "@/app/util/md3";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
-import { Add, DeleteOutline, PlaceOutlined } from "@mui/icons-material";
+import {
+  Add,
+  DeleteOutline,
+  PlaceOutlined,
+  SwapHorizOutlined,
+} from "@mui/icons-material";
 
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { QuotationContainerType } from "@/app/util/typeDef/pricing";
@@ -58,8 +63,8 @@ export default function Condition({
 
   return (
     <div className={styles.area}>
-      <SubTitle title="Route " />
-      <div className="flex gap-4">
+      <SubTitle title="Route" />
+      <div className="flex gap-4 items-center">
         <NAOutlinedAutoComplete
           label="Origin"
           required
@@ -86,19 +91,21 @@ export default function Condition({
             }));
           }}
         />
-        <NAOutlinedAutoComplete
-          label="Port of Loading"
-          itemList={tempPorts.map((name) => name.yardName)}
-          initialValue={quotationTerms.pol?.yardName || ""}
-          onItemSelection={(item) => {
+        <MdIconButton
+          onClick={() => {
             setQuotationTerms((prev) => ({
               ...prev,
-              pol: tempPorts.find((port) => port.yardName === item)!,
+              origin: quotationTerms.destination,
+              destination: quotationTerms.origin,
+              originServiceTerm: quotationTerms.destinationServiceTerm,
+              destinationServiceTerm: quotationTerms.originServiceTerm,
             }));
           }}
-        />
-      </div>
-      <div className="flex gap-4">
+        >
+          <MdIcon>
+            <SwapHorizOutlined />
+          </MdIcon>
+        </MdIconButton>
         <NAOutlinedAutoComplete
           label="Destination"
           required
@@ -125,22 +132,12 @@ export default function Condition({
             }));
           }}
         />
-        <NAOutlinedAutoComplete
-          label="Port of Discharge"
-          itemList={tempPorts.map((name) => name.yardName)}
-          initialValue={quotationTerms.pod?.yardName || ""}
-          onItemSelection={(item) => {
-            setQuotationTerms((prev) => ({
-              ...prev,
-              pod: tempPorts.find((port) => port.yardName === item)!,
-            }));
-          }}
-        />
       </div>
       <DatePicker
         className="w-fit"
         label="Departure Date"
         initialDate={quotationTerms.departureDate}
+        disablePast
         onDateChange={(date) => {
           date &&
             setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
@@ -283,8 +280,6 @@ export default function Condition({
               destination: {} as PlaceInformationType,
               originServiceTerm: "CY",
               destinationServiceTerm: "CY",
-              pol: {} as PlaceInformationType,
-              pod: {} as PlaceInformationType,
               departureDate: DateTime.now(),
               grossWeight: 0,
               weightUnit: "KGS",

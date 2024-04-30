@@ -26,9 +26,10 @@ export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
     LocationScheduleState
   );
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
-    useState(locationScheduleData.contractNumber === "");
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
     useState(false);
 
@@ -43,6 +44,10 @@ export default function LoactionScheduleStep() {
   // use Quote Data
   const params = useSearchParams();
   const quotationTerms = useRecoilValue(QuotationTermsState);
+  const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
+    useState(
+      locationScheduleData.contractNumber === "" || !params.has("quoteNumber")
+    );
 
   useEffect(() => {
     if (params.has("quoteNumber")) {
@@ -57,9 +62,8 @@ export default function LoactionScheduleStep() {
         destinationType: quotationTerms.destinationServiceTerm.toLowerCase() as
           | "cy"
           | "door",
-        pol: quotationTerms.pol,
-        pod: quotationTerms.pod,
         departureDate: quotationTerms.departureDate,
+        contractNumber: "C" + faker.string.numeric(10),
       }));
     }
   }, [params, quotationTerms, setLoactionScheduleData]);
@@ -98,6 +102,7 @@ export default function LoactionScheduleStep() {
       locationSchedule: {
         ...prev.locationSchedule,
         isSelected: false,
+        visited: true,
       },
       parties: {
         ...prev.parties,
@@ -181,6 +186,11 @@ export default function LoactionScheduleStep() {
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
               required
+              error={
+                bookingRequestStep.locationSchedule.visited &&
+                locationScheduleData.originPort.yardName === undefined
+              }
+              errorText="Origin is required"
               label="Origin"
               readOnly={params.has("quoteNumber")}
               icon={<FmdGoodOutlined />}
@@ -239,6 +249,11 @@ export default function LoactionScheduleStep() {
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
               required
+              error={
+                bookingRequestStep.locationSchedule.visited &&
+                locationScheduleData.destinationPort.yardName === undefined
+              }
+              errorText="Destination is required"
               readOnly={params.has("quoteNumber")}
               label="Destination"
               icon={<FmdGoodOutlined />}
@@ -304,6 +319,11 @@ export default function LoactionScheduleStep() {
                 className="bg-surfaceContainer rounded"
                 label="Estimated Time of Departure"
                 required
+                error={
+                  bookingRequestStep.locationSchedule.visited &&
+                  locationScheduleData.departureDate === undefined
+                }
+                errorText="Departure Date is required"
                 value={locationScheduleData.departureDate.toFormat(
                   "yyyy-MM-dd"
                 )}
@@ -312,6 +332,11 @@ export default function LoactionScheduleStep() {
                 readOnly
                 label="Vessel Voyage"
                 required
+                error={
+                  bookingRequestStep.locationSchedule.visited &&
+                  locationScheduleData.vessel.consortiumVoyage === ""
+                }
+                errorText="Vessel Voyage is required"
                 value={locationScheduleData.vessel.consortiumVoyage || ""}
               />
             </div>
@@ -334,6 +359,11 @@ export default function LoactionScheduleStep() {
           <div className="flex gap-4">
             <NAOutlinedListBox
               required
+              error={
+                bookingRequestStep.locationSchedule.visited &&
+                locationScheduleData.bookingOffice === ""
+              }
+              errorText="Booking Office is required"
               label="Booking Office"
               initialValue={locationScheduleData.bookingOffice}
               options={bookingOfficeList}
@@ -347,6 +377,8 @@ export default function LoactionScheduleStep() {
 
             <NAOutlinedListBox
               label="Contract Number"
+              className="h-fit"
+              readOnly={params.has("quoteNumber")}
               options={[
                 "Manually Input",
                 ...randomContractList.map((contract) => {
@@ -377,6 +409,7 @@ export default function LoactionScheduleStep() {
             {isContractNumberManuallyInput && (
               <NAOutlinedTextField
                 placeholder="Contract Number"
+                className="h-fit"
                 value={locationScheduleData.contractNumber}
                 handleValueChange={(value) => {
                   setLoactionScheduleData((prev) => ({

@@ -13,7 +13,10 @@ import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import { SubTitle } from "@/app/components/title-components";
 
 export default function PartiesStep() {
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
   const [partiesData, setPartiesData] = useRecoilState(PartiesState);
 
   const tempCompaniesData = useMemo(() => {
@@ -46,6 +49,7 @@ export default function PartiesStep() {
       parties: {
         ...prev.parties,
         isSelected: false,
+        visited: true,
       },
       cargoPickUpReturn: {
         ...prev.cargoPickUpReturn,
@@ -85,6 +89,11 @@ export default function PartiesStep() {
           label="Company Name"
           itemList={tempCompaniesData}
           required
+          error={
+            bookingRequestStep.parties.visited &&
+            partiesData.shipper.name === ""
+          }
+          errorText="Company Name is required"
           initialValue={{
             name: partiesData.shipper.name,
             address: partiesData.shipper.address,
@@ -116,6 +125,11 @@ export default function PartiesStep() {
           label="Address"
           placeholder="Address (State Name, City, State & Zip Code, Country Name)"
           required
+          error={
+            bookingRequestStep.parties.visited &&
+            partiesData.shipper.address === ""
+          }
+          errorText="Address is required"
           value={partiesData.shipper.address}
           handleValueChange={(value) => {
             setPartiesData((prev) => ({

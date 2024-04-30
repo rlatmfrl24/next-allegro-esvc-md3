@@ -49,6 +49,7 @@ export const DatePicker = ({
   initialDate,
   onDateChange,
   readonly = false,
+  disablePast = false,
   ...props
 }: {
   format?: string;
@@ -56,6 +57,7 @@ export const DatePicker = ({
   onDateChange?: (date: DateTime) => void;
   readonly?: boolean;
   props?: ComponentProps<typeof MdOutlinedTextField>;
+  disablePast?: boolean;
 } & ComponentProps<typeof MdOutlinedTextField>) => {
   const [maxHeight, setMaxHeight] = useState(0);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -335,6 +337,11 @@ export const DatePicker = ({
                               >
                                 {isCurrentMonth ? (
                                   <MdIconButton
+                                    disabled={
+                                      disablePast &&
+                                      DateTime.fromJSDate(value).diffNow("days")
+                                        .days < -1
+                                    }
                                     className={`
                                     ${
                                       DateTime.now().toISODate() ===

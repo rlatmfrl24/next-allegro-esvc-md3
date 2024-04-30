@@ -12,8 +12,6 @@ export type QuotationTermsType = {
   destination: PlaceInformationType;
   originServiceTerm: "CY" | "Door";
   destinationServiceTerm: "CY" | "Door";
-  pol: PlaceInformationType;
-  pod: PlaceInformationType;
   departureDate: DateTime;
   grossWeight: number;
   weightUnit: "KGS" | "LBS";

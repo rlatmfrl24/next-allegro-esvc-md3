@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { MdSingleDatePicker } from "@/app/components/datepickers/old/date-picker";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
@@ -27,7 +26,10 @@ export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
     CargoPickUpReturnState
   );
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+    BookingRequestStepState
+  );
 
   const ValidateRequired = useCallback(() => {
     if (
@@ -51,6 +53,7 @@ export default function CargoStep() {
       cargoPickUpReturn: {
         ...prev.cargoPickUpReturn,
         isSelected: false,
+        visited: true,
       },
       container: {
         ...prev.container,
@@ -121,6 +124,11 @@ export default function CargoStep() {
       <div className="flex gap-4">
         <NAMultiAutoComplete
           required
+          error={
+            bookingRequestStep.cargoPickUpReturn.visited &&
+            cargoPickUpReturnData.commodity.code === ""
+          }
+          errorText="Commodity is required."
           label="Commodity"
           initialValue={cargoPickUpReturnData.commodity}
           isAllowOnlyListItems={false}
@@ -147,9 +155,14 @@ export default function CargoStep() {
 
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight}
-          className="text-right"
+          className="h-fit"
           label="Gross Weight"
           required
+          error={
+            bookingRequestStep.cargoPickUpReturn.visited &&
+            cargoPickUpReturnData.grossWeight === "0"
+          }
+          errorText="Gross Weight is required."
           readOnly={params.has("quoteNumber")}
           type="number"
           handleValueChange={(value) => {

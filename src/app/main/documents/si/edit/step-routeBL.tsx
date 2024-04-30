@@ -16,7 +16,8 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepRouteBL() {
   const [routeBLStore, setRouteBLStore] = useRecoilState(SIEditRouteBLState);
-  const setSIEditStep = useSetRecoilState(SIEditStepState);
+  // const setSIEditStep = useSetRecoilState(SIEditStepState);
+  const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
 
   const moveToContainerStep = useCallback(() => {
     setSIEditStep((prev) => {
@@ -25,6 +26,7 @@ export default function StepRouteBL() {
         routeBL: {
           ...prev.routeBL,
           isSelected: false,
+          visited: true,
         },
         container: {
           ...prev.container,
@@ -82,6 +84,8 @@ export default function StepRouteBL() {
       <div className="grid grid-cols-[1fr_1fr_auto] gap-4">
         <NAOutlinedTextField
           required
+          error={SIEditStep.routeBL.visited && !routeBLStore.vesselVoyage}
+          errorText="Vessel Voyage is required"
           label="Vessel Voy(Flag)"
           value={routeBLStore.vesselVoyage || ""}
           handleValueChange={(value) =>
@@ -98,6 +102,8 @@ export default function StepRouteBL() {
         <div></div>
         <NAOutlinedAutoComplete
           required
+          error={SIEditStep.routeBL.visited && !routeBLStore.por?.yardName}
+          errorText="Place of Receipt is required"
           icon={<PlaceOutlined />}
           label="Pier or Place of Receipt"
           itemList={tempPortList.map((item) => item.yardName)}
@@ -116,6 +122,8 @@ export default function StepRouteBL() {
         />
         <NAOutlinedAutoComplete
           required
+          error={SIEditStep.routeBL.visited && !routeBLStore.pol?.yardName}
+          errorText="Port of Loading is required"
           icon={<PlaceOutlined />}
           label="Port of Loading"
           initialValue={routeBLStore.pol?.yardName || ""}
@@ -133,6 +141,7 @@ export default function StepRouteBL() {
           }}
         />
         <NaToggleButton
+          className="h-fit mt-3"
           label="Same as Place of Receipt"
           state={
             routeBLStore.por?.yardName === undefined ||
@@ -155,6 +164,8 @@ export default function StepRouteBL() {
         />
         <NAOutlinedAutoComplete
           required
+          error={SIEditStep.routeBL.visited && !routeBLStore.pod?.yardName}
+          errorText="Port of Discharging is required"
           icon={<PlaceOutlined />}
           label="Port of Discharging"
           itemList={tempPortList.map((item) => item.yardName)}
@@ -173,6 +184,8 @@ export default function StepRouteBL() {
         />
         <NAOutlinedAutoComplete
           required
+          error={SIEditStep.routeBL.visited && !routeBLStore.del?.yardName}
+          errorText="Place of Delivery is required"
           icon={<PlaceOutlined />}
           label="Place of Delivery (By On Carrier)"
           itemList={tempPortList.map((item) => item.yardName)}
@@ -190,6 +203,7 @@ export default function StepRouteBL() {
           }}
         />
         <NaToggleButton
+          className="h-fit mt-3"
           label="Same as Place of Discharging"
           state={
             routeBLStore.pod?.yardName === undefined ||
@@ -234,6 +248,8 @@ export default function StepRouteBL() {
         <div className="flex gap-2">
           <NAOutlinedListBox
             required
+            error={SIEditStep.routeBL.visited && !routeBLStore.serviceTypeFrom}
+            errorText="Service Type is required"
             options={["CY", "Door"]}
             initialValue={
               routeBLStore.serviceTypeFrom === "cy"
@@ -252,6 +268,8 @@ export default function StepRouteBL() {
           />
           <NAOutlinedListBox
             required
+            error={SIEditStep.routeBL.visited && !routeBLStore.serviceTypeTo}
+            errorText="Service Type is required"
             options={["CY", "Door"]}
             initialValue={
               routeBLStore.serviceTypeTo === "cy"
