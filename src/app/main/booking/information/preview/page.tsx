@@ -134,9 +134,9 @@ export default function BookingRequestPreview() {
                 specialInstruction={etcValue.specialInstruction}
               />
             </div>
-            {/* <DividerComponent className="my-8" />
+            <DividerComponent className="my-8" />
             <div className="flex items-stretch">
-              <Section title="Duplicate reservation">
+              {/* <Section title="Duplicate reservation">
                 <div className="flex flex-col gap-4">
                   <div>
                     <MdTypography
@@ -224,7 +224,7 @@ export default function BookingRequestPreview() {
               <DividerComponent
                 className="mx-8 border-dotted"
                 orientation="vertical"
-              />
+              /> */}
               <Section title="Email Notification Subscription">
                 <div className="flex flex-col">
                   <NaToggleButton
@@ -290,7 +290,7 @@ export default function BookingRequestPreview() {
                   />
                 </div>
               </Section>
-            </div> */}
+            </div>
           </div>
         </div>
         <div className="fixed bottom-0 left-20 w-[calc(100%-80px)] px-4 pb-2 z-20">

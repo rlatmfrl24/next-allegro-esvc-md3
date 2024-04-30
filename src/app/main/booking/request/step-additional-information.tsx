@@ -183,7 +183,7 @@ export default function AdditionalInformationStep() {
             });
           }
         }}
-      />
+      /> */}
       <SubTitle title="Email Notification Subscription" className="mt-6" />
       <div className="flex flex-col">
         <NaToggleButton
@@ -247,7 +247,7 @@ export default function AdditionalInformationStep() {
             });
           }}
         />
-      </div> */}
+      </div>
       <div className="flex-1 flex items-end justify-end">
         <MdFilledButton onClick={() => moveToContactInformationStep()}>
           Next

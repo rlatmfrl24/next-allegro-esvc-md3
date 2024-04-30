@@ -971,7 +971,7 @@ function SIPreview() {
           <div
             className={cx(siStyles["preview-section"], "flex-col col-span-2")}
           ></div>
-          {/* <div
+          <div
             className={cx(siStyles["preview-section"], "flex-col col-span-2")}
           >
             <MdTypography
@@ -1054,7 +1054,7 @@ function SIPreview() {
                 }}
               />
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
       {!requestNumber ? (
