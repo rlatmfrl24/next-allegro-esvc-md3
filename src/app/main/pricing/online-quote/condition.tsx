@@ -141,6 +141,7 @@ export default function Condition({
         className="w-fit"
         label="Departure Date"
         initialDate={quotationTerms.departureDate}
+        disablePast
         onDateChange={(date) => {
           date &&
             setQuotationTerms((prev) => ({ ...prev, departureDate: date }));
