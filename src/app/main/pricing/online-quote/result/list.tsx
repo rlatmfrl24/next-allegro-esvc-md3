@@ -52,14 +52,14 @@ export default function QuotationList({
           </div>
         </div>
         <div className="flex justify-between">
-          <TermsItem
+          {/* <TermsItem
             title="Port of Loading"
             value={quotationTerms.pol?.yardName || "-"}
           />
           <TermsItem
             title="Port of Discharge"
             value={quotationTerms.pod?.yardName || "-"}
-          />
+          /> */}
           <TermsItem
             title="Departure Date"
             value={quotationTerms.departureDate.toFormat("yyyy-MM-dd")}
