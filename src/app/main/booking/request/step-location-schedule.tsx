@@ -27,8 +27,7 @@ export default function LoactionScheduleStep() {
     LocationScheduleState
   );
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
-    useState(locationScheduleData.contractNumber === "");
+
   const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
     useState(false);
 
@@ -43,6 +42,10 @@ export default function LoactionScheduleStep() {
   // use Quote Data
   const params = useSearchParams();
   const quotationTerms = useRecoilValue(QuotationTermsState);
+  const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
+    useState(
+      locationScheduleData.contractNumber === "" || !params.has("quoteNumber")
+    );
 
   useEffect(() => {
     if (params.has("quoteNumber")) {
@@ -57,9 +60,8 @@ export default function LoactionScheduleStep() {
         destinationType: quotationTerms.destinationServiceTerm.toLowerCase() as
           | "cy"
           | "door",
-        pol: quotationTerms.pol,
-        pod: quotationTerms.pod,
         departureDate: quotationTerms.departureDate,
+        contractNumber: "C" + faker.string.numeric(10),
       }));
     }
   }, [params, quotationTerms, setLoactionScheduleData]);
@@ -347,6 +349,7 @@ export default function LoactionScheduleStep() {
 
             <NAOutlinedListBox
               label="Contract Number"
+              readOnly={params.has("quoteNumber")}
               options={[
                 "Manually Input",
                 ...randomContractList.map((contract) => {
