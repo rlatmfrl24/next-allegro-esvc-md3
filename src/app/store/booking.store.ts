@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import {
   ContactInformationType,
   LocationScheduleType,
@@ -35,36 +35,42 @@ export const BookingRequestStepState = atom({
       title: "Location & Schedule",
       isSelected: true,
       isCompleted: false,
+      visited: false,
     },
     parties: {
       id: "parties",
       title: "Parties",
       isSelected: false,
       isCompleted: false,
+      visited: false,
     },
     cargoPickUpReturn: {
       id: "cargoPickUpReturn",
       title: "Cargo & Pick Up/Return",
       isSelected: false,
       isCompleted: false,
+      visited: false,
     },
     container: {
       id: "container",
       title: "Container",
       isSelected: false,
       isCompleted: false,
+      visited: false,
     },
     additionalInformation: {
       id: "additionalInformation",
       title: "Addtional Information",
       isSelected: false,
       isCompleted: false,
+      visited: false,
     },
     contactInformation: {
       id: "contactInformation",
       title: "Contact Information",
       isSelected: false,
       isCompleted: false,
+      visited: false,
     },
   },
 });

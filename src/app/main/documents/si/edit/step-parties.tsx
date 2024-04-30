@@ -18,6 +18,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function StepParties() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
+  // const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
   const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
 
   const moveToRouteBLStep = useCallback(() => {
@@ -26,6 +27,7 @@ export default function StepParties() {
       parties: {
         ...prev.parties,
         isSelected: false,
+        visited: true,
       },
       routeBL: {
         ...prev.routeBL,
@@ -165,6 +167,7 @@ export default function StepParties() {
 
 const ShipperInfo = () => {
   const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
+  const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
 
   const companyList = Array.from({ length: 50 }, (_, i) => {
     const location = faker.location;
@@ -199,6 +202,11 @@ const ShipperInfo = () => {
             <NAMultiAutoComplete
               label="Company"
               required
+              error={
+                SIEditStep.parties.visited &&
+                partiesStore.shipper.companyName === ""
+              }
+              errorText="Company Name is required"
               className="flex-1"
               initialValue={{
                 name: partiesStore.shipper.companyName,
@@ -249,6 +257,11 @@ const ShipperInfo = () => {
             />
             <NAOutlinedTextField
               required
+              error={
+                SIEditStep.parties.visited &&
+                partiesStore.shipper.fullAddress === ""
+              }
+              errorText="Full Address is required"
               label="Address"
               type="textarea"
               value={partiesStore.shipper.fullAddress || ""}
@@ -474,6 +487,7 @@ const ShipperInfo = () => {
 
 const ConsigneeInfo = () => {
   const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
+  const SIEditStep = useRecoilValue(SIEditStepState);
 
   const companyList = Array.from({ length: 50 }, (_, i) => {
     const location = faker.location;
@@ -540,6 +554,11 @@ const ConsigneeInfo = () => {
               label="Company"
               className="flex-1"
               required
+              error={
+                SIEditStep.parties.visited &&
+                partiesStore.consignee.companyName === ""
+              }
+              errorText="Company Name is required"
               isAllowOnlyListItems={false}
               itemList={companyList.map((company) => {
                 return {
@@ -589,6 +608,11 @@ const ConsigneeInfo = () => {
             />
             <NAOutlinedTextField
               required
+              error={
+                SIEditStep.parties.visited &&
+                partiesStore.consignee.fullAddress === ""
+              }
+              errorText="Full Address is required"
               label="Address"
               className="flex-1"
               type="textarea"
@@ -833,6 +857,7 @@ const ConsigneeInfo = () => {
 
 const NotifyPartyInfo = () => {
   const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
+  const SIEditStep = useRecoilValue(SIEditStepState);
 
   const companyList = Array.from({ length: 50 }, (_, i) => {
     const location = faker.location;
@@ -926,6 +951,11 @@ const NotifyPartyInfo = () => {
               label="Company"
               className="flex-1"
               required
+              error={
+                SIEditStep.parties.visited &&
+                partiesStore.notifyParty.companyName === ""
+              }
+              errorText="Company Name is required"
               isAllowOnlyListItems={false}
               itemList={companyList.map((company) => {
                 return {
@@ -977,6 +1007,11 @@ const NotifyPartyInfo = () => {
             />
             <NAOutlinedTextField
               required
+              error={
+                SIEditStep.parties.visited &&
+                partiesStore.notifyParty.fullAddress === ""
+              }
+              errorText="Full Address is required"
               label="Address"
               className="flex-1"
               type="textarea"

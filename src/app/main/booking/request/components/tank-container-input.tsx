@@ -1,14 +1,16 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { AnimatePresence, motion } from "framer-motion";
+import { useMemo } from "react";
+import { useRecoilState } from "recoil";
 
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { MdTypography } from "@/app/components/typography";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { DetailTitle } from "@/app/components/title-components";
 import { getEmptyContainerData } from "@/app/main/util";
-import { ContainerState } from "@/app/store/booking.store";
 import {
-  MdFilledTonalIconButton,
-  MdIconButton,
-  MdOutlinedTextField,
-} from "@/app/util/md3";
+  BookingRequestStepState,
+  ContainerState,
+} from "@/app/store/booking.store";
+import { MdFilledTonalIconButton, MdIconButton } from "@/app/util/md3";
 import {
   ContainerType,
   TankContainerInformationType,
@@ -16,12 +18,8 @@ import {
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
-import DangerousCargoInput from "./dangerous-cargo-input";
-import { DetailTitle } from "@/app/components/title-components";
-import { useMemo } from "react";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { AnimatePresence, motion } from "framer-motion";
 import { containerVariant } from "./base";
+import DangerousCargoInput from "./dangerous-cargo-input";
 
 const TankContainerInput = ({
   list,
@@ -30,6 +28,7 @@ const TankContainerInput = ({
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
+  const [bookingRequestStep] = useRecoilState(BookingRequestStepState);
 
   const defaultContainerSizeOptions = ["20", "40", "45", "53"];
 
@@ -100,6 +99,11 @@ const TankContainerInput = ({
                         className="w-52 text-right"
                         suffixText="ft"
                         required
+                        error={
+                          bookingRequestStep.container.visited &&
+                          container.size === ""
+                        }
+                        errorText="Size is required"
                         initialValue={container.size}
                         options={
                           container.size !== ""
@@ -122,6 +126,11 @@ const TankContainerInput = ({
                         label="Quantity / Total"
                         type="number"
                         required
+                        error={
+                          bookingRequestStep.container.visited &&
+                          container.quantity === 0
+                        }
+                        errorText="Quantity is required"
                         value={container.quantity.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({

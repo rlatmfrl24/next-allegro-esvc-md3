@@ -125,7 +125,6 @@ export default function BLCheckResultTable() {
             tableData.every((row) => row.freight) ? "checked" : "unchecked"
           }
           onClick={() => {
-            console.log("clicked");
             setTableData(
               tableData.map((row) => {
                 return set(row, "freight", true);

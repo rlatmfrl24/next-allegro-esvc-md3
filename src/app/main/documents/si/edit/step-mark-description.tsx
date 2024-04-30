@@ -21,7 +21,8 @@ export default function StepMarkDescription() {
   const [markDescriptionStore, setMarkDescriptionStore] = useRecoilState(
     SIEditMarkDescriptionState
   );
-  const setSIEditStep = useSetRecoilState(SIEditStepState);
+  // const setSIEditStep = useSetRecoilState(SIEditStepState);
+  const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
   const fileRef = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
     fileRef.current?.click();
@@ -64,6 +65,7 @@ export default function StepMarkDescription() {
       markDescription: {
         ...prev.markDescription,
         isSelected: false,
+        visited: true,
       },
       contactInformation: {
         ...prev.contactInformation,
@@ -145,6 +147,11 @@ export default function StepMarkDescription() {
           <DetailTitle title="HS Code" />
           <NAOutlinedTextField
             required
+            error={
+              SIEditStep.markDescription.visited &&
+              markDescriptionStore.hsCode === ""
+            }
+            errorText="HS Code is required."
             label="HS Code"
             value={markDescriptionStore.hsCode}
             handleValueChange={(value) => {
@@ -159,6 +166,11 @@ export default function StepMarkDescription() {
           <DetailTitle title="Customs Commodity" />
           <NAOutlinedTextField
             required
+            error={
+              SIEditStep.markDescription.visited &&
+              markDescriptionStore.customsCommodity === ""
+            }
+            errorText="Customs Commodity is required."
             placeholder="Customs Commodity"
             type="textarea"
             rows={3}
