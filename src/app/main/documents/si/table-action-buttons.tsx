@@ -203,20 +203,20 @@ const BLIssueRequest = ({
       className="min-w-fit"
     >
       <div slot="headline">B/L Issue Request</div>
-      <div slot="content" className="flex flex-col gap-6">
-        <MdTypography variant="body" size="medium">
+      <div slot="content" className="flex flex-col gap-4">
+        <MdTypography variant="body" size="medium" className="mb-2">
           Do you want to save the data?
           <input autoFocus className="h-0" />
         </MdTypography>
         {requestedBLs.map((row, index) => (
           <div
             key={row.requestNumber}
-            className="px-6 py-4 flex flex-col gap-2 border border-outlineVariant rounded-2xl bg-surface"
+            className="px-6 py-4 flex flex-col gap-2 border border-outlineVariant rounded-2xl bg-surfaceContainer"
           >
             <div>
               <SIStateChip state={row.blState} />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 my-2">
               <FmdGood className="text-primary" />
               <MdTypography variant="body" size="large" prominent>
                 {row.origin}

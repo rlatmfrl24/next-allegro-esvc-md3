@@ -70,7 +70,7 @@ export default function CargoSection({
           </MdTypography>
         </div>
         <MdTypography variant="body" size="medium" className="text-outline">
-          Full Cargo Return Date
+          Full Container Return Date
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
           {data.fullReturnDate.toFormat("yyyy-MM-dd")}
