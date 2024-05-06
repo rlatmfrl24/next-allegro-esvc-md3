@@ -369,9 +369,10 @@ export default function BookingStatusTable() {
       case BookingStatus.Accepted:
         return ["Copy", "Edit", "Cancel", "S/I", "Print Receipt"];
       case BookingStatus.Rejected:
-      case BookingStatus.Pending:
       case BookingStatus.ChangeRequestedRejected:
         return ["Copy", "Edit"];
+      case BookingStatus.Pending:
+        return ["Copy"];
       default:
         return [];
     }
