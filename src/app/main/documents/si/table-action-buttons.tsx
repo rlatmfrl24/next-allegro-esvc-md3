@@ -211,7 +211,7 @@ const BLIssueRequest = ({
         {requestedBLs.map((row, index) => (
           <div
             key={row.requestNumber}
-            className="px-6 py-4 flex flex-col gap-2 border border-outlineVariant rounded-2xl"
+            className="px-6 py-4 flex flex-col gap-2 border border-outlineVariant rounded-2xl bg-surface"
           >
             <div>
               <SIStateChip state={row.blState} />
