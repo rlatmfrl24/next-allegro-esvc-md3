@@ -30,7 +30,7 @@ export function InputCard(props: DashboardInputCardDataType) {
 export function StatisticCard(props: DashboardStatisticCardDataType) {
   return (
     <DashboardCard title={props.title} hasTooltip={true}>
-      <QuickChart data={props.data} />
+      <QuickChart data={props.data} palette={props.palette} />
     </DashboardCard>
   );
 }
@@ -95,22 +95,25 @@ export function DashboardCardConstructor({
   if (item.type === "input") {
     return (
       <InputCard
+        id={item.id}
+        type="input"
+        size={item.size}
         title={item.title}
         buttonText="Search"
         description="Enter a B/L number to inquiry the B/L status"
         placeholder="B/L Number"
       />
     );
-  } else if (item.type === "statistic" || item.type === "chart") {
+  } else if (item.type === "chart") {
+    const chartItem = item as DashboardStatisticCardDataType;
     return (
       <StatisticCard
-        title={item.title}
-        data={[
-          { key: "Booked", value: 20 },
-          { key: "Rejected", value: 10 },
-          { key: "Processing", value: 30 },
-          { key: "Cancelled", value: 5 },
-        ]}
+        id={chartItem.id}
+        type="chart"
+        size={chartItem.size}
+        title={chartItem.title}
+        data={chartItem.data}
+        palette={chartItem.palette}
       />
     );
   } else {
@@ -162,11 +165,34 @@ export function DashboardCardConstructor({
       );
     }
 
-    if (item.id === "checklist") {
+    if (item.id === "outstanding_tasks") {
       {
         return (
           <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
-            <div className="flex flex-1 py-12">
+            <div className="px-4 pt-3 flex gap-2 items-center">
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="text-outline"
+              >
+                Total
+              </MdTypography>
+              <MdTypography
+                variant="title"
+                size="medium"
+                className="text-secondary"
+              >
+                12
+              </MdTypography>
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="text-outline "
+              >
+                (Shipments in 7 days)
+              </MdTypography>
+            </div>
+            <div className="flex flex-1 items-center">
               <div className="flex-1 flex flex-col gap-2 items-center  border-r border-dotted border-outline">
                 <MdTypography
                   variant="display"
@@ -180,7 +206,8 @@ export function DashboardCardConstructor({
                   size="medium"
                   className="text-outline text-balance w-fit text-center"
                 >
-                  Submit Shipping Instructions
+                  Submit Shipping
+                  <br /> Instructions
                 </MdTypography>
               </div>
               <div className="flex-1 flex flex-col gap-2 items-center ">
@@ -189,7 +216,7 @@ export function DashboardCardConstructor({
                   size="medium"
                   className="text-secondary"
                 >
-                  5
+                  7
                 </MdTypography>
                 <MdTypography
                   variant="label"
@@ -197,6 +224,8 @@ export function DashboardCardConstructor({
                   className="text-outline text-balance w-fit text-center"
                 >
                   Submit VGM
+                  <br />
+                  &nbsp;
                 </MdTypography>
               </div>
             </div>
