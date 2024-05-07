@@ -32,7 +32,7 @@ export default function FindIDPassword() {
 
     return (
       <>
-        <div className="flex flex-col items-center gap-6 my-6">
+        <div className="flex flex-col items-center gap-6 mt -6">
           <div className="flex flex-col items-center gap-2">
             <PersonSearchOutlined fontSize="large" className="text-primary" />
             <MdTypography variant="headline" size="medium">
