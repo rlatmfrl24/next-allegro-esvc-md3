@@ -1,9 +1,11 @@
 import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { useSimpleTable } from "@/app/components/table/simple-table";
+import { MdTypography } from "@/app/components/typography";
 import { MdDialog, MdFilledButton, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { createColumnHelper } from "@tanstack/react-table";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 export const CheckApprover = () => {
@@ -41,6 +43,21 @@ export const CheckApprover = () => {
     }),
     columnHelper.accessor("email", {
       header: "Email",
+      cell: (info) => {
+        return (
+          <Link href={`mailto:${info.getValue()}`}>
+            <MdTypography
+              tag="a"
+              variant="body"
+              size="medium"
+              className="underline"
+              onClick={() => {}}
+            >
+              {info.getValue()}
+            </MdTypography>
+          </Link>
+        );
+      },
     }),
     columnHelper.accessor("tel", {
       header: "Tel",

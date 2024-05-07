@@ -12,7 +12,7 @@ export const MdTypography = ({
   ...props
 }: {
   children: string | React.ReactNode;
-  tag?: "div" | "span" | "label";
+  tag?: "div" | "span" | "label" | "a";
   variant: "display" | "headline" | "title" | "label" | "body";
   size: "small" | "medium" | "large";
   prominent?: boolean;
