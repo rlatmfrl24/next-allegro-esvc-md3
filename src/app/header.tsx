@@ -42,7 +42,9 @@ export const Header = () => {
 
   return (
     <header className="relative h-16 flex items-center px-4">
-      <Logo />
+      <Link href={"/main/dashboard"}>
+        <Logo />
+      </Link>
       <div className="mx-6 flex-1"></div>
       {pathname.split("/").includes("main") ? (
         <HeaderMainComponent />

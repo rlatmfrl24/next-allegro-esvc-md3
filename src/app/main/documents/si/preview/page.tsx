@@ -970,9 +970,6 @@ function SIPreview() {
           </div>
           <div
             className={cx(siStyles["preview-section"], "flex-col col-span-2")}
-          ></div>
-          <div
-            className={cx(siStyles["preview-section"], "flex-col col-span-2")}
           >
             <MdTypography
               variant="body"

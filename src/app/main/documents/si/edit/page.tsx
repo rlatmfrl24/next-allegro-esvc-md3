@@ -46,6 +46,16 @@ export default function SIEdit() {
   const router = useRouter();
 
   useEffect(() => {
+    //set current step by siEditStep
+    const currentStep = Object.keys(siEditStep).find((key) => {
+      return siEditStep[key as keyof typeof siEditStep].isSelected;
+    });
+    if (currentStep) {
+      setCurrentStep(currentStep);
+    }
+  }, [siEditStep]);
+
+  useEffect(() => {
     return () => {
       // set all step to visited false
       setSiEditStep((prev) => {

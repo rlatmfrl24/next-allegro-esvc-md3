@@ -209,7 +209,7 @@ export default function StepContactInformation() {
           </button>
         </div> */}
 
-        {/* <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <DetailTitle title="Email Notification Subscription" />
           <div className="flex flex-col gap-1">
             <NaToggleButton
@@ -271,7 +271,6 @@ export default function StepContactInformation() {
             />
           </div>
         </div>
-         */}
       </div>
       {/* <Portal selector="#main-container">
         <MdDialog

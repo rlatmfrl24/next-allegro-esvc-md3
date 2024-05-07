@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { MdTypography } from "./typography";
-import LogoTSLine from "@/../public/logo_tsline.svg";
 
 export default function Logo({
   className,
