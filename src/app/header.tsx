@@ -146,16 +146,9 @@ const HeaderSignComponent = () => {
         </Link>
       ) : (
         <>
-          <Link
-            href={"/sign/up"}
-            onClick={() => {
-              setIsSigning(true);
-            }}
-          >
-            <MdOutlinedButton className="w-32 font-pretendard font-medium">
-              Register
-            </MdOutlinedButton>
-          </Link>
+          <MdOutlinedButton className="w-32 font-pretendard font-medium">
+            Register
+          </MdOutlinedButton>
           <Link
             href={"/sign/in"}
             onClick={() => {

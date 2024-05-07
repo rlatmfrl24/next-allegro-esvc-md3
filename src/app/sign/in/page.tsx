@@ -128,13 +128,7 @@ export default function SignIn() {
           <MdTypography variant="body" size="medium">
             {"Don't have an account?"}
           </MdTypography>
-          <MdTextButton
-            onClick={() => {
-              router.push("/sign/up");
-            }}
-          >
-            Sign Up Here
-          </MdTextButton>
+          <MdTextButton>Sign Up Here</MdTextButton>
         </div>
       </MdElevatedCard>
     </div>
