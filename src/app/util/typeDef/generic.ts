@@ -5,24 +5,22 @@ export type MenuItemType = {
   subMenu?: MenuItemType[];
 };
 
-export type DashboardCardInfoType = {
+export interface DashboardCardInfoType {
   id: string;
   title: string;
-  type: "input" | "statistic" | "chart" | "etc";
+  type: "input" | "chart" | "etc";
   size: 1 | 2 | 4;
-};
-
-export type DashboardInputCardDataType = {
-  title: string;
   tooltipText?: string | undefined;
+}
+
+export interface DashboardInputCardDataType extends DashboardCardInfoType {
   description?: string | undefined;
   placeholder?: string | undefined;
   buttonText: string;
-};
+}
 
-export type DashboardStatisticCardDataType = {
-  title: string;
-  tooltipText?: string | undefined;
+export interface DashboardStatisticCardDataType extends DashboardCardInfoType {
   data: { key: string; value: number }[];
+  palette?: { key: string; value: string }[];
   showChart?: boolean;
-};
+}

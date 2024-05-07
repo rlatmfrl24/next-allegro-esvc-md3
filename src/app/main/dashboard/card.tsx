@@ -30,7 +30,7 @@ export function InputCard(props: DashboardInputCardDataType) {
 export function StatisticCard(props: DashboardStatisticCardDataType) {
   return (
     <DashboardCard title={props.title} hasTooltip={true}>
-      <QuickChart data={props.data} />
+      <QuickChart data={props.data} palette={props.palette} />
     </DashboardCard>
   );
 }
@@ -95,22 +95,25 @@ export function DashboardCardConstructor({
   if (item.type === "input") {
     return (
       <InputCard
+        id={item.id}
+        type="input"
+        size={item.size}
         title={item.title}
         buttonText="Search"
         description="Enter a B/L number to inquiry the B/L status"
         placeholder="B/L Number"
       />
     );
-  } else if (item.type === "statistic" || item.type === "chart") {
+  } else if (item.type === "chart") {
+    const chartItem = item as DashboardStatisticCardDataType;
     return (
       <StatisticCard
-        title={item.title}
-        data={[
-          { key: "Booked", value: 20 },
-          { key: "Rejected", value: 10 },
-          { key: "Processing", value: 30 },
-          { key: "Cancelled", value: 5 },
-        ]}
+        id={chartItem.id}
+        type="chart"
+        size={chartItem.size}
+        title={chartItem.title}
+        data={chartItem.data}
+        palette={chartItem.palette}
       />
     );
   } else {
@@ -162,7 +165,7 @@ export function DashboardCardConstructor({
       );
     }
 
-    if (item.id === "checklist") {
+    if (item.id === "outstanding_tasks") {
       {
         return (
           <DashboardCard title={item.title} hasTooltip={true} cardSize={2}>
