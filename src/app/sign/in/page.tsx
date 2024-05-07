@@ -6,14 +6,15 @@ import {
   MdFilledButton,
   MdIconButton,
   MdOutlinedTextField,
+  MdTextButton,
 } from "@/app/util/md3";
-import Link from "next/link";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
 import { useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { UserState } from "@/app/store/global.store";
+import Image from "next/image";
 
 export default function SignIn() {
   const [id, setId] = useState("");
@@ -43,22 +44,20 @@ export default function SignIn() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <MdElevatedCard className="w-[483px] p-12">
-        <span className="font-pretendard text-xl">Welcome!</span>
-        <span
-          className="font-pretendard text-3xl"
-          onClick={() => {
-            // Test Function
-            errorTest(
-              "pw",
-              "Wrong password. Try again or click forgot password to reset it."
-            );
-          }}
-        >
+      <MdElevatedCard className="w-[483px] p-12 flex flex-col items-center">
+        <Image
+          src="/logo_clt.svg"
+          width={120}
+          height={50}
+          alt="logo"
+          className="m-4"
+        />
+        <MdTypography variant="headline" size="medium">
           Login to your Account
-        </span>
+        </MdTypography>
+
         <MdOutlinedTextField
-          className={`mt-12`}
+          className={`mt-12 w-full`}
           label="ID"
           value={id}
           onInput={(event) => {
@@ -79,7 +78,7 @@ export default function SignIn() {
           )}
         </MdOutlinedTextField>
         <MdOutlinedTextField
-          className={`mt-8`}
+          className={`mt-8 w-full`}
           label="PW"
           type="password"
           value={pw}
@@ -100,20 +99,22 @@ export default function SignIn() {
             </MdIconButton>
           )}
         </MdOutlinedTextField>
-        <div className="flex justify-between">
+        <div className="flex justify-between w-full mt-4">
           <label className="flex items-center font-pretendard font-medium text-sm">
             <MdCheckbox touch-target="wrapper"></MdCheckbox>
             Remember me
           </label>
 
-          <Link href={`/sign`} className="cursor-pointer flex items-center">
-            <MdTypography variant="label" size="large" className="text-primary">
-              Forgot Password?
-            </MdTypography>
-          </Link>
+          <MdTextButton
+            onClick={() => {
+              router.push("/sign/find");
+            }}
+          >
+            Forgot ID/Password?
+          </MdTextButton>
         </div>
         <MdFilledButton
-          className="mt-12"
+          className="mt-6 w-full"
           type="submit"
           disabled={id.length === 0 || pw.length === 0}
           onClick={() => {
@@ -123,15 +124,17 @@ export default function SignIn() {
         >
           Sign In
         </MdFilledButton>
-        <div className="flex items-center justify-center mt-12">
+        <div className="flex items-center justify-center mt-8">
           <MdTypography variant="body" size="medium">
             {"Don't have an account?"}
           </MdTypography>
-          <Link href={`/sign/up`} className="cursor-pointer text-primary px-3">
-            <MdTypography variant="label" size="large">
-              Sign Up Here
-            </MdTypography>
-          </Link>
+          <MdTextButton
+            onClick={() => {
+              router.push("/sign/up");
+            }}
+          >
+            Sign Up Here
+          </MdTextButton>
         </div>
       </MdElevatedCard>
     </div>

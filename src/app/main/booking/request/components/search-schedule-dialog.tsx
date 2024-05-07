@@ -7,13 +7,9 @@ import {
   MdRadio,
   MdTextButton,
 } from "@/app/util/md3";
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { BasicTable } from "@/app/components/table/simple-table";
-import { useEffect, useMemo, useState } from "react";
+import { createColumnHelper } from "@tanstack/react-table";
+import { useSimpleTable } from "@/app/components/table/simple-table";
+import { useMemo, useState } from "react";
 import {
   PtPScheduleType,
   PtPSearchConditionType,
@@ -38,7 +34,9 @@ export default function SearchScheduleDialog({
     return createDummyPtPScheduleData(condition);
   }, [condition]);
   const columnHelper = createColumnHelper<PtPScheduleType>();
-  const [selectedScheduleIndex, setSelectedScheduleIndex] = useState({});
+  const [selectedSchedule, setSelectedSchedule] = useState<PtPScheduleType>(
+    {} as PtPScheduleType
+  );
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
 
@@ -60,6 +58,7 @@ export default function SearchScheduleDialog({
     columnHelper.accessor("origin.yardName", {
       header: "Departure",
       cell: (info) => info.getValue(),
+      size: 200,
     }),
     columnHelper.accessor("departureDate", {
       header: "ETD",
@@ -89,6 +88,7 @@ export default function SearchScheduleDialog({
           {info.getValue().vesselName}
         </MdTypography>
       ),
+      size: 200,
     }),
     columnHelper.accessor("serviceLane", {
       header: "Lane",
@@ -115,22 +115,13 @@ export default function SearchScheduleDialog({
     }),
   ];
 
-  const table = useReactTable({
-    columns,
+  const { renderTable } = useSimpleTable({
     data: tempSchedules,
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setSelectedScheduleIndex,
-    state: {
-      rowSelection: selectedScheduleIndex,
+    columns,
+    getSelectionRows: (rows) => {
+      rows.length > 0 && setSelectedSchedule(rows[0]);
     },
-    enableMultiRowSelection: false,
   });
-
-  useEffect(() => {
-    if (!open) {
-      table.setRowSelection({});
-    }
-  }, [open, table]);
 
   return (
     <Portal selector="#main-container">
@@ -155,16 +146,7 @@ export default function SearchScheduleDialog({
             />
             <MdFilterChip label="Direct Only" />
           </div>
-          <BasicTable
-            table={table}
-            onRowSelction={(row) => {
-              if (row.getIsSelected()) {
-                return;
-              } else {
-                row.toggleSelected();
-              }
-            }}
-          />
+          {renderTable()}
         </div>
         <div slot="actions">
           <MdTextButton
@@ -177,11 +159,9 @@ export default function SearchScheduleDialog({
             Close
           </MdTextButton>
           <MdFilledButton
-            disabled={!table.getSelectedRowModel().rows.length}
             onClick={() => {
-              const selection = table.getSelectedRowModel().rows[0].original;
+              onSelection(selectedSchedule);
               handleOpen(false);
-              onSelection(selection);
             }}
           >
             Apply
