@@ -228,7 +228,7 @@ export default function ContainerInput({
       </div>
       <div className="flex gap-2">
         <NAOutlinedListBox
-          label="Kind"
+          label="Seal Kind"
           options={[
             "Shipper",
             "Carrier",
@@ -248,7 +248,7 @@ export default function ContainerInput({
           }}
         />
         <NAOutlinedListBox
-          label="Seal No. 01"
+          label="Seal Type"
           options={["Merchanical Seal", "Electronic Seal"]}
           className="w-52"
           initialValue={
@@ -277,7 +277,7 @@ export default function ContainerInput({
       </div>
       <div className="flex gap-2">
         <NAOutlinedListBox
-          label="Kind"
+          label="Seal Kind"
           options={[
             "Shipper",
             "Carrier",
@@ -297,7 +297,7 @@ export default function ContainerInput({
           }}
         />
         <NAOutlinedListBox
-          label="Seal No. 02"
+          label="Seal Type"
           options={["Merchanical Seal", "Electronic Seal"]}
           className="w-52"
           initialValue={
@@ -330,14 +330,15 @@ export default function ContainerInput({
           value={container.packageQuantity.toString()}
           className="w-1/4"
           type="number"
+          label="Package"
           handleValueChange={(value) => {
             updateContainerStore(container, "packageQuantity", parseInt(value));
           }}
         />
         <NAOutlinedAutoComplete
-          label="Package"
           className="flex-1"
           itemList={tempPackageList}
+          placeholder="Package Type"
           initialValue={container.packageType}
           isAllowOnlyListItems={false}
           showAllonFocus

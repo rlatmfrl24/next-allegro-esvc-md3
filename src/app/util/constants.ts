@@ -1,4 +1,9 @@
-import { DashboardCardInfoType, MenuItemType } from "./typeDef/generic";
+import { fa, faker } from "@faker-js/faker";
+import {
+  DashboardCardInfoType,
+  DashboardStatisticCardDataType,
+  MenuItemType,
+} from "./typeDef/generic";
 
 // TODO: 추후에 API로 받아올 예정
 export const menuItems: MenuItemType[] = [
@@ -260,26 +265,62 @@ export const menuItems: MenuItemType[] = [
 
 export const cardList: DashboardCardInfoType[] = [
   {
-    id: "bl_information",
-    title: "B/L Information",
-    size: 1,
-    type: "statistic",
-  },
-  {
     id: "booking",
     title: "Booking",
     size: 1,
     type: "chart",
-  },
+    data: [
+      { key: "Accepted", value: faker.number.int(50) },
+      { key: "Requested", value: faker.number.int(50) },
+      { key: "Rejected", value: faker.number.int(50) },
+      { key: "Cancelled", value: faker.number.int(50) },
+    ],
+    palette: [
+      { key: "Accepted", value: "#196584" },
+      { key: "Requested", value: "#71787D" },
+      { key: "Rejected", value: "#BA1A1A" },
+      { key: "Cancelled", value: "#8DCFF2" },
+    ],
+  } as DashboardStatisticCardDataType,
   {
     id: "shipping_instruction",
     title: "Shipping Instruction",
     size: 1,
     type: "chart",
+    data: [
+      { key: "Confirmed", value: faker.number.int(50) },
+      { key: "Submit", value: faker.number.int(50) },
+      { key: "Rejected", value: faker.number.int(50) },
+      { key: "Temporary Saved", value: faker.number.int(50) },
+    ],
+    palette: [
+      { key: "Confirmed", value: "#196584" },
+      { key: "Submit", value: "#71787D" },
+      { key: "Rejected", value: "#BA1A1A" },
+      { key: "Temporary Saved", value: "#8DCFF2" },
+    ],
   },
   {
-    id: "checklist",
-    title: "Checklist",
+    id: "bl_information",
+    title: "B/L Information",
+    size: 1,
+    type: "chart",
+    data: [
+      { key: "Original B/L", value: faker.number.int(50) },
+      { key: "Surredered B/L", value: faker.number.int(50) },
+      { key: "Sea Waybill", value: faker.number.int(50) },
+      { key: "Internet Original B/L", value: faker.number.int(50) },
+    ],
+    palette: [
+      { key: "Original B/L", value: "#196584" },
+      { key: "Surredered B/L", value: "#8DCFF2" },
+      { key: "Sea Waybill", value: "#C8C2EA" },
+      { key: "Internet Original B.L", value: "#B5C9D7" },
+    ],
+  } as DashboardStatisticCardDataType,
+  {
+    id: "outstanding_tasks",
+    title: "Outstanding Tasks",
     size: 1,
     type: "etc",
   },

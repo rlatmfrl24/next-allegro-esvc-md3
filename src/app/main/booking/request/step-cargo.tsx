@@ -286,7 +286,7 @@ export default function CargoStep() {
         <div className="flex gap-4">
           <DatePicker
             className="flex-1"
-            label="Full Cargo Pick Up Date"
+            label="Full Container Pick Up Date"
             initialDate={cargoPickUpReturnData.fullReturnDate}
             onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {
