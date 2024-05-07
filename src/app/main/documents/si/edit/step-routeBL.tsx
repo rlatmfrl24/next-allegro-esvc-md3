@@ -1,10 +1,10 @@
+import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import { SIEditRouteBLState, SIEditStepState } from "@/app/store/si.store";
 import { MdFilledButton, MdOutlinedTextField, MdRadio } from "@/app/util/md3";

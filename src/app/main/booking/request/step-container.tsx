@@ -24,7 +24,6 @@ import {
 import { faker } from "@faker-js/faker";
 
 import { getEmptyContainerData } from "../../util";
-import { DividerComponent } from "../information/components/base";
 import BulkContainerInput from "./components/bulk-container-input";
 import ContainerToggleButton from "./components/container-toggle-button";
 import DryContainerInput from "./components/dry-container-input";
@@ -33,6 +32,7 @@ import OpenTopContainerInput from "./components/opentop-container-input";
 import ReeferContainerInput from "./components/reefer-container-input";
 import TankContainerInput from "./components/tank-container-input";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function ContainerStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);

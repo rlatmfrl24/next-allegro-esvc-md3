@@ -30,7 +30,12 @@ export const useRegister = () => {
               {
                 policy: (
                   <>
-                    <MdTypography tag="label" variant="label" size="large">
+                    <MdTypography
+                      tag="label"
+                      variant="label"
+                      size="large"
+                      className={`flex items-center gap-2 cursor-pointer`}
+                    >
                       <MdCheckbox />I have read, understood and agree to the
                       ‘Privacy and Security Policy’
                     </MdTypography>

@@ -38,11 +38,11 @@ import {
   createDummyPlaceInformation,
   createDummyVesselInformations,
 } from "../../schedule/util";
-import { DividerComponent } from "../information/components/base";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
+import { DividerComponent } from "@/app/components/divider";
 
 const filterOptions = [
   {

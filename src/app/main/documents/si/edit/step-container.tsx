@@ -9,7 +9,6 @@ import FlatRackContainerImage from "@/../public/img_flat_rack_container.svg";
 import TankContainerImage from "@/../public/img_tank_container.svg";
 import BulkContainerImage from "@/../public/img_bulk_container.svg";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import {
   getEmptySIEditContainerData,
   sumContainerMeasurement,
@@ -26,6 +25,7 @@ import { ContainerType } from "@/app/util/typeDef/boooking";
 
 import ContainerToggleButton from "./components/container-toggle-button";
 import ContainerTypeInputComponent from "./components/container-type-input";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function StepContainer() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);

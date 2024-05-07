@@ -7,8 +7,8 @@ import { VesselScheduleType } from "@/app/util/typeDef/schedule";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
 import { Download } from "@mui/icons-material";
-import { DividerComponent } from "../../booking/information/components/base";
 import { usePlaceInfoDialog } from "@/app/components/common-dialog-hooks";
+import { DividerComponent } from "@/app/components/divider";
 
 const DateCell = ({
   info,

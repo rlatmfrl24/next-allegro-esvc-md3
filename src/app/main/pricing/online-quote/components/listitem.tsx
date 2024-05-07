@@ -13,7 +13,6 @@ import {
 import { faker } from "@faker-js/faker";
 import { ArrowDropDown, Place } from "@mui/icons-material";
 
-import { DividerComponent } from "../../../booking/information/components/base";
 import VesselInformationDialog from "../../../schedule/popup/vessel-information";
 import { createDummyVesselInformation } from "../../../schedule/util";
 import { getNumberWithCommas } from "../../../util";
@@ -21,6 +20,7 @@ import { PricePanel } from "./price-panel";
 import { RoutePanel } from "./route-panel";
 import Link from "next/link";
 import { CutOffTime } from "./cut-off-time";
+import { DividerComponent } from "@/app/components/divider";
 
 export const QuotationListItem = ({
   etd,

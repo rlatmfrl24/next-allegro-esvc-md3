@@ -6,7 +6,6 @@ import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import Portal from "@/app/components/portal";
 import { useSimpleTable } from "@/app/components/table/simple-table";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -27,6 +26,7 @@ import {
 
 import { SimpleItem } from "../../booking/request/components/base";
 import SIStateChip from "./si-state-chip";
+import { DividerComponent } from "@/app/components/divider";
 
 const ActionButtons = ({
   selectionList,
