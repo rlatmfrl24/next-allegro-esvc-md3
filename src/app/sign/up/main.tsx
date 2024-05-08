@@ -6,12 +6,30 @@ import {
   MdFilledButton,
   MdOutlinedButton,
 } from "@/app/util/md3";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { PolicyContent } from "./policy-content";
-import { set } from "lodash";
-import { SubTitle } from "@/app/components/title-components";
+import { DetailTitle, SubTitle } from "@/app/components/title-components";
 import { DividerComponent } from "@/app/components/divider";
 import { Check } from "@mui/icons-material";
+import { SignUpForm } from "./form";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+
+type SignUpFormProps = {
+  companyName: string;
+  companyType: string;
+  address: {
+    country: string;
+    zipCode: string;
+    city: string;
+    street: string;
+  };
+  userId: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export const useRegister = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -62,12 +80,79 @@ export const useRegister = () => {
                     <PolicyContent />
                   </>
                 ),
-                form: <></>,
+                form: (
+                  <div className="flex flex-col gap-4">
+                    <DetailTitle title="Company Information" />
+                    <div className="flex gap-2">
+                      <NAOutlinedTextField
+                        label="Company Name"
+                        required
+                        value=""
+                        className="flex-1"
+                      />
+                      <NAOutlinedListBox
+                        options={[
+                          "Company Type 1",
+                          "Company Type 2",
+                          "Company Type 3",
+                        ]}
+                        required
+                        label="Company Type"
+                        className="flex-1"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <NAOutlinedListBox
+                        label="Country"
+                        options={["Korea, Japan"]}
+                        className="flex-1"
+                      />
+                      <NAOutlinedTextField
+                        label="Zip Code"
+                        value=""
+                        className="flex-1"
+                      />
+                      <NAOutlinedTextField
+                        label="City"
+                        value=""
+                        className="flex-1"
+                      />
+                    </div>
+                    <NAOutlinedTextField
+                      label="Address"
+                      value=""
+                      className="w-full"
+                    />
+                    <DividerComponent className="my-2" />
+                    <DetailTitle title="User Information" />
+                    <div className="flex gap-2">
+                      <NAOutlinedTextField
+                        label="User ID"
+                        required
+                        value=""
+                        className="flex-1"
+                      />
+                      <NAOutlinedTextField
+                        label="First Name"
+                        required
+                        value=""
+                        className="flex-1"
+                      />
+                      <NAOutlinedTextField
+                        label="Last Name"
+                        required
+                        value=""
+                        className="flex-1"
+                      />
+                    </div>
+                    <div></div>
+                  </div>
+                ),
                 preview: (
                   <>
-                    <SubTitle title="Company Information" />
+                    <DetailTitle title="Company Information" />
                     <DividerComponent className="my-4" />
-                    <SubTitle title="User Information" />
+                    <DetailTitle title="User Information" />
                     <DividerComponent className="my-4 border-dotted" />
                   </>
                 ),
@@ -175,7 +260,6 @@ export const useRegister = () => {
                         setIsDialogOpen(false);
                       }}
                     >
-                      {" "}
                       Close
                     </MdFilledButton>
                   </>

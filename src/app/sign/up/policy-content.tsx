@@ -1,4 +1,4 @@
-import { SubTitle } from "@/app/components/title-components";
+import { DetailTitle, SubTitle } from "@/app/components/title-components";
 
 export const PolicyContent = () => {
   const policyText = `
@@ -54,7 +54,7 @@ SEOUL KOREA
 
   return (
     <>
-      <SubTitle title="Privacy and Security Policy" />
+      <DetailTitle title="Privacy and Security Policy" />
       <p className="text-balance">
         {policyText.split("\n").map((line, i) => (
           <span key={i}>
