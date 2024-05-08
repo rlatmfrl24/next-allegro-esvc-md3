@@ -19,9 +19,14 @@ import {
   ReeferContainerInformationType,
   TankContainerInformationType,
 } from "@/app/util/typeDef/boooking";
-import { InfoOutlined, Warning } from "@mui/icons-material";
+import { Info, ThermostatAuto } from "@mui/icons-material";
 import LabelChip from "@/app/components/label-chip";
-import { MdIconButton } from "@/app/util/md3";
+import { MdRippleEffect } from "@/app/util/md3";
+import {
+  AwkwardIndicator,
+  DangerIndicator,
+  ReeferIndicator,
+} from "./container-indicator";
 
 export default function ContainerSection({
   hasEdit,
@@ -59,7 +64,7 @@ export default function ContainerSection({
         moveToContainerStep();
       }}
     >
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {data.dry.length !== 0 && <ContainerTypeItem containers={data.dry} />}
         {data.reefer.length !== 0 && (
           <ContainerTypeItem containers={data.reefer} />
@@ -108,11 +113,28 @@ const ContainerTypeItem = (props: {
 
   return (
     <div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
-      <div className="absolute top-2 right-2">
+      <div className="absolute top-2 right-2 flex gap-1">
+        {props.containers.some(
+          (container) => container.type === ContainerType.reefer
+        ) && (
+          <ReeferIndicator
+            containers={props.containers as ReeferContainerInformationType[]}
+          />
+        )}
         {props.containers.some((container) => container.isDangerous) && (
-          <MdIconButton className="w-7 h-7 ">
-            <Warning fontSize="small" className="text-[#FFD300] mb-0.5" />
-          </MdIconButton>
+          <DangerIndicator containers={props.containers} />
+        )}
+        {props.containers.some((container) => {
+          if (
+            container.type === ContainerType.opentop ||
+            container.type === ContainerType.flatrack
+          ) {
+            return (container as OpenTopContainerInformationType).isAwkward;
+          }
+        }) && (
+          <AwkwardIndicator
+            containers={props.containers as OpenTopContainerInformationType[]}
+          />
         )}
       </div>
       <div className="text-center px-4">
