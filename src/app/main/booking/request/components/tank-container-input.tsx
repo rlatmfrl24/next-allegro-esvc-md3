@@ -30,7 +30,7 @@ const TankContainerInput = ({
     useRecoilState(ContainerState);
   const [bookingRequestStep] = useRecoilState(BookingRequestStepState);
 
-  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+  const defaultContainerSizeOptions = ["20", "40", "40HC"];
 
   const selectableContainerSizeOptions = useMemo(() => {
     // if container size is already selected, remove it from the options
@@ -70,7 +70,8 @@ const TankContainerInput = ({
                   tank: [
                     ...prev.tank,
                     getEmptyContainerData(
-                      ContainerType.tank
+                      ContainerType.tank,
+                      selectableContainerSizeOptions
                     ) as TankContainerInformationType,
                   ],
                 }));

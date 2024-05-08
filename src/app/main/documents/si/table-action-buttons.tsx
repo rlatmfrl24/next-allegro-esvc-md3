@@ -4,9 +4,8 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import Portal from "@/app/components/portal";
-import { BasicTable } from "@/app/components/table/simple-table";
+import { useSimpleTable } from "@/app/components/table/simple-table";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   MdCheckbox,
@@ -27,6 +26,7 @@ import {
 
 import { SimpleItem } from "../../booking/request/components/base";
 import SIStateChip from "./si-state-chip";
+import { DividerComponent } from "@/app/components/divider";
 
 const ActionButtons = ({
   selectionList,
@@ -309,7 +309,6 @@ const BLCombine = ({
     }));
   }, []);
   const columnHelper = createColumnHelper<TableProps>();
-  const [rowSelection, setRowSelection] = useState({});
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
 
@@ -365,14 +364,10 @@ const BLCombine = ({
     }),
   ];
 
-  const table = useReactTable({
+  const { renderTable, clearSelection } = useSimpleTable({
     data: tempTableData,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection: rowSelection,
-    },
+    allowMultiRowSelection: true,
   });
 
   return (
@@ -380,7 +375,7 @@ const BLCombine = ({
       open={open}
       closed={() => {
         onOpenChange(false);
-        table.resetRowSelection();
+        clearSelection();
       }}
       className="min-w-fit"
     >
@@ -402,12 +397,7 @@ const BLCombine = ({
         >
           Please check booking which you want to combine with your booking.
         </MdTypography>
-        <BasicTable
-          table={table}
-          onRowSelction={(row) => {
-            row.toggleSelected();
-          }}
-        />
+        {renderTable()}
       </div>
       <div slot="actions">
         <MdTextButton onClick={() => onOpenChange(false)}>Close</MdTextButton>

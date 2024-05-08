@@ -1,5 +1,5 @@
+import { DividerComponent } from "@/app/components/divider";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { CargoTrackingProps } from "@/app/util/typeDef/tracking";
 import { Place } from "@mui/icons-material";
 

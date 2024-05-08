@@ -26,7 +26,6 @@ import {
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
 import { BasicTable } from "@/app/components/table/basic-table";
-import { DividerComponent } from "../../booking/information/components/base";
 import { Download } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import {
@@ -34,6 +33,7 @@ import {
   useVesselScheduleDialog,
 } from "@/app/components/common-dialog-hooks";
 import { set } from "lodash";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function PortResultTable({
   data,

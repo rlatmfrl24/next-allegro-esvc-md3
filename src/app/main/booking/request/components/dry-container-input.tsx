@@ -8,11 +8,7 @@ import {
   BookingRequestStepState,
   ContainerState,
 } from "@/app/store/booking.store";
-import {
-  MdFilledTonalIconButton,
-  MdIconButton,
-  MdOutlinedTextField,
-} from "@/app/util/md3";
+import { MdFilledTonalIconButton, MdIconButton } from "@/app/util/md3";
 import {
   ContainerType,
   DryContainerInformationType,
@@ -23,7 +19,6 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { AnimatePresence, motion } from "framer-motion";
-import { init } from "next/dist/compiled/webpack/webpack";
 import { containerVariant } from "./base";
 
 const DryContainerInput = ({
@@ -35,7 +30,7 @@ const DryContainerInput = ({
     useRecoilState(ContainerState);
   const [bookingRequestStep] = useRecoilState(BookingRequestStepState);
 
-  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+  const defaultContainerSizeOptions = ["20", "40", "40HC"];
 
   const selectableContainerSizeOptions = useMemo(() => {
     // if container size is already selected, remove it from the options
@@ -75,7 +70,8 @@ const DryContainerInput = ({
                   dry: [
                     ...prev.dry,
                     getEmptyContainerData(
-                      ContainerType.dry
+                      ContainerType.dry,
+                      selectableContainerSizeOptions
                     ) as DryContainerInformationType,
                   ],
                 }));

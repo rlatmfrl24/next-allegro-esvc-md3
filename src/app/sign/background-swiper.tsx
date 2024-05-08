@@ -14,7 +14,7 @@ export default function BackgroundSwiper() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="h-[calc(100%-40px)] flex">
+    <div className="h-[calc(100%-40px)] flex relative z-0">
       <SwipeIndicator activeIndex={activeIndex} total={images.length} />
       <Swiper
         slidesPerView={1}

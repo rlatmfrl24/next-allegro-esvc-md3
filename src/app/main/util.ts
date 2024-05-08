@@ -93,15 +93,18 @@ export function getEmptySIEditContainerData(type: ContainerType) {
   } as SIContainerInputProps;
 }
 
-export function getEmptyContainerData(type: ContainerType) {
+export function getEmptyContainerData(
+  type: ContainerType,
+  sizeOptions?: string[]
+) {
   switch (type) {
     case ContainerType.dry:
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.dry,
-        size: "",
+        size: sizeOptions ? sizeOptions[0] : "",
         soc: 0,
-        quantity: 0,
+        quantity: 1,
         isDangerous: false,
         dangerousCargoInformation: {
           unNumber: "",
@@ -116,9 +119,9 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.reefer,
-        size: "",
+        size: sizeOptions ? sizeOptions[0] : "",
         soc: 0,
-        quantity: 0,
+        quantity: 1,
         temperature: 0,
         temperatureUnit: "℃",
         ventilation: 0,
@@ -140,9 +143,9 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.opentop,
-        size: "",
+        size: sizeOptions ? sizeOptions[0] : "",
         soc: 0,
-        quantity: 0,
+        quantity: 1,
         isAwkward: false,
         awkward: {
           package: 0,
@@ -175,9 +178,9 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.flatrack,
-        size: "",
+        size: sizeOptions ? sizeOptions[0] : "",
         soc: 0,
-        quantity: 0,
+        quantity: 1,
         isAwkward: false,
         awkward: {
           package: 0,
@@ -210,9 +213,9 @@ export function getEmptyContainerData(type: ContainerType) {
       return {
         uuid: faker.string.uuid(),
         type: ContainerType.tank,
-        size: "",
+        size: sizeOptions ? sizeOptions[0] : "",
         soc: 0,
-        quantity: 0,
+        quantity: 1,
         isDangerous: false,
         dangerousCargoInformation: {
           unNumber: "",

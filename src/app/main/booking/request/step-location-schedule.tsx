@@ -457,16 +457,18 @@ export default function LoactionScheduleStep() {
           startDate: DateTime.now().minus({ days: 7 }),
           endDate: DateTime.now(),
         }}
-        onSelection={(vaule) => {
-          setLoactionScheduleData((prev) => ({
-            ...prev,
-            originPort: vaule.origin,
-            destinationPort: vaule.destination,
-            pol: vaule.origin,
-            pod: vaule.destination,
-            departureDate: vaule.departureDate,
-            vessel: vaule.vesselInfo,
-          }));
+        onSelection={(value) => {
+          console.log(value);
+          value &&
+            setLoactionScheduleData((prev) => ({
+              ...prev,
+              originPort: value.origin,
+              destinationPort: value.destination,
+              pol: value.origin,
+              pod: value.destination,
+              departureDate: value.departureDate,
+              vessel: value.vesselInfo,
+            }));
         }}
       />
     </div>

@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import VesselIcon from "@/../public/icon_vessel.svg";
 import Portal from "@/app/components/portal";
@@ -13,7 +13,6 @@ import {
 import { faker } from "@faker-js/faker";
 import { ArrowDropDown, Place } from "@mui/icons-material";
 
-import { DividerComponent } from "../../../booking/information/components/base";
 import VesselInformationDialog from "../../../schedule/popup/vessel-information";
 import { createDummyVesselInformation } from "../../../schedule/util";
 import { getNumberWithCommas } from "../../../util";
@@ -21,6 +20,7 @@ import { PricePanel } from "./price-panel";
 import { RoutePanel } from "./route-panel";
 import Link from "next/link";
 import { CutOffTime } from "./cut-off-time";
+import { DividerComponent } from "@/app/components/divider";
 
 export const QuotationListItem = ({
   etd,
@@ -42,6 +42,12 @@ export const QuotationListItem = ({
 }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isVesselInformationOpen, setIsVesselInformationOpen] = useState(false);
+  const pod = useMemo(() => {
+    return faker.location.city() + ", " + faker.location.country();
+  }, []);
+  const pol = useMemo(() => {
+    return faker.location.city() + ", " + faker.location.country();
+  }, []);
 
   return (
     <>
@@ -64,32 +70,40 @@ export const QuotationListItem = ({
               <Place fontSize="small" className="text-primary" />
             </div>
             <div className="flex flex-1 justify-between">
-              <MdTypography variant="title" size="medium">
-                {etd.toFormat("yyyy-MM-dd HH:mm")}
+              <MdTypography variant="title" size="medium" className="basis-1/3">
+                {pod.toUpperCase()}
               </MdTypography>
-
               <MdTypography
                 variant="title"
                 size="medium"
-                className="underline cursor-pointer"
+                className="underline cursor-pointer text-center basis-1/3"
                 onClick={() => {
                   setIsVesselInformationOpen(true);
                 }}
               >
                 {vessel.vesselName}
               </MdTypography>
-              <MdTypography variant="title" size="medium">
-                {eta.toFormat("yyyy-MM-dd HH:mm")}
+              <MdTypography
+                variant="title"
+                size="medium"
+                className="basis-1/3 text-right"
+              >
+                {pol.toUpperCase()}
               </MdTypography>
             </div>
             <div className="flex flex-1 justify-between">
-              <MdTypography
-                variant="body"
-                size="medium"
-                className="text-outline"
-              >
-                ETD
-              </MdTypography>
+              <div className="flex gap-1 items-center">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  className="text-outline"
+                >
+                  ETD
+                </MdTypography>
+                <MdTypography variant="body" size="medium" prominent>
+                  {etd.toFormat("yyyy-MM-dd HH:mm")}
+                </MdTypography>
+              </div>
               <div className="flex items-center gap-1">
                 <MdTypography
                   variant="body"
@@ -119,13 +133,18 @@ export const QuotationListItem = ({
                   Direct
                 </MdTypography>
               </div>
-              <MdTypography
-                variant="body"
-                size="medium"
-                className="text-outline"
-              >
-                ETA
-              </MdTypography>
+              <div className="flex gap-1 items-center">
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  className="text-outline"
+                >
+                  ETA
+                </MdTypography>
+                <MdTypography variant="body" size="medium" prominent>
+                  {eta.toFormat("yyyy-MM-dd HH:mm")}
+                </MdTypography>
+              </div>
             </div>
           </div>
           <div className="ml-8 mr-6 flex flex-col bg-surfaceContainerLowest px-4 py-2 rounded-lg">

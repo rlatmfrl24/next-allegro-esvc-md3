@@ -41,7 +41,7 @@ const ContainerToggleButton = ({
       <MdTypography variant="body" size="large" prominent>
         {title}
       </MdTypography>
-      {count && count > 0 && (
+      {count !== undefined && (
         <MdTypography
           variant="body"
           size="medium"

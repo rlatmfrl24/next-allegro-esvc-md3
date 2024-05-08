@@ -27,7 +27,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { Settings } from "@mui/icons-material";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
+import { DividerComponent } from "../divider";
 
 export const ColumnFilterButton = ({
   table,
