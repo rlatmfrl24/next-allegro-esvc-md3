@@ -4,14 +4,20 @@ import {
   MdCheckbox,
   MdDialog,
   MdFilledButton,
+  MdIcon,
+  MdIconButton,
   MdOutlinedButton,
+  MdOutlinedTextField,
 } from "@/app/util/md3";
-import { useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import { PolicyContent } from "./policy-content";
-import { DetailTitle, SubTitle } from "@/app/components/title-components";
+import { DetailTitle } from "@/app/components/title-components";
 import { DividerComponent } from "@/app/components/divider";
-import { Check } from "@mui/icons-material";
-import { SignUpForm } from "./form";
+import {
+  Check,
+  VisibilityOffOutlined,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
@@ -31,12 +37,80 @@ type SignUpFormProps = {
   confirmPassword: string;
 };
 
+const PassWordTextField = ({
+  className,
+  ...props
+}: {
+  className?: string;
+} & ComponentProps<typeof MdOutlinedTextField>) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  return (
+    <div className={`relative flex h-fit ${className ? className : ""}`}>
+      <MdOutlinedTextField
+        {...props}
+        type={isPasswordVisible ? "text" : "password"}
+        required={false}
+        hasTrailingIcon
+        className="flex-1"
+      >
+        <MdIconButton
+          aria-label="toggle-password-visibility"
+          slot="trailing-icon"
+          onClick={() => {
+            setIsPasswordVisible(!isPasswordVisible);
+          }}
+        >
+          <MdIcon>
+            {isPasswordVisible ? (
+              <VisibilityOffOutlined />
+            ) : (
+              <VisibilityOutlined />
+            )}
+          </MdIcon>
+        </MdIconButton>
+      </MdOutlinedTextField>
+      {props.required && (
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-error absolute top-0.5 left-1.5"
+        >
+          *
+        </MdTypography>
+      )}
+    </div>
+  );
+};
+
 export const useRegister = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [agreePolicy, setAgreePolicy] = useState(false);
   const [currentStep, setCurrentStep] = useState<
     "policy" | "form" | "preview" | "complete"
   >("policy");
+
+  const [signUpForm, setSignUpForm] = useState<SignUpFormProps>({
+    companyName: "",
+    companyType: "",
+    address: {
+      country: "",
+      zipCode: "",
+      city: "",
+      street: "",
+    },
+    userId: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  useEffect(() => {
+    console.log(signUpForm);
+  }, [signUpForm]);
+
+  const isPasswordMatch = signUpForm.password === signUpForm.confirmPassword;
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -145,7 +219,40 @@ export const useRegister = () => {
                         className="flex-1"
                       />
                     </div>
-                    <div></div>
+                    <div className="flex gap-2">
+                      <PassWordTextField
+                        required
+                        label="Password"
+                        className="flex-1"
+                        onBlur={(e) => {
+                          if (
+                            e.target.ariaLabel !== "toggle-password-visibility"
+                          ) {
+                            setSignUpForm((prev) => ({
+                              ...prev,
+                              password: e.target.value,
+                            }));
+                          }
+                        }}
+                      />
+                      <PassWordTextField
+                        required
+                        label="Confirm Password"
+                        error={!isPasswordMatch}
+                        errorText="Password does not match"
+                        className="flex-1"
+                        onBlur={(e) => {
+                          if (
+                            e.target.ariaLabel !== "toggle-password-visibility"
+                          ) {
+                            setSignUpForm((prev) => ({
+                              ...prev,
+                              confirmPassword: e.target.value,
+                            }));
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 ),
                 preview: (
