@@ -1,8 +1,6 @@
 import { MdTypography } from "../components/typography";
 import {
   MdElevatedCard,
-  MdElevation,
-  MdFilledButton,
   MdPrimaryTab,
   MdTabs,
   MdTextButton,
@@ -15,7 +13,7 @@ import Link from "next/link";
 
 export default function QuickMenu() {
   return (
-    <div className="flex flex-col justify-center gap-6 h-full absolute z-10 right-16 w-[848px] px-16">
+    <div className="flex flex-col justify-center gap-6 h-full absolute top-0 right-16 w-[848px] px-16">
       <QuickSearch />
       <MdElevatedCard>
         <div className="px-6 py-2 flex items-center justify-between border-b border-b-outlineVariant">
@@ -44,7 +42,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <MdElevatedCard className="z-10 h-[26rem]">
+    <MdElevatedCard className=" h-[26rem]">
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab
           id="tab-schedule"

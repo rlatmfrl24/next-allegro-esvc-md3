@@ -22,7 +22,7 @@ export default function RootLayout({
         <Providers>
           <div
             id="nav-container"
-            className="flex h-screen overflow-hidden bg-surfaceDim"
+            className="relative flex h-screen overflow-hidden bg-surfaceDim"
           >
             <SideNavigation />
             <main className="flex-1 flex flex-col overflow-hidden bg-surfaceContainerHighest rounded-l-3xl">

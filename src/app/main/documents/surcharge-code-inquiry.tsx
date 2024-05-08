@@ -1,16 +1,11 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { BasicTable } from "@/app/components/table/simple-table";
+import { useSimpleTable } from "@/app/components/table/simple-table";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import Portal from "@/app/components/portal";
 import { MdDialog, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 
 function highlightText(text: string, query: string) {
   const regex = new RegExp(`(${query})`, "gi");
@@ -49,6 +44,8 @@ export default function SurchargeCodeInquiry({
     }));
   }, []);
 
+  const [tableData, setTableData] =
+    useState<SurchargeTableProps[]>(tempSurchargeData);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 
   const columnHelper = createColumnHelper<SurchargeTableProps>();
@@ -75,12 +72,25 @@ export default function SurchargeCodeInquiry({
     }),
   ];
 
-  const table = useReactTable({
-    data: tempSurchargeData,
+  useEffect(() => {
+    if (globalFilterValue === "") {
+      setTableData(tempSurchargeData);
+    } else {
+      const filteredData = tempSurchargeData.filter((data) => {
+        return (
+          data.code.toLowerCase().includes(globalFilterValue.toLowerCase()) ||
+          data.description
+            .toLowerCase()
+            .includes(globalFilterValue.toLowerCase())
+        );
+      });
+      setTableData(filteredData);
+    }
+  }, [globalFilterValue, tempSurchargeData]);
+
+  const { renderTable } = useSimpleTable({
+    data: tableData,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    enableGlobalFilter: true,
   });
 
   return (
@@ -97,12 +107,12 @@ export default function SurchargeCodeInquiry({
         <div slot="content" className="flex flex-col gap-4 ">
           <NAOutlinedTextField
             placeholder="Surcharge Code or Description"
+            value={globalFilterValue}
             handleValueChange={(value) => {
               setGlobalFilterValue(value);
-              table.setGlobalFilter(String(value));
             }}
           />
-          <BasicTable table={table} />
+          {renderTable()}
         </div>
         <div slot="actions">
           <MdTextButton

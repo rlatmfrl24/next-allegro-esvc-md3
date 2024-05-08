@@ -1,8 +1,6 @@
 "use client";
 
-import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { QuotationTermsState } from "@/app/store/pricing.store";
 import styles from "@/app/styles/base.module.css";
 import {
@@ -20,6 +18,7 @@ import { RoutePanel } from "../components/route-panel";
 import { PricePanel } from "../components/price-panel";
 import { useRouter } from "next/navigation";
 import { ChevronLeft } from "@mui/icons-material";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function QuotationSelection({
   params,

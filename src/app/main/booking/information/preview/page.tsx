@@ -3,7 +3,7 @@
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
-import { DividerComponent, Section } from "../components/base";
+import { Section } from "../components/base";
 import LocationScheduleSection from "../components/location-schedule";
 import ContactInformationSection from "../components/contact-information";
 import PartiesSection from "../components/parties";
@@ -34,6 +34,7 @@ import {
 import { useRouter } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 import { ChevronLeft } from "@mui/icons-material";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function BookingRequestPreview() {
   const locationScheduleValue = useRecoilValue(LocationScheduleState);

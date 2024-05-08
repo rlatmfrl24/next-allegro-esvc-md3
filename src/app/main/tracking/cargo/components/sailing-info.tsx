@@ -1,5 +1,4 @@
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { ArrowDropDown, FmdGood, InfoOutlined } from "@mui/icons-material";
 import VesselIcon from "@/../public/icon_vessel.svg";
 import { CargoTrackingProps } from "@/app/util/typeDef/tracking";
@@ -10,6 +9,7 @@ import {
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
 import { createDummyVesselSchedules } from "@/app/main/schedule/util";
+import { DividerComponent } from "@/app/components/divider";
 
 export const SailingInfo = ({
   data,

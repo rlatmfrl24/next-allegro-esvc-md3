@@ -36,6 +36,7 @@ import QuickSimpleSIIcon from "@/../public/icon_quick_simple_si.svg";
 import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
 import QuickSiteMapIcon from "@/../public/icon_quick_sitemap.svg";
 import { basicPopoverStyles } from "./util/constants";
+import { useRegister } from "./sign/up/main";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -58,9 +59,11 @@ export const Header = () => {
 const HeaderSignComponent = () => {
   const [isSigning, setIsSigning] = useState(false);
   const [onHoverAt, setOnHoverAt] = useState(0);
+  const { renderRegisterDialog, openDialog } = useRegister();
 
   return (
     <div className="flex gap-3 items-center">
+      {renderRegisterDialog()}
       <div className="flex">
         <MdNavigationTab
           label="Surcharge Search"
@@ -146,16 +149,14 @@ const HeaderSignComponent = () => {
         </Link>
       ) : (
         <>
-          <Link
-            href={"/sign/up"}
+          <MdOutlinedButton
+            className="w-32 font-pretendard font-medium"
             onClick={() => {
-              setIsSigning(true);
+              openDialog();
             }}
           >
-            <MdOutlinedButton className="w-32 font-pretendard font-medium">
-              Register
-            </MdOutlinedButton>
-          </Link>
+            Register
+          </MdOutlinedButton>
           <Link
             href={"/sign/in"}
             onClick={() => {

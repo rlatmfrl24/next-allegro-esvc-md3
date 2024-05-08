@@ -1,4 +1,3 @@
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { CargoTrackingProps, TransitType } from "@/app/util/typeDef/tracking";
 import { autoUpdate, offset, useFloating } from "@floating-ui/react";
 import { Place } from "@mui/icons-material";
@@ -10,6 +9,7 @@ import TransitShipIcon from "@/../public/icon_transit_ship.svg";
 import TransitTrainIcon from "@/../public/icon_transit_train.svg";
 import TransitTruckIcon from "@/../public/icon_transit_truck.svg";
 import { PlainTooltip } from "@/app/components/tooltip";
+import { DividerComponent } from "@/app/components/divider";
 
 function getIconByTransitType(type: TransitType) {
   switch (type) {

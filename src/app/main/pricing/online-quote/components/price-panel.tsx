@@ -1,9 +1,9 @@
 import { MdTypography } from "@/app/components/typography";
 import { QuotationContainerType } from "@/app/util/typeDef/pricing";
 import { CategorySumItem, SubSumItem } from "./price-items";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { getNumberWithCommas } from "@/app/main/util";
 import { faker } from "@faker-js/faker";
+import { DividerComponent } from "@/app/components/divider";
 
 export const PricePanel = ({
   containers,

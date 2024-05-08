@@ -6,7 +6,7 @@ import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import classNames from "classnames";
 import AttachmentSection from "../components/attachment";
-import { DividerComponent, Section } from "../components/base";
+import { Section } from "../components/base";
 import CargoSection from "../components/cargo";
 import ContactInformationSection from "../components/contact-information";
 import ContainerSection from "../components/contaienr";
@@ -24,6 +24,7 @@ import RequestNumberSection from "../components/request-number";
 import { BookingStatus } from "@/app/util/typeDef/boooking";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { ChevronLeft } from "@mui/icons-material";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function BookingRequestInformation() {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);

@@ -10,7 +10,6 @@ import LabelChip from "@/app/components/label-chip";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/main/booking/information/components/base";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
   sumContainerMeasurement,
@@ -57,6 +56,7 @@ import {
   Phone,
   Place,
 } from "@mui/icons-material";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function SIPreviewPage() {
   return (

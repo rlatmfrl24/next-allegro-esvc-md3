@@ -11,9 +11,9 @@ import "swiper/css/navigation";
 export default function Sign() {
   return (
     <div className="relative h-full">
+      <BackgroundSwiper />
       <QuickMenu />
       <CatchPhrase />
-      <BackgroundSwiper />
       <Footer />
     </div>
   );

@@ -20,10 +20,11 @@ import { BookingStatus } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
 import { ChevronLeft } from "@mui/icons-material";
 
-import { DividerComponent, Section } from "../components/base";
+import { Section } from "../components/base";
 import ContainerSection from "../components/contaienr";
 import LocationScheduleSection from "../components/location-schedule";
 import RequestNumberSection from "../components/request-number";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function BookingConfirmationInformation() {
   const cx = classNames.bind(styles);
