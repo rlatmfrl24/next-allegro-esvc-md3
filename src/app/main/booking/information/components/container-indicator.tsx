@@ -14,10 +14,10 @@ import {
 } from "@/app/util/typeDef/boooking";
 import { Info, ThermostatAuto, Warning } from "@mui/icons-material";
 import { useState } from "react";
-import { DividerComponent } from "./base";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import LabelChip from "@/app/components/label-chip";
+import { DividerComponent } from "@/app/components/divider";
 
 const BasicItem = (props: {
   title: string;
