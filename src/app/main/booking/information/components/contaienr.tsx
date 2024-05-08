@@ -12,12 +12,15 @@ import { useRouter } from "next/navigation";
 import {
   BulkContainerInformationType,
   ContainerInformationType,
+  ContainerType,
   DryContainerInformationType,
   FlatRackContainerInformationType,
   OpenTopContainerInformationType,
   ReeferContainerInformationType,
   TankContainerInformationType,
 } from "@/app/util/typeDef/boooking";
+import { InfoOutlined } from "@mui/icons-material";
+import LabelChip from "@/app/components/label-chip";
 
 export default function ContainerSection({
   hasEdit,
@@ -56,7 +59,19 @@ export default function ContainerSection({
       }}
     >
       <div className="grid grid-cols-5 gap-4">
-        {data.dry.map((container, index) => (
+        {data.dry.length !== 0 && <ContainerTypeItem containers={data.dry} />}
+        {data.reefer.length !== 0 && (
+          <ContainerTypeItem containers={data.reefer} />
+        )}
+        {data.flatrack.length !== 0 && (
+          <ContainerTypeItem containers={data.flatrack} />
+        )}
+        {data.opentop.length !== 0 && (
+          <ContainerTypeItem containers={data.opentop} />
+        )}
+        {data.tank.length !== 0 && <ContainerTypeItem containers={data.tank} />}
+
+        {/* {data.dry.map((container, index) => (
           <ContainerItem
             key={index}
             type="dry"
@@ -64,49 +79,68 @@ export default function ContainerSection({
             quantity={container.quantity}
             soc={container.soc}
           />
-        ))}
-        {data.reefer.map((container, index) => (
-          <ContainerItem
-            key={index}
-            type="reefer"
-            size={container.size}
-            quantity={container.quantity}
-            soc={container.soc}
-          />
-        ))}
-        {data.flatrack.map((container, index) => (
-          <ContainerItem
-            key={index}
-            type="flatrack"
-            size={container.size}
-            quantity={container.quantity}
-            soc={container.soc}
-          />
-        ))}
-        {data.opentop.map((container, index) => (
-          <ContainerItem
-            key={index}
-            type="open-top"
-            size={container.size}
-            quantity={container.quantity}
-            soc={container.soc}
-          />
-        ))}
-        {data.tank.map((container, index) => (
-          <ContainerItem
-            key={index}
-            type="tank"
-            size={container.size}
-            quantity={container.quantity}
-            soc={container.soc}
-          />
-        ))}
-        {data.bulk.length > 0 && <ContainerItem type="bulk" />}
+        ))} */}
       </div>
     </Section>
   );
 }
 
+const ContainerTypeItem = (props: {
+  containers: ContainerInformationType[];
+}) => {
+  const containerType = props.containers[0].type;
+  const socCount = props.containers.reduce((acc, cur) => acc + cur.soc, 0);
+
+  return (
+    <div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
+      <InfoOutlined
+        className="absolute top-2 right-2 text-outline"
+        fontSize="small"
+      />
+      <div className="text-center px-4">
+        {
+          {
+            Dry: <DryContainerImage />,
+            Reefer: <ReeferContainerImage />,
+            OpenTop: <OpenTopContainerImage />,
+            FlatRack: <FlatRackContainerImage />,
+            Tank: <TankContainerImage />,
+            Bulk: <BulkContainerImage />,
+          }[containerType as ContainerType]
+        }
+        <MdTypography
+          variant="label"
+          size="large"
+          className="text-outline mt-1"
+        >
+          {`(SOC: ${socCount})`}
+        </MdTypography>
+      </div>
+      <div>
+        <LabelChip
+          label={containerType}
+          className="bg-surfaceContainerHigh mb-2"
+          size="medium"
+        />
+        {props.containers.map((container, index) => (
+          <MdTypography
+            key={containerType + `_` + index}
+            variant="body"
+            size="large"
+            prominent
+            className="flex gap-2"
+          >
+            <span>{container.size}</span>
+            <span className="text-outlineVariant">X</span>
+            <span>{container.quantity}</span>
+          </MdTypography>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+//deprecated
 const ContainerItem = ({
   type,
   size,
@@ -119,7 +153,7 @@ const ContainerItem = ({
   soc?: number;
 }) => {
   return (
-    <div className="flex flex-1 items-center border rounded-lg border-outlineVariant p-4 gap-4">
+    <div className="relative flex flex-1 items-center border rounded-lg border-outlineVariant p-4 gap-4">
       <div className="w-24 flex justify-center items-center">
         {
           {
