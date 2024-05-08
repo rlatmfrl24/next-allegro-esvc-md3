@@ -44,8 +44,12 @@ export const DangerIndicator = (props: {
   containers: ContainerInformationType[];
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const dangerContainers = props.containers.filter(
+    (container) => container.isDangerous
+  );
+
   const [selectedSize, setSelectedSize] = useState<ContainerInformationType>(
-    props.containers[0]
+    dangerContainers[0]
   );
 
   return (
@@ -70,29 +74,27 @@ export const DangerIndicator = (props: {
           <div slot="headline">Danger Cargo Info</div>
           <div slot="content" className="flex flex-col gap-4">
             <MdChipSet>
-              {props.containers
-                .filter((container) => container.isDangerous)
-                .map((container, index) => (
-                  <MdFilterChip
-                    key={index}
-                    label={
-                      container.type +
-                      " " +
-                      container.size +
-                      " X " +
-                      container.quantity
+              {dangerContainers.map((container, index) => (
+                <MdFilterChip
+                  key={index}
+                  label={
+                    container.type +
+                    " " +
+                    container.size +
+                    " X " +
+                    container.quantity
+                  }
+                  selected={container.size === selectedSize.size}
+                  onClick={(e) => {
+                    if (container.size === selectedSize.size) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    } else {
+                      setSelectedSize(container);
                     }
-                    selected={container.size === selectedSize.size}
-                    onClick={(e) => {
-                      if (container.size === selectedSize.size) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      } else {
-                        setSelectedSize(container);
-                      }
-                    }}
-                  />
-                ))}
+                  }}
+                />
+              ))}
             </MdChipSet>
             <DividerComponent />
             <DetailTitle
@@ -168,9 +170,13 @@ export const AwkwardIndicator = (props: {
     | FlatRackContainerInformationType[];
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const awkwardContainers = props.containers.filter(
+    (container) => container.isAwkward
+  );
+
   const [selectedSize, setSelectedSize] =
     useState<OpenTopContainerInformationType>(
-      props.containers[0] as OpenTopContainerInformationType
+      awkwardContainers[0] as OpenTopContainerInformationType
     );
 
   return (
@@ -195,31 +201,29 @@ export const AwkwardIndicator = (props: {
           <div slot="headline">Awkward Cargo Info</div>
           <div slot="content" className="flex flex-col gap-4">
             <MdChipSet>
-              {props.containers
-                .filter((container) => container.isAwkward)
-                .map((container, index) => (
-                  <MdFilterChip
-                    key={index}
-                    selected={container.size === selectedSize.size}
-                    label={
-                      container.type +
-                      " " +
-                      container.size +
-                      " X " +
-                      container.quantity
+              {awkwardContainers.map((container, index) => (
+                <MdFilterChip
+                  key={index}
+                  selected={container.size === selectedSize.size}
+                  label={
+                    container.type +
+                    " " +
+                    container.size +
+                    " X " +
+                    container.quantity
+                  }
+                  onClick={(e) => {
+                    if (container.size === selectedSize.size) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    } else {
+                      setSelectedSize(
+                        container as OpenTopContainerInformationType
+                      );
                     }
-                    onClick={(e) => {
-                      if (container.size === selectedSize.size) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      } else {
-                        setSelectedSize(
-                          container as OpenTopContainerInformationType
-                        );
-                      }
-                    }}
-                  />
-                ))}
+                  }}
+                />
+              ))}
             </MdChipSet>
             <DividerComponent />
             <div className="grid grid-cols-3 gap-4">
