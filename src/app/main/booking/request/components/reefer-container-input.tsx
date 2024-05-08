@@ -32,8 +32,7 @@ const ReeferContainerInput = ({
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
   const [bookingRequestStep] = useRecoilState(BookingRequestStepState);
-
-  const defaultContainerSizeOptions = ["20", "40", "45", "53"];
+  const defaultContainerSizeOptions = ["20", "40", "40HC"];
 
   const selectableContainerSizeOptions = useMemo(() => {
     // if container size is already selected, remove it from the options
@@ -74,7 +73,8 @@ const ReeferContainerInput = ({
                     reefer: [
                       ...prev.reefer,
                       getEmptyContainerData(
-                        ContainerType.reefer
+                        ContainerType.reefer,
+                        selectableContainerSizeOptions
                       ) as ReeferContainerInformationType,
                     ],
                   }));

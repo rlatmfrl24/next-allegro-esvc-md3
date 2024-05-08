@@ -119,8 +119,10 @@ export default function ContainerStep() {
       setTypeSelections((prev) => [...prev, type]);
     }
 
+    const defaultContainerSizeOptions = ["20", "40", "40HC"];
+
     const typeKey = type.toLowerCase() as keyof typeof containerInformation;
-    const emptyData = getEmptyContainerData(type);
+    const emptyData = getEmptyContainerData(type, defaultContainerSizeOptions);
 
     if (containerInformation[typeKey].length === 0) {
       setContainerInformation((prev) => ({
@@ -254,10 +256,18 @@ export default function ContainerStep() {
                 handleTypeSelections(ContainerType.dry);
               }}
               title="Dry"
+              // count={
+              //   containerInformation.dry.length === 0
+              //     ? undefined
+              //     : containerInformation.dry.length
+              // }
               count={
                 containerInformation.dry.length === 0
                   ? undefined
-                  : containerInformation.dry.length
+                  : containerInformation.dry.reduce(
+                      (acc, curr) => acc + curr.quantity,
+                      0
+                    )
               }
               hoverText={
                 <div>
@@ -290,7 +300,10 @@ export default function ContainerStep() {
               count={
                 containerInformation.reefer.length === 0
                   ? undefined
-                  : containerInformation.reefer.length
+                  : containerInformation.reefer.reduce(
+                      (acc, curr) => acc + curr.quantity,
+                      0
+                    )
               }
               hoverText={
                 <div>
@@ -323,7 +336,10 @@ export default function ContainerStep() {
               count={
                 containerInformation.opentop.length === 0
                   ? undefined
-                  : containerInformation.opentop.length
+                  : containerInformation.opentop.reduce(
+                      (acc, curr) => acc + curr.quantity,
+                      0
+                    )
               }
               hoverText={
                 <div>
@@ -356,7 +372,10 @@ export default function ContainerStep() {
               count={
                 containerInformation.flatrack.length === 0
                   ? undefined
-                  : containerInformation.flatrack.length
+                  : containerInformation.flatrack.reduce(
+                      (acc, curr) => acc + curr.quantity,
+                      0
+                    )
               }
               hoverText={
                 <div>
@@ -389,7 +408,10 @@ export default function ContainerStep() {
               count={
                 containerInformation.tank.length === 0
                   ? undefined
-                  : containerInformation.tank.length
+                  : containerInformation.tank.reduce(
+                      (acc, curr) => acc + curr.quantity,
+                      0
+                    )
               }
               hoverText={
                 <div>
@@ -419,6 +441,7 @@ export default function ContainerStep() {
                 handleTypeSelections(ContainerType.bulk);
               }}
               title="Bulk"
+              // Bulk container does not have quantity
               count={
                 containerInformation.bulk.length === 0
                   ? undefined

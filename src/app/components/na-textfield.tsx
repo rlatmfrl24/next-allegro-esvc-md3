@@ -76,11 +76,20 @@ export const NAOutlinedTextField = ({
         onInput={(e) => {
           if (props.type !== "number") {
             handleValueChange?.(e.currentTarget.value);
-          }
-          if (e.currentTarget.value.length > 0) {
-            setHasValue(true);
+            if (e.currentTarget.value.length > 0) {
+              setHasValue(true);
+            } else {
+              setHasValue(false);
+            }
           } else {
-            setHasValue(false);
+            // type === "number"
+            const value = e.currentTarget.value;
+            if (value.length === 0) {
+              handleValueChange?.("");
+            }
+            if (value.startsWith("0")) {
+              handleValueChange?.(value.replace(/^0+/, ""));
+            }
           }
         }}
         onBlur={(e) => {
