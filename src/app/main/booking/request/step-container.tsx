@@ -119,8 +119,10 @@ export default function ContainerStep() {
       setTypeSelections((prev) => [...prev, type]);
     }
 
+    const defaultContainerSizeOptions = ["20", "40", "40HC"];
+
     const typeKey = type.toLowerCase() as keyof typeof containerInformation;
-    const emptyData = getEmptyContainerData(type);
+    const emptyData = getEmptyContainerData(type, defaultContainerSizeOptions);
 
     if (containerInformation[typeKey].length === 0) {
       setContainerInformation((prev) => ({

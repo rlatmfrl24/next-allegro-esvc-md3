@@ -19,8 +19,9 @@ import {
   ReeferContainerInformationType,
   TankContainerInformationType,
 } from "@/app/util/typeDef/boooking";
-import { InfoOutlined } from "@mui/icons-material";
+import { InfoOutlined, Warning } from "@mui/icons-material";
 import LabelChip from "@/app/components/label-chip";
+import { MdIconButton } from "@/app/util/md3";
 
 export default function ContainerSection({
   hasEdit,
@@ -70,6 +71,20 @@ export default function ContainerSection({
           <ContainerTypeItem containers={data.opentop} />
         )}
         {data.tank.length !== 0 && <ContainerTypeItem containers={data.tank} />}
+        {data.bulk.length !== 0 && (
+          <div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
+            <div className="text-center px-4">
+              <BulkContainerImage />
+            </div>
+            <div>
+              <LabelChip
+                label="Bulk"
+                className="bg-surfaceContainerHigh mb-2"
+                size="medium"
+              />
+            </div>
+          </div>
+        )}
 
         {/* {data.dry.map((container, index) => (
           <ContainerItem
@@ -93,10 +108,13 @@ const ContainerTypeItem = (props: {
 
   return (
     <div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
-      <InfoOutlined
-        className="absolute top-2 right-2 text-outline"
-        fontSize="small"
-      />
+      <div className="absolute top-2 right-2">
+        {props.containers.some((container) => container.isDangerous) && (
+          <MdIconButton className="w-7 h-7 ">
+            <Warning fontSize="small" className="text-[#FFD300] mb-0.5" />
+          </MdIconButton>
+        )}
+      </div>
       <div className="text-center px-4">
         {
           {
@@ -141,76 +159,76 @@ const ContainerTypeItem = (props: {
 };
 
 //deprecated
-const ContainerItem = ({
-  type,
-  size,
-  quantity,
-  soc,
-}: {
-  type: "dry" | "reefer" | "flatrack" | "open-top" | "tank" | "bulk";
-  size?: string;
-  quantity?: number;
-  soc?: number;
-}) => {
-  return (
-    <div className="relative flex flex-1 items-center border rounded-lg border-outlineVariant p-4 gap-4">
-      <div className="w-24 flex justify-center items-center">
-        {
-          {
-            dry: <DryContainerImage />,
-            reefer: <ReeferContainerImage />,
-            "open-top": <OpenTopContainerImage />,
-            flatrack: <FlatRackContainerImage />,
-            tank: <TankContainerImage />,
-            bulk: <BulkContainerImage />,
-          }[type]
-        }
-      </div>
-      {type !== "bulk" ? (
-        <>
-          <div>
-            <MdTypography variant="body" size="medium">
-              {
-                {
-                  dry: "Dry",
-                  reefer: "Reefer",
-                  empty: "Empty",
-                  flatrack: "Flatrack",
-                  "open-top": "Open Top",
-                  tank: "Tank",
-                  other: "Other",
-                  bulk: "Bulk",
-                }[type]
-              }
-            </MdTypography>
-            <div className="flex gap-1">
-              <MdTypography variant="body" size="large" prominent>
-                {size}
-              </MdTypography>
-              <MdTypography
-                variant="body"
-                size="large"
-                prominent
-                className="text-outlineVariant"
-              >
-                X
-              </MdTypography>
-              <MdTypography variant="body" size="large" prominent>
-                {quantity}
-              </MdTypography>
-            </div>
-            <MdTypography variant="body" size="small" className="text-outline">
-              SOC: {soc}
-            </MdTypography>
-          </div>
-        </>
-      ) : (
-        <div className="flex items-center">
-          <MdTypography variant="body" size="large" prominent>
-            Bulk
-          </MdTypography>
-        </div>
-      )}
-    </div>
-  );
-};
+// const ContainerItem = ({
+//   type,
+//   size,
+//   quantity,
+//   soc,
+// }: {
+//   type: "dry" | "reefer" | "flatrack" | "open-top" | "tank" | "bulk";
+//   size?: string;
+//   quantity?: number;
+//   soc?: number;
+// }) => {
+//   return (
+//     <div className="relative flex flex-1 items-center border rounded-lg border-outlineVariant p-4 gap-4">
+//       <div className="w-24 flex justify-center items-center">
+//         {
+//           {
+//             dry: <DryContainerImage />,
+//             reefer: <ReeferContainerImage />,
+//             "open-top": <OpenTopContainerImage />,
+//             flatrack: <FlatRackContainerImage />,
+//             tank: <TankContainerImage />,
+//             bulk: <BulkContainerImage />,
+//           }[type]
+//         }
+//       </div>
+//       {type !== "bulk" ? (
+//         <>
+//           <div>
+//             <MdTypography variant="body" size="medium">
+//               {
+//                 {
+//                   dry: "Dry",
+//                   reefer: "Reefer",
+//                   empty: "Empty",
+//                   flatrack: "Flatrack",
+//                   "open-top": "Open Top",
+//                   tank: "Tank",
+//                   other: "Other",
+//                   bulk: "Bulk",
+//                 }[type]
+//               }
+//             </MdTypography>
+//             <div className="flex gap-1">
+//               <MdTypography variant="body" size="large" prominent>
+//                 {size}
+//               </MdTypography>
+//               <MdTypography
+//                 variant="body"
+//                 size="large"
+//                 prominent
+//                 className="text-outlineVariant"
+//               >
+//                 X
+//               </MdTypography>
+//               <MdTypography variant="body" size="large" prominent>
+//                 {quantity}
+//               </MdTypography>
+//             </div>
+//             <MdTypography variant="body" size="small" className="text-outline">
+//               SOC: {soc}
+//             </MdTypography>
+//           </div>
+//         </>
+//       ) : (
+//         <div className="flex items-center">
+//           <MdTypography variant="body" size="large" prominent>
+//             Bulk
+//           </MdTypography>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
