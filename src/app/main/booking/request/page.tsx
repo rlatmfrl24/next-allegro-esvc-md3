@@ -32,16 +32,25 @@ import { CSSProperties, Suspense, use, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 import { set } from "lodash";
 
-export default function BookingRequest() {
+export default function BookingRequestPage() {
+  return (
+    <Suspense>
+      <BookingRequest />
+    </Suspense>
+  );
+}
+
+function BookingRequest() {
   const cx = classNames.bind(styles);
   const [bookingRequestStepState, setBookingRequestStepState] = useRecoilState(
     BookingRequestStepState
   );
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const locationSchedule = useRecoilValue(LocationScheduleState);
   const parties = useRecoilValue(PartiesState);

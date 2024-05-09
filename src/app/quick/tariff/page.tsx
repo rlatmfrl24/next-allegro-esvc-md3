@@ -107,43 +107,113 @@ export default function TariffPage() {
       id: "originCoverage",
       header: "Origin Coverage",
       size: 170,
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("destination", {
       id: "destination",
       header: "Destination",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("containerType", {
       id: "containerType",
       header: "Container Type",
       size: 170,
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("cargoType", {
       id: "cargoType",
       header: "Cargo Type",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("day", {
       id: "day",
       header: "Day",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("currency", {
       id: "currency",
       header: "Currency",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("price.20", {
       id: "price.20",
       header: "20`",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("price.40", {
       id: "price.40",
       header: "40`",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("price.HC", {
       id: "price.HC",
       header: "H/C",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
     columnHelper.accessor("price.45", {
       id: "price.45",
       header: "45`",
+      cell: (info) => {
+        return (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        );
+      },
     }),
   ];
 
