@@ -40,18 +40,15 @@ import {
 
 export const Header = () => {
   const pathname = usePathname();
+  const isMain = pathname.split("/").includes("main");
 
   return (
     <header className="relative h-16 flex items-center px-4">
-      <Link href={"/main/dashboard"}>
+      <Link href={isMain ? "/main/dashboard" : "/"}>
         <Logo />
       </Link>
       <div className="mx-6 flex-1"></div>
-      {pathname.split("/").includes("main") ? (
-        <HeaderMainComponent />
-      ) : (
-        <HeaderSignComponent />
-      )}
+      {isMain ? <HeaderMainComponent /> : <HeaderSignComponent />}
     </header>
   );
 };
@@ -81,7 +78,7 @@ const HeaderSignComponent = () => {
             </MdIcon>
           </MdNavigationTab>
         </Link>
-        <Link href={`/main/quick/guide`}>
+        <Link href={`/quick/guide`}>
           <MdNavigationTab
             label="Guide"
             className="w-32"
@@ -97,7 +94,7 @@ const HeaderSignComponent = () => {
             </MdIcon>
           </MdNavigationTab>
         </Link>
-        <Link href={`/main/quick/si`}>
+        <Link href={`/quick/si`}>
           <MdNavigationTab
             label="Simple SI"
             className="w-32"
@@ -113,7 +110,7 @@ const HeaderSignComponent = () => {
             </MdIcon>
           </MdNavigationTab>
         </Link>
-        <Link href={`/main/quick/tariff`}>
+        <Link href={`/quick/tariff`}>
           <MdNavigationTab
             label="DEM/DET Tariff"
             className="w-32"
@@ -129,7 +126,7 @@ const HeaderSignComponent = () => {
             </MdIcon>
           </MdNavigationTab>
         </Link>
-        <Link href={`/main/quick/sitemap`}>
+        <Link href={`/quick/sitemap`}>
           <MdNavigationTab
             label="SiteMap"
             className="w-32"

@@ -172,8 +172,8 @@ export default function GuideDownloadPage() {
   const cx = classNames.bind(styles);
 
   return (
-    <div aria-label="container" className={cx(styles.container, "flex-1")}>
-      <PageTitle title="Guide" />
+    <div aria-label="container" className={cx(styles.container, "h-full ")}>
+      <PageTitle title="e-Service Guide" />
       <div className={cx(styles.area, "flex-1")}>
         <div className="grid grid-cols-4 gap-8">
           {categories.map((category) => (
