@@ -55,7 +55,12 @@ export const DetailTitle = ({
   return (
     <div className={`flex items-center gap-2 ${className ? className : ""}`}>
       <div className="h-4 w-1 bg-primary rounded-r-sm"></div>
-      <MdTypography variant="body" size="large" prominent>
+      <MdTypography
+        variant="body"
+        size="large"
+        prominent
+        className="whitespace-nowrap"
+      >
         {title}
       </MdTypography>
     </div>
