@@ -201,7 +201,10 @@ export default function SITable() {
       id: "bookingNumber",
       header: "Booking No.",
       cell: (info) => (
-        <Link href={`/main/booking/information/confirmation`}>
+        <Link
+          href={`/main/booking/information/confirmation`}
+          className="w-fit block"
+        >
           <MdTypography variant="body" size="medium" className="underline">
             {info.getValue()}
           </MdTypography>
@@ -278,7 +281,7 @@ export default function SITable() {
         <MdTypography
           variant="body"
           size="medium"
-          className="underline cursor-pointer"
+          className="underline cursor-pointer w-fit"
           onClick={(e) => {
             e.stopPropagation();
             setCurrentVessel(info.getValue());

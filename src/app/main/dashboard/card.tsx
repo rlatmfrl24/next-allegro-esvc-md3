@@ -123,7 +123,7 @@ export function DashboardCardConstructor({
           title={item.title}
           cardSize={2}
           actionButton={
-            <Link href="/main/import/notice">
+            <Link href="/main/dashboard/notice">
               <MdTextButton>More</MdTextButton>
             </Link>
           }
