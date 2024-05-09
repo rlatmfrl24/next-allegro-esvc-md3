@@ -40,9 +40,7 @@ export default function MainLayout({
   return (
     <div className="relative flex h-full mx-1 py-2">
       <div className="w-full flex" ref={scrollRef}>
-        <div className="h-full flex">{children}</div>
-        {/* <div className="flex justify-center flex-col items-center">
-        </div> */}
+        <div className="h-full flex flex-col">{children}</div>
       </div>
     </div>
   );
