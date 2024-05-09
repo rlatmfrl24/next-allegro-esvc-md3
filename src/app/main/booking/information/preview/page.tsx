@@ -88,7 +88,7 @@ export default function BookingRequestPreview() {
 
   return (
     <>
-      <div aria-label="container" className={cx(styles.container, "mb-12")}>
+      <div aria-label="container" className={cx(styles.container)}>
         <div className="flex gap-4">
           <MdOutlinedButton
             onClick={() => {
@@ -103,7 +103,11 @@ export default function BookingRequestPreview() {
           <PageTitle title="Booking Request Preview" hasFavorite={false} />
         </div>
         <div
-          className={cx(styles.area, styles["no-padding"], "overflow-hidden")}
+          className={cx(
+            styles.area,
+            styles["no-padding"],
+            "overflow-hidden mb-12"
+          )}
         >
           <div className="bg-secondaryContainer h-4"></div>
           <div className="px-6 pt-4 pb-8">

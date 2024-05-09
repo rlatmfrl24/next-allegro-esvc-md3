@@ -211,7 +211,7 @@ function SIPreview() {
   };
 
   return (
-    <div aria-label="container" className={cx(styles.container, "mb-11")}>
+    <div aria-label="container" className={cx(styles.container)}>
       <div className="flex gap-4 items-center">
         <MdOutlinedButton
           onClick={() => {
@@ -233,7 +233,7 @@ function SIPreview() {
         )}
       </div>
 
-      <div className={styles.area}>
+      <div className={cx(styles.area, "mb-12")}>
         <div aria-label="title-area" className="flex justify-between">
           <MdTypography
             variant="headline"
