@@ -23,9 +23,11 @@ import { basicPopoverStyles } from "../util/constants";
 
 const StatusFilterComponent = ({
   statusOptions,
+  unit = "Status",
   onChange,
 }: {
   statusOptions: string[];
+  unit?: string;
   onChange?: (status: string[]) => void;
 }) => {
   const [selectedStatus, setSelectedStatus] = useState(statusOptions);
@@ -66,9 +68,9 @@ const StatusFilterComponent = ({
         <Check fontSize="small" className="mx-2" />
         <MdTypography variant="label" size="large" className="select-none">
           {selectedStatus.length === 0
-            ? "No Status"
+            ? "No " + unit
             : selectedStatus.length === statusOptions.length
-            ? "All Status"
+            ? "All " + unit
             : selectedStatus[0] +
               (selectedStatus.length > 1
                 ? " +" + (selectedStatus.length - 1)
