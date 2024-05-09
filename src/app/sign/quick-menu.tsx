@@ -20,7 +20,7 @@ export default function QuickMenu() {
           <MdTypography variant="title" size="large" className="">
             Notice
           </MdTypography>
-          <Link href="/main/import/notice">
+          <Link href="/quick/notice">
             <MdTextButton>More</MdTextButton>
           </Link>
         </div>

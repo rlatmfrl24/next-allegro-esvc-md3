@@ -24,7 +24,7 @@ export default function SimpleSI() {
   return (
     <div className={cx(styles.container, "h-full flex flex-col")}>
       <div className="flex items-center h-fit justify-between">
-        <PageTitle title="Simple S/I" />
+        <PageTitle title="Simple S/I" hasFavorite={false} />
         <div className="flex gap-2">
           <Link href="/quick/guide">
             <MdOutlinedButton>e-Service Guide</MdOutlinedButton>
