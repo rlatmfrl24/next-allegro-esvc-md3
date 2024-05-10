@@ -14,7 +14,7 @@ const LabelChip = ({
     <MdTypography
       variant="label"
       size={size === "large" ? "large" : "medium"}
-      className={`h-fit min-h-fit bg-primaryContainer text-onPrimaryContainer rounded-lg inline-block overflow-hidden whitespace-nowrap text-ellipsis ${
+      className={`h-fit min-h-fit rounded-lg inline-block overflow-hidden whitespace-nowrap text-ellipsis ${
         className || ""
       } ${
         size === "small"
@@ -24,7 +24,9 @@ const LabelChip = ({
           : size === "large"
           ? "py-1.5 px-4"
           : ""
-      }`}
+      } ${className?.includes("bg-") ? "" : "bg-primaryContainer"}
+      ${className?.includes("text-") ? "" : "text-onPrimaryContainer"}
+      `}
     >
       {label}
     </MdTypography>
