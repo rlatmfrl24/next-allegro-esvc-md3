@@ -125,11 +125,14 @@ export default function BookingStatusTable() {
       id: "bookingNo",
       header: "Booking No",
       cell: (info) => (
-        <Link href={`/main/booking/information/confirmation`}>
+        <Link
+          href={`/main/booking/information/confirmation`}
+          className="block w-fit"
+        >
           <MdTypography
             variant="body"
             size="medium"
-            className="text-onSurfaceVariant underline cursor-pointer"
+            className="text-onSurfaceVariant underline cursor-pointer w-fit"
           >
             {info.getValue()}
           </MdTypography>
@@ -164,7 +167,7 @@ export default function BookingStatusTable() {
           <MdTypography
             variant="body"
             size="medium"
-            className="underline cursor-pointer"
+            className="underline cursor-pointer w-fit"
             onClick={(e) => {
               e.stopPropagation();
               setCurrentVessel(info.getValue());

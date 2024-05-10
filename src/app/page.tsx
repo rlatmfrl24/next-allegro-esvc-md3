@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { MdCircularProgress } from "./util/md3";
 
 export default function Home() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col justify-center items-center">
-      Main Page
+      <MdCircularProgress indeterminate />
     </main>
   );
 }

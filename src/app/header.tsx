@@ -1,23 +1,13 @@
 "use client";
-
-import Logo from "./components/logo";
 import Link from "next/link";
-import {
-  MdElevatedCard,
-  MdFilledButton,
-  MdIcon,
-  MdIconButton,
-  MdMenu,
-  MdMenuItem,
-  MdNavigationTab,
-  MdOutlinedButton,
-} from "./util/md3";
-import { CSSProperties, useState } from "react";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import CheckIcon from "@mui/icons-material/Check";
 import { usePathname } from "next/navigation";
-import { AccountCircleOutlined, PlaceOutlined } from "@mui/icons-material";
+import { CSSProperties, useState } from "react";
+
+import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
+import QuickGuideIcon from "@/../public/icon_quick_guide.svg";
+import QuickSimpleSIIcon from "@/../public/icon_quick_simple_si.svg";
+import QuickSiteMapIcon from "@/../public/icon_quick_sitemap.svg";
+import QuickSurchargeSearchIcon from "@/../public/icon_quick_surcharge_search.svg";
 import {
   autoUpdate,
   shift,
@@ -28,30 +18,37 @@ import {
   useRole,
   useTransitionStyles,
 } from "@floating-ui/react";
+import { AccountCircleOutlined } from "@mui/icons-material";
+import CheckIcon from "@mui/icons-material/Check";
+import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+
+import Logo from "./components/logo";
 import { MdTypography } from "./components/typography";
-import TariffIcon from "@/../public/icon_menu_pricing.svg";
-import QuickSurchargeSearchIcon from "@/../public/icon_quick_surcharge_search.svg";
-import QuickGuideIcon from "@/../public/icon_quick_guide.svg";
-import QuickSimpleSIIcon from "@/../public/icon_quick_simple_si.svg";
-import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
-import QuickSiteMapIcon from "@/../public/icon_quick_sitemap.svg";
-import { basicPopoverStyles } from "./util/constants";
 import { useRegister } from "./sign/up/main";
+import { basicPopoverStyles } from "./util/constants";
+import {
+  MdElevatedCard,
+  MdFilledButton,
+  MdIcon,
+  MdIconButton,
+  MdMenu,
+  MdMenuItem,
+  MdNavigationTab,
+  MdOutlinedButton,
+} from "./util/md3";
 
 export const Header = () => {
   const pathname = usePathname();
+  const isMain = pathname.split("/").includes("main");
 
   return (
     <header className="relative h-16 flex items-center px-4">
-      <Link href={"/main/dashboard"}>
+      <Link href={isMain ? "/main/dashboard" : "/"}>
         <Logo />
       </Link>
       <div className="mx-6 flex-1"></div>
-      {pathname.split("/").includes("main") ? (
-        <HeaderMainComponent />
-      ) : (
-        <HeaderSignComponent />
-      )}
+      {isMain ? <HeaderMainComponent /> : <HeaderSignComponent />}
     </header>
   );
 };
@@ -65,76 +62,86 @@ const HeaderSignComponent = () => {
     <div className="flex gap-3 items-center">
       {renderRegisterDialog()}
       <div className="flex">
-        <MdNavigationTab
-          label="Surcharge Search"
-          className={`w-32`}
-          onMouseEnter={() => setOnHoverAt(1)}
-          onMouseLeave={() => setOnHoverAt(0)}
-          active={onHoverAt === 1}
-        >
-          <MdIcon slot="inactive-icon">
-            <QuickSurchargeSearchIcon />
-          </MdIcon>
-          <MdIcon slot="active-icon">
-            <QuickSurchargeSearchIcon />
-          </MdIcon>
-        </MdNavigationTab>
-        <MdNavigationTab
-          label="Guide"
-          className="w-32"
-          onMouseEnter={() => setOnHoverAt(2)}
-          onMouseLeave={() => setOnHoverAt(0)}
-          active={onHoverAt === 2}
-        >
-          <MdIcon slot="inactive-icon">
-            <QuickGuideIcon />
-          </MdIcon>
-          <MdIcon slot="active-icon">
-            <QuickGuideIcon />
-          </MdIcon>
-        </MdNavigationTab>
-        <MdNavigationTab
-          label="Simple SI"
-          className="w-32"
-          onMouseEnter={() => setOnHoverAt(3)}
-          onMouseLeave={() => setOnHoverAt(0)}
-          active={onHoverAt === 3}
-        >
-          <MdIcon slot="inactive-icon">
-            <QuickSimpleSIIcon />
-          </MdIcon>
-          <MdIcon slot="active-icon">
-            <QuickSimpleSIIcon />
-          </MdIcon>
-        </MdNavigationTab>
-        <MdNavigationTab
-          label="DEM/DET Tariff"
-          className="w-32"
-          onMouseEnter={() => setOnHoverAt(4)}
-          onMouseLeave={() => setOnHoverAt(0)}
-          active={onHoverAt === 4}
-        >
-          <MdIcon slot="inactive-icon">
-            <QuickDEMDETTariffIcon />
-          </MdIcon>
-          <MdIcon slot="active-icon">
-            <QuickDEMDETTariffIcon />
-          </MdIcon>
-        </MdNavigationTab>
-        <MdNavigationTab
-          label="SiteMap"
-          className="w-32"
-          onMouseEnter={() => setOnHoverAt(5)}
-          onMouseLeave={() => setOnHoverAt(0)}
-          active={onHoverAt === 5}
-        >
-          <MdIcon slot="inactive-icon">
-            <QuickSiteMapIcon />
-          </MdIcon>
-          <MdIcon slot="active-icon">
-            <QuickSiteMapIcon />
-          </MdIcon>
-        </MdNavigationTab>
+        <Link href={`/main/quick/surcharge`}>
+          <MdNavigationTab
+            label="Surcharge Search"
+            className={`w-32`}
+            onMouseEnter={() => setOnHoverAt(1)}
+            onMouseLeave={() => setOnHoverAt(0)}
+            active={onHoverAt === 1}
+          >
+            <MdIcon slot="inactive-icon">
+              <QuickSurchargeSearchIcon />
+            </MdIcon>
+            <MdIcon slot="active-icon">
+              <QuickSurchargeSearchIcon />
+            </MdIcon>
+          </MdNavigationTab>
+        </Link>
+        <Link href={`/quick/guide`}>
+          <MdNavigationTab
+            label="Guide"
+            className="w-32"
+            onMouseEnter={() => setOnHoverAt(2)}
+            onMouseLeave={() => setOnHoverAt(0)}
+            active={onHoverAt === 2}
+          >
+            <MdIcon slot="inactive-icon">
+              <QuickGuideIcon />
+            </MdIcon>
+            <MdIcon slot="active-icon">
+              <QuickGuideIcon />
+            </MdIcon>
+          </MdNavigationTab>
+        </Link>
+        <Link href={`/quick/si`}>
+          <MdNavigationTab
+            label="Simple SI"
+            className="w-32"
+            onMouseEnter={() => setOnHoverAt(3)}
+            onMouseLeave={() => setOnHoverAt(0)}
+            active={onHoverAt === 3}
+          >
+            <MdIcon slot="inactive-icon">
+              <QuickSimpleSIIcon />
+            </MdIcon>
+            <MdIcon slot="active-icon">
+              <QuickSimpleSIIcon />
+            </MdIcon>
+          </MdNavigationTab>
+        </Link>
+        <Link href={`/quick/tariff`}>
+          <MdNavigationTab
+            label="DEM/DET Tariff"
+            className="w-32"
+            onMouseEnter={() => setOnHoverAt(4)}
+            onMouseLeave={() => setOnHoverAt(0)}
+            active={onHoverAt === 4}
+          >
+            <MdIcon slot="inactive-icon">
+              <QuickDEMDETTariffIcon />
+            </MdIcon>
+            <MdIcon slot="active-icon">
+              <QuickDEMDETTariffIcon />
+            </MdIcon>
+          </MdNavigationTab>
+        </Link>
+        <Link href={`/quick/sitemap`}>
+          <MdNavigationTab
+            label="SiteMap"
+            className="w-32"
+            onMouseEnter={() => setOnHoverAt(5)}
+            onMouseLeave={() => setOnHoverAt(0)}
+            active={onHoverAt === 5}
+          >
+            <MdIcon slot="inactive-icon">
+              <QuickSiteMapIcon />
+            </MdIcon>
+            <MdIcon slot="active-icon">
+              <QuickSiteMapIcon />
+            </MdIcon>
+          </MdNavigationTab>
+        </Link>
       </div>
       {isSigning ? (
         <Link
