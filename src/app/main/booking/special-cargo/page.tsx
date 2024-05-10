@@ -43,45 +43,19 @@ import {
   createDummyPlaceInformation,
   createDummyVesselInformation,
 } from "../../schedule/util";
-import { createColumnHelper } from "@tanstack/react-table";
+import { ColumnHelper, createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import LabelChip from "@/app/components/label-chip";
-
-type SpecialCargoStatusProps = {
-  bookingNumber: string;
-  targetVessel: {
-    pod: PlaceInformationType;
-    pol: PlaceInformationType;
-    vessel: VesselInfoType;
-  };
-  typeSize: string;
-  class: string;
-  unNumber: string;
-  requestDate: DateTime;
-  approval: "Approved" | "Requested" | "Rejected";
-  approvalDate: DateTime;
-};
-
-function createDummySpecialCargoStatus(): SpecialCargoStatusProps {
-  return {
-    bookingNumber: (
-      faker.string.alpha(2) + faker.string.numeric(7)
-    ).toUpperCase(),
-    targetVessel: {
-      pod: createDummyPlaceInformation(faker.location.city()),
-      pol: createDummyPlaceInformation(faker.location.city()),
-      vessel: createDummyVesselInformation(),
-    },
-    typeSize: faker.helpers.arrayElement(["Dry 20", "Dry 40", "Reefer 20"]),
-    class: faker.helpers.arrayElement(["1", "2", "3"]),
-    unNumber: faker.string.numeric(4),
-    requestDate: DateTime.fromJSDate(faker.date.recent()),
-    approval: faker.helpers.arrayElement(["Approved", "Requested", "Rejected"]),
-    approvalDate: DateTime.fromJSDate(faker.date.recent()),
-  };
-}
+import {
+  AwkwardCargoStatusProps,
+  DangerousCargoStatusProps,
+  SpecialCargoStatusProps,
+  createDummyAwkwardCargoStatus,
+  createDummyDangerousCargoStatus,
+  createDummySpecialCargoStatus,
+} from "./util";
 
 export default function SpecialCargoStatusSearch() {
   const cx = classNames.bind(styles);
@@ -90,10 +64,10 @@ export default function SpecialCargoStatusSearch() {
   >("dangerous");
 
   const dangerousCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummySpecialCargoStatus);
+    return Array.from({ length: 50 }, createDummyDangerousCargoStatus);
   }, []);
   const awkwardCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummySpecialCargoStatus);
+    return Array.from({ length: 50 }, createDummyAwkwardCargoStatus);
   }, []);
   const reeferCargos = useMemo(() => {
     return Array.from({ length: 50 }, createDummySpecialCargoStatus);
@@ -165,24 +139,55 @@ export default function SpecialCargoStatusSearch() {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("class", {
-      id: "class",
-      header: "Class",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("unNumber", {
-      id: "unNumber",
-      header: "UN Number",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium" className="text-right ">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
+    selectedTab === "dangerous" &&
+      (
+        columnHelper as unknown as ColumnHelper<DangerousCargoStatusProps>
+      ).accessor("class", {
+        id: "class",
+        header: "Class",
+        cell: (info) => (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        ),
+        size: 100,
+      }),
+
+    selectedTab === "dangerous" &&
+      (
+        columnHelper as unknown as ColumnHelper<DangerousCargoStatusProps>
+      ).accessor("unNumber", {
+        id: "unNumber",
+        header: "UN Number",
+        cell: (info) => (
+          <MdTypography variant="body" size="medium" className="text-right">
+            {info.getValue()}
+          </MdTypography>
+        ),
+        size: 150,
+      }),
+
+    selectedTab === "awkward" &&
+      (
+        columnHelper as unknown as ColumnHelper<AwkwardCargoStatusProps>
+      ).accessor("dimension", {
+        id: "dimension",
+        header: () => (
+          <>
+            Over Dimesion (CM)
+            <br />
+            [Left x Right x Height]
+          </>
+        ),
+        cell: (info) => (
+          <MdTypography variant="body" size="medium">
+            {`${info.getValue().left} x ${info.getValue().right} x ${
+              info.getValue().height
+            }`}
+          </MdTypography>
+        ),
+      }),
+
     columnHelper.accessor("requestDate", {
       id: "requestDate",
       header: "Request Date",
@@ -192,6 +197,7 @@ export default function SpecialCargoStatusSearch() {
         </MdTypography>
       ),
     }),
+
     columnHelper.accessor("approval", {
       id: "approval",
       header: "Approval",
@@ -218,7 +224,7 @@ export default function SpecialCargoStatusSearch() {
         </MdTypography>
       ),
     }),
-  ];
+  ].filter((column) => column !== false);
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
