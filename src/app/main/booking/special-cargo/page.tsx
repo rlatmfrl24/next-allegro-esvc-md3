@@ -1,5 +1,4 @@
 "use client";
-
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import PageTitle from "@/app/components/title-components";
@@ -18,11 +17,6 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import {
-  PlaceInformationType,
-  VesselInfoType,
-} from "@/app/util/typeDef/schedule";
-import { faker } from "@faker-js/faker";
-import {
   autoUpdate,
   flip,
   offset,
@@ -37,12 +31,7 @@ import {
 } from "@floating-ui/react";
 import { Download, InfoOutlined } from "@mui/icons-material";
 import classNames from "classnames";
-import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
-import {
-  createDummyPlaceInformation,
-  createDummyVesselInformation,
-} from "../../schedule/util";
 import { ColumnHelper, createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
@@ -73,13 +62,6 @@ export default function SpecialCargoStatusSearch() {
     return Array.from({ length: 50 }, createDummySpecialCargoStatus);
   }, []);
 
-  const [currentTableData, setCurrentTableData] = useState(
-    selectedTab === "dangerous"
-      ? dangerousCargos
-      : selectedTab === "awkward"
-      ? awkwardCargos
-      : reeferCargos
-  );
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
 
@@ -250,7 +232,6 @@ export default function SpecialCargoStatusSearch() {
             selected={selectedTab === "dangerous"}
             onClick={() => {
               setSelectedTab("dangerous");
-              setCurrentTableData(dangerousCargos);
             }}
           >
             Dangerous Cargo
@@ -259,7 +240,6 @@ export default function SpecialCargoStatusSearch() {
             selected={selectedTab === "awkward"}
             onClick={() => {
               setSelectedTab("awkward");
-              setCurrentTableData(awkwardCargos);
             }}
           >
             Awkward Cargo
@@ -268,30 +248,69 @@ export default function SpecialCargoStatusSearch() {
             selected={selectedTab === "reefer"}
             onClick={() => {
               setSelectedTab("reefer");
-              setCurrentTableData(reeferCargos);
             }}
           >
             Reefer Cargo
           </MdSecondaryTab>
         </MdTabs>
         <div className="p-6 pt-2 ">
-          <BasicTable
-            ActionComponent={() => {
-              return (
-                <div className="flex-1">
-                  <MdTextButton>
-                    <MdIcon slot="icon">
-                      <Download fontSize="small" />
-                    </MdIcon>
-                    Download
-                  </MdTextButton>
-                </div>
-              );
-            }}
-            data={currentTableData}
-            columns={columnDefs}
-            isSingleSelect
-          />
+          {selectedTab === "dangerous" && (
+            <BasicTable
+              ActionComponent={() => {
+                return (
+                  <div className="flex-1">
+                    <MdTextButton>
+                      <MdIcon slot="icon">
+                        <Download fontSize="small" />
+                      </MdIcon>
+                      Download
+                    </MdTextButton>
+                  </div>
+                );
+              }}
+              data={dangerousCargos}
+              columns={columnDefs}
+              isSingleSelect
+            />
+          )}
+          {selectedTab === "awkward" && (
+            <BasicTable
+              ActionComponent={() => {
+                return (
+                  <div className="flex-1">
+                    <MdTextButton>
+                      <MdIcon slot="icon">
+                        <Download fontSize="small" />
+                      </MdIcon>
+                      Download
+                    </MdTextButton>
+                  </div>
+                );
+              }}
+              data={awkwardCargos}
+              columns={columnDefs}
+              isSingleSelect
+            />
+          )}
+          {selectedTab === "reefer" && (
+            <BasicTable
+              ActionComponent={() => {
+                return (
+                  <div className="flex-1">
+                    <MdTextButton>
+                      <MdIcon slot="icon">
+                        <Download fontSize="small" />
+                      </MdIcon>
+                      Download
+                    </MdTextButton>
+                  </div>
+                );
+              }}
+              data={reeferCargos}
+              columns={columnDefs}
+              isSingleSelect
+            />
+          )}
         </div>
       </div>
     </div>
