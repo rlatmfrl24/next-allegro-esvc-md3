@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
-import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
-import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import ActualScheduleIcon from "@/../public/icon_schedule_actual.svg";
+import EstimateScheduleIcon from "@/../public/icon_schedule_estimate.svg";
 import { MdTypography } from "@/app/components/typography";
 import { VesselScheduleType } from "@/app/util/typeDef/schedule";
 import { BasicTable } from "@/app/components/table/basic-table";
