@@ -12,6 +12,8 @@ import { useMemo } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
+import ActualScheduleIcon from "@/../public/icon_schedule_actual.svg";
+import ConfirmScheduleIcon from "@/../public/icon_schedule_confirm.svg";
 
 type InboundMasterTableProps = {
   blNumber: string;
@@ -89,12 +91,18 @@ export const InboundMasterTable = () => {
           {info.getValue()}
         </MdTypography>
       ),
+      size: 300,
     }),
     columnHelper.accessor("departureDate", {
       id: "departureDate",
       header: "Departure Date",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="flex items-center gap-2"
+        >
+          <ActualScheduleIcon />
           {info.getValue().toFormat("yyyy-MM-dd")}
         </MdTypography>
       ),
@@ -112,7 +120,12 @@ export const InboundMasterTable = () => {
       id: "arrivalDate",
       header: "Arrival Date",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="flex items-center gap-2"
+        >
+          <ConfirmScheduleIcon />
           {info.getValue().toFormat("yyyy-MM-dd")}
         </MdTypography>
       ),
