@@ -201,18 +201,26 @@ export default function CargoStep() {
           <div className="flex-1">
             <MdOutlinedTextField
               type="time"
-              value={cargoPickUpReturnData.emptyPickUpDate?.toFormat("HH:mm")}
+              value={
+                cargoPickUpReturnData.emptyPickUpDate?.toFormat("HH:mm") || ""
+              }
               onInput={(e) => {
                 const date = cargoPickUpReturnData.emptyPickUpDate;
                 const time = e.currentTarget.value;
                 const hour = Number(time.split(":")[0]);
                 const minute = Number(time.split(":")[1]);
-                setCargoPickUpReturnData((prev) => {
-                  return {
-                    ...prev,
-                    emptyPickUpDate: date.set({ hour, minute }),
-                  };
-                });
+                date &&
+                  setCargoPickUpReturnData((prev) => {
+                    return {
+                      ...prev,
+                      emptyPickUpDate: date.set({ hour, minute }),
+                    };
+
+                    // return {
+                    //   ...prev,
+                    //   emptyPickUpDate: date.set({ hour, minute }),
+                    // };
+                  });
               }}
             />
           </div>
@@ -286,7 +294,7 @@ export default function CargoStep() {
         <div className="flex gap-4">
           <DatePicker
             className="flex-1"
-            label="Full Container Pick Up Date"
+            label="Full Container Return Date"
             initialDate={cargoPickUpReturnData.fullReturnDate}
             onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {

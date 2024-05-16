@@ -22,8 +22,10 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import { useEstimatedTimeofDepartureDialog } from "./components/estimated-time-of-departure-dialog";
+import { useRouter } from "next/navigation";
 
 export default function BookingStatusTable() {
+  const router = useRouter();
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
@@ -418,7 +420,16 @@ export default function BookingStatusTable() {
                                 <MdTextButton key={action}>Copy</MdTextButton>
                               ),
                               Edit: (
-                                <MdTextButton key={action}>Edit</MdTextButton>
+                                <MdTextButton
+                                  key={action}
+                                  onClick={() => {
+                                    router.push(
+                                      `/main/booking/request?requestNo=${currentBookingData.requestNo}&bookingNo=${currentBookingData.bookingNo}&status=${currentBookingData.status}&type=edit`
+                                    );
+                                  }}
+                                >
+                                  Edit
+                                </MdTextButton>
                               ),
                               Cancel: (
                                 <MdTextButton key={action}>Cancel</MdTextButton>

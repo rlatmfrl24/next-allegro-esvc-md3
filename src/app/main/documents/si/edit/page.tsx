@@ -19,17 +19,32 @@ import StepContainer from "./step-container";
 import StepMarkDescription from "./step-mark-description";
 import StepContactInformation from "./step-contact-information";
 import { AnimatePresence, motion } from "framer-motion";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { CSSProperties, Suspense, useEffect, useMemo, useState } from "react";
 import {
   MdElevation,
   MdFilledButton,
   MdFilledTonalButton,
+  MdIcon,
+  MdOutlinedButton,
 } from "@/app/util/md3";
-import { useRouter } from "next/navigation";
-import { SIEditDataType } from "@/app/util/typeDef/si";
+import { useRouter, useSearchParams } from "next/navigation";
+import { SIEditDataType, SIState } from "@/app/util/typeDef/si";
+import { ChevronLeft } from "@mui/icons-material";
+import SIStateChip from "../si-state-chip";
+import { MdTypography } from "@/app/components/typography";
+import { DividerComponent } from "@/app/components/divider";
 
-export default function SIEdit() {
+export default function SIEditPage() {
+  return (
+    <Suspense>
+      <SIEdit />
+    </Suspense>
+  );
+}
+
+function SIEdit() {
   const cx = classNames.bind(styles);
+  const searchParams = useSearchParams();
   const setCurrentSICondition = useSetRecoilState(CurrentSIConditionState);
   const currentPartiesInputData = useRecoilValue(SIEditPartiesState);
   const currentRouteBLInputData = useRecoilValue(SIEditRouteBLState);
@@ -106,8 +121,54 @@ export default function SIEdit() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex justify-between">
-        <PageTitle title="Shipping Instruction" />
-        <MdFilledTonalButton>Temporary Save </MdFilledTonalButton>
+        <div className="flex items-center gap-4">
+          <MdOutlinedButton
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <MdIcon slot="icon">
+              <ChevronLeft fontSize="small" />
+            </MdIcon>
+            Back
+          </MdOutlinedButton>
+          <PageTitle title="Shipping Instruction (Edit)" hasFavorite={false} />
+        </div>
+        <div className="flex items-center">
+          <SIStateChip state={searchParams.get("status") as SIState} />
+          {searchParams.get("requestNumber") && (
+            <>
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="text-outline mr-1 ml-4"
+              >
+                Request No.
+              </MdTypography>
+              <MdTypography variant="body" size="medium" prominent>
+                {searchParams.get("requestNumber")}
+              </MdTypography>
+            </>
+          )}
+          {searchParams.get("bookingNumber") && (
+            <>
+              <DividerComponent orientation="vertical" className="mx-4 h-5" />
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="mr-1 text-outline"
+              >
+                Booking No.
+              </MdTypography>
+              <MdTypography variant="body" size="medium" prominent>
+                {searchParams.get("bookingNumber")}
+              </MdTypography>
+            </>
+          )}
+          <MdFilledTonalButton className="ml-4">
+            Temporary Save{" "}
+          </MdFilledTonalButton>
+        </div>
       </div>
       <div
         className={cx(

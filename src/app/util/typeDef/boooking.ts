@@ -63,8 +63,8 @@ export type CargoPickUpReturnType = {
   commodity: CommodityType;
   grossWeight: string;
   grossWeightUnit: "KGS" | "LBS";
-  emptyPickUpDate: DateTime;
-  fullReturnDate: DateTime;
+  emptyPickUpDate: DateTime | undefined;
+  fullReturnDate: DateTime | undefined;
   emptyPickUpLocation: PlaceInformationType;
   fullReturnLocation: PlaceInformationType;
 };

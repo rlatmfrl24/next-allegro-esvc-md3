@@ -113,6 +113,7 @@ export const NAOutlinedTextField = ({
         }
         required={false}
       >
+        {props.children}
         {!(
           props.type === "number" ||
           props.type === "textarea" ||
