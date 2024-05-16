@@ -162,7 +162,7 @@ export const UNNumberSearchDialog = (props: {
             }
           }}
         >
-          Search
+          Apply
         </MdFilledButton>
       </div>
     </MdDialog>

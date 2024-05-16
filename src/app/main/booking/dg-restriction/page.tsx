@@ -17,6 +17,7 @@ import { Search } from "@mui/icons-material";
 import classNames from "classnames";
 import { useMemo, useState } from "react";
 import { UNNumberSearchDialog } from "./dialog";
+import { DGRestrictionTable } from "./table";
 
 type SearchCondition = {
   pol: string;
@@ -152,6 +153,7 @@ export default function DGRestrictionSearch() {
           <NAOutlinedTextField
             label="Description"
             readOnly
+            className="w-96"
             value={searchCondition.description}
           />
         </div>
@@ -176,6 +178,7 @@ export default function DGRestrictionSearch() {
         {pageState === "unseach" && (
           <EmptyResultPlaceholder text="Please search for the condition." />
         )}
+        {pageState === "search" && <DGRestrictionTable />}
       </div>
     </div>
   );
