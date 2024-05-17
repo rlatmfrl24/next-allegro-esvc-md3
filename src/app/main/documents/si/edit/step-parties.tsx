@@ -121,13 +121,13 @@ export default function StepParties() {
                     ?.join("\n")
                     .toUpperCase();
 
-                  if (splitTexts) {
+                  if (splitTexts !== undefined) {
                     e.currentTarget.value = splitTexts;
                     setPartiesStore((prev) => ({
                       ...prev,
                       notifyParty: {
                         ...prev.notifyParty,
-                        alsoNotify: splitTexts,
+                        alsoNotify: splitTexts as string,
                       },
                     }));
                   }
@@ -267,7 +267,7 @@ const ShipperInfo = () => {
                     ...prev,
                     shipper: {
                       ...prev.shipper,
-                      companyName: splitTexts,
+                      companyName: splitTexts as string,
                     },
                   }));
                 }
@@ -335,7 +335,7 @@ const ShipperInfo = () => {
                     ...prev,
                     shipper: {
                       ...prev.shipper,
-                      fullAddress: splitTexts,
+                      fullAddress: splitTexts as string,
                     },
                   }));
                 }
@@ -659,7 +659,7 @@ const ConsigneeInfo = () => {
                     ...prev,
                     consignee: {
                       ...prev.consignee,
-                      companyName: splitTexts,
+                      companyName: splitTexts as string,
                     },
                   }));
                 }
@@ -738,7 +738,7 @@ const ConsigneeInfo = () => {
                     ...prev,
                     consignee: {
                       ...prev.consignee,
-                      fullAddress: splitTexts,
+                      fullAddress: splitTexts as string,
                     },
                   }));
                 }
@@ -1108,7 +1108,7 @@ const NotifyPartyInfo = () => {
                     ...prev,
                     notifyParty: {
                       ...prev.notifyParty,
-                      companyName: splitTexts,
+                      companyName: splitTexts as string,
                     },
                   }));
                 }
@@ -1189,7 +1189,7 @@ const NotifyPartyInfo = () => {
                     ...prev,
                     notifyParty: {
                       ...prev.notifyParty,
-                      fullAddress: splitTexts,
+                      fullAddress: splitTexts as string,
                     },
                   }));
                 }
@@ -1472,7 +1472,7 @@ const ReferencesInfo = () => {
                   e.currentTarget.value = splitTexts;
                   setPartiesStore((prev) => ({
                     ...prev,
-                    exportReference: splitTexts,
+                    exportReference: splitTexts as string,
                   }));
                 }
               }}
@@ -1503,7 +1503,7 @@ const ReferencesInfo = () => {
                   e.currentTarget.value = splitTexts;
                   setPartiesStore((prev) => ({
                     ...prev,
-                    forwardingAgentReference: splitTexts,
+                    forwardingAgentReference: splitTexts as string,
                   }));
                 }
               }}

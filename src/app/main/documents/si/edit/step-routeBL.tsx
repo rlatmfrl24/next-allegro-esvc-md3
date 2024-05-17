@@ -596,7 +596,7 @@ export default function StepRouteBL() {
               e.currentTarget.value = splitTexts;
               setRouteBLStore((prev) => ({
                 ...prev,
-                ...{ remarks: splitTexts },
+                ...{ remarks: splitTexts as string },
               }));
             }
           }}
