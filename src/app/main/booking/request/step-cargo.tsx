@@ -157,6 +157,7 @@ export default function CargoStep() {
           value={cargoPickUpReturnData.grossWeight}
           className="h-fit"
           label="Gross Weight"
+          maxInputLength={9}
           required
           error={
             bookingRequestStep.cargoPickUpReturn.visited &&
@@ -166,8 +167,17 @@ export default function CargoStep() {
           readOnly={params.has("quoteNumber")}
           type="number"
           handleValueChange={(value) => {
+            const intValue = parseInt(value);
+            if (isNaN(intValue)) {
+              return;
+            }
+
             setCargoPickUpReturnData((prev) => {
-              return { ...prev, grossWeight: value };
+              return {
+                ...prev,
+                // grossWeight: intValue > 999999999 ? "999999999" : value,
+                grossWeight: value,
+              };
             });
           }}
         />

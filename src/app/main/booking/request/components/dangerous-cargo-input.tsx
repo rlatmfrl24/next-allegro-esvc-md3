@@ -75,11 +75,13 @@ const DangerousCargoInput = ({
       {container.isDangerous && (
         <div className="flex flex-col gap-6">
           <div className="flex gap-4">
-            <MdOutlinedTextField
+            <NAOutlinedTextField
               label="UN No."
+              type="number"
+              maxInputLength={4}
+              enableNumberSeparator={false}
               value={container.dangerousCargoInformation.unNumber}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
+              handleValueChange={(value) => {
                 setContainerInformation((prev) => ({
                   ...prev,
                   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -96,11 +98,14 @@ const DangerousCargoInput = ({
                 }));
               }}
             />
-            <MdOutlinedTextField
+
+            <NAOutlinedTextField
               label="Class"
+              type="number"
+              maxInputLength={3}
+              enableNumberSeparator={false}
               value={container.dangerousCargoInformation.class}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
+              handleValueChange={(value) => {
                 setContainerInformation((prev) => ({
                   ...prev,
                   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -144,11 +149,12 @@ const DangerousCargoInput = ({
                 }));
               }}
             />
-            <MdOutlinedTextField
+
+            <NAOutlinedTextField
               label="Proper Shipping Name"
               value={container.dangerousCargoInformation.properShippingName}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
+              maxInputLength={500}
+              handleValueChange={(value) => {
                 setContainerInformation((prev) => ({
                   ...prev,
                   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
