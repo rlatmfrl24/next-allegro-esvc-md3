@@ -162,7 +162,7 @@ export default function StepRouteBL() {
                 }))
               }
             />
-            Route B/L Print
+            Printed on the B/L
           </MdTypography>
         </div>
         {routeBLStore.isUsingRoutePrint && (
