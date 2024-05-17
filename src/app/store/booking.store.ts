@@ -20,6 +20,146 @@ import {
 } from "../util/typeDef/boooking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 
+export const resetBookingState = selector({
+  key: "resetBookingState",
+  get: ({ get }) => {
+    get(LocationScheduleState);
+    get(PartiesState);
+    get(CargoPickUpReturnState);
+    get(AdditionalInformationState);
+    get(ContactInformationState);
+    get(ContainerState);
+  },
+  set: ({ set }) => {
+    set(LocationScheduleState, {
+      searchType: "schedule",
+      originPort: {} as PlaceInformationType,
+      destinationPort: {} as PlaceInformationType,
+      originType: "cy",
+      destinationType: "cy",
+      pol: {} as PlaceInformationType,
+      pod: {} as PlaceInformationType,
+      departureDate: DateTime.now(),
+      vessel: {} as VesselInfoType,
+      bookingOffice: "",
+      contractNumber: "",
+    } as LocationScheduleType);
+    set(PartiesState, {
+      shipper: {
+        name: "",
+        address: "",
+      } as PartyInterface,
+      freightForwarder: {
+        name: "",
+        address: "",
+      } as PartyInterface,
+      consignee: {
+        name: "",
+        address: "",
+      } as PartyInterface,
+      actualShipper: "",
+    } as PartiesType);
+    set(CargoPickUpReturnState, {
+      commodity: {
+        code: "",
+        description: "",
+      } as CommodityType,
+      grossWeight: "0",
+      grossWeightUnit: "KGS",
+      emptyPickUpDate: undefined,
+      fullReturnDate: undefined,
+      emptyPickUpLocation: {
+        code: "",
+        yardName: "",
+        address: "",
+        phoneNo: "",
+        faxNo: "",
+        customerNo: "",
+        emailAddress: "",
+      } as PlaceInformationType,
+      fullReturnLocation: {
+        code: "",
+        yardName: "",
+        address: "",
+        phoneNo: "",
+        faxNo: "",
+        customerNo: "",
+        emailAddress: "",
+      } as PlaceInformationType,
+    } as CargoPickUpReturnType);
+    set(AdditionalInformationState, {
+      attachment: null,
+      specialInstruction: "",
+      duplicateCount: 1,
+      emailSubscription: {
+        rollOver: false,
+        vesselAdvanceDelay: false,
+        vesselDeparture: false,
+      },
+    } as AdditionalInformatioType);
+    set(ContactInformationState, {
+      name: "",
+      email: "",
+      address: "",
+      telNo: "",
+      faxNo: "",
+      emailRecipient: [],
+    } as ContactInformationType);
+    set(ContainerState, {
+      dry: [],
+      reefer: [],
+      tank: [],
+      opentop: [],
+      flatrack: [],
+      bulk: [],
+    });
+    set(BookingRequestStepState, {
+      locationSchedule: {
+        id: "locationSchedule",
+        title: "Location & Schedule",
+        isSelected: true,
+        isCompleted: false,
+        visited: false,
+      },
+      parties: {
+        id: "parties",
+        title: "Parties",
+        isSelected: false,
+        isCompleted: false,
+        visited: false,
+      },
+      cargoPickUpReturn: {
+        id: "cargoPickUpReturn",
+        title: "Cargo & Pick Up/Return",
+        isSelected: false,
+        isCompleted: false,
+        visited: false,
+      },
+      container: {
+        id: "container",
+        title: "Container",
+        isSelected: false,
+        isCompleted: false,
+        visited: false,
+      },
+      additionalInformation: {
+        id: "additionalInformation",
+        title: "Addtional Information",
+        isSelected: false,
+        isCompleted: false,
+        visited: false,
+      },
+      contactInformation: {
+        id: "contactInformation",
+        title: "Contact Information",
+        isSelected: false,
+        isCompleted: false,
+        visited: false,
+      },
+    });
+  },
+});
+
 export const CurrentBookingDataState = atom<
   BookingStatusTableProps | undefined
 >({
@@ -132,8 +272,8 @@ export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
     } as CommodityType,
     grossWeight: "0",
     grossWeightUnit: "KGS",
-    emptyPickUpDate: DateTime.now(),
-    fullReturnDate: DateTime.now(),
+    emptyPickUpDate: undefined,
+    fullReturnDate: undefined,
     emptyPickUpLocation: {
       code: "",
       yardName: "",

@@ -88,6 +88,13 @@ export type SIRouteBLType = {
   pol: PlaceInformationType;
   pod: PlaceInformationType;
   del: PlaceInformationType;
+  isUsingRoutePrint: boolean;
+  routePrint: {
+    por: string;
+    pol: string;
+    pod: string;
+    del: string;
+  };
   pointAndCountryOfOrigin: string;
   finalDestination: string;
   serviceTypeFrom: "cy" | "door";
