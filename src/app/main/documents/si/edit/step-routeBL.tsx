@@ -85,6 +85,7 @@ export default function StepRouteBL() {
           error={SIEditStep.routeBL.visited && !routeBLStore.vesselVoyage}
           errorText="Vessel Voyage is required"
           label="Vessel Voy(Flag)"
+          maxInputLength={30}
           value={routeBLStore.vesselVoyage || ""}
           handleValueChange={(value) =>
             setRouteBLStore((prev) => ({ ...prev, vesselVoyage: value }))
@@ -92,6 +93,7 @@ export default function StepRouteBL() {
         />
         <NAOutlinedTextField
           label="Pre-Carriage By"
+          maxInputLength={30}
           value={routeBLStore.preCarriageBy || ""}
           handleValueChange={(value) =>
             setRouteBLStore((prev) => ({ ...prev, preCarriageBy: value }))
@@ -171,6 +173,7 @@ export default function StepRouteBL() {
               icon={<PlaceOutlined />}
               label="Pier or Place of Receipt"
               isAllowOnlyListItems={false}
+              maxInputLength={25}
               itemList={tempPortList.map((item) => item.yardName)}
               initialValue={routeBLStore.routePrint.por || ""}
               onQueryChange={(value) => {
@@ -197,6 +200,7 @@ export default function StepRouteBL() {
             <NAOutlinedAutoComplete
               icon={<PlaceOutlined />}
               label="Port of Loading"
+              maxInputLength={25}
               initialValue={routeBLStore.routePrint.pol || ""}
               isAllowOnlyListItems={false}
               itemList={tempPortList.map((item) => item.yardName)}
@@ -255,6 +259,7 @@ export default function StepRouteBL() {
             <NAOutlinedAutoComplete
               icon={<PlaceOutlined />}
               label="Port of Discharging"
+              maxInputLength={25}
               itemList={tempPortList.map((item) => item.yardName)}
               initialValue={routeBLStore.routePrint.pod || ""}
               isAllowOnlyListItems={false}
@@ -281,6 +286,7 @@ export default function StepRouteBL() {
             />
             <NAOutlinedAutoComplete
               icon={<PlaceOutlined />}
+              maxInputLength={25}
               label="Place of Delivery (By On Carrier)"
               itemList={tempPortList.map((item) => item.yardName)}
               initialValue={routeBLStore.routePrint.del || ""}
@@ -341,6 +347,7 @@ export default function StepRouteBL() {
         )}
         <NAOutlinedTextField
           label="Point and Country of Origin"
+          maxInputLength={32}
           value={routeBLStore.pointAndCountryOfOrigin || ""}
           handleValueChange={(value) =>
             setRouteBLStore((prev) => ({
@@ -351,6 +358,7 @@ export default function StepRouteBL() {
         />
         <NAOutlinedTextField
           label="Final Destination"
+          maxInputLength={30}
           value={routeBLStore.finalDestination || ""}
           handleValueChange={(value) =>
             setRouteBLStore((prev) => ({
@@ -567,18 +575,16 @@ export default function StepRouteBL() {
           <DetailTitle title="Remark" />
           <DividerComponent className="flex-1" />
         </div>
-        <MdOutlinedTextField
+        <NAOutlinedTextField
           label="Remark"
           type="textarea"
+          maxInputLength={2000}
           rows={5}
           className="w-full"
           value={routeBLStore.remarks || ""}
-          onInput={(e) =>
-            setRouteBLStore((prev) => ({
-              ...prev,
-              remarks: e.currentTarget.value,
-            }))
-          }
+          handleValueChange={(value) => {
+            setRouteBLStore((prev) => ({ ...prev, remarks: value }));
+          }}
         />
       </div>
       <MdFilledButton

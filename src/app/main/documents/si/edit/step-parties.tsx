@@ -98,6 +98,7 @@ export default function StepParties() {
               <MdOutlinedTextField
                 label="Also Notify"
                 type="textarea"
+                maxLength={175}
                 className="w-full"
                 rows={5}
                 value={partiesStore.notifyParty.alsoNotify || ""}
@@ -200,7 +201,7 @@ const ShipperInfo = () => {
           </Disclosure.Button>
           <Disclosure.Panel className={`flex flex-col gap-4`}>
             <NAMultiAutoComplete
-              label="Company"
+              label="Company Name"
               required
               error={
                 SIEditStep.parties.visited &&
@@ -212,7 +213,10 @@ const ShipperInfo = () => {
                 name: partiesStore.shipper.companyName,
                 address: partiesStore.shipper.fullAddress,
               }}
+              type="textarea"
+              rows={2}
               isAllowOnlyListItems={false}
+              maxLength={70}
               itemList={companyList.map((company) => {
                 return {
                   name: company.name,
@@ -261,8 +265,10 @@ const ShipperInfo = () => {
                 SIEditStep.parties.visited &&
                 partiesStore.shipper.fullAddress === ""
               }
+              maxLength={105}
+              rows={3}
               errorText="Full Address is required"
-              label="Address"
+              label="Address (State Name, City, State & Zip Code, Country Name)"
               type="textarea"
               value={partiesStore.shipper.fullAddress || ""}
               className="flex-1"
@@ -309,6 +315,7 @@ const ShipperInfo = () => {
               />
               <NAOutlinedTextField
                 label="City / State"
+                maxLength={30}
                 value={partiesStore.shipper.addressCityState || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -326,6 +333,7 @@ const ShipperInfo = () => {
                 <NAOutlinedTextField
                   label="Zip Code"
                   className="w-36"
+                  maxLength={10}
                   value={partiesStore.shipper.addressZipCode || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -342,6 +350,7 @@ const ShipperInfo = () => {
                 <NAOutlinedTextField
                   label="Street / P.O Box"
                   className="flex-1"
+                  maxLength={50}
                   value={partiesStore.shipper.addressStreet || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -381,6 +390,7 @@ const ShipperInfo = () => {
                     <NAOutlinedTextField
                       label="EORI No"
                       className="col-span-2"
+                      maxLength={17}
                       value={partiesStore.shipper.eoriNumber || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -396,6 +406,7 @@ const ShipperInfo = () => {
                     />
                     <NAOutlinedTextField
                       label="USCC No"
+                      maxLength={30}
                       className="col-span-2"
                       value={partiesStore.shipper.usccNumber || ""}
                       handleValueChange={(value) => {
@@ -412,6 +423,7 @@ const ShipperInfo = () => {
                     />
                     <NAOutlinedTextField
                       label="Tax ID"
+                      maxLength={30}
                       value={partiesStore.shipper.taxID || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -428,6 +440,7 @@ const ShipperInfo = () => {
                     <NAOutlinedTextField
                       label="Phone"
                       type="tel"
+                      maxLength={20}
                       value={partiesStore.shipper.phone || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -444,6 +457,7 @@ const ShipperInfo = () => {
                     <NAOutlinedTextField
                       label="Fax"
                       type="tel"
+                      maxLength={20}
                       value={partiesStore.shipper.fax || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -460,6 +474,7 @@ const ShipperInfo = () => {
                     <NAOutlinedTextField
                       label="Email"
                       type="email"
+                      maxLength={100}
                       className="col-span-2"
                       value={partiesStore.shipper.email || ""}
                       handleValueChange={(value) => {
@@ -551,13 +566,14 @@ const ConsigneeInfo = () => {
               }}
             />
             <NAMultiAutoComplete
-              label="Company"
+              label="Company Name"
               className="flex-1"
               required
               error={
                 SIEditStep.parties.visited &&
                 partiesStore.consignee.companyName === ""
               }
+              maxLength={70}
               errorText="Company Name is required"
               isAllowOnlyListItems={false}
               itemList={companyList.map((company) => {
@@ -613,7 +629,8 @@ const ConsigneeInfo = () => {
                 partiesStore.consignee.fullAddress === ""
               }
               errorText="Full Address is required"
-              label="Address"
+              label="Address (State Name, City, State & Zip Code, Country Name)"
+              maxLength={105}
               className="flex-1"
               type="textarea"
               value={partiesStore.consignee.fullAddress || ""}
@@ -661,6 +678,7 @@ const ConsigneeInfo = () => {
 
               <NAOutlinedTextField
                 label="City / State"
+                maxLength={30}
                 value={partiesStore.consignee.addressCityState || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -678,6 +696,7 @@ const ConsigneeInfo = () => {
                 <NAOutlinedTextField
                   label="Zip Code"
                   className="w-36"
+                  maxLength={10}
                   value={partiesStore.consignee.addressZipCode || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -694,6 +713,7 @@ const ConsigneeInfo = () => {
                 <NAOutlinedTextField
                   label="Street / P.O Box"
                   className="flex-1"
+                  maxLength={50}
                   value={partiesStore.consignee.addressStreet || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -734,6 +754,7 @@ const ConsigneeInfo = () => {
                   <Disclosure.Panel className={`grid grid-cols-4 gap-4`}>
                     <NAOutlinedTextField
                       label="EORI No"
+                      maxLength={17}
                       className="col-span-2"
                       value={partiesStore.consignee.eoriNumber || ""}
                       handleValueChange={(value) => {
@@ -750,6 +771,7 @@ const ConsigneeInfo = () => {
                     />
                     <NAOutlinedTextField
                       label="USCC No"
+                      maxLength={30}
                       className="col-span-2"
                       value={partiesStore.consignee.usccNumber || ""}
                       handleValueChange={(value) => {
@@ -766,6 +788,7 @@ const ConsigneeInfo = () => {
                     />
                     <NAOutlinedTextField
                       label="Tax ID"
+                      maxLength={30}
                       value={partiesStore.consignee.taxID || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -782,6 +805,7 @@ const ConsigneeInfo = () => {
                     <NAOutlinedTextField
                       label="Phone"
                       type="tel"
+                      maxLength={20}
                       value={partiesStore.consignee.phone || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -798,6 +822,7 @@ const ConsigneeInfo = () => {
                     <NAOutlinedTextField
                       label="Fax"
                       type="tel"
+                      maxLength={20}
                       value={partiesStore.consignee.fax || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -814,6 +839,7 @@ const ConsigneeInfo = () => {
                     <NAOutlinedTextField
                       label="Email"
                       type="email"
+                      maxLength={100}
                       className="col-span-2"
                       value={partiesStore.consignee.email || ""}
                       handleValueChange={(value) => {
@@ -948,7 +974,8 @@ const NotifyPartyInfo = () => {
               }}
             />
             <NAMultiAutoComplete
-              label="Company"
+              label="Company Name"
+              maxLength={70}
               className="flex-1"
               required
               error={
@@ -1007,12 +1034,13 @@ const NotifyPartyInfo = () => {
             />
             <NAOutlinedTextField
               required
+              maxLength={105}
               error={
                 SIEditStep.parties.visited &&
                 partiesStore.notifyParty.fullAddress === ""
               }
               errorText="Full Address is required"
-              label="Address"
+              label="Address (State Name, City, State & Zip Code, Country Name)"
               className="flex-1"
               type="textarea"
               value={partiesStore.notifyParty.fullAddress || ""}
@@ -1059,6 +1087,7 @@ const NotifyPartyInfo = () => {
               />
               <NAOutlinedTextField
                 label="City / State"
+                maxLength={30}
                 value={partiesStore.notifyParty.addressCityState || ""}
                 handleValueChange={(value) => {
                   setPartiesStore((prev) => {
@@ -1076,6 +1105,7 @@ const NotifyPartyInfo = () => {
                 <NAOutlinedTextField
                   label="Zip Code"
                   className="w-36"
+                  maxLength={10}
                   value={partiesStore.notifyParty.addressZipCode || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -1091,6 +1121,7 @@ const NotifyPartyInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="Street / P.O Box"
+                  maxLength={50}
                   className="flex-1"
                   value={partiesStore.notifyParty.addressStreet || ""}
                   handleValueChange={(value) => {
@@ -1132,6 +1163,7 @@ const NotifyPartyInfo = () => {
                   <Disclosure.Panel className={`grid grid-cols-4 gap-4`}>
                     <NAOutlinedTextField
                       label="EORI No"
+                      maxLength={17}
                       className="col-span-2"
                       value={partiesStore.notifyParty.eoriNumber || ""}
                       handleValueChange={(value) => {
@@ -1148,6 +1180,7 @@ const NotifyPartyInfo = () => {
                     />
                     <NAOutlinedTextField
                       label="USCC No"
+                      maxLength={30}
                       className="col-span-2"
                       value={partiesStore.notifyParty.usccNumber || ""}
                       handleValueChange={(value) => {
@@ -1164,6 +1197,7 @@ const NotifyPartyInfo = () => {
                     />
                     <NAOutlinedTextField
                       label="Tax ID"
+                      maxLength={30}
                       value={partiesStore.notifyParty.taxID || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -1180,6 +1214,7 @@ const NotifyPartyInfo = () => {
                     <NAOutlinedTextField
                       label="Phone"
                       type="tel"
+                      maxLength={20}
                       value={partiesStore.notifyParty.phone || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -1196,6 +1231,7 @@ const NotifyPartyInfo = () => {
                     <NAOutlinedTextField
                       label="Fax"
                       type="tel"
+                      maxLength={20}
                       value={partiesStore.notifyParty.fax || ""}
                       handleValueChange={(value) => {
                         setPartiesStore((prev) => {
@@ -1212,6 +1248,7 @@ const NotifyPartyInfo = () => {
                     <NAOutlinedTextField
                       label="Email"
                       type="email"
+                      maxLength={100}
                       className="col-span-2"
                       value={partiesStore.notifyParty.email || ""}
                       handleValueChange={(value) => {
@@ -1274,6 +1311,7 @@ const ReferencesInfo = () => {
               label="Export References"
               type="textarea"
               rows={5}
+              maxLength={175}
               value={partiesStore.exportReference || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
@@ -1288,6 +1326,7 @@ const ReferencesInfo = () => {
               label="Forwarding Agent References"
               type="textarea"
               rows={5}
+              maxLength={175}
               value={partiesStore.forwardingAgentReference || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {

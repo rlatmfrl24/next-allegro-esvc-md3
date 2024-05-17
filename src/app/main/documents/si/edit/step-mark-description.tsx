@@ -82,16 +82,17 @@ export default function StepMarkDescription() {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           <DetailTitle title="Mark" />
-          <MdOutlinedTextField
+          <NAOutlinedTextField
             label="Mark"
             type="textarea"
+            maxInputLength={2300}
             rows={10}
             className="resize-y"
             value={markDescriptionStore.mark}
-            onInput={(e) => {
+            handleValueChange={(value) => {
               setMarkDescriptionStore((prev) => ({
                 ...prev,
-                mark: e.currentTarget.value,
+                mark: value,
               }));
             }}
           />
@@ -129,16 +130,17 @@ export default function StepMarkDescription() {
               hidden
             />
           </div>
-          <MdOutlinedTextField
+          <NAOutlinedTextField
             placeholder="Description"
             type="textarea"
+            maxInputLength={2450}
             rows={10}
             className="resize-y"
             value={markDescriptionStore.description}
-            onInput={(e) => {
+            handleValueChange={(value) => {
               setMarkDescriptionStore((prev) => ({
                 ...prev,
-                description: e.currentTarget.value,
+                description: value,
               }));
             }}
           />
@@ -153,6 +155,7 @@ export default function StepMarkDescription() {
             }
             errorText="HS Code is required."
             label="HS Code"
+            maxInputLength={10}
             value={markDescriptionStore.hsCode}
             handleValueChange={(value) => {
               setMarkDescriptionStore((prev) => ({
@@ -170,6 +173,7 @@ export default function StepMarkDescription() {
               SIEditStep.markDescription.visited &&
               markDescriptionStore.customsCommodity === ""
             }
+            maxInputLength={350}
             errorText="Customs Commodity is required."
             placeholder="Customs Commodity"
             value={markDescriptionStore.customsCommodity}

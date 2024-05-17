@@ -193,6 +193,7 @@ export default function ContainerInput({
       <div className="flex gap-2 items-start">
         <NAOutlinedTextField
           label="Container No."
+          maxInputLength={14}
           className="w-52"
           value={container.containerNumber}
           handleValueChange={(value) => {
@@ -275,6 +276,7 @@ export default function ContainerInput({
           value={container.firstSeal.description}
           placeholder="Seal No. 01"
           className="flex-1"
+          maxInputLength={20}
           handleValueChange={(value) => {
             updateContainerStore(container, "firstSeal", {
               ...container.firstSeal,
@@ -324,6 +326,7 @@ export default function ContainerInput({
           value={container.secondSeal.description}
           placeholder="Seal No. 02"
           className="flex-1"
+          maxInputLength={20}
           handleValueChange={(value) => {
             updateContainerStore(container, "secondSeal", {
               ...container.secondSeal,
@@ -339,6 +342,7 @@ export default function ContainerInput({
           className="w-1/4"
           type="number"
           label="Package"
+          maxInputLength={16}
           handleValueChange={(value) => {
             updateContainerStore(container, "packageQuantity", parseInt(value));
           }}
@@ -365,6 +369,7 @@ export default function ContainerInput({
             label="Weight"
             value={container.packageWeight.toString()}
             type="number"
+            maxInputLength={22}
             className="flex-1"
             handleValueChange={(value) => {
               updateContainerStore(container, "packageWeight", parseInt(value));
@@ -386,6 +391,7 @@ export default function ContainerInput({
           <NAOutlinedTextField
             label="Measure"
             className="flex-1"
+            maxInputLength={16}
             value={container.packageMeasurement.toString()}
             type="number"
             handleValueChange={(value) => {
@@ -521,6 +527,7 @@ export default function ContainerInput({
                 <NAOutlinedTextField
                   type="number"
                   className="w-1/4"
+                  maxInputLength={16}
                   value={
                     container.cargoManifest
                       .find((cm) => cm.uuid === selectedCargoManifestUuid)
@@ -588,6 +595,7 @@ export default function ContainerInput({
                   <NAOutlinedTextField
                     label="Weight"
                     type="number"
+                    maxInputLength={22}
                     className="flex-1"
                     value={
                       container.cargoManifest
@@ -625,6 +633,7 @@ export default function ContainerInput({
                   <NAOutlinedTextField
                     label="Measure"
                     type="number"
+                    maxInputLength={16}
                     className="flex-1"
                     value={
                       container.cargoManifest
@@ -712,6 +721,7 @@ export default function ContainerInput({
                 /> */}
                 <NAOutlinedTextField
                   className="flex-1"
+                  maxInputLength={4000}
                   placeholder="BULK,LIQUEFIED GAS(ABNORMAL TEMPERATURE/PRESSURE)"
                   value={
                     container.cargoManifest.find(
@@ -748,6 +758,8 @@ export default function ContainerInput({
               <div className="flex gap-2">
                 <NAOutlinedTextField
                   label="HTS Code(U.S.)"
+                  type="number"
+                  maxInputLength={6}
                   placeholder="Code"
                   value={
                     container.cargoManifest.find(
@@ -774,6 +786,8 @@ export default function ContainerInput({
                 />
                 <NAOutlinedTextField
                   label="HTS Code(EU, ASIA)"
+                  type="number"
+                  maxInputLength={6}
                   placeholder="Code"
                   value={
                     container.cargoManifest.find(
