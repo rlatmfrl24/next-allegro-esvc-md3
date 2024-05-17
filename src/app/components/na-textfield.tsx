@@ -39,7 +39,7 @@ export const NAOutlinedTextField = ({
   }, [props.value]);
 
   return (
-    <div className={`relative flex h-fit ${className}`}>
+    <div className={`relative flex h-fit ${className} `}>
       <MdOutlinedTextFieldBase
         {...props}
         ref={inputRef}
@@ -109,6 +109,7 @@ export const NAOutlinedTextField = ({
             if (isNaN(intValue)) intValue = 0;
             handleValueChange?.(intValue.toString());
           } else {
+            props.onBlur?.(e);
             handleValueChange?.(e.currentTarget.value);
           }
         }}
@@ -120,7 +121,9 @@ export const NAOutlinedTextField = ({
                 .split(".")
                 .map((v, i) => (i === 0 ? v : v.replaceAll(",", "")))
                 .join(".")
-            : props.value
+            : props.type === "textarea"
+            ? props.value?.replaceAll("\n", "\r\n") || ""
+            : props.value || ""
         }
         required={false}
       >

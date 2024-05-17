@@ -249,6 +249,9 @@ export default function NAMultiAutoComplete({
           setQuery(e.currentTarget.value);
           onQueryChange?.(e.currentTarget.value);
         }}
+        onBlur={(e) => {
+          props.onBlur?.(e);
+        }}
       >
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
         <div slot="trailing-icon" className="mr-2">

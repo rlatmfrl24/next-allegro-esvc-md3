@@ -585,6 +585,21 @@ export default function StepRouteBL() {
           handleValueChange={(value) => {
             setRouteBLStore((prev) => ({ ...prev, remarks: value }));
           }}
+          onBlur={(e) => {
+            // split 35 characters
+            let splitTexts = e.currentTarget.value
+              .replaceAll("\n", "")
+              .match(/.{1,50}/g)
+              ?.join("\n");
+
+            if (splitTexts) {
+              e.currentTarget.value = splitTexts;
+              setRouteBLStore((prev) => ({
+                ...prev,
+                ...{ remarks: splitTexts },
+              }));
+            }
+          }}
         />
       </div>
       <MdFilledButton

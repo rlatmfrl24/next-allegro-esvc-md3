@@ -113,6 +113,25 @@ export default function StepParties() {
                     };
                   });
                 }}
+                onBlur={(e) => {
+                  // split 35 characters
+                  let splitTexts = e.currentTarget.value
+                    .replaceAll("\n", "")
+                    .match(/.{1,35}/g)
+                    ?.join("\n")
+                    .toUpperCase();
+
+                  if (splitTexts) {
+                    e.currentTarget.value = splitTexts;
+                    setPartiesStore((prev) => ({
+                      ...prev,
+                      notifyParty: {
+                        ...prev.notifyParty,
+                        alsoNotify: splitTexts,
+                      },
+                    }));
+                  }
+                }}
               />
             </Disclosure.Panel>
           </>
@@ -234,6 +253,25 @@ const ShipperInfo = () => {
                   };
                 });
               }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    shipper: {
+                      ...prev.shipper,
+                      companyName: splitTexts,
+                    },
+                  }));
+                }
+              }}
               onItemSelection={(item) => {
                 if (item.name === "") {
                   setPartiesStore((prev) => {
@@ -282,6 +320,25 @@ const ShipperInfo = () => {
                     },
                   };
                 });
+              }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    shipper: {
+                      ...prev.shipper,
+                      fullAddress: splitTexts,
+                    },
+                  }));
+                }
               }}
             />
             <div className="grid grid-cols-4 gap-4">
@@ -573,7 +630,9 @@ const ConsigneeInfo = () => {
                 SIEditStep.parties.visited &&
                 partiesStore.consignee.companyName === ""
               }
+              type="textarea"
               maxLength={70}
+              rows={2}
               errorText="Company Name is required"
               isAllowOnlyListItems={false}
               itemList={companyList.map((company) => {
@@ -585,6 +644,25 @@ const ConsigneeInfo = () => {
               initialValue={{
                 name: partiesStore.consignee.companyName,
                 address: partiesStore.consignee.fullAddress,
+              }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    consignee: {
+                      ...prev.consignee,
+                      companyName: splitTexts,
+                    },
+                  }));
+                }
               }}
               onQueryChange={(query) => {
                 setPartiesStore((prev) => {
@@ -631,6 +709,7 @@ const ConsigneeInfo = () => {
               errorText="Full Address is required"
               label="Address (State Name, City, State & Zip Code, Country Name)"
               maxLength={105}
+              rows={3}
               className="flex-1"
               type="textarea"
               value={partiesStore.consignee.fullAddress || ""}
@@ -644,6 +723,25 @@ const ConsigneeInfo = () => {
                     },
                   };
                 });
+              }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    consignee: {
+                      ...prev.consignee,
+                      fullAddress: splitTexts,
+                    },
+                  }));
+                }
               }}
             />
             <div className="grid grid-cols-4 gap-4">
@@ -978,6 +1076,8 @@ const NotifyPartyInfo = () => {
               maxLength={70}
               className="flex-1"
               required
+              type="textarea"
+              rows={2}
               error={
                 SIEditStep.parties.visited &&
                 partiesStore.notifyParty.companyName === ""
@@ -993,6 +1093,25 @@ const NotifyPartyInfo = () => {
               initialValue={{
                 name: partiesStore.notifyParty.companyName,
                 address: partiesStore.notifyParty.fullAddress,
+              }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    notifyParty: {
+                      ...prev.notifyParty,
+                      companyName: splitTexts,
+                    },
+                  }));
+                }
               }}
               onQueryChange={(query) => {
                 setPartiesStore((prev) => {
@@ -1034,6 +1153,7 @@ const NotifyPartyInfo = () => {
             />
             <NAOutlinedTextField
               required
+              rows={3}
               maxLength={105}
               error={
                 SIEditStep.parties.visited &&
@@ -1054,6 +1174,25 @@ const NotifyPartyInfo = () => {
                     },
                   };
                 });
+              }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    notifyParty: {
+                      ...prev.notifyParty,
+                      fullAddress: splitTexts,
+                    },
+                  }));
+                }
               }}
             />
             <div className="grid grid-cols-4 gap-4">
@@ -1321,6 +1460,22 @@ const ReferencesInfo = () => {
                   };
                 });
               }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    exportReference: splitTexts,
+                  }));
+                }
+              }}
             />
             <NAOutlinedTextField
               label="Forwarding Agent References"
@@ -1335,6 +1490,22 @@ const ReferencesInfo = () => {
                     forwardingAgentReference: value,
                   };
                 });
+              }}
+              onBlur={(e) => {
+                // split 35 characters
+                let splitTexts = e.currentTarget.value
+                  .replaceAll("\n", "")
+                  .match(/.{1,35}/g)
+                  ?.join("\n")
+                  .toUpperCase();
+
+                if (splitTexts) {
+                  e.currentTarget.value = splitTexts;
+                  setPartiesStore((prev) => ({
+                    ...prev,
+                    forwardingAgentReference: splitTexts,
+                  }));
+                }
               }}
             />
           </Disclosure.Panel>
