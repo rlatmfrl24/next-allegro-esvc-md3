@@ -48,6 +48,7 @@ const AwkwardContainerInput = ({
                 className="w-32 min-w-32"
                 label="Package"
                 type="number"
+                maxInputLength={9}
                 value={container.awkward.package.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
@@ -106,6 +107,7 @@ const AwkwardContainerInput = ({
                 className="w-[120px] min-w-[120px]"
                 label="Gross Weight"
                 type="number"
+                maxInputLength={15}
                 value={container.awkward.grossWeight.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
@@ -155,6 +157,7 @@ const AwkwardContainerInput = ({
                 className="w-[120px] min-w-[120px]"
                 label="Net Weight"
                 type="number"
+                maxInputLength={15}
                 value={container.awkward.netWeight.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
@@ -233,6 +236,7 @@ const AwkwardContainerInput = ({
                 className="w-28 min-w-28"
                 label="Length"
                 type="number"
+                maxInputLength={5}
                 value={container.awkward.length.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
@@ -257,6 +261,7 @@ const AwkwardContainerInput = ({
                 className="w-28 min-w-28"
                 label="Width"
                 type="number"
+                maxInputLength={5}
                 value={container.awkward.width.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
@@ -281,6 +286,7 @@ const AwkwardContainerInput = ({
                 className="w-28 min-w-28"
                 label="Height"
                 type="number"
+                maxInputLength={5}
                 value={container.awkward.height.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({

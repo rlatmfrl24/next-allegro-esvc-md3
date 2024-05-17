@@ -7,11 +7,17 @@ import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import { SIEditRouteBLState, SIEditStepState } from "@/app/store/si.store";
-import { MdFilledButton, MdOutlinedTextField, MdRadio } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdFilledButton,
+  MdIcon,
+  MdOutlinedTextField,
+  MdRadio,
+} from "@/app/util/md3";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 import { PlaceOutlined } from "@mui/icons-material";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 export default function StepRouteBL() {
@@ -39,18 +45,10 @@ export default function StepRouteBL() {
   const ValidateRequired = useMemo(() => {
     return (
       !!routeBLStore.vesselVoyage &&
-      !!routeBLStore.por?.yardName &&
-      !!routeBLStore.pol?.yardName &&
-      !!routeBLStore.pod?.yardName &&
-      !!routeBLStore.del?.yardName &&
       !!routeBLStore.serviceTypeFrom &&
       !!routeBLStore.serviceTypeTo
     );
   }, [
-    routeBLStore.del?.yardName,
-    routeBLStore.pod?.yardName,
-    routeBLStore.pol?.yardName,
-    routeBLStore.por?.yardName,
     routeBLStore.vesselVoyage,
     routeBLStore.serviceTypeFrom,
     routeBLStore.serviceTypeTo,
@@ -100,130 +98,247 @@ export default function StepRouteBL() {
           }
         />
         <div></div>
-        <NAOutlinedAutoComplete
-          required
-          error={SIEditStep.routeBL.visited && !routeBLStore.por?.yardName}
-          errorText="Place of Receipt is required"
-          icon={<PlaceOutlined />}
+
+        <NAOutlinedTextField
+          readOnly
+          hasLeadingIcon
           label="Pier or Place of Receipt"
-          itemList={tempPortList.map((item) => item.yardName)}
-          initialValue={routeBLStore.por?.yardName || ""}
-          onItemSelection={(value) => {
-            const selectedPort = tempPortList.find(
-              (item) => item.yardName === value
-            );
-            selectedPort
-              ? setRouteBLStore((prev) => ({ ...prev, por: selectedPort }))
-              : setRouteBLStore((prev) => ({
-                  ...prev,
-                  por: {} as PlaceInformationType,
-                }));
-          }}
-        />
-        <NAOutlinedAutoComplete
-          required
-          error={SIEditStep.routeBL.visited && !routeBLStore.pol?.yardName}
-          errorText="Port of Loading is required"
-          icon={<PlaceOutlined />}
+          value={routeBLStore.por?.yardName || ""}
+        >
+          <MdIcon slot="leading-icon">
+            <PlaceOutlined />
+          </MdIcon>
+        </NAOutlinedTextField>
+
+        <NAOutlinedTextField
+          readOnly
+          hasLeadingIcon
           label="Port of Loading"
-          initialValue={routeBLStore.pol?.yardName || ""}
-          itemList={tempPortList.map((item) => item.yardName)}
-          onItemSelection={(value) => {
-            const selectedPort = tempPortList.find(
-              (item) => item.yardName === value
-            );
-            selectedPort
-              ? setRouteBLStore((prev) => ({ ...prev, pol: selectedPort }))
-              : setRouteBLStore((prev) => ({
-                  ...prev,
-                  pol: {} as PlaceInformationType,
-                }));
-          }}
-        />
-        <NaToggleButton
-          className="h-fit mt-3"
-          label="Same as Place of Receipt"
-          state={
-            routeBLStore.por?.yardName === undefined ||
-            routeBLStore.por?.yardName === ""
-              ? "disabled"
-              : routeBLStore.por?.yardName === routeBLStore.pol?.yardName
-              ? "checked"
-              : "unchecked"
-          }
-          onClick={(isChecked) => {
-            if (isChecked) {
-              setRouteBLStore((prev) => ({
-                ...prev,
-                pol: {} as PlaceInformationType,
-              }));
-            } else {
-              setRouteBLStore((prev) => ({ ...prev, pol: prev.por }));
-            }
-          }}
-        />
-        <NAOutlinedAutoComplete
-          required
-          error={SIEditStep.routeBL.visited && !routeBLStore.pod?.yardName}
-          errorText="Port of Discharging is required"
-          icon={<PlaceOutlined />}
+          value={routeBLStore.pol?.yardName || ""}
+        >
+          <MdIcon slot="leading-icon">
+            <PlaceOutlined />
+          </MdIcon>
+        </NAOutlinedTextField>
+
+        <div></div>
+        <NAOutlinedTextField
+          readOnly
+          hasLeadingIcon
           label="Port of Discharging"
-          itemList={tempPortList.map((item) => item.yardName)}
-          initialValue={routeBLStore.pod?.yardName || ""}
-          onItemSelection={(value) => {
-            const selectedPort = tempPortList.find(
-              (item) => item.yardName === value
-            );
-            selectedPort
-              ? setRouteBLStore((prev) => ({ ...prev, pod: selectedPort }))
-              : setRouteBLStore((prev) => ({
-                  ...prev,
-                  pod: {} as PlaceInformationType,
-                }));
-          }}
-        />
-        <NAOutlinedAutoComplete
-          required
-          error={SIEditStep.routeBL.visited && !routeBLStore.del?.yardName}
-          errorText="Place of Delivery is required"
-          icon={<PlaceOutlined />}
+          value={routeBLStore.pod?.yardName || ""}
+        >
+          <MdIcon slot="leading-icon">
+            <PlaceOutlined />
+          </MdIcon>
+        </NAOutlinedTextField>
+
+        <NAOutlinedTextField
+          readOnly
+          hasLeadingIcon
           label="Place of Delivery (By On Carrier)"
-          itemList={tempPortList.map((item) => item.yardName)}
-          initialValue={routeBLStore.del?.yardName || ""}
-          onItemSelection={(value) => {
-            const selectedPort = tempPortList.find(
-              (item) => item.yardName === value
-            );
-            selectedPort
-              ? setRouteBLStore((prev) => ({ ...prev, del: selectedPort }))
-              : setRouteBLStore((prev) => ({
+          value={routeBLStore.del?.yardName || ""}
+        >
+          <MdIcon slot="leading-icon">
+            <PlaceOutlined />
+          </MdIcon>
+        </NAOutlinedTextField>
+
+        <div></div>
+        <div className="col-span-3">
+          <MdTypography
+            tag="label"
+            variant="label"
+            size="large"
+            className="flex items-center gap-2 cursor-pointer w-fit"
+          >
+            <MdCheckbox
+              checked={routeBLStore.isUsingRoutePrint}
+              // onClick={() => setIsUsingRouteInput((prev) => !prev)}
+              onClick={() =>
+                setRouteBLStore((prev) => ({
                   ...prev,
-                  del: {} as PlaceInformationType,
+                  isUsingRoutePrint: !prev.isUsingRoutePrint,
+                }))
+              }
+            />
+            Printed on the B/L
+          </MdTypography>
+        </div>
+        {routeBLStore.isUsingRoutePrint && (
+          <>
+            <NAOutlinedAutoComplete
+              icon={<PlaceOutlined />}
+              label="Pier or Place of Receipt"
+              isAllowOnlyListItems={false}
+              itemList={tempPortList.map((item) => item.yardName)}
+              initialValue={routeBLStore.routePrint.por || ""}
+              onQueryChange={(value) => {
+                if (value) {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      por: value,
+                    },
+                  }));
+                }
+              }}
+              onItemSelection={(value) => {
+                setRouteBLStore((prev) => ({
+                  ...prev,
+                  routePrint: {
+                    ...prev.routePrint,
+                    por: value,
+                  },
                 }));
-          }}
-        />
-        <NaToggleButton
-          className="h-fit mt-3"
-          label="Same as Place of Discharging"
-          state={
-            routeBLStore.pod?.yardName === undefined ||
-            routeBLStore.pod?.yardName === ""
-              ? "disabled"
-              : routeBLStore.pod?.yardName === routeBLStore.del?.yardName
-              ? "checked"
-              : "unchecked"
-          }
-          onClick={(isChecked) => {
-            if (isChecked) {
-              setRouteBLStore((prev) => ({
-                ...prev,
-                del: {} as PlaceInformationType,
-              }));
-            } else {
-              setRouteBLStore((prev) => ({ ...prev, del: prev.pod }));
-            }
-          }}
-        />
+              }}
+            />
+            <NAOutlinedAutoComplete
+              icon={<PlaceOutlined />}
+              label="Port of Loading"
+              initialValue={routeBLStore.routePrint.pol || ""}
+              isAllowOnlyListItems={false}
+              itemList={tempPortList.map((item) => item.yardName)}
+              onQueryChange={(value) => {
+                if (value) {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      pol: value,
+                    },
+                  }));
+                }
+              }}
+              onItemSelection={(value) => {
+                setRouteBLStore((prev) => ({
+                  ...prev,
+                  routePrint: {
+                    ...prev.routePrint,
+                    pol: value,
+                  },
+                }));
+              }}
+            />
+            <NaToggleButton
+              className="h-fit mt-3"
+              label="Same as Place of Receipt"
+              state={
+                routeBLStore.routePrint.por === undefined ||
+                routeBLStore.routePrint.por === ""
+                  ? "disabled"
+                  : routeBLStore.routePrint.por === routeBLStore.routePrint.pol
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={(isChecked) => {
+                if (isChecked) {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      pol: prev.pol.yardName,
+                    },
+                  }));
+                } else {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      pol: prev.routePrint.por,
+                    },
+                  }));
+                }
+              }}
+            />
+            <NAOutlinedAutoComplete
+              icon={<PlaceOutlined />}
+              label="Port of Discharging"
+              itemList={tempPortList.map((item) => item.yardName)}
+              initialValue={routeBLStore.routePrint.pod || ""}
+              isAllowOnlyListItems={false}
+              onQueryChange={(value) => {
+                if (value) {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      pod: value,
+                    },
+                  }));
+                }
+              }}
+              onItemSelection={(value) => {
+                setRouteBLStore((prev) => ({
+                  ...prev,
+                  routePrint: {
+                    ...prev.routePrint,
+                    pod: value,
+                  },
+                }));
+              }}
+            />
+            <NAOutlinedAutoComplete
+              icon={<PlaceOutlined />}
+              label="Place of Delivery (By On Carrier)"
+              itemList={tempPortList.map((item) => item.yardName)}
+              initialValue={routeBLStore.routePrint.del || ""}
+              isAllowOnlyListItems={false}
+              onQueryChange={(value) => {
+                if (value) {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      del: value,
+                    },
+                  }));
+                }
+              }}
+              onItemSelection={(value) => {
+                setRouteBLStore((prev) => ({
+                  ...prev,
+                  routePrint: {
+                    ...prev.routePrint,
+                    del: value,
+                  },
+                }));
+              }}
+            />
+            <NaToggleButton
+              className="h-fit mt-3"
+              label="Same as Place of Discharging"
+              state={
+                routeBLStore.routePrint.pod === undefined ||
+                routeBLStore.routePrint.pod === ""
+                  ? "disabled"
+                  : routeBLStore.routePrint.pod === routeBLStore.routePrint.del
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={(isChecked) => {
+                if (isChecked) {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      del: prev.del.yardName,
+                    },
+                  }));
+                } else {
+                  setRouteBLStore((prev) => ({
+                    ...prev,
+                    routePrint: {
+                      ...prev.routePrint,
+                      del: prev.routePrint.pod,
+                    },
+                  }));
+                }
+              }}
+            />
+          </>
+        )}
         <NAOutlinedTextField
           label="Point and Country of Origin"
           value={routeBLStore.pointAndCountryOfOrigin || ""}

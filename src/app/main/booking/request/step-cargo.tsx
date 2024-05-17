@@ -157,6 +157,7 @@ export default function CargoStep() {
           value={cargoPickUpReturnData.grossWeight}
           className="h-fit"
           label="Gross Weight"
+          maxInputLength={9}
           required
           error={
             bookingRequestStep.cargoPickUpReturn.visited &&
@@ -166,8 +167,17 @@ export default function CargoStep() {
           readOnly={params.has("quoteNumber")}
           type="number"
           handleValueChange={(value) => {
+            const intValue = parseInt(value);
+            if (isNaN(intValue)) {
+              return;
+            }
+
             setCargoPickUpReturnData((prev) => {
-              return { ...prev, grossWeight: value };
+              return {
+                ...prev,
+                // grossWeight: intValue > 999999999 ? "999999999" : value,
+                grossWeight: value,
+              };
             });
           }}
         />
@@ -201,18 +211,26 @@ export default function CargoStep() {
           <div className="flex-1">
             <MdOutlinedTextField
               type="time"
-              value={cargoPickUpReturnData.emptyPickUpDate?.toFormat("HH:mm")}
+              value={
+                cargoPickUpReturnData.emptyPickUpDate?.toFormat("HH:mm") || ""
+              }
               onInput={(e) => {
                 const date = cargoPickUpReturnData.emptyPickUpDate;
                 const time = e.currentTarget.value;
                 const hour = Number(time.split(":")[0]);
                 const minute = Number(time.split(":")[1]);
-                setCargoPickUpReturnData((prev) => {
-                  return {
-                    ...prev,
-                    emptyPickUpDate: date.set({ hour, minute }),
-                  };
-                });
+                date &&
+                  setCargoPickUpReturnData((prev) => {
+                    return {
+                      ...prev,
+                      emptyPickUpDate: date.set({ hour, minute }),
+                    };
+
+                    // return {
+                    //   ...prev,
+                    //   emptyPickUpDate: date.set({ hour, minute }),
+                    // };
+                  });
               }}
             />
           </div>
@@ -286,7 +304,7 @@ export default function CargoStep() {
         <div className="flex gap-4">
           <DatePicker
             className="flex-1"
-            label="Full Container Pick Up Date"
+            label="Full Container Return Date"
             initialDate={cargoPickUpReturnData.fullReturnDate}
             onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {

@@ -331,9 +331,9 @@ export default function BookingConfirmationInformation() {
                   size="medium"
                   className="text-onSurface"
                 >
-                  {dataSet[0].cargoPickUpReturn.emptyPickUpDate.toFormat(
+                  {dataSet[0].cargoPickUpReturn.emptyPickUpDate?.toFormat(
                     "yyyy-MM-dd"
-                  ) || "-"}
+                  ) ?? "-"}
                 </MdTypography>
                 <MdTypography
                   variant="body"
@@ -400,9 +400,9 @@ export default function BookingConfirmationInformation() {
                   size="medium"
                   className="text-onSurface"
                 >
-                  {dataSet[0].cargoPickUpReturn.fullReturnDate.toFormat(
+                  {dataSet[0].cargoPickUpReturn.fullReturnDate?.toFormat(
                     "yyyy-MM-dd"
-                  ) || "-"}
+                  ) ?? "-"}
                 </MdTypography>
                 <MdTypography
                   variant="body"

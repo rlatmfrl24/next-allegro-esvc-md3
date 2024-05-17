@@ -13,9 +13,9 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import { Upload, UploadFile } from "@mui/icons-material";
+import { Upload } from "@mui/icons-material";
 import { useCallback, useEffect, useRef } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 export default function StepMarkDescription() {
   const [markDescriptionStore, setMarkDescriptionStore] = useRecoilState(
@@ -172,9 +172,6 @@ export default function StepMarkDescription() {
             }
             errorText="Customs Commodity is required."
             placeholder="Customs Commodity"
-            type="textarea"
-            rows={3}
-            className="resize-y"
             value={markDescriptionStore.customsCommodity}
             handleValueChange={(value) => {
               setMarkDescriptionStore((prev) => ({

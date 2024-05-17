@@ -40,7 +40,7 @@ export const CutOffTime = (props: { cutOffTime: DateTime }) => {
     <>
       <div ref={refs.setReference} {...getReferenceProps()}>
         <MdTypography
-          className="absolute bottom-6 left-6 text-primary bg-surfaceContainerLow px-2 py-0.5 rounded-full gap-0.5 flex items-center cursor-pointer"
+          className="text-primary bg-surfaceContainerLow px-2 py-0.5 rounded-full gap-0.5 flex items-center cursor-pointer"
           variant="label"
           size="small"
           style={

@@ -60,7 +60,6 @@ export const QuotationListItem = ({
       </Portal>
       <div className="w-full">
         <div className="p-6 border border-outlineVariant rounded-lg flex relative">
-          <CutOffTime cutOffTime={etd.plus({ days: 3 })} />
           <div className="flex-1">
             <div className="flex flex-1 justify-between items-center gap-4 mb-4">
               <Place fontSize="small" className="text-primary" />
@@ -146,11 +145,15 @@ export const QuotationListItem = ({
                 </MdTypography>
               </div>
             </div>
+            <div className="relative w-fit mt-2">
+              <CutOffTime cutOffTime={etd.plus({ days: 3 })} />
+            </div>
           </div>
-          <div className="ml-8 mr-6 flex flex-col bg-surfaceContainerLowest px-4 py-2 rounded-lg">
+          <div className="ml-8 mr-6 flex flex-col justify-center bg-surfaceContainerLowest px-4 py-2 rounded-lg w-56 gap-2 ">
             <MdTypography
-              variant="body"
-              size="medium"
+              variant="label"
+              size="large"
+              prominent
               className="text-outline text-left"
             >
               Total Price
@@ -174,23 +177,7 @@ export const QuotationListItem = ({
                 USD
               </MdTypography>
             </div>
-            <DividerComponent className="my-2" />
-            <MdTypography
-              variant="body"
-              size="medium"
-              className="text-outline text-left"
-            >
-              Validity Date
-            </MdTypography>
-            <MdTypography
-              variant="body"
-              size="small"
-              className="text-onSurface"
-            >
-              {etd.toFormat("yyyy-MM-dd")} ~ {eta.toFormat("yyyy-MM-dd")}
-            </MdTypography>
           </div>
-
           <div className="flex flex-col gap-2">
             <Link
               className="w-full"

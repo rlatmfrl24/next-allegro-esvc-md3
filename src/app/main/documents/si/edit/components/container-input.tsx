@@ -7,8 +7,11 @@ import { MdTypography } from "@/app/components/typography";
 import { SIEditContainerState } from "@/app/store/si.store";
 import {
   MdChipSet,
+  MdDialog,
+  MdFilledButton,
   MdFilterChip,
   MdIconButton,
+  MdOutlinedButton,
   MdOutlinedIconButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
@@ -33,6 +36,11 @@ export default function ContainerInput({
   containerIndex: number;
   isLastItem?: boolean;
 }) {
+  const [
+    isWarningRemoveCargoManifestDialogOpen,
+    setIsWarningRemoveCargoManifestDialogOpen,
+  ] = useState(false);
+
   const [SIEditContainerStore, setSIEditContainerStore] =
     useRecoilState(SIEditContainerState);
 
@@ -337,6 +345,7 @@ export default function ContainerInput({
         />
         <NAOutlinedAutoComplete
           className="flex-1"
+          readOnly={container.hasCargoManifest}
           itemList={tempPackageList}
           placeholder="Package Type"
           initialValue={container.packageType}
@@ -400,16 +409,63 @@ export default function ContainerInput({
           />
         </div>
       </div>
+      <MdDialog
+        open={isWarningRemoveCargoManifestDialogOpen}
+        closed={() => setIsWarningRemoveCargoManifestDialogOpen(false)}
+      >
+        <div slot="headline">Delete Cargo Menifast</div>
+        <div slot="content">
+          If you uncheck it, all of the Cargo input will be lost. <br />
+          Do you still want to uncheck it?
+        </div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              setIsWarningRemoveCargoManifestDialogOpen(false);
+            }}
+          >
+            Cancel
+          </MdOutlinedButton>
+          <MdFilledButton
+            onClick={() => {
+              updateContainerStore(container, "hasCargoManifest", false);
+              setIsWarningRemoveCargoManifestDialogOpen(false);
+
+              if (typeKey === "weightUnit" || typeKey === "measurementUnit")
+                return;
+
+              setSIEditContainerStore((prev) => ({
+                ...prev,
+                [typeKey]: prev[typeKey].map((c, i) =>
+                  i === containerIndex
+                    ? {
+                        ...c,
+                        hasCargoManifest: false,
+                        cargoManifest: [],
+                      }
+                    : c
+                ),
+              }));
+            }}
+          >
+            Yes
+          </MdFilledButton>
+        </div>
+      </MdDialog>
       <NaToggleButton
         className="w-fit"
         label="Cargo Manifest"
         state={container.hasCargoManifest ? "checked" : "unchecked"}
         onClick={(isChecked) => {
-          updateContainerStore(container, "hasCargoManifest", !isChecked);
-          if (container.cargoManifest.length === 0) {
-            addNewCargoManifestToContainer();
+          if (isChecked) {
+            setIsWarningRemoveCargoManifestDialogOpen(true);
+          } else {
+            updateContainerStore(container, "hasCargoManifest", !isChecked);
+            if (container.cargoManifest.length === 0) {
+              addNewCargoManifestToContainer();
+            }
+            setSelectedCargoManifestUuid("");
           }
-          setSelectedCargoManifestUuid("");
         }}
       />
       {container.hasCargoManifest && (
