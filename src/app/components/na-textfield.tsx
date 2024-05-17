@@ -16,11 +16,15 @@ type MdOutlinedTextFieldProps = React.ComponentProps<
 export const NAOutlinedTextField = ({
   handleValueChange,
   enableClearButton = true,
+  maxInputLength,
+  enableNumberSeparator = true,
   className,
   ...props
 }: {
   handleValueChange?: (value: string) => void;
   enableClearButton?: boolean;
+  maxInputLength?: number;
+  enableNumberSeparator?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) => {
   const [hasValue, setHasValue] = useState(false);
@@ -74,6 +78,13 @@ export const NAOutlinedTextField = ({
           }
         }}
         onInput={(e) => {
+          if (maxInputLength && e.currentTarget.value.length > maxInputLength) {
+            e.currentTarget.value = e.currentTarget.value.slice(
+              0,
+              maxInputLength
+            );
+          }
+
           if (props.type !== "number") {
             handleValueChange?.(e.currentTarget.value);
             if (e.currentTarget.value.length > 0) {
@@ -102,7 +113,7 @@ export const NAOutlinedTextField = ({
           }
         }}
         value={
-          props.type === "number"
+          props.type === "number" && enableNumberSeparator
             ? props.value
                 ?.toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -113,6 +124,7 @@ export const NAOutlinedTextField = ({
         }
         required={false}
       >
+        {props.children}
         {!(
           props.type === "number" ||
           props.type === "textarea" ||

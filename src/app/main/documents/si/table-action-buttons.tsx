@@ -27,6 +27,7 @@ import {
 import { SimpleItem } from "../../booking/request/components/base";
 import SIStateChip from "./si-state-chip";
 import { DividerComponent } from "@/app/components/divider";
+import { useRouter } from "next/navigation";
 
 const ActionButtons = ({
   selectionList,
@@ -35,6 +36,7 @@ const ActionButtons = ({
   selectionList: SISearchTableProps[];
   setTableData: Dispatch<SetStateAction<SISearchTableProps[]>>;
 }) => {
+  const router = useRouter();
   const states = selectionList.map((item) => item.blState);
 
   const [isBLPreviewOpen, setIsBLPreviewOpen] = useState(false);
@@ -55,9 +57,15 @@ const ActionButtons = ({
               states.includes(SIState.Rejected) ||
               states.includes(SIState.Submit)) &&
               states.length === 1 && (
-                <Link href={`/main/documents/si/edit`}>
-                  <MdTextButton>Edit</MdTextButton>
-                </Link>
+                <MdTextButton
+                  onClick={() => {
+                    router.push(
+                      `/main/documents/si/edit?requestNumber=${selectionList[0].requestNumber}&bookingNumber=${selectionList[0].bookingNumber}&status=${selectionList[0].blState}`
+                    );
+                  }}
+                >
+                  Edit
+                </MdTextButton>
               )}
 
             {(states.includes(SIState.ChangeRequested) ||

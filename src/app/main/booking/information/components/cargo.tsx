@@ -56,7 +56,7 @@ export default function CargoSection({
           Empty Pick Up Date
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          {data.emptyPickUpDate.toFormat("yyyy-MM-dd HH:mm")}
+          {data.emptyPickUpDate?.toFormat("yyyy-MM-dd HH:mm") ?? "-"}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Empty Pick Up CY/Depot (Prefered)
@@ -73,7 +73,7 @@ export default function CargoSection({
           Full Container Return Date
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-onSurface">
-          {data.fullReturnDate.toFormat("yyyy-MM-dd")}
+          {data.fullReturnDate?.toFormat("yyyy-MM-dd") ?? "-"}
         </MdTypography>
         <MdTypography variant="body" size="medium" className="text-outline">
           Full Container Return CY

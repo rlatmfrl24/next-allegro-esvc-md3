@@ -10,6 +10,8 @@ import {
   SIPartiesProps,
   SIRouteBLType,
 } from "../util/typeDef/si";
+import { createDummyPlaceInformation } from "../main/schedule/util";
+import { faker } from "@faker-js/faker";
 
 export const SIEditStepState = atom({
   key: "siEditStepState",
@@ -73,9 +75,35 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
   },
 });
 
+const tempRouteSet = {
+  pod: createDummyPlaceInformation(
+    faker.location.city() + ", " + faker.location.country()
+  ),
+  pol: createDummyPlaceInformation(
+    faker.location.city() + ", " + faker.location.country()
+  ),
+  por: createDummyPlaceInformation(
+    faker.location.city() + ", " + faker.location.country()
+  ),
+  del: createDummyPlaceInformation(
+    faker.location.city() + ", " + faker.location.country()
+  ),
+};
+
 export const SIEditRouteBLState = atom<SIRouteBLType>({
   key: "siEditRouteBLState",
   default: {
+    pod: tempRouteSet.pod,
+    pol: tempRouteSet.pol,
+    por: tempRouteSet.por,
+    del: tempRouteSet.del,
+    routePrint: {
+      pod: tempRouteSet.pod.yardName,
+      pol: tempRouteSet.pol.yardName,
+      por: tempRouteSet.por.yardName,
+      del: tempRouteSet.del.yardName,
+    },
+    isUsingRoutePrint: false,
     remarks: "",
     blType: "originalBL",
     freightTerms: "prepaid",

@@ -208,6 +208,7 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Ventilation"
                               type="number"
+                              maxInputLength={3}
                               value={container.ventilation.toString()}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
@@ -262,6 +263,7 @@ const ReeferContainerInput = ({
                             label="Humidity"
                             suffixText="%"
                             type="number"
+                            maxInputLength={3}
                             value={container.humidity.toString()}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
