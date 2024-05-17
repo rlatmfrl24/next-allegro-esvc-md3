@@ -46,6 +46,7 @@ export default function NAOutlinedAutoComplete({
   onQueryChange,
   isAllowOnlyListItems = true,
   className,
+  maxInputLength,
   showAllonFocus = false,
   maxListHeight = 600,
   ...props
@@ -59,6 +60,7 @@ export default function NAOutlinedAutoComplete({
   onQueryChange?: (value: string) => void;
   isAllowOnlyListItems?: boolean;
   maxListHeight?: number;
+  maxInputLength?: number;
   showAllonFocus?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) {
@@ -145,11 +147,17 @@ export default function NAOutlinedAutoComplete({
   // }, [query, onQueryChange]);
 
   function handleItemSelect(item: string) {
-    setQuery(item);
-    setDefaultValue(item);
+    let returnValue = item;
+
+    if (maxInputLength && item.length > maxInputLength) {
+      returnValue = item.slice(0, maxInputLength);
+    }
+
+    setQuery(returnValue);
+    setDefaultValue(returnValue);
     setIsListOpen(false);
-    onSelection?.(item);
-    item !== "" && setRecentItems(item);
+    onSelection?.(returnValue);
+    item !== "" && setRecentItems(returnValue);
   }
 
   const showRecommand = useCallback(() => {
@@ -188,6 +196,13 @@ export default function NAOutlinedAutoComplete({
         className={`w-full ${props.readOnly ? "bg-surfaceContainer" : ""}`}
         required={false}
         onInput={(e) => {
+          if (maxInputLength && e.currentTarget.value.length > maxInputLength) {
+            e.currentTarget.value = e.currentTarget.value.slice(
+              0,
+              maxInputLength
+            );
+          }
+
           setQuery(e.currentTarget.value);
           onQueryChange?.(e.currentTarget.value);
         }}
