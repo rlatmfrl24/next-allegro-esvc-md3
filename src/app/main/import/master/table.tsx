@@ -14,6 +14,12 @@ import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
 import ActualScheduleIcon from "@/../public/icon_schedule_actual.svg";
 import ConfirmScheduleIcon from "@/../public/icon_schedule_confirm.svg";
+import { Info } from "@mui/icons-material";
+import {
+  usePlaceInfoDialog,
+  useVesselScheduleDialog,
+} from "@/app/components/common-dialog-hooks";
+import { MdRadio } from "@/app/util/md3";
 
 type InboundMasterTableProps = {
   blNumber: string;
@@ -60,11 +66,28 @@ function createDummyInboundMasterData() {
 }
 
 export const InboundMasterTable = () => {
+  const { setCurrentVessel, renderDialog, setIsVesselScheduleDialogOpen } =
+    useVesselScheduleDialog();
+  const {
+    renderDialog: renderPlaceDialog,
+    setIsPlaceInfoDialogOpen,
+    setCurrentPlace,
+  } = usePlaceInfoDialog();
+
   const tempData = useMemo(() => {
     return Array.from({ length: 100 }, () => createDummyInboundMasterData());
   }, []);
   const columnHelper = createColumnHelper<InboundMasterTableProps>();
   const columnDefs = [
+    columnHelper.display({
+      id: "radio",
+      cell: (info) => (
+        <div className="flex justify-center">
+          <MdRadio checked={info.row.getIsSelected()} />
+        </div>
+      ),
+      size: 50,
+    }),
     columnHelper.accessor("blNumber", {
       id: "blNumber",
       header: "B/L Number",
@@ -103,7 +126,7 @@ export const InboundMasterTable = () => {
           className="flex items-center gap-2"
         >
           <ActualScheduleIcon />
-          {info.getValue().toFormat("yyyy-MM-dd")}
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
     }),
@@ -115,6 +138,7 @@ export const InboundMasterTable = () => {
           {info.getValue()}
         </MdTypography>
       ),
+      size: 300,
     }),
     columnHelper.accessor("arrivalDate", {
       id: "arrivalDate",
@@ -126,7 +150,7 @@ export const InboundMasterTable = () => {
           className="flex items-center gap-2"
         >
           <ConfirmScheduleIcon />
-          {info.getValue().toFormat("yyyy-MM-dd")}
+          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
         </MdTypography>
       ),
     }),
@@ -134,8 +158,16 @@ export const InboundMasterTable = () => {
       id: "vesselVoyage",
       header: "Vessel/Voyage",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue().vesselName} / {info.getValue().vesselName}
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="w-fit underline cursor-pointer"
+          onClick={() => {
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
+        >
+          {info.getValue().vesselName}
         </MdTypography>
       ),
       size: 400,
@@ -144,10 +176,19 @@ export const InboundMasterTable = () => {
       id: "terminal",
       header: "Terminal",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="w-fit underline cursor-pointer"
+          onClick={() => {
+            setCurrentPlace(info.getValue());
+            setIsPlaceInfoDialogOpen(true);
+          }}
+        >
           {info.getValue().yardName}
         </MdTypography>
       ),
+      size: 300,
     }),
     columnHelper.accessor("blType", {
       id: "blType",
@@ -172,7 +213,7 @@ export const InboundMasterTable = () => {
       header: "Demmurage",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue() ? "Yes" : "No"}
+          {info.getValue() ? "Y" : "N"}
         </MdTypography>
       ),
     }),
@@ -181,7 +222,7 @@ export const InboundMasterTable = () => {
       header: "Detention",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue() ? "Yes" : "No"}
+          {info.getValue() ? "Y" : "N"}
         </MdTypography>
       ),
     }),
@@ -190,7 +231,7 @@ export const InboundMasterTable = () => {
       header: "Combined",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue() ? "Yes" : "No"}
+          {info.getValue() ? "Y" : "N"}
         </MdTypography>
       ),
     }),
@@ -200,8 +241,19 @@ export const InboundMasterTable = () => {
       cell: (info) => {
         const value = info.getValue();
         return (
-          <MdTypography variant="body" size="medium">
-            {value ? value.toFormat("yyyy-MM-dd") : "N/A"}
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="flex gap-4 items-center"
+          >
+            {value ? (
+              <>
+                {value.toFormat("yyyy-MM-dd HH:mm")}
+                <Info fontSize="small" className="text-error" />
+              </>
+            ) : (
+              "N"
+            )}
           </MdTypography>
         );
       },
@@ -209,11 +261,15 @@ export const InboundMasterTable = () => {
   ];
 
   return (
-    <BasicTable
-      ActionComponent={() => <div className="flex-1"></div>}
-      data={tempData}
-      columns={columnDefs}
-      isSingleSelect
-    />
+    <>
+      {renderDialog()}
+      {renderPlaceDialog()}
+      <BasicTable
+        ActionComponent={() => <div className="flex-1"></div>}
+        data={tempData}
+        columns={columnDefs}
+        isSingleSelect
+      />
+    </>
   );
 };

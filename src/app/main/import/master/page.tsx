@@ -1,9 +1,5 @@
 "use client";
-
-import { DatePicker } from "@/app/components/datepickers/date-picker";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
-import { MdSingleDatePicker } from "@/app/components/datepickers/old/date-picker";
-import { MdRangeDatePicker } from "@/app/components/datepickers/old/range-picker";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -19,7 +15,7 @@ import {
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import classNames from "classnames";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { InboundMasterTable } from "./table";
 
 const OnboardConditions = () => {

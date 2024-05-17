@@ -188,7 +188,7 @@ export const menuItems: MenuItemType[] = [
       {
         id: "surrender",
         name: "BL Surrender Check",
-        link: "surrunder",
+        link: "surrender",
         subMenu: [],
       },
       {
