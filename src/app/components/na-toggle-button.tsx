@@ -30,10 +30,10 @@ export default function NaToggleButton({
           ? "text-outlineVariant"
           : "text-primary"
       }`}
-      onClick={(e) => {
-        // e.stopPropagation();
-        onClick?.(state === "checked");
-      }}
+      // onClick={(e) => {
+      //   // e.stopPropagation();
+      //   onClick?.(state === "checked");
+      // }}
     >
       <MdCheckbox
         className="m-1.5"
@@ -49,7 +49,7 @@ export default function NaToggleButton({
         onClick={
           state !== "disabled" && state !== "disabled-checked"
             ? (e) => {
-                e.stopPropagation();
+                // e.stopPropagation();
                 onClick?.(state === "checked");
               }
             : undefined
