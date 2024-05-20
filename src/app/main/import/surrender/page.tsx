@@ -13,6 +13,7 @@ import {
 import { faker } from "@faker-js/faker";
 import classNames from "classnames";
 import { useState } from "react";
+import { SurrenderTable } from "./table";
 
 export default function BLSurrenderCheck() {
   const cx = classNames.bind(styles);
@@ -72,7 +73,7 @@ export default function BLSurrenderCheck() {
       </div>
       <div className={cx(styles.area)}>
         {pageState === "search" ? (
-          <></>
+          <SurrenderTable />
         ) : (
           <EmptyResultPlaceholder
             text="Please search for the condition."
