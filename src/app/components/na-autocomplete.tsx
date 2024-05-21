@@ -45,6 +45,7 @@ export default function NAOutlinedAutoComplete({
   onItemSelection: onSelection,
   onQueryChange,
   isAllowOnlyListItems = true,
+  removeQueryOnSelect = false,
   className,
   maxInputLength,
   showAllonFocus = false,
@@ -59,6 +60,7 @@ export default function NAOutlinedAutoComplete({
   onItemSelection?: (value: string) => void;
   onQueryChange?: (value: string) => void;
   isAllowOnlyListItems?: boolean;
+  removeQueryOnSelect?: boolean;
   maxListHeight?: number;
   maxInputLength?: number;
   showAllonFocus?: boolean;
@@ -153,8 +155,13 @@ export default function NAOutlinedAutoComplete({
       returnValue = item.slice(0, maxInputLength);
     }
 
-    setQuery(returnValue);
-    setDefaultValue(returnValue);
+    if (removeQueryOnSelect) {
+      setQuery("");
+      setDefaultValue("");
+    } else {
+      setQuery(returnValue);
+      setDefaultValue(returnValue);
+    }
     setIsListOpen(false);
     onSelection?.(returnValue);
     item !== "" && setRecentItems(returnValue);

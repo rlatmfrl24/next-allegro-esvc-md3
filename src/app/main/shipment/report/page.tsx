@@ -39,6 +39,7 @@ import {
 } from "@floating-ui/react";
 import { basicPopoverStyles } from "@/app/util/constants";
 import { DividerComponent } from "@/app/components/divider";
+import { set } from "lodash";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -146,6 +147,8 @@ export default function ShipmentReportPage() {
     "customer"
   );
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
+  const [polQuery, setPolQuery] = useState<string>("");
+  const [podQuery, setPodQuery] = useState<string>("");
   const [polSelections, setPolSelections] = useState<string[]>([]);
   const [podSelections, setPodSelections] = useState<string[]>([]);
   const tempContracts = Array.from({ length: 10 }, () =>
@@ -257,6 +260,7 @@ export default function ShipmentReportPage() {
               <NAOutlinedAutoComplete
                 itemList={tempPorts}
                 label="Port of Loading"
+                removeQueryOnSelect
                 onItemSelection={(item) => {
                   setPolSelections([...polSelections, item]);
                 }}
@@ -282,6 +286,7 @@ export default function ShipmentReportPage() {
               <NAOutlinedAutoComplete
                 itemList={tempPorts}
                 label="Port of Discharging"
+                removeQueryOnSelect
                 onItemSelection={(item) => {
                   setPodSelections([...podSelections, item]);
                 }}
