@@ -17,6 +17,7 @@ import {
   MdInputChip,
   MdList,
   MdListItem,
+  MdOutlinedButton,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdRadio,
@@ -30,6 +31,7 @@ import {
   flip,
   offset,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
@@ -39,7 +41,8 @@ import {
 } from "@floating-ui/react";
 import { basicPopoverStyles } from "@/app/util/constants";
 import { DividerComponent } from "@/app/components/divider";
-import { set } from "lodash";
+import { flushSync } from "react-dom";
+import { ReportTable } from "./table";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -138,6 +141,84 @@ const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   );
 };
 
+const MyReportComponent = () => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [maxHeight, setMaxHeight] = useState(0);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isPopoverOpen,
+    onOpenChange: setIsPopoverOpen,
+    placement: "bottom-end",
+    middleware: [
+      shift(),
+      offset(4),
+      flip(),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          flushSync(() => setMaxHeight(availableHeight));
+        },
+      }),
+    ],
+  });
+
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(
+    context,
+    basicPopoverStyles
+  );
+  const { getFloatingProps, getReferenceProps } = useInteractions([
+    useClick(context),
+    useDismiss(context),
+    useRole(context),
+  ]);
+
+  return (
+    <>
+      <MdFilledTonalButton ref={refs.setReference} {...getReferenceProps()}>
+        My Report
+      </MdFilledTonalButton>
+      {isMounted && (
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+          className="z-10"
+        >
+          <MdElevatedCard style={transitionStyles}>
+            <MdTypography variant="headline" size="small" className="m-6">
+              My Report
+            </MdTypography>
+            <MdList
+              className="bg-surfaceContainerLow overflow-y-auto"
+              style={{ maxHeight: maxHeight - 200, minHeight: "4rem" }}
+            >
+              {Array.from({ length: 20 }, (_, i) => i).map((i) => (
+                <MdListItem
+                  key={i}
+                  type="button"
+                  onClick={() => {
+                    setIsPopoverOpen(false);
+                  }}
+                >
+                  Report Name {i}
+                </MdListItem>
+              ))}
+            </MdList>
+            <div className="mx-6 mb-6 flex justify-end">
+              <MdOutlinedButton
+                onClick={() => {
+                  setIsPopoverOpen(false);
+                }}
+              >
+                Close
+              </MdOutlinedButton>
+            </div>
+          </MdElevatedCard>
+        </div>
+      )}
+    </>
+  );
+};
+
 export default function ShipmentReportPage() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [currentTab, setCurrentTab] = useState<
@@ -147,8 +228,6 @@ export default function ShipmentReportPage() {
     "customer"
   );
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
-  const [polQuery, setPolQuery] = useState<string>("");
-  const [podQuery, setPodQuery] = useState<string>("");
   const [polSelections, setPolSelections] = useState<string[]>([]);
   const [podSelections, setPodSelections] = useState<string[]>([]);
   const tempContracts = Array.from({ length: 10 }, () =>
@@ -249,9 +328,7 @@ export default function ShipmentReportPage() {
             )}
           </div>
 
-          <MdFilledTonalButton className="w-fit h-fit">
-            My Report
-          </MdFilledTonalButton>
+          <MyReportComponent />
         </div>
         {moreFilter.length > 0 && <DividerComponent />}
         <div className="flex gap-4">
@@ -335,7 +412,7 @@ export default function ShipmentReportPage() {
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder text="Please search for the condition." />
         ) : (
-          <></>
+          <ReportTable />
         )}
       </div>
     </div>
