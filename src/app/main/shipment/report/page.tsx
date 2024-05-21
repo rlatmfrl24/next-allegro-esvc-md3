@@ -10,9 +10,11 @@ import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import {
   MdCheckbox,
+  MdChipSet,
   MdElevatedCard,
   MdFilledButton,
   MdFilledTonalButton,
+  MdInputChip,
   MdList,
   MdListItem,
   MdOutlinedSegmentedButton,
@@ -144,6 +146,8 @@ export default function ShipmentReportPage() {
     "customer"
   );
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
+  const [polSelections, setPolSelections] = useState<string[]>([]);
+  const [podSelections, setPodSelections] = useState<string[]>([]);
   const tempContracts = Array.from({ length: 10 }, () =>
     faker.string.alphanumeric(10).toUpperCase()
   );
@@ -249,16 +253,54 @@ export default function ShipmentReportPage() {
         {moreFilter.length > 0 && <DividerComponent />}
         <div className="flex gap-4">
           {moreFilter.includes("Port of Loading") && (
-            <NAOutlinedAutoComplete
-              itemList={tempPorts}
-              label="Port of Loading"
-            />
+            <div className="flex-1 flex flex-col gap-2">
+              <NAOutlinedAutoComplete
+                itemList={tempPorts}
+                label="Port of Loading"
+                onItemSelection={(item) => {
+                  setPolSelections([...polSelections, item]);
+                }}
+              />
+              <MdChipSet>
+                {polSelections.map((item) => (
+                  <MdInputChip
+                    key={faker.string.uuid()}
+                    label={item}
+                    selected
+                    handleTrailingActionFocus={() =>
+                      setPolSelections((prev) => {
+                        return prev.filter((q) => q !== item);
+                      })
+                    }
+                  />
+                ))}
+              </MdChipSet>
+            </div>
           )}
           {moreFilter.includes("Port of Discharging") && (
-            <NAOutlinedAutoComplete
-              itemList={tempPorts}
-              label="Port of Discharging"
-            />
+            <div className="flex-1 flex flex-col gap-2">
+              <NAOutlinedAutoComplete
+                itemList={tempPorts}
+                label="Port of Discharging"
+                onItemSelection={(item) => {
+                  setPodSelections([...podSelections, item]);
+                }}
+              />
+              <MdChipSet>
+                {podSelections.map((item) => (
+                  <MdInputChip
+                    key={faker.string.uuid()}
+                    label={item}
+                    selected
+                    handleTrailingActionFocus={() =>
+                      setPodSelections((prev) => {
+                        return prev.filter((q) => q !== item);
+                      })
+                    }
+                  />
+                ))}
+              </MdChipSet>
+            </div>
           )}
         </div>
 
