@@ -64,7 +64,7 @@ export const menuItems: MenuItemType[] = [
       {
         id: "surcharge",
         name: "Surcharge Search",
-        link: "surchage-search",
+        link: "surcharge",
         subMenu: [],
       },
     ],

@@ -62,7 +62,7 @@ const HeaderSignComponent = () => {
     <div className="flex gap-3 items-center">
       {renderRegisterDialog()}
       <div className="flex">
-        <Link href={`/main/quick/surcharge`}>
+        <Link href={`/quick/surcharge`}>
           <MdNavigationTab
             label="Surcharge Search"
             className={`w-32`}
