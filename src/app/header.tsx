@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { CSSProperties, useState } from "react";
 
 import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
@@ -271,7 +271,10 @@ const HeaderMainComponent = () => {
                 Jsahn@cyberlogitec.com
               </MdTypography>
             </div>
-            <MdMenuItem>Account Profile</MdMenuItem>
+
+            <Link href={"/main/profile"}>
+              <MdMenuItem>My Profile</MdMenuItem>
+            </Link>
             <Link href={"/sign"}>
               <MdMenuItem>Sign Out</MdMenuItem>
             </Link>
