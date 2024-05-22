@@ -89,8 +89,12 @@ export const SurchargeSearchTable = () => {
       id: "rateOfpercentage",
       header: "Rate of Percentage",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue().toFixed(3)}
+        <MdTypography variant="body" size="medium" className="text-right">
+          {info
+            .getValue()
+            .toFixed(3)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </MdTypography>
       ),
     }),
