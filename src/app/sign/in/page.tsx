@@ -37,13 +37,6 @@ export default function SignIn() {
     errorText: "",
   });
 
-  const errorTest = (key: string, errorText: string) => {
-    setErrors({
-      key: key,
-      errorText: errorText,
-    });
-  };
-
   return (
     <div className="h-full flex justify-center items-center">
       {renderRegisterDialog()}

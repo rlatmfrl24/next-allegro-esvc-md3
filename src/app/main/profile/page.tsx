@@ -1,18 +1,22 @@
 "use client";
 
+import classNames from "classnames";
+import { useMemo } from "react";
+import { useRecoilState } from "recoil";
+
 import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { DetailTitle, SubTitle } from "@/app/components/title-components";
+import { SubTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { UserProfileState } from "@/app/store/global.store";
 import styles from "@/app/styles/base.module.css";
 import { MdOutlinedButton, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import classNames from "classnames";
-import { useMemo } from "react";
 
 export default function MyProfilePage() {
+  const [userProfile, setUserProfile] = useRecoilState(UserProfileState);
   const cx = classNames.bind(styles);
   const tempContactOffices = useMemo(() => {
     return Array.from({ length: 10 }, (_, i) => {
@@ -58,7 +62,7 @@ export default function MyProfilePage() {
             <div className="flex gap-4 items-center">
               <NAOutlinedTextField
                 label="User ID"
-                value="Seul-Ki Kim"
+                value={userProfile.userId}
                 readOnly
               />
               <NAOutlinedTextField
@@ -76,44 +80,66 @@ export default function MyProfilePage() {
             <div className="flex gap-4">
               <NAOutlinedTextField
                 label="First Name"
-                value=""
+                value={userProfile.firstName}
                 className="w-96"
+                handleValueChange={(value) => {
+                  setUserProfile({ ...userProfile, firstName: value });
+                }}
               />
               <NAOutlinedTextField
                 label="Last Name"
-                value=""
+                value={userProfile.lastName}
                 className="w-96"
+                handleValueChange={(value) => {
+                  setUserProfile({ ...userProfile, lastName: value });
+                }}
               />
             </div>
             <div className="flex gap-4">
               <NAOutlinedTextField
                 label="Tel No."
                 type="tel"
-                value=""
+                value={userProfile.tel}
                 className="w-96"
+                handleValueChange={(value) => {
+                  setUserProfile({ ...userProfile, tel: value });
+                }}
               />
               <NAOutlinedTextField
                 label="Fax No."
                 type="tel"
-                value=""
+                value={userProfile.fax}
                 className="w-96"
+                handleValueChange={(value) => {
+                  setUserProfile({ ...userProfile, fax: value });
+                }}
               />
             </div>
             <div className="flex gap-4">
               <NAOutlinedTextField
                 label="E-mail"
                 type="email"
-                value=""
+                value={userProfile.email}
                 className="w-96"
+                handleValueChange={(value) => {
+                  setUserProfile({ ...userProfile, email: value });
+                }}
               />
               <NAOutlinedListBox
                 options={["Import", "Export", "Export & Import"]}
                 label="Trade"
-                initialValue="Export"
+                initialValue={userProfile.trade}
+                onSelection={(value) => {
+                  setUserProfile({ ...userProfile, trade: value });
+                }}
               />
               <NAOutlinedListBox
                 options={tempContactOffices}
                 label="Contact Office"
+                initialValue={userProfile.contactOffice}
+                onSelection={(value) => {
+                  setUserProfile({ ...userProfile, contactOffice: value });
+                }}
               />
             </div>
             <div className="flex items-center gap-4">
@@ -123,29 +149,77 @@ export default function MyProfilePage() {
             <div className="flex gap-4 items-center">
               <NAOutlinedTextField
                 label="Company Name"
-                value="Cyberlogitec"
                 readOnly
                 required
                 className="w-96"
+                value={userProfile.companyName}
               />
               <MdOutlinedButton>Company Update</MdOutlinedButton>
             </div>
             <div className="flex gap-4 items-center">
-              <NAOutlinedListBox options={countryOptions} label="Country" />
-              <NAOutlinedAutoComplete itemList={cityOptions} label="City" />
-              <NAOutlinedTextField label="Zip Code" className="w-36" />
-              <NAOutlinedTextField className="flex-1" label="Address" />
+              <NAOutlinedListBox
+                options={countryOptions}
+                label="Country"
+                initialValue={userProfile.address.country}
+                onSelection={(value) => {
+                  setUserProfile({
+                    ...userProfile,
+                    address: { ...userProfile.address, country: value },
+                  });
+                }}
+              />
+              <NAOutlinedAutoComplete
+                itemList={cityOptions}
+                label="City"
+                initialValue={userProfile.address.city}
+                onItemSelection={(value) => {
+                  setUserProfile({
+                    ...userProfile,
+                    address: { ...userProfile.address, city: value },
+                  });
+                }}
+              />
+              <NAOutlinedTextField
+                label="Zip Code"
+                className="w-36"
+                value={userProfile.address.zipCode}
+                handleValueChange={(value) => {
+                  setUserProfile({
+                    ...userProfile,
+                    address: { ...userProfile.address, zipCode: value },
+                  });
+                }}
+              />
+              <NAOutlinedTextField
+                className="flex-1"
+                label="Address"
+                value={userProfile.address.street}
+                handleValueChange={(value) => {
+                  setUserProfile({
+                    ...userProfile,
+                    address: { ...userProfile.address, street: value },
+                  });
+                }}
+              />
             </div>
             <div className="flex gap-4 items-center">
               <NAOutlinedListBox
                 options={companyTypeOptions}
-                label="Company Name"
+                label="Company Type"
+                initialValue={userProfile.companyType}
+                onSelection={(value) => {
+                  setUserProfile({ ...userProfile, companyType: value });
+                }}
               />
               <NAOutlinedListBox
                 options={contractNumberOptions}
                 label="Contract No."
+                initialValue={userProfile.recentBLNumber}
+                onSelection={(value) => {
+                  setUserProfile({ ...userProfile, recentBLNumber: value });
+                }}
               />
-              <MdOutlinedButton>Contract No. Update</MdOutlinedButton>
+              <MdOutlinedButton>Contra ct No. Update</MdOutlinedButton>
             </div>
           </div>
         </div>

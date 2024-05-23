@@ -37,6 +37,8 @@ import {
   MdNavigationTab,
   MdOutlinedButton,
 } from "./util/md3";
+import { useRecoilValue } from "recoil";
+import { UserState } from "./store/global.store";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -185,6 +187,7 @@ const HeaderMainComponent = () => {
   const [currentLanguage, setCurrentLanguage] = useState("English");
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userState = useRecoilValue(UserState);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isUserMenuOpen,
@@ -265,10 +268,10 @@ const HeaderMainComponent = () => {
           >
             <div className="w-full flex flex-col justify-center items-center p-6 gap-4">
               <MdTypography variant="headline" size="small" className="w-fit">
-                Wy_lee
+                {userState.name}
               </MdTypography>
               <MdTypography variant="body" size="medium">
-                Jsahn@cyberlogitec.com
+                {userState.email}
               </MdTypography>
             </div>
 
