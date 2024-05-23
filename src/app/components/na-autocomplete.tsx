@@ -31,6 +31,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { MdTypography } from "./typography";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { getCookie, setCookie } from "cookies-next";
+import { flushSync } from "react-dom";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -70,6 +71,7 @@ export default function NAOutlinedAutoComplete({
   const [defaultValue, setDefaultValue] = useState(initialValue || "");
   const [isListOpen, setIsListOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [maxHeight, setMaxHeight] = useState(maxListHeight);
 
   const recentItems = useMemo(() => {
     return recentCookieKey
@@ -109,9 +111,12 @@ export default function NAOutlinedAutoComplete({
       offset(2),
       shift(),
       size({
-        apply({ rects, elements }) {
+        apply({ rects, elements, availableHeight }) {
           Object.assign(elements.floating.style, {
             width: `${rects.reference.width}px`,
+          });
+          flushSync(() => {
+            setMaxHeight(availableHeight);
           });
         },
       }),
@@ -243,7 +248,7 @@ export default function NAOutlinedAutoComplete({
         >
           <MdElevation />
           <MdList
-            style={{ maxHeight: `${maxListHeight}px` }}
+            style={{ maxHeight: maxHeight - 10 }}
             className="relative overflow-y-auto rounded bg-surfaceContainerLow"
           >
             <OverlayScrollbarsComponent defer>
