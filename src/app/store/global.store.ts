@@ -14,6 +14,9 @@ const UserState = atom({
 const UserProfileState = atom<SignUpFormProps>({
   key: "UserProfileState",
   default: {
+    password: faker.internet.password({
+      length: 10,
+    }),
     userId: faker.internet.userName(),
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
