@@ -283,7 +283,7 @@ export default function MyProfilePage() {
                     setIsContractUpdateDialogOpen(true);
                   }}
                 >
-                  Contra ct No. Update
+                  Contract No. Update
                 </MdOutlinedButton>
               </div>
             </div>
