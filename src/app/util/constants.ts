@@ -167,6 +167,12 @@ export const menuItems: MenuItemType[] = [
         subMenu: [],
       },
       {
+        id: "visibility_summary",
+        name: "Visibility Summary",
+        link: "visibility",
+        subMenu: [],
+      },
+      {
         id: "my",
         name: "My Tracking",
         link: "my",
@@ -257,6 +263,12 @@ export const menuItems: MenuItemType[] = [
         id: "status",
         name: "Detention Status",
         link: "status",
+        subMenu: [],
+      },
+      {
+        id: "freetime",
+        name: "Freetime Request",
+        link: "freetime",
         subMenu: [],
       },
     ],
