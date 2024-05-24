@@ -162,9 +162,9 @@ export const DemDetTable = () => {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("tariff.45", {
-      id: "45",
-      header: "45'",
+    columnHelper.accessor("tariff.HC", {
+      id: "HC",
+      header: "H/C",
       cell: (info) => (
         <MdTypography variant="body" size="medium" className="text-right">
           {info
@@ -175,9 +175,9 @@ export const DemDetTable = () => {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("tariff.HC", {
-      id: "HC",
-      header: "HC'",
+    columnHelper.accessor("tariff.45", {
+      id: "45",
+      header: "45'",
       cell: (info) => (
         <MdTypography variant="body" size="medium" className="text-right">
           {info
