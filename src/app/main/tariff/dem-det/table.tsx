@@ -12,8 +12,8 @@ type DemDetTableProps = {
   tariffType: "Demurrage" | "Detention" | "Combined";
   originType: string;
   destination: string;
-  containerType: "General" | "Dry" | "Reefer" | "Dangerous" | "Awkward";
-  cargoType: "FCL" | "LCL" | "TEMP CNTL";
+  containerType: "Dry" | "Reefer" | "Flat Rack" | "Open Top" | "Tank";
+  cargoType: "General" | "Dangerous" | "Awkward" | "Reefer";
   day: {
     min: number;
     max: number;
@@ -37,13 +37,18 @@ function createDummyDemDetTariff(): DemDetTableProps {
     originType: faker.string.alpha(6).toUpperCase(),
     destination: faker.location.country(),
     containerType: faker.helpers.arrayElement([
-      "General",
       "Dry",
       "Reefer",
+      "Flat Rack",
+      "Open Top",
+      "Tank",
+    ]),
+    cargoType: faker.helpers.arrayElement([
+      "General",
       "Dangerous",
       "Awkward",
+      "Reefer",
     ]),
-    cargoType: faker.helpers.arrayElement(["FCL", "LCL", "TEMP CNTL"]),
     day: {
       min: faker.number.int({ min: 1, max: 10 }),
       max: faker.number.int({ min: 11, max: 20 }),
@@ -190,6 +195,7 @@ export const DemDetTable = () => {
       <div className="flex gap-2">
         <StatusFilterComponent
           statusOptions={["Demurrage", "Detention", "Combined"]}
+          unit="Tariff Type"
           onChange={(selected) => {
             setTableData(
               tempDemDetTariff.filter((tariff) =>
@@ -199,7 +205,8 @@ export const DemDetTable = () => {
           }}
         />
         <StatusFilterComponent
-          statusOptions={["General", "Dry", "Reefer", "Dangerous", "Awkward"]}
+          statusOptions={["Dry", "Reefer", "Flat Rack", "Open Top", "Tank"]}
+          unit="Container Type"
           onChange={(selected) => {
             setTableData(
               tempDemDetTariff.filter((tariff) =>
@@ -209,7 +216,8 @@ export const DemDetTable = () => {
           }}
         />
         <StatusFilterComponent
-          statusOptions={["FCL", "LCL", "TEMP CNTL"]}
+          statusOptions={["General", "Dangerous", "Awkward", "Reefer"]}
+          unit="Cargo Type"
           onChange={(selected) => {
             setTableData(
               tempDemDetTariff.filter((tariff) =>
