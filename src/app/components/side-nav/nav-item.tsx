@@ -51,13 +51,15 @@ const NavItem = ({
     "Detention & Demurrage": <DententionIcon />,
   }[item.name];
 
+  const isCurrentPath = path.every((p, i) => currentPath.includes(p));
+
   return (
     <>
       <div
         key={item.id}
         className={cx(
           styles.navItem,
-          currentPath.includes(path[depth - 1]) && styles["selected"],
+          isCurrentPath && styles["selected"],
           className
         )}
         onClick={() => {

@@ -22,7 +22,7 @@ export default function ImportInvoicePage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Invoice (Inbound)" />
+      <PageTitle title="Invoice (Outbound)" />
       <div className={styles.area}>
         <div className="flex gap-4">
           <DateRangePicker label="Date" />
