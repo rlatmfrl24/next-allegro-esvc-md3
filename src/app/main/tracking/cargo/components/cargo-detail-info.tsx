@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
-import ActualDateIcon from "@/../public/icon_actual_schedule.svg";
-import EstimatedDateIcon from "@/../public/icon_estimate_schedule.svg";
+import ActualDateIcon from "@/../public/icon_schedule_actual.svg";
+import EstimatedDateIcon from "@/../public/icon_schedule_estimate.svg";
 import EmptyContainerImage from "@/../public/image_empty_container_placeholder.svg";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";

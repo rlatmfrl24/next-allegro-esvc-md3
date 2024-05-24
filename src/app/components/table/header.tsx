@@ -23,7 +23,7 @@ export const HeaderComponent = ({
   // const headerStyles = isPinned ? getCommonPinningStyles(header.column) :
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useSortable({
-      id: header.column.id,
+      id: header.id,
     });
 
   const draggableStyles: CSSProperties = {

@@ -56,15 +56,15 @@ export const menuItems: MenuItemType[] = [
     link: "pricing",
     subMenu: [
       {
-        id: "online_quote",
-        name: "Online Quote",
-        link: "online-quote",
+        id: "quote",
+        name: "Instant Quote",
+        link: "quote",
         subMenu: [],
       },
       {
         id: "surcharge",
         name: "Surcharge Search",
-        link: "surchage-search",
+        link: "surcharge",
         subMenu: [],
       },
     ],
@@ -118,15 +118,9 @@ export const menuItems: MenuItemType[] = [
         subMenu: [],
       },
       {
-        id: "template",
-        name: "Shipping Instruction Template",
-        link: "template",
-        subMenu: [],
-      },
-      {
-        id: "draft",
-        name: "Draft N/N B/L",
-        link: "draft",
+        id: "bl_check_outbound",
+        name: "B/L Check (Outbound)",
+        link: "bl-check",
         subMenu: [],
       },
       {
@@ -153,6 +147,12 @@ export const menuItems: MenuItemType[] = [
         link: "log",
         subMenu: [],
       },
+      {
+        id: "invoice_outbound",
+        name: "Invoice (Outbound)",
+        link: "invoice",
+        subMenu: [],
+      },
     ],
   },
   {
@@ -164,6 +164,12 @@ export const menuItems: MenuItemType[] = [
         id: "cargo",
         name: "Cargo Tracking",
         link: "cargo",
+        subMenu: [],
+      },
+      {
+        id: "visibility_summary",
+        name: "Visibility Summary",
+        link: "visibility",
         subMenu: [],
       },
       {
@@ -188,7 +194,7 @@ export const menuItems: MenuItemType[] = [
       {
         id: "surrender",
         name: "BL Surrender Check",
-        link: "surrunder",
+        link: "surrender",
         subMenu: [],
       },
       {
@@ -198,14 +204,14 @@ export const menuItems: MenuItemType[] = [
         subMenu: [],
       },
       {
-        id: "check",
-        name: "B/L Check",
-        link: "check",
+        id: "bl_check_inbound",
+        name: "B/L Check (Inbound)",
+        link: "bl-check",
         subMenu: [],
       },
       {
-        id: "invoice",
-        name: "Invoice",
+        id: "invoice_inbound",
+        name: "Invoice (Inbound)",
         link: "invoice",
         subMenu: [],
       },
@@ -257,6 +263,12 @@ export const menuItems: MenuItemType[] = [
         id: "status",
         name: "Detention Status",
         link: "status",
+        subMenu: [],
+      },
+      {
+        id: "freetime",
+        name: "Freetime Request",
+        link: "freetime",
         subMenu: [],
       },
     ],

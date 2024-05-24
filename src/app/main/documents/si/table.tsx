@@ -19,7 +19,7 @@ import {
 import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
-import { createColumnHelper } from "@tanstack/react-table";
+import { Row, createColumnHelper } from "@tanstack/react-table";
 
 import SIStateChip from "./si-state-chip";
 import ActionButtons from "./table-action-buttons";
@@ -52,33 +52,6 @@ function createDummySITableData(count: number = 10) {
 }
 
 export default function SITable() {
-  function handleSITableRowSelection(newRow: SISearchTableProps) {
-    if (selectedRows.includes(newRow)) {
-      setSelectedRows(selectedRows.filter((selected) => selected !== newRow));
-    } else {
-      if (
-        newRow.blState === SIState.Rejected ||
-        newRow.blState === SIState.Pending ||
-        newRow.blState === SIState.BLIssuePending ||
-        newRow.blState === SIState.BLIssueClosed
-      ) {
-        setSelectedRows([newRow]);
-      } else {
-        if (
-          selectedRows.length > 0 &&
-          (selectedRows[0].blState === SIState.Rejected ||
-            selectedRows[0].blState === SIState.Pending ||
-            selectedRows[0].blState === SIState.BLIssuePending ||
-            selectedRows[0].blState === SIState.BLIssueClosed)
-        ) {
-          setSelectedRows([newRow]);
-        } else {
-          setSelectedRows([...selectedRows, newRow]);
-        }
-      }
-    }
-  }
-
   const tempTableData: SISearchTableProps[] = useMemo(
     () => createDummySITableData(900),
     []
@@ -152,17 +125,7 @@ export default function SITable() {
         />
       ),
       cell: (info) => (
-        <MdCheckbox
-          className="mx-2"
-          checked={
-            // if selectedRows includes the current row, return true
-            selectedRows.includes(info.row.original) ? true : false
-          }
-          onClick={(e) => {
-            e.preventDefault();
-            info.row.toggleSelected();
-          }}
-        />
+        <MdCheckbox className="mx-2" checked={info.row.getIsSelected()} />
       ),
       size: 52,
       minSize: 52,
@@ -411,15 +374,75 @@ export default function SITable() {
         columns={columns}
         data={tableData}
         controlColumns={["select"]}
-        ignoreSelectionColumns={["select"]}
         pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
-        getSelectionRows={(rows) => {
-          if (rows[0]) {
-            handleSITableRowSelection(rows[0]);
+        getSelectionRows={(rows, table) => {
+          if (selectedRows.length >= rows.length) {
+            setSelectedRows(rows);
+          } else {
+            const newSelectedRow = rows.filter((row) => {
+              return !selectedRows.includes(row);
+            })[0];
+
+            if (
+              newSelectedRow.blState === SIState.Rejected ||
+              newSelectedRow.blState === SIState.Pending ||
+              newSelectedRow.blState === SIState.BLIssuePending ||
+              newSelectedRow.blState === SIState.BLIssueClosed
+            ) {
+              setSelectedRows([newSelectedRow]);
+              table.getSelectedRowModel().rows.map((row) => {
+                if (
+                  row.original.requestNumber !== newSelectedRow.requestNumber
+                ) {
+                  row.toggleSelected();
+                }
+              });
+            } else {
+              const newSelectedRows = rows.filter((row) => {
+                return row.blState === SIState.Rejected ||
+                  row.blState === SIState.Pending ||
+                  row.blState === SIState.BLIssuePending ||
+                  row.blState === SIState.BLIssueClosed
+                  ? false
+                  : true;
+              });
+              setSelectedRows(newSelectedRows);
+              table.getRowModel().rows.map((row) => {
+                if (!newSelectedRows.includes(row.original)) {
+                  row.toggleSelected(false);
+                }
+              });
+            }
           }
         }}
-        isSingleSelect
       />
     </>
   );
+
+  function handleSITableRowSelection(newRow: SISearchTableProps) {
+    if (selectedRows.includes(newRow)) {
+      setSelectedRows(selectedRows.filter((selected) => selected !== newRow));
+    } else {
+      if (
+        newRow.blState === SIState.Rejected ||
+        newRow.blState === SIState.Pending ||
+        newRow.blState === SIState.BLIssuePending ||
+        newRow.blState === SIState.BLIssueClosed
+      ) {
+        setSelectedRows([newRow]);
+      } else {
+        if (
+          selectedRows.length > 0 &&
+          (selectedRows[0].blState === SIState.Rejected ||
+            selectedRows[0].blState === SIState.Pending ||
+            selectedRows[0].blState === SIState.BLIssuePending ||
+            selectedRows[0].blState === SIState.BLIssueClosed)
+        ) {
+          setSelectedRows([newRow]);
+        } else {
+          setSelectedRows([...selectedRows, newRow]);
+        }
+      }
+    }
+  }
 }

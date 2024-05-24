@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { CSSProperties, useState } from "react";
 
 import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
@@ -37,6 +37,8 @@ import {
   MdNavigationTab,
   MdOutlinedButton,
 } from "./util/md3";
+import { useRecoilValue } from "recoil";
+import { UserState } from "./store/global.store";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -62,7 +64,7 @@ const HeaderSignComponent = () => {
     <div className="flex gap-3 items-center">
       {renderRegisterDialog()}
       <div className="flex">
-        <Link href={`/main/quick/surcharge`}>
+        <Link href={`/quick/surcharge`}>
           <MdNavigationTab
             label="Surcharge Search"
             className={`w-32`}
@@ -185,6 +187,7 @@ const HeaderMainComponent = () => {
   const [currentLanguage, setCurrentLanguage] = useState("English");
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userState = useRecoilValue(UserState);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isUserMenuOpen,
@@ -265,13 +268,16 @@ const HeaderMainComponent = () => {
           >
             <div className="w-full flex flex-col justify-center items-center p-6 gap-4">
               <MdTypography variant="headline" size="small" className="w-fit">
-                Wy_lee
+                {userState.name}
               </MdTypography>
               <MdTypography variant="body" size="medium">
-                Jsahn@cyberlogitec.com
+                {userState.email}
               </MdTypography>
             </div>
-            <MdMenuItem>Account Profile</MdMenuItem>
+
+            <Link href={"/main/profile"}>
+              <MdMenuItem>My Profile</MdMenuItem>
+            </Link>
             <Link href={"/sign"}>
               <MdMenuItem>Sign Out</MdMenuItem>
             </Link>

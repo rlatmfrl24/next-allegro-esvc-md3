@@ -90,7 +90,7 @@ export const BasicTable = ({
   disableColumns?: string[];
   editableColumns?: string[];
   isSingleSelect?: boolean;
-  getSelectionRows?: (Rows: any[]) => void;
+  getSelectionRows?: (Rows: any[], table: Table<any>) => void;
   ActionComponent?: (table: Table<any>) => React.ReactNode;
   updater?: Dispatch<SetStateAction<any[]>>;
 }) => {
@@ -174,9 +174,14 @@ export const BasicTable = ({
   });
 
   useEffect(() => {
+    setColumnOrder(columns.map((column) => column.id));
+  }, [columns, table]);
+
+  useEffect(() => {
     getSelectionRows &&
       getSelectionRows(
-        Object.keys(selectedRows).map((key) => data[parseInt(key)])
+        Object.keys(selectedRows).map((key) => data[parseInt(key)]),
+        table
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRows]);

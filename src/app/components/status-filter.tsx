@@ -51,9 +51,10 @@ const StatusFilterComponent = ({
   ]);
 
   useEffect(() => {
-    if (onChange && selectedStatus !== statusOptions) {
-      onChange(selectedStatus);
-    }
+    // if (onChange && selectedStatus !== statusOptions) {
+    //   onChange(selectedStatus);
+    // }
+    onChange?.(selectedStatus);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatus]);
 

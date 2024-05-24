@@ -10,7 +10,7 @@ export default function OnlineQuote() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Online Quote" />
+      <PageTitle title="Instant Quote" />
       <Condition
         onSearch={() => {
           router.push("/main/pricing/online-quote/result");

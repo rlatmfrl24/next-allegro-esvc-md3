@@ -38,7 +38,7 @@ export const SubTitle = ({
   return (
     <div className={`flex items-center gap-2 ${className ? className : ""}`}>
       <div className="w-1 h-4 bg-primary"></div>
-      <MdTypography variant="body" size="large">
+      <MdTypography variant="body" size="large" className="whitespace-nowrap">
         {title}
       </MdTypography>
     </div>

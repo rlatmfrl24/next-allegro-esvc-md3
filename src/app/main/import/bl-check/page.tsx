@@ -7,7 +7,7 @@ import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 import { useState } from "react";
 import BLCheckResultTable from "./reseult-table";
 import { MdOutlinedButton } from "@/app/util/md3";
-import SurchargeCodeInquiry from "../surcharge-code-inquiry";
+import SurchargeCodeInquiry from "../../documents/surcharge-code-inquiry";
 
 export default function BLCheck() {
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
@@ -17,7 +17,7 @@ export default function BLCheck() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex items-center justify-between">
-        <PageTitle title="B/L Check" />
+        <PageTitle title="B/L Check (Inbound)" />
         <MdOutlinedButton
           onClick={() => {
             setIsSurchargeCodeInquiryOpen(true);
