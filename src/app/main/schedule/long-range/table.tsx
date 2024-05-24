@@ -2,13 +2,13 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useEffect, useMemo, useState } from "react";
 import { max } from "lodash";
 
-import ActualDateIcon from "@/../public/icon_actual_schedule.svg";
+import ActualDateIcon from "@/../public/icon_schedule_actual.svg";
 import EastIcon from "@/../public/icon_direction_east.svg";
 import NorthIcon from "@/../public/icon_direction_north.svg";
 import SouthIcon from "@/../public/icon_direction_south.svg";
 import WestIcon from "@/../public/icon_direction_west.svg";
 import RemarkIcon from "@/../public/icon_long_range_remark.svg";
-import LongRangeDateIcon from "@/../public/icon_long_range_schedule.svg";
+import LongRangeDateIcon from "@/../public/icon_schedule_long_range.svg";
 
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdIconButton } from "@/app/util/md3";

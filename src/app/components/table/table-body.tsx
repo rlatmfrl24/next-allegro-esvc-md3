@@ -3,7 +3,6 @@ import {
   Dispatch,
   memo,
   SetStateAction,
-  useEffect,
   useRef,
   useState,
 } from "react";
@@ -11,7 +10,6 @@ import {
 import { Cell, flexRender, Row, Table } from "@tanstack/react-table";
 
 import { getCommonPinningStyles } from "./util";
-import { MdOutlinedTextField } from "@/app/util/md3";
 
 export const TableBody = ({
   table,
@@ -20,7 +18,6 @@ export const TableBody = ({
   ignoreSelectionColumns,
   disableColumns,
   editableColumns,
-  onCellEdit,
 }: {
   table: Table<any>;
   selectedCell?: Cell<any, unknown> | null;
@@ -28,7 +25,6 @@ export const TableBody = ({
   ignoreSelectionColumns?: string[];
   disableColumns?: string[];
   editableColumns?: string[];
-  onCellEdit?: (rowId: string, columnId: string, value: string) => void;
 }) => {
   const inputRef = useRef<any>(null);
   const [hoverInfo, setHoverInfo] = useState<{
@@ -128,21 +124,34 @@ export const TableBody = ({
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ) : (
-                <td className="h-full relative">
+                <td key={cell.id} className="h-full relative">
                   <div className="absolute flex top-0 w-full h-full left-0 p-px">
                     <input
                       autoFocus
                       ref={inputRef}
-                      className="flex-1 px-4 outline-primary"
+                      className="flex-1 px-4 outline-primary max-w-full"
+                      type={
+                        typeof cell.getContext().getValue() === "number"
+                          ? "number"
+                          : "text"
+                      }
                       defaultValue={
                         (cell.getContext().getValue() as string) || ""
                       }
                       onBlur={() => {
-                        onCellEdit?.(
-                          row.id,
-                          cell.column.id,
-                          inputRef.current.value
-                        );
+                        if (typeof cell.getContext().getValue() === "number") {
+                          table.options.meta?.updateData(
+                            parseInt(row.id),
+                            cell.column.id,
+                            parseFloat(inputRef.current.value)
+                          );
+                        } else {
+                          table.options.meta?.updateData(
+                            parseInt(row.id),
+                            cell.column.id,
+                            inputRef.current.value
+                          );
+                        }
                         setCurrentEditCell(null);
                       }}
                     />

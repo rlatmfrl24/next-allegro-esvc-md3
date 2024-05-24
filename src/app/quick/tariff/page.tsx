@@ -77,6 +77,7 @@ export default function TariffPage() {
   const cx = classNames.bind(styles);
 
   const tempData = Array.from({ length: 900 }, () => createDummyTariff());
+  const [originCoverage, setOriginCoverage] = useState<string>("");
   const [tableData, setTableData] = useState<TariffProps[]>(tempData);
   const [searchType, setSearchType] = useState<"outbound" | "inbound">(
     "outbound"
@@ -251,7 +252,13 @@ export default function TariffPage() {
             </MdTypography>
           </div>
           <div className="flex gap-4">
-            <NAOutlinedTextField label="Origin Coverage" value="" />
+            <NAOutlinedTextField
+              label="Origin Coverage"
+              value={originCoverage}
+              handleValueChange={(valule) => {
+                setOriginCoverage(valule);
+              }}
+            />
             <NAOutlinedListBox
               label="Destination"
               initialValue="All"

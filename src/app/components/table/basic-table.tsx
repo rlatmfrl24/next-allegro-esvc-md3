@@ -174,6 +174,10 @@ export const BasicTable = ({
   });
 
   useEffect(() => {
+    setColumnOrder(columns.map((column) => column.id));
+  }, [columns, table]);
+
+  useEffect(() => {
     getSelectionRows &&
       getSelectionRows(
         Object.keys(selectedRows).map((key) => data[parseInt(key)]),

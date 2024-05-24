@@ -1,8 +1,8 @@
 import { DateTime } from "luxon";
 import { useState } from "react";
 
-import ActualScheduleIcon from "@/../public/icon_actual_schedule.svg";
-import EstimateScheduleIcon from "@/../public/icon_estimate_schedule.svg";
+import ActualScheduleIcon from "@/../public/icon_schedule_actual.svg";
+import EstimateScheduleIcon from "@/../public/icon_schedule_estimate.svg";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import {
