@@ -56,9 +56,9 @@ export const menuItems: MenuItemType[] = [
     link: "pricing",
     subMenu: [
       {
-        id: "online_quote",
-        name: "Online Quote",
-        link: "online-quote",
+        id: "quote",
+        name: "Instant Quote",
+        link: "quote",
         subMenu: [],
       },
       {
@@ -115,12 +115,6 @@ export const menuItems: MenuItemType[] = [
         id: "si",
         name: "Shipping Instruction",
         link: "si",
-        subMenu: [],
-      },
-      {
-        id: "template",
-        name: "Shipping Instruction Template",
-        link: "template",
         subMenu: [],
       },
       {
