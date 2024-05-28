@@ -12,6 +12,7 @@ import classNames from "classnames/bind";
 import { VesselSubscription } from "./vessel";
 import { Visibility } from "@tanstack/react-table";
 import { VisibilitySubscription } from "./visibility";
+import { ReportSubscription } from "./report";
 
 export default function SubscriptionPage() {
   const [currentTabe, setCurrentTab] = useState("Documentation");
@@ -53,7 +54,7 @@ export default function SubscriptionPage() {
             Documentation: <DocumentationSubscription />,
             Vessel: <VesselSubscription />,
             Schedule: "Schedule",
-            Report: "Report",
+            Report: <ReportSubscription />,
             Visibility: <VisibilitySubscription />,
           }[currentTabe]
         }
