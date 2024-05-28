@@ -210,11 +210,13 @@ const HeaderMainComponent = () => {
 
   return (
     <div className="flex gap-3">
-      <MdIconButton>
-        <MdIcon>
-          <NotificationsNoneOutlinedIcon />
-        </MdIcon>
-      </MdIconButton>
+      <Link href={"/main/subscription"}>
+        <MdIconButton>
+          <MdIcon>
+            <NotificationsNoneOutlinedIcon />
+          </MdIcon>
+        </MdIconButton>
+      </Link>
       <div className="relative">
         <MdIconButton
           id="language-anchor"
