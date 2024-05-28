@@ -87,6 +87,44 @@ export const VisibilitySubscription = () => {
               <InfoOutlined fontSize="small" className="mr-1" />
               To enter multiple values, separated by a comma or space.
             </MdTypography>
+            <div className="flex gap-2">
+              <CycleSelector label="Sending Cycle" />
+              <DividerComponent orientation="vertical" />
+              <div className="flex-1">
+                <MdOutlinedTextField
+                  label="Recipients"
+                  className="w-full mb-4"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (e.currentTarget.value === "") {
+                        return;
+                      }
+                      if (eventRecipients.includes(e.currentTarget.value)) {
+                        return;
+                      }
+                      setEventRecipients([
+                        ...eventRecipients,
+                        e.currentTarget.value,
+                      ]);
+                      e.currentTarget.value = "";
+                    }
+                  }}
+                />
+                <MdChipSet>
+                  {eventRecipients.map((recipient, index) => (
+                    <RemovableChip
+                      key={recipient}
+                      label={recipient}
+                      onRemove={() => {
+                        setEventRecipients((prev) =>
+                          prev.filter((_, i) => i !== index)
+                        );
+                      }}
+                    />
+                  ))}
+                </MdChipSet>
+              </div>
+            </div>
           </div>
         </SubscriptionItemContainer>
         <SubscriptionItemContainer name="Vessel Schedule Updates">
@@ -102,6 +140,44 @@ export const VisibilitySubscription = () => {
               <InfoOutlined fontSize="small" className="mr-1" />
               To enter multiple values, separated by a comma or space.
             </MdTypography>
+            <div className="flex gap-2">
+              <CycleSelector label="Sending Cycle" />
+              <DividerComponent orientation="vertical" />
+              <div className="flex-1">
+                <MdOutlinedTextField
+                  label="Recipients"
+                  className="w-full mb-4"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (e.currentTarget.value === "") {
+                        return;
+                      }
+                      if (vesselRecipients.includes(e.currentTarget.value)) {
+                        return;
+                      }
+                      setVesselRecipients([
+                        ...vesselRecipients,
+                        e.currentTarget.value,
+                      ]);
+                      e.currentTarget.value = "";
+                    }
+                  }}
+                />
+                <MdChipSet>
+                  {vesselRecipients.map((recipient, index) => (
+                    <RemovableChip
+                      key={recipient}
+                      label={recipient}
+                      onRemove={() => {
+                        setVesselRecipients((prev) =>
+                          prev.filter((_, i) => i !== index)
+                        );
+                      }}
+                    />
+                  ))}
+                </MdChipSet>
+              </div>
+            </div>
           </div>
         </SubscriptionItemContainer>
       </div>
