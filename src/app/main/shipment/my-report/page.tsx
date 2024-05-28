@@ -15,6 +15,7 @@ import { faker } from "@faker-js/faker";
 import { MoreVert } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
 type MyReportTableProps = {
@@ -54,6 +55,7 @@ export default function MyReportPage() {
     () => Array.from({ length: 50 }, () => createMyReportData()),
     []
   );
+  const router = useRouter();
   const columnHelper = createColumnHelper<MyReportTableProps>();
   const columnDefs = [
     columnHelper.display({
@@ -185,7 +187,13 @@ export default function MyReportPage() {
     <div aria-label="container" className={styles.container}>
       <div className="flex justify-between">
         <PageTitle title="My Report" />
-        <MdFilledButton>Create New Report</MdFilledButton>
+        <MdFilledButton
+          onClick={() => {
+            router.push("/main/shipment/my-report/create");
+          }}
+        >
+          Create New Report
+        </MdFilledButton>
       </div>
       <div className={styles.area}>
         <BasicTable
