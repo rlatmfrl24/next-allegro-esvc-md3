@@ -9,7 +9,10 @@ import { MdChipSet, MdOutlinedTextField, MdSwitch } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { InfoOutlined } from "@mui/icons-material";
 
-import { CycleSelector, SubscriptionItemContainer } from "./component";
+import {
+  CycleSelector,
+  SubscriptionItemContainer,
+} from "./components/component";
 
 type ReportSubscriptionProps = {
   origin: string;

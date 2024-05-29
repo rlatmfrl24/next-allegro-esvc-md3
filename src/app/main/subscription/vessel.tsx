@@ -1,6 +1,6 @@
 import { MdTypography } from "@/app/components/typography";
 import { InfoOutlined } from "@mui/icons-material";
-import { SimpleSubscriptionItem } from "./component";
+import { SimpleSubscriptionItem } from "./components/component";
 
 export const VesselSubscription = () => {
   return (

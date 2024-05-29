@@ -1,6 +1,9 @@
 import { MdTypography } from "@/app/components/typography";
 import { InfoOutlined } from "@mui/icons-material";
-import { CycleSelector, SubscriptionItemContainer } from "./component";
+import {
+  CycleSelector,
+  SubscriptionItemContainer,
+} from "./components/component";
 import {
   MdChipSet,
   MdOutlinedButton,
@@ -9,11 +12,20 @@ import {
 import { DividerComponent } from "@/app/components/divider";
 import { useState } from "react";
 import { RemovableChip } from "@/app/components/removable-chip";
+import {
+  EventDialog,
+  SummaryDialog,
+  VesselDialog,
+} from "./components/visibility-dialog";
 
 export const VisibilitySubscription = () => {
   const [summaryRecipients, setSummaryRecipients] = useState<string[]>([]);
   const [eventRecipients, setEventRecipients] = useState<string[]>([]);
   const [vesselRecipients, setVesselRecipients] = useState<string[]>([]);
+
+  const [isSummaryDialogOpen, setIsSummaryDialogOpen] = useState(false);
+  const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
+  const [isVesselDialogOpen, setIsVesselDialogOpen] = useState(false);
 
   return (
     <div className="flex flex-col">
@@ -23,7 +35,13 @@ export const VisibilitySubscription = () => {
       <div className="flex flex-col gap-6 mt-6">
         <SubscriptionItemContainer name="Visibility Summary">
           <div slot="actions">
-            <MdOutlinedButton>Setting</MdOutlinedButton>
+            <MdOutlinedButton
+              onClick={() => {
+                setIsSummaryDialogOpen(true);
+              }}
+            >
+              Setting
+            </MdOutlinedButton>
           </div>
           <div slot="content" className="p-6 flex flex-col">
             <MdTypography
@@ -76,7 +94,13 @@ export const VisibilitySubscription = () => {
         </SubscriptionItemContainer>
         <SubscriptionItemContainer name="Event Notification">
           <div slot="actions">
-            <MdOutlinedButton>Setting</MdOutlinedButton>
+            <MdOutlinedButton
+              onClick={() => {
+                setIsEventDialogOpen(true);
+              }}
+            >
+              Setting
+            </MdOutlinedButton>
           </div>
           <div slot="content" className="p-6 flex flex-col">
             <MdTypography
@@ -129,7 +153,13 @@ export const VisibilitySubscription = () => {
         </SubscriptionItemContainer>
         <SubscriptionItemContainer name="Vessel Schedule Updates">
           <div slot="actions">
-            <MdOutlinedButton>Setting</MdOutlinedButton>
+            <MdOutlinedButton
+              onClick={() => {
+                setIsVesselDialogOpen(true);
+              }}
+            >
+              Setting
+            </MdOutlinedButton>
           </div>
           <div slot="content" className="p-6 flex flex-col">
             <MdTypography
@@ -181,6 +211,24 @@ export const VisibilitySubscription = () => {
           </div>
         </SubscriptionItemContainer>
       </div>
+      {isSummaryDialogOpen && (
+        <SummaryDialog
+          open={isSummaryDialogOpen}
+          onOpenChange={setIsSummaryDialogOpen}
+        />
+      )}
+      {isEventDialogOpen && (
+        <EventDialog
+          open={isEventDialogOpen}
+          onOpenChange={setIsEventDialogOpen}
+        />
+      )}
+      {isVesselDialogOpen && (
+        <VesselDialog
+          open={isVesselDialogOpen}
+          onOpenChange={setIsVesselDialogOpen}
+        />
+      )}
     </div>
   );
 };

@@ -1,5 +1,8 @@
 import { MdTypography } from "@/app/components/typography";
-import { CycleSelector, SubscriptionItemContainer } from "./component";
+import {
+  CycleSelector,
+  SubscriptionItemContainer,
+} from "./components/component";
 import {
   MdChipSet,
   MdDialog,
@@ -31,6 +34,7 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { basicDropdownStyles } from "@/app/util/constants";
+import { AddLongRangeScheduleDialog } from "./components/shedule-dialog";
 
 type ScheduleSubscriptionProps = {
   origin: string;
@@ -99,6 +103,14 @@ export const ScheduleSubscription = () => {
   const [longRangeSubscriptions, setLongRangeSubscriptions] = useState(
     tempLongRangeScheduleSubscriptions
   );
+
+  const [isAddPtpScheduleDialogOpen, setIsAddPtpScheduleDialogOpen] =
+    useState(false);
+
+  const [
+    isAddLongRangeScheduleDialogOpen,
+    setIsAddLongRangeScheduleDialogOpen,
+  ] = useState(false);
 
   return (
     <div className="flex flex-col gap-6">
@@ -179,12 +191,22 @@ export const ScheduleSubscription = () => {
       >
         <div slot="content" className="flex flex-col p-4 gap-4">
           <div className="flex items-center justify-between">
-            <MdTextButton>
+            <MdTextButton
+              onClick={() => {
+                setIsAddLongRangeScheduleDialogOpen(true);
+              }}
+            >
               <MdIcon slot="icon">
                 <Add fontSize="small" />
               </MdIcon>
               Add Schedule
             </MdTextButton>
+            {isAddLongRangeScheduleDialogOpen && (
+              <AddLongRangeScheduleDialog
+                open={isAddLongRangeScheduleDialogOpen}
+                onOpenChange={setIsAddLongRangeScheduleDialogOpen}
+              />
+            )}
             <MdTypography
               variant="body"
               size="medium"
