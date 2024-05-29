@@ -320,8 +320,15 @@ export default function ShipmentReportPage() {
             </MdTypography>
             {listOption === "customer" ? (
               <NAOutlinedMultiListBox
-                options={["Shipper", "Consignee", "Notify", "Fowarder"]}
+                options={[
+                  "Shipper",
+                  "Consignee",
+                  "Notify",
+                  "Fowarder",
+                  "Also Notify",
+                ]}
                 label="By Customer"
+                unit="Customer"
               />
             ) : (
               <NAOutlinedListBox options={tempContracts} label="By Contract" />

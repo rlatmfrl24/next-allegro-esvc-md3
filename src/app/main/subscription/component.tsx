@@ -48,7 +48,9 @@ export const SubscriptionItemContainer = (props: {
   children?: React.ReactNode;
   isSwitchOn?: boolean;
   onSwitchChange?: (isSwitchOn: boolean) => void;
+  isExpandalbe?: boolean;
 }) => {
+  const [isExpanded, setIsExpanded] = useState(true);
   const childrenList = React.Children.toArray(props.children);
   const content = childrenList.filter(
     (child) => (child as React.ReactElement).props?.slot === "content"
@@ -60,7 +62,16 @@ export const SubscriptionItemContainer = (props: {
 
   return (
     <div className="flex flex-col rounded-lg border-2 border-secondaryContainer">
-      <div className="flex bg-secondaryContainer px-4 py-6 items-center">
+      <div
+        className={`flex bg-secondaryContainer px-4 py-6 items-center ${
+          props.isExpandalbe ? "cursor-pointer" : ""
+        }`}
+        onClick={() => {
+          if (props.isExpandalbe) {
+            setIsExpanded(!isExpanded);
+          }
+        }}
+      >
         <MdTypography variant="body" size="large" prominent className="flex-1">
           {props.name}
         </MdTypography>
@@ -74,14 +85,28 @@ export const SubscriptionItemContainer = (props: {
         </MdTypography>
         <MdSwitch
           selected={props.isSwitchOn}
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             props.onSwitchChange?.(
               props.isSwitchOn !== undefined ? !props.isSwitchOn : true
             );
           }}
         />
+        {props.isExpandalbe && (
+          <MdIcon className="ml-4">
+            <ArrowDropDown
+              className={`
+              transform transition-transform animate-transform
+              ${isExpanded ? "rotate-0" : "rotate-180"}
+            `}
+            />
+          </MdIcon>
+        )}
       </div>
-      {content}
+      {props.isExpandalbe === true && isExpanded && content}
+      {(props.isExpandalbe === undefined || props.isExpandalbe === false) &&
+        content}
     </div>
   );
 };
@@ -138,6 +163,7 @@ export const CycleSelector = (props: {
             }`}
             onClick={() => {
               setSelectedWeek(option);
+              setIsOptionOpen(false);
             }}
           >
             <MdRippleEffect />
@@ -162,6 +188,7 @@ export const CycleSelector = (props: {
               }`}
               onClick={() => {
                 setSelectedDay(option.toString());
+                setIsOptionOpen(false);
               }}
             >
               <MdRippleEffect />

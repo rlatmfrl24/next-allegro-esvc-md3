@@ -1,5 +1,4 @@
 "use client";
-
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import {
@@ -10,9 +9,9 @@ import { useState } from "react";
 import { DocumentationSubscription } from "./documentation";
 import classNames from "classnames/bind";
 import { VesselSubscription } from "./vessel";
-import { Visibility } from "@tanstack/react-table";
 import { VisibilitySubscription } from "./visibility";
 import { ReportSubscription } from "./report";
+import { ScheduleSubscription } from "./schedule";
 
 export default function SubscriptionPage() {
   const [currentTabe, setCurrentTab] = useState("Documentation");
@@ -53,7 +52,7 @@ export default function SubscriptionPage() {
           {
             Documentation: <DocumentationSubscription />,
             Vessel: <VesselSubscription />,
-            Schedule: "Schedule",
+            Schedule: <ScheduleSubscription />,
             Report: <ReportSubscription />,
             Visibility: <VisibilitySubscription />,
           }[currentTabe]

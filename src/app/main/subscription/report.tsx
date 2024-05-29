@@ -1,14 +1,15 @@
-import { MdTypography } from "@/app/components/typography";
-import { InfoOutlined } from "@mui/icons-material";
-import { CycleSelector, SubscriptionItemContainer } from "./component";
-import { faker } from "@faker-js/faker";
+import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
+
 import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { MdChipSet, MdOutlinedTextField, MdSwitch } from "@/app/util/md3";
 import { RemovableChip } from "@/app/components/removable-chip";
-import { DateTime } from "luxon";
-import { isEqual } from "lodash";
+import { MdTypography } from "@/app/components/typography";
+import { MdChipSet, MdOutlinedTextField, MdSwitch } from "@/app/util/md3";
+import { faker } from "@faker-js/faker";
+import { InfoOutlined } from "@mui/icons-material";
+
+import { CycleSelector, SubscriptionItemContainer } from "./component";
 
 type ReportSubscriptionProps = {
   origin: string;
@@ -74,11 +75,6 @@ export const ReportSubscription = () => {
     return reportDataSet.some((report) => report.useEmailService);
   }, [reportDataSet]);
 
-  useEffect(() => {
-    console.log(reportDataSet);
-    console.log(isContainerSwithOn);
-  }, [isContainerSwithOn, reportDataSet]);
-
   return (
     <div className="flex flex-col">
       <MdTypography variant="title" size="large" className="mt-2">
@@ -94,7 +90,6 @@ export const ReportSubscription = () => {
         name="Report"
         isSwitchOn={isContainerSwithOn}
         onSwitchChange={(val) => {
-          // setContainerSwitch(val);
           setReportDataSet((prev) =>
             prev.map((report) => ({ ...report, useEmailService: val }))
           );

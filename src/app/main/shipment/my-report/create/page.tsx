@@ -95,6 +95,7 @@ export default function CreateNewReport() {
                 "Forwarder",
                 "Also Notify",
               ]}
+              unit="Customer"
             />
           ) : (
             <NAOutlinedListBox options={tempContracts} label="By Contract" />
