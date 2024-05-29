@@ -2,8 +2,13 @@ import { MdTypography } from "@/app/components/typography";
 import { CycleSelector, SubscriptionItemContainer } from "./component";
 import {
   MdChipSet,
+  MdDialog,
+  MdElevatedCard,
+  MdFilledButton,
   MdIcon,
   MdIconButton,
+  MdList,
+  MdListItem,
   MdOutlinedTextField,
   MdSwitch,
   MdTextButton,
@@ -14,6 +19,18 @@ import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
 import { DividerComponent } from "@/app/components/divider";
 import { RemovableChip } from "@/app/components/removable-chip";
+import {
+  autoUpdate,
+  flip,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from "@floating-ui/react";
+import { basicDropdownStyles } from "@/app/util/constants";
 
 type ScheduleSubscriptionProps = {
   origin: string;
@@ -134,6 +151,11 @@ export const ScheduleSubscription = () => {
                   });
                 });
               }}
+              onDelete={() => {
+                setPtpSubscriptions((prev) => {
+                  return prev.filter((_, i) => i !== index);
+                });
+              }}
             />
           ))}
         </div>
@@ -186,6 +208,11 @@ export const ScheduleSubscription = () => {
                   });
                 });
               }}
+              onDelete={() => {
+                setLongRangeSubscriptions((prev) => {
+                  return prev.filter((_, i) => i !== index);
+                });
+              }}
             />
           ))}
         </div>
@@ -197,8 +224,32 @@ export const ScheduleSubscription = () => {
 const ScheduleSubscriptionItem = (props: {
   data: ScheduleSubscriptionProps;
   onChanges?: (data: ScheduleSubscriptionProps) => void;
+  onDelete?: () => void;
 }) => {
   const [recipients, setRecipients] = useState(props.data.recipients);
+  const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isActionMenuOpen,
+    onOpenChange: setIsActionMenuOpen,
+    placement: "bottom-end",
+    middleware: [flip(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(
+    context,
+    basicDropdownStyles
+  );
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useClick(context),
+    useDismiss(context),
+    useRole(context, {
+      role: "menu",
+    }),
+  ]);
 
   return (
     <div className="border-2 border-secondaryContainer rounded-lg flex">
@@ -297,11 +348,61 @@ const ScheduleSubscriptionItem = (props: {
             {props.data.lastSendingDate.toFormat("yyyy-MM-dd HH:mm")}
           </MdTypography>
         </div>
-        <MdIconButton>
+        <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
           <MdIcon>
             <MoreVert />
           </MdIcon>
         </MdIconButton>
+        {isMounted && (
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            {...getFloatingProps()}
+            className="z-10"
+          >
+            <MdElevatedCard style={transitionStyles} className="py-2">
+              <MdListItem
+                type="button"
+                onClick={() => {
+                  setIsActionMenuOpen(false);
+                  setIsConfirmDialogOpen(true);
+                }}
+              >
+                Delete
+              </MdListItem>
+            </MdElevatedCard>
+          </div>
+        )}
+        <MdDialog
+          open={isConfirmDialogOpen}
+          closed={() => setIsConfirmDialogOpen(false)}
+        >
+          <div slot="headline">
+            Are you sure you want to delete this Schedule?
+          </div>
+          <div slot="content">
+            {props.data.origin} / {props.data.destination}
+          </div>
+          <div slot="actions">
+            <MdTextButton
+              onClick={() => {
+                setIsConfirmDialogOpen(false);
+              }}
+            >
+              Cancel
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                if (props.onDelete) {
+                  props.onDelete();
+                }
+                setIsConfirmDialogOpen(false);
+              }}
+            >
+              Delete
+            </MdFilledButton>
+          </div>
+        </MdDialog>
       </div>
     </div>
   );
