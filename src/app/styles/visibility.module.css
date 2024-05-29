@@ -1,0 +1,3 @@
+.inner-dialog-box {
+  @apply border border-outlineVariant px-6 py-4 rounded-xl;
+}
