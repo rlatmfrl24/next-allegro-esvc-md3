@@ -1,15 +1,32 @@
 import { MdTypography } from "@/app/components/typography";
-import { MdDialog, MdFilledButton, MdOutlinedButton } from "@/app/util/md3";
-import { Dispatch, SetStateAction } from "react";
+import {
+  MdCheckbox,
+  MdDialog,
+  MdFilledButton,
+  MdOutlinedButton,
+} from "@/app/util/md3";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "@/app/styles/visibility.module.css";
 import classNames from "classnames";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
+import { summaryReportItemOptions } from "./util";
+import { difference } from "lodash";
+import SubIndicator from "@/../public/icon_subsum_indicator.svg";
 
 export const SummaryDialog = (props: {
   open: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
 }) => {
   const cx = classNames.bind(styles);
+
+  const [checkedItems, setCheckedItems] = useState({
+    "Basic Information": [] as string[],
+    "Vessel Information": [] as string[],
+  });
+
+  useEffect(() => {
+    console.log(checkedItems);
+  }, [checkedItems]);
 
   return (
     <MdDialog
@@ -39,6 +56,103 @@ export const SummaryDialog = (props: {
           <MdTypography variant="body" size="large" prominent>
             Reports
           </MdTypography>
+          <div className="grid grid-cols-4 gap-4 mt-4">
+            {Object.keys(summaryReportItemOptions).map((key) => (
+              <div key={key} className="flex flex-col gap-4">
+                <MdTypography
+                  tag="label"
+                  variant="label"
+                  size="large"
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <MdCheckbox
+                    checked={
+                      checkedItems[key as keyof typeof checkedItems].length ===
+                      summaryReportItemOptions[
+                        key as keyof typeof summaryReportItemOptions
+                      ].length
+                    }
+                    indeterminate={
+                      checkedItems[key as keyof typeof checkedItems].length >
+                        0 &&
+                      checkedItems[key as keyof typeof checkedItems].length <
+                        summaryReportItemOptions[
+                          key as keyof typeof summaryReportItemOptions
+                        ].length
+                    }
+                    onClick={() => {
+                      const diff = difference(
+                        summaryReportItemOptions[
+                          key as keyof typeof summaryReportItemOptions
+                        ],
+                        checkedItems[key as keyof typeof checkedItems]
+                      );
+                      if (diff.length === 0) {
+                        setCheckedItems({
+                          ...checkedItems,
+                          [key]: [],
+                        });
+                        return;
+                      } else {
+                        setCheckedItems({
+                          ...checkedItems,
+                          [key]:
+                            summaryReportItemOptions[
+                              key as keyof typeof summaryReportItemOptions
+                            ],
+                        });
+                      }
+                    }}
+                  />
+                  {key}
+                </MdTypography>
+                {summaryReportItemOptions[
+                  key as keyof typeof summaryReportItemOptions
+                ].map((option) => (
+                  <div key={option} className="flex gap-3 ml-1">
+                    <SubIndicator />
+                    <MdTypography
+                      variant="label"
+                      size="large"
+                      tag="label"
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <MdCheckbox
+                        checked={checkedItems[
+                          key as keyof typeof checkedItems
+                        ].includes(option)}
+                        onClick={() => {
+                          if (
+                            checkedItems[
+                              key as keyof typeof checkedItems
+                            ].includes(option)
+                          ) {
+                            setCheckedItems({
+                              ...checkedItems,
+                              [key]: checkedItems[
+                                key as keyof typeof checkedItems
+                              ].filter((item) => item !== option),
+                            });
+                          } else {
+                            setCheckedItems({
+                              ...checkedItems,
+                              [key]: [
+                                ...checkedItems[
+                                  key as keyof typeof checkedItems
+                                ],
+                                option,
+                              ],
+                            });
+                          }
+                        }}
+                      />
+                      {option}
+                    </MdTypography>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div slot="actions">
@@ -107,14 +221,14 @@ export const EventDialog = (props: {
       <div slot="actions">
         <MdOutlinedButton
           onClick={() => {
-            props.onOpenChange;
+            props.onOpenChange(false);
           }}
         >
           Cancel
         </MdOutlinedButton>
         <MdFilledButton
           onClick={() => {
-            props.onOpenChange;
+            props.onOpenChange(false);
           }}
         >
           Save
@@ -171,14 +285,14 @@ export const VesselDialog = (props: {
       <div slot="actions">
         <MdOutlinedButton
           onClick={() => {
-            props.onOpenChange;
+            props.onOpenChange(false);
           }}
         >
           Cancel
         </MdOutlinedButton>
         <MdFilledButton
           onClick={() => {
-            props.onOpenChange;
+            props.onOpenChange(false);
           }}
         >
           Save

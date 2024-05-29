@@ -34,7 +34,7 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { basicDropdownStyles } from "@/app/util/constants";
-import { AddLongRangeScheduleDialog } from "./components/shedule-dialog";
+import { AddLongRangeScheduleDialog } from "./components/schedule-dialog";
 
 type ScheduleSubscriptionProps = {
   origin: string;

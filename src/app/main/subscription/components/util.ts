@@ -1,0 +1,25 @@
+export const summaryReportItemOptions = {
+  "Basic Information": [
+    "Bill of Landing No.",
+    "Booking No.",
+    "Container No.",
+    "Container Type/Size",
+    "Current Status",
+    "Event Date/Time",
+    "Event Location",
+    "Seal No.",
+    "Package",
+    "P/O No.",
+    "P/O No. By Container No.",
+    "Booking Reference No.",
+    "SCAC",
+    "VGM",
+    "VGM Unit",
+    "VGM Submission Date",
+  ],
+  "Vessel Information": [
+    "Vessel Schedule",
+    "Cargo Discharging Date",
+    "Estimated Vessel Berthing at POD",
+  ],
+};
