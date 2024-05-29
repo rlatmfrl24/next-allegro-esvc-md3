@@ -20,7 +20,7 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { ArrowDropDown } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 export const SimpleSubscriptionItem = (props: { name: string }) => {
@@ -46,10 +46,10 @@ export const SimpleSubscriptionItem = (props: { name: string }) => {
 export const SubscriptionItemContainer = (props: {
   name: string;
   children?: React.ReactNode;
+  isSwitchOn?: boolean;
+  onSwitchChange?: (isSwitchOn: boolean) => void;
 }) => {
   const childrenList = React.Children.toArray(props.children);
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
-
   const content = childrenList.filter(
     (child) => (child as React.ReactElement).props?.slot === "content"
   );
@@ -70,11 +70,14 @@ export const SubscriptionItemContainer = (props: {
           size="medium"
           className="text-outline mr-2 ml-4"
         >
-          {isSwitchOn ? "Subscribe" : "Unsubscribe"}
+          {props.isSwitchOn ? "Subscribe" : "Unsubscribe"}
         </MdTypography>
         <MdSwitch
+          selected={props.isSwitchOn}
           onClick={() => {
-            setIsSwitchOn(!isSwitchOn);
+            props.onSwitchChange?.(
+              props.isSwitchOn !== undefined ? !props.isSwitchOn : true
+            );
           }}
         />
       </div>
@@ -83,11 +86,24 @@ export const SubscriptionItemContainer = (props: {
   );
 };
 
-export const CycleSelector = (props: { label?: string }) => {
-  const [cycle, setCycle] = useState("Daily");
+export const CycleSelector = (props: {
+  label?: string;
+  initialValue?: {
+    cycleOption: "Daily" | "Weekly" | "Monthly";
+    weekOption?: string;
+    dayOption?: string;
+  };
+}) => {
+  const [cycle, setCycle] = useState<"Daily" | "Weekly" | "Monthly">(
+    props.initialValue?.cycleOption || "Daily"
+  );
   const [isOptionOpen, setIsOptionOpen] = useState(false);
-  const [selectedWeek, setSelectedWeek] = useState("SUN");
-  const [selectedDay, setSelectedDay] = useState("1");
+  const [selectedWeek, setSelectedWeek] = useState(
+    props.initialValue?.weekOption ?? "SUN"
+  );
+  const [selectedDay, setSelectedDay] = useState(
+    props.initialValue?.dayOption ?? 1
+  );
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOptionOpen,
@@ -174,21 +190,22 @@ export const CycleSelector = (props: { label?: string }) => {
         label={props.label || "Cycle"}
         value={cycle}
         onSelection={(value) => {
-          setCycle(value);
+          setCycle(value as "Daily" | "Weekly" | "Monthly");
         }}
         className="w-32"
       />
       <MdOutlinedTextField
         ref={refs.setReference}
         {...getReferenceProps()}
-        className="w-28"
+        className="w-28 select-none"
+        readOnly
         disabled={cycle === "Daily"}
         label={cycle === "Daily" ? "" : cycle === "Weekly" ? "Week" : "Day"}
         value={
           cycle === "Weekly"
             ? selectedWeek
             : cycle === "Monthly"
-            ? selectedDay
+            ? selectedDay.toString()
             : ""
         }
       >
@@ -203,6 +220,7 @@ export const CycleSelector = (props: { label?: string }) => {
             ref={refs.setFloating}
             style={floatingStyles}
             {...getFloatingProps()}
+            className="z-10"
           >
             <MdElevatedCard style={transitionStyles} className="py-4 px-2">
               {cycle === "Weekly" && <WeekSelector />}

@@ -21,7 +21,7 @@ export default function SubscriptionPage() {
   return (
     <div aria-label="container" className={cx(styles.container, "flex-1")}>
       <PageTitle title="e-Subscription" />
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, "flex-1 mb-12")}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
             label="Documentation"

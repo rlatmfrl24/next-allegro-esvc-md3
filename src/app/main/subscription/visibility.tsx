@@ -82,7 +82,7 @@ export const VisibilitySubscription = () => {
             <MdTypography
               variant="body"
               size="medium"
-              className="text-outline text-right"
+              className="text-outline text-right mb-4"
             >
               <InfoOutlined fontSize="small" className="mr-1" />
               To enter multiple values, separated by a comma or space.
@@ -135,7 +135,7 @@ export const VisibilitySubscription = () => {
             <MdTypography
               variant="body"
               size="medium"
-              className="text-outline text-right"
+              className="text-outline text-right mb-4"
             >
               <InfoOutlined fontSize="small" className="mr-1" />
               To enter multiple values, separated by a comma or space.
