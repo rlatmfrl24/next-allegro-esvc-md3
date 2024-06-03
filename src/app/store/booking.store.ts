@@ -17,6 +17,7 @@ import {
   FlatRackContainerInformationType,
   BulkContainerInformationType,
   BookingStatusTableProps,
+  BookingTemplateProps,
 } from "../util/typeDef/boooking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 
@@ -331,4 +332,46 @@ export const ContainerState = atom<{
 export const BookingInformationState = atom<BookingInformationRequestType[]>({
   key: "bookingInformationState",
   default: [],
+});
+
+export const BookingTemplateListState = atom<BookingTemplateProps[]>({
+  key: "bookingTemplateListState",
+  default: [
+    {
+      name: "Template 1",
+      information: {
+        locationSchedule: undefined,
+        parties: undefined,
+        cargoPickUpReturn: undefined,
+        container: {
+          dry: [],
+          reefer: [],
+          tank: [],
+          opentop: [],
+          flatrack: [],
+          bulk: [],
+        },
+        additionalInformation: undefined,
+        contactInformation: undefined,
+      },
+    },
+    {
+      name: "Template 2",
+      information: {
+        locationSchedule: undefined,
+        parties: undefined,
+        cargoPickUpReturn: undefined,
+        container: {
+          dry: [],
+          reefer: [],
+          tank: [],
+          opentop: [],
+          flatrack: [],
+          bulk: [],
+        },
+        additionalInformation: undefined,
+        contactInformation: undefined,
+      },
+    },
+  ],
 });

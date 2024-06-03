@@ -197,3 +197,22 @@ export interface AwkwardContainerInformationType
   netWeightUnit: "KGS" | "LBS";
   remark: string;
 }
+
+export interface BookingTemplateProps {
+  name: string;
+  information: {
+    locationSchedule: LocationScheduleType | undefined;
+    parties: PartiesType | undefined;
+    container: {
+      dry: DryContainerInformationType[];
+      reefer: ReeferContainerInformationType[];
+      opentop: OpenTopContainerInformationType[];
+      flatrack: FlatRackContainerInformationType[];
+      tank: TankContainerInformationType[];
+      bulk: BulkContainerInformationType[];
+    };
+    cargoPickUpReturn: CargoPickUpReturnType | undefined;
+    additionalInformation: AdditionalInformatioType | undefined;
+    contactInformation: ContactInformationType | undefined;
+  };
+}
