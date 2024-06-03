@@ -9,9 +9,12 @@ import {
 import styles from "@/app/styles/base.module.css";
 import { basicPopoverStyles } from "@/app/util/constants";
 import {
+  MdChipSet,
   MdFilledButton,
   MdIcon,
   MdIconButton,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdSecondaryTab,
   MdTabs,
   MdTextButton,
@@ -45,12 +48,17 @@ import {
   createDummyDangerousCargoStatus,
   createDummySpecialCargoStatus,
 } from "./util";
+import { RemovableChip } from "@/app/components/removable-chip";
 
 export default function SpecialCargoStatusSearch() {
   const cx = classNames.bind(styles);
   const [selectedTab, setSelectedTab] = useState<
     "dangerous" | "awkward" | "reefer"
   >("dangerous");
+  const [searchType, setSearchType] = useState<"polEta" | "bookingNo">(
+    "polEta"
+  );
+  const [queries, setQueries] = useState<string[]>([]);
 
   const dangerousCargos = useMemo(() => {
     return Array.from({ length: 50 }, createDummyDangerousCargoStatus);
@@ -213,17 +221,63 @@ export default function SpecialCargoStatusSearch() {
       <PageTitle title="Special Cargo  Status Search" />
       {renderDialog()}
       <div className={cx(styles.area)}>
-        <div className="flex gap-4 items-center">
-          <DateRangePicker label="POL ETA" buttonMode="after" />
-          <NAOutlinedTextField
-            value=""
-            placeholder="Search by B/L No. or Booking Bo."
+        <MdOutlinedSegmentedButtonSet>
+          <MdOutlinedSegmentedButton
+            selected={searchType === "polEta"}
+            onClick={() => setSearchType("polEta")}
+            label="POL ETA"
           />
-          <SearchInfo />
-        </div>
-        <div className="flex gap-2 justify-end">
-          <MdTextButton>Reset</MdTextButton>
-          <MdFilledButton>Search</MdFilledButton>
+          <MdOutlinedSegmentedButton
+            selected={searchType === "bookingNo"}
+            onClick={() => setSearchType("bookingNo")}
+            label="Booking or B/L No."
+          />
+        </MdOutlinedSegmentedButtonSet>
+        <div className="flex items-end">
+          <div className="flex-1 flex gap-4 items-center">
+            {searchType === "polEta" && (
+              <DateRangePicker label="POL ETA" buttonMode="after" />
+            )}
+            {searchType === "bookingNo" && (
+              <div>
+                <div className="flex gap-4 items-center">
+                  <NAOutlinedTextField
+                    placeholder="Search by B/L No. or Booking Bo."
+                    className="w-[840px]"
+                    onKeyDown={(e) => {
+                      const value = e.currentTarget.value;
+                      if (value === "" || queries.includes(value)) {
+                        return;
+                      }
+
+                      if (e.key === "Enter") {
+                        setQueries([...queries, value]);
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                  />
+                  <SearchInfo />
+                </div>
+                <MdChipSet className="mt-2">
+                  {queries.map((query, index) => (
+                    <RemovableChip
+                      key={index}
+                      label={query}
+                      onRemove={() => {
+                        setQueries((prev) =>
+                          prev.filter((_, i) => i !== index)
+                        );
+                      }}
+                    />
+                  ))}
+                </MdChipSet>
+              </div>
+            )}
+          </div>
+          <div className="flex gap-2 justify-end">
+            <MdTextButton>Reset</MdTextButton>
+            <MdFilledButton>Search</MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
