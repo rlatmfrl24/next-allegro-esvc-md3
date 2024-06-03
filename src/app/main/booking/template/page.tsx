@@ -279,7 +279,13 @@ export default function BookingTemplate() {
     >
       <div className="flex items-center justify-between">
         <PageTitle title="Booking Template" />
-        <MdOutlinedButton>Create New Template</MdOutlinedButton>
+        <MdOutlinedButton
+          onClick={() => {
+            router.push("/main/booking/template/create");
+          }}
+        >
+          Create New Template
+        </MdOutlinedButton>
       </div>
       <div className={cx(styles.area, "flex-1")}>
         <BasicTable
@@ -287,7 +293,16 @@ export default function BookingTemplate() {
             <div className="flex-1 flex gap-4">
               {selectedTemplate && (
                 <>
-                  <MdTextButton>Edit</MdTextButton>
+                  <MdTextButton
+                    onClick={() => {
+                      router.push(
+                        "/main/booking/template/create?type=edit&template=" +
+                          selectedTemplate.templateName
+                      );
+                    }}
+                  >
+                    Edit
+                  </MdTextButton>
                   <MdTextButton
                     onClick={() => {
                       router.push(
