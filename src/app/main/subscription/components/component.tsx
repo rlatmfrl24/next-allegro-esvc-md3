@@ -118,6 +118,11 @@ export const CycleSelector = (props: {
     weekOption?: string;
     dayOption?: string;
   };
+  onChanges?: (value: {
+    cycleOption: "Daily" | "Weekly" | "Monthly";
+    weekOption?: string;
+    dayOption?: string;
+  }) => void;
 }) => {
   const [cycle, setCycle] = useState<"Daily" | "Weekly" | "Monthly">(
     props.initialValue?.cycleOption || "Daily"
@@ -129,6 +134,16 @@ export const CycleSelector = (props: {
   const [selectedDay, setSelectedDay] = useState(
     props.initialValue?.dayOption ?? 1
   );
+
+  useEffect(() => {
+    props.onChanges?.({
+      cycleOption: cycle,
+      weekOption: cycle === "Weekly" ? selectedWeek : undefined,
+      dayOption: cycle === "Monthly" ? selectedDay.toString() : undefined,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cycle, selectedWeek, selectedDay]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOptionOpen,

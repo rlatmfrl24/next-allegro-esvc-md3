@@ -34,17 +34,11 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { basicDropdownStyles } from "@/app/util/constants";
-import { AddLongRangeScheduleDialog } from "./components/schedule-dialog";
-
-type ScheduleSubscriptionProps = {
-  origin: string;
-  destination: string;
-  cycleType: "Daily" | "Weekly" | "Monthly";
-  cycleValue: string;
-  recipients: string[];
-  useEmailService: boolean;
-  lastSendingDate: DateTime;
-};
+import {
+  AddLongRangeScheduleDialog,
+  AddPtpScheduleDialog,
+} from "./components/schedule-dialog";
+import { ScheduleSubscriptionProps } from "@/app/util/typeDef/subscription";
 
 function createDummyScheduleSubscription(
   type: "ptp" | "long-range"
@@ -80,7 +74,7 @@ function createDummyScheduleSubscription(
     recipients: [],
     useEmailService: faker.datatype.boolean(),
     lastSendingDate: DateTime.fromJSDate(faker.date.recent()),
-  };
+  } as ScheduleSubscriptionProps;
 }
 
 export const ScheduleSubscription = () => {
@@ -134,12 +128,23 @@ export const ScheduleSubscription = () => {
       >
         <div slot="content" className="flex flex-col p-4 gap-4">
           <div className="flex items-center justify-between">
-            <MdTextButton>
+            <MdTextButton
+              onClick={() => {
+                setIsAddPtpScheduleDialogOpen(true);
+              }}
+            >
               <MdIcon slot="icon">
                 <Add fontSize="small" />
               </MdIcon>
               Add Schedule
             </MdTextButton>
+            <AddPtpScheduleDialog
+              open={isAddPtpScheduleDialogOpen}
+              onOpenChange={setIsAddPtpScheduleDialogOpen}
+              onScheduleSave={(data) => {
+                setPtpSubscriptions((prev) => [...prev, data]);
+              }}
+            />
             <MdTypography
               variant="body"
               size="medium"
@@ -201,12 +206,13 @@ export const ScheduleSubscription = () => {
               </MdIcon>
               Add Schedule
             </MdTextButton>
-            {isAddLongRangeScheduleDialogOpen && (
-              <AddLongRangeScheduleDialog
-                open={isAddLongRangeScheduleDialogOpen}
-                onOpenChange={setIsAddLongRangeScheduleDialogOpen}
-              />
-            )}
+            <AddLongRangeScheduleDialog
+              open={isAddLongRangeScheduleDialogOpen}
+              onOpenChange={setIsAddLongRangeScheduleDialogOpen}
+              onScheduleSave={(data) => {
+                setLongRangeSubscriptions((prev) => [...prev, data]);
+              }}
+            />
             <MdTypography
               variant="body"
               size="medium"

@@ -1,3 +1,8 @@
+export const summaryServiceRouteOptions = {
+  Origin: ["Asia", "America", "Europe", "Africa"],
+  Destination: ["Asia", "America", "Europe", "Africa"],
+};
+
 export const summaryReportItemOptions = {
   "Basic Information": [
     "Bill of Landing No.",
@@ -21,5 +26,70 @@ export const summaryReportItemOptions = {
     "Vessel Schedule",
     "Cargo Discharging Date",
     "Estimated Vessel Berthing at POD",
+  ],
+  "Route Information": [
+    "Place of Receipt",
+    "Port of Loading",
+    "Transshipment Port",
+    "Port of Discharging",
+    "Place of Delivery",
+    "Receiving/Delivery Term",
+  ],
+  "Customs Information": [
+    "F (Settlement of Freight)",
+    "O (Settlement of Original B/L)",
+    "C (Customs Clearance)",
+    "Last Free Date",
+    "Hot Delivery",
+    "Hub",
+    "IT No.",
+    "Firms Code",
+    "CRNU No.",
+    "Importer Filling Status",
+  ],
+  "Rail Movement Information": [
+    "Last Rail Location Date/Time",
+    "Last Rail Location",
+    "Actual Arrival",
+    "Estimated Departure",
+    "Rail Company",
+    "Rail Origin",
+    "Last Free Date of Rail",
+    "Inbound Rail Arrival Time",
+    "Flat Car",
+    "Train",
+  ],
+  "Pick-up & Delivery Information": [
+    "Hub Arrival",
+    "Staying Days",
+    "Pick-up Available",
+    "Pick-up Date",
+    "Estimated Delivery",
+    "Actual Delivery",
+    "Pick-up No.",
+  ],
+  "Customer Information": ["Shipping Name", "Consignee Name"],
+};
+
+export const eventReportItemOptions = {
+  Events: [
+    "Booking Confirmed",
+    "Shipping Instruction Confirmed",
+    "Gate In to Outbound Terminal",
+    "Loaded on Vessel at Port of Loading",
+    "Vessel Departure from Port of Loading",
+    "Vessel Arrival at Port of Loading",
+    "Veesel Arrival at Transshipment Port",
+    "Unloaded from Vessel at Transshipment Port",
+    "Loaded on Vessel at Transshipment Port",
+    "Vessel Departure from Transshipment Port",
+    "Vessel Arrival at Port of Discharging",
+    "Unloaded from Vessel at Port of Discharging",
+    "Loaded on Rail Inbound Rail Origin (USA/Canada Inbound Cargo Only)",
+    "Inbound Rail Departure (USA/Canada Inbound Cargo Only)",
+    "Inbound Rail Arrival (USA/Canada Inbound Cargo Only)",
+    "Unloaded from Rail at inbound Rail Destination (USA/Canada Inbound Cargo Only)",
+    "Gate Out for Delivery to Consignee (or Port Shuttle)",
+    "Empty Container Returned from Terminal",
   ],
 };
