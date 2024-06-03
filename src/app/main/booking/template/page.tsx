@@ -101,7 +101,16 @@ export default function BookingTemplate() {
       header: "Template Name",
       cell: (info) => {
         return (
-          <MdTypography variant="body" size="medium">
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="underline cursor-pointer w-fit"
+            onClick={() => {
+              router.push(
+                "/main/booking/template/preview?template=" + info.getValue()
+              );
+            }}
+          >
             {info.getValue()}
           </MdTypography>
         );
