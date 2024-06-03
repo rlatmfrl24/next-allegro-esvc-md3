@@ -1,6 +1,6 @@
 "use client";
 import classNames from "classnames";
-import { useMemo, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { DividerComponent } from "@/app/components/divider";
@@ -11,14 +11,21 @@ import { SubTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { UserProfileState } from "@/app/store/global.store";
 import styles from "@/app/styles/base.module.css";
-import { MdOutlinedButton, MdTextButton } from "@/app/util/md3";
+import {
+  MdElevation,
+  MdFilledButton,
+  MdOutlinedButton,
+  MdTextButton,
+} from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { PasswordUpdateDialog } from "./dialog/password";
 import { CompanyUpdateDialog } from "./dialog/company";
 import { WithdrawalDialog } from "./dialog/withdrawal";
 import { ContractUpdateDialog } from "./dialog/contract";
+import LabelChip from "@/app/components/label-chip";
 
 export default function MyProfilePage() {
+  const [isRequesting, setIsRequesting] = useState(false);
   const [userProfile, setUserProfile] = useRecoilState(UserProfileState);
   const [isPasswordUpdateDialogOpen, setIsPasswordUpdateDialogOpen] =
     useState(false);
@@ -91,14 +98,13 @@ export default function MyProfilePage() {
       >
         <div className={cx(styles.area, "flex-1 flex")}>
           <div className="border-2 border-secondaryContainer flex-1 rounded-lg flex flex-col">
-            <MdTypography
-              variant="title"
-              size="large"
-              className="bg-secondaryContainer p-4"
-            >
-              My Profile
-            </MdTypography>
-            <div className="flex flex-1 flex-col gap-4 px-6 py-12">
+            <div className="flex items-center justify-between bg-secondaryContainer p-4">
+              <MdTypography variant="title" size="large" className="">
+                My Profile
+              </MdTypography>
+              {isRequesting && <LabelChip label="Requesting..." />}
+            </div>
+            <div className="flex flex-1 flex-col gap-4 px-6 justify-center">
               <div className="flex gap-4 items-center">
                 <NAOutlinedTextField
                   label="User ID"
@@ -289,6 +295,26 @@ export default function MyProfilePage() {
             </div>
           </div>
         </div>
+      </div>
+      <div
+        style={
+          {
+            "--md-elevation-level": 2,
+          } as CSSProperties
+        }
+        className="flex justify-end relative p-2 mx-6 mb-6 rounded-full"
+      >
+        <MdElevation />
+        <MdFilledButton
+          onClick={() => {
+            setIsRequesting(true);
+            setTimeout(() => {
+              setIsRequesting(false);
+            }, 2000);
+          }}
+        >
+          Save
+        </MdFilledButton>
       </div>
     </>
   );

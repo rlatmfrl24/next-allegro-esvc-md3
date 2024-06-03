@@ -17,8 +17,10 @@ import {
   FlatRackContainerInformationType,
   BulkContainerInformationType,
   BookingStatusTableProps,
+  BookingTemplateProps,
 } from "../util/typeDef/boooking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
+import { createDummyBooking } from "../main/booking/template/components/util";
 
 export const resetBookingState = selector({
   key: "resetBookingState",
@@ -331,4 +333,22 @@ export const ContainerState = atom<{
 export const BookingInformationState = atom<BookingInformationRequestType[]>({
   key: "bookingInformationState",
   default: [],
+});
+
+export const BookingTemplateListState = atom<BookingTemplateProps[]>({
+  key: "bookingTemplateListState",
+  default: [
+    {
+      name: "Template 1",
+      information: createDummyBooking(),
+    },
+    {
+      name: "Template 2",
+      information: createDummyBooking(),
+    },
+    {
+      name: "Template 3",
+      information: createDummyBooking(),
+    },
+  ],
 });

@@ -23,6 +23,7 @@ import { ArrowDropDown } from "@mui/icons-material";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { basicDropdownStyles } from "../util/constants";
+import { DividerComponent } from "./divider";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextField
@@ -33,11 +34,13 @@ export default function NAOutlinedMultiListBox({
   options,
   initialValue,
   className,
+  unit,
   ...props
 }: {
   options: string[];
   initialValue?: string[];
   className?: string;
+  unit?: string;
 } & MdOutlinedTextFieldProps) {
   const listRef = useRef<any[]>([]);
   const [isOptionOpen, setIsOptionOpen] = useState(false);
@@ -94,7 +97,11 @@ export default function NAOutlinedMultiListBox({
         required={false}
         ref={refs.setReference}
         {...getReferenceProps()}
-        value={selectedOptions.join(", ")}
+        value={
+          selectedOptions.length === options.length
+            ? "All" + (unit ? ` ${unit}` : "")
+            : selectedOptions.join(", ")
+        }
         className={className}
       >
         <div slot="trailing-icon">
@@ -113,6 +120,23 @@ export default function NAOutlinedMultiListBox({
               className="bg-surfaceContainerLow rounded"
               style={{ maxHeight: `${maxHeight}px`, overflowY: "auto" }}
             >
+              <MdListItem
+                type="button"
+                onClick={() => {
+                  if (selectedOptions.length === options.length) {
+                    setSelectedOptions([]);
+                  } else {
+                    setSelectedOptions(options);
+                  }
+                }}
+              >
+                <MdCheckbox
+                  slot="start"
+                  checked={selectedOptions.length === options.length}
+                />
+                ({selectedOptions.length} / {options.length})
+              </MdListItem>
+              <DividerComponent />
               {options.map((option, index) => (
                 <MdListItem
                   key={option}
