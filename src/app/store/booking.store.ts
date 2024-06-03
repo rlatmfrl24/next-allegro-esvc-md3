@@ -20,6 +20,7 @@ import {
   BookingTemplateProps,
 } from "../util/typeDef/boooking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
+import { createDummyBooking } from "../main/booking/template/components/util";
 
 export const resetBookingState = selector({
   key: "resetBookingState",
@@ -339,39 +340,15 @@ export const BookingTemplateListState = atom<BookingTemplateProps[]>({
   default: [
     {
       name: "Template 1",
-      information: {
-        locationSchedule: undefined,
-        parties: undefined,
-        cargoPickUpReturn: undefined,
-        container: {
-          dry: [],
-          reefer: [],
-          tank: [],
-          opentop: [],
-          flatrack: [],
-          bulk: [],
-        },
-        additionalInformation: undefined,
-        contactInformation: undefined,
-      },
+      information: createDummyBooking(),
     },
     {
       name: "Template 2",
-      information: {
-        locationSchedule: undefined,
-        parties: undefined,
-        cargoPickUpReturn: undefined,
-        container: {
-          dry: [],
-          reefer: [],
-          tank: [],
-          opentop: [],
-          flatrack: [],
-          bulk: [],
-        },
-        additionalInformation: undefined,
-        contactInformation: undefined,
-      },
+      information: createDummyBooking(),
+    },
+    {
+      name: "Template 3",
+      information: createDummyBooking(),
     },
   ],
 });
