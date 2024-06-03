@@ -218,7 +218,9 @@ function BookingRequest() {
           )}
           {searchParams.get("type") !== "edit" &&
             searchParams.get("quoteNumber") === null && (
-              <BookingTemplateSelect />
+              <BookingTemplateSelect
+                initialTemplate={searchParams.get("template") as string}
+              />
             )}
           <SaveAsTemplate className="ml-4" />
         </div>

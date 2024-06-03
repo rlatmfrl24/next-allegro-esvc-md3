@@ -120,8 +120,10 @@ export const SaveAsTemplate = (props: { className?: string }) => {
   );
 };
 
-export const BookingTemplateSelect = () => {
-  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+export const BookingTemplateSelect = (props: { initialTemplate?: string }) => {
+  const [selectedTemplate, setSelectedTemplate] = useState<string>(
+    props.initialTemplate ?? ""
+  );
   const templateList = useRecoilValue(BookingTemplateListState);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

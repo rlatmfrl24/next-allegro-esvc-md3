@@ -19,6 +19,7 @@ import {
   MdListItem,
   MdOutlinedButton,
   MdRadio,
+  MdTextButton,
 } from "@/app/util/md3";
 import { BookingTemplateProps } from "@/app/util/typeDef/boooking";
 import { faker, id_ID } from "@faker-js/faker";
@@ -37,6 +38,7 @@ import { MoreVert } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 import classNames from "classnames";
 import { DateTime } from "luxon";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -69,11 +71,13 @@ function convertTemplateToTableProps(
 
 export default function BookingTemplate() {
   const cx = classNames.bind(styles);
+  const router = useRouter();
   const templates = useRecoilValue(BookingTemplateListState);
   const [tableData, setTableData] = useState<BookingTemplateTableProps[]>(
     templates.map(convertTemplateToTableProps)
   );
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<BookingTemplateTableProps>();
 
   const columnHelper = createColumnHelper<BookingTemplateTableProps>();
 
@@ -83,7 +87,11 @@ export default function BookingTemplate() {
       header: "",
       cell: (info) => (
         <div className="flex items-center justify-center">
-          <MdRadio checked={info.row.getIsSelected()} />
+          <MdRadio
+            checked={
+              selectedTemplate?.templateName === info.row.original.templateName
+            }
+          />
         </div>
       ),
       size: 40,
@@ -269,11 +277,33 @@ export default function BookingTemplate() {
       </div>
       <div className={cx(styles.area, "flex-1")}>
         <BasicTable
-          ActionComponent={() => <div className="flex-1"></div>}
+          ActionComponent={() => (
+            <div className="flex-1 flex gap-4">
+              {selectedTemplate && (
+                <>
+                  <MdTextButton>Edit</MdTextButton>
+                  <MdTextButton
+                    onClick={() => {
+                      router.push(
+                        "/main/booking/request?template=" +
+                          selectedTemplate.templateName
+                      );
+                    }}
+                  >
+                    Use Template
+                  </MdTextButton>
+                </>
+              )}
+            </div>
+          )}
           columns={columnDefs}
           data={tableData}
           isSingleSelect
-          ignoreSelectionColumns={["radio", "action"]}
+          ignoreSelectionColumns={["action"]}
+          controlColumns={["radio", "action"]}
+          getSelectionRows={(rows) => {
+            setSelectedTemplate(rows[0]);
+          }}
         />
       </div>
     </div>
