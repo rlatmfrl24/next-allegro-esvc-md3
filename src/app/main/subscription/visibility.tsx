@@ -27,13 +27,21 @@ export const VisibilitySubscription = () => {
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [isVesselDialogOpen, setIsVesselDialogOpen] = useState(false);
 
+  const [isSummarySubscribed, setIsSummarySubscribed] = useState(false);
+  const [isEventSubscribed, setIsEventSubscribed] = useState(false);
+  const [isVesselSubscribed, setIsVesselSubscribed] = useState(false);
+
   return (
     <div className="flex flex-col">
       <MdTypography variant="title" size="large" className="mt-2">
         Visibility
       </MdTypography>
       <div className="flex flex-col gap-6 mt-6">
-        <SubscriptionItemContainer name="Visibility Summary">
+        <SubscriptionItemContainer
+          name="Visibility Summary"
+          isSwitchOn={isSummarySubscribed}
+          onSwitchChange={(value) => setIsSummarySubscribed(value)}
+        >
           <div slot="actions">
             <MdOutlinedButton
               onClick={() => {
@@ -92,7 +100,11 @@ export const VisibilitySubscription = () => {
             </div>
           </div>
         </SubscriptionItemContainer>
-        <SubscriptionItemContainer name="Event Notification">
+        <SubscriptionItemContainer
+          name="Event Notification"
+          isSwitchOn={isEventSubscribed}
+          onSwitchChange={(value) => setIsEventSubscribed(value)}
+        >
           <div slot="actions">
             <MdOutlinedButton
               onClick={() => {
@@ -151,7 +163,11 @@ export const VisibilitySubscription = () => {
             </div>
           </div>
         </SubscriptionItemContainer>
-        <SubscriptionItemContainer name="Vessel Schedule Updates">
+        <SubscriptionItemContainer
+          name="Vessel Schedule Updates"
+          isSwitchOn={isVesselSubscribed}
+          onSwitchChange={(value) => setIsVesselSubscribed(value)}
+        >
           <div slot="actions">
             <MdOutlinedButton
               onClick={() => {
@@ -211,24 +227,18 @@ export const VisibilitySubscription = () => {
           </div>
         </SubscriptionItemContainer>
       </div>
-      {isSummaryDialogOpen && (
-        <SummaryDialog
-          open={isSummaryDialogOpen}
-          onOpenChange={setIsSummaryDialogOpen}
-        />
-      )}
-      {isEventDialogOpen && (
-        <EventDialog
-          open={isEventDialogOpen}
-          onOpenChange={setIsEventDialogOpen}
-        />
-      )}
-      {isVesselDialogOpen && (
-        <VesselDialog
-          open={isVesselDialogOpen}
-          onOpenChange={setIsVesselDialogOpen}
-        />
-      )}
+      <SummaryDialog
+        open={isSummaryDialogOpen}
+        onOpenChange={setIsSummaryDialogOpen}
+      />
+      <EventDialog
+        open={isEventDialogOpen}
+        onOpenChange={setIsEventDialogOpen}
+      />
+      <VesselDialog
+        open={isVesselDialogOpen}
+        onOpenChange={setIsVesselDialogOpen}
+      />
     </div>
   );
 };

@@ -5,7 +5,6 @@ import {
   MdChipSet,
   MdDialog,
   MdFilledButton,
-  MdFilledTonalButton,
   MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
@@ -16,6 +15,7 @@ import {
 } from "@/app/util/md3";
 import {
   ArrowDropDown,
+  Check,
   Favorite,
   FmdGoodOutlined,
   InfoOutlined,
@@ -125,11 +125,11 @@ export const AddPtpScheduleDialog = (props: {
               }
 
               setFavorites((prev) => [
-                ...prev,
                 {
                   origin: currentData.origin,
                   destination: currentData.destination,
                 },
+                ...prev,
               ]);
             }}
           >
@@ -151,7 +151,23 @@ export const AddPtpScheduleDialog = (props: {
               <Disclosure.Panel className={`mb-4`}>
                 <MdList className="bg-surfaceContainerHigh">
                   {favorites.map((favorite, index) => (
-                    <MdListItem key={index} type="button">
+                    <MdListItem
+                      key={index}
+                      type="button"
+                      onClick={() => {
+                        setCurrentData((prev) => ({
+                          ...prev,
+                          origin: favorite.origin,
+                          destination: favorite.destination,
+                        }));
+                      }}
+                    >
+                      <MdIcon slot="start">
+                        {currentData.origin === favorite.origin &&
+                          currentData.destination === favorite.destination && (
+                            <Check />
+                          )}
+                      </MdIcon>
                       {favorite.origin} → {favorite.destination}
                     </MdListItem>
                   ))}
