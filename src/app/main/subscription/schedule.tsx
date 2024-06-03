@@ -39,6 +39,7 @@ import {
   AddPtpScheduleDialog,
 } from "./components/schedule-dialog";
 import { ScheduleSubscriptionProps } from "@/app/util/typeDef/subscription";
+import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 
 function createDummyScheduleSubscription(
   type: "ptp" | "long-range"
@@ -154,6 +155,9 @@ export const ScheduleSubscription = () => {
               To enter multiple values, separated by a comma or space.
             </MdTypography>
           </div>
+          {ptpSubscriptions.length === 0 && (
+            <EmptyResultPlaceholder text="If you'd like to be notified, add a schedule." />
+          )}
           {ptpSubscriptions.map((data, index) => (
             <ScheduleSubscriptionItem
               key={index}
@@ -222,6 +226,9 @@ export const ScheduleSubscription = () => {
               To enter multiple values, separated by a comma or space.
             </MdTypography>
           </div>
+          {longRangeSubscriptions.length === 0 && (
+            <EmptyResultPlaceholder text="If you'd like to be notified, add a schedule." />
+          )}
           {longRangeSubscriptions.map((data, index) => (
             <ScheduleSubscriptionItem
               key={index}
