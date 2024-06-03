@@ -31,7 +31,7 @@ import {
   useTransitionStyles,
 } from "@floating-ui/react";
 import { ArrowDropDown, Check } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export const SaveAsTemplate = (props: { className?: string }) => {
@@ -120,7 +120,10 @@ export const SaveAsTemplate = (props: { className?: string }) => {
   );
 };
 
-export const BookingTemplateSelect = (props: { initialTemplate?: string }) => {
+export const BookingTemplateSelect = (props: {
+  initialTemplate?: string;
+  onSelectTemplate?: (template: BookingTemplateProps | undefined) => void;
+}) => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
     props.initialTemplate ?? ""
   );
@@ -143,6 +146,18 @@ export const BookingTemplateSelect = (props: { initialTemplate?: string }) => {
     useDismiss(context),
     useRole(context),
   ]);
+
+  useEffect(() => {
+    if (props.onSelectTemplate) {
+      const template = templateList.find((t) => t.name === selectedTemplate);
+      if (template) {
+        props.onSelectTemplate(template);
+      } else {
+        props.onSelectTemplate(undefined);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTemplate]);
 
   return (
     <>
