@@ -1,28 +1,30 @@
 "use client";
 
+import classNames from "classnames";
+import { DateTime } from "luxon";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+
 import { BasicTable } from "@/app/components/table/basic-table";
 import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { BookingTemplateListState } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
-import {
-  basicDropdownStyles,
-  getBasicDropdownStyles,
-} from "@/app/util/constants";
+import { getBasicDropdownStyles } from "@/app/util/constants";
 import {
   MdDialog,
   MdElevatedCard,
   MdFilledButton,
   MdIcon,
   MdIconButton,
-  MdList,
   MdListItem,
   MdOutlinedButton,
   MdRadio,
   MdTextButton,
 } from "@/app/util/md3";
 import { BookingTemplateProps } from "@/app/util/typeDef/boooking";
-import { faker, id_ID } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import {
   autoUpdate,
   flip,
@@ -36,11 +38,6 @@ import {
 } from "@floating-ui/react";
 import { MoreVert } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
-import classNames from "classnames";
-import { DateTime } from "luxon";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
 
 type BookingTemplateTableProps = {
   templateName: string;
