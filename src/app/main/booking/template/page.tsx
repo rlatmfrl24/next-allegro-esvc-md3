@@ -5,9 +5,35 @@ import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { BookingTemplateListState } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
-import { MdOutlinedButton } from "@/app/util/md3";
+import {
+  basicDropdownStyles,
+  getBasicDropdownStyles,
+} from "@/app/util/constants";
+import {
+  MdDialog,
+  MdElevatedCard,
+  MdFilledButton,
+  MdIcon,
+  MdIconButton,
+  MdList,
+  MdListItem,
+  MdOutlinedButton,
+  MdRadio,
+} from "@/app/util/md3";
 import { BookingTemplateProps } from "@/app/util/typeDef/boooking";
-import { faker } from "@faker-js/faker";
+import { faker, id_ID } from "@faker-js/faker";
+import {
+  autoUpdate,
+  flip,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from "@floating-ui/react";
+import { MoreVert } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 import classNames from "classnames";
 import { DateTime } from "luxon";
@@ -47,10 +73,21 @@ export default function BookingTemplate() {
   const [tableData, setTableData] = useState<BookingTemplateTableProps[]>(
     templates.map(convertTemplateToTableProps)
   );
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const columnHelper = createColumnHelper<BookingTemplateTableProps>();
 
   const columnDefs = [
+    columnHelper.display({
+      id: "radio",
+      header: "",
+      cell: (info) => (
+        <div className="flex items-center justify-center">
+          <MdRadio checked={info.row.getIsSelected()} />
+        </div>
+      ),
+      size: 40,
+    }),
     columnHelper.accessor("templateName", {
       id: "templateName",
       header: "Template Name",
@@ -128,7 +165,98 @@ export default function BookingTemplate() {
         );
       },
     }),
+    columnHelper.display({
+      id: "action",
+      header: "",
+      cell: (info) => (
+        <DeleteActionButton targetName={info.row.original.templateName} />
+      ),
+      size: 40,
+    }),
   ];
+
+  const DeleteActionButton = (props: { targetName: string }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+    const { refs, floatingStyles, context, placement } = useFloating({
+      open: isMenuOpen,
+      onOpenChange: setIsMenuOpen,
+      middleware: [shift(), flip()],
+      whileElementsMounted: autoUpdate,
+    });
+
+    const { styles: transitionStyles, isMounted } = useTransitionStyles(
+      context,
+      placement === "top"
+        ? getBasicDropdownStyles("up")
+        : getBasicDropdownStyles("down")
+    );
+
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+      useClick(context),
+      useDismiss(context),
+      useRole(context),
+    ]);
+
+    return (
+      <div className="flex items-center justify-center">
+        <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
+          <MdIcon>
+            <MoreVert />
+          </MdIcon>
+        </MdIconButton>
+        <div>
+          {isMounted && (
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              {...getFloatingProps()}
+              className="z-10"
+            >
+              <MdElevatedCard style={transitionStyles} className="py-1">
+                <MdListItem
+                  type="button"
+                  onClick={() => {
+                    setIsDeleteDialogOpen(true);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Delete
+                </MdListItem>
+              </MdElevatedCard>
+            </div>
+          )}
+        </div>
+        <MdDialog
+          open={isDeleteDialogOpen}
+          closed={() => setIsDeleteDialogOpen(false)}
+        >
+          <div slot="headline">Do you want to delete the booking template?</div>
+          <div slot="content"></div>
+          <div slot="actions">
+            <MdOutlinedButton
+              onClick={() => {
+                setIsDeleteDialogOpen(false);
+              }}
+            >
+              Cancel
+            </MdOutlinedButton>
+            <MdFilledButton
+              onClick={() => {
+                setIsDeleteDialogOpen(false);
+                setTableData((prev) =>
+                  prev.filter((data) => data.templateName !== props.targetName)
+                );
+              }}
+            >
+              OK
+            </MdFilledButton>
+          </div>
+        </MdDialog>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -140,7 +268,13 @@ export default function BookingTemplate() {
         <MdOutlinedButton>Create New Template</MdOutlinedButton>
       </div>
       <div className={cx(styles.area, "flex-1")}>
-        <BasicTable columns={columnDefs} data={tableData} isSingleSelect />
+        <BasicTable
+          ActionComponent={() => <div className="flex-1"></div>}
+          columns={columnDefs}
+          data={tableData}
+          isSingleSelect
+          ignoreSelectionColumns={["radio", "action"]}
+        />
       </div>
     </div>
   );
