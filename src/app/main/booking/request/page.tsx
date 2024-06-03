@@ -8,6 +8,7 @@ import {
   AdditionalInformationState,
   BookingInformationState,
   BookingRequestStepState,
+  BookingTemplateListState,
   CargoPickUpReturnState,
   ContactInformationState,
   ContainerState,
@@ -16,11 +17,16 @@ import {
 } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import {
+  MdElevatedCard,
   MdElevation,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
+  MdInputChip,
+  MdList,
+  MdListItem,
   MdOutlinedButton,
+  MdRippleEffect,
 } from "@/app/util/md3";
 
 import CargoStep from "./step-cargo";
@@ -29,7 +35,14 @@ import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import { CSSProperties, Suspense, use, useEffect, useMemo } from "react";
+import {
+  CSSProperties,
+  Suspense,
+  use,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
@@ -39,10 +52,24 @@ import {
   BookingStatus,
 } from "@/app/util/typeDef/boooking";
 import { set } from "lodash";
-import { ChevronLeft } from "@mui/icons-material";
+import { ArrowDropDown, Check, ChevronLeft } from "@mui/icons-material";
 import BookingStatusChip from "../status/components/booking-status-chip";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
+import {
+  autoUpdate,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from "@floating-ui/react";
+import { basicDropdownStyles } from "@/app/util/constants";
+import {
+  BookingTemplateSelect,
+  SaveAsTemplate,
+} from "../template/components/generic";
 
 export default function BookingRequestPage() {
   return (
@@ -127,6 +154,7 @@ function BookingRequest() {
       ].isSelected;
     });
   }
+  console.log(searchParams.get("quoteNumber"));
 
   return (
     <div aria-label="container" className={styles.container + ""}>
@@ -154,49 +182,47 @@ function BookingRequest() {
           )}
         </div>
         <div className="flex items-center">
-          {searchParams.get("type") !== "edit" ? (
-            <MdOutlinedButton>Booking Template</MdOutlinedButton>
-          ) : (
+          {searchParams.get("status") !== null && (
+            <BookingStatusChip
+              status={searchParams.get("status") as BookingStatus}
+            />
+          )}
+          {searchParams.get("requestNo") !== null && (
             <>
-              {searchParams.get("status") !== null && (
-                <BookingStatusChip
-                  status={searchParams.get("status") as BookingStatus}
-                />
-              )}
-              {searchParams.get("requestNo") !== null && (
-                <>
-                  <MdTypography
-                    variant="body"
-                    size="medium"
-                    className="text-outline mr-1 ml-4"
-                  >
-                    Request No.
-                  </MdTypography>
-                  <MdTypography variant="body" size="medium" prominent>
-                    {searchParams.get("requestNo")}
-                  </MdTypography>
-                </>
-              )}
-              {searchParams.get("bookingNo") !== null && (
-                <>
-                  <DividerComponent
-                    orientation="vertical"
-                    className="mx-4 h-5"
-                  />
-                  <MdTypography
-                    variant="body"
-                    size="medium"
-                    className="text-outline mr-1"
-                  >
-                    Booking No.
-                  </MdTypography>
-                  <MdTypography variant="body" size="medium" prominent>
-                    {searchParams.get("bookingNo")}
-                  </MdTypography>
-                </>
-              )}
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="text-outline mr-1 ml-4"
+              >
+                Request No.
+              </MdTypography>
+              <MdTypography variant="body" size="medium" prominent>
+                {searchParams.get("requestNo")}
+              </MdTypography>
             </>
           )}
+          {searchParams.get("bookingNo") !== null && (
+            <>
+              <DividerComponent orientation="vertical" className="mx-4 h-5" />
+              <MdTypography
+                variant="body"
+                size="medium"
+                className="text-outline mr-1"
+              >
+                Booking No.
+              </MdTypography>
+              <MdTypography variant="body" size="medium" prominent>
+                {searchParams.get("bookingNo")}
+              </MdTypography>
+            </>
+          )}
+          {searchParams.get("type") !== "edit" &&
+            searchParams.get("quoteNumber") === null && (
+              <BookingTemplateSelect
+                initialTemplate={searchParams.get("template") as string}
+              />
+            )}
+          <SaveAsTemplate className="ml-4" />
         </div>
       </div>
       <div

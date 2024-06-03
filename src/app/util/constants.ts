@@ -381,6 +381,36 @@ export const cardList: DashboardCardInfoType[] = [
   },
 ];
 
+export const getBasicDropdownStyles = (direction: "down" | "up") => {
+  return {
+    duration: {
+      open: 200,
+      close: 100,
+    },
+    initial: {
+      opacity: 0,
+      transformOrigin: direction === "down" ? "top" : "bottom",
+      transform:
+        direction === "down"
+          ? "scaleY(0.55) translateY(-10px)"
+          : "scaleY(0.55) translateY(10px)",
+    },
+    open: {
+      opacity: 1,
+      transformOrigin: direction === "down" ? "top" : "bottom",
+      transform: "scaleY(1) translateY(0)",
+    },
+    close: {
+      opacity: 0,
+      transformOrigin: direction === "down" ? "top" : "bottom",
+      transform:
+        direction === "down"
+          ? "scaleY(0.55) translateY(-10px)"
+          : "scaleY(0.55) translateY(10px)",
+    },
+  };
+};
+
 export const basicDropdownStyles = {
   duration: {
     open: 200,

@@ -181,9 +181,7 @@ export const QuotationListItem = ({
           <div className="flex flex-col gap-2">
             <Link
               className="w-full"
-              href={
-                `/main/pricing/online-quote/` + faker.string.alphanumeric(12)
-              }
+              href={`/main/pricing/quote/` + faker.string.alphanumeric(12)}
             >
               <MdFilledButton className="w-full">Accept</MdFilledButton>
             </Link>

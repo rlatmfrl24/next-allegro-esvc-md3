@@ -13,7 +13,7 @@ export default function OnlineQuote() {
       <PageTitle title="Instant Quote" />
       <Condition
         onSearch={() => {
-          router.push("/main/pricing/online-quote/result");
+          router.push("/main/pricing/quote/result");
         }}
         onReset={() => {}}
       />
