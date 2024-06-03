@@ -35,14 +35,6 @@ export default function PartiesStep() {
     }));
   }, []);
 
-  const ValidateRequired = useCallback(() => {
-    if (partiesData.shipper.name === "" || partiesData.shipper.address === "") {
-      return false;
-    } else {
-      return true;
-    }
-  }, [partiesData.shipper.address, partiesData.shipper.name]);
-
   const moveToCargoStep = useCallback(() => {
     setBookingRequestStep((prev) => ({
       ...prev,
@@ -58,26 +50,6 @@ export default function PartiesStep() {
     }));
   }, [setBookingRequestStep]);
 
-  useEffect(() => {
-    if (ValidateRequired()) {
-      setBookingRequestStep((prev) => ({
-        ...prev,
-        parties: {
-          ...prev.parties,
-          isCompleted: true,
-        },
-      }));
-    } else {
-      setBookingRequestStep((prev) => ({
-        ...prev,
-        parties: {
-          ...prev.parties,
-          isCompleted: false,
-        },
-      }));
-    }
-  }, [ValidateRequired, partiesData, setBookingRequestStep]);
-
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -88,13 +60,7 @@ export default function PartiesStep() {
         <NAMultiAutoComplete
           label="Company Name"
           itemList={tempCompaniesData}
-          required
           maxLength={70}
-          error={
-            bookingRequestStep.parties.visited &&
-            partiesData.shipper.name === ""
-          }
-          errorText="Company Name is required"
           initialValue={{
             name: partiesData.shipper.name,
             address: partiesData.shipper.address,
@@ -126,12 +92,6 @@ export default function PartiesStep() {
           label="Address"
           maxLength={105}
           placeholder="Address (State Name, City, State & Zip Code, Country Name)"
-          required
-          error={
-            bookingRequestStep.parties.visited &&
-            partiesData.shipper.address === ""
-          }
-          errorText="Address is required"
           value={partiesData.shipper.address}
           handleValueChange={(value) => {
             setPartiesData((prev) => ({

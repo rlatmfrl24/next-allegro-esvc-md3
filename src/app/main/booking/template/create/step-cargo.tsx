@@ -31,22 +31,6 @@ export default function CargoStep() {
     BookingRequestStepState
   );
 
-  const ValidateRequired = useCallback(() => {
-    if (
-      cargoPickUpReturnData.commodity.code === "" ||
-      cargoPickUpReturnData.commodity.description === "" ||
-      cargoPickUpReturnData.grossWeight === "0"
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  }, [
-    cargoPickUpReturnData.commodity.code,
-    cargoPickUpReturnData.commodity.description,
-    cargoPickUpReturnData.grossWeight,
-  ]);
-
   const moveToContainerStep = useCallback(() => {
     setBookingRequestStep((prev) => ({
       ...prev,
@@ -61,26 +45,6 @@ export default function CargoStep() {
       },
     }));
   }, [setBookingRequestStep]);
-
-  useEffect(() => {
-    if (ValidateRequired()) {
-      setBookingRequestStep((prev) => ({
-        ...prev,
-        cargoPickUpReturn: {
-          ...prev.cargoPickUpReturn,
-          isCompleted: true,
-        },
-      }));
-    } else {
-      setBookingRequestStep((prev) => ({
-        ...prev,
-        cargoPickUpReturn: {
-          ...prev.cargoPickUpReturn,
-          isCompleted: false,
-        },
-      }));
-    }
-  }, [ValidateRequired, setBookingRequestStep]);
 
   const portList = useMemo(() => {
     return Array.from({ length: 50 }, (_, i) =>
@@ -123,12 +87,6 @@ export default function CargoStep() {
       <SubTitle title="Cargo" className="mb-4" />
       <div className="flex gap-4">
         <NAMultiAutoComplete
-          required
-          error={
-            bookingRequestStep.cargoPickUpReturn.visited &&
-            cargoPickUpReturnData.commodity.code === ""
-          }
-          errorText="Commodity is required."
           label="Commodity"
           initialValue={cargoPickUpReturnData.commodity}
           isAllowOnlyListItems={false}
@@ -158,12 +116,6 @@ export default function CargoStep() {
           className="h-fit"
           label="Gross Weight"
           maxInputLength={9}
-          required
-          error={
-            bookingRequestStep.cargoPickUpReturn.visited &&
-            cargoPickUpReturnData.grossWeight === "0"
-          }
-          errorText="Gross Weight is required."
           readOnly={params.has("quoteNumber")}
           type="number"
           handleValueChange={(value) => {
@@ -199,7 +151,6 @@ export default function CargoStep() {
           <DatePicker
             className="flex-1"
             label="Empty Pick Up Date"
-            required
             initialDate={cargoPickUpReturnData.emptyPickUpDate}
             onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {

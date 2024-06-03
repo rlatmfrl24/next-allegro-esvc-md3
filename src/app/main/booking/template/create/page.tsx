@@ -1,19 +1,11 @@
 "use client";
 import classNames from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CSSProperties, Suspense, useEffect, useMemo } from "react";
+import { CSSProperties, Suspense, useEffect } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { DividerComponent } from "@/app/components/divider";
 import PageTitle from "@/app/components/title-components";
-import { MdTypography } from "@/app/components/typography";
-import BookingStatusChip from "@/app/main/booking/status/components/booking-status-chip";
-import {
-  BookingTemplateSelect,
-  SaveAsTemplate,
-} from "@/app/main/booking/template/components/generic";
+import { BookingTemplateSelect } from "@/app/main/booking/template/components/generic";
 import {
   AdditionalInformationState,
   BookingInformationState,
@@ -29,14 +21,10 @@ import styles from "@/app/styles/base.module.css";
 import {
   MdElevation,
   MdFilledButton,
-  MdFilledTonalButton,
   MdIcon,
   MdOutlinedButton,
 } from "@/app/util/md3";
-import {
-  BookingInformationRequestType,
-  BookingStatus,
-} from "@/app/util/typeDef/boooking";
+import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
 import { ChevronLeft } from "@mui/icons-material";
 
 import AdditionalInformationStep from "./step-additional-information";
@@ -161,12 +149,13 @@ function BookingTemplateCreation() {
           )}
         </div>
         <div className="flex items-center">
-          {searchParams.get("type") !== "edit" &&
-            searchParams.get("quoteNumber") === null && (
+          {searchParams.get("type") !== "edit" && (
+            <>
               <BookingTemplateSelect
                 initialTemplate={searchParams.get("template") as string}
               />
-            )}
+            </>
+          )}
         </div>
       </div>
       <div

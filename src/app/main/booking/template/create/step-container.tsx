@@ -492,7 +492,7 @@ export default function ContainerStep() {
               );
             })}
             {typeSelections.length === 0 && (
-              <div className="flex-1 flex-col flex items-center justify-center gap-8">
+              <div className="flex-1 flex-col flex items-center justify-center gap-8 pt-6">
                 <EmptyContainerPlaceholder />
                 <MdTypography
                   variant="headline"

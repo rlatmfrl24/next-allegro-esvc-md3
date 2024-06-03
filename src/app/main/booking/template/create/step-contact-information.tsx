@@ -50,39 +50,6 @@ export default function ContactInformationStep() {
     []
   );
 
-  const ValidateRequired = useCallback(() => {
-    if (
-      contactInformationData.name === "" ||
-      contactInformationData.address === "" ||
-      contactInformationData.telNo === "" ||
-      contactInformationData.email === ""
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  }, [contactInformationData]);
-
-  useEffect(() => {
-    if (ValidateRequired()) {
-      setBookingRequestStep((prev) => ({
-        ...prev,
-        contactInformation: {
-          ...prev.contactInformation,
-          isCompleted: true,
-        },
-      }));
-    } else {
-      setBookingRequestStep((prev) => ({
-        ...prev,
-        contactInformation: {
-          ...prev.contactInformation,
-          isCompleted: false,
-        },
-      }));
-    }
-  }, [ValidateRequired, contactInformationData, setBookingRequestStep]);
-
   return (
     <div className="w-full">
       <MdTypography variant="title" size="large" className="mb-6">
@@ -90,12 +57,6 @@ export default function ContactInformationStep() {
       </MdTypography>
       <div className="grid grid-cols-2 gap-4 w-full">
         <NAOutlinedTextField
-          required
-          error={
-            bookingRequestStep.contactInformation.visited &&
-            contactInformationData.name === ""
-          }
-          errorText="Name is required"
           value={contactInformationData.name}
           label="Name"
           handleValueChange={(value) => {
@@ -108,12 +69,6 @@ export default function ContactInformationStep() {
           }}
         />
         <NAOutlinedTextField
-          required
-          error={
-            bookingRequestStep.contactInformation.visited &&
-            contactInformationData.email === ""
-          }
-          errorText="Email is required"
           value={contactInformationData.email}
           label="Email"
           handleValueChange={(value) => {
@@ -127,12 +82,6 @@ export default function ContactInformationStep() {
         />
 
         <NAOutlinedTextField
-          required
-          error={
-            bookingRequestStep.contactInformation.visited &&
-            contactInformationData.telNo === ""
-          }
-          errorText="Tel No. is required"
           value={contactInformationData.telNo}
           label="Tel No."
           handleValueChange={(value) => {
@@ -158,12 +107,6 @@ export default function ContactInformationStep() {
         />
         <NAOutlinedTextField
           className="col-span-2"
-          required
-          error={
-            bookingRequestStep.contactInformation.visited &&
-            contactInformationData.address === ""
-          }
-          errorText="Address is required"
           type="textarea"
           value={contactInformationData.address}
           label="Address"
