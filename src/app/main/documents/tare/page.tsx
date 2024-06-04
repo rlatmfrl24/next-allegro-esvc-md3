@@ -22,41 +22,42 @@ import { faker } from "@faker-js/faker";
 export default function TARESearch() {
   const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unseach" | "search">("unseach");
-  const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
       <PageTitle title="Container Tare Finder" />
-      <div className={cx(styles.area)}>
-        <NAOutlinedTextField
-          value={inputQuery}
-          handleValueChange={(value) => {
-            setInputQuery(value);
-          }}
-          label="Container No. (Multi)"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (inputQuery !== "" && !queries.includes(inputQuery))
-                setQueries([...queries, inputQuery]);
-              setInputQuery("");
-            }
-          }}
-        />
-        <MdChipSet>
-          {queries.map((query, index) => (
-            <MdInputChip
-              key={faker.string.uuid()}
-              label={query}
-              selected
-              handleTrailingActionFocus={() => {
-                setQueries((prev) => {
-                  return prev.filter((_, i) => i !== index);
-                });
-              }}
-            />
-          ))}
-        </MdChipSet>
+      <div className={cx(styles.area, styles.row)}>
+        <div className="flex flex-col gap-2 flex-1">
+          <NAOutlinedTextField
+            value=""
+            className="w-[832px]"
+            label="Container No. (Multi)"
+            onKeyDown={(e) => {
+              const query = e.currentTarget.value;
+
+              if (e.key === "Enter") {
+                if (query !== "" && !queries.includes(query))
+                  setQueries([...queries, query]);
+                e.currentTarget.value = "";
+              }
+            }}
+          />
+          <MdChipSet>
+            {queries.map((query, index) => (
+              <MdInputChip
+                key={faker.string.uuid()}
+                label={query}
+                selected
+                handleTrailingActionFocus={() => {
+                  setQueries((prev) => {
+                    return prev.filter((_, i) => i !== index);
+                  });
+                }}
+              />
+            ))}
+          </MdChipSet>
+        </div>
         <div className="flex gap-4 justify-end">
           <MdTextButton
             onClick={() => {

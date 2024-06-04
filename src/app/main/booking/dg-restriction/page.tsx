@@ -78,86 +78,82 @@ export default function DGRestrictionSearch() {
         }}
       />
       <PageTitle title="DG Restriction Search" />
-      <div className={cx(styles.area)}>
-        <div className="flex gap-4">
-          <NAOutlinedAutoComplete
-            label="Place of Loading"
-            itemList={tempPortList}
-            className="w-96"
-            initialValue={searchCondition.pol}
-            onItemSelection={(item) => {
-              setSearchCondition((prev) => ({ ...prev, pol: item }));
-            }}
-          />
-          <NAOutlinedAutoComplete
-            label="Place of Discharging"
-            itemList={tempPortList}
-            className="w-96"
-            initialValue={searchCondition.pod}
-            onItemSelection={(item) => {
-              setSearchCondition((prev) => ({ ...prev, pod: item }));
-            }}
-          />
-          <NAMultiAutoComplete
-            showAllonFocus
-            label="Target Lane"
-            itemList={tempTargetLanes}
-            initialValue={{
-              key: searchCondition.targetLane.key,
-              value: searchCondition.targetLane.value,
-            }}
-            onItemSelection={(item) => {
-              setSearchCondition((prev) => ({
-                ...prev,
-                targetLane: {
-                  key: item.key,
-                  value: item.value,
-                },
-              }));
-            }}
-          />
-        </div>
-        <div className="flex gap-4">
-          <MdOutlinedTextField
-            label="Seq."
-            readOnly
-            hasTrailingIcon
-            className="w-32"
-            onClick={() => {
-              setUnNumberDialogOpen(true);
-            }}
-            value={searchCondition.seq}
-          >
-            <MdIcon slot="trailing-icon">
-              <Search />
-            </MdIcon>
-          </MdOutlinedTextField>
-          <MdOutlinedTextField
-            label="UN No."
-            value={searchCondition.unNumber}
-            onInput={(e) => {
-              console.log(e.currentTarget?.value);
-              const value = e.currentTarget?.value;
-              value &&
+      <div className={cx(styles.area, styles.row)}>
+        <div className="flex flex-col gap-4 flex-1">
+          <div className="flex gap-4">
+            <NAOutlinedAutoComplete
+              label="Place of Loading"
+              itemList={tempPortList}
+              className="w-[424px]"
+              initialValue={searchCondition.pol}
+              onItemSelection={(item) => {
+                setSearchCondition((prev) => ({ ...prev, pol: item }));
+              }}
+            />
+            <NAOutlinedAutoComplete
+              label="Place of Discharging"
+              itemList={tempPortList}
+              className="w-[424px]"
+              initialValue={searchCondition.pod}
+              onItemSelection={(item) => {
+                setSearchCondition((prev) => ({ ...prev, pod: item }));
+              }}
+            />
+            <NAMultiAutoComplete
+              showAllonFocus
+              required
+              label="Target Lane"
+              itemList={tempTargetLanes}
+              initialValue={{
+                key: searchCondition.targetLane.key,
+                value: searchCondition.targetLane.value,
+              }}
+              onItemSelection={(item) => {
                 setSearchCondition((prev) => ({
                   ...prev,
-                  unNumber: value,
+                  targetLane: {
+                    key: item.key,
+                    value: item.value,
+                  },
                 }));
-            }}
-          />
-          <NAOutlinedTextField
-            label="Class"
-            readOnly
-            value={searchCondition.class}
-          />
-          <NAOutlinedTextField
-            label="Description"
-            readOnly
-            className="w-96"
-            value={searchCondition.description}
-          />
+              }}
+            />
+          </div>
+          <div className="flex gap-4">
+            <MdOutlinedTextField
+              label="UN No."
+              className="w-32"
+              value={searchCondition.unNumber}
+              onClick={() => {
+                setUnNumberDialogOpen(true);
+              }}
+            >
+              <MdIcon slot="trailing-icon">
+                <Search />
+              </MdIcon>
+            </MdOutlinedTextField>
+
+            <NAOutlinedTextField
+              label="Seq."
+              readOnly
+              className="w-28"
+              value={searchCondition.seq}
+            />
+            <NAOutlinedTextField
+              label="Class"
+              readOnly
+              className="w-24"
+              value={searchCondition.class}
+            />
+            <NAOutlinedTextField
+              label="Description"
+              readOnly
+              className="w-[600px]"
+              value={searchCondition.description}
+            />
+          </div>
         </div>
-        <div className="flex gap-4 justify-end">
+        <div className="flex gap-4 justify-end h-fit">
           <MdTextButton
             onClick={() => {
               setPageState("unseach");

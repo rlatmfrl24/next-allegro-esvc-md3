@@ -11,6 +11,10 @@
   @apply p-0;
 }
 
+.area.row {
+  @apply flex-row gap-4 items-end;
+}
+
 .area.row-direction {
   @apply flex-row gap-0;
 }
