@@ -24,7 +24,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createDummyVesselInformations } from "../../schedule/util";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import {
@@ -266,153 +266,167 @@ export default function ShipmentReportPage() {
             }}
           />
         </MdOutlinedSegmentedButtonSet>
-        <div className="flex gap-4 items-end">
-          {currentTab === "arrival" && <DateRangePicker label="Arrival Date" />}
-          {currentTab === "departure" && (
-            <DateRangePicker label="Departure Date" />
-          )}
-          {currentTab === "vessel" && (
+
+        <div className="flex items-end gap-4">
+          <div className="flex-1 flex flex-col gap-4">
+            <div className="flex gap-4 flex-wrap items-center">
+              {currentTab === "arrival" && (
+                <DateRangePicker label="Arrival Date" />
+              )}
+              {currentTab === "departure" && (
+                <DateRangePicker label="Departure Date" />
+              )}
+              {currentTab === "vessel" && (
+                <div className="flex gap-4">
+                  <NAOutlinedAutoComplete
+                    label="Vessel Name"
+                    itemList={tempVessels.map((vessel) => vessel.vesselName)}
+                  />
+                  <NAOutlinedTextField
+                    label="Voyage"
+                    value=""
+                    className="w-32"
+                  />
+                  <NAOutlinedListBox
+                    label="Direction"
+                    options={["E", "W", "S", "N"]}
+                    className="w-36"
+                  />
+                </div>
+              )}
+
+              <div className="flex gap-4 flex-1 items-center">
+                <MdTypography
+                  tag="label"
+                  variant="body"
+                  size="medium"
+                  className="flex gap-2 items-center cursor-pointer whitespace-nowrap"
+                >
+                  <MdRadio
+                    name="list-option"
+                    checked={listOption === "customer"}
+                    onClick={() => {
+                      setListOption("customer");
+                    }}
+                  />
+                  By Customer
+                </MdTypography>
+                <MdTypography
+                  tag="label"
+                  variant="body"
+                  size="medium"
+                  className="flex gap-2 items-center cursor-pointer whitespace-nowrap"
+                >
+                  <MdRadio
+                    name="list-option"
+                    checked={listOption === "contract"}
+                    onClick={() => {
+                      setListOption("contract");
+                    }}
+                  />
+                  By Contract
+                </MdTypography>
+                {listOption === "customer" ? (
+                  <NAOutlinedMultiListBox
+                    options={[
+                      "Shipper",
+                      "Consignee",
+                      "Notify",
+                      "Fowarder",
+                      "Also Notify",
+                    ]}
+                    label="By Customer"
+                    unit="Customer"
+                  />
+                ) : (
+                  <>
+                    <NAOutlinedListBox
+                      options={tempContracts}
+                      label="By Contract"
+                      className="min-w-24"
+                    />
+                    <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+                  </>
+                )}
+              </div>
+              <MyReportComponent />
+            </div>
             <div className="flex gap-4">
-              <NAOutlinedAutoComplete
-                label="Vessel Name"
-                itemList={tempVessels.map((vessel) => vessel.vesselName)}
-                className="w-96"
-              />
-              <NAOutlinedTextField label="Voyage" value="" />
-              <NAOutlinedListBox
-                label="Direction"
-                options={["E", "W", "S", "N"]}
-                className="w-36"
-              />
+              {moreFilter.includes("Port of Loading") && (
+                <div className="w-1/2 flex flex-col gap-2">
+                  <NAOutlinedAutoComplete
+                    itemList={tempPorts}
+                    label="Port of Loading"
+                    removeQueryOnSelect
+                    onItemSelection={(item) => {
+                      setPolSelections([...polSelections, item]);
+                    }}
+                  />
+                  <MdChipSet>
+                    {polSelections.map((item) => (
+                      <MdInputChip
+                        key={faker.string.uuid()}
+                        label={item}
+                        selected
+                        handleTrailingActionFocus={() =>
+                          setPolSelections((prev) => {
+                            return prev.filter((q) => q !== item);
+                          })
+                        }
+                      />
+                    ))}
+                  </MdChipSet>
+                </div>
+              )}
+              {moreFilter.includes("Port of Discharging") && (
+                <div className="w-1/2 flex flex-col gap-2">
+                  <NAOutlinedAutoComplete
+                    itemList={tempPorts}
+                    label="Port of Discharging"
+                    removeQueryOnSelect
+                    onItemSelection={(item) => {
+                      setPodSelections([...podSelections, item]);
+                    }}
+                  />
+                  <MdChipSet>
+                    {podSelections.map((item) => (
+                      <MdInputChip
+                        key={faker.string.uuid()}
+                        label={item}
+                        selected
+                        handleTrailingActionFocus={() =>
+                          setPodSelections((prev) => {
+                            return prev.filter((q) => q !== item);
+                          })
+                        }
+                      />
+                    ))}
+                  </MdChipSet>
+                </div>
+              )}
             </div>
-          )}
-
-          <div className="flex gap-4 flex-1">
-            <MdTypography
-              tag="label"
-              variant="body"
-              size="medium"
-              className="flex gap-2 items-center cursor-pointer"
-            >
-              <MdRadio
-                name="list-option"
-                checked={listOption === "customer"}
-                onClick={() => {
-                  setListOption("customer");
-                }}
-              />
-              By Customer
-            </MdTypography>
-            <MdTypography
-              tag="label"
-              variant="body"
-              size="medium"
-              className="flex gap-2 items-center cursor-pointer"
-            >
-              <MdRadio
-                name="list-option"
-                checked={listOption === "contract"}
-                onClick={() => {
-                  setListOption("contract");
-                }}
-              />
-              By Contract
-            </MdTypography>
-            {listOption === "customer" ? (
-              <NAOutlinedMultiListBox
-                options={[
-                  "Shipper",
-                  "Consignee",
-                  "Notify",
-                  "Fowarder",
-                  "Also Notify",
-                ]}
-                label="By Customer"
-                unit="Customer"
-              />
-            ) : (
-              <NAOutlinedListBox options={tempContracts} label="By Contract" />
-            )}
           </div>
-
-          <MyReportComponent />
-        </div>
-        {moreFilter.length > 0 && <DividerComponent />}
-        <div className="flex gap-4">
-          {moreFilter.includes("Port of Loading") && (
-            <div className="flex-1 flex flex-col gap-2">
-              <NAOutlinedAutoComplete
-                itemList={tempPorts}
-                label="Port of Loading"
-                removeQueryOnSelect
-                onItemSelection={(item) => {
-                  setPolSelections([...polSelections, item]);
-                }}
-              />
-              <MdChipSet>
-                {polSelections.map((item) => (
-                  <MdInputChip
-                    key={faker.string.uuid()}
-                    label={item}
-                    selected
-                    handleTrailingActionFocus={() =>
-                      setPolSelections((prev) => {
-                        return prev.filter((q) => q !== item);
-                      })
-                    }
-                  />
-                ))}
-              </MdChipSet>
-            </div>
-          )}
-          {moreFilter.includes("Port of Discharging") && (
-            <div className="flex-1 flex flex-col gap-2">
-              <NAOutlinedAutoComplete
-                itemList={tempPorts}
-                label="Port of Discharging"
-                removeQueryOnSelect
-                onItemSelection={(item) => {
-                  setPodSelections([...podSelections, item]);
-                }}
-              />
-              <MdChipSet>
-                {podSelections.map((item) => (
-                  <MdInputChip
-                    key={faker.string.uuid()}
-                    label={item}
-                    selected
-                    handleTrailingActionFocus={() =>
-                      setPodSelections((prev) => {
-                        return prev.filter((q) => q !== item);
-                      })
-                    }
-                  />
-                ))}
-              </MdChipSet>
-            </div>
-          )}
-        </div>
-
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MoreFilter
-            onFilterChange={(filter) => {
-              setMoreFilter(filter);
-            }}
-          />
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MoreFilter
+              onFilterChange={(filter) => {
+                setMoreFilter(filter);
+              }}
+            />
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={styles.area}>

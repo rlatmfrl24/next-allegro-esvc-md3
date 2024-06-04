@@ -8,6 +8,8 @@ import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
   MdFilledButton,
+  MdIcon,
+  MdIconButton,
   MdInputChip,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
@@ -17,6 +19,26 @@ import { faker } from "@faker-js/faker";
 import classNames from "classnames";
 import { useMemo, useState } from "react";
 import { InboundMasterTable } from "./table";
+import {
+  FloatingFocusManager,
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from "@floating-ui/react";
+import { basicPopoverStyles } from "@/app/util/constants";
+import { Info, InfoOutlined } from "@mui/icons-material";
+import {
+  RichTooltipContainer,
+  RichTooltipItem,
+} from "@/app/components/tooltip";
+import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 
 const OnboardConditions = () => {
   const tempPortList = useMemo(() => {
@@ -27,7 +49,7 @@ const OnboardConditions = () => {
   }, []);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 flex-1">
       <DateRangePicker label="Onboard/Arrival Date" />
       <NAOutlinedAutoComplete label="Port of Loading" itemList={tempPortList} />
       <NAOutlinedAutoComplete
@@ -44,36 +66,43 @@ const BlConditions = () => {
 
   return (
     <>
-      <div className="flex gap-4 flex-col">
-        <NAOutlinedTextField
-          value={inputQuery}
-          handleValueChange={(value) => {
-            setInputQuery(value);
-          }}
-          label="Container No. (Multi)"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (inputQuery !== "" && !queries.includes(inputQuery))
-                setQueries([...queries, inputQuery]);
-              setInputQuery("");
-            }
-          }}
-        />
-      </div>
-      <MdChipSet>
-        {queries.map((query, index) => (
-          <MdInputChip
-            key={faker.string.uuid()}
-            label={query}
-            selected={true}
-            handleTrailingActionFocus={() => {
-              setQueries((prev) => {
-                return prev.filter((_, i) => i !== index);
-              });
+      <div className="flex gap-2 flex-col flex-1">
+        <div className="flex gap-4 items-center">
+          <NAOutlinedTextField
+            value={inputQuery}
+            handleValueChange={(value) => {
+              setInputQuery(value);
+            }}
+            className="w-[832px]"
+            label="Container No. (Multi)"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (inputQuery !== "" && !queries.includes(inputQuery))
+                  setQueries([...queries, inputQuery]);
+                setInputQuery("");
+              }
             }}
           />
-        ))}
-      </MdChipSet>
+          <InfoTooltipButton
+            title="Please enter B/L number composed of 14 alphanumeric characters."
+            supportingText="Ensure your B/L number is assigned by ALLEGRO. Our system does not accept House B/L number assigned by NVOCC or Freight Forwarder."
+          />
+        </div>
+        <MdChipSet>
+          {queries.map((query, index) => (
+            <MdInputChip
+              key={faker.string.uuid()}
+              label={query}
+              selected={true}
+              handleTrailingActionFocus={() => {
+                setQueries((prev) => {
+                  return prev.filter((_, i) => i !== index);
+                });
+              }}
+            />
+          ))}
+        </MdChipSet>
+      </div>
     </>
   );
 };
@@ -103,22 +132,24 @@ export default function InboundMaster() {
             }}
           />
         </MdOutlinedSegmentedButtonSet>
-        {currentTab === "onboard" ? <OnboardConditions /> : <BlConditions />}
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unseach");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+        <div className="flex gap-4 items-end">
+          {currentTab === "onboard" ? <OnboardConditions /> : <BlConditions />}
+          <div className="flex gap-4 justify-end">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unseach");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={cx(styles.area)}>

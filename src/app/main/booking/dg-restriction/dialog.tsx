@@ -75,7 +75,7 @@ export const UNNumberSearchDialog = (props: {
     }),
     columnHelper.accessor("unNumber", {
       id: "unNumber",
-      header: "UN Number",
+      header: "UN No. / Seq",
       size: 120,
     }),
     columnHelper.accessor("description", {

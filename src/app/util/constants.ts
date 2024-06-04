@@ -94,7 +94,7 @@ export const menuItems: MenuItemType[] = [
       },
       {
         id: "special_cargo",
-        name: "Search Cargo Status Search",
+        name: "Special Cargo Status Search",
         link: "special-cargo",
         subMenu: [],
       },
