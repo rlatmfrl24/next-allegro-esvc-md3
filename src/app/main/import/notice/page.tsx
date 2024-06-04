@@ -1,156 +1,148 @@
 "use client";
+import { useState } from "react";
 
+import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
+import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { RemovableChip } from "@/app/components/removable-chip";
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
   MdFilledButton,
-  MdIcon,
-  MdIconButton,
-  MdInputChip,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
-import { useState } from "react";
+
 import { ArrivalNoticeTable } from "./table";
-import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-  useTransitionStyles,
-} from "@floating-ui/react";
-import { basicPopoverStyles } from "@/app/util/constants";
-import { Info, InfoOutlined } from "@mui/icons-material";
-import {
-  RichTooltipContainer,
-  RichTooltipItem,
-} from "@/app/components/tooltip";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { faker } from "@faker-js/faker";
-
-const SearchTooltip = () => {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-
-  const { context, floatingStyles, refs } = useFloating({
-    open: isTooltipOpen,
-    onOpenChange: setIsTooltipOpen,
-    placement: "bottom-end",
-    middleware: [shift(), flip(), offset(4)],
-    whileElementsMounted: autoUpdate,
-  });
-
-  const { isMounted, styles: transitionStyles } = useTransitionStyles(
-    context,
-    basicPopoverStyles
-  );
-
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    useClick(context),
-    useDismiss(context),
-    useRole(context, {
-      role: "tooltip",
-    }),
-  ]);
-
-  return (
-    <>
-      <MdIconButton
-        ref={refs.setReference}
-        {...getReferenceProps()}
-        className="mt-2"
-      >
-        <MdIcon>
-          <InfoOutlined />
-        </MdIcon>
-      </MdIconButton>
-      {isMounted && (
-        <div
-          ref={refs.setFloating}
-          style={floatingStyles}
-          {...getFloatingProps()}
-          className="z-10 max-w-96"
-        >
-          <div style={transitionStyles}>
-            <RichTooltipContainer>
-              <RichTooltipItem
-                slot="content"
-                title={`Please enter KAMBARA KISEN B/L number composed of 3 alphabet characters + 9 digits of number (i/e PUS123456789, Discard the prefix "KKCL").`}
-                supportingText={`Ensure your B/L number is assigned by KAMBARA KISEN. Our system does not accept House B/L number assigned by NVOCC or Freight Forwarder.`}
-              />
-            </RichTooltipContainer>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
 
 export default function ArrivalNoticePage() {
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
-  const [inputQuery, setInputQuery] = useState<string>("");
+  const [searchType, setSearchType] = useState<"date" | "bl" | "container">(
+    "date"
+  ); // ["date", "bl", "container"
   const [queries, setQueries] = useState<string[]>([]);
 
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Arrival Notice" />
       <div className={styles.area}>
-        <div className="flex gap-4 ">
-          <DateRangePicker label="Onboard/Arrival Date" />
-          <div className="flex flex-col gap-4 flex-1">
-            <NAOutlinedTextField
-              value={inputQuery}
-              className="flex-1"
-              label="Container or B/L No. (Multi)"
-              handleValueChange={(value) => {
-                setInputQuery(value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (inputQuery !== "" && !queries.includes(inputQuery))
-                    setQueries([...queries, inputQuery]);
-                  setInputQuery("");
-                }
-              }}
-            />
-            <MdChipSet>
-              {queries.map((query, index) => (
-                <MdInputChip
-                  key={faker.string.uuid()}
-                  label={query}
-                  selected={true}
-                  handleTrailingActionFocus={() => {
-                    setQueries((prev) => {
-                      return prev.filter((_, i) => i !== index);
-                    });
-                  }}
-                />
-              ))}
-            </MdChipSet>
+        <MdOutlinedSegmentedButtonSet>
+          <MdOutlinedSegmentedButton
+            selected={searchType === "date"}
+            onClick={() => {
+              setSearchType("date");
+              setQueries([]);
+            }}
+            label="Onboard/Arrival Date"
+          />
+          <MdOutlinedSegmentedButton
+            selected={searchType === "bl"}
+            onClick={() => {
+              setSearchType("bl");
+              setQueries([]);
+            }}
+            label="B/L No."
+          />
+          <MdOutlinedSegmentedButton
+            selected={searchType === "container"}
+            onClick={() => {
+              setSearchType("container");
+              setQueries([]);
+            }}
+            label="Container No."
+          />
+        </MdOutlinedSegmentedButtonSet>
+        <div className="flex gap-4 items-end">
+          <div className="flex-1">
+            {searchType === "date" && (
+              <DateRangePicker label="Onboard/Arrival Date" className="w-fit" />
+            )}
+            {searchType === "bl" && (
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-4">
+                  <NAOutlinedTextField
+                    value=""
+                    label="B/L No. (Multi)"
+                    className="w-1/2"
+                    onKeyDown={(e) => {
+                      const query = e.currentTarget.value;
+
+                      if (e.key === "Enter") {
+                        if (query !== "" && !queries.includes(query))
+                          setQueries([...queries, query]);
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                  />
+                  <InfoTooltipButton
+                    title={`Please enter KAMBARA KISEN B/L number composed of 3 alphabet characters + 9 digits of number (i/e PUS123456789, Discard the prefix "KKCL").`}
+                    supportingText="Ensure your B/L number is assigned by KAMBARA KISEN. Our system does not accept House B/L number assigned by NVOCC or Freight Forwarder."
+                  />
+                </div>
+                <MdChipSet>
+                  {queries.map((query) => (
+                    <RemovableChip
+                      key={query}
+                      label={query}
+                      onRemove={() => {
+                        setQueries(queries.filter((q) => q !== query));
+                      }}
+                    />
+                  ))}
+                </MdChipSet>
+              </div>
+            )}
+            {searchType === "container" && (
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-4">
+                  <NAOutlinedTextField
+                    value=""
+                    label="Container No. (Multi)"
+                    className="w-1/2"
+                    onKeyDown={(e) => {
+                      const query = e.currentTarget.value;
+
+                      if (e.key === "Enter") {
+                        if (query !== "" && !queries.includes(query))
+                          setQueries([...queries, query]);
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                  />
+                </div>
+                <MdChipSet>
+                  {queries.map((query) => (
+                    <RemovableChip
+                      key={query}
+                      label={query}
+                      onRemove={() => {
+                        setQueries(queries.filter((q) => q !== query));
+                      }}
+                    />
+                  ))}
+                </MdChipSet>
+              </div>
+            )}
           </div>
-          <SearchTooltip />
-        </div>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={styles.area}>
