@@ -8,6 +8,8 @@ import {
   MdChipSet,
   MdFilledButton,
   MdInputChip,
+  MdOutlinedSegmentedButton,
+  MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
@@ -18,6 +20,7 @@ import { SurrenderTable } from "./table";
 export default function BLSurrenderCheck() {
   const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unseach" | "search">("unseach");
+  const [searchType, setSearchType] = useState<"bl" | "container">("bl"); // ["bl", "container"
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
 
@@ -25,50 +28,71 @@ export default function BLSurrenderCheck() {
     <div aria-label="container" className={cx(styles.container)}>
       <PageTitle title="B/L Surrender Check" />
       <div className={cx(styles.area)}>
-        <NAOutlinedTextField
-          value={inputQuery}
-          label="Container or Booking or B/L No. (Multi)"
-          handleValueChange={(value) => {
-            setInputQuery(value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (inputQuery !== "" && !queries.includes(inputQuery))
-                setQueries([...queries, inputQuery]);
-              setInputQuery("");
-            }
-          }}
-        />
-        <MdChipSet>
-          {queries.map((query, index) => (
-            <MdInputChip
-              key={faker.string.uuid()}
-              label={query}
-              selected={true}
-              handleTrailingActionFocus={() => {
-                setQueries((prev) => {
-                  return prev.filter((_, i) => i !== index);
-                });
+        <MdOutlinedSegmentedButtonSet>
+          <MdOutlinedSegmentedButton
+            selected={searchType === "bl"}
+            onClick={() => setSearchType("bl")}
+            label="B/L No."
+          />
+          <MdOutlinedSegmentedButton
+            selected={searchType === "container"}
+            onClick={() => setSearchType("container")}
+            label="Container No."
+          />
+        </MdOutlinedSegmentedButtonSet>
+        <div className="flex gap-4 items-end">
+          <div className="flex flex-col gap-2 flex-1">
+            <NAOutlinedTextField
+              value={inputQuery}
+              handleValueChange={(value) => {
+                setInputQuery(value);
+              }}
+              label={
+                searchType === "bl"
+                  ? "B/L No. (Multi)"
+                  : "Container No. (Multi)"
+              }
+              className="w-1/2"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (inputQuery !== "" && !queries.includes(inputQuery))
+                    setQueries([...queries, inputQuery]);
+                  setInputQuery("");
+                }
               }}
             />
-          ))}
-        </MdChipSet>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setQueries([]);
-              setPageState("unseach");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+            <MdChipSet>
+              {queries.map((query, index) => (
+                <MdInputChip
+                  key={faker.string.uuid()}
+                  label={query}
+                  selected={true}
+                  handleTrailingActionFocus={() => {
+                    setQueries((prev) => {
+                      return prev.filter((_, i) => i !== index);
+                    });
+                  }}
+                />
+              ))}
+            </MdChipSet>
+          </div>
+          <div className="flex gap-4 justify-end">
+            <MdTextButton
+              onClick={() => {
+                setQueries([]);
+                setPageState("unseach");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={cx(styles.area)}>
