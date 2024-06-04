@@ -121,33 +121,23 @@ export default function DGRestrictionSearch() {
           </div>
           <div className="flex gap-4">
             <MdOutlinedTextField
-              label="Seq."
-              readOnly
-              hasTrailingIcon
-              className="w-28"
+              label="UN No."
+              className="w-32"
+              value={searchCondition.unNumber}
               onClick={() => {
                 setUnNumberDialogOpen(true);
               }}
-              value={searchCondition.seq}
             >
               <MdIcon slot="trailing-icon">
                 <Search />
               </MdIcon>
             </MdOutlinedTextField>
+
             <NAOutlinedTextField
-              label="UN No."
-              className="w-24"
+              label="Seq."
               readOnly
-              value={searchCondition.unNumber}
-              onInput={(e) => {
-                console.log(e.currentTarget?.value);
-                const value = e.currentTarget?.value;
-                value &&
-                  setSearchCondition((prev) => ({
-                    ...prev,
-                    unNumber: value,
-                  }));
-              }}
+              className="w-28"
+              value={searchCondition.seq}
             />
             <NAOutlinedTextField
               label="Class"
