@@ -18,6 +18,7 @@ import {
   MdIcon,
   MdIconButton,
   MdInputChip,
+  MdOutlinedButton,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdRadio,
@@ -39,6 +40,7 @@ import {
 import { InfoOutlined } from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import { ChargeInquiryTable } from "./table";
+import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 
 export default function ChargeInquiryPage() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -87,7 +89,7 @@ export default function ChargeInquiryPage() {
             }}
           />
         </MdOutlinedSegmentedButtonSet>
-        <div className="flex gap-4">
+        <div className="flex gap-4 p-1">
           <MdTypography
             tag="label"
             variant="label"
@@ -121,29 +123,33 @@ export default function ChargeInquiryPage() {
             Inbound
           </MdTypography>
         </div>
-        {
-          {
-            bl: <BlNumberCriteria />,
-            container: <ContainerNumberCriteria />,
-            customer: <TypeCustomerCriteria />,
-            contract: <ContractNumberCriteria />,
-          }[currentTab]
-        }
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+        <div className="flex items-end">
+          <div className="flex-1">
+            {
+              {
+                bl: <BlNumberCriteria />,
+                container: <ContainerNumberCriteria />,
+                customer: <TypeCustomerCriteria />,
+                contract: <ContractNumberCriteria />,
+              }[currentTab]
+            }
+          </div>
+          <div className="flex gap-4 justify-end">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={styles.area}>
@@ -178,25 +184,6 @@ export default function ChargeInquiryPage() {
 const BlNumberCriteria = () => {
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: isTooltipOpen,
-    onOpenChange: setIsTooltipOpen,
-    middleware: [shift(), flip(), offset(4)],
-    whileElementsMounted: autoUpdate,
-  });
-
-  const { isMounted, styles: transitionStyles } = useTransitionStyles(
-    context,
-    basicPopoverStyles
-  );
-
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    useClick(context),
-    useDismiss(context),
-    useRole(context),
-  ]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -207,7 +194,7 @@ const BlNumberCriteria = () => {
             setInputQuery(value);
           }}
           label="B/L No. (Multi)"
-          className="flex-1"
+          className="w-1/2"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (queries.includes(inputQuery)) return;
@@ -216,31 +203,7 @@ const BlNumberCriteria = () => {
             }
           }}
         />
-        <>
-          <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
-            <MdIcon>
-              <InfoOutlined />
-            </MdIcon>
-          </MdIconButton>
-          {isMounted && (
-            <div
-              ref={refs.setFloating}
-              style={floatingStyles}
-              {...getFloatingProps()}
-              className="z-10"
-            >
-              <div style={transitionStyles}>
-                <RichTooltipContainer>
-                  <RichTooltipItem
-                    slot="content"
-                    title="Tooltip"
-                    supportingText="Tooltip Text"
-                  />
-                </RichTooltipContainer>
-              </div>
-            </div>
-          )}
-        </>
+        <InfoTooltipButton title="Tooltip" supportingText="Tooltip Text" />
       </div>
       <MdChipSet>
         {queries.map((query, index) => (
@@ -261,25 +224,6 @@ const BlNumberCriteria = () => {
 const ContainerNumberCriteria = () => {
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: isTooltipOpen,
-    onOpenChange: setIsTooltipOpen,
-    middleware: [shift(), flip(), offset(4)],
-    whileElementsMounted: autoUpdate,
-  });
-
-  const { isMounted, styles: transitionStyles } = useTransitionStyles(
-    context,
-    basicPopoverStyles
-  );
-
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    useClick(context),
-    useDismiss(context),
-    useRole(context),
-  ]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -290,7 +234,7 @@ const ContainerNumberCriteria = () => {
             setInputQuery(value);
           }}
           label="Container No. (Multi)"
-          className="flex-1"
+          className="w-1/2"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (queries.includes(inputQuery)) return;
@@ -299,31 +243,7 @@ const ContainerNumberCriteria = () => {
             }
           }}
         />
-        <>
-          <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
-            <MdIcon>
-              <InfoOutlined />
-            </MdIcon>
-          </MdIconButton>
-          {isMounted && (
-            <div
-              ref={refs.setFloating}
-              style={floatingStyles}
-              {...getFloatingProps()}
-              className="z-10"
-            >
-              <div style={transitionStyles}>
-                <RichTooltipContainer>
-                  <RichTooltipItem
-                    slot="content"
-                    title="Tooltip"
-                    supportingText="Tooltip Text"
-                  />
-                </RichTooltipContainer>
-              </div>
-            </div>
-          )}
-        </>
+        <InfoTooltipButton title="Tooltip" supportingText="Tooltip Text" />
       </div>
       <MdChipSet>
         {queries.map((query, index) => (
@@ -351,7 +271,7 @@ const TypeCustomerCriteria = () => {
         size="large"
         className="cursor-pointer"
       >
-        <MdRadio name="customer-type" className="mr-2" />
+        <MdRadio name="customer-type" className="mr-2" checked />
         By Shipper
       </MdTypography>
       <MdTypography
@@ -378,6 +298,7 @@ const ContractNumberCriteria = () => {
     <div className="flex gap-4 items-center">
       <DateRangePicker label="Booking Date " />
       <NAOutlinedListBox label="Contract No." options={tempContracts} />
+      <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
     </div>
   );
 };
