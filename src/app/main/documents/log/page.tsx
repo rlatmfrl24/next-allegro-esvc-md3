@@ -160,73 +160,81 @@ export default function AdvancedManifestLogPage() {
             onClick={() => setCurrentTab("vessel")}
           />
         </MdOutlinedSegmentedButtonSet>
-        {currentTab === "booking" && (
-          <>
-            <NAOutlinedTextField
-              label="Booking or B/L No.(Multi)"
-              value={inputQuery}
-              handleValueChange={(value) => setInputQuery(value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (inputQuery !== "" && !queries.includes(inputQuery))
-                    setQueries([...queries, inputQuery]);
-                  setInputQuery("");
-                }
-              }}
-            />
-            <MdChipSet>
-              {queries.map((query) => (
-                <MdInputChip
-                  key={faker.string.uuid()}
-                  label={query}
-                  selected
-                  handleTrailingActionFocus={() =>
-                    setQueries((prev) => {
-                      return prev.filter((q) => q !== query);
-                    })
-                  }
+
+        <div className="flex gap-4 items-end">
+          <div className="flex-1 flex gap-4 flex-wrap">
+            {currentTab === "booking" && (
+              <div className="flex flex-col gap-2">
+                <NAOutlinedTextField
+                  label="Booking or B/L No.(Multi)"
+                  value={inputQuery}
+                  className="w-[832px]"
+                  handleValueChange={(value) => setInputQuery(value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (inputQuery !== "" && !queries.includes(inputQuery))
+                        setQueries([...queries, inputQuery]);
+                      setInputQuery("");
+                    }
+                  }}
                 />
-              ))}
-            </MdChipSet>
-          </>
-        )}
-        {currentTab === "vessel" && (
-          <div className="flex gap-4">
-            <NAOutlinedTextField
-              label="Vessel Name"
-              value=""
-              className="w-96"
-            />
-            <NAOutlinedTextField label="Voyage" value="" />
-            <NAOutlinedListBox
-              options={["E", "W", "N", "s"]}
-              label="Direction"
-              className="w-36"
-            />
+                <MdChipSet>
+                  {queries.map((query) => (
+                    <MdInputChip
+                      key={faker.string.uuid()}
+                      label={query}
+                      selected
+                      handleTrailingActionFocus={() =>
+                        setQueries((prev) => {
+                          return prev.filter((q) => q !== query);
+                        })
+                      }
+                    />
+                  ))}
+                </MdChipSet>
+              </div>
+            )}
+            {currentTab === "vessel" && (
+              <div className="flex gap-4">
+                <NAOutlinedTextField
+                  label="Vessel Name"
+                  value=""
+                  className="w-96"
+                />
+                <NAOutlinedTextField label="Voyage" value="" />
+                <NAOutlinedListBox
+                  options={["E", "W", "N", "s"]}
+                  label="Direction"
+                  className="w-36"
+                />
+              </div>
+            )}
+            {activeFilters.includes("Place of Loading") && (
+              <NAOutlinedTextField
+                label="Place of Loading"
+                value=""
+                className="min-w-36"
+              />
+            )}
+            {activeFilters.includes("Place of Discharging") && (
+              <NAOutlinedTextField label="Place of Discharging" value="" />
+            )}
           </div>
-        )}
-        {activeFilters.length > 0 && <DividerComponent />}
-        <div className="flex gap-4">
-          {activeFilters.includes("Place of Loading") && (
-            <NAOutlinedTextField label="Place of Loading" value="" />
-          )}
-          {activeFilters.includes("Place of Discharging") && (
-            <NAOutlinedTextField label="Place of Discharging" value="" />
-          )}
-        </div>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setActiveFilters([]);
-              setPageState("unsearched");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MoreFilter onFilterChange={(filter) => setActiveFilters(filter)} />
-          <MdFilledButton onClick={() => setPageState("searched")}>
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end">
+            <MdTextButton
+              onClick={() => {
+                setActiveFilters([]);
+                setPageState("unsearched");
+                setQueries([]);
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MoreFilter onFilterChange={(filter) => setActiveFilters(filter)} />
+            <MdFilledButton onClick={() => setPageState("searched")}>
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={styles.area}>
