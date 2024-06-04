@@ -98,7 +98,10 @@ export default function CreateNewReport() {
               unit="Customer"
             />
           ) : (
-            <NAOutlinedListBox options={tempContracts} label="By Contract" />
+            <>
+              <NAOutlinedListBox options={tempContracts} label="By Contract" />
+              <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+            </>
           )}
         </div>
         <div className="flex gap-4">
