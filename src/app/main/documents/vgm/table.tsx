@@ -1,3 +1,4 @@
+import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import Portal from "@/app/components/portal";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { GridSelectComponent } from "@/app/components/table/grid-select";
@@ -293,9 +294,10 @@ export const VGMTable = () => {
   ];
 
   useEffect(() => {
-    console.log("update table data");
-    setIsBottomFloatingVisible(true);
-  }, [tableData]);
+    if (tableData !== tempData) {
+      setIsBottomFloatingVisible(true);
+    }
+  }, [tableData, tempData]);
 
   return (
     <>
@@ -329,26 +331,14 @@ export const VGMTable = () => {
         updater={setTableData}
       />
       <Portal selector="#vgm-container">
-        <AnimatePresence>
-          {isBottomFloatingVisible && (
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 100, opacity: 0 }}
-              style={
-                {
-                  "--md-elevation-level": 2,
-                } as CSSProperties
-              }
-              className="fixed bottom-3 left-24 w-[calc(100%-7rem)] p-2 rounded-full flex justify-end bg-surfaceContainer z-10"
-            >
-              <MdElevation />
-              <MdFilledButton onClick={() => setIsBottomFloatingVisible(false)}>
-                Save
-              </MdFilledButton>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <BottomFloatingBar
+          open={isBottomFloatingVisible}
+          onOpenChange={setIsBottomFloatingVisible}
+        >
+          <MdFilledButton onClick={() => setIsBottomFloatingVisible(false)}>
+            Save
+          </MdFilledButton>
+        </BottomFloatingBar>
       </Portal>
     </>
   );

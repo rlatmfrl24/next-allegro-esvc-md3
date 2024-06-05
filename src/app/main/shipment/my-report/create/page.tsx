@@ -12,6 +12,7 @@ import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import {
   MdCheckbox,
+  MdFilledButton,
   MdOutlinedButton,
   MdRadio,
   MdSwitch,
@@ -26,8 +27,11 @@ import {
 } from "./util";
 import SubIndicator from "@/../public/icon_subsum_indicator.svg";
 import { difference, isEqual } from "lodash";
+import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
+import classNames from "classnames";
 
 export default function CreateNewReport() {
+  const cx = classNames.bind(styles);
   const router = useRouter();
   const tempPorts = useMemo(() => {
     return Array.from(
@@ -37,6 +41,8 @@ export default function CreateNewReport() {
   }, []);
   const [infoType, setInfoType] = useState<"customer" | "contract">("customer");
   const [getServices, setGetServices] = useState<boolean>(false);
+  const [reportName, setReportName] = useState<string>("");
+  const [isSaveBarOpen, setIsSaveBarOpen] = useState<boolean>(false);
   const [bookingInformation, setBookingInformation] = useState<string[]>([]);
   const [routeInformation, setRouteInformation] = useState<string[]>([]);
   const [chargeInformation, setChargeInformation] = useState<string[]>([]);
@@ -47,8 +53,28 @@ export default function CreateNewReport() {
     );
   }, []);
 
+  useEffect(() => {
+    if (
+      (bookingInformation.length > 0 ||
+        routeInformation.length > 0 ||
+        chargeInformation.length > 0 ||
+        inboundInformation.length > 0) &&
+      reportName.length > 0
+    ) {
+      setIsSaveBarOpen(true);
+    } else {
+      setIsSaveBarOpen(false);
+    }
+  }, [
+    reportName.length,
+    bookingInformation.length,
+    chargeInformation.length,
+    inboundInformation.length,
+    routeInformation.length,
+  ]);
+
   return (
-    <div aria-label="container" className={styles.container}>
+    <div aria-label="container" className={cx(styles.container)}>
       <div className="flex justify-between items-center">
         <PageTitle title="Create New Report" hasFavorite={false} />
         <MdOutlinedButton
@@ -59,52 +85,62 @@ export default function CreateNewReport() {
           Cancel
         </MdOutlinedButton>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, "mb-12")}>
         <DetailTitle title="Report General Information" />
-        <NAOutlinedTextField label="Report Name" value="" required />
-        <div className="flex items-center gap-4">
-          <MdTypography tag="label" variant="title" size="small">
-            <MdRadio
-              name="info-type"
-              className="mr-2"
-              checked={infoType === "customer"}
-              onClick={() => {
-                setInfoType("customer");
-              }}
-            />
-            By Customer
-          </MdTypography>
-          <MdTypography tag="label" variant="title" size="small">
-            <MdRadio
-              name="info-type"
-              className="mr-2"
-              checked={infoType === "contract"}
-              onClick={() => {
-                setInfoType("contract");
-              }}
-            />
-            By Contract
-          </MdTypography>
-          {infoType === "customer" ? (
-            <NAOutlinedMultiListBox
-              label="By Customer"
-              options={[
-                "Shipper",
-                "Consignee",
-                "Notify",
-                "Forwarder",
-                "Also Notify",
-              ]}
-              unit="Customer"
-            />
-          ) : (
-            <>
-              <NAOutlinedListBox options={tempContracts} label="By Contract" />
-              <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
-            </>
-          )}
-        </div>
-        <div className="flex gap-4">
+        <div className="grid grid-cols-2 gap-4">
+          <NAOutlinedTextField
+            label="Report Name"
+            value={reportName}
+            required
+            handleValueChange={(value) => {
+              setReportName(value);
+            }}
+          />
+          <div className="flex items-center gap-4">
+            <MdTypography tag="label" variant="title" size="small">
+              <MdRadio
+                name="info-type"
+                className="mr-2"
+                checked={infoType === "customer"}
+                onClick={() => {
+                  setInfoType("customer");
+                }}
+              />
+              By Customer
+            </MdTypography>
+            <MdTypography tag="label" variant="title" size="small">
+              <MdRadio
+                name="info-type"
+                className="mr-2"
+                checked={infoType === "contract"}
+                onClick={() => {
+                  setInfoType("contract");
+                }}
+              />
+              By Contract
+            </MdTypography>
+            {infoType === "customer" ? (
+              <NAOutlinedMultiListBox
+                label="By Customer"
+                options={[
+                  "Shipper",
+                  "Consignee",
+                  "Notify",
+                  "Forwarder",
+                  "Also Notify",
+                ]}
+                unit="Customer"
+              />
+            ) : (
+              <>
+                <NAOutlinedListBox
+                  options={tempContracts}
+                  label="By Contract"
+                />
+                <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+              </>
+            )}
+          </div>
           <NAOutlinedAutoComplete
             itemList={tempPorts}
             label="Port of Loading"
@@ -143,7 +179,7 @@ export default function CreateNewReport() {
             </>
           )}
         </div>
-        <DetailTitle title="Report Composition" className="mt-2" />
+        <DetailTitle title="Report Composition" className="mt-2" required />
         <div className="border border-outlineVariant rounded-lg p-6 flex">
           <div className="flex-1 flex-col">
             <MdTextButton
@@ -328,6 +364,16 @@ export default function CreateNewReport() {
           </div>
         </div>
       </div>
+      <BottomFloatingBar open={isSaveBarOpen} onOpenChange={setIsSaveBarOpen}>
+        <MdFilledButton
+          onClick={() => {
+            setIsSaveBarOpen(false);
+            router.push("/main/shipment/my-report");
+          }}
+        >
+          Save
+        </MdFilledButton>
+      </BottomFloatingBar>
     </div>
   );
 }

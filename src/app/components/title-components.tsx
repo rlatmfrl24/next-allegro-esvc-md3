@@ -48,9 +48,11 @@ export const SubTitle = ({
 export const DetailTitle = ({
   title,
   className,
+  required,
 }: {
   title: string;
   className?: string;
+  required?: boolean;
 }) => {
   return (
     <div className={`flex items-center gap-2 ${className ? className : ""}`}>
@@ -61,6 +63,7 @@ export const DetailTitle = ({
         prominent
         className="whitespace-nowrap"
       >
+        {required && <span className="text-error mr-1">*</span>}
         {title}
       </MdTypography>
     </div>
