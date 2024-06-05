@@ -6,6 +6,7 @@ import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
+  MdElevation,
   MdFilledButton,
   MdInputChip,
   MdOutlinedSegmentedButton,
@@ -14,8 +15,9 @@ import {
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import classNames from "classnames";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { VGMTable } from "./table";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function VGMSearch() {
   const cx = classNames.bind(styles);
@@ -27,7 +29,11 @@ export default function VGMSearch() {
   const [queris, setQueries] = useState<string[]>([]);
 
   return (
-    <div aria-label="container" className={cx(styles.container)}>
+    <div
+      id="vgm-container"
+      aria-label="container"
+      className={cx(styles.container)}
+    >
       <PageTitle title="VGM" />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>

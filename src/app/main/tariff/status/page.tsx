@@ -21,6 +21,7 @@ import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DetentionStatusTable } from "./table";
 import { RemovableChip } from "@/app/components/removable-chip";
+import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function DetentionStatusPage() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -77,11 +78,7 @@ export default function DetentionStatusPage() {
             {searchType === "gate" && (
               <div className="flex gap-4 items-center">
                 <DateRangePicker label="Date" />
-                <NAOutlinedListBox
-                  label="By Contract"
-                  options={tempContracts}
-                />
-                <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+                <ContractNumberSelector contracts={tempContracts} />
               </div>
             )}
             {searchType === "number" && (

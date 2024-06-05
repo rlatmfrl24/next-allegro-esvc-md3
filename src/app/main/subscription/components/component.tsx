@@ -136,6 +136,31 @@ export const CycleSelector = (props: {
   );
 
   useEffect(() => {
+    // on create, do not call onChanges
+    if (!props.initialValue) {
+      if (cycle === "Daily" && selectedWeek === "SUN" && selectedDay === 1) {
+        return;
+      }
+    } else {
+      if (cycle === props.initialValue.cycleOption) {
+        if (cycle === "Daily") {
+          return;
+        }
+        if (
+          cycle === "Weekly" &&
+          selectedWeek === props.initialValue.weekOption
+        ) {
+          return;
+        }
+        if (
+          cycle === "Monthly" &&
+          selectedDay === props.initialValue.dayOption
+        ) {
+          return;
+        }
+      }
+    }
+
     props.onChanges?.({
       cycleOption: cycle,
       weekOption: cycle === "Weekly" ? selectedWeek : undefined,

@@ -43,6 +43,7 @@ import { basicPopoverStyles } from "@/app/util/constants";
 import { DividerComponent } from "@/app/components/divider";
 import { flushSync } from "react-dom";
 import { ReportTable } from "./table";
+import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -340,16 +341,11 @@ export default function ShipmentReportPage() {
                   />
                 ) : (
                   <>
-                    <NAOutlinedListBox
-                      options={tempContracts}
-                      label="By Contract"
-                      className="min-w-24"
-                    />
-                    <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+                    <ContractNumberSelector contracts={tempContracts} />
                   </>
                 )}
+                <MyReportComponent />
               </div>
-              <MyReportComponent />
             </div>
             <div className="flex gap-4">
               {moreFilter.includes("Port of Loading") && (
