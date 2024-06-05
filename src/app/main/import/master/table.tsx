@@ -19,7 +19,7 @@ import {
   usePlaceInfoDialog,
   useVesselScheduleDialog,
 } from "@/app/components/common-dialog-hooks";
-import { MdRadio } from "@/app/util/md3";
+import { MdRadio, MdTextButton } from "@/app/util/md3";
 
 type InboundMasterTableProps = {
   blNumber: string;
@@ -278,7 +278,12 @@ export const InboundMasterTable = () => {
       {renderDialog()}
       {renderPlaceDialog()}
       <BasicTable
-        ActionComponent={() => <div className="flex-1"></div>}
+        ActionComponent={() => (
+          <div className="flex-1 flex gap-4">
+            <MdTextButton>Arrival Notice</MdTextButton>
+            <MdTextButton>Advance/Delay Notice</MdTextButton>
+          </div>
+        )}
         data={tempData}
         columns={columnDefs}
         isSingleSelect

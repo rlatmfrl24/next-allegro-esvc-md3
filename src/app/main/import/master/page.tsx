@@ -55,7 +55,7 @@ const BlConditions = () => {
               setInputQuery(value);
             }}
             className="w-[832px]"
-            label="Container No. (Multi)"
+            label="B/L No. (Multi)"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (inputQuery !== "" && !queries.includes(inputQuery))
