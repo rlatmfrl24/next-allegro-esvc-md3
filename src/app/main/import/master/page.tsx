@@ -1,6 +1,10 @@
 "use client";
+import classNames from "classnames";
+import { useMemo, useState } from "react";
+
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
+import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import PageTitle from "@/app/components/title-components";
@@ -8,37 +12,14 @@ import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
   MdFilledButton,
-  MdIcon,
-  MdIconButton,
   MdInputChip,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import classNames from "classnames";
-import { useMemo, useState } from "react";
+
 import { InboundMasterTable } from "./table";
-import {
-  FloatingFocusManager,
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-  useTransitionStyles,
-} from "@floating-ui/react";
-import { basicPopoverStyles } from "@/app/util/constants";
-import { Info, InfoOutlined } from "@mui/icons-material";
-import {
-  RichTooltipContainer,
-  RichTooltipItem,
-} from "@/app/components/tooltip";
-import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 
 const OnboardConditions = () => {
   const tempPortList = useMemo(() => {
@@ -119,7 +100,7 @@ export default function InboundMaster() {
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
             selected={currentTab === "onboard"}
-            label="Onboard/Arrive Date"
+            label="Onboard/Arrival Date"
             onClick={() => {
               setCurrentTab("onboard");
             }}

@@ -23,7 +23,7 @@ import { MdRadio } from "@/app/util/md3";
 
 type InboundMasterTableProps = {
   blNumber: string;
-  containerNumber: string;
+  container: string;
   pol: string;
   departureDate: DateTime;
   pod: string;
@@ -41,7 +41,15 @@ type InboundMasterTableProps = {
 function createDummyInboundMasterData() {
   return {
     blNumber: faker.string.alphanumeric(11).toUpperCase(),
-    containerNumber: faker.string.alphanumeric(11).toUpperCase(),
+    container: Array.from({ length: faker.number.int({ max: 4 }) }, () => {
+      return (
+        faker.helpers.arrayElement(["Dry", "Reefer", "Special"]) +
+        " " +
+        faker.helpers.arrayElement(["20", "40", "HC", "45"]) +
+        " * " +
+        faker.number.int({ max: 9 })
+      );
+    }).join("\n"),
     pol: faker.location.city() + ", " + faker.location.country(),
     departureDate: DateTime.fromJSDate(faker.date.recent()),
     pod: faker.location.city() + ", " + faker.location.country(),
@@ -97,12 +105,17 @@ export const InboundMasterTable = () => {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("containerNumber", {
-      id: "containerNumber",
-      header: "Container No.",
+    columnHelper.accessor("container", {
+      id: "container",
+      header: "Container",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue()}
+          {info
+            .getValue()
+            .split("\n")
+            .map((container, index) => (
+              <div key={index}>{container}</div>
+            ))}
         </MdTypography>
       ),
     }),
