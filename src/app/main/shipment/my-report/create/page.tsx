@@ -31,6 +31,7 @@ import { difference, isEqual } from "lodash";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import classNames from "classnames";
 import { RemovableChip } from "@/app/components/removable-chip";
+import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function CreateNewReport() {
   const cx = classNames.bind(styles);
@@ -137,11 +138,7 @@ export default function CreateNewReport() {
               />
             ) : (
               <>
-                <NAOutlinedListBox
-                  options={tempContracts}
-                  label="By Contract"
-                />
-                <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+                <ContractNumberSelector contracts={tempContracts} />
               </>
             )}
           </div>
