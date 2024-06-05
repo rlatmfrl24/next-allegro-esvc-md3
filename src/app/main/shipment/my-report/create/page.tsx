@@ -12,6 +12,7 @@ import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import {
   MdCheckbox,
+  MdChipSet,
   MdFilledButton,
   MdOutlinedButton,
   MdRadio,
@@ -29,6 +30,7 @@ import SubIndicator from "@/../public/icon_subsum_indicator.svg";
 import { difference, isEqual } from "lodash";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import classNames from "classnames";
+import { RemovableChip } from "@/app/components/removable-chip";
 
 export default function CreateNewReport() {
   const cx = classNames.bind(styles);
@@ -43,6 +45,8 @@ export default function CreateNewReport() {
   const [getServices, setGetServices] = useState<boolean>(false);
   const [reportName, setReportName] = useState<string>("");
   const [isSaveBarOpen, setIsSaveBarOpen] = useState<boolean>(false);
+  const [origins, setOrigins] = useState<string[]>([]);
+  const [destinations, setDestinations] = useState<string[]>([]);
   const [bookingInformation, setBookingInformation] = useState<string[]>([]);
   const [routeInformation, setRouteInformation] = useState<string[]>([]);
   const [chargeInformation, setChargeInformation] = useState<string[]>([]);
@@ -141,16 +145,52 @@ export default function CreateNewReport() {
               </>
             )}
           </div>
-          <NAOutlinedAutoComplete
-            itemList={tempPorts}
-            label="Port of Loading"
-            className="flex-1"
-          />
-          <NAOutlinedAutoComplete
-            itemList={tempPorts}
-            label="Port of Discharging"
-            className="flex-1"
-          />
+          <div className="flex flex-col gap-2">
+            <NAOutlinedAutoComplete
+              itemList={tempPorts}
+              label="Port of Loading"
+              className="flex-1"
+              removeQueryOnSelect
+              onItemSelection={(item) => {
+                setOrigins([...origins, item]);
+              }}
+            />
+            <MdChipSet>
+              {origins.map((origin) => (
+                <RemovableChip
+                  key={origin}
+                  label={origin}
+                  onRemove={() => {
+                    setOrigins(origins.filter((item) => item !== origin));
+                  }}
+                />
+              ))}
+            </MdChipSet>
+          </div>
+          <div className="flex flex-col gap-2">
+            <NAOutlinedAutoComplete
+              itemList={tempPorts}
+              label="Port of Discharging"
+              className="flex-1"
+              removeQueryOnSelect
+              onItemSelection={(item) => {
+                setDestinations([...destinations, item]);
+              }}
+            />
+            <MdChipSet>
+              {destinations.map((destination) => (
+                <RemovableChip
+                  key={destination}
+                  label={destination}
+                  onRemove={() => {
+                    setDestinations(
+                      destinations.filter((item) => item !== destination)
+                    );
+                  }}
+                />
+              ))}
+            </MdChipSet>
+          </div>
         </div>
         <DetailTitle title="Email Service" className="mt-4" />
         <div className="flex items-center gap-2 h-20">

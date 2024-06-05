@@ -18,6 +18,7 @@ import { ScheduleSubscription } from "./schedule";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { BottomFloatingState } from "@/app/store/subscription.store";
+import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 
 export default function SubscriptionPage() {
   const [currentTabe, setCurrentTab] = useState("Documentation");
@@ -71,26 +72,14 @@ export default function SubscriptionPage() {
           }[currentTabe]
         }
       </div>
-      <AnimatePresence>
-        {isBottomFloatingVisible && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            style={
-              {
-                "--md-elevation-level": 2,
-              } as CSSProperties
-            }
-            className="fixed bottom-3 left-24 w-[calc(100%-7rem)] p-2 rounded-full flex justify-end bg-surfaceContainer z-10"
-          >
-            <MdElevation />
-            <MdFilledButton onClick={() => setIsBottomFloatingVisible(false)}>
-              Save
-            </MdFilledButton>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <BottomFloatingBar
+        open={isBottomFloatingVisible}
+        onOpenChange={setIsBottomFloatingVisible}
+      >
+        <MdFilledButton onClick={() => setIsBottomFloatingVisible(false)}>
+          Save
+        </MdFilledButton>
+      </BottomFloatingBar>
     </div>
   );
 }
