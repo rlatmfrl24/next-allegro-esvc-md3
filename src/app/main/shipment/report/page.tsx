@@ -348,8 +348,8 @@ export default function ShipmentReportPage() {
                     <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
                   </>
                 )}
+                <MyReportComponent />
               </div>
-              <MyReportComponent />
             </div>
             <div className="flex gap-4">
               {moreFilter.includes("Port of Loading") && (
