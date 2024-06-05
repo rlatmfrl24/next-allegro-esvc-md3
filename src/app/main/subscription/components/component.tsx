@@ -142,12 +142,22 @@ export const CycleSelector = (props: {
         return;
       }
     } else {
-      if (
-        cycle === props.initialValue.cycleOption &&
-        selectedWeek === props.initialValue.weekOption &&
-        selectedDay === props.initialValue.dayOption
-      ) {
-        return;
+      if (cycle === props.initialValue.cycleOption) {
+        if (cycle === "Daily") {
+          return;
+        }
+        if (
+          cycle === "Weekly" &&
+          selectedWeek === props.initialValue.weekOption
+        ) {
+          return;
+        }
+        if (
+          cycle === "Monthly" &&
+          selectedDay === props.initialValue.dayOption
+        ) {
+          return;
+        }
       }
     }
 

@@ -228,8 +228,9 @@ const ReportItem = (props: {
                       ? value.weekOption || ""
                       : value.dayOption || "",
                 });
-                setIsBottomFloatingVisible(true);
               }
+
+              setIsBottomFloatingVisible(true);
             }}
           />
           <DividerComponent orientation="vertical" className=" border-dotted" />

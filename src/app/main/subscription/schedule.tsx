@@ -40,6 +40,9 @@ import {
 } from "./components/schedule-dialog";
 import { ScheduleSubscriptionProps } from "@/app/util/typeDef/subscription";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
+import { useSetRecoilState } from "recoil";
+import { BottomFloatingState } from "@/app/store/subscription.store";
+import Portal from "@/app/components/portal";
 
 function createDummyScheduleSubscription(
   type: "ptp" | "long-range"
@@ -139,13 +142,15 @@ export const ScheduleSubscription = () => {
               </MdIcon>
               Add Schedule
             </MdTextButton>
-            <AddPtpScheduleDialog
-              open={isAddPtpScheduleDialogOpen}
-              onOpenChange={setIsAddPtpScheduleDialogOpen}
-              onScheduleSave={(data) => {
-                setPtpSubscriptions((prev) => [...prev, data]);
-              }}
-            />
+            <Portal selector="#main-container">
+              <AddPtpScheduleDialog
+                open={isAddPtpScheduleDialogOpen}
+                onOpenChange={setIsAddPtpScheduleDialogOpen}
+                onScheduleSave={(data) => {
+                  setPtpSubscriptions((prev) => [...prev, data]);
+                }}
+              />
+            </Portal>
             <MdTypography
               variant="body"
               size="medium"
@@ -264,6 +269,7 @@ const ScheduleSubscriptionItem = (props: {
   const [recipients, setRecipients] = useState(props.data.recipients);
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const setBottomFloatingVisible = useSetRecoilState(BottomFloatingState);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isActionMenuOpen,
@@ -320,6 +326,23 @@ const ScheduleSubscriptionItem = (props: {
                 ? props.data.cycleValue
                 : undefined,
           }}
+          onChanges={(data) => {
+            if (props.onChanges) {
+              props.onChanges({
+                ...props.data,
+                cycleType: data.cycleOption,
+                cycleValue:
+                  data.cycleOption === "Weekly"
+                    ? data.weekOption ?? ""
+                    : data.cycleOption === "Monthly"
+                    ? data.dayOption ?? ""
+                    : "",
+              });
+            }
+            if (data.dayOption !== undefined || data.weekOption !== undefined) {
+              setBottomFloatingVisible(true);
+            }
+          }}
         />
         <DividerComponent orientation="vertical" className="border-dotted" />
         <div className="flex-1">
@@ -335,6 +358,7 @@ const ScheduleSubscriptionItem = (props: {
                   return;
                 }
                 setRecipients([...recipients, e.currentTarget.value]);
+                setBottomFloatingVisible(true);
                 e.currentTarget.value = "";
               }
             }}
@@ -346,6 +370,7 @@ const ScheduleSubscriptionItem = (props: {
                 label={recipient}
                 onRemove={() => {
                   setRecipients((prev) => prev.filter((_, i) => i !== index));
+                  setBottomFloatingVisible(true);
                 }}
               />
             ))}
@@ -408,36 +433,38 @@ const ScheduleSubscriptionItem = (props: {
             </MdElevatedCard>
           </div>
         )}
-        <MdDialog
-          open={isConfirmDialogOpen}
-          closed={() => setIsConfirmDialogOpen(false)}
-        >
-          <div slot="headline">
-            Are you sure you want to delete this Schedule?
-          </div>
-          <div slot="content">
-            {props.data.origin} / {props.data.destination}
-          </div>
-          <div slot="actions">
-            <MdTextButton
-              onClick={() => {
-                setIsConfirmDialogOpen(false);
-              }}
-            >
-              Cancel
-            </MdTextButton>
-            <MdFilledButton
-              onClick={() => {
-                if (props.onDelete) {
-                  props.onDelete();
-                }
-                setIsConfirmDialogOpen(false);
-              }}
-            >
-              Delete
-            </MdFilledButton>
-          </div>
-        </MdDialog>
+        <Portal selector="#main-container">
+          <MdDialog
+            open={isConfirmDialogOpen}
+            closed={() => setIsConfirmDialogOpen(false)}
+          >
+            <div slot="headline">
+              Are you sure you want to delete this Schedule?
+            </div>
+            <div slot="content">
+              {props.data.origin} / {props.data.destination}
+            </div>
+            <div slot="actions">
+              <MdTextButton
+                onClick={() => {
+                  setIsConfirmDialogOpen(false);
+                }}
+              >
+                Cancel
+              </MdTextButton>
+              <MdFilledButton
+                onClick={() => {
+                  if (props.onDelete) {
+                    props.onDelete();
+                  }
+                  setIsConfirmDialogOpen(false);
+                }}
+              >
+                Delete
+              </MdFilledButton>
+            </div>
+          </MdDialog>
+        </Portal>
       </div>
     </div>
   );
