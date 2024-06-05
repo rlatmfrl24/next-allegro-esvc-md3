@@ -1,12 +1,20 @@
+import Portal from "@/app/components/portal";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { GridSelectComponent } from "@/app/components/table/grid-select";
 import { MdTypography } from "@/app/components/typography";
-import { MdCheckbox, MdIcon, MdTextButton } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdElevation,
+  MdFilledButton,
+  MdIcon,
+  MdTextButton,
+} from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import { Publish, Upload } from "@mui/icons-material";
+import { Download, Publish, Upload } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
+import { AnimatePresence, motion } from "framer-motion";
 import { DateTime } from "luxon";
-import { useMemo, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 
 type VGMTableProps = {
   containerNumber: string;
@@ -59,6 +67,7 @@ export const VGMTable = () => {
     []
   );
   const [tableData, setTableData] = useState<VGMTableProps[]>(tempData);
+  const [isBottomFloatingVisible, setIsBottomFloatingVisible] = useState(false);
   const columnHelper = createColumnHelper<VGMTableProps>();
   const columnDefs = [
     columnHelper.accessor("containerNumber", {
@@ -91,6 +100,16 @@ export const VGMTable = () => {
           <GridSelectComponent
             initialSelection={info.getValue()}
             options={["VGM", "Cargo Weight"]}
+            onChange={(value) => {
+              setTableData((prev) => {
+                const newData = [...prev];
+                newData[info.row.index] = {
+                  ...newData[info.row.index],
+                  weightType: value as "VGM" | "Cargo Weight",
+                };
+                return newData;
+              });
+            }}
           />
         );
       },
@@ -119,6 +138,16 @@ export const VGMTable = () => {
           <GridSelectComponent
             initialSelection={info.getValue()}
             options={["KGS", "LBS"]}
+            onChange={(value) => {
+              setTableData((prev) => {
+                const newData = [...prev];
+                newData[info.row.index] = {
+                  ...newData[info.row.index],
+                  vgmUnit: value as "KGS" | "LBS",
+                };
+                return newData;
+              });
+            }}
           />
         );
       },
@@ -263,29 +292,64 @@ export const VGMTable = () => {
     }),
   ];
 
+  useEffect(() => {
+    console.log("update table data");
+    setIsBottomFloatingVisible(true);
+  }, [tableData]);
+
   return (
-    <BasicTable
-      ActionComponent={() => (
-        <div className="flex-1">
-          <MdTextButton>
-            <MdIcon slot="icon">
-              <Publish fontSize="small" />
-            </MdIcon>
-            Upload
-          </MdTextButton>
-        </div>
-      )}
-      data={tableData}
-      columns={columnDefs}
-      isSingleSelect
-      editableColumns={[
-        "vgm",
-        "tareWeight",
-        "maxPayload",
-        "signatory",
-        "referenceId",
-      ]}
-      updater={setTableData}
-    />
+    <>
+      <BasicTable
+        ActionComponent={() => (
+          <div className="flex-1 flex gap-4">
+            <MdTextButton>
+              <MdIcon slot="icon">
+                <Publish fontSize="small" />
+              </MdIcon>
+              Upload
+            </MdTextButton>
+            <MdTextButton>
+              <MdIcon slot="icon">
+                <Download fontSize="small" />
+              </MdIcon>
+              Download
+            </MdTextButton>
+          </div>
+        )}
+        data={tableData}
+        columns={columnDefs}
+        isSingleSelect
+        editableColumns={[
+          "vgm",
+          "tareWeight",
+          "maxPayload",
+          "signatory",
+          "referenceId",
+        ]}
+        updater={setTableData}
+      />
+      <Portal selector="#vgm-container">
+        <AnimatePresence>
+          {isBottomFloatingVisible && (
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              style={
+                {
+                  "--md-elevation-level": 2,
+                } as CSSProperties
+              }
+              className="fixed bottom-3 left-24 w-[calc(100%-7rem)] p-2 rounded-full flex justify-end bg-surfaceContainer z-10"
+            >
+              <MdElevation />
+              <MdFilledButton onClick={() => setIsBottomFloatingVisible(false)}>
+                Save
+              </MdFilledButton>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Portal>
+    </>
   );
 };
