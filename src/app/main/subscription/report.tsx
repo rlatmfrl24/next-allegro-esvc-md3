@@ -17,6 +17,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { BottomFloatingState } from "@/app/store/subscription.store";
 
 type ReportSubscriptionProps = {
+  reportName: string;
   origin: string;
   destination: string;
   inqueryType: "Customer" | "Contract";
@@ -34,8 +35,13 @@ function createDummyReportSubscriptionData(switchOption?: boolean | undefined) {
   const cycleType = faker.helpers.arrayElement(["Daily", "Weekly", "Monthly"]);
 
   return {
-    origin: faker.location.city() + ", " + faker.location.country(),
-    destination: faker.location.city() + ", " + faker.location.country(),
+    reportName: "Report Name " + faker.string.numeric(2),
+    origin: faker.helpers.maybe(
+      () => faker.location.city() + ", " + faker.location.country()
+    ),
+    destination: faker.helpers.maybe(
+      () => faker.location.city() + ", " + faker.location.country()
+    ),
     inqueryType: inqueryType,
     inqueryValue:
       inqueryType === "Customer"
@@ -145,16 +151,34 @@ const ReportItem = (props: {
     <div className="flex border-2 border-secondaryContainer rounded-lg">
       <div className="w-2 bg-secondaryContainer"></div>
       <div className="flex-1 p-4">
-        <MdTypography
-          variant="label"
-          size="small"
-          className="text-outline mb-1"
-        >
-          Origin / Destination
-        </MdTypography>
-        <MdTypography variant="body" size="large" prominent>
-          {props.data.origin} → {props.data.destination}
-        </MdTypography>
+        <div className="flex">
+          <div>
+            <MdTypography
+              variant="label"
+              size="small"
+              className="text-outline mb-1"
+            >
+              Report Name
+            </MdTypography>
+            <MdTypography variant="body" size="large" prominent>
+              {props.data.reportName}
+            </MdTypography>
+          </div>
+          <div className="w-36"></div>
+          <div>
+            <MdTypography
+              variant="label"
+              size="small"
+              className="text-outline mb-1"
+            >
+              Origin / Destination
+            </MdTypography>
+            <MdTypography variant="body" size="large" prominent>
+              {props.data.origin ?? "No Condition"} →{" "}
+              {props.data.destination ?? "No Condition"}
+            </MdTypography>
+          </div>
+        </div>
         <div className="flex mt-6 gap-4">
           <div className="max-w-36 w-36">
             <MdTypography
@@ -162,7 +186,9 @@ const ReportItem = (props: {
               size="small"
               className="text-outline mb-1"
             >
-              Inquiry Option
+              {props.data.inqueryType === "Customer"
+                ? "Customer"
+                : "Contract No."}
             </MdTypography>
             <MdTypography variant="body" size="large">
               {props.data.inqueryValue}
