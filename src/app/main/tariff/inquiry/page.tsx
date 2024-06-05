@@ -1,22 +1,14 @@
 "use client";
-
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import PageTitle from "@/app/components/title-components";
-import {
-  RichTooltipContainer,
-  RichTooltipItem,
-} from "@/app/components/tooltip";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
-import { basicPopoverStyles } from "@/app/util/constants";
 import {
   MdChipSet,
   MdFilledButton,
-  MdIcon,
-  MdIconButton,
   MdInputChip,
   MdOutlinedButton,
   MdOutlinedSegmentedButton,
@@ -25,22 +17,10 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-  useTransitionStyles,
-} from "@floating-ui/react";
-import { InfoOutlined } from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import { ChargeInquiryTable } from "./table";
 import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
+import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function ChargeInquiryPage() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -297,8 +277,7 @@ const ContractNumberCriteria = () => {
   return (
     <div className="flex gap-4 items-center">
       <DateRangePicker label="Booking Date " />
-      <NAOutlinedListBox label="Contract No." options={tempContracts} />
-      <MdOutlinedButton>Update Contract No.</MdOutlinedButton>
+      <ContractNumberSelector contracts={tempContracts} />
     </div>
   );
 };

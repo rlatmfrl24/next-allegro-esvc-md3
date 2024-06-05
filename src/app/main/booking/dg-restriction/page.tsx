@@ -8,6 +8,7 @@ import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import {
   MdFilledButton,
+  MdFilledTonalIconButton,
   MdIcon,
   MdOutlinedTextField,
   MdTextButton,
@@ -85,6 +86,7 @@ export default function DGRestrictionSearch() {
               label="Place of Loading"
               itemList={tempPortList}
               className="w-[424px]"
+              required
               initialValue={searchCondition.pol}
               onItemSelection={(item) => {
                 setSearchCondition((prev) => ({ ...prev, pol: item }));
@@ -94,6 +96,7 @@ export default function DGRestrictionSearch() {
               label="Place of Discharging"
               itemList={tempPortList}
               className="w-[424px]"
+              required
               initialValue={searchCondition.pod}
               onItemSelection={(item) => {
                 setSearchCondition((prev) => ({ ...prev, pod: item }));
@@ -119,26 +122,49 @@ export default function DGRestrictionSearch() {
               }}
             />
           </div>
-          <div className="flex gap-4">
-            <MdOutlinedTextField
+          <div className="flex gap-2 items-center">
+            <NAOutlinedTextField
               label="UN No."
               className="w-32"
+              required
               value={searchCondition.unNumber}
+              handleValueChange={(value) => {
+                setSearchCondition((prev) => ({ ...prev, unNumber: value }));
+                if (value === "") {
+                  setSearchCondition((prev) => ({
+                    ...prev,
+                    seq: "",
+                    class: "",
+                    description: "",
+                  }));
+                }
+              }}
+            />
+            <NAOutlinedTextField
+              label="Seq."
+              className="w-28"
+              value={searchCondition.seq}
+              handleValueChange={(value) => {
+                setSearchCondition((prev) => ({ ...prev, seq: value }));
+                if (value === "") {
+                  setSearchCondition((prev) => ({
+                    ...prev,
+                    unNumber: "",
+                    class: "",
+                    description: "",
+                  }));
+                }
+              }}
+            />
+            <MdFilledTonalIconButton
               onClick={() => {
                 setUnNumberDialogOpen(true);
               }}
             >
-              <MdIcon slot="trailing-icon">
+              <MdIcon>
                 <Search />
               </MdIcon>
-            </MdOutlinedTextField>
-
-            <NAOutlinedTextField
-              label="Seq."
-              readOnly
-              className="w-28"
-              value={searchCondition.seq}
-            />
+            </MdFilledTonalIconButton>
             <NAOutlinedTextField
               label="Class"
               readOnly

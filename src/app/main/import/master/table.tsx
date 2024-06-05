@@ -19,11 +19,11 @@ import {
   usePlaceInfoDialog,
   useVesselScheduleDialog,
 } from "@/app/components/common-dialog-hooks";
-import { MdRadio } from "@/app/util/md3";
+import { MdRadio, MdTextButton } from "@/app/util/md3";
 
 type InboundMasterTableProps = {
   blNumber: string;
-  containerNumber: string;
+  container: string;
   pol: string;
   departureDate: DateTime;
   pod: string;
@@ -33,7 +33,6 @@ type InboundMasterTableProps = {
   blType: string;
   demdetDue: DateTime;
   isDemmurage: boolean;
-  isDetention: boolean;
   isCombined: boolean;
   vesselDelayNotice: DateTime | null;
 };
@@ -41,7 +40,15 @@ type InboundMasterTableProps = {
 function createDummyInboundMasterData() {
   return {
     blNumber: faker.string.alphanumeric(11).toUpperCase(),
-    containerNumber: faker.string.alphanumeric(11).toUpperCase(),
+    container: Array.from({ length: faker.number.int({ max: 4 }) }, () => {
+      return (
+        faker.helpers.arrayElement(["Dry", "Reefer", "Special"]) +
+        " " +
+        faker.helpers.arrayElement(["20", "40", "HC", "45"]) +
+        " * " +
+        faker.number.int({ max: 9 })
+      );
+    }).join("\n"),
     pol: faker.location.city() + ", " + faker.location.country(),
     departureDate: DateTime.fromJSDate(faker.date.recent()),
     pod: faker.location.city() + ", " + faker.location.country(),
@@ -57,7 +64,6 @@ function createDummyInboundMasterData() {
     ]),
     demdetDue: DateTime.fromJSDate(faker.date.recent()),
     isDemmurage: faker.datatype.boolean(),
-    isDetention: faker.datatype.boolean(),
     isCombined: faker.datatype.boolean(),
     vesselDelayNotice: faker.datatype.boolean()
       ? DateTime.fromJSDate(faker.date.recent())
@@ -90,19 +96,24 @@ export const InboundMasterTable = () => {
     }),
     columnHelper.accessor("blNumber", {
       id: "blNumber",
-      header: "B/L Number",
+      header: "B/L No.",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("containerNumber", {
-      id: "containerNumber",
-      header: "Container No.",
+    columnHelper.accessor("container", {
+      id: "container",
+      header: "Container",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue()}
+          {info
+            .getValue()
+            .split("\n")
+            .map((container, index) => (
+              <div key={index}>{container}</div>
+            ))}
         </MdTypography>
       ),
     }),
@@ -201,7 +212,7 @@ export const InboundMasterTable = () => {
     }),
     columnHelper.accessor("demdetDue", {
       id: "demdetDue",
-      header: "Dem/ Det Due",
+      header: "Dem/Det Due Date",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd")}
@@ -217,18 +228,9 @@ export const InboundMasterTable = () => {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("isDetention", {
-      id: "isDetention",
-      header: "Detention",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue() ? "Y" : "N"}
-        </MdTypography>
-      ),
-    }),
     columnHelper.accessor("isCombined", {
       id: "isCombined",
-      header: "Combined",
+      header: "Detention/Combine",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue() ? "Y" : "N"}
@@ -265,7 +267,12 @@ export const InboundMasterTable = () => {
       {renderDialog()}
       {renderPlaceDialog()}
       <BasicTable
-        ActionComponent={() => <div className="flex-1"></div>}
+        ActionComponent={() => (
+          <div className="flex-1 flex gap-4">
+            <MdTextButton>Arrival Notice</MdTextButton>
+            <MdTextButton>Advance/Delay Notice</MdTextButton>
+          </div>
+        )}
         data={tempData}
         columns={columnDefs}
         isSingleSelect

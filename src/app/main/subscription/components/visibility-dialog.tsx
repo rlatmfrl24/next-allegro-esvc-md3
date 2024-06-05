@@ -16,7 +16,8 @@ import {
 } from "./util";
 import { difference } from "lodash";
 import SubIndicator from "@/../public/icon_subsum_indicator.svg";
-import { Check, InfoOutlined } from "@mui/icons-material";
+import { InfoOutlined } from "@mui/icons-material";
+import { faker } from "@faker-js/faker";
 
 const CheckTree = (props: {
   name: string;
@@ -25,6 +26,17 @@ const CheckTree = (props: {
   onCheckedItemsChange?: (items: string[]) => void;
 }) => {
   const [checkedItems, setCheckedItems] = useState(props.checkedItems);
+
+  useEffect(() => {
+    if (props.onCheckedItemsChange) {
+      props.onCheckedItemsChange(checkedItems);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkedItems]);
+
+  useEffect(() => {
+    setCheckedItems(props.checkedItems);
+  }, [props.checkedItems]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -87,19 +99,63 @@ export const SummaryDialog = (props: {
 }) => {
   const cx = classNames.bind(styles);
 
-  const [checkedReportItems, setCheckedReportItems] = useState({
-    "Basic Information": [] as string[],
-    "Vessel Information": [] as string[],
-    "Route Information": [] as string[],
-    "Customs Information": [] as string[],
-    "Rail Movement Information": [] as string[],
-    "Pick-up & Delivery Information": [] as string[],
-    "Customer Information": [] as string[], //
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
+  const [initialCheckedServiceRouteItems, setInitialCheckedServiceRouteItems] =
+    useState({
+      Origin: faker.helpers.arrayElements(summaryServiceRouteOptions["Origin"]),
+      Destination: faker.helpers.arrayElements(
+        summaryServiceRouteOptions["Destination"]
+      ),
+    });
+  const [initialCheckedReportItems, setInitialCheckedReportItems] = useState({
+    "Basic Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Basic Information"]
+    ),
+    "Vessel Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Vessel Information"]
+    ),
+    "Route Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Route Information"]
+    ),
+    "Customs Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Customs Information"]
+    ),
+    "Rail Movement Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Rail Movement Information"]
+    ),
+    "Pick-up & Delivery Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Pick-up & Delivery Information"]
+    ),
+    "Customer Information": faker.helpers.arrayElements(
+      summaryReportItemOptions["Customer Information"]
+    ),
   });
+  const [checkedReportItems, setCheckedReportItems] = useState(
+    initialCheckedReportItems
+  );
+  const [checkedServiceRouteItems, setCheckedServiceRouteItems] = useState(
+    initialCheckedServiceRouteItems
+  );
+  const [initialRadioOptions, setInitialRadioOptions] = useState({
+    shipmentBy: "Shipper",
+  });
+  const [selectedRadioOption, setSelectedRadioOption] =
+    useState(initialRadioOptions);
 
-  useEffect(() => {
-    console.log(checkedReportItems);
-  }, [checkedReportItems]);
+  function handleReset() {
+    setCheckedServiceRouteItems(initialCheckedServiceRouteItems);
+    setCheckedReportItems(initialCheckedReportItems);
+    setSelectedRadioOption(initialRadioOptions);
+    props.onOpenChange(false);
+  }
+
+  function handleSave() {
+    setInitialCheckedReportItems(checkedReportItems);
+    setInitialCheckedServiceRouteItems(checkedServiceRouteItems);
+    setInitialRadioOptions(selectedRadioOption);
+    props.onOpenChange(false);
+    setIsSaveDialogOpen(false);
+  }
 
   return (
     <MdDialog
@@ -134,7 +190,17 @@ export const SummaryDialog = (props: {
                       key as keyof typeof summaryServiceRouteOptions
                     ]
                   }
-                  checkedItems={[]}
+                  checkedItems={
+                    checkedServiceRouteItems[
+                      key as keyof typeof checkedServiceRouteItems
+                    ]
+                  }
+                  onCheckedItemsChange={(items) => {
+                    setCheckedServiceRouteItems({
+                      ...checkedServiceRouteItems,
+                      [key]: items,
+                    });
+                  }}
                 />
               </div>
             ))}
@@ -178,18 +244,32 @@ export const SummaryDialog = (props: {
             ))}
           </div>
         </div>
-      </div>
-      <div slot="actions">
-        <MdOutlinedButton
-          onClick={() => {
-            props.onOpenChange(false);
+        <MdDialog
+          open={isSaveDialogOpen}
+          closed={() => {
+            setIsSaveDialogOpen(false);
           }}
         >
-          Cancel
-        </MdOutlinedButton>
+          <div slot="headline">Are you sure you want to save the changes?</div>
+          <div slot="actions">
+            <div className="flex gap-4">
+              <MdOutlinedButton
+                onClick={() => {
+                  setIsSaveDialogOpen(false);
+                }}
+              >
+                Cancel
+              </MdOutlinedButton>
+              <MdFilledButton onClick={handleSave}>Save</MdFilledButton>
+            </div>
+          </div>
+        </MdDialog>
+      </div>
+      <div slot="actions">
+        <MdOutlinedButton onClick={handleReset}>Cancel</MdOutlinedButton>
         <MdFilledButton
           onClick={() => {
-            props.onOpenChange(false);
+            setIsSaveDialogOpen(true);
           }}
         >
           Save
@@ -204,6 +284,44 @@ export const EventDialog = (props: {
   onOpenChange: Dispatch<SetStateAction<boolean>>;
 }) => {
   const cx = classNames.bind(styles);
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
+  const [initialCheckedServiceRouteItems, setInitialCheckedServiceRouteItems] =
+    useState({
+      Origin: faker.helpers.arrayElements(summaryServiceRouteOptions["Origin"]),
+      Destination: faker.helpers.arrayElements(
+        summaryServiceRouteOptions["Destination"]
+      ),
+    });
+  const [initialCheckedReportItems, setInitialCheckedReportItems] = useState({
+    Events: faker.helpers.arrayElements(eventReportItemOptions["Events"]),
+  });
+  const [checkedServiceRouteItems, setCheckedServiceRouteItems] = useState(
+    initialCheckedServiceRouteItems
+  );
+  const [checkedReportItems, setCheckedReportItems] = useState(
+    initialCheckedReportItems
+  );
+  const [initialRadioOptions, setInitialRadioOptions] = useState({
+    serviceType: "By Service Route",
+    inquiryOption: "Shipper",
+  });
+  const [selectedRadioOption, setSelectedRadioOption] =
+    useState(initialRadioOptions);
+
+  function handleReset() {
+    setCheckedServiceRouteItems(initialCheckedServiceRouteItems);
+    setCheckedReportItems(initialCheckedReportItems);
+    setSelectedRadioOption(initialRadioOptions);
+    props.onOpenChange(false);
+  }
+
+  function handleSave() {
+    setInitialCheckedReportItems(checkedReportItems);
+    setInitialCheckedServiceRouteItems(checkedServiceRouteItems);
+    setInitialRadioOptions(selectedRadioOption);
+    props.onOpenChange(false);
+    setIsSaveDialogOpen(false);
+  }
 
   return (
     <MdDialog
@@ -222,6 +340,13 @@ export const EventDialog = (props: {
           <SimpleRadioGroup
             groupName="event-service-type"
             options={["By Service Route", "By Booking No. or Container No."]}
+            initialSelected={selectedRadioOption.serviceType}
+            onChange={(option) => {
+              setSelectedRadioOption({
+                ...selectedRadioOption,
+                serviceType: option,
+              });
+            }}
           />
           <MdTypography variant="body" size="large" prominent className="mt-4">
             Inquiry Option
@@ -229,6 +354,13 @@ export const EventDialog = (props: {
           <SimpleRadioGroup
             groupName="event-inquiry-option"
             options={["Shipper", "Consignee", "Contract"]}
+            initialSelected={selectedRadioOption.inquiryOption}
+            onChange={(option) => {
+              setSelectedRadioOption({
+                ...selectedRadioOption,
+                inquiryOption: option,
+              });
+            }}
           />
         </div>
         <div className={cx(styles["inner-dialog-box"])}>
@@ -245,7 +377,17 @@ export const EventDialog = (props: {
                       key as keyof typeof summaryServiceRouteOptions
                     ]
                   }
-                  checkedItems={[]}
+                  checkedItems={
+                    checkedServiceRouteItems[
+                      key as keyof typeof checkedServiceRouteItems
+                    ]
+                  }
+                  onCheckedItemsChange={(items) => {
+                    setCheckedServiceRouteItems({
+                      ...checkedServiceRouteItems,
+                      [key]: items,
+                    });
+                  }}
                 />
               </div>
             ))}
@@ -259,22 +401,43 @@ export const EventDialog = (props: {
             <CheckTree
               name="Events"
               options={eventReportItemOptions["Events"]}
-              checkedItems={[]}
+              checkedItems={checkedReportItems["Events"] as string[]}
+              onCheckedItemsChange={(items) => {
+                setCheckedReportItems({
+                  ...checkedReportItems,
+                  Events: items,
+                });
+              }}
             />
           </div>
+          <MdDialog
+            open={isSaveDialogOpen}
+            closed={() => {
+              setIsSaveDialogOpen(false);
+            }}
+          >
+            <div slot="headline">
+              Are you sure you want to save the changes?
+            </div>
+            <div slot="content"></div>
+            <div slot="actions">
+              <MdOutlinedButton
+                onClick={() => {
+                  setIsSaveDialogOpen(false);
+                }}
+              >
+                Cancel
+              </MdOutlinedButton>
+              <MdFilledButton onClick={handleSave}>Save</MdFilledButton>
+            </div>
+          </MdDialog>
         </div>
       </div>
       <div slot="actions">
-        <MdOutlinedButton
-          onClick={() => {
-            props.onOpenChange(false);
-          }}
-        >
-          Cancel
-        </MdOutlinedButton>
+        <MdOutlinedButton onClick={handleReset}>Cancel</MdOutlinedButton>
         <MdFilledButton
           onClick={() => {
-            props.onOpenChange(false);
+            setIsSaveDialogOpen(true);
           }}
         >
           Save
@@ -289,6 +452,40 @@ export const VesselDialog = (props: {
   onOpenChange: Dispatch<SetStateAction<boolean>>;
 }) => {
   const cx = classNames.bind(styles);
+
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
+  const [initialCheckedServiceRouteItems, setInitialCheckedServiceRouteItems] =
+    useState({
+      Origin: faker.helpers.arrayElements(summaryServiceRouteOptions["Origin"]),
+      Destination: faker.helpers.arrayElements(
+        summaryServiceRouteOptions["Destination"]
+      ),
+    });
+  const [checkedServiceRouteItems, setCheckedServiceRouteItems] = useState(
+    initialCheckedServiceRouteItems
+  );
+
+  const [initialRadioOptions, setInitialRadioOptions] = useState({
+    serviceType: "By Service Route",
+    inquiryOption: "Shipper",
+    typeOfSchedule: "All",
+  });
+  const [selectedRadioOption, setSelectedRadioOption] =
+    useState(initialRadioOptions);
+
+  function handleReset() {
+    setCheckedServiceRouteItems(initialCheckedServiceRouteItems);
+    setSelectedRadioOption(initialRadioOptions);
+    props.onOpenChange(false);
+  }
+
+  function handleSave() {
+    setInitialCheckedServiceRouteItems(checkedServiceRouteItems);
+    setInitialRadioOptions(selectedRadioOption);
+    props.onOpenChange(false);
+    setIsSaveDialogOpen(false);
+  }
+
   return (
     <MdDialog
       open={props.open}
@@ -306,6 +503,13 @@ export const VesselDialog = (props: {
           <SimpleRadioGroup
             groupName="vessel-service-type"
             options={["By Service Route", "By Booking No. or Container No."]}
+            initialSelected={selectedRadioOption.serviceType}
+            onChange={(option) => {
+              setSelectedRadioOption({
+                ...selectedRadioOption,
+                serviceType: option,
+              });
+            }}
           />
           <MdTypography variant="body" size="large" prominent className="mt-4">
             Inquiry Option
@@ -313,6 +517,13 @@ export const VesselDialog = (props: {
           <SimpleRadioGroup
             groupName="vessel-inquiry-option"
             options={["Shipper", "Consignee", "Contract"]}
+            initialSelected={selectedRadioOption.inquiryOption}
+            onChange={(option) => {
+              setSelectedRadioOption({
+                ...selectedRadioOption,
+                inquiryOption: option,
+              });
+            }}
           />
           <MdTypography variant="body" size="large" prominent className="mt-4">
             Type of Schedule
@@ -320,6 +531,13 @@ export const VesselDialog = (props: {
           <SimpleRadioGroup
             groupName="vessel-schedule-type"
             options={["All", "Arrival", "Departure"]}
+            initialSelected={selectedRadioOption.typeOfSchedule}
+            onChange={(option) => {
+              setSelectedRadioOption({
+                ...selectedRadioOption,
+                typeOfSchedule: option,
+              });
+            }}
           />
         </div>
         <div className={cx(styles["inner-dialog-box"])}>
@@ -336,26 +554,38 @@ export const VesselDialog = (props: {
                       key as keyof typeof summaryServiceRouteOptions
                     ]
                   }
-                  checkedItems={[]}
+                  checkedItems={
+                    checkedServiceRouteItems[
+                      key as keyof typeof checkedServiceRouteItems
+                    ]
+                  }
+                  onCheckedItemsChange={(items) => {
+                    setCheckedServiceRouteItems({
+                      ...checkedServiceRouteItems,
+                      [key]: items,
+                    });
+                  }}
                 />
               </div>
             ))}
           </div>
         </div>
+        <MdDialog
+          open={isSaveDialogOpen}
+          closed={() => setIsSaveDialogOpen(false)}
+        >
+          <div slot="headline">Are you sure you want to save the changes?</div>
+          <div slot="actions">
+            <MdOutlinedButton onClick={() => setIsSaveDialogOpen(false)}>
+              Cancel
+            </MdOutlinedButton>
+            <MdFilledButton onClick={handleSave}>Save</MdFilledButton>
+          </div>
+        </MdDialog>
       </div>
       <div slot="actions">
-        <MdOutlinedButton
-          onClick={() => {
-            props.onOpenChange(false);
-          }}
-        >
-          Cancel
-        </MdOutlinedButton>
-        <MdFilledButton
-          onClick={() => {
-            props.onOpenChange(false);
-          }}
-        >
+        <MdOutlinedButton onClick={handleReset}>Cancel</MdOutlinedButton>
+        <MdFilledButton onClick={() => setIsSaveDialogOpen(true)}>
           Save
         </MdFilledButton>
       </div>

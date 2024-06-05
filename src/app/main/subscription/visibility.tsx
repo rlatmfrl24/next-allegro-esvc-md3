@@ -6,17 +6,21 @@ import {
 } from "./components/component";
 import {
   MdChipSet,
+  MdFilledButton,
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { DividerComponent } from "@/app/components/divider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RemovableChip } from "@/app/components/removable-chip";
 import {
   EventDialog,
   SummaryDialog,
   VesselDialog,
 } from "./components/visibility-dialog";
+import { useSetRecoilState } from "recoil";
+import { BottomFloatingState } from "@/app/store/subscription.store";
+import Portal from "@/app/components/portal";
 
 export const VisibilitySubscription = () => {
   const [summaryRecipients, setSummaryRecipients] = useState<string[]>([]);
@@ -30,6 +34,34 @@ export const VisibilitySubscription = () => {
   const [isSummarySubscribed, setIsSummarySubscribed] = useState(false);
   const [isEventSubscribed, setIsEventSubscribed] = useState(false);
   const [isVesselSubscribed, setIsVesselSubscribed] = useState(false);
+
+  const setIsBottomFloatingVisible = useSetRecoilState(BottomFloatingState);
+
+  function handeAddRecipient(
+    e: React.KeyboardEvent<any>,
+    recipients: string[],
+    setRecipients: React.Dispatch<React.SetStateAction<string[]>>
+  ) {
+    if (e.key === "Enter") {
+      if (e.currentTarget.value === "") {
+        return;
+      }
+      if (recipients.includes(e.currentTarget.value)) {
+        return;
+      }
+      setRecipients([...recipients, e.currentTarget.value]);
+      setIsBottomFloatingVisible(true);
+      e.currentTarget.value = "";
+    }
+  }
+
+  function handleRemoveRecipient(
+    index: number,
+    setRecipients: React.Dispatch<React.SetStateAction<string[]>>
+  ) {
+    setRecipients((prev) => prev.filter((_, i) => i !== index));
+    setIsBottomFloatingVisible(true);
+  }
 
   return (
     <div className="flex flex-col">
@@ -61,26 +93,24 @@ export const VisibilitySubscription = () => {
               To enter multiple values, separated by a comma or space.
             </MdTypography>
             <div className="flex gap-2">
-              <CycleSelector label="Sending Cycle" />
+              <CycleSelector
+                label="Sending Cycle"
+                onChanges={() => {
+                  console.log("change");
+                  setIsBottomFloatingVisible(true);
+                }}
+              />
               <DividerComponent orientation="vertical" />
               <div className="flex-1">
                 <MdOutlinedTextField
                   label="Recipients"
                   className="w-full mb-4"
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      if (e.currentTarget.value === "") {
-                        return;
-                      }
-                      if (summaryRecipients.includes(e.currentTarget.value)) {
-                        return;
-                      }
-                      setSummaryRecipients([
-                        ...summaryRecipients,
-                        e.currentTarget.value,
-                      ]);
-                      e.currentTarget.value = "";
-                    }
+                    handeAddRecipient(
+                      e,
+                      summaryRecipients,
+                      setSummaryRecipients
+                    );
                   }}
                 />
                 <MdChipSet>
@@ -89,9 +119,7 @@ export const VisibilitySubscription = () => {
                       key={recipient}
                       label={recipient}
                       onRemove={() => {
-                        setSummaryRecipients((prev) =>
-                          prev.filter((_, i) => i !== index)
-                        );
+                        handleRemoveRecipient(index, setSummaryRecipients);
                       }}
                     />
                   ))}
@@ -124,26 +152,19 @@ export const VisibilitySubscription = () => {
               To enter multiple values, separated by a comma or space.
             </MdTypography>
             <div className="flex gap-2">
-              <CycleSelector label="Sending Cycle" />
+              <CycleSelector
+                label="Sending Cycle"
+                onChanges={() => {
+                  setIsBottomFloatingVisible(true);
+                }}
+              />
               <DividerComponent orientation="vertical" />
               <div className="flex-1">
                 <MdOutlinedTextField
                   label="Recipients"
                   className="w-full mb-4"
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      if (e.currentTarget.value === "") {
-                        return;
-                      }
-                      if (eventRecipients.includes(e.currentTarget.value)) {
-                        return;
-                      }
-                      setEventRecipients([
-                        ...eventRecipients,
-                        e.currentTarget.value,
-                      ]);
-                      e.currentTarget.value = "";
-                    }
+                    handeAddRecipient(e, eventRecipients, setEventRecipients);
                   }}
                 />
                 <MdChipSet>
@@ -152,9 +173,7 @@ export const VisibilitySubscription = () => {
                       key={recipient}
                       label={recipient}
                       onRemove={() => {
-                        setEventRecipients((prev) =>
-                          prev.filter((_, i) => i !== index)
-                        );
+                        handleRemoveRecipient(index, setEventRecipients);
                       }}
                     />
                   ))}
@@ -187,26 +206,19 @@ export const VisibilitySubscription = () => {
               To enter multiple values, separated by a comma or space.
             </MdTypography>
             <div className="flex gap-2">
-              <CycleSelector label="Sending Cycle" />
+              <CycleSelector
+                label="Sending Cycle"
+                onChanges={() => {
+                  setIsBottomFloatingVisible(true);
+                }}
+              />
               <DividerComponent orientation="vertical" />
               <div className="flex-1">
                 <MdOutlinedTextField
                   label="Recipients"
                   className="w-full mb-4"
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      if (e.currentTarget.value === "") {
-                        return;
-                      }
-                      if (vesselRecipients.includes(e.currentTarget.value)) {
-                        return;
-                      }
-                      setVesselRecipients([
-                        ...vesselRecipients,
-                        e.currentTarget.value,
-                      ]);
-                      e.currentTarget.value = "";
-                    }
+                    handeAddRecipient(e, vesselRecipients, setVesselRecipients);
                   }}
                 />
                 <MdChipSet>
@@ -215,9 +227,7 @@ export const VisibilitySubscription = () => {
                       key={recipient}
                       label={recipient}
                       onRemove={() => {
-                        setVesselRecipients((prev) =>
-                          prev.filter((_, i) => i !== index)
-                        );
+                        handleRemoveRecipient(index, setVesselRecipients);
                       }}
                     />
                   ))}
@@ -227,18 +237,20 @@ export const VisibilitySubscription = () => {
           </div>
         </SubscriptionItemContainer>
       </div>
-      <SummaryDialog
-        open={isSummaryDialogOpen}
-        onOpenChange={setIsSummaryDialogOpen}
-      />
-      <EventDialog
-        open={isEventDialogOpen}
-        onOpenChange={setIsEventDialogOpen}
-      />
-      <VesselDialog
-        open={isVesselDialogOpen}
-        onOpenChange={setIsVesselDialogOpen}
-      />
+      <Portal selector="#main-container">
+        <SummaryDialog
+          open={isSummaryDialogOpen}
+          onOpenChange={setIsSummaryDialogOpen}
+        />
+        <EventDialog
+          open={isEventDialogOpen}
+          onOpenChange={setIsEventDialogOpen}
+        />
+        <VesselDialog
+          open={isVesselDialogOpen}
+          onOpenChange={setIsVesselDialogOpen}
+        />
+      </Portal>
     </div>
   );
 };
