@@ -33,7 +33,6 @@ type InboundMasterTableProps = {
   blType: string;
   demdetDue: DateTime;
   isDemmurage: boolean;
-  isDetention: boolean;
   isCombined: boolean;
   vesselDelayNotice: DateTime | null;
 };
@@ -65,7 +64,6 @@ function createDummyInboundMasterData() {
     ]),
     demdetDue: DateTime.fromJSDate(faker.date.recent()),
     isDemmurage: faker.datatype.boolean(),
-    isDetention: faker.datatype.boolean(),
     isCombined: faker.datatype.boolean(),
     vesselDelayNotice: faker.datatype.boolean()
       ? DateTime.fromJSDate(faker.date.recent())
@@ -214,7 +212,7 @@ export const InboundMasterTable = () => {
     }),
     columnHelper.accessor("demdetDue", {
       id: "demdetDue",
-      header: "Dem/ Det Due",
+      header: "Dem/Det Due Date",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd")}
@@ -230,18 +228,9 @@ export const InboundMasterTable = () => {
         </MdTypography>
       ),
     }),
-    columnHelper.accessor("isDetention", {
-      id: "isDetention",
-      header: "Detention",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue() ? "Y" : "N"}
-        </MdTypography>
-      ),
-    }),
     columnHelper.accessor("isCombined", {
       id: "isCombined",
-      header: "Combined",
+      header: "Detention/Combine",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue() ? "Y" : "N"}
