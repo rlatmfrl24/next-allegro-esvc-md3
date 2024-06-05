@@ -13,6 +13,8 @@ import {
   CycleSelector,
   SubscriptionItemContainer,
 } from "./components/component";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { BottomFloatingState } from "@/app/store/subscription.store";
 
 type ReportSubscriptionProps = {
   origin: string;
@@ -137,6 +139,7 @@ const ReportItem = (props: {
   onChanges?: (data: ReportSubscriptionProps) => void;
 }) => {
   const [recipients, setRecipients] = useState<string[]>([]);
+  const setIsBottomFloatingVisible = useSetRecoilState(BottomFloatingState);
 
   return (
     <div className="flex border-2 border-secondaryContainer rounded-lg">
@@ -171,6 +174,15 @@ const ReportItem = (props: {
             options={["Arrival", "Departure"]}
             initialValue={props.data.dateType}
             className="w-36"
+            onSelection={(value) => {
+              if (props.onChanges) {
+                props.onChanges({
+                  ...props.data,
+                  dateType: value as "Arrival" | "Departure",
+                });
+                setIsBottomFloatingVisible(true);
+              }
+            }}
           />
           <NAOutlinedListBox
             label="Searching Period"
@@ -183,6 +195,15 @@ const ReportItem = (props: {
               (props.data.searchingPeriod > 1 ? "s" : "")
             }
             className="w-36"
+            onSelection={(value) => {
+              if (props.onChanges) {
+                props.onChanges({
+                  ...props.data,
+                  searchingPeriod: Number(value.split(" ")[0]),
+                });
+                setIsBottomFloatingVisible(true);
+              }
+            }}
           />
           <CycleSelector
             label="Sending Cycle"
@@ -196,6 +217,19 @@ const ReportItem = (props: {
                 props.data.cycleType === "Monthly"
                   ? props.data.cycleValue
                   : undefined,
+            }}
+            onChanges={(value) => {
+              if (props.onChanges) {
+                props.onChanges({
+                  ...props.data,
+                  cycleType: value.cycleOption,
+                  cycleValue:
+                    value.cycleOption === "Weekly"
+                      ? value.weekOption || ""
+                      : value.dayOption || "",
+                });
+                setIsBottomFloatingVisible(true);
+              }
             }}
           />
           <DividerComponent orientation="vertical" className=" border-dotted" />
@@ -213,6 +247,7 @@ const ReportItem = (props: {
                     return;
                   }
                   setRecipients([...recipients, e.currentTarget.value]);
+                  setIsBottomFloatingVisible(true);
                   e.currentTarget.value = "";
                 }
               }}
@@ -224,6 +259,7 @@ const ReportItem = (props: {
                   label={recipient}
                   onRemove={() => {
                     setRecipients((prev) => prev.filter((_, i) => i !== index));
+                    setIsBottomFloatingVisible(true);
                   }}
                 />
               ))}
