@@ -96,7 +96,7 @@ export const InboundMasterTable = () => {
     }),
     columnHelper.accessor("blNumber", {
       id: "blNumber",
-      header: "B/L Number",
+      header: "B/L No.",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
