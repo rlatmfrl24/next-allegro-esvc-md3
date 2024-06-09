@@ -5,7 +5,12 @@ import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { RemovableChip } from "@/app/components/removable-chip";
 import { MdTypography } from "@/app/components/typography";
-import { MdChipSet, MdOutlinedTextField, MdSwitch } from "@/app/util/md3";
+import {
+  MdChipSet,
+  MdInputChip,
+  MdOutlinedTextField,
+  MdSwitch,
+} from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { InfoOutlined } from "@mui/icons-material";
 
@@ -82,9 +87,11 @@ export const ReportSubscription = () => {
 
   const [reportDataSet, setReportDataSet] = useState(tempReports);
 
-  const isContainerSwithOn = useMemo(() => {
-    return reportDataSet.some((report) => report.useEmailService);
-  }, [reportDataSet]);
+  // const isContainerSwithOn = useMemo(() => {
+  //   return reportDataSet.some((report) => report.useEmailService);
+  // }, [reportDataSet]);
+
+  const [isContainerSwithOn, setIsContainerSwithOn] = useState(false);
 
   return (
     <div className="flex flex-col">
@@ -101,9 +108,10 @@ export const ReportSubscription = () => {
         name="Report"
         isSwitchOn={isContainerSwithOn}
         onSwitchChange={(val) => {
-          setReportDataSet((prev) =>
-            prev.map((report) => ({ ...report, useEmailService: val }))
-          );
+          setIsContainerSwithOn(val);
+          // setReportDataSet((prev) =>
+          //   prev.map((report) => ({ ...report, useEmailService: val }))
+          // );
         }}
       >
         <div slot="content" className="p-6 flex flex-col">
@@ -120,6 +128,7 @@ export const ReportSubscription = () => {
               <ReportItem
                 key={index}
                 data={report}
+                disabled={!isContainerSwithOn}
                 onChanges={(report) => {
                   setReportDataSet((prev) => {
                     //detect the change
@@ -142,6 +151,7 @@ export const ReportSubscription = () => {
 
 const ReportItem = (props: {
   data: ReportSubscriptionProps;
+  disabled?: boolean;
   onChanges?: (data: ReportSubscriptionProps) => void;
 }) => {
   const [recipients, setRecipients] = useState<string[]>([]);
@@ -196,6 +206,7 @@ const ReportItem = (props: {
           </div>
           <DividerComponent orientation="vertical" className=" border-dotted" />
           <NAOutlinedListBox
+            disabled={props.disabled}
             label="Inquiry Type"
             options={["Arrival", "Departure"]}
             initialValue={props.data.dateType}
@@ -212,6 +223,7 @@ const ReportItem = (props: {
           />
           <NAOutlinedListBox
             label="Searching Period"
+            disabled={props.disabled}
             options={Array.from({ length: 8 }, (_, i) => i + 1).map(
               (i) => String(i + 1) + " Week" + (i > 1 ? "s" : "")
             )}
@@ -233,6 +245,7 @@ const ReportItem = (props: {
           />
           <CycleSelector
             label="Sending Cycle"
+            disabled={props.disabled}
             initialValue={{
               cycleOption: props.data.cycleType,
               weekOption:
@@ -264,6 +277,7 @@ const ReportItem = (props: {
           <div className="flex-1">
             <MdOutlinedTextField
               label="Recipients"
+              disabled={props.disabled}
               className="w-full mb-4"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -279,10 +293,11 @@ const ReportItem = (props: {
                 }
               }}
             />
-            <MdChipSet>
+            <MdChipSet aria-disabled={props.disabled}>
               {recipients.map((recipient, index) => (
                 <RemovableChip
                   key={recipient}
+                  disabled={props.disabled}
                   label={recipient}
                   onRemove={() => {
                     setRecipients((prev) => prev.filter((_, i) => i !== index));
@@ -299,6 +314,7 @@ const ReportItem = (props: {
             </MdTypography>
             <MdSwitch
               selected={props.data.useEmailService}
+              disabled={props.disabled}
               onClick={(e) => {
                 e.preventDefault();
 
