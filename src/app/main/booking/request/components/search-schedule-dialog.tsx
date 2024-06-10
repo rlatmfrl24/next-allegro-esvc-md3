@@ -145,11 +145,6 @@ export default function SearchScheduleDialog({
         <div slot="headline">Search Schedule</div>
         <div slot="content" className="flex flex-col gap-4">
           <div className="flex relative gap-4 items-center">
-            <NAOutlinedListBox
-              label="Search On"
-              defaultValue={"All"}
-              options={["All", "Departure", "Arrival"]}
-            />
             <NAOutlinedAutoComplete
               className="flex-1"
               itemList={tempPorts}
@@ -159,6 +154,11 @@ export default function SearchScheduleDialog({
               className="flex-1"
               itemList={tempPorts}
               label="Destination"
+            />
+            <NAOutlinedListBox
+              label="Search On"
+              defaultValue={"All"}
+              options={["All", "Departure", "Arrival"]}
             />
             <MdOutlinedButton autoFocus>Search</MdOutlinedButton>
           </div>
