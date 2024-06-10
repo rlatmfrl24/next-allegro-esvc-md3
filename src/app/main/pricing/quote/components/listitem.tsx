@@ -112,7 +112,12 @@ export const QuotationListItem = ({
                 >
                   {vessel.serviceLane}
                 </MdTypography>
-                <MdTypography variant="body" size="medium">
+                <DividerComponent orientation="vertical" className="h-4 mx-1" />
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  className="text-outline"
+                >
                   Transit Time
                 </MdTypography>
                 <MdTypography
