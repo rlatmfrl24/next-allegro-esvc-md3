@@ -3,6 +3,7 @@ import VesselStatusNotesDialog from "./vessel-status-notes";
 import Portal from "@/app/components/portal";
 import { BookingStatusTableProps } from "@/app/util/typeDef/boooking";
 import { DateTime } from "luxon";
+import { faker } from "@faker-js/faker";
 
 export const useEstimatedTimeofDepartureDialog = () => {
   const [isVesselStatusNotesDialogOpen, setIsVesselStatusNotesDialogOpen] =
@@ -21,7 +22,8 @@ export const useEstimatedTimeofDepartureDialog = () => {
             ({
               estimatedTimeofDeparture: {
                 date: DateTime.now(),
-                status: "delayed",
+                // status: "delayed",
+                status: faker.helpers.arrayElement(["delayed", "early"]),
               },
             } as BookingStatusTableProps)
           }

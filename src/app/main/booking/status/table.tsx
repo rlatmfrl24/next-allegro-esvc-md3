@@ -24,48 +24,52 @@ import BookingStatusChip from "./components/booking-status-chip";
 import { useEstimatedTimeofDepartureDialog } from "./components/estimated-time-of-departure-dialog";
 import { useRouter } from "next/navigation";
 
+function createDummnyBookingStatus() {
+  return {
+    requestNo: `R${faker.string.numeric(12)}`,
+    status: faker.helpers.arrayElement(
+      Object.values(BookingStatus)
+    ) as BookingStatus,
+    bookingNo: `R${faker.string.numeric(12)}`,
+    requestDate: DateTime.fromJSDate(faker.date.past()),
+    actualShipper: faker.person.fullName(),
+    vessel: createDummyVesselInformation(),
+    requestDepartureTime: DateTime.fromJSDate(faker.date.past()),
+    estimatedTimeofDeparture: {
+      date: DateTime.fromJSDate(faker.date.future()),
+      status: faker.helpers.arrayElement(["normal", "delayed", "early"]) as
+        | "normal"
+        | "delayed"
+        | "early",
+    },
+    origin: faker.location.city(),
+    destination: faker.location.city(),
+    cargoClosingTime: DateTime.fromJSDate(faker.date.future()),
+    docClosingTime: DateTime.fromJSDate(faker.date.future()),
+    vgmCutOffTime: DateTime.fromJSDate(faker.date.future()),
+    via: faker.helpers.arrayElement(["web", "general", "edi"]) as
+      | "web"
+      | "general"
+      | "edi",
+    qty: Array.from(
+      { length: faker.number.int(4) },
+      (_, i) =>
+        `${faker.helpers.arrayElement([
+          "Dry 20:",
+          "Dry 40:",
+          "Reefer 20:",
+          "Reefer 40:",
+        ])} ${faker.number.int(9)}`
+    ).join("\n"),
+  };
+}
+
 export default function BookingStatusTable() {
   const router = useRouter();
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 900 }, (_, i) => ({
-      requestNo: `R${faker.string.numeric(12)}`,
-      status: faker.helpers.arrayElement(
-        Object.values(BookingStatus)
-      ) as BookingStatus,
-      bookingNo: `R${faker.string.numeric(12)}`,
-      requestDate: DateTime.fromJSDate(faker.date.past()),
-      actualShipper: faker.person.fullName(),
-      vessel: createDummyVesselInformation(),
-      requestDepartureTime: DateTime.fromJSDate(faker.date.past()),
-      estimatedTimeofDeparture: {
-        date: DateTime.fromJSDate(faker.date.future()),
-        status: faker.helpers.arrayElement(["normal", "delayed", "early"]) as
-          | "normal"
-          | "delayed"
-          | "early",
-      },
-      origin: faker.location.city(),
-      destination: faker.location.city(),
-      cargoClosingTime: DateTime.fromJSDate(faker.date.future()),
-      docClosingTime: DateTime.fromJSDate(faker.date.future()),
-      vgmCutOffTime: DateTime.fromJSDate(faker.date.future()),
-      via: faker.helpers.arrayElement(["web", "general", "edi"]) as
-        | "web"
-        | "general"
-        | "edi",
-      qty: Array.from(
-        { length: faker.number.int(4) },
-        (_, i) =>
-          `${faker.helpers.arrayElement([
-            "Dry 20:",
-            "Dry 40:",
-            "Reefer 20:",
-            "Reefer 40:",
-          ])} ${faker.number.int(9)}`
-      ).join("\n"),
-    }));
+    return Array.from({ length: 900 }, (_, i) => createDummnyBookingStatus());
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
