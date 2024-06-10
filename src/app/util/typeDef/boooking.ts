@@ -18,7 +18,6 @@ export enum BookingStatus {
   Accepted = "Accepted",
   Rejected = "Rejected",
   Pending = "Pending",
-  ChangeRequestedRejected = "Change Requested Rejected",
 }
 
 export type CommodityType = {
@@ -41,6 +40,7 @@ export type PartiesType = {
 export type BookingStatusTableProps = {
   requestNo: string;
   status: BookingStatus;
+  hasShippingInstruction: boolean;
   bookingNo: string;
   requestDate: DateTime;
   actualShipper: string;

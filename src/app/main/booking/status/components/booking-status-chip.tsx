@@ -19,8 +19,6 @@ export default function BookingStatusChip({
           Accepted: "bg-extendGoodContainer text-extendOnGoodContainer",
           Rejected: "bg-errorContainer text-onErrorContainer",
           Pending: "bg-extendPendingContainer text-extendOnPendingContainer",
-          "Change Requested Rejected":
-            "bg-errorContainer text-onErrorContainer",
         }[status]
       }`}
     >
