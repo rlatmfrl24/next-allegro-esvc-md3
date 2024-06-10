@@ -110,33 +110,6 @@ export const AddPtpScheduleDialog = (props: {
               setCurrentData((prev) => ({ ...prev, destination: value }));
             }}
           />
-          <MdFilledTonalIconButton
-            onClick={() => {
-              if (
-                favorites.some(
-                  (favorite) =>
-                    favorite.origin === currentData.origin &&
-                    favorite.destination === currentData.destination
-                ) ||
-                currentData.origin === "" ||
-                currentData.destination === ""
-              ) {
-                return;
-              }
-
-              setFavorites((prev) => [
-                {
-                  origin: currentData.origin,
-                  destination: currentData.destination,
-                },
-                ...prev,
-              ]);
-            }}
-          >
-            <MdIcon>
-              <Favorite />
-            </MdIcon>
-          </MdFilledTonalIconButton>
         </div>
         <Disclosure defaultOpen>
           {({ open }) => (

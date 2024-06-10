@@ -110,6 +110,10 @@ export const ScheduleSubscription = () => {
     setIsAddLongRangeScheduleDialogOpen,
   ] = useState(false);
 
+  const [isPtpScheduleSwitchOn, setIsPtpScheduleSwitchOn] = useState(true);
+  const [isLongRangeScheduleSwitchOn, setIsLongRangeScheduleSwitchOn] =
+    useState(true);
+
   return (
     <div className="flex flex-col gap-6">
       <MdTypography variant="title" size="large" className="mt-2">
@@ -118,16 +122,18 @@ export const ScheduleSubscription = () => {
       <SubscriptionItemContainer
         name="Point ot Point Schedule"
         isExpandalbe
-        isSwitchOn={ptpSubscriptions.some((report) => report.useEmailService)}
+        // isSwitchOn={ptpSubscriptions.some((report) => report.useEmailService)}
+        isSwitchOn={isPtpScheduleSwitchOn}
         onSwitchChange={(val) => {
-          setPtpSubscriptions((prev) => {
-            return prev.map((report) => {
-              return {
-                ...report,
-                useEmailService: val,
-              };
-            });
-          });
+          setIsPtpScheduleSwitchOn(val);
+          // setPtpSubscriptions((prev) => {
+          //   return prev.map((report) => {
+          //     return {
+          //       ...report,
+          //       useEmailService: val,
+          //     };
+          //   });
+          // });
         }}
       >
         <div slot="content" className="flex flex-col p-4 gap-4">
@@ -167,6 +173,7 @@ export const ScheduleSubscription = () => {
             <ScheduleSubscriptionItem
               key={index}
               data={data}
+              disabled={!isPtpScheduleSwitchOn}
               onChanges={(data) => {
                 setPtpSubscriptions((prev) => {
                   return prev.map((r, i) => {
@@ -189,18 +196,20 @@ export const ScheduleSubscription = () => {
       <SubscriptionItemContainer
         name="Long Range Schedule"
         isExpandalbe
-        isSwitchOn={longRangeSubscriptions.some(
-          (report) => report.useEmailService
-        )}
+        // isSwitchOn={longRangeSubscriptions.some(
+        //   (report) => report.useEmailService
+        // )}
+        isSwitchOn={isLongRangeScheduleSwitchOn}
         onSwitchChange={(val) => {
-          setLongRangeSubscriptions((prev) => {
-            return prev.map((report) => {
-              return {
-                ...report,
-                useEmailService: val,
-              };
-            });
-          });
+          setIsLongRangeScheduleSwitchOn(val);
+          // setLongRangeSubscriptions((prev) => {
+          //   return prev.map((report) => {
+          //     return {
+          //       ...report,
+          //       useEmailService: val,
+          //     };
+          //   });
+          // });
         }}
       >
         <div slot="content" className="flex flex-col p-4 gap-4">
@@ -238,6 +247,7 @@ export const ScheduleSubscription = () => {
             <ScheduleSubscriptionItem
               key={index}
               data={data}
+              disabled={!isLongRangeScheduleSwitchOn}
               onChanges={(data) => {
                 setLongRangeSubscriptions((prev) => {
                   return prev.map((r, i) => {
@@ -265,6 +275,7 @@ const ScheduleSubscriptionItem = (props: {
   data: ScheduleSubscriptionProps;
   onChanges?: (data: ScheduleSubscriptionProps) => void;
   onDelete?: () => void;
+  disabled?: boolean;
 }) => {
   const [recipients, setRecipients] = useState(props.data.recipients);
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
@@ -315,6 +326,7 @@ const ScheduleSubscriptionItem = (props: {
         </div>
         <DividerComponent orientation="vertical" className="border-dotted" />
         <CycleSelector
+          disabled={props.disabled}
           initialValue={{
             cycleOption: props.data.cycleType,
             weekOption:
@@ -348,6 +360,7 @@ const ScheduleSubscriptionItem = (props: {
         <div className="flex-1">
           <MdOutlinedTextField
             label="Recipients"
+            disabled={props.disabled}
             className="w-full mb-4"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -368,6 +381,7 @@ const ScheduleSubscriptionItem = (props: {
               <RemovableChip
                 key={recipient}
                 label={recipient}
+                disabled={props.disabled}
                 onRemove={() => {
                   setRecipients((prev) => prev.filter((_, i) => i !== index));
                   setBottomFloatingVisible(true);
@@ -382,6 +396,7 @@ const ScheduleSubscriptionItem = (props: {
             Email Service
           </MdTypography>
           <MdSwitch
+            disabled={props.disabled}
             selected={props.data.useEmailService}
             onClick={(e) => {
               e.preventDefault();
@@ -408,7 +423,11 @@ const ScheduleSubscriptionItem = (props: {
             {props.data.lastSendingDate.toFormat("yyyy-MM-dd HH:mm")}
           </MdTypography>
         </div>
-        <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
+        <MdIconButton
+          disabled={props.disabled}
+          ref={refs.setReference}
+          {...getReferenceProps()}
+        >
           <MdIcon>
             <MoreVert />
           </MdIcon>

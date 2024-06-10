@@ -123,6 +123,7 @@ export const CycleSelector = (props: {
     weekOption?: string;
     dayOption?: string;
   }) => void;
+  disabled?: boolean;
 }) => {
   const [cycle, setCycle] = useState<"Daily" | "Weekly" | "Monthly">(
     props.initialValue?.cycleOption || "Daily"
@@ -260,13 +261,14 @@ export const CycleSelector = (props: {
           setCycle(value as "Daily" | "Weekly" | "Monthly");
         }}
         className="w-32"
+        disabled={props.disabled}
       />
       <MdOutlinedTextField
         ref={refs.setReference}
         {...getReferenceProps()}
         className="w-28 select-none"
         readOnly
-        disabled={cycle === "Daily"}
+        disabled={cycle === "Daily" || props.disabled}
         label={cycle === "Daily" ? "" : cycle === "Weekly" ? "Week" : "Day"}
         value={
           cycle === "Weekly"

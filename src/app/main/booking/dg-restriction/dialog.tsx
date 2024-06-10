@@ -5,6 +5,7 @@ import {
   MdDialog,
   MdFilledButton,
   MdOutlinedButton,
+  MdOutlinedTextField,
   MdRadio,
   MdTextButton,
 } from "@/app/util/md3";
@@ -111,37 +112,11 @@ export const UNNumberSearchDialog = (props: {
     >
       <div slot="headline">UN Number Detail Search</div>
       <div slot="content" className="flex flex-col gap-4">
-        <NAOutlinedTextField
-          label="Key Word"
-          value={query}
-          handleValueChange={(value) => {
-            setQuery(value);
-          }}
-        />
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setQuery("");
-              setTableData(tempDatas);
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setTableData(
-                tempDatas.filter((data) => {
-                  return (
-                    data.class.includes(query) ||
-                    data.unNumber.includes(query) ||
-                    data.description.includes(query)
-                  );
-                })
-              );
-            }}
-          >
-            Search
-          </MdFilledButton>
+        <div className="flex gap-4 items-center">
+          <MdOutlinedTextField className="w-24" label="UN No." />
+          <MdOutlinedTextField className="w-24" label="Seq" />
+          <MdOutlinedTextField className="flex-1" label="Dsescription" />
+          <MdOutlinedButton>Search</MdOutlinedButton>
         </div>
         <DividerComponent />
         {renderTable()}
