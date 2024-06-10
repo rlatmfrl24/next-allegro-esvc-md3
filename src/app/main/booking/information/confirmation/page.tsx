@@ -62,7 +62,8 @@ export default function BookingConfirmationInformation() {
       <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
         <div className="bg-secondaryContainer h-4"></div>
         <RequestNumberSection
-          bookingStatus={currentBookingData?.status || BookingStatus.Requested}
+          bookingStatus={undefined}
+          // bookingStatus={currentBookingData?.status || BookingStatus.Requested}
           requestNumber={currentBookingData?.requestNo || ""}
           title="Booking No."
         />
