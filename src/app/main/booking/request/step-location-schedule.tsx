@@ -194,7 +194,7 @@ export default function LoactionScheduleStep() {
               label="Origin"
               readOnly={params.has("quoteNumber")}
               icon={<FmdGoodOutlined />}
-              className="flex-1"
+              className="flex-1 max-w-[531px]"
               recentCookieKey="recent-port"
               initialValue={locationScheduleData.originPort.yardName}
               onItemSelection={(value) => {
@@ -212,6 +212,7 @@ export default function LoactionScheduleStep() {
             />
             <NAOutlinedListBox
               className="w-40"
+              label="Service Term"
               readOnly={params.has("quoteNumber")}
               initialValue={
                 locationScheduleData.originType === "cy" ? "CY" : "Door"
@@ -226,8 +227,8 @@ export default function LoactionScheduleStep() {
             />
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
-              placeholder="Port of Loading"
-              label="POL"
+              label="Port of Loading"
+              className="flex-1 max-w-[531px]"
               readOnly={params.has("quoteNumber")}
               initialValue={locationScheduleData.pol.yardName}
               recentCookieKey="recent-port"
@@ -257,7 +258,7 @@ export default function LoactionScheduleStep() {
               readOnly={params.has("quoteNumber")}
               label="Destination"
               icon={<FmdGoodOutlined />}
-              className="flex-1"
+              className="flex-1 max-w-[531px]"
               recentCookieKey="recent-port"
               initialValue={locationScheduleData.destinationPort.yardName}
               onItemSelection={(value) => {
@@ -278,6 +279,7 @@ export default function LoactionScheduleStep() {
             <NAOutlinedListBox
               className="w-40"
               readOnly={params.has("quoteNumber")}
+              label="Service Term"
               initialValue={
                 locationScheduleData.destinationType === "cy" ? "CY" : "Door"
               }
@@ -293,6 +295,7 @@ export default function LoactionScheduleStep() {
               itemList={portList.map((port) => port.yardName)}
               placeholder="Port of Discharging"
               label="POD"
+              className="flex-1 max-w-[531px]"
               readOnly={params.has("quoteNumber")}
               initialValue={locationScheduleData.pod.yardName}
               recentCookieKey="recent-port"
