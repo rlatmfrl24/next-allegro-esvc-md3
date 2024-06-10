@@ -8,28 +8,33 @@ import {
   createDummyPlaceInformation,
   createDummyVesselInformation,
 } from "../../schedule/util";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
-import ActualScheduleIcon from "@/../public/icon_schedule_actual.svg";
-import ConfirmScheduleIcon from "@/../public/icon_schedule_confirm.svg";
 import { Info } from "@mui/icons-material";
 import {
   usePlaceInfoDialog,
   useVesselScheduleDialog,
 } from "@/app/components/common-dialog-hooks";
 import { MdRadio, MdTextButton } from "@/app/util/md3";
+import { useRouter } from "next/navigation";
+import { useEstimatedTimeofDepartureDialog } from "../../booking/status/components/estimated-time-of-departure-dialog";
 
 type InboundMasterTableProps = {
   blNumber: string;
   container: string;
-  pol: string;
-  departureDate: DateTime;
-  pod: string;
-  arrivalDate: DateTime;
+  departure: {
+    pol: string;
+    departureDate: DateTime;
+  };
+  arrival: {
+    pod: string;
+    arrivalDate: DateTime;
+  };
   vesselVoyage: VesselInfoType;
   terminal: PlaceInformationType;
+  arrivalNote: boolean;
   blType: string;
   demdetDue: DateTime;
   isDemmurage: boolean;
@@ -49,14 +54,19 @@ function createDummyInboundMasterData() {
         faker.number.int({ max: 9 })
       );
     }).join("\n"),
-    pol: faker.location.city() + ", " + faker.location.country(),
-    departureDate: DateTime.fromJSDate(faker.date.recent()),
-    pod: faker.location.city() + ", " + faker.location.country(),
-    arrivalDate: DateTime.fromJSDate(faker.date.recent()),
+    departure: {
+      pol: faker.location.city() + ", " + faker.location.country(),
+      departureDate: DateTime.fromJSDate(faker.date.recent()),
+    },
+    arrival: {
+      pod: faker.location.city() + ", " + faker.location.country(),
+      arrivalDate: DateTime.fromJSDate(faker.date.recent()),
+    },
     vesselVoyage: createDummyVesselInformation(),
     terminal: createDummyPlaceInformation(
       faker.location.city() + ", " + faker.location.country()
     ),
+    arrivalNote: faker.datatype.boolean(),
     blType: faker.helpers.arrayElement([
       "Original B/L",
       "Surrender B/L",
@@ -65,9 +75,11 @@ function createDummyInboundMasterData() {
     demdetDue: DateTime.fromJSDate(faker.date.recent()),
     isDemmurage: faker.datatype.boolean(),
     isCombined: faker.datatype.boolean(),
-    vesselDelayNotice: faker.datatype.boolean()
-      ? DateTime.fromJSDate(faker.date.recent())
-      : null,
+    vesselDelayNotice: faker.helpers.arrayElement([
+      null,
+      DateTime.fromJSDate(faker.date.recent()),
+      DateTime.fromJSDate(faker.date.soon()),
+    ]),
   } as InboundMasterTableProps;
 }
 
@@ -79,6 +91,15 @@ export const InboundMasterTable = () => {
     setIsPlaceInfoDialogOpen,
     setCurrentPlace,
   } = usePlaceInfoDialog();
+  const {
+    renderDialog: renderEstimatedTimeofDepartureDialog,
+    setIsVesselStatusNotesDialogOpen,
+  } = useEstimatedTimeofDepartureDialog();
+
+  const [selectedRow, setSelectedRow] =
+    useState<InboundMasterTableProps | null>(null);
+
+  const router = useRouter();
 
   const tempData = useMemo(() => {
     return Array.from({ length: 100 }, () => createDummyInboundMasterData());
@@ -89,7 +110,9 @@ export const InboundMasterTable = () => {
       id: "radio",
       cell: (info) => (
         <div className="flex justify-center">
-          <MdRadio checked={info.row.getIsSelected()} />
+          <MdRadio
+            checked={selectedRow?.blNumber === info.row.original.blNumber}
+          />
         </div>
       ),
       size: 50,
@@ -98,72 +121,47 @@ export const InboundMasterTable = () => {
       id: "blNumber",
       header: "B/L No.",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("container", {
-      id: "container",
-      header: "Container",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info
-            .getValue()
-            .split("\n")
-            .map((container, index) => (
-              <div key={index}>{container}</div>
-            ))}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("pol", {
-      id: "pol",
-      header: "POL",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-      size: 300,
-    }),
-    columnHelper.accessor("departureDate", {
-      id: "departureDate",
-      header: "Departure Date",
-      cell: (info) => (
         <MdTypography
           variant="body"
           size="medium"
-          className="flex items-center gap-2"
+          className="underline w-fit cursor-pointer"
+          onClick={() => {
+            router.push("/main/booking/information/confirmation");
+          }}
         >
-          <ActualScheduleIcon />
-          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("pod", {
-      id: "pod",
-      header: "POD",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
           {info.getValue()}
         </MdTypography>
       ),
+    }),
+    columnHelper.accessor("departure", {
+      id: "departure",
+      header: "Departure",
+      cell: (info) => (
+        <div>
+          <MdTypography variant="body" size="medium">
+            {info.getValue().pol}
+          </MdTypography>
+          <MdTypography variant="body" size="medium" className="text-outline">
+            {info.getValue().departureDate.toFormat("yyyy-MM-dd HH:mm")}
+          </MdTypography>
+        </div>
+      ),
       size: 300,
     }),
-    columnHelper.accessor("arrivalDate", {
-      id: "arrivalDate",
-      header: "Arrival Date",
+    columnHelper.accessor("arrival", {
+      id: "arrival",
+      header: "Arrival",
       cell: (info) => (
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="flex items-center gap-2"
-        >
-          <ConfirmScheduleIcon />
-          {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-        </MdTypography>
+        <div>
+          <MdTypography variant="body" size="medium">
+            {info.getValue().pod}
+          </MdTypography>
+          <MdTypography variant="body" size="medium" className="text-outline">
+            {info.getValue().arrivalDate.toFormat("yyyy-MM-dd HH:mm")}
+          </MdTypography>
+        </div>
       ),
+      size: 300,
     }),
     columnHelper.accessor("vesselVoyage", {
       id: "vesselVoyage",
@@ -201,6 +199,36 @@ export const InboundMasterTable = () => {
       ),
       size: 300,
     }),
+    columnHelper.accessor("container", {
+      id: "container",
+      header: "Container",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info
+            .getValue()
+            .split("\n")
+            .map((container, index) => (
+              <div key={index}>{container}</div>
+            ))}
+        </MdTypography>
+      ),
+    }),
+    columnHelper.accessor("arrivalNote", {
+      id: "arrivalNote",
+      header: "Arrival Note",
+      cell: (info) => (
+        <MdTypography
+          variant="body"
+          size="medium"
+          className={info.getValue() ? "underline cursor-pointer w-fit" : ""}
+          onClick={() => {
+            info.getValue() && router.push("/main/import/notice");
+          }}
+        >
+          {info.getValue() ? "Y" : "N"}
+        </MdTypography>
+      ),
+    }),
     columnHelper.accessor("blType", {
       id: "blType",
       header: "B/L Type",
@@ -212,9 +240,16 @@ export const InboundMasterTable = () => {
     }),
     columnHelper.accessor("demdetDue", {
       id: "demdetDue",
-      header: "Dem/Det Due Date",
+      header: "Due Date",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="w-fit underline cursor-pointer"
+          onClick={() => {
+            router.push("/main/tariff/inquiry");
+          }}
+        >
           {info.getValue().toFormat("yyyy-MM-dd")}
         </MdTypography>
       ),
@@ -230,9 +265,24 @@ export const InboundMasterTable = () => {
     }),
     columnHelper.accessor("isCombined", {
       id: "isCombined",
-      header: "Detention/Combine",
+      header: () => {
+        return (
+          <MdTypography variant="body" size="medium">
+            Detention
+            <br />
+            Combine
+          </MdTypography>
+        );
+      },
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
+        <MdTypography
+          variant="body"
+          size="medium"
+          className={info.getValue() ? "w-fit underline cursor-pointer" : ""}
+          onClick={() => {
+            info.getValue() && router.push("/main/tariff/inquiry");
+          }}
+        >
           {info.getValue() ? "Y" : "N"}
         </MdTypography>
       ),
@@ -246,12 +296,22 @@ export const InboundMasterTable = () => {
           <MdTypography
             variant="body"
             size="medium"
-            className="flex gap-4 items-center"
+            className="flex gap-4 items-center w-fit underline cursor-pointer"
+            onClick={() => {
+              setIsVesselStatusNotesDialogOpen(true);
+            }}
           >
-            {value ? (
+            {value !== null ? (
               <>
                 {value.toFormat("yyyy-MM-dd HH:mm")}
-                <Info fontSize="small" className="text-error" />
+                <Info
+                  fontSize="small"
+                  className={
+                    info.getValue()!.diffNow("days").days > 0
+                      ? "text-[#325BDA]"
+                      : "text-error"
+                  }
+                />
               </>
             ) : (
               "N"
@@ -264,17 +324,34 @@ export const InboundMasterTable = () => {
 
   return (
     <>
+      {renderEstimatedTimeofDepartureDialog()}
       {renderDialog()}
       {renderPlaceDialog()}
       <BasicTable
         ActionComponent={() => (
           <div className="flex-1 flex gap-4">
-            <MdTextButton>Arrival Notice</MdTextButton>
-            <MdTextButton>Advance/Delay Notice</MdTextButton>
+            <MdTextButton
+              onClick={() => {
+                router.push("/main/import/notice");
+              }}
+            >
+              Arrival Notice
+            </MdTextButton>
+            <MdTextButton
+              disabled={selectedRow === null || selectedRow === undefined}
+              onClick={() => {
+                setIsVesselStatusNotesDialogOpen(true);
+              }}
+            >
+              Advance/Delay Notice
+            </MdTextButton>
           </div>
         )}
         data={tempData}
         columns={columnDefs}
+        getSelectionRows={(rows) => {
+          setSelectedRow(rows[0]);
+        }}
         isSingleSelect
       />
     </>

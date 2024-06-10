@@ -1,17 +1,19 @@
 import { Close } from "@mui/icons-material";
 import { MdTypography } from "./typography";
-import { MdRippleEffect } from "../util/md3";
+import { MdInputChip, MdRippleEffect } from "../util/md3";
 
 export const RemovableChip = ({
   label,
   onRemove,
   className,
+  disabled,
 }: {
   label: string;
   onRemove?: () => void;
   className?: string;
+  disabled?: boolean;
 }) => {
-  return (
+  return !disabled ? (
     <div
       className={`flex max-h-8 py-1.5 pl-3 pr-2 items-center rounded-lg overflow-hidden whitespace-nowrap text-ellipsis ${
         className || ""
@@ -30,5 +32,7 @@ export const RemovableChip = ({
         <Close fontSize="small" />
       </div>
     </div>
+  ) : (
+    <MdInputChip label={label} className={className} disabled={true} selected />
   );
 };
