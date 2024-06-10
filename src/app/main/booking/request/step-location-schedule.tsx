@@ -69,7 +69,7 @@ export default function LoactionScheduleStep() {
   }, [params, quotationTerms, setLoactionScheduleData]);
 
   const bookingOfficeList = useMemo(() => {
-    const newList = Array.from({ length: 5 }, (_, i) => faker.company.name());
+    const newList = Array.from({ length: 90 }, (_, i) => faker.company.name());
     return locationScheduleData.bookingOffice !== ""
       ? [locationScheduleData.bookingOffice, ...newList]
       : newList;
@@ -357,7 +357,7 @@ export default function LoactionScheduleStep() {
             </div>
           )}
           <div className="flex gap-4">
-            <NAOutlinedListBox
+            {/* <NAOutlinedListBox
               required
               error={
                 bookingRequestStep.locationSchedule.visited &&
@@ -368,6 +368,24 @@ export default function LoactionScheduleStep() {
               initialValue={locationScheduleData.bookingOffice}
               options={bookingOfficeList}
               onSelection={(value) => {
+                setLoactionScheduleData((prev) => ({
+                  ...prev,
+                  bookingOffice: value,
+                }));
+              }}
+            /> */}
+            <NAOutlinedAutoComplete
+              required
+              error={
+                bookingRequestStep.locationSchedule.visited &&
+                locationScheduleData.bookingOffice === ""
+              }
+              errorText="Booking Office is required"
+              label="Booking Office"
+              itemList={bookingOfficeList}
+              showAllonFocus
+              initialValue={locationScheduleData.bookingOffice}
+              onItemSelection={(value) => {
                 setLoactionScheduleData((prev) => ({
                   ...prev,
                   bookingOffice: value,
