@@ -16,13 +16,14 @@ import {
   BookingStatusTableProps,
 } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
-import { Download, Info } from "@mui/icons-material";
+import { Code, Download, Info } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import { useEstimatedTimeofDepartureDialog } from "./components/estimated-time-of-departure-dialog";
 import { useRouter } from "next/navigation";
+import { CodeCopyButton } from "./components/code-copy-button";
 
 const HasShippingInstructionIcon = () => {
   return (
@@ -119,7 +120,7 @@ export default function BookingStatusTable() {
       id: "requestNo",
       header: "Request No",
       cell: (info) => (
-        <>
+        <div className="flex gap-4 items-center relative">
           <MdRadio
             // name="requestNo"
             className="mr-2"
@@ -135,10 +136,11 @@ export default function BookingStatusTable() {
               {info.getValue()}
             </MdTypography>
           </Link>
-        </>
+          <CodeCopyButton code={info.getValue()} />
+        </div>
       ),
-      size: 180,
-      minSize: 180,
+      size: 230,
+      minSize: 230,
     }),
     columnHelper.accessor("status", {
       id: "status",
@@ -161,21 +163,24 @@ export default function BookingStatusTable() {
       id: "bookingNo",
       header: "Booking No",
       cell: (info) => (
-        <Link
-          href={`/main/booking/information/confirmation`}
-          className="block w-fit"
-        >
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-onSurfaceVariant underline cursor-pointer w-fit"
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/main/booking/information/confirmation`}
+            className="block w-fit"
           >
-            {info.getValue()}
-          </MdTypography>
-        </Link>
+            <MdTypography
+              variant="body"
+              size="medium"
+              className="text-onSurfaceVariant underline cursor-pointer w-fit"
+            >
+              {info.getValue()}
+            </MdTypography>
+          </Link>
+          <CodeCopyButton code={info.getValue()} />
+        </div>
       ),
-      size: 140,
-      minSize: 140,
+      size: 180,
+      minSize: 180,
     }),
     columnHelper.accessor("requestDate", {
       id: "requestDate",
