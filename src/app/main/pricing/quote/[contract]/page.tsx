@@ -19,12 +19,15 @@ import { PricePanel } from "../components/price-panel";
 import { useRouter } from "next/navigation";
 import { ChevronLeft } from "@mui/icons-material";
 import { DividerComponent } from "@/app/components/divider";
+import classNames from "classnames";
 
 export default function QuotationSelection({
   params,
 }: {
   params: { contract: string };
 }) {
+  const cx = classNames.bind(styles);
+
   const [agreeTerms, setAgreeTerms] = useState(false);
   const quotationTerms = useRecoilValue(QuotationTermsState);
   const tempCondition = useMemo(() => {
@@ -58,16 +61,7 @@ export default function QuotationSelection({
       <div className={styles.area}>
         <div className="flex gap-8">
           <div className="flex flex-1 flex-col">
-            <div className="relative flex items-center justify-center flex-1 bg-surface border border-secondaryContainer rounded-lg">
-              <MdTypography
-                variant="label"
-                size="small"
-                className="absolute top-2 right-2 bg-surfaceContainerLow rounded-full px-4 py-2"
-              >
-                <span className="text-outline mr-2">Validity Date</span>
-                {tempCondition.etd.toFormat("yyyy-MM-dd")} ~{" "}
-                {tempCondition.eta.toFormat("yyyy-MM-dd")}
-              </MdTypography>
+            <div className="relative flex items-center justify-center flex-1 bg-surface">
               <div aria-label="route-origin" className="text-right">
                 <MdTypography
                   variant="headline"
@@ -102,20 +96,13 @@ export default function QuotationSelection({
               </div>
             </div>
           </div>
+          <DividerComponent orientation="vertical" />
           <div className="flex-1 flex flex-col gap-4">
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-6">
               <SimpleItem
                 title="Departure Date"
                 value={
                   quotationTerms.departureDate.toFormat("yyyy-MM-dd") || "-"
-                }
-              />
-              <SimpleItem
-                title="Service Term"
-                value={
-                  quotationTerms.originServiceTerm +
-                  " - " +
-                  quotationTerms.destinationServiceTerm
                 }
               />
 
@@ -173,6 +160,16 @@ export default function QuotationSelection({
                   .join(", ")}
               />
               <SimpleItem
+                title="Service Term"
+                value={
+                  quotationTerms.originServiceTerm +
+                  " - " +
+                  quotationTerms.destinationServiceTerm
+                }
+              />
+              <SimpleItem title="Commodity" value={"Freight All Kinds"} />
+
+              <SimpleItem
                 title="Weight"
                 value={
                   quotationTerms.grossWeight
@@ -182,35 +179,12 @@ export default function QuotationSelection({
                   quotationTerms.weightUnit
                 }
               />
-              <SimpleItem title="Commodity" value={"Freight All Kinds"} />
             </div>
-            <DividerComponent className="border-dotted" />
-            <div>
-              <MdTypography
-                variant="body"
-                size="medium"
-                prominent
-                className="text-outline"
-              >
-                Total Amount
-              </MdTypography>
-              <div className="flex justify-end items-baseline gap-2 text-primary">
-                <MdTypography variant="headline" size="small">
-                  {faker.number
-                    .int({
-                      min: 4000,
-                      max: 9000,
-                    })
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </MdTypography>
-                <MdTypography variant="body" size="large">
-                  USD
-                </MdTypography>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex gap-1 items-center ">
+          </div>
+          <div className="flex flex-col items-center border border-primary rounded-lg overflow-hidden">
+            <div className="h-2 bg-primary w-full"></div>
+            <div className="flex-1 flex-col flex justify-center p-6 gap-4">
+              <div className="flex gap-1 items-center justify-center">
                 <label
                   onClick={() => {
                     setAgreeTerms(!agreeTerms);
@@ -237,42 +211,38 @@ export default function QuotationSelection({
 
               <MdFilledButton
                 disabled={!agreeTerms}
+                className="w-full"
                 onClick={() => {
                   router.push(
                     `/main/booking/request?quoteNumber=${params.contract}`
                   );
                 }}
               >
-                Booking Request
+                <span>
+                  Booking Request&nbsp;&nbsp;&nbsp;Total{" "}
+                  {faker.number
+                    .int({
+                      min: 2000,
+                      max: 20000,
+                    })
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  USD
+                </span>
               </MdFilledButton>
             </div>
           </div>
         </div>
       </div>
-      <div className={styles.area}>
-        <div className="flex justify-end">
-          <MdTypography
-            variant="label"
-            size="medium"
-            prominent
-            className="px-4 py-2 bg-primaryContainer rounded-2xl w-fit "
-          >
-            <span className="mr-1 text-outline">Total</span>
-            {tempCondition.eta.diff(tempCondition.etd, [
-              "days",
-              "hours",
-              "minutes",
-            ]).days +
-              ` Day(s) (Ocean: ${
-                tempCondition.eta.diff(tempCondition.etd, [
-                  "days",
-                  "hours",
-                  "minutes",
-                ]).days - faker.number.int({ min: 1, max: 3 })
-              } Days)`}
-          </MdTypography>
-        </div>
-        <div className="flex gap-8">
+      <div
+        className={cx(
+          styles.area,
+          styles["no-padding"],
+          "overflow-hidden gap-0"
+        )}
+      >
+        <div className="h-2 bg-secondaryContainer"></div>
+        <div className="flex gap-8 px-6 pb-6">
           <RoutePanel
             eta={tempCondition.eta}
             etd={tempCondition.etd}
