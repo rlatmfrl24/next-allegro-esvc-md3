@@ -463,11 +463,46 @@ export default function BookingStatusTable() {
           }}
         />
       </div>
-
-      <MdTypography variant="body" size="small">
-        If there is time difference between the changed departure time and the
-        time previously notified, it will marked as below.
-      </MdTypography>
+      <div className="flex flex-col gap-2">
+        <MdTypography variant="body" size="small">
+          If there is time difference between the changed departure time and the
+          time previously notified, it will marked as below.
+        </MdTypography>
+        <div className="flex gap-4">
+          <MdTypography
+            variant="body"
+            size="small"
+            className="text-outline flex gap-1 items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <circle cx="6" cy="6" r="6" fill="#325BDA" />
+            </svg>
+            Advance
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="small"
+            className="text-outline flex gap-1 items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <circle cx="6" cy="6" r="6" fill="#BA1A1A" />
+            </svg>
+            Delay
+          </MdTypography>
+        </div>
+      </div>
     </>
   );
 }

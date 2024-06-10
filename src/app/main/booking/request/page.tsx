@@ -154,7 +154,6 @@ function BookingRequest() {
       ].isSelected;
     });
   }
-  console.log(searchParams.get("quoteNumber"));
 
   return (
     <div aria-label="container" className={styles.container + ""}>
