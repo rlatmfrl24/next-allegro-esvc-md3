@@ -508,6 +508,7 @@ export default function ContainerInput({
                         }
                       }}
                       handleTrailingActionFocus={(e) => {
+                        console.log("Delete", cargo.uuid);
                         removeCargoManifestFromContainer(cargo.uuid);
                       }}
                       removable
