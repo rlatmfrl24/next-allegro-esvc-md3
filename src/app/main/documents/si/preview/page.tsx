@@ -3,12 +3,12 @@
 import classNames from "classnames";
 import { DateTime } from "luxon";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CSSProperties, Suspense, useMemo } from "react";
+import { CSSProperties, Suspense, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import LabelChip from "@/app/components/label-chip";
 import NaToggleButton from "@/app/components/na-toggle-button";
-import PageTitle from "@/app/components/title-components";
+import PageTitle, { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { createDummyVesselInformation } from "@/app/main/schedule/util";
 import {
@@ -29,14 +29,19 @@ import styles from "@/app/styles/base.module.css";
 import siStyles from "@/app/styles/si.module.css";
 import {
   MdAssistChip,
+  MdChipSet,
+  MdDialog,
   MdElevation,
   MdFilledButton,
   MdFilledTonalButton,
   MdFilledTonalIconButton,
+  MdFilterChip,
   MdIcon,
   MdOutlinedButton,
+  MdRippleEffect,
 } from "@/app/util/md3";
 import {
+  CargoManifestType,
   SIContainerInputProps,
   SIEditDataType,
   SIState,
@@ -50,6 +55,7 @@ import {
   Email,
   Fax,
   Inventory,
+  Inventory2,
   Inventory2Outlined,
   InventoryOutlined,
   Mail,
@@ -57,6 +63,10 @@ import {
   Place,
 } from "@mui/icons-material";
 import { DividerComponent } from "@/app/components/divider";
+import Portal from "@/app/components/portal";
+import { SimpleItem } from "@/app/main/booking/request/components/base";
+import Item from "@/app/components/dnd/item";
+import { m } from "framer-motion";
 
 export default function SIPreviewPage() {
   return (
@@ -372,19 +382,6 @@ function SIPreview() {
               </MdTypography>
               <MdTypography variant="body" size="medium">
                 {siBaseData.blNumber}
-              </MdTypography>
-            </div>
-            <div className="flex-1">
-              <MdTypography
-                variant="body"
-                size="large"
-                prominent
-                className="mb-2"
-              >
-                Export Doc
-              </MdTypography>
-              <MdTypography variant="body" size="medium">
-                {`?`}
               </MdTypography>
             </div>
           </div>
@@ -1119,6 +1116,145 @@ const StringToSplit = (props: { text: string }) => {
   );
 };
 
+const CargoManifestDetail = (props: {
+  containerData: SIContainerInputProps;
+  manifests: CargoManifestType[];
+}) => {
+  const containerStore = useRecoilValue(SIEditContainerState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedManifest, setSelectedManifest] =
+    useState<CargoManifestType | null>(props.manifests[0] || null);
+
+  const ItemComponent = (props: { label: string; value: string }) => {
+    return (
+      <div className="flex-1">
+        <MdTypography
+          variant="body"
+          size="medium"
+          prominent
+          className="whitespace-nowrap"
+        >
+          {props.label}
+        </MdTypography>
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="text-outline whitespace-nowrap"
+        >
+          {props.value}
+        </MdTypography>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <MdTypography
+        variant="body"
+        size="small"
+        className="relative ml-2 border border-outline rounded-full px-2 flex items-center text-primary cursor-pointer"
+        onClick={() => {
+          setIsModalOpen(true);
+        }}
+      >
+        <MdRippleEffect />
+        <Inventory2 sx={{ fontSize: 12 }} />
+        {`x${props.manifests.length}`}
+      </MdTypography>
+      <Portal selector="#main-container">
+        <MdDialog
+          open={isModalOpen}
+          closed={() => {
+            setIsModalOpen(false);
+          }}
+          className="min-w-[520px]"
+        >
+          <div slot="headline">
+            {props.containerData.containerNumber || "N/A"} -{" "}
+            {props.containerData.containerSize +
+              " " +
+              props.containerData.containerType || "N/A"}
+          </div>
+          <div slot="content" className="flex flex-col">
+            <MdChipSet className="flex">
+              {props.manifests.map((manifest, index) => {
+                return (
+                  <MdFilterChip
+                    key={index}
+                    selected={selectedManifest?.uuid === manifest.uuid}
+                    label={`Cargo #${index + 1}`}
+                    onClick={() => {
+                      setSelectedManifest(manifest);
+                    }}
+                  />
+                );
+              })}
+            </MdChipSet>
+            <DividerComponent className="my-4" />
+            <DetailTitle title="Cargo Manifest" />
+            <div className="flex flex-col gap-4 my-4">
+              <ItemComponent
+                label="Package"
+                value={
+                  selectedManifest?.packageQuantity +
+                    " " +
+                    selectedManifest?.packageType || "-"
+                }
+              />
+              <div className="flex">
+                <ItemComponent
+                  label="Weight"
+                  value={
+                    (selectedManifest?.weight
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "-") +
+                    " " +
+                    containerStore.weightUnit
+                  }
+                />
+                <ItemComponent
+                  label="Measurement"
+                  value={
+                    (selectedManifest?.measurement
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "-") +
+                    " " +
+                    containerStore.measurementUnit
+                  }
+                />
+              </div>
+              <ItemComponent
+                label="Description"
+                value={selectedManifest?.cargoInformation.description || "-"}
+              />
+            </div>
+            <DetailTitle title="Commodity Code" />
+            <div className="flex my-4">
+              <ItemComponent
+                label="HTS Code(U.S.)"
+                value={selectedManifest?.commodityCode.htsCodeUS || "-"}
+              />
+              <ItemComponent
+                label="HS Code(EU, ASIA)"
+                value={selectedManifest?.commodityCode.hisCodeEUASIA || "-"}
+              />
+            </div>
+          </div>
+          <div slot="actions">
+            <MdOutlinedButton
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+            >
+              Cancel
+            </MdOutlinedButton>
+          </div>
+        </MdDialog>
+      </Portal>
+    </>
+  );
+};
+
 const ContainerPreview = (containerData: SIContainerInputProps) => {
   const containerStore = useRecoilValue(SIEditContainerState);
 
@@ -1132,7 +1268,7 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
           variant="body"
           size="small"
           prominent
-          className="text-outline"
+          className="text-primary"
         >
           {containerData.containerSize +
             " " +
@@ -1140,20 +1276,10 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
             " "}
         </MdTypography>
         {containerData.hasCargoManifest && (
-          <>
-            <MdTypography
-              variant="body"
-              size="small"
-              className="text-outline ml-2"
-            >
-              <Inventory2Outlined
-                sx={{
-                  fontSize: 12,
-                }}
-              />
-              {`x${containerData.cargoManifest.length}`}
-            </MdTypography>
-          </>
+          <CargoManifestDetail
+            containerData={containerData}
+            manifests={containerData.cargoManifest}
+          />
         )}
       </div>
       <div className="flex items-center gap-2">
