@@ -138,8 +138,77 @@ export default function BookingRequestPreview() {
                 file={etcValue.attachment}
                 specialInstruction={etcValue.specialInstruction}
               />
+              <DividerComponent
+                className="mx-8 border-dotted"
+                orientation="vertical"
+              />
+              <Section title="Email Notification Subscription">
+                <div className="flex flex-col">
+                  <NaToggleButton
+                    label="Roll-Over (Including T/S)"
+                    state={
+                      additionalInformationData.emailSubscription.rollOver
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onClick={() => {
+                      setAdditionalInformationData((prev) => {
+                        return {
+                          ...prev,
+                          emailSubscription: {
+                            ...prev.emailSubscription,
+                            rollOver: !prev.emailSubscription.rollOver,
+                          },
+                        };
+                      });
+                    }}
+                  />
+                  <NaToggleButton
+                    label="Vessel Departure"
+                    state={
+                      additionalInformationData.emailSubscription
+                        .vesselDeparture
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onClick={() => {
+                      setAdditionalInformationData((prev) => {
+                        return {
+                          ...prev,
+                          emailSubscription: {
+                            ...prev.emailSubscription,
+                            vesselDeparture:
+                              !prev.emailSubscription.vesselDeparture,
+                          },
+                        };
+                      });
+                    }}
+                  />
+                  <NaToggleButton
+                    label="Vessel Advance / Delay"
+                    state={
+                      additionalInformationData.emailSubscription
+                        .vesselAdvanceDelay
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onClick={() => {
+                      setAdditionalInformationData((prev) => {
+                        return {
+                          ...prev,
+                          emailSubscription: {
+                            ...prev.emailSubscription,
+                            vesselAdvanceDelay:
+                              !prev.emailSubscription.vesselAdvanceDelay,
+                          },
+                        };
+                      });
+                    }}
+                  />
+                </div>
+              </Section>
             </div>
-            <DividerComponent className="my-8" />
+            {/* <DividerComponent className="my-8" /> */}
             <div className="flex items-stretch">
               {/* <Section title="Duplicate reservation">
                 <div className="flex flex-col gap-4">
@@ -230,7 +299,7 @@ export default function BookingRequestPreview() {
                 className="mx-8 border-dotted"
                 orientation="vertical"
               /> */}
-              <Section title="Email Notification Subscription">
+              {/* <Section title="Email Notification Subscription">
                 <div className="flex flex-col">
                   <NaToggleButton
                     label="Roll-Over (Including T/S)"
@@ -294,7 +363,7 @@ export default function BookingRequestPreview() {
                     }}
                   />
                 </div>
-              </Section>
+              </Section> */}
             </div>
           </div>
         </div>

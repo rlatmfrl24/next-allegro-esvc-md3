@@ -12,7 +12,7 @@ export default function AttachmentSection({
   hasEdit,
 }: {
   hasEdit?: boolean;
-  file: File | null;
+  file: File[];
   specialInstruction: string;
 }) {
   const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -41,7 +41,12 @@ export default function AttachmentSection({
         <MdTypography variant="body" size="medium" className="text-outline">
           Attachment
         </MdTypography>
-        <MdChipSet>{file && <LabelChip label={file.name} />}</MdChipSet>
+        <MdChipSet>
+          {file &&
+            file.map((file, index) => (
+              <LabelChip key={index} label={file.name} />
+            ))}
+        </MdChipSet>
         <MdTypography variant="body" size="medium" className="text-outline">
           Special Instruction
         </MdTypography>

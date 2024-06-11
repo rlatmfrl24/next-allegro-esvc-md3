@@ -18,7 +18,6 @@ export enum BookingStatus {
   Accepted = "Accepted",
   Rejected = "Rejected",
   Pending = "Pending",
-  ChangeRequestedRejected = "Change Requested Rejected",
 }
 
 export type CommodityType = {
@@ -41,6 +40,7 @@ export type PartiesType = {
 export type BookingStatusTableProps = {
   requestNo: string;
   status: BookingStatus;
+  hasShippingInstruction: boolean;
   bookingNo: string;
   requestDate: DateTime;
   actualShipper: string;
@@ -93,7 +93,12 @@ export type ContactInformationType = {
 };
 
 export type AdditionalInformatioType = {
-  attachment: File | null;
+  attachment: File[];
+  specialCargoAttachment: {
+    dangerousCargo: File[];
+    reeferCargo: File[];
+    awkwardCargo: File[];
+  };
   specialInstruction: string;
   duplicateCount: number;
   emailSubscription: {
@@ -126,16 +131,16 @@ export interface ContainerInformationType {
   quantity: number;
   soc: number;
   isDangerous: boolean;
-  dangerousCargoInformation: DangerousContainerInformationType;
+  dangerousCargoInformation: DangerousContainerInformationType[];
 }
 
 export type DangerousContainerInformationType = {
+  uuid: string;
   unNumber: string;
   class: string;
   flashPoint: string;
   packingGroup: string;
   properShippingName: string;
-  dangerousCargoCertificate: File[];
 };
 
 export interface DryContainerInformationType extends ContainerInformationType {

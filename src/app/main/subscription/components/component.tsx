@@ -174,7 +174,7 @@ export const CycleSelector = (props: {
   const { refs, floatingStyles, context } = useFloating({
     open: isOptionOpen,
     onOpenChange: setIsOptionOpen,
-    middleware: [shift()],
+    middleware: [shift(), flip()],
     placement: "bottom-end",
     whileElementsMounted: autoUpdate,
   });
