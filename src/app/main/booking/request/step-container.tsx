@@ -19,6 +19,7 @@ import { QuotationTermsState } from "@/app/store/pricing.store";
 import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import {
   ContainerType,
+  DangerousContainerInformationType,
   DryContainerInformationType,
 } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
@@ -33,6 +34,7 @@ import ReeferContainerInput from "./components/reefer-container-input";
 import TankContainerInput from "./components/tank-container-input";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { DividerComponent } from "@/app/components/divider";
+import { DangerousCargoStatusProps } from "../special-cargo/util";
 
 export default function ContainerStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -81,7 +83,8 @@ export default function ContainerStep() {
         container.quantity === 0 ||
         container.temperature === undefined ||
         container.ventilation === undefined ||
-        container.nature === ""
+        container.nature === "" ||
+        container.genset === undefined
       ) {
         isValid = false;
       }
@@ -98,6 +101,24 @@ export default function ContainerStep() {
     });
     containerInformation.tank.forEach((container) => {
       if (container.size === "" || container.quantity === 0) {
+        isValid = false;
+      }
+    });
+
+    // get All Dangerous Cargo Data from All container
+    const allDangerousCargo: DangerousContainerInformationType[] = [
+      ...containerInformation.dry,
+      ...containerInformation.reefer,
+      ...containerInformation.opentop,
+      ...containerInformation.flatrack,
+      ...containerInformation.tank,
+    ].reduce((acc, curr) => {
+      return [...acc, ...curr.dangerousCargoInformation];
+    }, [] as DangerousContainerInformationType[]);
+
+    // Check if Dangerous Cargo required data is empty
+    allDangerousCargo.forEach((dangerousCargo) => {
+      if (dangerousCargo.unNumber === "" || dangerousCargo.class === "") {
         isValid = false;
       }
     });

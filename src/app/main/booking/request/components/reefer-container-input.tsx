@@ -287,6 +287,7 @@ const ReeferContainerInput = ({
                           />
                           <NAOutlinedListBox
                             label="Genset"
+                            required
                             className="w-28"
                             options={["Yes", "No"]}
                             initialValue={container.genset ? "Yes" : "No"}
