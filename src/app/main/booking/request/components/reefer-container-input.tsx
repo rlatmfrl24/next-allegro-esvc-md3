@@ -177,6 +177,8 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Degree"
                               type="number"
+                              required
+                              className="w-28"
                               value={container.temperature.toString()}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
@@ -191,6 +193,7 @@ const ReeferContainerInput = ({
                             />
                             <NAOutlinedListBox
                               options={["℃", "℉"]}
+                              className="w-28"
                               initialValue={container.temperatureUnit as string}
                               onSelection={(unit) => {
                                 setContainerInformation((prev) => ({
@@ -208,7 +211,10 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Ventilation"
                               type="number"
+                              required
+                              className="w-28"
                               maxInputLength={3}
+                              maxLength={3}
                               value={container.ventilation.toString()}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
@@ -223,6 +229,7 @@ const ReeferContainerInput = ({
                             />
                             <NAOutlinedListBox
                               options={["%Open", "%Close"]}
+                              className="w-32"
                               initialValue={
                                 container.ventilationType
                                   ? container.ventilationType === "open"
@@ -248,6 +255,8 @@ const ReeferContainerInput = ({
                           </div>
                           <NAOutlinedListBox
                             label="Nature"
+                            className="w-48"
+                            required
                             options={["Chilled", "Frozen"]}
                             initialValue={container.nature}
                             onSelection={(nature) => {
@@ -263,6 +272,8 @@ const ReeferContainerInput = ({
                             label="Humidity"
                             suffixText="%"
                             type="number"
+                            className="w-28"
+                            maxLength={3}
                             maxInputLength={3}
                             value={container.humidity.toString()}
                             handleValueChange={(value) => {
@@ -275,7 +286,9 @@ const ReeferContainerInput = ({
                             }}
                           />
                           <NAOutlinedListBox
-                            label="Gen"
+                            label="Genset"
+                            required
+                            className="w-28"
                             options={["Yes", "No"]}
                             initialValue={container.genset ? "Yes" : "No"}
                             onSelection={(gen) => {

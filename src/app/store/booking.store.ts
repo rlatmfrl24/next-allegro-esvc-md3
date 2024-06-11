@@ -90,7 +90,12 @@ export const resetBookingState = selector({
       } as PlaceInformationType,
     } as CargoPickUpReturnType);
     set(AdditionalInformationState, {
-      attachment: null,
+      attachment: [],
+      specialCargoAttachment: {
+        awkwardCargo: [],
+        dangerousCargo: [],
+        reeferCargo: [],
+      },
       specialInstruction: "",
       duplicateCount: 1,
       emailSubscription: {
@@ -300,7 +305,12 @@ export const CargoPickUpReturnState = atom<CargoPickUpReturnType>({
 export const AdditionalInformationState = atom<AdditionalInformatioType>({
   key: "etcDataState",
   default: {
-    attachment: null,
+    attachment: [],
+    specialCargoAttachment: {
+      awkwardCargo: [],
+      dangerousCargo: [],
+      reeferCargo: [],
+    },
     specialInstruction: "",
     duplicateCount: 1,
     emailSubscription: {

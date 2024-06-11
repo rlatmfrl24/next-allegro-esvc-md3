@@ -3,6 +3,7 @@ import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
+import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
 import { SIEditContainerState } from "@/app/store/si.store";
 import {
@@ -62,29 +63,29 @@ export default function ContainerInput({
     // add empty CarogManifest to Container
     if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
 
+    const newCargoManifest: CargoManifestType = {
+      uuid: faker.string.uuid(),
+      packageType: "",
+      packageQuantity: 0,
+      weight: 0,
+      measurement: 0,
+      cargoInformation: {
+        description: "",
+      },
+      commodityCode: {
+        htsCodeUS: "",
+        hisCodeEUASIA: "",
+      },
+    } as CargoManifestType;
+
+    setSelectedCargoManifestUuid(newCargoManifest.uuid);
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, i) =>
         i === containerIndex
           ? {
               ...c,
-              cargoManifest: [
-                ...c.cargoManifest,
-                {
-                  uuid: faker.string.uuid(),
-                  packageType: "",
-                  packageQuantity: 0,
-                  weight: 0,
-                  measurement: 0,
-                  cargoInformation: {
-                    description: "",
-                  },
-                  commodityCode: {
-                    htsCodeUS: "",
-                    hisCodeEUASIA: "",
-                  },
-                } as CargoManifestType,
-              ],
+              cargoManifest: [...c.cargoManifest, newCargoManifest],
             }
           : c
       ),
@@ -341,6 +342,7 @@ export default function ContainerInput({
           value={container.packageQuantity.toString()}
           className="w-1/4"
           type="number"
+          readOnly={container.hasCargoManifest}
           label="Package"
           maxInputLength={16}
           handleValueChange={(value) => {
@@ -369,6 +371,7 @@ export default function ContainerInput({
             label="Weight"
             value={container.packageWeight.toString()}
             type="number"
+            readOnly={container.hasCargoManifest}
             maxInputLength={22}
             className="flex-1"
             handleValueChange={(value) => {
@@ -379,6 +382,7 @@ export default function ContainerInput({
             initialValue={SIEditContainerStore.weightUnit}
             options={["KGS", "LBS"]}
             className="flex-1"
+            readOnly={container.hasCargoManifest}
             onSelection={(value) => {
               setSIEditContainerStore((prev) => ({
                 ...prev,
@@ -394,6 +398,7 @@ export default function ContainerInput({
             maxInputLength={16}
             value={container.packageMeasurement.toString()}
             type="number"
+            readOnly={container.hasCargoManifest}
             handleValueChange={(value) => {
               updateContainerStore(
                 container,
@@ -406,6 +411,7 @@ export default function ContainerInput({
             initialValue={SIEditContainerStore.measurementUnit}
             options={["CBM", "CBF"]}
             className="flex-1"
+            readOnly={container.hasCargoManifest}
             onSelection={(value) => {
               setSIEditContainerStore((prev) => ({
                 ...prev,
@@ -415,49 +421,50 @@ export default function ContainerInput({
           />
         </div>
       </div>
-      <MdDialog
-        open={isWarningRemoveCargoManifestDialogOpen}
-        closed={() => setIsWarningRemoveCargoManifestDialogOpen(false)}
-      >
-        <div slot="headline">Delete Cargo Menifast</div>
-        <div slot="content">
-          If you uncheck it, all of the Cargo input will be lost. <br />
-          Do you still want to uncheck it?
-        </div>
-        <div slot="actions">
-          <MdOutlinedButton
-            onClick={() => {
-              setIsWarningRemoveCargoManifestDialogOpen(false);
-            }}
-          >
-            Cancel
-          </MdOutlinedButton>
-          <MdFilledButton
-            onClick={() => {
-              updateContainerStore(container, "hasCargoManifest", false);
-              setIsWarningRemoveCargoManifestDialogOpen(false);
+      <Portal selector="#main-container">
+        <MdDialog
+          open={isWarningRemoveCargoManifestDialogOpen}
+          closed={() => setIsWarningRemoveCargoManifestDialogOpen(false)}
+        >
+          <div slot="headline">
+            All input contents of the Cargo Manifest will be discarded.
+          </div>
+          <div slot="content">Are you sure you want to uncheck?</div>
+          <div slot="actions">
+            <MdOutlinedButton
+              onClick={() => {
+                setIsWarningRemoveCargoManifestDialogOpen(false);
+              }}
+            >
+              Cancel
+            </MdOutlinedButton>
+            <MdFilledButton
+              onClick={() => {
+                updateContainerStore(container, "hasCargoManifest", false);
+                setIsWarningRemoveCargoManifestDialogOpen(false);
 
-              if (typeKey === "weightUnit" || typeKey === "measurementUnit")
-                return;
+                if (typeKey === "weightUnit" || typeKey === "measurementUnit")
+                  return;
 
-              setSIEditContainerStore((prev) => ({
-                ...prev,
-                [typeKey]: prev[typeKey].map((c, i) =>
-                  i === containerIndex
-                    ? {
-                        ...c,
-                        hasCargoManifest: false,
-                        cargoManifest: [],
-                      }
-                    : c
-                ),
-              }));
-            }}
-          >
-            Yes
-          </MdFilledButton>
-        </div>
-      </MdDialog>
+                setSIEditContainerStore((prev) => ({
+                  ...prev,
+                  [typeKey]: prev[typeKey].map((c, i) =>
+                    i === containerIndex
+                      ? {
+                          ...c,
+                          hasCargoManifest: false,
+                          cargoManifest: [],
+                        }
+                      : c
+                  ),
+                }));
+              }}
+            >
+              Yes
+            </MdFilledButton>
+          </div>
+        </MdDialog>
+      </Portal>
       <NaToggleButton
         className="w-fit"
         label="Cargo Manifest"
@@ -470,7 +477,6 @@ export default function ContainerInput({
             if (container.cargoManifest.length === 0) {
               addNewCargoManifestToContainer();
             }
-            setSelectedCargoManifestUuid("");
           }
         }}
       />

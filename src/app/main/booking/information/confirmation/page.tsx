@@ -62,7 +62,8 @@ export default function BookingConfirmationInformation() {
       <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
         <div className="bg-secondaryContainer h-4"></div>
         <RequestNumberSection
-          bookingStatus={currentBookingData?.status || BookingStatus.Requested}
+          bookingStatus={undefined}
+          // bookingStatus={currentBookingData?.status || BookingStatus.Requested}
           requestNumber={currentBookingData?.requestNo || ""}
           title="Booking No."
         />
@@ -467,7 +468,7 @@ export default function BookingConfirmationInformation() {
               </MdTypography>
             </Section>
           </div>
-          <DividerComponent className="my-8" />
+          {/* <DividerComponent className="my-8" /> */}
           <div className="flex items-stretch">
             {/* <Section title="Duplicate reservation">
               <div className="flex flex-col gap-4">
@@ -506,36 +507,6 @@ export default function BookingConfirmationInformation() {
               className="mx-8 border-dotted"
               orientation="vertical"
             /> */}
-            <Section title="Email Notification Subscription">
-              <div className="flex flex-col">
-                <NaToggleButton
-                  label="Roll-Over (Including T/S)"
-                  state={
-                    dataSet[0].additionalInformation.emailSubscription.rollOver
-                      ? "disabled-checked"
-                      : "disabled"
-                  }
-                />
-                <NaToggleButton
-                  label="Vessel Departure"
-                  state={
-                    dataSet[0].additionalInformation.emailSubscription
-                      .vesselDeparture
-                      ? "disabled-checked"
-                      : "disabled"
-                  }
-                />
-                <NaToggleButton
-                  label="Vessel Advance / Delay"
-                  state={
-                    dataSet[0].additionalInformation.emailSubscription
-                      .vesselAdvanceDelay
-                      ? "disabled-checked"
-                      : "disabled"
-                  }
-                />
-              </div>
-            </Section>
           </div>
         </div>
       </div>

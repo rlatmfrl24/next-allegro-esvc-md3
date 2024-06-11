@@ -91,9 +91,43 @@ export default function BookingRequestInformation() {
                 dataSet[0].additionalInformation.specialInstruction
               }
             />
+            <DividerComponent
+              className="mx-8 border-dotted"
+              orientation="vertical"
+            />
+            <Section title="Email Notification Subscription">
+              <div className="flex flex-col">
+                <NaToggleButton
+                  label="Roll-Over (Including T/S)"
+                  state={
+                    dataSet[0].additionalInformation.emailSubscription.rollOver
+                      ? "disabled-checked"
+                      : "disabled"
+                  }
+                />
+                <NaToggleButton
+                  label="Vessel Departure"
+                  state={
+                    dataSet[0].additionalInformation.emailSubscription
+                      .vesselDeparture
+                      ? "disabled-checked"
+                      : "disabled"
+                  }
+                />
+                <NaToggleButton
+                  label="Vessel Advance / Delay"
+                  state={
+                    dataSet[0].additionalInformation.emailSubscription
+                      .vesselAdvanceDelay
+                      ? "disabled-checked"
+                      : "disabled"
+                  }
+                />
+              </div>
+            </Section>
           </div>
 
-          <DividerComponent className="my-8" />
+          {/* <DividerComponent className="my-8" /> */}
           <div className="flex items-stretch">
             {/* <Section title="Duplicate reservation">
               <div className="flex flex-col gap-4">
@@ -132,36 +166,6 @@ export default function BookingRequestInformation() {
               className="mx-8 border-dotted"
               orientation="vertical"
             /> */}
-            <Section title="Email Notification Subscription">
-              <div className="flex flex-col">
-                <NaToggleButton
-                  label="Roll-Over (Including T/S)"
-                  state={
-                    dataSet[0].additionalInformation.emailSubscription.rollOver
-                      ? "checked"
-                      : "unchecked"
-                  }
-                />
-                <NaToggleButton
-                  label="Vessel Departure"
-                  state={
-                    dataSet[0].additionalInformation.emailSubscription
-                      .vesselDeparture
-                      ? "checked"
-                      : "unchecked"
-                  }
-                />
-                <NaToggleButton
-                  label="Vessel Advance / Delay"
-                  state={
-                    dataSet[0].additionalInformation.emailSubscription
-                      .vesselAdvanceDelay
-                      ? "checked"
-                      : "unchecked"
-                  }
-                />
-              </div>
-            </Section>
           </div>
         </div>
       </div>

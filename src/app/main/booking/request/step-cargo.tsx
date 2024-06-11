@@ -156,7 +156,7 @@ export default function CargoStep() {
         <NAOutlinedTextField
           value={cargoPickUpReturnData.grossWeight}
           className="h-fit"
-          label="Gross Weight"
+          label="Total Estimated Gross Weight"
           maxInputLength={9}
           required
           error={

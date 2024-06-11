@@ -16,13 +16,35 @@ import {
   BookingStatusTableProps,
 } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
-import { Download, Info } from "@mui/icons-material";
+import { Code, Download, Info } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
 import BookingStatusChip from "./components/booking-status-chip";
 import { useEstimatedTimeofDepartureDialog } from "./components/estimated-time-of-departure-dialog";
 import { useRouter } from "next/navigation";
+import { CodeCopyButton } from "./components/code-copy-button";
+
+const HasShippingInstructionIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M15.4173 19.1663H3.75065C2.83398 19.1663 2.08398 18.4163 2.08398 17.4997V5.83301H3.75065V17.4997H15.4173V19.1663ZM12.9173 0.833008H7.08398C6.16732 0.833008 5.42565 1.58301 5.42565 2.49967L5.41732 14.1663C5.41732 15.083 6.15898 15.833 7.07565 15.833H16.2507C17.1673 15.833 17.9173 15.083 17.9173 14.1663V5.83301L12.9173 0.833008ZM16.2507 14.1663H7.08398V2.49967H12.2257L16.2507 6.52467V14.1663Z"
+        fill="#40484C"
+      />
+      <path
+        d="M14.0996 6.3252L10.9329 9.49186L9.27558 7.8409L8.09961 9.01686L10.9329 11.8502L15.2834 7.49979L14.0996 6.3252Z"
+        fill="#40484C"
+      />
+    </svg>
+  );
+};
 
 function createDummnyBookingStatus() {
   return {
@@ -30,6 +52,7 @@ function createDummnyBookingStatus() {
     status: faker.helpers.arrayElement(
       Object.values(BookingStatus)
     ) as BookingStatus,
+    hasShippingInstruction: faker.datatype.boolean(),
     bookingNo: `R${faker.string.numeric(12)}`,
     requestDate: DateTime.fromJSDate(faker.date.past()),
     actualShipper: faker.person.fullName(),
@@ -61,7 +84,7 @@ function createDummnyBookingStatus() {
           "Reefer 40:",
         ])} ${faker.number.int(9)}`
     ).join("\n"),
-  };
+  } as BookingStatusTableProps;
 }
 
 export default function BookingStatusTable() {
@@ -97,7 +120,7 @@ export default function BookingStatusTable() {
       id: "requestNo",
       header: "Request No",
       cell: (info) => (
-        <>
+        <div className="flex gap-4 items-center relative">
           <MdRadio
             // name="requestNo"
             className="mr-2"
@@ -113,15 +136,24 @@ export default function BookingStatusTable() {
               {info.getValue()}
             </MdTypography>
           </Link>
-        </>
+          <CodeCopyButton code={info.getValue()} />
+        </div>
       ),
-      size: 180,
-      minSize: 180,
+      size: 230,
+      minSize: 230,
     }),
     columnHelper.accessor("status", {
       id: "status",
       header: "Status",
-      cell: (info) => <BookingStatusChip status={info.getValue()} />,
+      cell: (info) => (
+        <div className="flex gap-2 items-center">
+          <BookingStatusChip status={info.getValue()} />
+          {info.row.original.hasShippingInstruction &&
+            info.getValue() === BookingStatus.Accepted && (
+              <HasShippingInstructionIcon />
+            )}
+        </div>
+      ),
       filterFn: (row, id, filterValue) => {
         return filterValue.includes(row.original.status);
       },
@@ -131,21 +163,24 @@ export default function BookingStatusTable() {
       id: "bookingNo",
       header: "Booking No",
       cell: (info) => (
-        <Link
-          href={`/main/booking/information/confirmation`}
-          className="block w-fit"
-        >
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-onSurfaceVariant underline cursor-pointer w-fit"
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/main/booking/information/confirmation`}
+            className="block w-fit"
           >
-            {info.getValue()}
-          </MdTypography>
-        </Link>
+            <MdTypography
+              variant="body"
+              size="medium"
+              className="text-onSurfaceVariant underline cursor-pointer w-fit"
+            >
+              {info.getValue()}
+            </MdTypography>
+          </Link>
+          <CodeCopyButton code={info.getValue()} />
+        </div>
       ),
-      size: 140,
-      minSize: 140,
+      size: 180,
+      minSize: 180,
     }),
     columnHelper.accessor("requestDate", {
       id: "requestDate",
@@ -378,8 +413,6 @@ export default function BookingStatusTable() {
       case BookingStatus.Accepted:
         return ["Copy", "Edit", "Cancel", "S/I", "Print Receipt"];
       case BookingStatus.Rejected:
-      case BookingStatus.ChangeRequestedRejected:
-        return ["Copy", "Edit"];
       case BookingStatus.Pending:
         return ["Copy"];
       default:
@@ -439,7 +472,20 @@ export default function BookingStatusTable() {
                                 <MdTextButton key={action}>Cancel</MdTextButton>
                               ),
                               "S/I": (
-                                <MdTextButton key={action}>S/I</MdTextButton>
+                                <MdTextButton
+                                  key={action}
+                                  onClick={() => {
+                                    router.push(
+                                      `/main/documents/si${
+                                        !currentBookingData.hasShippingInstruction
+                                          ? "/edit"
+                                          : ""
+                                      }`
+                                    );
+                                  }}
+                                >
+                                  S/I
+                                </MdTextButton>
                               ),
                               "Print Receipt": (
                                 <MdTextButton key={action}>
@@ -463,11 +509,46 @@ export default function BookingStatusTable() {
           }}
         />
       </div>
-
-      <MdTypography variant="body" size="small">
-        If there is time difference between the changed departure time and the
-        time previously notified, it will marked as below.
-      </MdTypography>
+      <div className="flex flex-col gap-2">
+        <MdTypography variant="body" size="small">
+          If there is time difference between the changed departure time and the
+          time previously notified, it will marked as below.
+        </MdTypography>
+        <div className="flex gap-4">
+          <MdTypography
+            variant="body"
+            size="small"
+            className="text-outline flex gap-1 items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <circle cx="6" cy="6" r="6" fill="#325BDA" />
+            </svg>
+            Advance
+          </MdTypography>
+          <MdTypography
+            variant="body"
+            size="small"
+            className="text-outline flex gap-1 items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <circle cx="6" cy="6" r="6" fill="#BA1A1A" />
+            </svg>
+            Delay
+          </MdTypography>
+        </div>
+      </div>
     </>
   );
 }

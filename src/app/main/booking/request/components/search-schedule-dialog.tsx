@@ -4,6 +4,8 @@ import {
   MdDialog,
   MdFilledButton,
   MdFilterChip,
+  MdOutlinedButton,
+  MdOutlinedTextField,
   MdRadio,
   MdTextButton,
 } from "@/app/util/md3";
@@ -18,6 +20,8 @@ import { FilterChipMenu } from "@/app/components/filter-chip-menu";
 import { faker } from "@faker-js/faker";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import { MdTypography } from "@/app/components/typography";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 
 export default function SearchScheduleDialog({
   open,
@@ -33,6 +37,11 @@ export default function SearchScheduleDialog({
   const tempSchedules = useMemo(() => {
     return createDummyPtPScheduleData(condition);
   }, [condition]);
+  const tempPorts = useMemo(() => {
+    return Array.from({ length: 100 }, (_, index) =>
+      faker.location.city().toUpperCase()
+    );
+  }, []);
   const columnHelper = createColumnHelper<PtPScheduleType>();
   const [selectedSchedule, setSelectedSchedule] = useState<PtPScheduleType>(
     {} as PtPScheduleType
@@ -135,6 +144,24 @@ export default function SearchScheduleDialog({
       >
         <div slot="headline">Search Schedule</div>
         <div slot="content" className="flex flex-col gap-4">
+          <div className="flex relative gap-4 items-center">
+            <NAOutlinedAutoComplete
+              className="flex-1"
+              itemList={tempPorts}
+              label="Origin"
+            />
+            <NAOutlinedAutoComplete
+              className="flex-1"
+              itemList={tempPorts}
+              label="Destination"
+            />
+            <NAOutlinedListBox
+              label="Search On"
+              defaultValue={"All"}
+              options={["All", "Departure", "Arrival"]}
+            />
+            <MdOutlinedButton autoFocus>Search</MdOutlinedButton>
+          </div>
           <div className="flex items-center gap-4 relative">
             <FilterChipMenu
               initialValue="Earliest Departure"

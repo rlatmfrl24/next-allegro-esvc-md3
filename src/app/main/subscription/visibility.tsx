@@ -95,6 +95,7 @@ export const VisibilitySubscription = () => {
             <div className="flex gap-2">
               <CycleSelector
                 label="Sending Cycle"
+                disabled={isSummarySubscribed ? false : true}
                 onChanges={() => {
                   console.log("change");
                   setIsBottomFloatingVisible(true);
@@ -105,6 +106,7 @@ export const VisibilitySubscription = () => {
                 <MdOutlinedTextField
                   label="Recipients"
                   className="w-full mb-4"
+                  disabled={isSummarySubscribed ? false : true}
                   onKeyDown={(e) => {
                     handeAddRecipient(
                       e,
@@ -118,6 +120,7 @@ export const VisibilitySubscription = () => {
                     <RemovableChip
                       key={recipient}
                       label={recipient}
+                      disabled={isSummarySubscribed ? false : true}
                       onRemove={() => {
                         handleRemoveRecipient(index, setSummaryRecipients);
                       }}
@@ -154,6 +157,7 @@ export const VisibilitySubscription = () => {
             <div className="flex gap-2">
               <CycleSelector
                 label="Sending Cycle"
+                disabled={isEventSubscribed ? false : true}
                 onChanges={() => {
                   setIsBottomFloatingVisible(true);
                 }}
@@ -163,6 +167,7 @@ export const VisibilitySubscription = () => {
                 <MdOutlinedTextField
                   label="Recipients"
                   className="w-full mb-4"
+                  disabled={isEventSubscribed ? false : true}
                   onKeyDown={(e) => {
                     handeAddRecipient(e, eventRecipients, setEventRecipients);
                   }}
@@ -172,6 +177,7 @@ export const VisibilitySubscription = () => {
                     <RemovableChip
                       key={recipient}
                       label={recipient}
+                      disabled={isEventSubscribed ? false : true}
                       onRemove={() => {
                         handleRemoveRecipient(index, setEventRecipients);
                       }}
@@ -208,6 +214,7 @@ export const VisibilitySubscription = () => {
             <div className="flex gap-2">
               <CycleSelector
                 label="Sending Cycle"
+                disabled={isVesselSubscribed ? false : true}
                 onChanges={() => {
                   setIsBottomFloatingVisible(true);
                 }}
@@ -216,6 +223,7 @@ export const VisibilitySubscription = () => {
               <div className="flex-1">
                 <MdOutlinedTextField
                   label="Recipients"
+                  disabled={isVesselSubscribed ? false : true}
                   className="w-full mb-4"
                   onKeyDown={(e) => {
                     handeAddRecipient(e, vesselRecipients, setVesselRecipients);
@@ -225,6 +233,7 @@ export const VisibilitySubscription = () => {
                   {vesselRecipients.map((recipient, index) => (
                     <RemovableChip
                       key={recipient}
+                      disabled={isVesselSubscribed ? false : true}
                       label={recipient}
                       onRemove={() => {
                         handleRemoveRecipient(index, setVesselRecipients);

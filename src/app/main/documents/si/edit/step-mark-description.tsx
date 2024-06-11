@@ -80,70 +80,72 @@ export default function StepMarkDescription() {
         Mark & Description
       </MdTypography>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-4">
-          <DetailTitle title="Mark" />
-          <NAOutlinedTextField
-            label="Mark"
-            type="textarea"
-            maxInputLength={2300}
-            rows={10}
-            className="resize-y"
-            value={markDescriptionStore.mark}
-            handleValueChange={(value) => {
-              setMarkDescriptionStore((prev) => ({
-                ...prev,
-                mark: value,
-              }));
-            }}
-          />
-        </div>
-        <div className="flex flex-col gap-4">
-          <DetailTitle title="Description" />
-          <div className="flex gap-4 items-center">
-            <MdOutlinedButton onClick={handleUploadClick}>
-              <div slot="icon">
-                <Upload fontSize="small" />
-              </div>
-              File Upload
-            </MdOutlinedButton>
-            <MdChipSet>
-              {markDescriptionStore.descriptionFile && (
-                <MdInputChip
-                  key={faker.string.uuid()}
-                  label={markDescriptionStore.descriptionFile.name}
-                  selected
-                  handleTrailingActionFocus={() => {
-                    setMarkDescriptionStore((prev) => {
-                      return {
-                        ...prev,
-                        descriptionFile: null,
-                      };
-                    });
-                  }}
-                />
-              )}
-            </MdChipSet>
-            <input
-              type="file"
-              ref={fileRef}
-              onInput={handleFileChange}
-              hidden
+        <div className="flex gap-6">
+          <div className="flex-1 flex flex-col gap-4">
+            <DetailTitle title="Mark" />
+            <NAOutlinedTextField
+              label="Mark"
+              type="textarea"
+              maxInputLength={2300}
+              rows={10}
+              className="resize-y flex-1"
+              value={markDescriptionStore.mark}
+              handleValueChange={(value) => {
+                setMarkDescriptionStore((prev) => ({
+                  ...prev,
+                  mark: value,
+                }));
+              }}
             />
           </div>
-          <NAOutlinedTextField
-            placeholder="Description"
-            type="textarea"
-            maxInputLength={2450}
-            rows={10}
-            className="resize-y"
-            value={markDescriptionStore.description}
-            handleValueChange={(value) => {
-              setMarkDescriptionStore((prev) => ({
-                ...prev,
-                description: value,
-              }));
-            }}
-          />
+          <div className="flex-1 flex flex-col gap-4">
+            <DetailTitle title="Description" />
+            <NAOutlinedTextField
+              placeholder="Description"
+              type="textarea"
+              maxInputLength={2450}
+              rows={10}
+              className="resize-y"
+              value={markDescriptionStore.description}
+              handleValueChange={(value) => {
+                setMarkDescriptionStore((prev) => ({
+                  ...prev,
+                  description: value,
+                }));
+              }}
+            />
+            <div className="flex gap-4 items-center">
+              <MdOutlinedButton onClick={handleUploadClick}>
+                <div slot="icon">
+                  <Upload fontSize="small" />
+                </div>
+                File Upload
+              </MdOutlinedButton>
+              <MdChipSet>
+                {markDescriptionStore.descriptionFile && (
+                  <MdInputChip
+                    key={faker.string.uuid()}
+                    label={markDescriptionStore.descriptionFile.name}
+                    selected
+                    handleTrailingActionFocus={() => {
+                      setMarkDescriptionStore((prev) => {
+                        return {
+                          ...prev,
+                          descriptionFile: null,
+                        };
+                      });
+                    }}
+                  />
+                )}
+              </MdChipSet>
+              <input
+                type="file"
+                ref={fileRef}
+                onInput={handleFileChange}
+                hidden
+              />
+            </div>
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="HS Code" />
@@ -168,11 +170,12 @@ export default function StepMarkDescription() {
         <div className="flex flex-col gap-4">
           <DetailTitle title="Customs Commodity" />
           <NAOutlinedTextField
-            required
             error={
               SIEditStep.markDescription.visited &&
               markDescriptionStore.customsCommodity === ""
             }
+            type="textarea"
+            rows={5}
             maxInputLength={350}
             errorText="Customs Commodity is required."
             placeholder="Customs Commodity"

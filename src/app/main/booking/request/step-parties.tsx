@@ -11,6 +11,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import { SubTitle } from "@/app/components/title-components";
+import { DividerComponent } from "@/app/components/divider";
+import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 
 export default function PartiesStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -83,6 +85,12 @@ export default function PartiesStep() {
       <MdTypography variant="title" size="large" className="mb-6">
         Parties
       </MdTypography>
+      <SubTitle title="Person Placing Request" className="mb-4" />
+      <SimpleRadioGroup
+        groupName="person-placing-request"
+        options={["Shipper", "Forwarder"]}
+      />
+      <DividerComponent className="my-6" />
       <SubTitle title="Shipper" className="mb-4" />
       <div className="flex gap-4">
         <NAMultiAutoComplete

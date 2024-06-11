@@ -11,7 +11,7 @@ import {
   VesselInfoType,
 } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
-import { ArrowDropDown, Place } from "@mui/icons-material";
+import { AccessTime, ArrowDropDown, Place } from "@mui/icons-material";
 
 import VesselInformationDialog from "../../../schedule/popup/vessel-information";
 import { createDummyVesselInformation } from "../../../schedule/util";
@@ -112,7 +112,12 @@ export const QuotationListItem = ({
                 >
                   {vessel.serviceLane}
                 </MdTypography>
-                <MdTypography variant="body" size="medium">
+                <DividerComponent orientation="vertical" className="h-4 mx-1" />
+                <MdTypography
+                  variant="body"
+                  size="medium"
+                  className="text-outline"
+                >
                   Transit Time
                 </MdTypography>
                 <MdTypography
@@ -146,7 +151,18 @@ export const QuotationListItem = ({
               </div>
             </div>
             <div className="relative w-fit mt-2">
-              <CutOffTime cutOffTime={etd.plus({ days: 3 })} />
+              <MdTypography
+                variant="label"
+                size="medium"
+                className="text-outline flex items-center gap-1"
+              >
+                <span className="flex gap-1 items-center text-primary">
+                  <AccessTime fontSize="small" />
+                  Cargo Cut Off{" "}
+                </span>
+                {etd.plus({ days: 3 }).toFormat("yyyy-MM-dd HH:mm")}
+              </MdTypography>
+              {/* <CutOffTime cutOffTime={etd.plus({ days: 3 })} /> */}
             </div>
           </div>
           <div className="ml-8 mr-6 flex flex-col justify-center bg-surfaceContainerLowest px-4 py-2 rounded-lg w-56 gap-2 ">
