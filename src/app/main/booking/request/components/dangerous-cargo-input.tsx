@@ -1,8 +1,7 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import NaToggleButton from "@/app/components/na-toggle-button";
-import { MdTypography } from "@/app/components/typography";
 import { ContainerState } from "@/app/store/booking.store";
 import {
   ContainerInformationType,
@@ -10,14 +9,14 @@ import {
 } from "@/app/util/typeDef/boooking";
 import {
   MdChipSet,
-  MdInputChip,
-  MdOutlinedButton,
-  MdOutlinedTextField,
+  MdFilterChip,
+  MdIcon,
+  MdOutlinedIconButton,
 } from "@/app/util/md3";
-
-import { Upload } from "@mui/icons-material";
-import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { Add } from "@mui/icons-material";
+import { faker } from "@faker-js/faker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 
 const DangerousCargoInput = ({
   container,
@@ -28,32 +27,13 @@ const DangerousCargoInput = ({
 }) => {
   const typeKey = type.toString().toLowerCase();
   const setContainerInformation = useSetRecoilState(ContainerState);
-  const fileRef = useRef<HTMLInputElement>(null);
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const mergedFiles = files.concat(
-        container.dangerousCargoInformation.dangerousCargoCertificate
-      );
-      setContainerInformation((prev) => ({
-        ...prev,
-        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-          c.uuid === container.uuid && c.type !== ContainerType.bulk
-            ? {
-                ...c,
-                dangerousCargoInformation: {
-                  ...c.dangerousCargoInformation,
-                  dangerousCargoCertificate: mergedFiles,
-                },
-              }
-            : c
-        ),
-      }));
+  const [selectedDangerousCargo, setSelectedDangerousCargo] = useState("");
+
+  useEffect(() => {
+    if (container.dangerousCargoInformation.length === 0) {
+      setSelectedDangerousCargo("");
     }
-  };
-  const handleClick = () => {
-    fileRef.current?.click();
-  };
+  }, [container.dangerousCargoInformation.length]);
 
   return (
     <>
@@ -74,155 +54,229 @@ const DangerousCargoInput = ({
       />
       {container.isDangerous && (
         <div className="flex flex-col gap-6">
-          <div className="flex gap-4">
-            <NAOutlinedTextField
-              label="UN No."
-              type="number"
-              maxInputLength={4}
-              enableNumberSeparator={false}
-              value={container.dangerousCargoInformation.unNumber}
-              handleValueChange={(value) => {
+          <div className="flex gap-4 items-center">
+            <MdOutlinedIconButton
+              onClick={() => {
                 setContainerInformation((prev) => ({
                   ...prev,
                   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
                     c.uuid === container.uuid && c.type !== ContainerType.bulk
                       ? {
                           ...c,
-                          dangerousCargoInformation: {
+                          dangerousCargoInformation: [
                             ...c.dangerousCargoInformation,
-                            unNumber: value,
-                          },
+                            {
+                              uuid: faker.string.uuid(),
+                              unNumber: "",
+                              class: "",
+                              flashPoint: "",
+                              packingGroup: "None",
+                              properShippingName: "",
+                            },
+                          ],
                         }
                       : c
                   ),
                 }));
               }}
-            />
-
-            <NAOutlinedTextField
-              label="Class"
-              type="number"
-              maxInputLength={3}
-              enableNumberSeparator={false}
-              value={container.dangerousCargoInformation.class}
-              handleValueChange={(value) => {
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                    c.uuid === container.uuid && c.type !== ContainerType.bulk
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            class: value,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            />
-
-            <NAOutlinedTextField
-              label="Flash Point"
-              readOnly
-              value={container.dangerousCargoInformation.flashPoint}
-            />
-            <NAOutlinedListBox
-              label="Package Group"
-              options={["None", "I", "II", "III"]}
-              initialValue={container.dangerousCargoInformation.packingGroup}
-              onSelection={(value) => {
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                    c.uuid === container.uuid && c.type !== ContainerType.bulk
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            packingGroup: value as any,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            />
-
-            <NAOutlinedTextField
-              label="Proper Shipping Name"
-              value={container.dangerousCargoInformation.properShippingName}
-              maxInputLength={500}
-              handleValueChange={(value) => {
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                    c.uuid === container.uuid && c.type !== ContainerType.bulk
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: {
-                            ...c.dangerousCargoInformation,
-                            properShippingName: value,
-                          },
-                        }
-                      : c
-                  ),
-                }));
-              }}
-            />
+            >
+              <MdIcon>
+                <Add />
+              </MdIcon>
+            </MdOutlinedIconButton>
+            <MdChipSet className="flex flex-row-reverse">
+              {container.dangerousCargoInformation.map((dci, index) => (
+                <MdFilterChip
+                  key={dci.uuid}
+                  removable
+                  label={`Dangerous Cargo #` + (index + 1)}
+                  selected={selectedDangerousCargo === dci.uuid}
+                  onClick={() =>
+                    selectedDangerousCargo === dci.uuid
+                      ? setSelectedDangerousCargo("")
+                      : setSelectedDangerousCargo(dci.uuid)
+                  }
+                  handleTrailingActionFocus={() =>
+                    //delete the dangerous cargo
+                    setContainerInformation((prev) => ({
+                      ...prev,
+                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                        c.uuid === container.uuid &&
+                        c.type !== ContainerType.bulk
+                          ? {
+                              ...c,
+                              dangerousCargoInformation:
+                                c.dangerousCargoInformation.filter(
+                                  (dc) => dc.uuid !== dci.uuid
+                                ),
+                            }
+                          : c
+                      ),
+                    }))
+                  }
+                />
+              ))}
+            </MdChipSet>
           </div>
-          <div className="flex flex-col gap-4">
-            <MdTypography variant="title" size="small">
-              Dangerous Cargo Certificate
-            </MdTypography>
-            <div className="flex items-center gap-4">
-              <MdOutlinedButton onClick={handleClick}>
-                <div slot="icon">
-                  <Upload fontSize="small" />
-                </div>
-                File Upload
-              </MdOutlinedButton>
-              <input
-                type="file"
-                ref={fileRef}
-                className="hidden"
-                multiple
-                onInput={handleFileChange}
-              />
-              <MdChipSet>
-                {container.dangerousCargoInformation.dangerousCargoCertificate.map(
-                  (file, index) => (
-                    <MdInputChip
-                      key={file.name}
-                      label={file.name}
-                      selected
-                      handleTrailingActionFocus={() => {
-                        setContainerInformation((prev) => ({
-                          ...prev,
-                          [typeKey]: prev[typeKey as keyof typeof prev].map(
-                            (c) =>
-                              c.uuid === container.uuid &&
-                              c.type !== ContainerType.bulk
-                                ? {
-                                    ...c,
-                                    dangerousCargoInformation: {
-                                      ...c.dangerousCargoInformation,
-                                      dangerousCargoCertificate:
-                                        c.dangerousCargoInformation.dangerousCargoCertificate.filter(
-                                          (item) => item.name !== file.name
-                                        ),
-                                    },
-                                  }
-                                : c
-                          ),
-                        }));
-                      }}
-                    />
-                  )
-                )}
-              </MdChipSet>
-            </div>
+          <div className="flex gap-2">
+            {selectedDangerousCargo !== "" && (
+              <>
+                <NAOutlinedTextField
+                  label="UN No."
+                  required
+                  maxInputLength={4}
+                  maxLength={4}
+                  className="w-24"
+                  enableClearButton={false}
+                  value={
+                    container.dangerousCargoInformation.find(
+                      (dci) => dci.uuid === selectedDangerousCargo
+                    )?.unNumber
+                  }
+                  handleValueChange={(value) =>
+                    setContainerInformation((prev) => ({
+                      ...prev,
+                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                        c.uuid === container.uuid &&
+                        c.type !== ContainerType.bulk
+                          ? {
+                              ...c,
+                              dangerousCargoInformation:
+                                c.dangerousCargoInformation.map((dci) =>
+                                  dci.uuid === selectedDangerousCargo
+                                    ? { ...dci, unNumber: value }
+                                    : dci
+                                ),
+                            }
+                          : c
+                      ),
+                    }))
+                  }
+                />
+                <NAOutlinedTextField
+                  label="Class"
+                  required
+                  maxInputLength={3}
+                  maxLength={3}
+                  className="w-24"
+                  enableClearButton={false}
+                  value={
+                    container.dangerousCargoInformation.find(
+                      (dci) => dci.uuid === selectedDangerousCargo
+                    )?.class
+                  }
+                  handleValueChange={(value) =>
+                    setContainerInformation((prev) => ({
+                      ...prev,
+                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                        c.uuid === container.uuid &&
+                        c.type !== ContainerType.bulk
+                          ? {
+                              ...c,
+                              dangerousCargoInformation:
+                                c.dangerousCargoInformation.map((dci) =>
+                                  dci.uuid === selectedDangerousCargo
+                                    ? { ...dci, class: value }
+                                    : dci
+                                ),
+                            }
+                          : c
+                      ),
+                    }))
+                  }
+                />
+                <NAOutlinedTextField
+                  label="Flash Point"
+                  required
+                  disabled
+                  className="w-28"
+                  suffixText="°C"
+                  enableClearButton={false}
+                  value={
+                    container.dangerousCargoInformation.find(
+                      (dci) => dci.uuid === selectedDangerousCargo
+                    )?.flashPoint
+                  }
+                  handleValueChange={(value) =>
+                    setContainerInformation((prev) => ({
+                      ...prev,
+                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                        c.uuid === container.uuid &&
+                        c.type !== ContainerType.bulk
+                          ? {
+                              ...c,
+                              dangerousCargoInformation:
+                                c.dangerousCargoInformation.map((dci) =>
+                                  dci.uuid === selectedDangerousCargo
+                                    ? { ...dci, flashPoint: value }
+                                    : dci
+                                ),
+                            }
+                          : c
+                      ),
+                    }))
+                  }
+                />
+                <NAOutlinedListBox
+                  label="Packing Group"
+                  className="w-36"
+                  options={["None", "I", "II", "III"]}
+                  initialValue={
+                    container.dangerousCargoInformation.find(
+                      (dci) => dci.uuid === selectedDangerousCargo
+                    )?.packingGroup
+                  }
+                  onSelection={(value) =>
+                    setContainerInformation((prev) => ({
+                      ...prev,
+                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                        c.uuid === container.uuid &&
+                        c.type !== ContainerType.bulk
+                          ? {
+                              ...c,
+                              dangerousCargoInformation:
+                                c.dangerousCargoInformation.map((dci) =>
+                                  dci.uuid === selectedDangerousCargo
+                                    ? { ...dci, packingGroup: value }
+                                    : dci
+                                ),
+                            }
+                          : c
+                      ),
+                    }))
+                  }
+                />
+                <NAOutlinedTextField
+                  label="Proper Shipping Name"
+                  className="flex-1"
+                  enableClearButton={false}
+                  value={
+                    container.dangerousCargoInformation.find(
+                      (dci) => dci.uuid === selectedDangerousCargo
+                    )?.properShippingName
+                  }
+                  handleValueChange={(value) =>
+                    setContainerInformation((prev) => ({
+                      ...prev,
+                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                        c.uuid === container.uuid &&
+                        c.type !== ContainerType.bulk
+                          ? {
+                              ...c,
+                              dangerousCargoInformation:
+                                c.dangerousCargoInformation.map((dci) =>
+                                  dci.uuid === selectedDangerousCargo
+                                    ? { ...dci, properShippingName: value }
+                                    : dci
+                                ),
+                            }
+                          : c
+                      ),
+                    }))
+                  }
+                />
+              </>
+            )}
           </div>
         </div>
       )}

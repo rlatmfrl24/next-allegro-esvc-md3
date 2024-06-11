@@ -79,7 +79,7 @@ const DryContainerInput = ({
             >
               <Add fontSize="small" />
             </MdFilledTonalIconButton>
-            <div className="flex flex-col-reverse">
+            <div className="flex flex-col-reverse flex-1">
               <AnimatePresence>
                 {list.map((container, index) => (
                   <motion.div
@@ -88,7 +88,7 @@ const DryContainerInput = ({
                     initial="initial"
                     animate="add"
                     exit="remove"
-                    className="mt-6 flex flex-col gap-4"
+                    className="mt-6 flex flex-col gap-4 flex-1"
                   >
                     {list.length - 1 !== index && (
                       <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>

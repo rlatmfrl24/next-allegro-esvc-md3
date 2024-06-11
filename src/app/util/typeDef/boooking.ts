@@ -126,16 +126,16 @@ export interface ContainerInformationType {
   quantity: number;
   soc: number;
   isDangerous: boolean;
-  dangerousCargoInformation: DangerousContainerInformationType;
+  dangerousCargoInformation: DangerousContainerInformationType[];
 }
 
 export type DangerousContainerInformationType = {
+  uuid: string;
   unNumber: string;
   class: string;
   flashPoint: string;
   packingGroup: string;
   properShippingName: string;
-  dangerousCargoCertificate: File[];
 };
 
 export interface DryContainerInformationType extends ContainerInformationType {

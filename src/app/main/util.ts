@@ -106,14 +106,7 @@ export function getEmptyContainerData(
         soc: 0,
         quantity: 1,
         isDangerous: false,
-        dangerousCargoInformation: {
-          unNumber: "",
-          class: "",
-          flashPoint: "",
-          packingGroup: "",
-          properShippingName: "",
-          dangerousCargoCertificate: [],
-        },
+        dangerousCargoInformation: [],
       } as DryContainerInformationType;
     case ContainerType.reefer:
       return {
@@ -130,14 +123,7 @@ export function getEmptyContainerData(
         humidity: 0,
         genset: false,
         isDangerous: false,
-        dangerousCargoInformation: {
-          unNumber: "",
-          class: "",
-          flashPoint: "",
-          packingGroup: "",
-          properShippingName: "",
-          dangerousCargoCertificate: [],
-        },
+        dangerousCargoInformation: [],
       } as ReeferContainerInformationType;
     case ContainerType.opentop:
       return {
@@ -165,14 +151,7 @@ export function getEmptyContainerData(
           remark: "",
         },
         isDangerous: false,
-        dangerousCargoInformation: {
-          unNumber: "",
-          class: "",
-          flashPoint: "",
-          packingGroup: "",
-          properShippingName: "",
-          dangerousCargoCertificate: [],
-        },
+        dangerousCargoInformation: [],
       } as OpenTopContainerInformationType;
     case ContainerType.flatrack:
       return {
@@ -200,14 +179,7 @@ export function getEmptyContainerData(
           remark: "",
         },
         isDangerous: false,
-        dangerousCargoInformation: {
-          unNumber: "",
-          class: "",
-          flashPoint: "",
-          packingGroup: "",
-          properShippingName: "",
-          dangerousCargoCertificate: [],
-        },
+        dangerousCargoInformation: [],
       } as FlatRackContainerInformationType;
     case ContainerType.tank:
       return {
@@ -217,14 +189,7 @@ export function getEmptyContainerData(
         soc: 0,
         quantity: 1,
         isDangerous: false,
-        dangerousCargoInformation: {
-          unNumber: "",
-          class: "",
-          flashPoint: "",
-          packingGroup: "",
-          properShippingName: "",
-          dangerousCargoCertificate: [],
-        },
+        dangerousCargoInformation: [],
       } as TankContainerInformationType;
     case ContainerType.bulk:
       return {
