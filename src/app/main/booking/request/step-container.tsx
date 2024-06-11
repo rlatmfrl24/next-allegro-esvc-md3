@@ -50,13 +50,39 @@ export default function ContainerStep() {
   function ValidateContainerInput() {
     let isValid = true;
 
+    const totalContainerQuantity =
+      containerInformation.dry.reduce((acc, curr) => acc + curr.quantity, 0) +
+      containerInformation.reefer.reduce(
+        (acc, curr) => acc + curr.quantity,
+        0
+      ) +
+      containerInformation.opentop.reduce(
+        (acc, curr) => acc + curr.quantity,
+        0
+      ) +
+      containerInformation.flatrack.reduce(
+        (acc, curr) => acc + curr.quantity,
+        0
+      ) +
+      containerInformation.tank.reduce((acc, curr) => acc + curr.quantity, 0);
+
+    if (totalContainerQuantity === 0) {
+      isValid = false;
+    }
+
     containerInformation.dry.forEach((container) => {
       if (container.size === "" || container.quantity === 0) {
         isValid = false;
       }
     });
     containerInformation.reefer.forEach((container) => {
-      if (container.size === "" || container.quantity === 0) {
+      if (
+        container.size === "" ||
+        container.quantity === 0 ||
+        container.temperature === undefined ||
+        container.ventilation === undefined ||
+        container.nature === ""
+      ) {
         isValid = false;
       }
     });

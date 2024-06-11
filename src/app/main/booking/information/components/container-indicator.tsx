@@ -16,7 +16,6 @@ import { Info, ThermostatAuto, Warning } from "@mui/icons-material";
 import { useState } from "react";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import LabelChip from "@/app/components/label-chip";
 import { DividerComponent } from "@/app/components/divider";
 
 const BasicItem = (props: {
@@ -106,7 +105,7 @@ export const DangerIndicator = (props: {
                 selectedSize.quantity
               }
             />
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
               <BasicItem
                 title="UN Number"
                 value={selectedSize.dangerousCargoInformation.unNumber}
@@ -147,7 +146,7 @@ export const DangerIndicator = (props: {
                   )}
                 </MdChipSet>
               </div>
-            </div>
+            </div> */}
           </div>
           <div slot="actions">
             <MdOutlinedButton

@@ -124,6 +124,8 @@ const DangerousCargoInput = ({
                 <NAOutlinedTextField
                   label="UN No."
                   required
+                  type="number"
+                  enableNumberSeparator={false}
                   maxInputLength={4}
                   maxLength={4}
                   className="w-24"
@@ -156,6 +158,7 @@ const DangerousCargoInput = ({
                 <NAOutlinedTextField
                   label="Class"
                   required
+                  type="number"
                   maxInputLength={3}
                   maxLength={3}
                   className="w-24"

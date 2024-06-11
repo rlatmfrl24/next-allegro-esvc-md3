@@ -87,7 +87,12 @@ export function createDummyBooking(): {
       },
     },
     additionalInformation: {
-      attachment: null,
+      attachment: [],
+      specialCargoAttachment: {
+        awkwardCargo: [],
+        dangerousCargo: [],
+        reeferCargo: [],
+      },
       duplicateCount: 1,
       specialInstruction: "",
       emailSubscription: {

@@ -364,10 +364,14 @@ const DndFileUploadPlaceholder = ({
     if (files.length + acceptedFiles.length > 10) {
       setFiles((prev) => prev.slice(0, 9));
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles]);
 
   useEffect(() => {
     onFilesChange && onFilesChange(files);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
   return (
