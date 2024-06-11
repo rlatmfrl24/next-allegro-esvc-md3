@@ -74,7 +74,100 @@ export default function AdditionalInformationStep() {
       <MdTypography variant="title" size="large" className="mb-6">
         Additional Information
       </MdTypography>
-      <SubTitle title="Attachment" className="mb-4" />
+      <div className="grid grid-cols-2 gap-8">
+        <div>
+          <SubTitle title="Attachment" className="mb-4" />
+        </div>
+        <div>
+          <SubTitle title="Attachment" className="mb-4" />
+        </div>
+        <div className="flex flex-col">
+          <SubTitle title="Special Instruction" className="mb-4 mt-6" />
+          <MdOutlinedTextField
+            type="textarea"
+            className="resize-y"
+            rows={3}
+            placeholder="Special Instruction on Booking"
+            value={AdditionalInformationData.specialInstruction}
+            onInput={(e) => {
+              setAdditionalInformationData((prev) => {
+                return {
+                  ...prev,
+                  specialInstruction: e.currentTarget.value,
+                };
+              });
+            }}
+          />
+        </div>
+        <div className="flex flex-col">
+          <SubTitle title="Email Notification Subscription" className="mt-6" />
+          <div className="flex flex-col">
+            <NaToggleButton
+              className="w-fit"
+              label="Roll-Over (Including T/S)"
+              state={
+                AdditionalInformationData.emailSubscription.rollOver
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={() => {
+                setAdditionalInformationData((prev) => {
+                  return {
+                    ...prev,
+                    emailSubscription: {
+                      ...prev.emailSubscription,
+                      rollOver: !prev.emailSubscription.rollOver,
+                    },
+                  };
+                });
+              }}
+            />
+            <NaToggleButton
+              className="w-fit"
+              label="Vessel Departure"
+              state={
+                AdditionalInformationData.emailSubscription.vesselDeparture
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={() => {
+                setAdditionalInformationData((prev) => {
+                  return {
+                    ...prev,
+                    emailSubscription: {
+                      ...prev.emailSubscription,
+                      vesselDeparture: !prev.emailSubscription.vesselDeparture,
+                    },
+                  };
+                });
+              }}
+            />
+            <NaToggleButton
+              className="w-fit"
+              label="Vessel Advance / Delay"
+              state={
+                AdditionalInformationData.emailSubscription.vesselAdvanceDelay
+                  ? "checked"
+                  : "unchecked"
+              }
+              onClick={() => {
+                setAdditionalInformationData((prev) => {
+                  return {
+                    ...prev,
+                    emailSubscription: {
+                      ...prev.emailSubscription,
+                      vesselAdvanceDelay:
+                        !prev.emailSubscription.vesselAdvanceDelay,
+                    },
+                  };
+                });
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* <SubTitle title="Attachment" className="mb-4" />
       <div className="flex items-center gap-4">
         <MdOutlinedButton onClick={handleClick}>
           <div slot="icon">
@@ -106,24 +199,8 @@ export default function AdditionalInformationStep() {
         ref={fileRef}
         className="hidden"
         onInput={handleFileChange}
-      />
+      /> */}
 
-      <SubTitle title="Special Instruction" className="mb-4 mt-6" />
-      <MdOutlinedTextField
-        type="textarea"
-        className="resize-y"
-        rows={3}
-        placeholder="Special Instruction on Booking"
-        value={AdditionalInformationData.specialInstruction}
-        onInput={(e) => {
-          setAdditionalInformationData((prev) => {
-            return {
-              ...prev,
-              specialInstruction: e.currentTarget.value,
-            };
-          });
-        }}
-      />
       {/* 
       <SubTitle
         title="Do you want to make duplicate bookings for the same vessel?"
@@ -188,70 +265,7 @@ export default function AdditionalInformationStep() {
           }
         }}
       /> */}
-      <SubTitle title="Email Notification Subscription" className="mt-6" />
-      <div className="flex flex-col">
-        <NaToggleButton
-          className="w-fit"
-          label="Roll-Over (Including T/S)"
-          state={
-            AdditionalInformationData.emailSubscription.rollOver
-              ? "checked"
-              : "unchecked"
-          }
-          onClick={() => {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                emailSubscription: {
-                  ...prev.emailSubscription,
-                  rollOver: !prev.emailSubscription.rollOver,
-                },
-              };
-            });
-          }}
-        />
-        <NaToggleButton
-          className="w-fit"
-          label="Vessel Departure"
-          state={
-            AdditionalInformationData.emailSubscription.vesselDeparture
-              ? "checked"
-              : "unchecked"
-          }
-          onClick={() => {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                emailSubscription: {
-                  ...prev.emailSubscription,
-                  vesselDeparture: !prev.emailSubscription.vesselDeparture,
-                },
-              };
-            });
-          }}
-        />
-        <NaToggleButton
-          className="w-fit"
-          label="Vessel Advance / Delay"
-          state={
-            AdditionalInformationData.emailSubscription.vesselAdvanceDelay
-              ? "checked"
-              : "unchecked"
-          }
-          onClick={() => {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                emailSubscription: {
-                  ...prev.emailSubscription,
-                  vesselAdvanceDelay:
-                    !prev.emailSubscription.vesselAdvanceDelay,
-                },
-              };
-            });
-          }}
-        />
-      </div>
+
       <div className="flex-1 flex items-end justify-end">
         <MdFilledButton onClick={() => moveToContactInformationStep()}>
           Next
