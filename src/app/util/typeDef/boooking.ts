@@ -93,7 +93,12 @@ export type ContactInformationType = {
 };
 
 export type AdditionalInformatioType = {
-  attachment: File | null;
+  attachment: File[];
+  specialCargoAttachment: {
+    dangerousCargo: File[];
+    reeferCargo: File[];
+    awkwardCargo: File[];
+  };
   specialInstruction: string;
   duplicateCount: number;
   emailSubscription: {

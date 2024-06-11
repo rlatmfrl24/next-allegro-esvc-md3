@@ -25,7 +25,7 @@ export const RemovableChip = ({
         {label}
       </MdTypography>
       <div
-        className="flex items-center justify-center w-6 h-6 cursor-pointer relative rounded-lg ml-2"
+        className="flex items-center justify-center w-6 h-6 cursor-pointer relative rounded-full ml-2"
         onClick={onRemove}
       >
         <MdRippleEffect />
