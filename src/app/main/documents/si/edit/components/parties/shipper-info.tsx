@@ -8,27 +8,34 @@ import { MdCheckbox } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { splitForSIForm } from "./util";
+import { slice } from "lodash";
+import { useMemo } from "react";
 
 export const ShipperInfo = () => {
   const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
   //   const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
   const SIEditStep = useRecoilValue(SIEditStepState);
 
-  const companyList = Array.from({ length: 50 }, (_, i) => {
-    const location = faker.location;
-    return {
-      name: faker.company.name(),
-      street: location.streetAddress(),
-      country: location.country(),
-      city: location.city(),
-      postalCode: location.zipCode(),
-    };
-  });
+  const companyList = useMemo(() => {
+    return Array.from({ length: 50 }, (_, i) => {
+      const location = faker.location;
+      return {
+        name: faker.company.name(),
+        street: location.streetAddress(),
+        country: location.country(),
+        city: location.city(),
+        postalCode: location.zipCode(),
+      };
+    });
+  }, []);
 
-  const countryList = Array.from({ length: 100 }, (_, i) => {
-    const location = faker.location;
-    return location.country();
-  }).filter((value, index, self) => self.indexOf(value) === index);
+  const countryList = useMemo(() => {
+    return Array.from({ length: 100 }, (_, i) => {
+      const location = faker.location;
+      return location.country();
+    }).filter((value, index, self) => self.indexOf(value) === index);
+  }, []);
 
   return (
     <div>
@@ -70,11 +77,7 @@ export const ShipperInfo = () => {
           }}
           onBlur={(e) => {
             // split 35 characters
-            let splitTexts = e.currentTarget.value
-              .replaceAll("\n", "")
-              .match(/.{1,35}/g)
-              ?.join("\n")
-              .toUpperCase();
+            let splitTexts = splitForSIForm(e.currentTarget.value);
 
             if (splitTexts) {
               e.currentTarget.value = splitTexts;
@@ -104,8 +107,8 @@ export const ShipperInfo = () => {
                   ...prev,
                   shipper: {
                     ...prev.shipper,
-                    companyName: item.name,
-                    fullAddress: item.address,
+                    companyName: splitForSIForm(item.name) as string,
+                    fullAddress: splitForSIForm(item.address) as string,
                   },
                 };
               });
@@ -156,7 +159,7 @@ export const ShipperInfo = () => {
             }
           }}
         />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="flex gap-4">
           <NAOutlinedAutoComplete
             label="Country"
             itemList={countryList}
@@ -185,59 +188,77 @@ export const ShipperInfo = () => {
               });
             }}
           />
-          <NAOutlinedTextField
-            label="City / State"
-            maxLength={30}
-            value={partiesStore.shipper.addressCity || ""}
-            handleValueChange={(value) => {
-              setPartiesStore((prev) => {
-                return {
-                  ...prev,
-                  shipper: {
-                    ...prev.shipper,
-                    addressCityState: value,
-                  },
-                };
-              });
-            }}
-          />
-          <div className="col-span-2 flex gap-4">
+          <div className="flex gap-2">
             <NAOutlinedTextField
-              label="Zip Code"
-              className="w-36"
-              maxLength={10}
-              value={partiesStore.shipper.addressZipCode || ""}
+              label="City"
+              maxLength={30}
+              value={partiesStore.shipper.addressCity || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
                   return {
                     ...prev,
                     shipper: {
                       ...prev.shipper,
-                      addressZipCode: value,
+                      addressCity: value,
                     },
                   };
                 });
               }}
             />
             <NAOutlinedTextField
-              label="Street / P.O Box"
-              className="flex-1"
-              maxLength={50}
-              value={partiesStore.shipper.addressStreet || ""}
+              label="State"
+              maxLength={2}
+              className="w-24"
+              enableClearButton={false}
+              value={partiesStore.shipper.addressState || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
                   return {
                     ...prev,
                     shipper: {
                       ...prev.shipper,
-                      addressStreet: value,
+                      addressState: value,
                     },
                   };
                 });
               }}
             />
           </div>
+          <NAOutlinedTextField
+            label="Zip Code"
+            className="w-44"
+            maxLength={10}
+            value={partiesStore.shipper.addressZipCode || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  shipper: {
+                    ...prev.shipper,
+                    addressZipCode: value,
+                  },
+                };
+              });
+            }}
+          />
         </div>
+        <NAOutlinedTextField
+          label="Street / P.O Box"
+          className="col-span-4"
+          maxLength={50}
+          value={partiesStore.shipper.addressStreet || ""}
+          handleValueChange={(value) => {
+            setPartiesStore((prev) => {
+              return {
+                ...prev,
+                shipper: {
+                  ...prev.shipper,
+                  addressStreet: value,
+                },
+              };
+            });
+          }}
+        />
         <Disclosure
           defaultOpen={
             Boolean(partiesStore.shipper.eoriNumber) ||
