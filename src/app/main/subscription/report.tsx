@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdChipSet,
@@ -295,15 +294,18 @@ const ReportItem = (props: {
             />
             <MdChipSet aria-disabled={props.disabled}>
               {recipients.map((recipient, index) => (
-                <RemovableChip
-                  key={recipient}
-                  disabled={props.disabled}
-                  label={recipient}
-                  onRemove={() => {
-                    setRecipients((prev) => prev.filter((_, i) => i !== index));
-                    setIsBottomFloatingVisible(true);
-                  }}
-                />
+                <div key={recipient}>
+                  <MdInputChip
+                    label={recipient}
+                    selected
+                    remove={() => {
+                      setRecipients((prev) =>
+                        prev.filter((_, i) => i !== index)
+                      );
+                      setIsBottomFloatingVisible(true);
+                    }}
+                  />
+                </div>
               ))}
             </MdChipSet>
           </div>

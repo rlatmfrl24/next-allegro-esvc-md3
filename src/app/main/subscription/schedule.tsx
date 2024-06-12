@@ -22,7 +22,6 @@ import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
 import { DividerComponent } from "@/app/components/divider";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import {
   autoUpdate,
   flip,

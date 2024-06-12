@@ -31,7 +31,6 @@ import SubIndicator from "@/../public/icon_subsum_indicator.svg";
 import { difference, isEqual } from "lodash";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import classNames from "classnames";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function CreateNewReport() {

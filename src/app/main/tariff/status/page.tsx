@@ -21,7 +21,6 @@ import {
 import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DetentionStatusTable } from "./table";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function DetentionStatusPage() {

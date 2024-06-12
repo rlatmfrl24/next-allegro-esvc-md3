@@ -13,6 +13,7 @@ import {
   MdFilledButton,
   MdIcon,
   MdIconButton,
+  MdInputChip,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdSecondaryTab,
@@ -48,7 +49,6 @@ import {
   createDummyDangerousCargoStatus,
   createDummySpecialCargoStatus,
 } from "./util";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 
 export default function SpecialCargoStatusSearch() {
   const cx = classNames.bind(styles);
@@ -260,15 +260,16 @@ export default function SpecialCargoStatusSearch() {
                 </div>
                 <MdChipSet className="mt-2">
                   {queries.map((query, index) => (
-                    <RemovableChip
-                      key={index}
-                      label={query}
-                      onRemove={() => {
-                        setQueries((prev) =>
-                          prev.filter((_, i) => i !== index)
-                        );
-                      }}
-                    />
+                    <div key={index}>
+                      <MdInputChip
+                        label={query}
+                        remove={() => {
+                          setQueries((prev) =>
+                            prev.filter((_, i) => i !== index)
+                          );
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

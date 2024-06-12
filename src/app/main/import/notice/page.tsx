@@ -5,7 +5,6 @@ import { DateRangePicker } from "@/app/components/datepickers/date-range-picker"
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import {

@@ -13,7 +13,6 @@ import {
 } from "@/app/util/md3";
 import { DividerComponent } from "@/app/components/divider";
 import { useEffect, useState } from "react";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import {
   EventDialog,
   SummaryDialog,

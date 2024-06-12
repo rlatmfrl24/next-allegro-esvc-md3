@@ -25,7 +25,6 @@ import {
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { CycleSelector } from "./component";
 import { DividerComponent } from "@/app/components/divider";
-import { RemovableChip } from "@/app/components/chips/removable-chip";
 import { ScheduleSubscriptionProps } from "@/app/util/typeDef/subscription";
 import { DateTime } from "luxon";
 import { Disclosure } from "@headlessui/react";
