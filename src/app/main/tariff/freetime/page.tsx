@@ -47,7 +47,7 @@ export default function FreetimeRequestPage() {
                   key={faker.string.uuid()}
                   label={query}
                   selected
-                  handleTrailingActionFocus={() => {
+                  remove={() => {
                     setQueries(queries.filter((_, i) => i !== index));
                   }}
                 />

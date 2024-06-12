@@ -181,9 +181,6 @@ export const MdAssistChip = createComponent({
   tagName: "md-assist-chip",
   elementClass: MdAssistChipWebComponent,
   react: React,
-  events: {
-    handleTrailingActionFocus: "handleTrailingActionFocus",
-  },
 });
 
 export const MdFilterChip = createComponent({
@@ -191,7 +188,7 @@ export const MdFilterChip = createComponent({
   elementClass: MdFilterChipWebComponent,
   react: React,
   events: {
-    handleTrailingActionFocus: "handleTrailingActionFocus",
+    remove: "remove",
   },
 });
 
@@ -200,7 +197,7 @@ export const MdInputChip = createComponent({
   elementClass: MdInputChipWebComponent,
   react: React,
   events: {
-    handleTrailingActionFocus: "handleTrailingActionFocus",
+    remove: "remove",
   },
 });
 
@@ -208,9 +205,6 @@ export const MdSuggestionChip = createComponent({
   tagName: "md-suggestion-chip",
   elementClass: MdSuggestionChipWebComponent,
   react: React,
-  events: {
-    handleTrailingActionFocus: "handleTrailingActionFocus",
-  },
 });
 
 export const MdSwitch = createComponent({

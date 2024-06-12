@@ -1,6 +1,11 @@
 "use client";
 
-import { MdCircularProgress, MdFilledButton } from "../util/md3";
+import {
+  MdChipSet,
+  MdCircularProgress,
+  MdFilledButton,
+  MdInputChip,
+} from "../util/md3";
 import { createMDTheme, applyPresetTheme } from "../util/theme";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -57,6 +62,18 @@ export default function Test() {
       >
         Go to Main
       </MdFilledButton>
+
+      <div>
+        <MdChipSet>
+          <MdInputChip
+            label="TEST"
+            remove={() => {
+              console.log("remove");
+            }}
+          />
+        </MdChipSet>
+      </div>
+
       <div className="h-fit">
         <HexColorPicker color={color} onChange={setColor} />
       </div>

@@ -250,7 +250,7 @@ export default function AdditionalInformationStep() {
               key={faker.string.uuid()}
               label={AdditionalInformationData.attachment.name}
               selected
-              handleTrailingActionFocus={() => {
+              remove={() => {
                 console.log("delete");
                 setAdditionalInformationData((prev) => {
                   return {

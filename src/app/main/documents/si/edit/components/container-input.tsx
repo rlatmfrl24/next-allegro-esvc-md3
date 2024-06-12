@@ -99,7 +99,7 @@ export default function ContainerInput({
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) => {
-        if (c.cargoManifest.length === 1) {
+        if (c.cargoManifest.length === 0) {
           return {
             ...c,
             hasCargoManifest: false,
@@ -507,7 +507,7 @@ export default function ContainerInput({
                           setSelectedCargoManifestUuid(cargo.uuid);
                         }
                       }}
-                      handleTrailingActionFocus={(e) => {
+                      remove={(e) => {
                         removeCargoManifestFromContainer(cargo.uuid);
                       }}
                       removable

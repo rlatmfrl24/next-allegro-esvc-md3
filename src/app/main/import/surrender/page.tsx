@@ -67,7 +67,7 @@ export default function BLSurrenderCheck() {
                   key={faker.string.uuid()}
                   label={query}
                   selected={true}
-                  handleTrailingActionFocus={() => {
+                  remove={() => {
                     setQueries((prev) => {
                       return prev.filter((_, i) => i !== index);
                     });

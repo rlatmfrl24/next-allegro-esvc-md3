@@ -99,7 +99,7 @@ export default function CargoTrackingSearchCondition({
                 selected
                 key={searchChip}
                 label={searchChip}
-                handleTrailingActionFocus={() => {
+                remove={() => {
                   setSearchChipList((prev) =>
                     prev.filter((chip) => chip !== searchChip)
                   );

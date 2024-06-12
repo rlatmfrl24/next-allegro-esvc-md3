@@ -175,7 +175,7 @@ export default function SeaWaybillSearchCondition({
                       selected
                       key={blNumber}
                       label={blNumber}
-                      handleTrailingActionFocus={() => {
+                      remove={() => {
                         setBlNumberList((prev) =>
                           prev.filter((bl) => bl !== blNumber)
                         );

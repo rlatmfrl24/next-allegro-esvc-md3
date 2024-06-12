@@ -191,7 +191,7 @@ const BlNumberCriteria = () => {
             key={faker.string.uuid()}
             label={query}
             selected
-            handleTrailingActionFocus={() => {
+            remove={() => {
               setQueries(queries.filter((q, i) => i !== index));
             }}
           />
@@ -231,7 +231,7 @@ const ContainerNumberCriteria = () => {
             key={faker.string.uuid()}
             label={query}
             selected
-            handleTrailingActionFocus={() => {
+            remove={() => {
               setQueries(queries.filter((q, i) => i !== index));
             }}
           />

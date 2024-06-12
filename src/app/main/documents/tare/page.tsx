@@ -49,7 +49,7 @@ export default function TARESearch() {
                 key={faker.string.uuid()}
                 label={query}
                 selected
-                handleTrailingActionFocus={() => {
+                remove={() => {
                   setQueries((prev) => {
                     return prev.filter((_, i) => i !== index);
                   });

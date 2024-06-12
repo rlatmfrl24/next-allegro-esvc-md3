@@ -79,7 +79,7 @@ export default function ImportInvoicePage() {
                     key={faker.string.uuid()}
                     label={query}
                     selected
-                    handleTrailingActionFocus={() => {
+                    remove={() => {
                       setQueries(queries.filter((_, i) => i !== index));
                     }}
                   />

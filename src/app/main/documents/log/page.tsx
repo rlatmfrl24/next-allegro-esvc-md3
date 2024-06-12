@@ -184,7 +184,7 @@ export default function AdvancedManifestLogPage() {
                       key={faker.string.uuid()}
                       label={query}
                       selected
-                      handleTrailingActionFocus={() =>
+                      remove={() =>
                         setQueries((prev) => {
                           return prev.filter((q) => q !== query);
                         })

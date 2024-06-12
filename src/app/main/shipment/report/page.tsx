@@ -364,7 +364,7 @@ export default function ShipmentReportPage() {
                         key={faker.string.uuid()}
                         label={item}
                         selected
-                        handleTrailingActionFocus={() =>
+                        remove={() =>
                           setPolSelections((prev) => {
                             return prev.filter((q) => q !== item);
                           })
@@ -390,7 +390,7 @@ export default function ShipmentReportPage() {
                         key={faker.string.uuid()}
                         label={item}
                         selected
-                        handleTrailingActionFocus={() =>
+                        remove={() =>
                           setPodSelections((prev) => {
                             return prev.filter((q) => q !== item);
                           })
