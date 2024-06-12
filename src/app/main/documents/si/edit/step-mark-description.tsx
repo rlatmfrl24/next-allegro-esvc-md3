@@ -127,7 +127,7 @@ export default function StepMarkDescription() {
                     key={faker.string.uuid()}
                     label={markDescriptionStore.descriptionFile.name}
                     selected
-                    handleTrailingActionFocus={() => {
+                    remove={() => {
                       setMarkDescriptionStore((prev) => {
                         return {
                           ...prev,

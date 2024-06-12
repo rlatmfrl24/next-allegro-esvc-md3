@@ -10,6 +10,7 @@ import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedButton,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
@@ -20,7 +21,6 @@ import {
 import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DetentionStatusTable } from "./table";
-import { RemovableChip } from "@/app/components/removable-chip";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function DetentionStatusPage() {
@@ -99,15 +99,16 @@ export default function DetentionStatusPage() {
                 />
                 <MdChipSet>
                   {numberQueries.map((query, index) => (
-                    <RemovableChip
-                      key={query}
-                      label={query}
-                      onRemove={() => {
-                        setNumberQueries(
-                          numberQueries.filter((_, i) => i !== index)
-                        );
-                      }}
-                    />
+                    <div key={query}>
+                      <MdInputChip
+                        label={query}
+                        remove={() => {
+                          setNumberQueries((prev) => {
+                            return prev.filter((q) => q !== query);
+                          });
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

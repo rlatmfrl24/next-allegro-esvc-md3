@@ -1,4 +1,4 @@
-import LabelChip from "@/app/components/label-chip";
+import LabelChip from "@/app/components/chips/label-chip";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -99,7 +99,7 @@ export default function ContainerInput({
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) => {
-        if (c.cargoManifest.length === 1) {
+        if (c.cargoManifest.length === 0) {
           return {
             ...c,
             hasCargoManifest: false,
@@ -496,22 +496,23 @@ export default function ContainerInput({
                 // display CargoManifest
                 container.cargoManifest.map((cargo, i) => {
                   return (
-                    <MdFilterChip
-                      key={cargo.uuid}
-                      label={`Cargo #${i + 1}`}
-                      selected={selectedCargoManifestUuid === cargo.uuid}
-                      onClick={() => {
-                        if (selectedCargoManifestUuid === cargo.uuid) {
-                          setSelectedCargoManifestUuid("");
-                        } else {
-                          setSelectedCargoManifestUuid(cargo.uuid);
-                        }
-                      }}
-                      handleTrailingActionFocus={(e) => {
-                        removeCargoManifestFromContainer(cargo.uuid);
-                      }}
-                      removable
-                    />
+                    <div key={cargo.uuid}>
+                      <MdFilterChip
+                        label={`Cargo #${i + 1}`}
+                        selected={selectedCargoManifestUuid === cargo.uuid}
+                        onClick={() => {
+                          if (selectedCargoManifestUuid === cargo.uuid) {
+                            setSelectedCargoManifestUuid("");
+                          } else {
+                            setSelectedCargoManifestUuid(cargo.uuid);
+                          }
+                        }}
+                        remove={(e) => {
+                          removeCargoManifestFromContainer(cargo.uuid);
+                        }}
+                        removable
+                      />
+                    </div>
                   );
                 })
               }

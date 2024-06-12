@@ -75,14 +75,15 @@ export default function ImportInvoicePage() {
               />
               <MdChipSet>
                 {queries.map((query, index) => (
-                  <MdInputChip
-                    key={faker.string.uuid()}
-                    label={query}
-                    selected
-                    handleTrailingActionFocus={() => {
-                      setQueries(queries.filter((_, i) => i !== index));
-                    }}
-                  />
+                  <div key={index}>
+                    <MdInputChip
+                      label={query}
+                      selected
+                      remove={() => {
+                        setQueries(queries.filter((_, i) => i !== index));
+                      }}
+                    />
+                  </div>
                 ))}
               </MdChipSet>
             </div>

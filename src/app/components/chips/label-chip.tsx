@@ -1,5 +1,4 @@
-import { size } from "lodash";
-import { MdTypography } from "./typography";
+import { MdTypography } from "../typography";
 
 const LabelChip = ({
   label,
