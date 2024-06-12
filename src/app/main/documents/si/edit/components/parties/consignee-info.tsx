@@ -9,27 +9,33 @@ import { MdCheckbox } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
 import { ArrowDropDown } from "@mui/icons-material";
+import { useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { splitForSIForm } from "./util";
 
 export const ConsigneeInfo = () => {
   const [partiesStore, setPartiesStore] = useRecoilState(SIEditPartiesState);
   const SIEditStep = useRecoilValue(SIEditStepState);
 
-  const companyList = Array.from({ length: 50 }, (_, i) => {
-    const location = faker.location;
-    return {
-      name: faker.company.name(),
-      street: location.streetAddress(),
-      country: location.country(),
-      city: location.city(),
-      postalCode: location.zipCode(),
-    };
-  });
+  const companyList = useMemo(() => {
+    return Array.from({ length: 50 }, (_, i) => {
+      const location = faker.location;
+      return {
+        name: faker.company.name(),
+        street: location.streetAddress(),
+        country: location.country(),
+        city: location.city(),
+        postalCode: location.zipCode(),
+      };
+    });
+  }, []);
 
-  const countryList = Array.from({ length: 100 }, (_, i) => {
-    const location = faker.location;
-    return location.country();
-  }).filter((value, index, self) => self.indexOf(value) === index);
+  const countryList = useMemo(() => {
+    return Array.from({ length: 100 }, (_, i) => {
+      const location = faker.location;
+      return location.country();
+    }).filter((value, index, self) => self.indexOf(value) === index);
+  }, []);
 
   return (
     <div>
@@ -138,8 +144,8 @@ export const ConsigneeInfo = () => {
                   ...prev,
                   consignee: {
                     ...prev.consignee,
-                    companyName: item.name,
-                    fullAddress: item.address,
+                    companyName: splitForSIForm(item.name) as string,
+                    fullAddress: splitForSIForm(item.address) as string,
                   },
                 };
               });
@@ -190,7 +196,7 @@ export const ConsigneeInfo = () => {
             }
           }}
         />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="flex gap-4">
           <NAOutlinedAutoComplete
             label="Country"
             itemList={countryList}
@@ -219,27 +225,48 @@ export const ConsigneeInfo = () => {
               });
             }}
           />
+          <div className="flex gap-2">
+            <NAOutlinedTextField
+              label="City"
+              maxLength={30}
+              value={partiesStore.consignee.addressCity || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    consignee: {
+                      ...prev.consignee,
+                      addressCity: value,
+                    },
+                  };
+                });
+              }}
+            />
 
-          <NAOutlinedTextField
-            label="City / State"
-            maxLength={30}
-            value={partiesStore.consignee.addressCity || ""}
-            handleValueChange={(value) => {
-              setPartiesStore((prev) => {
-                return {
-                  ...prev,
-                  consignee: {
-                    ...prev.consignee,
-                    addressCityState: value,
-                  },
-                };
-              });
-            }}
-          />
+            <NAOutlinedTextField
+              label="State"
+              maxLength={2}
+              enableClearButton={false}
+              className="w-24"
+              value={partiesStore.consignee.addressState || ""}
+              handleValueChange={(value) => {
+                setPartiesStore((prev) => {
+                  return {
+                    ...prev,
+                    consignee: {
+                      ...prev.consignee,
+                      addressState: value,
+                    },
+                  };
+                });
+              }}
+            />
+          </div>
+
           <div className="col-span-2 flex gap-4">
             <NAOutlinedTextField
               label="Zip Code"
-              className="w-36"
+              className="w-44"
               maxLength={10}
               value={partiesStore.consignee.addressZipCode || ""}
               handleValueChange={(value) => {
@@ -254,25 +281,25 @@ export const ConsigneeInfo = () => {
                 });
               }}
             />
-            <NAOutlinedTextField
-              label="Street / P.O Box"
-              className="flex-1"
-              maxLength={50}
-              value={partiesStore.consignee.addressStreet || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    consignee: {
-                      ...prev.consignee,
-                      addressStreet: value,
-                    },
-                  };
-                });
-              }}
-            />
           </div>
         </div>
+        <NAOutlinedTextField
+          label="Street / P.O Box"
+          className="flex-1"
+          maxLength={50}
+          value={partiesStore.consignee.addressStreet || ""}
+          handleValueChange={(value) => {
+            setPartiesStore((prev) => {
+              return {
+                ...prev,
+                consignee: {
+                  ...prev.consignee,
+                  addressStreet: value,
+                },
+              };
+            });
+          }}
+        />
 
         <Disclosure
           defaultOpen={
