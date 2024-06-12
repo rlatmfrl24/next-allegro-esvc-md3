@@ -1,7 +1,7 @@
 "use client";
 
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
-import LabelChip from "@/app/components/label-chip";
+import LabelChip from "@/app/components/chips/label-chip";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import StatusFilterComponent from "@/app/components/status-filter";

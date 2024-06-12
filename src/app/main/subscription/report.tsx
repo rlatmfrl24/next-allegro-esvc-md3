@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { RemovableChip } from "@/app/components/removable-chip";
+import { RemovableChip } from "@/app/components/chips/removable-chip";
 import { MdTypography } from "@/app/components/typography";
 import {
   MdChipSet,

@@ -16,7 +16,7 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import { BackupOutlined } from "@mui/icons-material";
 import { SubTitle } from "@/app/components/title-components";
 import { useDropzone } from "react-dropzone";
-import { RemovableChip } from "@/app/components/removable-chip";
+import { RemovableChip } from "@/app/components/chips/removable-chip";
 
 export default function AdditionalInformationStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);

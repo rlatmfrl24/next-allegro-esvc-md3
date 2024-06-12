@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
 
-import LabelChip from "@/app/components/label-chip";
+import LabelChip from "@/app/components/chips/label-chip";
 import { MdTypography } from "@/app/components/typography";
 import { QuotationTermsState } from "@/app/store/pricing.store";
 import styles from "@/app/styles/base.module.css";

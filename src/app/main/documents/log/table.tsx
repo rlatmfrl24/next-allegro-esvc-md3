@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { useVesselInfoDialog } from "@/app/components/common-dialog-hooks";
-import LabelChip from "@/app/components/label-chip";
+import LabelChip from "@/app/components/chips/label-chip";
 
 type ManifestLogTableProps = {
   type: string;

@@ -1,6 +1,6 @@
 import { Close } from "@mui/icons-material";
-import { MdTypography } from "./typography";
-import { MdInputChip, MdRippleEffect } from "../util/md3";
+import { MdTypography } from "../typography";
+import { MdInputChip, MdRippleEffect } from "@/app/util/md3";
 
 export const RemovableChip = ({
   label,
