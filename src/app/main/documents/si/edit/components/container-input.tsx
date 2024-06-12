@@ -496,22 +496,23 @@ export default function ContainerInput({
                 // display CargoManifest
                 container.cargoManifest.map((cargo, i) => {
                   return (
-                    <MdFilterChip
-                      key={cargo.uuid}
-                      label={`Cargo #${i + 1}`}
-                      selected={selectedCargoManifestUuid === cargo.uuid}
-                      onClick={() => {
-                        if (selectedCargoManifestUuid === cargo.uuid) {
-                          setSelectedCargoManifestUuid("");
-                        } else {
-                          setSelectedCargoManifestUuid(cargo.uuid);
-                        }
-                      }}
-                      remove={(e) => {
-                        removeCargoManifestFromContainer(cargo.uuid);
-                      }}
-                      removable
-                    />
+                    <div key={cargo.uuid}>
+                      <MdFilterChip
+                        label={`Cargo #${i + 1}`}
+                        selected={selectedCargoManifestUuid === cargo.uuid}
+                        onClick={() => {
+                          if (selectedCargoManifestUuid === cargo.uuid) {
+                            setSelectedCargoManifestUuid("");
+                          } else {
+                            setSelectedCargoManifestUuid(cargo.uuid);
+                          }
+                        }}
+                        remove={(e) => {
+                          removeCargoManifestFromContainer(cargo.uuid);
+                        }}
+                        removable
+                      />
+                    </div>
                   );
                 })
               }

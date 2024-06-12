@@ -2,6 +2,7 @@ import { MdTypography } from "@/app/components/typography";
 import {
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdOutlinedTextField,
@@ -397,13 +398,15 @@ const DndFileUploadPlaceholder = ({
       </div>
       <MdChipSet>
         {files.map((file) => (
-          <RemovableChip
-            key={file.name}
-            label={file.name}
-            onRemove={() => {
-              setFiles((prev) => prev.filter((f) => f.name !== file.name));
-            }}
-          />
+          <div key={file.name}>
+            <MdInputChip
+              label={file.name}
+              selected
+              remove={() => {
+                setFiles((prev) => prev.filter((f) => f.name !== file.name));
+              }}
+            />
+          </div>
         ))}
       </MdChipSet>
     </div>

@@ -33,6 +33,12 @@ export const RemovableChip = ({
       </div>
     </div>
   ) : (
-    <MdInputChip label={label} className={className} disabled={true} selected />
+    <MdInputChip
+      label={label}
+      className={className}
+      disabled
+      selected
+      remove={() => {}}
+    />
   );
 };

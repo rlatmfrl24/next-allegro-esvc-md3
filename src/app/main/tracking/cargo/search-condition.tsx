@@ -95,16 +95,17 @@ export default function CargoTrackingSearchCondition({
           </div>
           <MdChipSet>
             {searchChipList.map((searchChip) => (
-              <MdInputChip
-                selected
-                key={searchChip}
-                label={searchChip}
-                remove={() => {
-                  setSearchChipList((prev) =>
-                    prev.filter((chip) => chip !== searchChip)
-                  );
-                }}
-              />
+              <div key={searchChip}>
+                <MdInputChip
+                  label={searchChip}
+                  selected
+                  remove={() =>
+                    setSearchChipList((prev) =>
+                      prev.filter((chip) => chip !== searchChip)
+                    )
+                  }
+                />
+              </div>
             ))}
           </MdChipSet>
         </div>

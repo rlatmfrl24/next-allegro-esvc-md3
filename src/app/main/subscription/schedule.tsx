@@ -10,6 +10,7 @@ import {
   MdFilledButton,
   MdIcon,
   MdIconButton,
+  MdInputChip,
   MdList,
   MdListItem,
   MdOutlinedTextField,
@@ -378,15 +379,16 @@ const ScheduleSubscriptionItem = (props: {
           />
           <MdChipSet>
             {recipients.map((recipient, index) => (
-              <RemovableChip
-                key={recipient}
-                label={recipient}
-                disabled={props.disabled}
-                onRemove={() => {
-                  setRecipients((prev) => prev.filter((_, i) => i !== index));
-                  setBottomFloatingVisible(true);
-                }}
-              />
+              <div key={recipient}>
+                <MdInputChip
+                  label={recipient}
+                  selected
+                  remove={() => {
+                    setRecipients((prev) => prev.filter((_, i) => i !== index));
+                    setBottomFloatingVisible(true);
+                  }}
+                />
+              </div>
             ))}
           </MdChipSet>
         </div>

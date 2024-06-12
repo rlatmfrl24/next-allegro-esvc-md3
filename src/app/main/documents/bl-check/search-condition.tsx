@@ -171,16 +171,17 @@ export default function BLCheckSearchCondition({
                 </div>
                 <MdChipSet>
                   {blNumberList.map((blNumber) => (
-                    <MdInputChip
-                      selected
-                      key={blNumber}
-                      label={blNumber}
-                      remove={() => {
-                        setBlNumberList((prev) =>
-                          prev.filter((bl) => bl !== blNumber)
-                        );
-                      }}
-                    />
+                    <div key={blNumber}>
+                      <MdInputChip
+                        selected
+                        label={blNumber}
+                        remove={(e) => {
+                          setBlNumberList((prev) =>
+                            prev.filter((bl) => bl !== blNumber)
+                          );
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

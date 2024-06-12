@@ -63,17 +63,6 @@ export default function Test() {
         Go to Main
       </MdFilledButton>
 
-      <div>
-        <MdChipSet>
-          <MdInputChip
-            label="TEST"
-            remove={() => {
-              console.log("remove");
-            }}
-          />
-        </MdChipSet>
-      </div>
-
       <div className="h-fit">
         <HexColorPicker color={color} onChange={setColor} />
       </div>

@@ -8,6 +8,7 @@ import {
   MdFilledTonalIconButton,
   MdIcon,
   MdIconButton,
+  MdInputChip,
   MdList,
   MdListItem,
   MdOutlinedButton,
@@ -197,18 +198,20 @@ export const AddPtpScheduleDialog = (props: {
               />
               <MdChipSet>
                 {currentData.recipients.map((recipient, index) => (
-                  <RemovableChip
-                    key={recipient}
-                    label={recipient}
-                    onRemove={() => {
-                      setCurrentData((prev) => ({
-                        ...prev,
-                        recipients: prev.recipients.filter(
-                          (_, i) => i !== index
-                        ),
-                      }));
-                    }}
-                  />
+                  <div key={recipient}>
+                    <MdInputChip
+                      label={recipient}
+                      selected
+                      remove={() => {
+                        setCurrentData((prev) => ({
+                          ...prev,
+                          recipients: prev.recipients.filter(
+                            (_, i) => i !== index
+                          ),
+                        }));
+                      }}
+                    />
+                  </div>
                 ))}
               </MdChipSet>
             </div>
@@ -334,18 +337,20 @@ export const AddLongRangeScheduleDialog = (props: {
               />
               <MdChipSet>
                 {currentData.recipients.map((recipient, index) => (
-                  <RemovableChip
-                    key={recipient}
-                    label={recipient}
-                    onRemove={() => {
-                      setCurrentData((prev) => ({
-                        ...prev,
-                        recipients: prev.recipients.filter(
-                          (_, i) => i !== index
-                        ),
-                      }));
-                    }}
-                  />
+                  <div key={recipient}>
+                    <MdInputChip
+                      label={recipient}
+                      selected
+                      remove={() => {
+                        setCurrentData((prev) => ({
+                          ...prev,
+                          recipients: prev.recipients.filter(
+                            (_, i) => i !== index
+                          ),
+                        }));
+                      }}
+                    />
+                  </div>
                 ))}
               </MdChipSet>
             </div>

@@ -11,6 +11,7 @@ import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdTextButton,
@@ -84,13 +85,15 @@ export default function ArrivalNoticePage() {
                 </div>
                 <MdChipSet>
                   {queries.map((query) => (
-                    <RemovableChip
-                      key={query}
-                      label={query}
-                      onRemove={() => {
-                        setQueries(queries.filter((q) => q !== query));
-                      }}
-                    />
+                    <div key={query}>
+                      <MdInputChip
+                        label={query}
+                        selected
+                        remove={() => {
+                          setQueries(queries.filter((q) => q !== query));
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>
@@ -115,13 +118,15 @@ export default function ArrivalNoticePage() {
                 </div>
                 <MdChipSet>
                   {queries.map((query) => (
-                    <RemovableChip
-                      key={query}
-                      label={query}
-                      onRemove={() => {
-                        setQueries(queries.filter((q) => q !== query));
-                      }}
-                    />
+                    <div key={query}>
+                      <MdInputChip
+                        label={query}
+                        selected
+                        remove={() => {
+                          setQueries(queries.filter((q) => q !== query));
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>
