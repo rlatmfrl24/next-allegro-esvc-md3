@@ -174,7 +174,7 @@ export default function StepContactInformation() {
                   <MdInputChip
                     key={email}
                     label={email}
-                    handleTrailingActionFocus={() => {
+                    remove={() => {
                       setContactInformationStore((prev) => {
                         return {
                           ...prev,

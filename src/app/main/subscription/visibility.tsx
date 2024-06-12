@@ -7,12 +7,12 @@ import {
 import {
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { DividerComponent } from "@/app/components/divider";
 import { useEffect, useState } from "react";
-import { RemovableChip } from "@/app/components/removable-chip";
 import {
   EventDialog,
   SummaryDialog,
@@ -117,14 +117,15 @@ export const VisibilitySubscription = () => {
                 />
                 <MdChipSet>
                   {summaryRecipients.map((recipient, index) => (
-                    <RemovableChip
-                      key={recipient}
-                      label={recipient}
-                      disabled={isSummarySubscribed ? false : true}
-                      onRemove={() => {
-                        handleRemoveRecipient(index, setSummaryRecipients);
-                      }}
-                    />
+                    <div key={recipient}>
+                      <MdInputChip
+                        label={recipient}
+                        selected
+                        remove={() => {
+                          handleRemoveRecipient(index, setSummaryRecipients);
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>
@@ -174,14 +175,15 @@ export const VisibilitySubscription = () => {
                 />
                 <MdChipSet>
                   {eventRecipients.map((recipient, index) => (
-                    <RemovableChip
-                      key={recipient}
-                      label={recipient}
-                      disabled={isEventSubscribed ? false : true}
-                      onRemove={() => {
-                        handleRemoveRecipient(index, setEventRecipients);
-                      }}
-                    />
+                    <div key={recipient}>
+                      <MdInputChip
+                        label={recipient}
+                        selected
+                        remove={() => {
+                          handleRemoveRecipient(index, setEventRecipients);
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>
@@ -231,14 +233,15 @@ export const VisibilitySubscription = () => {
                 />
                 <MdChipSet>
                   {vesselRecipients.map((recipient, index) => (
-                    <RemovableChip
-                      key={recipient}
-                      disabled={isVesselSubscribed ? false : true}
-                      label={recipient}
-                      onRemove={() => {
-                        handleRemoveRecipient(index, setVesselRecipients);
-                      }}
-                    />
+                    <div key={recipient}>
+                      <MdInputChip
+                        label={recipient}
+                        selected
+                        remove={() => {
+                          handleRemoveRecipient(index, setVesselRecipients);
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

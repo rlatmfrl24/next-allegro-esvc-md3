@@ -14,6 +14,7 @@ import {
   MdCheckbox,
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedButton,
   MdRadio,
   MdSwitch,
@@ -30,7 +31,6 @@ import SubIndicator from "@/../public/icon_subsum_indicator.svg";
 import { difference, isEqual } from "lodash";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import classNames from "classnames";
-import { RemovableChip } from "@/app/components/removable-chip";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 
 export default function CreateNewReport() {
@@ -154,13 +154,15 @@ export default function CreateNewReport() {
             />
             <MdChipSet>
               {origins.map((origin) => (
-                <RemovableChip
-                  key={origin}
-                  label={origin}
-                  onRemove={() => {
-                    setOrigins(origins.filter((item) => item !== origin));
-                  }}
-                />
+                <div key={origin}>
+                  <MdInputChip
+                    label={origin}
+                    selected
+                    remove={() => {
+                      setOrigins(origins.filter((q) => q !== origin));
+                    }}
+                  />
+                </div>
               ))}
             </MdChipSet>
           </div>
@@ -176,15 +178,17 @@ export default function CreateNewReport() {
             />
             <MdChipSet>
               {destinations.map((destination) => (
-                <RemovableChip
-                  key={destination}
-                  label={destination}
-                  onRemove={() => {
-                    setDestinations(
-                      destinations.filter((item) => item !== destination)
-                    );
-                  }}
-                />
+                <div key={destination}>
+                  <MdInputChip
+                    label={destination}
+                    selected
+                    remove={() => {
+                      setDestinations(
+                        destinations.filter((item) => item !== destination)
+                      );
+                    }}
+                  />
+                </div>
               ))}
             </MdChipSet>
           </div>

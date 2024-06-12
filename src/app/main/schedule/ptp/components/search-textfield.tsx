@@ -5,6 +5,7 @@ import {
   MdElevation,
   MdIcon,
   MdIconButton,
+  MdInputChip,
   MdListItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
   MdRippleEffect,
@@ -307,15 +308,17 @@ export const SearchTextField = ({
       <MdChipSet>
         {selectionItems.map((item, index) => {
           return (
-            <CustomChip
-              key={item + "_" + index}
-              label={item}
-              onDelete={() => {
-                handleItemSelection((previous) =>
-                  previous.filter((value) => value !== item)
-                );
-              }}
-            />
+            <div key={item + "_" + index}>
+              <MdInputChip
+                label={item}
+                selected
+                remove={() => {
+                  handleItemSelection((previous) =>
+                    previous.filter((value) => value !== item)
+                  );
+                }}
+              />
+            </div>
           );
         })}
       </MdChipSet>
@@ -344,36 +347,3 @@ function highlightText(text: string, highlight: string) {
     </MdTypography>
   );
 }
-
-const CustomChip = ({
-  label,
-  onDelete,
-}: {
-  label: string;
-  onDelete?: Dispatch<SetStateAction<string>>;
-}) => {
-  return (
-    <div className="bg-secondaryContainer h-8 flex items-center min-h-8 pl-3 pr-2 rounded-lg gap-2 whitespace-nowrap">
-      <MdTypography
-        variant="label"
-        size="large"
-        className="text-onSecondaryContainer"
-      >
-        {label}
-      </MdTypography>
-      <div
-        className="relative w-6 h-6 rounded-full flex items-center justify-center cursor-pointer"
-        onClick={() => {
-          onDelete?.(label);
-        }}
-      >
-        <MdRippleEffect />
-        <ClearIcon
-          sx={{
-            fontSize: 18,
-          }}
-        />
-      </div>
-    </div>
-  );
-};

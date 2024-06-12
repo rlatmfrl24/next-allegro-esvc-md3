@@ -96,7 +96,7 @@ const DangerousCargoInput = ({
                       ? setSelectedDangerousCargo("")
                       : setSelectedDangerousCargo(dci.uuid)
                   }
-                  handleTrailingActionFocus={() =>
+                  remove={() =>
                     //delete the dangerous cargo
                     setContainerInformation((prev) => ({
                       ...prev,
