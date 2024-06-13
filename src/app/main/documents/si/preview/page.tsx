@@ -134,11 +134,12 @@ function SIPreview() {
 
   function combineAddress(
     street?: string,
-    cityState?: string,
+    city?: string,
+    state?: string,
     zipCode?: string,
     country?: string
   ) {
-    return [country, street, cityState, zipCode].filter((x) => x).join(", ");
+    return [country, street, city, state, zipCode].filter((x) => x).join(", ");
   }
 
   const ContactInfo = ({
@@ -331,7 +332,7 @@ function SIPreview() {
             <MdTypography variant="body" size="medium">
               {combineAddress(
                 partiesData.shipper.addressStreet,
-                partiesData.shipper.addressCityState,
+                partiesData.shipper.addressCity,
                 partiesData.shipper.addressZipCode,
                 partiesData.shipper.addressCountry
               ) || ""}
@@ -422,7 +423,8 @@ function SIPreview() {
             <MdTypography variant="body" size="medium">
               {combineAddress(
                 partiesData.consignee.addressStreet,
-                partiesData.consignee.addressCityState,
+                partiesData.consignee.addressCity,
+                partiesData.consignee.addressState,
                 partiesData.consignee.addressZipCode,
                 partiesData.consignee.addressCountry
               ) || ""}
@@ -490,7 +492,8 @@ function SIPreview() {
             <MdTypography variant="body" size="medium">
               {combineAddress(
                 partiesData.notifyParty.addressStreet,
-                partiesData.notifyParty.addressCityState,
+                partiesData.notifyParty.addressCity,
+                partiesData.notifyParty.addressState,
                 partiesData.notifyParty.addressZipCode,
                 partiesData.notifyParty.addressCountry
               ) || ""}
@@ -1170,7 +1173,10 @@ const CargoManifestDetail = (props: {
           className="min-w-[520px]"
         >
           <div slot="headline">
-            {props.containerData.containerNumber || "N/A"} -{" "}
+            {/* {props.containerData.containerNumber || "N/A"} -{" "} */}
+            {props.containerData.containerNumber
+              ? props.containerData.containerNumber + " - "
+              : ""}
             {props.containerData.containerSize +
               " " +
               props.containerData.containerType || "N/A"}
@@ -1191,7 +1197,7 @@ const CargoManifestDetail = (props: {
               })}
             </MdChipSet>
             <DividerComponent className="my-4" />
-            <DetailTitle title="Cargo Manifest" />
+            <DetailTitle title="Cargo Information" />
             <div className="flex flex-col gap-4 my-4">
               <ItemComponent
                 label="Package"

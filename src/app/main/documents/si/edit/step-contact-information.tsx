@@ -214,6 +214,7 @@ export default function StepContactInformation() {
           <div className="flex flex-col gap-1">
             <NaToggleButton
               label="Roll-Over (Including T/S)"
+              className="w-fit"
               state={
                 contactInformationStore.subscrition.rollOver
                   ? "checked"
@@ -233,6 +234,7 @@ export default function StepContactInformation() {
             />
             <NaToggleButton
               label="Vessel Departure"
+              className="w-fit"
               state={
                 contactInformationStore.subscrition.vesselDeparture
                   ? "checked"
@@ -252,6 +254,7 @@ export default function StepContactInformation() {
             />
             <NaToggleButton
               label="Vessel Advance / Delay"
+              className="w-fit"
               state={
                 contactInformationStore.subscrition.vesselAdvanceDelay
                   ? "checked"

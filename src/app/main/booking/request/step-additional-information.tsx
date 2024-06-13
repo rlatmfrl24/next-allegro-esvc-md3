@@ -17,6 +17,7 @@ import NaToggleButton from "@/app/components/na-toggle-button";
 import { BackupOutlined } from "@mui/icons-material";
 import { SubTitle } from "@/app/components/title-components";
 import { useDropzone } from "react-dropzone";
+import { faker } from "@faker-js/faker";
 
 export default function AdditionalInformationStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -65,6 +66,10 @@ export default function AdditionalInformationStep() {
           <SubTitle title="Attachment" />
           <DndFileUploadPlaceholder
             className="flex-1"
+            maxFiles={10}
+            maxFileSize={
+              20 * 1024 * 1024 // 20MB
+            }
             initialFiles={AdditionalInformationData.attachment}
             onFilesChange={(files) => {
               setAdditionalInformationData((prev) => {
@@ -97,6 +102,8 @@ export default function AdditionalInformationStep() {
           </MdOutlinedSegmentedButtonSet>
           {selectedSpecialCargoTab === "dangerous" && (
             <DndFileUploadPlaceholder
+              maxFiles={5}
+              maxFileSize={10 * 1024 * 1024} // 10MB
               initialFiles={
                 AdditionalInformationData.specialCargoAttachment.dangerousCargo
               }
@@ -348,12 +355,48 @@ const DndFileUploadPlaceholder = ({
   className,
   initialFiles,
   onFilesChange,
+  maxFiles = 10,
+  maxFileSize = 10485760, // 10MB
 }: {
   className?: string;
   initialFiles?: File[];
   onFilesChange?: (files: File[]) => void;
+  maxFiles?: number;
+  maxFileSize?: number;
 }) => {
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone();
+  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
+    useDropzone({
+      maxFiles: maxFiles,
+      maxSize: maxFileSize,
+      // Accept zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt, odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
+      accept: {
+        "image/jpg": [".jpg"],
+        "image/jpeg": [".jpeg"],
+        "image/svg": [".svg"],
+        "image/tiff": [".tiff"],
+        "image/tif": [".tif"],
+        "image/bmp": [".bmp"],
+        "image/avif": [".avif"],
+        "image/png": [".png"],
+        "application/pdf": [".pdf"],
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+          ".xlsx",
+        ],
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          [".docx"],
+        "application/zip": [".zip"],
+        "application/x-7z-compressed": [".7z"],
+        "application/x-rar-compressed": [".rar"],
+        "text/plain": [".txt"],
+        "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
+        "application/vnd.oasis.opendocument.text": [".odt"],
+        "application/vnd.oasis.opendocument.presentation": [".odp"],
+        "application/vnd.ms-powerpoint": [".ppt"],
+        "application/msword": [".doc"],
+        "application/rtf": [".rtf"],
+        "text/html": [".html"],
+      },
+    });
   const [files, setFiles] = useState<File[]>(initialFiles || []);
 
   useEffect(() => {
@@ -361,12 +404,21 @@ const DndFileUploadPlaceholder = ({
     setFiles((prev) => [...prev, ...acceptedFiles]);
 
     // if files exceed 10, remove the last file
-    if (files.length + acceptedFiles.length > 10) {
-      setFiles((prev) => prev.slice(0, 9));
+    if (files.length + acceptedFiles.length > maxFiles) {
+      setFiles((prev) => prev.slice(0, maxFiles - 1));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles]);
+
+  useEffect(() => {
+    // if file rejections exist, show alert
+    if (fileRejections.length > 0) {
+      alert("Some files are rejected. Please check the file types and sizes.");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileRejections]);
 
   useEffect(() => {
     onFilesChange && onFilesChange(files);
@@ -385,19 +437,30 @@ const DndFileUploadPlaceholder = ({
       >
         <input {...getInputProps()} />
         <BackupOutlined className="text-outline" />
-        <MdTypography variant="body" size="large">
+        <MdTypography variant="body" size="large" prominent>
           <span className="underline text-primary cursor-pointer">
             Click to upload
           </span>
           &nbsp;or drop files here
         </MdTypography>
-        <MdTypography variant="label" size="medium" className="text-outline">
-          You can only upload up to 10 files.
+        <MdTypography
+          variant="body"
+          size="small"
+          prominent
+          className="text-outline"
+        >
+          {`(Maximum ${maxFiles} files, Max file size : ${
+            maxFileSize / 1024 / 1024
+          }MB)`}
+        </MdTypography>
+        <MdTypography variant="body" size="small" className="text-outline mt-4">
+          zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt,
+          odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
         </MdTypography>
       </div>
       <MdChipSet>
         {files.map((file) => (
-          <div key={file.name}>
+          <div key={faker.string.uuid()}>
             <MdInputChip
               label={file.name}
               selected

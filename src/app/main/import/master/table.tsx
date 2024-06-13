@@ -20,6 +20,8 @@ import {
 import { MdRadio, MdTextButton } from "@/app/util/md3";
 import { useRouter } from "next/navigation";
 import { useEstimatedTimeofDepartureDialog } from "../../booking/status/components/estimated-time-of-departure-dialog";
+import ActualScheduleIcon from "@/../public/icon_schedule_actual.svg";
+import EstimatedScheduleIcon from "@/../public/icon_schedule_estimate.svg";
 
 type InboundMasterTableProps = {
   blNumber: string;
@@ -138,10 +140,15 @@ export const InboundMasterTable = () => {
       header: "Departure",
       cell: (info) => (
         <div>
-          <MdTypography variant="body" size="medium">
+          <MdTypography variant="body" size="medium" className="mb-1">
             {info.getValue().pol}
           </MdTypography>
-          <MdTypography variant="body" size="medium" className="text-outline">
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-outline flex gap-1 items-center"
+          >
+            <ActualScheduleIcon />
             {info.getValue().departureDate.toFormat("yyyy-MM-dd HH:mm")}
           </MdTypography>
         </div>
@@ -153,10 +160,15 @@ export const InboundMasterTable = () => {
       header: "Arrival",
       cell: (info) => (
         <div>
-          <MdTypography variant="body" size="medium">
+          <MdTypography variant="body" size="medium" className="mb-1">
             {info.getValue().pod}
           </MdTypography>
-          <MdTypography variant="body" size="medium" className="text-outline">
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-outline flex gap-1 items-center"
+          >
+            <EstimatedScheduleIcon />
             {info.getValue().arrivalDate.toFormat("yyyy-MM-dd HH:mm")}
           </MdTypography>
         </div>
