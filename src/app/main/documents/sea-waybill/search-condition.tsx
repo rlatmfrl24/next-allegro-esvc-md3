@@ -171,16 +171,17 @@ export default function SeaWaybillSearchCondition({
                 </div>
                 <MdChipSet>
                   {blNumberList.map((blNumber) => (
-                    <MdInputChip
-                      selected
-                      key={blNumber}
-                      label={blNumber}
-                      handleTrailingActionFocus={() => {
-                        setBlNumberList((prev) =>
-                          prev.filter((bl) => bl !== blNumber)
-                        );
-                      }}
-                    />
+                    <div key={blNumber}>
+                      <MdInputChip
+                        selected
+                        label={blNumber}
+                        remove={() => {
+                          setBlNumberList((prev) =>
+                            prev.filter((bl) => bl !== blNumber)
+                          );
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

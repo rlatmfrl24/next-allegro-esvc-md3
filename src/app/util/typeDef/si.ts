@@ -52,7 +52,8 @@ export interface SIPartiesProps {
   companyName: string;
   fullAddress: string;
   addressCountry: string;
-  addressCityState: string;
+  addressCity: string;
+  addressState: string;
   addressZipCode: string;
   addressStreet: string;
   eoriNumber: string;

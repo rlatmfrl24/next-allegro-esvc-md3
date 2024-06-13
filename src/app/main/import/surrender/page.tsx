@@ -63,16 +63,17 @@ export default function BLSurrenderCheck() {
             />
             <MdChipSet>
               {queries.map((query, index) => (
-                <MdInputChip
-                  key={faker.string.uuid()}
-                  label={query}
-                  selected={true}
-                  handleTrailingActionFocus={() => {
-                    setQueries((prev) => {
-                      return prev.filter((_, i) => i !== index);
-                    });
-                  }}
-                />
+                <div key={query}>
+                  <MdInputChip
+                    label={query}
+                    selected={true}
+                    remove={() => {
+                      setQueries((prev) => {
+                        return prev.filter((_, i) => i !== index);
+                      });
+                    }}
+                  />
+                </div>
               ))}
             </MdChipSet>
           </div>

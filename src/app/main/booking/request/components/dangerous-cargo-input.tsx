@@ -9,8 +9,11 @@ import {
 } from "@/app/util/typeDef/boooking";
 import {
   MdChipSet,
+  MdDialog,
+  MdFilledButton,
   MdFilterChip,
   MdIcon,
+  MdOutlinedButton,
   MdOutlinedIconButton,
 } from "@/app/util/md3";
 import { Add } from "@mui/icons-material";
@@ -28,6 +31,8 @@ const DangerousCargoInput = ({
   const typeKey = type.toString().toLowerCase();
   const setContainerInformation = useSetRecoilState(ContainerState);
   const [selectedDangerousCargo, setSelectedDangerousCargo] = useState("");
+  const [isResetConfirmDialogOpen, setIsResetConfirmDialogOpen] =
+    useState(false);
 
   useEffect(() => {
     if (container.dangerousCargoInformation.length === 0) {
@@ -35,21 +40,127 @@ const DangerousCargoInput = ({
     }
   }, [container.dangerousCargoInformation.length]);
 
+  function AddDangerousCargo() {
+    setContainerInformation((prev) => ({
+      ...prev,
+      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+        c.uuid === container.uuid && c.type !== ContainerType.bulk
+          ? {
+              ...c,
+              dangerousCargoInformation: [
+                ...c.dangerousCargoInformation,
+                {
+                  uuid: faker.string.uuid(),
+                  unNumber: "",
+                  class: "",
+                  flashPoint: "",
+                  packingGroup: "None",
+                  properShippingName: "",
+                },
+              ],
+            }
+          : c
+      ),
+    }));
+  }
+
+  function RemoveDangerousCargo(uuid: string) {
+    setContainerInformation((prev) => ({
+      ...prev,
+      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+        c.uuid === container.uuid && c.type !== ContainerType.bulk
+          ? {
+              ...c,
+              dangerousCargoInformation: c.dangerousCargoInformation.filter(
+                (dci) => dci.uuid !== uuid
+              ),
+            }
+          : c
+      ),
+    }));
+
+    if (selectedDangerousCargo === uuid) {
+      setSelectedDangerousCargo("");
+    }
+
+    if (container.dangerousCargoInformation.length === 1) {
+      setContainerInformation((prev) => ({
+        ...prev,
+        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+          c.uuid === container.uuid && c.type !== ContainerType.bulk
+            ? { ...c, isDangerous: false }
+            : c
+        ),
+      }));
+    }
+  }
+
   return (
     <>
+      <MdDialog
+        open={isResetConfirmDialogOpen}
+        closed={() => setIsResetConfirmDialogOpen(false)}
+      >
+        <div slot="headline">
+          All input contents of the Cargo Manifest will be discarded.
+        </div>
+        <div slot="content">Are you sure you want to uncheck?</div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              setIsResetConfirmDialogOpen(false);
+            }}
+          >
+            Cancel
+          </MdOutlinedButton>
+          <MdFilledButton
+            onClick={() => {
+              setIsResetConfirmDialogOpen(false);
+              setContainerInformation((prev) => ({
+                ...prev,
+                [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                  c.uuid === container.uuid && c.type !== ContainerType.bulk
+                    ? {
+                        ...c,
+                        isDangerous: !c.isDangerous,
+                        dangerousCargoInformation: [],
+                      }
+                    : c
+                ),
+              }));
+            }}
+          >
+            Yes
+          </MdFilledButton>
+        </div>
+      </MdDialog>
       <NaToggleButton
         className="w-fit"
         label="Dangerous Cargo"
         state={container.isDangerous ? "checked" : "unchecked"}
         onClick={() => {
-          setContainerInformation((prev) => ({
-            ...prev,
-            [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-              c.uuid === container.uuid && c.type !== ContainerType.bulk
-                ? { ...c, isDangerous: !c.isDangerous }
-                : c
-            ),
-          }));
+          // setContainerInformation((prev) => ({
+          //   ...prev,
+          //   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+          //     c.uuid === container.uuid && c.type !== ContainerType.bulk
+          //       ? { ...c, isDangerous: !c.isDangerous }
+          //       : c
+          //   ),
+          // }));
+
+          if (!container.isDangerous) {
+            AddDangerousCargo();
+            setContainerInformation((prev) => ({
+              ...prev,
+              [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                c.uuid === container.uuid && c.type !== ContainerType.bulk
+                  ? { ...c, isDangerous: !c.isDangerous }
+                  : c
+              ),
+            }));
+          } else {
+            setIsResetConfirmDialogOpen(true);
+          }
         }}
       />
       {container.isDangerous && (
@@ -57,27 +168,7 @@ const DangerousCargoInput = ({
           <div className="flex gap-4 items-center">
             <MdOutlinedIconButton
               onClick={() => {
-                setContainerInformation((prev) => ({
-                  ...prev,
-                  [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                    c.uuid === container.uuid && c.type !== ContainerType.bulk
-                      ? {
-                          ...c,
-                          dangerousCargoInformation: [
-                            ...c.dangerousCargoInformation,
-                            {
-                              uuid: faker.string.uuid(),
-                              unNumber: "",
-                              class: "",
-                              flashPoint: "",
-                              packingGroup: "None",
-                              properShippingName: "",
-                            },
-                          ],
-                        }
-                      : c
-                  ),
-                }));
+                AddDangerousCargo();
               }}
             >
               <MdIcon>
@@ -96,23 +187,24 @@ const DangerousCargoInput = ({
                       ? setSelectedDangerousCargo("")
                       : setSelectedDangerousCargo(dci.uuid)
                   }
-                  handleTrailingActionFocus={() =>
+                  remove={() =>
                     //delete the dangerous cargo
-                    setContainerInformation((prev) => ({
-                      ...prev,
-                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                        c.uuid === container.uuid &&
-                        c.type !== ContainerType.bulk
-                          ? {
-                              ...c,
-                              dangerousCargoInformation:
-                                c.dangerousCargoInformation.filter(
-                                  (dc) => dc.uuid !== dci.uuid
-                                ),
-                            }
-                          : c
-                      ),
-                    }))
+                    // setContainerInformation((prev) => ({
+                    //   ...prev,
+                    //   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                    //     c.uuid === container.uuid &&
+                    //     c.type !== ContainerType.bulk
+                    //       ? {
+                    //           ...c,
+                    //           dangerousCargoInformation:
+                    //             c.dangerousCargoInformation.filter(
+                    //               (dc) => dc.uuid !== dci.uuid
+                    //             ),
+                    //         }
+                    //       : c
+                    //   ),
+                    // }))
+                    RemoveDangerousCargo(dci.uuid)
                   }
                 />
               ))}

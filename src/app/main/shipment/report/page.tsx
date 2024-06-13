@@ -360,16 +360,17 @@ export default function ShipmentReportPage() {
                   />
                   <MdChipSet>
                     {polSelections.map((item) => (
-                      <MdInputChip
-                        key={faker.string.uuid()}
-                        label={item}
-                        selected
-                        handleTrailingActionFocus={() =>
-                          setPolSelections((prev) => {
-                            return prev.filter((q) => q !== item);
-                          })
-                        }
-                      />
+                      <div key={item}>
+                        <MdInputChip
+                          label={item}
+                          selected
+                          remove={() =>
+                            setPolSelections((prev) => {
+                              return prev.filter((q) => q !== item);
+                            })
+                          }
+                        />
+                      </div>
                     ))}
                   </MdChipSet>
                 </div>
@@ -386,16 +387,17 @@ export default function ShipmentReportPage() {
                   />
                   <MdChipSet>
                     {podSelections.map((item) => (
-                      <MdInputChip
-                        key={faker.string.uuid()}
-                        label={item}
-                        selected
-                        handleTrailingActionFocus={() =>
-                          setPodSelections((prev) => {
-                            return prev.filter((q) => q !== item);
-                          })
-                        }
-                      />
+                      <div key={item}>
+                        <MdInputChip
+                          label={item}
+                          selected
+                          remove={() =>
+                            setPodSelections((prev) => {
+                              return prev.filter((q) => q !== item);
+                            })
+                          }
+                        />
+                      </div>
                     ))}
                   </MdChipSet>
                 </div>

@@ -5,12 +5,12 @@ import { DateRangePicker } from "@/app/components/datepickers/date-range-picker"
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import { RemovableChip } from "@/app/components/removable-chip";
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import {
   MdChipSet,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdTextButton,
@@ -84,13 +84,15 @@ export default function ArrivalNoticePage() {
                 </div>
                 <MdChipSet>
                   {queries.map((query) => (
-                    <RemovableChip
-                      key={query}
-                      label={query}
-                      onRemove={() => {
-                        setQueries(queries.filter((q) => q !== query));
-                      }}
-                    />
+                    <div key={query}>
+                      <MdInputChip
+                        label={query}
+                        selected
+                        remove={() => {
+                          setQueries(queries.filter((q) => q !== query));
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>
@@ -115,13 +117,15 @@ export default function ArrivalNoticePage() {
                 </div>
                 <MdChipSet>
                   {queries.map((query) => (
-                    <RemovableChip
-                      key={query}
-                      label={query}
-                      onRemove={() => {
-                        setQueries(queries.filter((q) => q !== query));
-                      }}
-                    />
+                    <div key={query}>
+                      <MdInputChip
+                        label={query}
+                        selected
+                        remove={() => {
+                          setQueries(queries.filter((q) => q !== query));
+                        }}
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

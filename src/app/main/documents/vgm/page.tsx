@@ -81,7 +81,7 @@ export default function VGMSearch() {
                   key={faker.string.uuid()}
                   label={q}
                   selected={true}
-                  handleTrailingActionFocus={() => {
+                  remove={() => {
                     console.log("focus");
                     setQueries((prev) => {
                       const newQueries = prev.filter((_, index) => index !== i);

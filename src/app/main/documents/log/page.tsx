@@ -180,16 +180,18 @@ export default function AdvancedManifestLogPage() {
                 />
                 <MdChipSet>
                   {queries.map((query) => (
-                    <MdInputChip
-                      key={faker.string.uuid()}
-                      label={query}
-                      selected
-                      handleTrailingActionFocus={() =>
-                        setQueries((prev) => {
-                          return prev.filter((q) => q !== query);
-                        })
-                      }
-                    />
+                    <div key={query}>
+                      <MdInputChip
+                        key={faker.string.uuid()}
+                        selected
+                        label={query}
+                        remove={() =>
+                          setQueries((prev) => {
+                            return prev.filter((q) => q !== query);
+                          })
+                        }
+                      />
+                    </div>
                   ))}
                 </MdChipSet>
               </div>

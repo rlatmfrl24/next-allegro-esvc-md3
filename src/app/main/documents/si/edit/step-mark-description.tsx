@@ -48,16 +48,10 @@ export default function StepMarkDescription() {
       ...prev,
       markDescription: {
         ...prev.markDescription,
-        isCompleted:
-          !!markDescriptionStore.hsCode &&
-          !!markDescriptionStore.customsCommodity,
+        isCompleted: !!markDescriptionStore.hsCode,
       },
     }));
-  }, [
-    markDescriptionStore.customsCommodity,
-    markDescriptionStore.hsCode,
-    setSIEditStep,
-  ]);
+  }, [markDescriptionStore.hsCode, setSIEditStep]);
 
   const moveToContactInformationStep = useCallback(() => {
     setSIEditStep((prev) => ({
@@ -127,7 +121,7 @@ export default function StepMarkDescription() {
                     key={faker.string.uuid()}
                     label={markDescriptionStore.descriptionFile.name}
                     selected
-                    handleTrailingActionFocus={() => {
+                    remove={() => {
                       setMarkDescriptionStore((prev) => {
                         return {
                           ...prev,

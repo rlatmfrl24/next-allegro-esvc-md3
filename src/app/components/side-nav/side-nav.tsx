@@ -8,6 +8,13 @@ import NavOverlay from "./nav-overlay";
 import { DrawerState } from "@/app/store/global.store";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DropdownMenu } from "./nav-dropdown";
+import {
+  Class,
+  ClassOutlined,
+  Favorite,
+  Map,
+  MapOutlined,
+} from "@mui/icons-material";
 
 export default function SideNavigation() {
   const pathname = usePathname();
@@ -32,8 +39,24 @@ export default function SideNavigation() {
             <MenuIcon />
           </MdIcon>
         </MdIconButton>
-        <div className="flex flex-col mt-3 gap-5">
+        <div className="flex flex-col mt-3 gap-5 h-full">
           <DropdownMenu />
+          <div className="flex-1"></div>
+          <MdIconButton>
+            <MdIcon>
+              <Favorite />
+            </MdIcon>
+          </MdIconButton>
+          <MdIconButton>
+            <MdIcon>
+              <ClassOutlined />
+            </MdIcon>
+          </MdIconButton>
+          <MdIconButton>
+            <MdIcon>
+              <MapOutlined />
+            </MdIcon>
+          </MdIconButton>
         </div>
       </aside>
       <AnimatePresence>
