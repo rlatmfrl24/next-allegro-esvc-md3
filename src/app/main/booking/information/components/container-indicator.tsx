@@ -3,9 +3,7 @@ import {
   MdChipSet,
   MdDialog,
   MdFilterChip,
-  MdInputChip,
   MdOutlinedButton,
-  MdPrimaryTab,
   MdRippleEffect,
   MdSecondaryTab,
   MdTabs,
@@ -20,15 +18,9 @@ import { Info, ThermostatAuto, Warning } from "@mui/icons-material";
 import { CSSProperties, useState } from "react";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { DividerComponent } from "@/app/components/divider";
 import { useRecoilValue } from "recoil";
-import {
-  AdditionalInformationState,
-  CurrentBookingDataState,
-} from "@/app/store/booking.store";
-import { faker } from "@faker-js/faker";
+import { AdditionalInformationState } from "@/app/store/booking.store";
 import LabelChip from "@/app/components/chips/label-chip";
-import { set } from "lodash";
 
 const BasicItem = (props: {
   title: string;
@@ -87,34 +79,36 @@ export const DangerIndicator = (props: {
         >
           <div slot="headline">Danger Cargo Info</div>
           <div slot="content" className="flex flex-col gap-4">
-            <MdTabs>
-              {props.containers.map((container, index) => (
-                <MdSecondaryTab
-                  key={index + "_" + container.uuid}
-                  selected={container.size === selectedSize.size}
-                  style={
-                    {
-                      "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
-                    } as CSSProperties
-                  }
-                  onClick={(e) => {
-                    if (container.size === selectedSize.size) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    } else {
-                      setSelectedSize(container);
-                      setSelectedDangerIndex(0);
+            {props.containers.length > 1 && (
+              <MdTabs>
+                {props.containers.map((container, index) => (
+                  <MdSecondaryTab
+                    key={index + "_" + container.uuid}
+                    selected={container.size === selectedSize.size}
+                    style={
+                      {
+                        "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+                      } as CSSProperties
                     }
-                  }}
-                >
-                  {container.type +
-                    " " +
-                    container.size +
-                    " * " +
-                    container.quantity}
-                </MdSecondaryTab>
-              ))}
-            </MdTabs>
+                    onClick={(e) => {
+                      if (container.size === selectedSize.size) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      } else {
+                        setSelectedSize(container);
+                        setSelectedDangerIndex(0);
+                      }
+                    }}
+                  >
+                    {container.type +
+                      " " +
+                      container.size +
+                      " * " +
+                      container.quantity}
+                  </MdSecondaryTab>
+                ))}
+              </MdTabs>
+            )}
             <DetailTitle
               title={
                 selectedSize.type +
@@ -251,37 +245,39 @@ export const AwkwardIndicator = (props: {
         >
           <div slot="headline">Awkward Cargo Info</div>
           <div slot="content" className="flex flex-col gap-4">
-            <MdTabs>
-              {awkwardContainers.map((container, index) => {
-                return (
-                  <MdSecondaryTab
-                    key={index + "_" + container.uuid}
-                    selected={container.size === selectedSize.size}
-                    style={
-                      {
-                        "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
-                      } as CSSProperties
-                    }
-                    onClick={(e) => {
-                      if (container.size === selectedSize.size) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      } else {
-                        setSelectedSize(
-                          container as OpenTopContainerInformationType
-                        );
+            {props.containers.length > 1 && (
+              <MdTabs>
+                {awkwardContainers.map((container, index) => {
+                  return (
+                    <MdSecondaryTab
+                      key={index + "_" + container.uuid}
+                      selected={container.size === selectedSize.size}
+                      style={
+                        {
+                          "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+                        } as CSSProperties
                       }
-                    }}
-                  >
-                    {container.type +
-                      " " +
-                      container.size +
-                      " * " +
-                      container.quantity}
-                  </MdSecondaryTab>
-                );
-              })}
-            </MdTabs>
+                      onClick={(e) => {
+                        if (container.size === selectedSize.size) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        } else {
+                          setSelectedSize(
+                            container as OpenTopContainerInformationType
+                          );
+                        }
+                      }}
+                    >
+                      {container.type +
+                        " " +
+                        container.size +
+                        " * " +
+                        container.quantity}
+                    </MdSecondaryTab>
+                  );
+                })}
+              </MdTabs>
+            )}
             <DetailTitle
               title={
                 selectedSize.type +
@@ -406,33 +402,35 @@ export const ReeferIndicator = (props: {
         >
           <div slot="headline">Reefer Information</div>
           <div slot="content" className="flex flex-col gap-4">
-            <MdTabs>
-              {props.containers.map((container, index) => (
-                <MdSecondaryTab
-                  key={index + "_" + container.uuid}
-                  selected={container.size === selectedSize.size}
-                  style={
-                    {
-                      "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
-                    } as CSSProperties
-                  }
-                  onClick={(e) => {
-                    if (container.size === selectedSize.size) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    } else {
-                      setSelectedSize(container);
+            {props.containers.length > 1 && (
+              <MdTabs>
+                {props.containers.map((container, index) => (
+                  <MdSecondaryTab
+                    key={index + "_" + container.uuid}
+                    selected={container.size === selectedSize.size}
+                    style={
+                      {
+                        "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+                      } as CSSProperties
                     }
-                  }}
-                >
-                  {container.type +
-                    " " +
-                    container.size +
-                    " * " +
-                    container.quantity}
-                </MdSecondaryTab>
-              ))}
-            </MdTabs>
+                    onClick={(e) => {
+                      if (container.size === selectedSize.size) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      } else {
+                        setSelectedSize(container);
+                      }
+                    }}
+                  >
+                    {container.type +
+                      " " +
+                      container.size +
+                      " * " +
+                      container.quantity}
+                  </MdSecondaryTab>
+                ))}
+              </MdTabs>
+            )}
             <DetailTitle
               title={
                 selectedSize.type +
