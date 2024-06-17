@@ -62,12 +62,20 @@ export default function LocationScheduleSection({
           }
         />
         <SimpleItemComponent
+          title="Place of Receipt"
+          value={data.originPort.code || "N/A"}
+        />
+        <SimpleItemComponent
           title="Port of Loading"
           value={data.pol.code || "N/A"}
         />
         <SimpleItemComponent
           title="Port of Discharge"
           value={data.pod.code || "N/A"}
+        />
+        <SimpleItemComponent
+          title="Place of Delivery"
+          value={data.destinationPort.code || "N/A"}
         />
 
         <SimpleItemComponent
