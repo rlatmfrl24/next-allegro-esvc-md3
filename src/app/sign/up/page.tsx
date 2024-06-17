@@ -13,9 +13,8 @@ import {
 import classNames from "classnames";
 import { useState } from "react";
 import { PolicyContent } from "./policy-content";
-import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
-import { MdFilledButton } from "@/app/util/md3";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { Check } from "@mui/icons-material";
 
 const CustomStepIcon = (props: StepIconProps) => {
   const { active, completed, className, icon } = props;
@@ -31,19 +30,17 @@ const CustomStepIcon = (props: StepIconProps) => {
       }`}
     >
       {completed ? (
-        <></>
-      ) : (
         <>
-          <MdTypography
-            variant="label"
-            size="large"
-            className={
-              active || completed ? "text-white" : "text-outlineVariant"
-            }
-          >
-            {"0" + icon?.toString()}
-          </MdTypography>
+          <Check className="text-white" />
         </>
+      ) : (
+        <MdTypography
+          variant="label"
+          size="large"
+          className={active || completed ? "text-white" : "text-outlineVariant"}
+        >
+          {"0" + icon?.toString()}
+        </MdTypography>
       )}
     </div>
   );
