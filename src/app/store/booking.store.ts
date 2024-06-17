@@ -254,6 +254,7 @@ export const LocationScheduleState = atom<LocationScheduleType>({
 export const PartiesState = atom<PartiesType>({
   key: "partiesState",
   default: {
+    placeOfReceipt: "Shipper",
     shipper: {
       name: "",
       address: "",

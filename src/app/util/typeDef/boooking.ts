@@ -31,6 +31,7 @@ export interface PartyInterface {
 }
 
 export type PartiesType = {
+  placeOfReceipt: "Shipper" | "Forwarder";
   shipper: PartyInterface;
   freightForwarder: PartyInterface;
   consignee: PartyInterface;
