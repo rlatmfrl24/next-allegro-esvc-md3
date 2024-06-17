@@ -20,7 +20,7 @@ import {
   SIEditContainerState,
   SIEditStepState,
 } from "@/app/store/si.store";
-import { MdFilledButton } from "@/app/util/md3";
+import { MdFilledButton, MdSwitch } from "@/app/util/md3";
 import { ContainerType } from "@/app/util/typeDef/boooking";
 
 import ContainerToggleButton from "./components/container-toggle-button";
@@ -117,81 +117,84 @@ export default function StepContainer() {
         <MdTypography variant="title" size="large">
           Container
         </MdTypography>
-        <div className="bg-surfaceContainerHigh rounded-2xl px-4 py-1 flex items-center relative">
-          <MdTypography
-            variant="label"
-            size="small"
-            className="text-outline absolute -top-1.5"
-          >
-            Total
-          </MdTypography>
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-primary min-w-[88px] text-right"
-          >
-            {sumContainerQuantity([
-              ...siContainerStore.dry,
-              ...siContainerStore.reefer,
-              ...siContainerStore.opentop,
-              ...siContainerStore.flatrack,
-              ...siContainerStore.tank,
-              ...siContainerStore.bulk,
-            ])}
-          </MdTypography>
-          <DividerComponent
-            orientation="vertical"
-            className="mx-4 h-4 flex items-center"
-          />
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-primary min-w-16 text-right"
-          >
-            {sumContainerWeight([
-              ...siContainerStore.dry,
-              ...siContainerStore.reefer,
-              ...siContainerStore.opentop,
-              ...siContainerStore.flatrack,
-              ...siContainerStore.tank,
-              ...siContainerStore.bulk,
-            ])}
-          </MdTypography>
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-outline ml-2"
-          >
-            {siContainerStore.weightUnit}
-          </MdTypography>
-          <DividerComponent
-            orientation="vertical"
-            className="mx-4 h-4 flex items-center"
-          />
-          <MdTypography
-            variant="body"
-            size="medium"
-            prominent
-            className="text-primary min-w-16 text-right"
-          >
-            {sumContainerMeasurement([
-              ...siContainerStore.dry,
-              ...siContainerStore.reefer,
-              ...siContainerStore.opentop,
-              ...siContainerStore.flatrack,
-              ...siContainerStore.tank,
-              ...siContainerStore.bulk,
-            ])}
-          </MdTypography>
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-outline ml-2"
-          >
-            {siContainerStore.measurementUnit}
-          </MdTypography>
+        <div className="flex gap-4">
+          <div className="bg-surfaceContainerHigh rounded-2xl px-4 py-1 flex items-center relative">
+            <MdTypography
+              variant="label"
+              size="small"
+              className="text-outline absolute -top-1.5"
+            >
+              Total
+            </MdTypography>
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-primary min-w-[88px] text-right"
+            >
+              {sumContainerQuantity([
+                ...siContainerStore.dry,
+                ...siContainerStore.reefer,
+                ...siContainerStore.opentop,
+                ...siContainerStore.flatrack,
+                ...siContainerStore.tank,
+                ...siContainerStore.bulk,
+              ])}
+            </MdTypography>
+            <DividerComponent
+              orientation="vertical"
+              className="mx-4 h-4 flex items-center"
+            />
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-primary min-w-16 text-right"
+            >
+              {sumContainerWeight([
+                ...siContainerStore.dry,
+                ...siContainerStore.reefer,
+                ...siContainerStore.opentop,
+                ...siContainerStore.flatrack,
+                ...siContainerStore.tank,
+                ...siContainerStore.bulk,
+              ])}
+            </MdTypography>
+            <MdTypography
+              variant="body"
+              size="medium"
+              className="text-outline ml-2"
+            >
+              {siContainerStore.weightUnit}
+            </MdTypography>
+            <DividerComponent
+              orientation="vertical"
+              className="mx-4 h-4 flex items-center"
+            />
+            <MdTypography
+              variant="body"
+              size="medium"
+              prominent
+              className="text-primary min-w-16 text-right"
+            >
+              {sumContainerMeasurement([
+                ...siContainerStore.dry,
+                ...siContainerStore.reefer,
+                ...siContainerStore.opentop,
+                ...siContainerStore.flatrack,
+                ...siContainerStore.tank,
+                ...siContainerStore.bulk,
+              ])}
+            </MdTypography>
+            <MdTypography
+              variant="body"
+              size="medium"
+              className="text-outline ml-2"
+            >
+              {siContainerStore.measurementUnit}
+            </MdTypography>
+          </div>
+          <MdSwitch />
         </div>
       </div>
       <div className="flex gap-4">
