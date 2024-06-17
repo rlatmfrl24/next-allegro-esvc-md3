@@ -326,56 +326,53 @@ export default function BookingStatusCondition() {
           }}
         />
       </MdOutlinedSegmentedButtonSet>
-      <div>
-        {stateCondition === "requestDate" ? (
-          <div className="flex items-center">
-            <DateRangePicker
-              label="Request Date"
-              initial={{
-                start: searchCondition.requestDateStart,
-                end: searchCondition.requestDateEnd,
-              }}
-              onDateChange={(dateRange) => {
-                if (dateRange.start && dateRange.end)
-                  setSearchCondition({
-                    ...searchCondition,
-                    requestDateStart: dateRange.start,
-                    requestDateEnd: dateRange.end,
-                  });
-              }}
-            />
-          </div>
-        ) : (
-          <>{VesselVoyageFilter}</>
-        )}
-      </div>
-      {activeFilters.length > 0 && (
-        <DividerComponent className="border-dotted" />
-      )}
-      <div className="flex gap-4 flex-wrap">
-        {activeFilters.includes("referenceNo") && ReferenceNumberFilter}
-        {activeFilters.includes("origin") && OriginPortFilter}
-        {activeFilters.includes("destination") && DestinationPortFilter}
-        {activeFilters.includes("bookingVia") && BookingViaFilter}
-      </div>
-      <div className="flex gap-4 justify-end">
-        <MdTextButton>Reset</MdTextButton>
-        <MdTextButton
-          ref={refs.setReference}
-          {...getReferenceProps()}
-          className={isFilterDetailsOpen ? "bg-secondaryFixed" : ""}
-        >
-          More Filter
-        </MdTextButton>
+      <div className="flex gap-4">
+        <div className="flex gap-4 items-start flex-wrap">
+          {stateCondition === "requestDate" ? (
+            <div className="flex items-center">
+              <DateRangePicker
+                label="Request Date"
+                initial={{
+                  start: searchCondition.requestDateStart,
+                  end: searchCondition.requestDateEnd,
+                }}
+                onDateChange={(dateRange) => {
+                  if (dateRange.start && dateRange.end)
+                    setSearchCondition({
+                      ...searchCondition,
+                      requestDateStart: dateRange.start,
+                      requestDateEnd: dateRange.end,
+                    });
+                }}
+              />
+            </div>
+          ) : (
+            <>{VesselVoyageFilter}</>
+          )}
+          {activeFilters.includes("referenceNo") && ReferenceNumberFilter}
+          {activeFilters.includes("origin") && OriginPortFilter}
+          {activeFilters.includes("destination") && DestinationPortFilter}
+          {activeFilters.includes("bookingVia") && BookingViaFilter}
+        </div>
+        <div className="flex gap-4 justify-end h-full items-end flex-1">
+          <MdTextButton>Reset</MdTextButton>
+          <MdTextButton
+            ref={refs.setReference}
+            {...getReferenceProps()}
+            className={isFilterDetailsOpen ? "bg-secondaryFixed" : ""}
+          >
+            More Filter
+          </MdTextButton>
 
-        <MdFilledButton
-          onClick={() => {
-            console.log(getCondition());
-            FocusOnResult(areaRef, scrollState.instance);
-          }}
-        >
-          Search
-        </MdFilledButton>
+          <MdFilledButton
+            onClick={() => {
+              console.log(getCondition());
+              FocusOnResult(areaRef, scrollState.instance);
+            }}
+          >
+            Search
+          </MdFilledButton>
+        </div>
       </div>
       <div
         ref={refs.setFloating}

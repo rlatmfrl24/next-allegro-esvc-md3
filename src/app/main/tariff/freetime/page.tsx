@@ -67,22 +67,22 @@ export default function FreetimeRequestPage() {
             options={["Demurrage", "Detention", "Combined"]}
             initialValue="Demurrage"
           />
-        </div>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end items-end h-full flex-1">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={styles.area}>

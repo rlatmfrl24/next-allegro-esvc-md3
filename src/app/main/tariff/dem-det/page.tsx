@@ -87,22 +87,22 @@ export default function DemDetPage() {
               />
             </>
           )}
-        </div>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end items-end flex-1 h-full">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       <div className={styles.area}>
