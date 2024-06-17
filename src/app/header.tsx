@@ -58,11 +58,9 @@ export const Header = () => {
 const HeaderSignComponent = () => {
   const [isSigning, setIsSigning] = useState(false);
   const [onHoverAt, setOnHoverAt] = useState(0);
-  const { renderRegisterDialog, openDialog } = useRegister();
 
   return (
     <div className="flex gap-3 items-center">
-      {renderRegisterDialog()}
       <div className="flex">
         <Link href={`/quick/surcharge`}>
           <MdNavigationTab
@@ -158,14 +156,11 @@ const HeaderSignComponent = () => {
         </Link>
       ) : (
         <>
-          <MdOutlinedButton
-            className="w-32 font-pretendard font-medium"
-            onClick={() => {
-              openDialog();
-            }}
-          >
-            Register
-          </MdOutlinedButton>
+          <Link href={"/sign/up"}>
+            <MdOutlinedButton className="w-32 font-pretendard font-medium">
+              Register
+            </MdOutlinedButton>
+          </Link>
           <Link
             href={"/sign/in"}
             onClick={() => {
