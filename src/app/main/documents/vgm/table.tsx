@@ -20,30 +20,25 @@ import { CSSProperties, useEffect, useMemo, useState } from "react";
 type VGMTableProps = {
   containerNumber: string;
   bookingNumber: string;
-  weightType: "VGM" | "Cargo Weight";
   vgm: number;
-  vgmUnit: "KGS" | "LBS";
   tareWeight: number;
   maxPayload: number;
   signatory: string | undefined;
-  referenceId: string | undefined;
   vgmCutOffTime: DateTime;
+  declaredWeight: number;
   isSubscribed: boolean;
   emailNotification: string;
   updateDate: DateTime;
-  updateId: DateTime;
 };
 
 function createDummyVGM() {
   return {
     containerNumber: faker.string.alphanumeric(11).toUpperCase(),
     bookingNumber: faker.string.alphanumeric(11).toUpperCase(),
-    weightType: faker.helpers.arrayElement(["VGM", "Cargo Weight"]),
     vgm: faker.number.int({
       min: 1000,
       max: 10000,
     }),
-    vgmUnit: faker.helpers.arrayElement(["KGS", "LBS"]),
     tareWeight: faker.number.int({
       min: 1000,
       max: 10000,
@@ -53,12 +48,14 @@ function createDummyVGM() {
       max: 10000,
     }),
     signatory: undefined,
-    referenceId: undefined,
     vgmCutOffTime: DateTime.fromJSDate(faker.date.recent()),
+    declaredWeight: faker.number.int({
+      min: 1000,
+      max: 10000,
+    }),
     isSubscribed: faker.datatype.boolean(),
     emailNotification: faker.internet.email(),
     updateDate: DateTime.fromJSDate(faker.date.recent()),
-    updateId: DateTime.fromJSDate(faker.date.recent()),
   } as VGMTableProps;
 }
 
@@ -93,31 +90,10 @@ export const VGMTable = () => {
         );
       },
     }),
-    columnHelper.accessor("weightType", {
-      id: "weightType",
-      header: "Weight Type",
-      cell: (info) => {
-        return (
-          <GridSelectComponent
-            initialSelection={info.getValue()}
-            options={["VGM", "Cargo Weight"]}
-            onChange={(value) => {
-              setTableData((prev) => {
-                const newData = [...prev];
-                newData[info.row.index] = {
-                  ...newData[info.row.index],
-                  weightType: value as "VGM" | "Cargo Weight",
-                };
-                return newData;
-              });
-            }}
-          />
-        );
-      },
-    }),
+
     columnHelper.accessor("vgm", {
       id: "vgm",
-      header: "VGM",
+      header: "VGM (KGS) (Cargo + Tare Weight)",
       cell: (info) => {
         const intValue = parseInt(info.getValue().toString());
 
@@ -131,31 +107,10 @@ export const VGMTable = () => {
         );
       },
     }),
-    columnHelper.accessor("vgmUnit", {
-      id: "vgmUnit",
-      header: "VGM Unit",
-      cell: (info) => {
-        return (
-          <GridSelectComponent
-            initialSelection={info.getValue()}
-            options={["KGS", "LBS"]}
-            onChange={(value) => {
-              setTableData((prev) => {
-                const newData = [...prev];
-                newData[info.row.index] = {
-                  ...newData[info.row.index],
-                  vgmUnit: value as "KGS" | "LBS",
-                };
-                return newData;
-              });
-            }}
-          />
-        );
-      },
-    }),
+
     columnHelper.accessor("tareWeight", {
       id: "tareWeight",
-      header: "Tare Weight",
+      header: "Tare Weight (KGS)",
       cell: (info) => {
         const intValue = parseInt(info.getValue().toString());
 
@@ -171,7 +126,7 @@ export const VGMTable = () => {
     }),
     columnHelper.accessor("maxPayload", {
       id: "maxPayload",
-      header: "Max Payload",
+      header: "Max Payload (KGS)",
       cell: (info) => {
         const intValue = parseInt(info.getValue().toString());
 
@@ -204,28 +159,10 @@ export const VGMTable = () => {
         );
       },
     }),
-    columnHelper.accessor("referenceId", {
-      id: "referenceId",
-      header: "Reference ID",
-      cell: (info) => {
-        return info.getValue() ? (
-          <MdTypography variant="body" size="medium">
-            {info.getValue()}
-          </MdTypography>
-        ) : (
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-outlineVariant"
-          >
-            Reference ID
-          </MdTypography>
-        );
-      },
-    }),
+
     columnHelper.accessor("vgmCutOffTime", {
       id: "vgmCutOffTime",
-      header: "VGM Cut-off Time",
+      header: "VGM Cut Off Time",
       cell: (info) => {
         return (
           <MdTypography variant="body" size="medium">
@@ -234,6 +171,23 @@ export const VGMTable = () => {
         );
       },
     }),
+    columnHelper.accessor("declaredWeight", {
+      id: "declaredWeight",
+      header: "Declared VGM Weight (KGS)",
+      cell: (info) => {
+        const intValue = parseInt(info.getValue().toString());
+
+        return (
+          <MdTypography variant="body" size="medium" className="text-right">
+            {intValue
+              .toFixed(2)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </MdTypography>
+        );
+      },
+    }),
+
     columnHelper.accessor("isSubscribed", {
       id: "isSubscribed",
       header: "Subsc.",
@@ -268,21 +222,11 @@ export const VGMTable = () => {
           </MdTypography>
         );
       },
+      size: 200,
     }),
     columnHelper.accessor("updateDate", {
       id: "updateDate",
       header: "Update Date",
-      cell: (info) => {
-        return (
-          <MdTypography variant="body" size="medium">
-            {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-          </MdTypography>
-        );
-      },
-    }),
-    columnHelper.accessor("updateId", {
-      id: "updateId",
-      header: "Update ID",
       cell: (info) => {
         return (
           <MdTypography variant="body" size="medium">
@@ -321,13 +265,7 @@ export const VGMTable = () => {
         data={tableData}
         columns={columnDefs}
         isSingleSelect
-        editableColumns={[
-          "vgm",
-          "tareWeight",
-          "maxPayload",
-          "signatory",
-          "referenceId",
-        ]}
+        editableColumns={["vgm", "signatory", "emailNotification"]}
         updater={setTableData}
       />
       <Portal selector="#vgm-container">
