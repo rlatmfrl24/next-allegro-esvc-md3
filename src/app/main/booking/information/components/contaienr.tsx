@@ -87,6 +87,16 @@ export default function ContainerSection({
                 className="bg-surfaceContainerHigh mb-2"
                 size="medium"
               />
+              <MdTypography
+                variant="body"
+                size="large"
+                prominent
+                className="flex gap-2"
+              >
+                <span>Bulk</span>
+                <span className="text-outlineVariant">X</span>
+                <span>{data.bulk.length}</span>
+              </MdTypography>
             </div>
           </div>
         )}
