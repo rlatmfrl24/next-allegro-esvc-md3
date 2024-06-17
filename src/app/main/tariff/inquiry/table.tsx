@@ -115,8 +115,11 @@ export const ChargeInquiryTable = (props: {
         <MdTypography
           variant="body"
           size="medium"
-          className="w-fit underline cursor-pointer"
+          className={`w-fit ${
+            props.tableType === "simple" ? "" : "underline cursor-pointer"
+          }`}
           onClick={() => {
+            if (props.tableType === "simple") return;
             setSelectedBookingInfo(info.row.original);
             openBookingInformationDialog(true);
           }}

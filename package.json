@@ -26,6 +26,7 @@
     "@tanstack/react-form": "^0.13.7",
     "@tanstack/react-table": "^8.12.0",
     "@types/lodash": "^4.14.202",
+    "ag-grid-react": "^31.3.2",
     "classnames": "^2.5.1",
     "cookies-next": "^4.1.1",
     "framer-motion": "^10.18.0",
