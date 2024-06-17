@@ -196,7 +196,7 @@ export default function CreateNewReport() {
         <DetailTitle title="Email Service" className="mt-4" />
         <div className="flex items-center gap-2 h-20">
           <MdTypography variant="label" size="medium" className="text-outline">
-            Get service
+            Subscription
           </MdTypography>
           <MdSwitch
             className="mr-4"

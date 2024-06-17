@@ -32,6 +32,7 @@ import { difference, isEqual } from "lodash";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import classNames from "classnames";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import { CycleSelector } from "@/app/main/subscription/components/component";
 
 export default function EditReport() {
   const cx = classNames.bind(styles);
@@ -200,7 +201,7 @@ export default function EditReport() {
         <DetailTitle title="Email Service" className="mt-4" />
         <div className="flex items-center gap-2 h-20">
           <MdTypography variant="label" size="medium" className="text-outline">
-            Get service
+            Subscription
           </MdTypography>
           <MdSwitch
             className="mr-4"
@@ -217,10 +218,11 @@ export default function EditReport() {
                   (i) => i + " Week" + (i > 1 ? "s" : "")
                 )}
               />
-              <NAOutlinedListBox
+              {/* <NAOutlinedListBox
                 label="Sending Cycle"
                 options={["Daily", "Weekly", "Monthly"]}
-              />
+              /> */}
+              <CycleSelector />
             </>
           )}
         </div>
