@@ -23,7 +23,6 @@ import { DividerComponent } from "@/app/components/divider";
 
 export default function NoticePage() {
   const cx = classNames.bind(styles);
-  const router = useRouter();
   const tempData = useMemo(() => {
     return Array.from({ length: 100 }, () => createDummyNotice());
   }, []);
