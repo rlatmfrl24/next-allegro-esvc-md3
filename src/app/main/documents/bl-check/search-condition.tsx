@@ -242,38 +242,38 @@ export default function BLCheckSearchCondition({
             ),
           }[searchType]
         }
-      </div>
-      <div className="flex gap-2 justify-end">
-        <MdTextButton
-          onClick={() => {
-            setBlQuery("");
-            setBlNumberList([]);
-            setVesselCondition({
-              vesselName: "",
-              voyage: "",
-              direction: "E",
-            });
-            setBoardDateCondition({
-              from: DateTime.now(),
-              to: DateTime.now(),
-            });
-            onReset();
-          }}
-        >
-          Reset
-        </MdTextButton>
-        <MdFilledButton
-          onClick={() => {
-            if (searchType === "B/L No.") console.log(blNumberList);
-            else if (searchType === "Vessel") console.log(vesselCondition);
-            else console.log(boardDateCondition);
+        <div className="flex gap-2 justify-end h-full items-end flex-1">
+          <MdTextButton
+            onClick={() => {
+              setBlQuery("");
+              setBlNumberList([]);
+              setVesselCondition({
+                vesselName: "",
+                voyage: "",
+                direction: "E",
+              });
+              setBoardDateCondition({
+                from: DateTime.now(),
+                to: DateTime.now(),
+              });
+              onReset();
+            }}
+          >
+            Reset
+          </MdTextButton>
+          <MdFilledButton
+            onClick={() => {
+              if (searchType === "B/L No.") console.log(blNumberList);
+              else if (searchType === "Vessel") console.log(vesselCondition);
+              else console.log(boardDateCondition);
 
-            onSearch();
-            FocusOnResult(areaRef, scrollState.instance);
-          }}
-        >
-          Search
-        </MdFilledButton>
+              onSearch();
+              FocusOnResult(areaRef, scrollState.instance);
+            }}
+          >
+            Search
+          </MdFilledButton>
+        </div>
       </div>
     </div>
   );

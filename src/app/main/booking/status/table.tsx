@@ -425,23 +425,28 @@ export default function BookingStatusTable() {
       {renderEstimatedTimeofDepartureDialog()}
       {renderVesselInfoDialog()}
       <div className="relative w-full max-w-full">
-        <MdChipSet className="mb-4">
-          <StatusFilterComponent
-            statusOptions={Object.values(BookingStatus)}
-            onChange={(states) => {
-              setTableData(
-                tempData.filter((row) => states.includes(row.status))
-              );
-            }}
-          />
-          <MdFilterChip label="My Booking" />
-        </MdChipSet>
         <BasicTable
-          ActionComponent={() => {
+          ActionComponent={(table) => {
             return (
               <div className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
+                    <MdChipSet>
+                      <StatusFilterComponent
+                        statusOptions={Object.values(BookingStatus)}
+                        onChange={(states) => {
+                          console.log(states);
+                          table.setColumnFilters([
+                            {
+                              id: "status",
+                              value: states as BookingStatus[],
+                            },
+                          ]);
+                        }}
+                      />
+                      <MdFilterChip label="My Booking" />
+                    </MdChipSet>
+
                     <MdTextButton>
                       <div slot="icon">
                         <Download fontSize="small" />

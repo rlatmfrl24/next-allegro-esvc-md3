@@ -342,22 +342,25 @@ export default function SITable() {
   return (
     <>
       {renderDialog()}
-      <MdChipSet>
-        <StatusFilterComponent
-          statusOptions={Object.values(SIState)}
-          onChange={(states) => {
-            setTableData(
-              tempTableData.filter((row) => states.includes(row.blState))
-            );
-          }}
-        />
-        <MdFilterChip label="My Shipment " />
-      </MdChipSet>
-
       <BasicTable
-        ActionComponent={() => {
+        ActionComponent={(table) => {
           return (
             <div className="flex flex-1 gap-2 items-center">
+              <MdChipSet>
+                <StatusFilterComponent
+                  statusOptions={Object.values(SIState)}
+                  onChange={(states) => {
+                    table.setColumnFilters([
+                      {
+                        id: "blState",
+                        value: states,
+                      },
+                    ]);
+                  }}
+                />
+                <MdFilterChip label="My Shipment " />
+              </MdChipSet>
+
               <MdTextButton>
                 <div slot="icon">
                   <Download fontSize="small" />
