@@ -20,6 +20,7 @@ import {
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
 import { FocusOnResult } from "../../util";
+import classNames from "classnames";
 
 export default function VesselSchedule() {
   const emptyVesselData: VesselInfoType = {
@@ -41,6 +42,7 @@ export default function VesselSchedule() {
     portOfRegistry: "",
   };
 
+  const cx = classNames.bind(styles);
   const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
@@ -78,13 +80,15 @@ export default function VesselSchedule() {
     <div
       id="content-container"
       aria-label="container"
-      className={styles.container + " relative"}
+      className={cx(styles.container, "relative")}
+      // className={styles.container + " relative"}
     >
       <PageTitle title="Vessel Schedule" />
-      <div ref={areaRef} className={styles.area}>
+      <div ref={areaRef} className={cx(styles.area, styles.row)}>
         <NAOutlinedAutoComplete
           label="Vessel Name"
           required
+          className="flex-1"
           icon={<VesselIcon />}
           recentCookieKey="recent-vessel"
           itemList={vesselList.map((vessel) => vessel.vesselName)}

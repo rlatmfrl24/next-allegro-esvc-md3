@@ -53,7 +53,7 @@ export default function PortSchedule() {
         aria-label="condition-container"
         className={styles.area}
       >
-        <div className="flex gap-4 items-start">
+        <div className="flex gap-4 items-end">
           <NAOutlinedAutoComplete
             label="Port Name"
             className="w-full"
@@ -70,7 +70,7 @@ export default function PortSchedule() {
             }}
           />
           <DateRangePicker
-            className="w-80"
+            className="w-96"
             initial={{
               start: portQuery.startDate,
               end: portQuery.endDate,
@@ -84,27 +84,27 @@ export default function PortSchedule() {
                 });
             }}
           />
-        </div>
-        <div
-          aria-label="search-condition-actions"
-          className="flex justify-end gap-2"
-        >
-          <MdTextButton
-            onClick={() => {
-              resetPortQuery();
-              setPageState("unsearch");
-            }}
+          <div
+            aria-label="search-condition-actions"
+            className="flex justify-end gap-2"
           >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-              FocusOnResult(areaRef, scrollState.instance);
-            }}
-          >
-            Search
-          </MdFilledButton>
+            <MdTextButton
+              onClick={() => {
+                resetPortQuery();
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+                FocusOnResult(areaRef, scrollState.instance);
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       {pageState === "unsearch" ? (
