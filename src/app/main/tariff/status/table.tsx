@@ -20,6 +20,8 @@ type DetentionStatusTableProps = {
   containerNumber: string;
   typeSize: string;
   vessel: VesselInfoType;
+  por: string;
+  pol: string;
   pod: string;
   del: string;
   tariffType: string;
@@ -47,6 +49,8 @@ function createDummyDetention(): DetentionStatusTableProps {
       "40' Reefer",
     ]),
     vessel: createDummyVesselInformation(),
+    por: faker.location.city() + ", " + faker.location.country(),
+    pol: faker.location.city() + ", " + faker.location.country(),
     pod: faker.location.city() + ", " + faker.location.country(),
     del: faker.location.city() + ", " + faker.location.country(),
     tariffType: faker.lorem.words(4),
@@ -64,7 +68,9 @@ function createDummyDetention(): DetentionStatusTableProps {
   } as DetentionStatusTableProps;
 }
 
-export const DetentionStatusTable = () => {
+export const DetentionStatusTable = (pros: {
+  type: "inbound" | "outbound";
+}) => {
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
 

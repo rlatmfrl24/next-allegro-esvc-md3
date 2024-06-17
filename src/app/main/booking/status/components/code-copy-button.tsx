@@ -1,4 +1,4 @@
-import { MdIcon, MdIconButton } from "@/app/util/md3";
+import { MdIcon, MdIconButton, MdRippleEffect } from "@/app/util/md3";
 import { Check, ContentCopy } from "@mui/icons-material";
 import { useState } from "react";
 import { PlainTooltip } from "@/app/components/tooltip";
@@ -10,6 +10,7 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import Portal from "@/app/components/portal";
+import CopyIcon from "@/../public/icon_copy_line.svg";
 
 export const CodeCopyButton = ({ code }: { code: string }) => {
   const [copied, setCopied] = useState(false);
@@ -35,7 +36,7 @@ export const CodeCopyButton = ({ code }: { code: string }) => {
 
   return (
     <>
-      <MdIconButton
+      <div
         ref={refs.setReference}
         {...getReferenceProps()}
         onClick={(e) => {
@@ -43,15 +44,15 @@ export const CodeCopyButton = ({ code }: { code: string }) => {
           e.stopPropagation();
           copyCode();
         }}
+        className="flex items-center justify-center w-8 h-8 relative rounded-full cursor-pointer"
       >
-        <MdIcon>
-          {copied ? (
-            <Check className="text-primary" />
-          ) : (
-            <ContentCopy className="text-outlineVariant" />
-          )}
-        </MdIcon>
-      </MdIconButton>
+        <MdRippleEffect />
+        {copied ? (
+          <Check className="text-primary" fontSize="small" />
+        ) : (
+          <CopyIcon />
+        )}
+      </div>
       <Portal selector="#main-container">
         {isTooltipOpen && (
           <div
