@@ -6,7 +6,10 @@ import { useMemo, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
-import { useVesselInfoDialog } from "@/app/components/common-dialog-hooks";
+import {
+  useVesselInfoDialog,
+  useVesselScheduleDialog,
+} from "@/app/components/common-dialog-hooks";
 import LabelChip from "@/app/components/chips/label-chip";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { MdIcon, MdTextButton } from "@/app/util/md3";
@@ -62,8 +65,8 @@ function createDummyDetention(): DetentionStatusTableProps {
 }
 
 export const DetentionStatusTable = () => {
-  const { renderDialog, setCurrentVessel, setIsVesselInfoDialogOpen } =
-    useVesselInfoDialog();
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselScheduleDialog();
 
   const tempDetentions = useMemo(() => {
     return Array.from({ length: 100 }, (_, index) => createDummyDetention());
@@ -109,7 +112,7 @@ export const DetentionStatusTable = () => {
           className="w-fit underline cursor-pointer"
           onClick={() => {
             setCurrentVessel(info.getValue());
-            setIsVesselInfoDialogOpen(true);
+            setIsVesselScheduleDialogOpen(true);
           }}
         >
           {info.getValue().vesselName}

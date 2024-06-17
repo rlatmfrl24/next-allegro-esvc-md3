@@ -101,6 +101,7 @@ export default function DetentionStatusPage() {
                   {numberQueries.map((query, index) => (
                     <div key={query}>
                       <MdInputChip
+                        selected
                         label={query}
                         remove={() => {
                           setNumberQueries((prev) => {
