@@ -1,11 +1,13 @@
 import {
   Cell,
+  ColumnFiltersState,
   PaginationState,
   RowData,
   SortingState,
   Table,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -115,6 +117,7 @@ export const BasicTable = ({
   const [selectedCell, setSelectedCell] = useState<Cell<any, unknown> | null>(
     null
   );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]); // can set initial column filter state here
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -131,6 +134,7 @@ export const BasicTable = ({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       columnPinning: {
         left: pinningColumns,
@@ -138,16 +142,19 @@ export const BasicTable = ({
     },
     state: {
       rowSelection: selectedRows,
+      columnFilters,
       columnOrder,
       sorting,
       columnVisibility,
       pagination,
     },
+    onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setSelectedRows,
     onColumnOrderChange: setColumnOrder,
     onColumnVisibilityChange: setColumnVisibility,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
     autoResetPageIndex,
