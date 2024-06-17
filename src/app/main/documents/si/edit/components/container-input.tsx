@@ -23,7 +23,12 @@ import {
   SealKind,
 } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { Add, DeleteOutline } from "@mui/icons-material";
+import {
+  Add,
+  DeleteOutline,
+  TableChart,
+  TextFields,
+} from "@mui/icons-material";
 import { set } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -682,85 +687,6 @@ export default function ContainerInput({
                     }}
                   />
                 </div>
-              </div>
-              <div className="flex gap-2">
-                {/* <NAOutlinedListBox
-                  options={["Y", "N", "N/A"]}
-                  initialValue={
-                    container.cargoManifest.find(
-                      (cm) => cm.uuid === selectedCargoManifestUuid
-                    )?.cargoInformation.wpmStatus || "N/A"
-                  }
-                  onSelection={(value) => {
-                    updateContainerStore(
-                      container,
-                      "cargoManifest",
-                      container.cargoManifest.map((cm) =>
-                        cm.uuid === selectedCargoManifestUuid
-                          ? {
-                              ...cm,
-                              cargoInformation: {
-                                ...cm.cargoInformation,
-                                wpmStatus: value,
-                              },
-                            }
-                          : cm
-                      )
-                    );
-                  }}
-                /> */}
-                {/* <NAOutlinedTextField
-                  label="Combo"
-                  value={
-                    container.cargoManifest.find(
-                      (cm) => cm.uuid === selectedCargoManifestUuid
-                    )?.cargoInformation.combo || ""
-                  }
-                  handleValueChange={(value) => {
-                    updateContainerStore(
-                      container,
-                      "cargoManifest",
-                      container.cargoManifest.map((cm) =>
-                        cm.uuid === selectedCargoManifestUuid
-                          ? {
-                              ...cm,
-                              cargoInformation: {
-                                ...cm.cargoInformation,
-                                combo: value,
-                              },
-                            }
-                          : cm
-                      )
-                    );
-                  }}
-                /> */}
-                <NAOutlinedTextField
-                  className="flex-1"
-                  maxInputLength={4000}
-                  placeholder="BULK,LIQUEFIED GAS(ABNORMAL TEMPERATURE/PRESSURE)"
-                  value={
-                    container.cargoManifest.find(
-                      (cm) => cm.uuid === selectedCargoManifestUuid
-                    )?.cargoInformation.description || ""
-                  }
-                  handleValueChange={(value) => {
-                    updateContainerStore(
-                      container,
-                      "cargoManifest",
-                      container.cargoManifest.map((cm) =>
-                        cm.uuid === selectedCargoManifestUuid
-                          ? {
-                              ...cm,
-                              cargoInformation: {
-                                ...cm.cargoInformation,
-                                description: value,
-                              },
-                            }
-                          : cm
-                      )
-                    );
-                  }}
-                />
               </div>
               <MdTypography
                 variant="body"

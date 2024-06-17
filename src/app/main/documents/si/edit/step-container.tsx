@@ -20,14 +20,24 @@ import {
   SIEditContainerState,
   SIEditStepState,
 } from "@/app/store/si.store";
-import { MdFilledButton, MdSwitch } from "@/app/util/md3";
+import { MdFilledButton, MdRippleEffect, MdSwitch } from "@/app/util/md3";
 import { ContainerType } from "@/app/util/typeDef/boooking";
 
 import ContainerToggleButton from "./components/container-toggle-button";
 import ContainerTypeInputComponent from "./components/container-type-input";
 import { DividerComponent } from "@/app/components/divider";
 
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import SIContainerGrid from "./components/container-grid";
+import {
+  TableChart,
+  TableChartOutlined,
+  TextFields,
+} from "@mui/icons-material";
+
 export default function StepContainer() {
+  const [viewType, setViewType] = useState<"grid" | "form">("form");
   const setSIEditStep = useSetRecoilState(SIEditStepState);
   const [typeSelections, setTypeSelections] = useState<ContainerType[]>(
     Object.keys(ContainerType).map(
@@ -194,237 +204,248 @@ export default function StepContainer() {
               {siContainerStore.measurementUnit}
             </MdTypography>
           </div>
-          <MdSwitch />
+          <CustomSwapSwitch
+            viewType={viewType}
+            onViewTypeChange={(viewType) => setViewType(viewType)}
+          />
         </div>
       </div>
-      <div className="flex gap-4">
-        <ContainerToggleButton
-          image={<DryContainerImage />}
-          isSelected={typeSelections.includes(ContainerType.dry)}
-          title="Dry"
-          onClick={() => handleTypeSelections(ContainerType.dry)}
-          count={
-            siContainerStore.dry.length === 0
-              ? undefined
-              : siContainerStore.dry.length
-          }
-          hoverText={
-            <div>
-              {Object.keys(containerInputStatstics.dry).map((key) => {
-                return (
-                  <div key={key} className="flex text-white">
-                    <MdTypography variant="title" size="medium">
-                      {key} x
-                    </MdTypography>
-                    <MdTypography variant="title" size="medium">
-                      {containerInputStatstics.dry[key as any]}
-                    </MdTypography>
-                  </div>
-                );
-              })}
-            </div>
-          }
-        />
-        <ContainerToggleButton
-          image={<ReeferContainerImage />}
-          isSelected={typeSelections.includes(ContainerType.reefer)}
-          title="Reefer"
-          onClick={() => handleTypeSelections(ContainerType.reefer)}
-          count={
-            siContainerStore.reefer.length === 0
-              ? undefined
-              : siContainerStore.reefer.length
-          }
-          hoverText={
-            <div>
-              {Object.keys(containerInputStatstics.reefer).map((key) => {
-                return (
-                  <div key={key} className="flex text-white">
-                    <MdTypography variant="title" size="medium">
-                      {key} x
-                    </MdTypography>
-                    <MdTypography variant="title" size="medium">
-                      {containerInputStatstics.reefer[key as any]}
-                    </MdTypography>
-                  </div>
-                );
-              })}
-            </div>
-          }
-        />
-        <ContainerToggleButton
-          image={<OpenTopContainerImage />}
-          isSelected={typeSelections.includes(ContainerType.opentop)}
-          title="Open top"
-          onClick={() => handleTypeSelections(ContainerType.opentop)}
-          count={
-            siContainerStore.opentop.length === 0
-              ? undefined
-              : siContainerStore.opentop.length
-          }
-          hoverText={
-            <div>
-              {Object.keys(containerInputStatstics.opentop).map((key) => {
-                return (
-                  <div key={key} className="flex text-white">
-                    <MdTypography variant="title" size="medium">
-                      {key} x
-                    </MdTypography>
-                    <MdTypography variant="title" size="medium">
-                      {containerInputStatstics.opentop[key as any]}
-                    </MdTypography>
-                  </div>
-                );
-              })}
-            </div>
-          }
-        />
-        <ContainerToggleButton
-          image={<FlatRackContainerImage />}
-          isSelected={typeSelections.includes(ContainerType.flatrack)}
-          title="Flat rack"
-          onClick={() => handleTypeSelections(ContainerType.flatrack)}
-          count={
-            siContainerStore.flatrack.length === 0
-              ? undefined
-              : siContainerStore.flatrack.length
-          }
-          hoverText={
-            <div>
-              {Object.keys(containerInputStatstics.flatrack).map((key) => {
-                return (
-                  <div key={key} className="flex text-white">
-                    <MdTypography variant="title" size="medium">
-                      {key} x
-                    </MdTypography>
-                    <MdTypography variant="title" size="medium">
-                      {containerInputStatstics.flatrack[key as any]}
-                    </MdTypography>
-                  </div>
-                );
-              })}
-            </div>
-          }
-        />
-        <ContainerToggleButton
-          image={<TankContainerImage />}
-          isSelected={typeSelections.includes(ContainerType.tank)}
-          title="Tank"
-          onClick={() => handleTypeSelections(ContainerType.tank)}
-          count={
-            siContainerStore.tank.length === 0
-              ? undefined
-              : siContainerStore.tank.length
-          }
-          hoverText={
-            <div>
-              {Object.keys(containerInputStatstics.tank).map((key) => {
-                return (
-                  <div key={key} className="flex text-white">
-                    <MdTypography variant="title" size="medium">
-                      {key} x
-                    </MdTypography>
-                    <MdTypography variant="title" size="medium">
-                      {containerInputStatstics.tank[key as any]}
-                    </MdTypography>
-                  </div>
-                );
-              })}
-            </div>
-          }
-        />
-        <ContainerToggleButton
-          image={<BulkContainerImage />}
-          isSelected={typeSelections.includes(ContainerType.bulk)}
-          title="Bulk"
-          onClick={() => handleTypeSelections(ContainerType.bulk)}
-          count={
-            siContainerStore.bulk.length === 0
-              ? undefined
-              : siContainerStore.bulk.length
-          }
-          hoverText={
-            <div>
-              {Object.keys(containerInputStatstics.bulk).map((key) => {
-                return (
-                  <div key={key} className="flex text-white">
-                    <MdTypography variant="title" size="medium">
-                      {key} x
-                    </MdTypography>
-                    <MdTypography variant="title" size="medium">
-                      {containerInputStatstics.bulk[key as any]}
-                    </MdTypography>
-                  </div>
-                );
-              })}
-            </div>
-          }
-        />
-      </div>
-      <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
-        {typeSelections.map((type) => {
-          return (
-            <div key={type}>
-              {type === ContainerType.dry && (
-                <ContainerTypeInputComponent
-                  title="Dry Container"
-                  type={ContainerType.dry}
-                  list={siContainerStore.dry}
-                />
-              )}
-              {type === ContainerType.reefer && (
-                <ContainerTypeInputComponent
-                  title="Reefer Container"
-                  type={ContainerType.reefer}
-                  list={siContainerStore.reefer}
-                />
-              )}
-              {type === ContainerType.opentop && (
-                <ContainerTypeInputComponent
-                  title="Open Top Container"
-                  type={ContainerType.opentop}
-                  list={siContainerStore.opentop}
-                />
-              )}
-              {type === ContainerType.flatrack && (
-                <ContainerTypeInputComponent
-                  title="Flat Rack Container"
-                  type={ContainerType.flatrack}
-                  list={siContainerStore.flatrack}
-                />
-              )}
-              {type === ContainerType.tank && (
-                <ContainerTypeInputComponent
-                  title="Tank Container"
-                  type={ContainerType.tank}
-                  list={siContainerStore.tank}
-                />
-              )}
-              {type === ContainerType.bulk && (
-                <ContainerTypeInputComponent
-                  title="Bulk Container"
-                  type={ContainerType.bulk}
-                  list={siContainerStore.bulk}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
-        {typeSelections.length === 0 && (
-          <div className="flex-1 flex-col flex items-center justify-center gap-8">
-            <EmptyContainerPlaceholder />
-            <MdTypography
-              variant="headline"
-              size="medium"
-              className="text-outlineVariant"
-            >
-              Please select the container type you want to add.
-            </MdTypography>
+      {viewType === "grid" ? (
+        <>
+          <SIContainerGrid />
+        </>
+      ) : (
+        <>
+          <div className="flex gap-4">
+            <ContainerToggleButton
+              image={<DryContainerImage />}
+              isSelected={typeSelections.includes(ContainerType.dry)}
+              title="Dry"
+              onClick={() => handleTypeSelections(ContainerType.dry)}
+              count={
+                siContainerStore.dry.length === 0
+                  ? undefined
+                  : siContainerStore.dry.length
+              }
+              hoverText={
+                <div>
+                  {Object.keys(containerInputStatstics.dry).map((key) => {
+                    return (
+                      <div key={key} className="flex text-white">
+                        <MdTypography variant="title" size="medium">
+                          {key} x
+                        </MdTypography>
+                        <MdTypography variant="title" size="medium">
+                          {containerInputStatstics.dry[key as any]}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+            />
+            <ContainerToggleButton
+              image={<ReeferContainerImage />}
+              isSelected={typeSelections.includes(ContainerType.reefer)}
+              title="Reefer"
+              onClick={() => handleTypeSelections(ContainerType.reefer)}
+              count={
+                siContainerStore.reefer.length === 0
+                  ? undefined
+                  : siContainerStore.reefer.length
+              }
+              hoverText={
+                <div>
+                  {Object.keys(containerInputStatstics.reefer).map((key) => {
+                    return (
+                      <div key={key} className="flex text-white">
+                        <MdTypography variant="title" size="medium">
+                          {key} x
+                        </MdTypography>
+                        <MdTypography variant="title" size="medium">
+                          {containerInputStatstics.reefer[key as any]}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+            />
+            <ContainerToggleButton
+              image={<OpenTopContainerImage />}
+              isSelected={typeSelections.includes(ContainerType.opentop)}
+              title="Open top"
+              onClick={() => handleTypeSelections(ContainerType.opentop)}
+              count={
+                siContainerStore.opentop.length === 0
+                  ? undefined
+                  : siContainerStore.opentop.length
+              }
+              hoverText={
+                <div>
+                  {Object.keys(containerInputStatstics.opentop).map((key) => {
+                    return (
+                      <div key={key} className="flex text-white">
+                        <MdTypography variant="title" size="medium">
+                          {key} x
+                        </MdTypography>
+                        <MdTypography variant="title" size="medium">
+                          {containerInputStatstics.opentop[key as any]}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+            />
+            <ContainerToggleButton
+              image={<FlatRackContainerImage />}
+              isSelected={typeSelections.includes(ContainerType.flatrack)}
+              title="Flat rack"
+              onClick={() => handleTypeSelections(ContainerType.flatrack)}
+              count={
+                siContainerStore.flatrack.length === 0
+                  ? undefined
+                  : siContainerStore.flatrack.length
+              }
+              hoverText={
+                <div>
+                  {Object.keys(containerInputStatstics.flatrack).map((key) => {
+                    return (
+                      <div key={key} className="flex text-white">
+                        <MdTypography variant="title" size="medium">
+                          {key} x
+                        </MdTypography>
+                        <MdTypography variant="title" size="medium">
+                          {containerInputStatstics.flatrack[key as any]}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+            />
+            <ContainerToggleButton
+              image={<TankContainerImage />}
+              isSelected={typeSelections.includes(ContainerType.tank)}
+              title="Tank"
+              onClick={() => handleTypeSelections(ContainerType.tank)}
+              count={
+                siContainerStore.tank.length === 0
+                  ? undefined
+                  : siContainerStore.tank.length
+              }
+              hoverText={
+                <div>
+                  {Object.keys(containerInputStatstics.tank).map((key) => {
+                    return (
+                      <div key={key} className="flex text-white">
+                        <MdTypography variant="title" size="medium">
+                          {key} x
+                        </MdTypography>
+                        <MdTypography variant="title" size="medium">
+                          {containerInputStatstics.tank[key as any]}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+            />
+            <ContainerToggleButton
+              image={<BulkContainerImage />}
+              isSelected={typeSelections.includes(ContainerType.bulk)}
+              title="Bulk"
+              onClick={() => handleTypeSelections(ContainerType.bulk)}
+              count={
+                siContainerStore.bulk.length === 0
+                  ? undefined
+                  : siContainerStore.bulk.length
+              }
+              hoverText={
+                <div>
+                  {Object.keys(containerInputStatstics.bulk).map((key) => {
+                    return (
+                      <div key={key} className="flex text-white">
+                        <MdTypography variant="title" size="medium">
+                          {key} x
+                        </MdTypography>
+                        <MdTypography variant="title" size="medium">
+                          {containerInputStatstics.bulk[key as any]}
+                        </MdTypography>
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+            />
           </div>
-        )}
-      </div>
+          <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
+            {typeSelections.map((type) => {
+              return (
+                <div key={type}>
+                  {type === ContainerType.dry && (
+                    <ContainerTypeInputComponent
+                      title="Dry Container"
+                      type={ContainerType.dry}
+                      list={siContainerStore.dry}
+                    />
+                  )}
+                  {type === ContainerType.reefer && (
+                    <ContainerTypeInputComponent
+                      title="Reefer Container"
+                      type={ContainerType.reefer}
+                      list={siContainerStore.reefer}
+                    />
+                  )}
+                  {type === ContainerType.opentop && (
+                    <ContainerTypeInputComponent
+                      title="Open Top Container"
+                      type={ContainerType.opentop}
+                      list={siContainerStore.opentop}
+                    />
+                  )}
+                  {type === ContainerType.flatrack && (
+                    <ContainerTypeInputComponent
+                      title="Flat Rack Container"
+                      type={ContainerType.flatrack}
+                      list={siContainerStore.flatrack}
+                    />
+                  )}
+                  {type === ContainerType.tank && (
+                    <ContainerTypeInputComponent
+                      title="Tank Container"
+                      type={ContainerType.tank}
+                      list={siContainerStore.tank}
+                    />
+                  )}
+                  {type === ContainerType.bulk && (
+                    <ContainerTypeInputComponent
+                      title="Bulk Container"
+                      type={ContainerType.bulk}
+                      list={siContainerStore.bulk}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
+            {typeSelections.length === 0 && (
+              <div className="flex-1 flex-col flex items-center justify-center gap-8">
+                <EmptyContainerPlaceholder />
+                <MdTypography
+                  variant="headline"
+                  size="medium"
+                  className="text-outlineVariant"
+                >
+                  Please select the container type you want to add.
+                </MdTypography>
+              </div>
+            )}
+          </div>
+        </>
+      )}
       <div className="flex-1 flex justify-end items-end">
         <MdFilledButton
           className="h-fit"
@@ -436,3 +457,39 @@ export default function StepContainer() {
     </div>
   );
 }
+
+const CustomSwapSwitch = (props: {
+  viewType: "grid" | "form";
+  onViewTypeChange: (viewType: "grid" | "form") => void;
+}) => {
+  return (
+    <div className="flex border border-primary rounded-lg overflow-hidden h-fit">
+      <div
+        className={`relative p-1.5 flex items-center ${
+          props.viewType === "grid" ? "bg-primary" : ""
+        }`}
+        onClick={() => props.onViewTypeChange("grid")}
+      >
+        <MdRippleEffect />
+        <TableChartOutlined
+          className={`${
+            props.viewType === "grid" ? "text-white" : "text-primary"
+          }`}
+        />
+      </div>
+      <div
+        className={`relative p-1.5 flex items-center ${
+          props.viewType === "form" ? "bg-primary" : ""
+        }`}
+        onClick={() => props.onViewTypeChange("form")}
+      >
+        <MdRippleEffect />
+        <TextFields
+          className={`
+        ${props.viewType === "form" ? "text-white" : "text-primary"}
+          `}
+        />
+      </div>
+    </div>
+  );
+};
