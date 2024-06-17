@@ -174,6 +174,13 @@ export const SummaryDialog = (props: {
           <SimpleRadioGroup
             groupName="summary-shipment-by"
             options={["Shipper", "Consignee", "Contract"]}
+            selected={selectedRadioOption.shipmentBy}
+            onChange={(option) => {
+              setSelectedRadioOption({
+                ...selectedRadioOption,
+                shipmentBy: option,
+              });
+            }}
           />
         </div>
         <div className={cx(styles["inner-dialog-box"])}>
@@ -340,7 +347,7 @@ export const EventDialog = (props: {
           <SimpleRadioGroup
             groupName="event-service-type"
             options={["By Service Route", "By Booking No. or Container No."]}
-            initialSelected={selectedRadioOption.serviceType}
+            selected={selectedRadioOption.serviceType}
             onChange={(option) => {
               setSelectedRadioOption({
                 ...selectedRadioOption,
@@ -354,7 +361,7 @@ export const EventDialog = (props: {
           <SimpleRadioGroup
             groupName="event-inquiry-option"
             options={["Shipper", "Consignee", "Contract"]}
-            initialSelected={selectedRadioOption.inquiryOption}
+            selected={selectedRadioOption.inquiryOption}
             onChange={(option) => {
               setSelectedRadioOption({
                 ...selectedRadioOption,
@@ -503,7 +510,7 @@ export const VesselDialog = (props: {
           <SimpleRadioGroup
             groupName="vessel-service-type"
             options={["By Service Route", "By Booking No. or Container No."]}
-            initialSelected={selectedRadioOption.serviceType}
+            selected={selectedRadioOption.serviceType}
             onChange={(option) => {
               setSelectedRadioOption({
                 ...selectedRadioOption,
@@ -517,7 +524,7 @@ export const VesselDialog = (props: {
           <SimpleRadioGroup
             groupName="vessel-inquiry-option"
             options={["Shipper", "Consignee", "Contract"]}
-            initialSelected={selectedRadioOption.inquiryOption}
+            selected={selectedRadioOption.inquiryOption}
             onChange={(option) => {
               setSelectedRadioOption({
                 ...selectedRadioOption,
@@ -531,7 +538,7 @@ export const VesselDialog = (props: {
           <SimpleRadioGroup
             groupName="vessel-schedule-type"
             options={["All", "Arrival", "Departure"]}
-            initialSelected={selectedRadioOption.typeOfSchedule}
+            selected={selectedRadioOption.typeOfSchedule}
             onChange={(option) => {
               setSelectedRadioOption({
                 ...selectedRadioOption,

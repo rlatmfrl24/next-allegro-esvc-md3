@@ -27,8 +27,10 @@ import { containerVariant } from "./base";
 
 const OpenTopContainerInput = ({
   list,
+  showRequired = true,
 }: {
   list: OpenTopContainerInformationType[];
+  showRequired?: boolean;
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
@@ -104,7 +106,7 @@ const OpenTopContainerInput = ({
                             label="Size"
                             className="w-52 text-right"
                             suffixText="ft"
-                            required
+                            required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
                               container.size === ""
@@ -131,7 +133,7 @@ const OpenTopContainerInput = ({
                           <NAOutlinedTextField
                             label="Quantity / Total"
                             type="number"
-                            required
+                            required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
                               container.quantity === 0

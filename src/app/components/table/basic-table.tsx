@@ -76,6 +76,7 @@ export const BasicTable = ({
   disableColumns = [],
   requiredColumns = [],
   editableColumns = [],
+  hiddenColumns = [],
   isSingleSelect = false,
   getSelectionRows,
   ActionComponent,
@@ -86,6 +87,7 @@ export const BasicTable = ({
   pinningColumns?: string[];
   controlColumns?: string[];
   ignoreSelectionColumns?: string[];
+  hiddenColumns?: string[];
   requiredColumns?: string[];
   disableColumns?: string[];
   editableColumns?: string[];
@@ -99,7 +101,12 @@ export const BasicTable = ({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState(
+    columns.reduce((acc, column) => {
+      acc[column.id] = !hiddenColumns.includes(column.id);
+      return acc;
+    }, {} as Record<string, boolean>)
+  );
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedRows, setSelectedRows] = useState({});
   const [columnOrder, setColumnOrder] = useState<string[]>(

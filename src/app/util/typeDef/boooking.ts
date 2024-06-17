@@ -31,6 +31,7 @@ export interface PartyInterface {
 }
 
 export type PartiesType = {
+  personPlacingRequest: "Shipper" | "Forwarder";
   shipper: PartyInterface;
   freightForwarder: PartyInterface;
   consignee: PartyInterface;

@@ -56,6 +56,10 @@ export function createDummyBooking(): {
       vessel: createDummyVesselInformation(),
     },
     parties: {
+      personPlacingRequest: faker.helpers.arrayElement([
+        "Shipper",
+        "Forwarder",
+      ]),
       shipper: {
         name: faker.company.name(),
         address: faker.location.streetAddress(),

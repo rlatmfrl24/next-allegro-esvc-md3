@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
-import { useVesselInfoDialog } from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import LabelChip from "@/app/components/chips/label-chip";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { MdIcon, MdTextButton } from "@/app/util/md3";
@@ -17,6 +17,8 @@ type DetentionStatusTableProps = {
   containerNumber: string;
   typeSize: string;
   vessel: VesselInfoType;
+  por: string;
+  pol: string;
   pod: string;
   del: string;
   tariffType: string;
@@ -44,6 +46,8 @@ function createDummyDetention(): DetentionStatusTableProps {
       "40' Reefer",
     ]),
     vessel: createDummyVesselInformation(),
+    por: faker.location.city() + ", " + faker.location.country(),
+    pol: faker.location.city() + ", " + faker.location.country(),
     pod: faker.location.city() + ", " + faker.location.country(),
     del: faker.location.city() + ", " + faker.location.country(),
     tariffType: faker.lorem.words(4),
@@ -61,9 +65,11 @@ function createDummyDetention(): DetentionStatusTableProps {
   } as DetentionStatusTableProps;
 }
 
-export const DetentionStatusTable = () => {
-  const { renderDialog, setCurrentVessel, setIsVesselInfoDialogOpen } =
-    useVesselInfoDialog();
+export const DetentionStatusTable = (pros: {
+  type: "inbound" | "outbound";
+}) => {
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselScheduleDialog();
 
   const tempDetentions = useMemo(() => {
     return Array.from({ length: 100 }, (_, index) => createDummyDetention());
@@ -109,13 +115,31 @@ export const DetentionStatusTable = () => {
           className="w-fit underline cursor-pointer"
           onClick={() => {
             setCurrentVessel(info.getValue());
-            setIsVesselInfoDialogOpen(true);
+            setIsVesselScheduleDialogOpen(true);
           }}
         >
           {info.getValue().vesselName}
         </MdTypography>
       ),
       size: 300,
+    }),
+    columnHelper.accessor("por", {
+      id: "por",
+      header: "POR",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
+    }),
+    columnHelper.accessor("pol", {
+      id: "pol",
+      header: "POL",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
     }),
     columnHelper.accessor("pod", {
       id: "pod",
@@ -299,6 +323,9 @@ export const DetentionStatusTable = () => {
             </MdTextButton>
           </div>
         )}
+        hiddenColumns={
+          pros.type === "outbound" ? ["pod", "del"] : ["por", "pol"]
+        }
         columns={columnDefs}
         data={tableData}
         isSingleSelect

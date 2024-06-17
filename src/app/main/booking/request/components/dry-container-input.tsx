@@ -23,8 +23,10 @@ import { containerVariant } from "./base";
 
 const DryContainerInput = ({
   list,
+  showRequired = true,
 }: {
   list: DryContainerInformationType[];
+  showRequired?: boolean;
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
@@ -97,7 +99,7 @@ const DryContainerInput = ({
                     <div className="flex gap-4 items-start">
                       <NAOutlinedListBox
                         label="Size"
-                        required
+                        required={showRequired}
                         error={
                           bookingRequestStep.container.visited &&
                           container.size === ""
@@ -126,7 +128,7 @@ const DryContainerInput = ({
 
                       <NAOutlinedTextField
                         label="Quantity / Total"
-                        required
+                        required={showRequired}
                         error={
                           bookingRequestStep.container.visited &&
                           container.quantity === 0
@@ -179,6 +181,7 @@ const DryContainerInput = ({
                     <DangerousCargoInput
                       container={container}
                       type={ContainerType.dry}
+                      showRequired={showRequired}
                     />
                   </motion.div>
                 ))}

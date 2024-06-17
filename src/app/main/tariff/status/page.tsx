@@ -101,6 +101,7 @@ export default function DetentionStatusPage() {
                   {numberQueries.map((query, index) => (
                     <div key={query}>
                       <MdInputChip
+                        selected
                         label={query}
                         remove={() => {
                           setNumberQueries((prev) => {
@@ -124,72 +125,20 @@ export default function DetentionStatusPage() {
             </MdTextButton>
             <MdFilledButton
               onClick={() => {
-                setPageState("search");
+                setPageState("unsearch");
+                setTimeout(() => {
+                  setPageState("search");
+                }, 50);
               }}
             >
               Search
             </MdFilledButton>
           </div>
         </div>
-
-        {/* <div className="flex gap-4">
-          <MdTypography
-            variant="label"
-            size="large"
-            tag="label"
-            className="cursor-pointer"
-          >
-            <MdRadio
-              className="mr-2"
-              checked={searchType === "gate"}
-              onClick={() => setSearchType("gate")}
-            />
-            Discharging/Out Gate
-          </MdTypography>
-          <MdTypography
-            variant="label"
-            size="large"
-            tag="label"
-            className="cursor-pointer"
-          >
-            <MdRadio
-              className="mr-2"
-              checked={searchType === "number"}
-              onClick={() => setSearchType("number")}
-            />
-            Booking No. or B/L No.
-          </MdTypography>
-        </div>
-        {searchType === "gate" ? (
-          <div className="flex gap-4">
-            <DateRangePicker label="Date" />
-            <NAOutlinedListBox options={tempContracts} label="Contract No." />
-          </div>
-        ) : (
-          <div className="flex gap-4">
-            <NAOutlinedTextField label="Booking No. or B/L No." value="" />
-          </div>
-        )}
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
-        </div> */}
       </div>
       <div className={styles.area}>
         {pageState === "search" ? (
-          <DetentionStatusTable />
+          <DetentionStatusTable type={boundSelection} />
         ) : (
           <EmptyResultPlaceholder
             text="Please select the search criteria and click the search button."
