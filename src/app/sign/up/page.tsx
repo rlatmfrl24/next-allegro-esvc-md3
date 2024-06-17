@@ -1,8 +1,19 @@
 "use client";
 
+import classNames from "classnames";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { CSSProperties, useState } from "react";
+
 import { DividerComponent } from "@/app/components/divider";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
+import {
+  MdDialog,
+  MdElevation,
+  MdFilledButton,
+  MdOutlinedButton,
+} from "@/app/util/md3";
+import { Check } from "@mui/icons-material";
 import {
   Step,
   StepConnector,
@@ -10,11 +21,9 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
-import classNames from "classnames";
-import { useState } from "react";
+
 import { PolicyContent } from "./policy-content";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { Check } from "@mui/icons-material";
+import { RegisterForm } from "./form";
 
 const CustomStepIcon = (props: StepIconProps) => {
   const { active, completed, className, icon } = props;
@@ -49,6 +58,51 @@ const CustomStepIcon = (props: StepIconProps) => {
 export default function Register() {
   const cx = classNames.bind(styles);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isValidationFilled, setIsValidationFilled] = useState(false);
+
+  const PolicyNextButton = () => {
+    return (
+      <MdFilledButton onClick={() => setCurrentStep(1)}>
+        Agree and Continue
+      </MdFilledButton>
+    );
+  };
+
+  const SubmitButton = (props: { disabled?: boolean }) => {
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+    return (
+      <>
+        <MdFilledButton
+          disabled={!isValidationFilled || props.disabled}
+          onClick={() => setIsConfirmDialogOpen(true)}
+        >
+          Submit
+        </MdFilledButton>
+        <MdDialog
+          open={isConfirmDialogOpen}
+          closed={() => setIsConfirmDialogOpen(false)}
+        >
+          <div slot="headline" className="text-pretty text-left">
+            Are you sure you want to submit your registration?
+          </div>
+          <div slot="actions">
+            <MdOutlinedButton onClick={() => setIsConfirmDialogOpen(false)}>
+              Cancel
+            </MdOutlinedButton>
+            <MdFilledButton
+              onClick={() => {
+                setIsConfirmDialogOpen(false);
+                setCurrentStep(2);
+              }}
+            >
+              Submit
+            </MdFilledButton>
+          </div>
+        </MdDialog>
+      </>
+    );
+  };
 
   return (
     <OverlayScrollbarsComponent defer className="h-full overflow-auto m-2">
@@ -98,10 +152,38 @@ export default function Register() {
             </Step>
           </Stepper>
 
-          <DividerComponent />
-          {currentStep === 0 ? <PolicyContent /> : <></>}
+          <DividerComponent className="border-dotted" />
+          {/* {currentStep === 0 ? <PolicyContent /> : <></>} */}
+          {
+            {
+              0: <PolicyContent />,
+              1: (
+                <RegisterForm
+                  onRequiredFilledChange={(isFilled: boolean) =>
+                    setIsValidationFilled(isFilled)
+                  }
+                />
+              ),
+            }[currentStep]
+          }
         </div>
-        <div className="border w-full bg-white">123123</div>
+        <div
+          style={
+            {
+              "--md-elevation-level": "2",
+            } as CSSProperties
+          }
+          className="relative w-full p-2 rounded-full text-right"
+        >
+          <MdElevation />
+          {
+            {
+              0: <PolicyNextButton />,
+              1: <SubmitButton />,
+              2: <></>,
+            }[currentStep]
+          }
+        </div>
       </div>
     </OverlayScrollbarsComponent>
   );

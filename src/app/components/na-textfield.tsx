@@ -95,6 +95,7 @@ export const NAOutlinedTextField = ({
           } else {
             // type === "number"
             const value = e.currentTarget.value;
+
             if (value.length === 0) {
               handleValueChange?.("");
             }

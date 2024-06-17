@@ -97,7 +97,6 @@ export const useRegister = () => {
     email: "",
     trade: "",
     contactOffice: "",
-    recentBLNumber: "",
     comment: "",
   });
   const isRequiredFilled = useMemo(() => {
@@ -116,8 +115,7 @@ export const useRegister = () => {
       signUpForm.tel &&
       signUpForm.email &&
       signUpForm.trade &&
-      signUpForm.contactOffice &&
-      signUpForm.recentBLNumber
+      signUpForm.contactOffice
     );
   }, [signUpForm]);
 
@@ -153,7 +151,6 @@ export const useRegister = () => {
               email: "",
               trade: "",
               contactOffice: "",
-              recentBLNumber: "",
               comment: "",
             });
           }}
@@ -405,18 +402,7 @@ export const useRegister = () => {
                           }))
                         }
                       />
-                      <NAOutlinedTextField
-                        required
-                        className="col-span-4"
-                        label="Recent BL Number"
-                        value={signUpForm.recentBLNumber}
-                        handleValueChange={(value) =>
-                          setSignUpForm((prev) => ({
-                            ...prev,
-                            recentBLNumber: value,
-                          }))
-                        }
-                      />
+
                       <NAOutlinedTextField
                         label="Comment"
                         type="textarea"
