@@ -47,6 +47,7 @@ export const resetBookingState = selector({
       contractNumber: "",
     } as LocationScheduleType);
     set(PartiesState, {
+      personPlacingRequest: "Shipper",
       shipper: {
         name: "",
         address: "",
@@ -254,6 +255,7 @@ export const LocationScheduleState = atom<LocationScheduleType>({
 export const PartiesState = atom<PartiesType>({
   key: "partiesState",
   default: {
+    personPlacingRequest: "Shipper",
     shipper: {
       name: "",
       address: "",

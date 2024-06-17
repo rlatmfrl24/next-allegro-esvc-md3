@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { use, useEffect, useMemo, useState } from "react";
 
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
@@ -32,8 +32,9 @@ import { difference, isEqual } from "lodash";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
 import classNames from "classnames";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import { CycleSelector } from "@/app/main/subscription/components/component";
 
-export default function CreateNewReport() {
+export default function EditReport() {
   const cx = classNames.bind(styles);
   const router = useRouter();
   const tempPorts = useMemo(() => {
@@ -42,9 +43,13 @@ export default function CreateNewReport() {
       () => faker.location.city() + ", " + faker.location.country()
     );
   }, []);
+
+  const searchParams = useSearchParams();
   const [infoType, setInfoType] = useState<"customer" | "contract">("customer");
   const [getServices, setGetServices] = useState<boolean>(false);
-  const [reportName, setReportName] = useState<string>("");
+  const [reportName, setReportName] = useState<string>(
+    searchParams.get("name") || ""
+  );
   const [isSaveBarOpen, setIsSaveBarOpen] = useState<boolean>(false);
   const [origins, setOrigins] = useState<string[]>([]);
   const [destinations, setDestinations] = useState<string[]>([]);
@@ -81,7 +86,7 @@ export default function CreateNewReport() {
   return (
     <div aria-label="container" className={cx(styles.container)}>
       <div className="flex justify-between items-center">
-        <PageTitle title="Create New Report" hasFavorite={false} />
+        <PageTitle title="Edit Report" hasFavorite={false} />
         <MdOutlinedButton
           onClick={() => {
             router.push("/main/shipment/my-report");
@@ -213,10 +218,11 @@ export default function CreateNewReport() {
                   (i) => i + " Week" + (i > 1 ? "s" : "")
                 )}
               />
-              <NAOutlinedListBox
+              {/* <NAOutlinedListBox
                 label="Sending Cycle"
                 options={["Daily", "Weekly", "Monthly"]}
-              />
+              /> */}
+              <CycleSelector />
             </>
           )}
         </div>

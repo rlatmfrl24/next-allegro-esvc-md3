@@ -26,10 +26,10 @@ export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
     CargoPickUpReturnState
   );
-  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
-    BookingRequestStepState
-  );
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+  //   BookingRequestStepState
+  // );
 
   const moveToContainerStep = useCallback(() => {
     setBookingRequestStep((prev) => ({
@@ -45,14 +45,6 @@ export default function CargoStep() {
       },
     }));
   }, [setBookingRequestStep]);
-
-  const portList = useMemo(() => {
-    return Array.from({ length: 50 }, (_, i) =>
-      createDummyPlaceInformation(
-        (faker.location.city() + ", " + faker.location.country()).toUpperCase()
-      )
-    );
-  }, []);
 
   const tempCommodities = useMemo(() => {
     return Array.from({ length: 40 }, (_, i) => ({
@@ -182,149 +174,6 @@ export default function CargoStep() {
                     //   emptyPickUpDate: date.set({ hour, minute }),
                     // };
                   });
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <NAOutlinedAutoComplete
-            className="flex-1"
-            label="Empty Pick Up CY/Depot"
-            placeholder="Empty Pick Up CY/Depot (Prefered)"
-            recentCookieKey="recent-port"
-            initialValue={cargoPickUpReturnData.emptyPickUpLocation.yardName}
-            itemList={portList.map((port) => port.yardName)}
-            onItemSelection={(value) => {
-              let selectedPort = portList.find(
-                (port) => port.yardName === value
-              );
-
-              if (value !== "" && selectedPort === undefined) {
-                selectedPort = createDummyPlaceInformation(value);
-              }
-
-              setCargoPickUpReturnData((prev) => {
-                return {
-                  ...prev,
-                  emptyPickUpLocation:
-                    selectedPort || ({} as PlaceInformationType),
-                };
-              });
-            }}
-          />
-
-          <div className="flex-1 flex gap-4">
-            <NAOutlinedTextField
-              readOnly
-              label="Tel No."
-              className="flex-1"
-              type="tel"
-              value={cargoPickUpReturnData.emptyPickUpLocation.code || ""}
-              onInput={(e) => {
-                setCargoPickUpReturnData((prev) => {
-                  return {
-                    ...prev,
-                    emptyPickUpLocation: {
-                      ...prev.emptyPickUpLocation,
-                      code: e.currentTarget.value,
-                    },
-                  };
-                });
-              }}
-            />
-
-            <NAOutlinedTextField
-              readOnly
-              label="Address"
-              className="flex-1"
-              value={cargoPickUpReturnData.emptyPickUpLocation.address || ""}
-              onInput={(e) => {
-                setCargoPickUpReturnData((prev) => {
-                  return {
-                    ...prev,
-                    emptyPickUpLocation: {
-                      ...prev.emptyPickUpLocation,
-                      address: e.currentTarget.value,
-                    },
-                  };
-                });
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <DatePicker
-            className="flex-1"
-            label="Full Container Return Date"
-            initialDate={cargoPickUpReturnData.fullReturnDate}
-            onDateChange={(date) => {
-              setCargoPickUpReturnData((prev) => {
-                return { ...prev, fullPickUpDate: date };
-              });
-            }}
-          />
-          <div className="flex-1"></div>
-        </div>
-        <div className="flex gap-4">
-          <NAOutlinedAutoComplete
-            className="flex-1"
-            label="Full Container Return CY"
-            value={cargoPickUpReturnData.fullReturnLocation.yardName}
-            itemList={portList.map((port) => port.yardName)}
-            recentCookieKey="recent-port"
-            onItemSelection={(value) => {
-              let selectedPort = portList.find(
-                (port) => port.yardName === value
-              );
-
-              if (value !== "" && selectedPort === undefined) {
-                selectedPort = createDummyPlaceInformation(value);
-              }
-
-              setCargoPickUpReturnData((prev) => {
-                return {
-                  ...prev,
-                  fullReturnLocation:
-                    selectedPort || ({} as PlaceInformationType),
-                };
-              });
-            }}
-          />
-
-          <div className="flex-1 flex gap-4">
-            <NAOutlinedTextField
-              readOnly
-              label="Tel No."
-              type="tel"
-              className="flex-1"
-              value={cargoPickUpReturnData.fullReturnLocation.code || ""}
-              onInput={(e) => {
-                setCargoPickUpReturnData((prev) => {
-                  return {
-                    ...prev,
-                    fullReturnLocation: {
-                      ...prev.fullReturnLocation,
-                      code: e.currentTarget.value,
-                    },
-                  };
-                });
-              }}
-            />
-            <NAOutlinedTextField
-              readOnly
-              label="Address"
-              className="flex-1"
-              value={cargoPickUpReturnData.fullReturnLocation.address || ""}
-              onInput={(e) => {
-                setCargoPickUpReturnData((prev) => {
-                  return {
-                    ...prev,
-                    fullReturnLocation: {
-                      ...prev.fullReturnLocation,
-                      address: e.currentTarget.value,
-                    },
-                  };
-                });
               }}
             />
           </div>

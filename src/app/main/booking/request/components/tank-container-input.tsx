@@ -23,8 +23,10 @@ import DangerousCargoInput from "./dangerous-cargo-input";
 
 const TankContainerInput = ({
   list,
+  showRequired = true,
 }: {
   list: TankContainerInformationType[];
+  showRequired?: boolean;
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
@@ -99,7 +101,7 @@ const TankContainerInput = ({
                         label="Size"
                         className="w-52 text-right"
                         suffixText="ft"
-                        required
+                        required={showRequired}
                         error={
                           bookingRequestStep.container.visited &&
                           container.size === ""
@@ -126,7 +128,7 @@ const TankContainerInput = ({
                       <NAOutlinedTextField
                         label="Quantity / Total"
                         type="number"
-                        required
+                        required={showRequired}
                         error={
                           bookingRequestStep.container.visited &&
                           container.quantity === 0

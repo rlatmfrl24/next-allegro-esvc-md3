@@ -111,7 +111,12 @@ export const SubscriptionItemContainer = (props: {
   );
 };
 
-export const CycleSelector = (props: {
+export const CycleSelector = ({
+  label,
+  initialValue,
+  onChanges,
+  disabled = false,
+}: {
   label?: string;
   initialValue?: {
     cycleOption: "Daily" | "Weekly" | "Monthly";
@@ -126,43 +131,35 @@ export const CycleSelector = (props: {
   disabled?: boolean;
 }) => {
   const [cycle, setCycle] = useState<"Daily" | "Weekly" | "Monthly">(
-    props.initialValue?.cycleOption || "Daily"
+    initialValue?.cycleOption || "Daily"
   );
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState(
-    props.initialValue?.weekOption ?? "SUN"
+    initialValue?.weekOption ?? "SUN"
   );
-  const [selectedDay, setSelectedDay] = useState(
-    props.initialValue?.dayOption ?? 1
-  );
+  const [selectedDay, setSelectedDay] = useState(initialValue?.dayOption ?? 1);
 
   useEffect(() => {
     // on create, do not call onChanges
-    if (!props.initialValue) {
+    if (!initialValue) {
       if (cycle === "Daily" && selectedWeek === "SUN" && selectedDay === 1) {
         return;
       }
     } else {
-      if (cycle === props.initialValue.cycleOption) {
+      if (cycle === initialValue.cycleOption) {
         if (cycle === "Daily") {
           return;
         }
-        if (
-          cycle === "Weekly" &&
-          selectedWeek === props.initialValue.weekOption
-        ) {
+        if (cycle === "Weekly" && selectedWeek === initialValue.weekOption) {
           return;
         }
-        if (
-          cycle === "Monthly" &&
-          selectedDay === props.initialValue.dayOption
-        ) {
+        if (cycle === "Monthly" && selectedDay === initialValue.dayOption) {
           return;
         }
       }
     }
 
-    props.onChanges?.({
+    onChanges?.({
       cycleOption: cycle,
       weekOption: cycle === "Weekly" ? selectedWeek : undefined,
       dayOption: cycle === "Monthly" ? selectedDay.toString() : undefined,
@@ -255,20 +252,20 @@ export const CycleSelector = (props: {
       <NAOutlinedListBox
         initialValue={cycle}
         options={["Daily", "Weekly", "Monthly"]}
-        label={props.label || "Cycle"}
+        label={label || "Cycle"}
         value={cycle}
         onSelection={(value) => {
           setCycle(value as "Daily" | "Weekly" | "Monthly");
         }}
         className="w-32"
-        disabled={props.disabled}
+        disabled={disabled}
       />
       <MdOutlinedTextField
         ref={refs.setReference}
         {...getReferenceProps()}
         className="w-28 select-none"
         readOnly
-        disabled={cycle === "Daily" || props.disabled}
+        disabled={cycle === "Daily" || disabled}
         label={cycle === "Daily" ? "" : cycle === "Weekly" ? "Week" : "Day"}
         value={
           cycle === "Weekly"

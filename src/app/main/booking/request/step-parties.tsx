@@ -13,6 +13,7 @@ import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import { SubTitle } from "@/app/components/title-components";
 import { DividerComponent } from "@/app/components/divider";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
+import { UserProfileState } from "@/app/store/global.store";
 
 export default function PartiesStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -21,6 +22,7 @@ export default function PartiesStep() {
   );
   const [partiesData, setPartiesData] = useRecoilState(PartiesState);
 
+  const [userData] = useRecoilState(UserProfileState);
   const tempCompaniesData = useMemo(() => {
     return Array.from({ length: 100 }, (_, index) => ({
       name: faker.company.name(),
@@ -88,7 +90,51 @@ export default function PartiesStep() {
       <SubTitle title="Person Placing Request" className="mb-4" />
       <SimpleRadioGroup
         groupName="person-placing-request"
+        selected={partiesData.personPlacingRequest}
         options={["Shipper", "Forwarder"]}
+        onChange={(value) => {
+          if (value === "Shipper") {
+            setPartiesData((prev) => ({
+              ...prev,
+              personPlacingRequest: value as "Shipper" | "Forwarder",
+              shipper: {
+                name: userData.companyName,
+                address:
+                  userData.address.street +
+                  ", " +
+                  userData.address.city +
+                  ", " +
+                  userData.address.country +
+                  ", " +
+                  userData.address.zipCode,
+              },
+              freightForwarder: {
+                name: "",
+                address: "",
+              },
+            }));
+          } else {
+            setPartiesData((prev) => ({
+              ...prev,
+              personPlacingRequest: value as "Shipper" | "Forwarder",
+              shipper: {
+                name: "",
+                address: "",
+              },
+              freightForwarder: {
+                name: userData.companyName,
+                address:
+                  userData.address.street +
+                  ", " +
+                  userData.address.city +
+                  ", " +
+                  userData.address.country +
+                  ", " +
+                  userData.address.zipCode,
+              },
+            }));
+          }
+        }}
       />
       <DividerComponent className="my-6" />
       <SubTitle title="Shipper" className="mb-4" />

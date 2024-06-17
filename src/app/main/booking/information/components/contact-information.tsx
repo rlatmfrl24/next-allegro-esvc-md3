@@ -59,6 +59,7 @@ export default function ContactInformationSection({
           Email
         </MdTypography>
         <MdChipSet>
+          <LabelChip label={data.email} size="medium" />
           {data.emailRecipient.map((email, index) => (
             <LabelChip key={index} label={email} />
           ))}

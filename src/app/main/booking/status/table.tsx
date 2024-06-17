@@ -120,7 +120,7 @@ export default function BookingStatusTable() {
       id: "requestNo",
       header: "Request No",
       cell: (info) => (
-        <div className="flex gap-4 items-center relative">
+        <div className="flex items-center relative">
           <MdRadio
             // name="requestNo"
             className="mr-2"
@@ -163,7 +163,7 @@ export default function BookingStatusTable() {
       id: "bookingNo",
       header: "Booking No",
       cell: (info) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <Link
             href={`/main/booking/information/confirmation`}
             className="block w-fit"

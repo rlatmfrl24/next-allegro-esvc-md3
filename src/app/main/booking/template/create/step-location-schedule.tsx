@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
@@ -25,12 +25,13 @@ export default function LoactionScheduleStep() {
   const [locationScheduleData, setLoactionScheduleData] = useRecoilState(
     LocationScheduleState
   );
-  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
-    BookingRequestStepState
-  );
   const [isSearchScheduleDialogOpen, setIsSearchScheduleDialogOpen] =
     useState(false);
+
+  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+  // const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+  //   BookingRequestStepState
+  // );
 
   const portList = useMemo(() => {
     return Array.from({ length: 30 }, (_, i) =>
@@ -40,32 +41,7 @@ export default function LoactionScheduleStep() {
     );
   }, []);
 
-  // use Quote Data
   const params = useSearchParams();
-  const quotationTerms = useRecoilValue(QuotationTermsState);
-  const [isContractNumberManuallyInput, setIsContractNumberManuallyInput] =
-    useState(
-      locationScheduleData.contractNumber === "" || !params.has("quoteNumber")
-    );
-
-  useEffect(() => {
-    if (params.has("quoteNumber")) {
-      setLoactionScheduleData((prev) => ({
-        ...prev,
-        searchType: "earliest",
-        originPort: quotationTerms.origin,
-        destinationPort: quotationTerms.destination,
-        originType: quotationTerms.originServiceTerm.toLowerCase() as
-          | "cy"
-          | "door",
-        destinationType: quotationTerms.destinationServiceTerm.toLowerCase() as
-          | "cy"
-          | "door",
-        departureDate: quotationTerms.departureDate,
-        contractNumber: "C" + faker.string.numeric(10),
-      }));
-    }
-  }, [params, quotationTerms, setLoactionScheduleData]);
 
   const bookingOfficeList = useMemo(() => {
     const newList = Array.from({ length: 5 }, (_, i) => faker.company.name());
@@ -73,16 +49,6 @@ export default function LoactionScheduleStep() {
       ? [locationScheduleData.bookingOffice, ...newList]
       : newList;
   }, [locationScheduleData.bookingOffice]);
-
-  const randomContractList = useMemo(() => {
-    const newList = Array.from(
-      { length: 5 },
-      (_, i) => "C" + faker.string.numeric(10)
-    );
-    return locationScheduleData.contractNumber !== ""
-      ? [locationScheduleData.contractNumber, ...newList]
-      : newList;
-  }, [locationScheduleData.contractNumber]);
 
   const moveToParties = useCallback(() => {
     setBookingRequestStep((prev) => ({
@@ -106,50 +72,6 @@ export default function LoactionScheduleStep() {
       </MdTypography>
       <div className="flex gap-4 flex-1">
         <div className="flex-1 flex flex-col gap-6">
-          <form className="flex gap-8">
-            <MdTypography
-              tag="label"
-              variant="label"
-              size="large"
-              className="cursor-pointer"
-            >
-              <MdRadio
-                name="location-type"
-                value="schedule"
-                className="mr-2"
-                checked={locationScheduleData.searchType === "schedule"}
-                disabled={params.has("quoteNumber")}
-                onClick={() => {
-                  setLoactionScheduleData({
-                    ...locationScheduleData,
-                    searchType: "schedule",
-                  });
-                }}
-              />
-              By Schedule Search
-            </MdTypography>
-            <MdTypography
-              tag="label"
-              variant="label"
-              size="large"
-              className="cursor-pointer"
-            >
-              <MdRadio
-                name="location-type"
-                value="earliest"
-                checked={locationScheduleData.searchType === "earliest"}
-                disabled={params.has("quoteNumber")}
-                onClick={() => {
-                  setLoactionScheduleData({
-                    ...locationScheduleData,
-                    searchType: "earliest",
-                  });
-                }}
-                className="mr-2"
-              />
-              By The Earliest Available Schedule
-            </MdTypography>
-          </form>
           <div className="flex gap-4">
             <NAOutlinedAutoComplete
               itemList={portList.map((port) => port.yardName)}
@@ -268,107 +190,19 @@ export default function LoactionScheduleStep() {
               }}
             />
           </div>
-          {locationScheduleData.searchType === "schedule" && (
-            <div className="flex gap-4">
-              <NAOutlinedTextField
-                readOnly
-                className="bg-surfaceContainer rounded"
-                label="Estimated Time of Departure"
-                value={locationScheduleData.departureDate.toFormat(
-                  "yyyy-MM-dd"
-                )}
-              />
-              <NAOutlinedTextField
-                readOnly
-                label="Vessel Voyage"
-                value={locationScheduleData.vessel.consortiumVoyage || ""}
-              />
-            </div>
-          )}
-          {locationScheduleData.searchType === "earliest" && (
-            <div className="flex">
-              <DatePicker
-                label="Departure Date"
-                readonly={params.has("quoteNumber")}
-                initialDate={locationScheduleData.departureDate}
-                onDateChange={(date) => {
-                  setLoactionScheduleData((prev) => ({
-                    ...prev,
-                    departureDate: date,
-                  }));
-                }}
-              />
-            </div>
-          )}
-          <div className="flex gap-4">
-            <NAOutlinedListBox
-              label="Booking Office"
-              initialValue={locationScheduleData.bookingOffice}
-              options={bookingOfficeList}
-              onSelection={(value) => {
-                setLoactionScheduleData((prev) => ({
-                  ...prev,
-                  bookingOffice: value,
-                }));
-              }}
-            />
-
-            <NAOutlinedListBox
-              label="Contract Number"
-              className="h-fit"
-              readOnly={params.has("quoteNumber")}
-              options={[
-                "Manually Input",
-                ...randomContractList.map((contract) => {
-                  return contract;
-                }),
-              ]}
-              initialValue={
-                isContractNumberManuallyInput
-                  ? "Manually Input"
-                  : locationScheduleData.contractNumber
-              }
-              onSelection={(value) => {
-                if (value === "Manually Input") {
-                  setIsContractNumberManuallyInput(true);
-                  setLoactionScheduleData((prev) => ({
-                    ...prev,
-                    contractNumber: "",
-                  }));
-                } else {
-                  setIsContractNumberManuallyInput(false);
-                  setLoactionScheduleData((prev) => ({
-                    ...prev,
-                    contractNumber: value,
-                  }));
-                }
-              }}
-            />
-            {isContractNumberManuallyInput && (
-              <NAOutlinedTextField
-                placeholder="Contract Number"
-                className="h-fit"
-                value={locationScheduleData.contractNumber}
-                handleValueChange={(value) => {
-                  setLoactionScheduleData((prev) => ({
-                    ...prev,
-                    contractNumber: value,
-                  }));
-                }}
-              />
-            )}
-          </div>
-        </div>
-        {locationScheduleData.searchType === "schedule" && (
-          <MdFilledTonalButton
-            className="mt-[50px] h-fit"
-            onClick={() => {
-              setIsSearchScheduleDialogOpen(true);
+          <NAOutlinedListBox
+            className="w-96"
+            label="Booking Office"
+            initialValue={locationScheduleData.bookingOffice}
+            options={bookingOfficeList}
+            onSelection={(value) => {
+              setLoactionScheduleData((prev) => ({
+                ...prev,
+                bookingOffice: value,
+              }));
             }}
-          >
-            Search Schedule
-          </MdFilledTonalButton>
-        )}
+          />
+        </div>
       </div>
       <MdFilledButton className="self-end" onClick={() => moveToParties()}>
         Next

@@ -28,8 +28,10 @@ import { containerVariant } from "./base";
 
 const FlatRackContainerInput = ({
   list,
+  showRequired = true,
 }: {
   list: FlatRackContainerInformationType[];
+  showRequired?: boolean;
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
@@ -105,7 +107,7 @@ const FlatRackContainerInput = ({
                             label="Size"
                             className="w-52 text-right"
                             suffixText="ft"
-                            required
+                            required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
                               container.size === ""
@@ -132,7 +134,7 @@ const FlatRackContainerInput = ({
                           <NAOutlinedTextField
                             label="Quantity / Total"
                             type="number"
-                            required
+                            required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
                               container.quantity === 0

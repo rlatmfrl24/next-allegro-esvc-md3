@@ -5,18 +5,38 @@ import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
 import {
+  basicDropdownStyles,
+  getBasicDropdownStyles,
+} from "@/app/util/constants";
+import {
+  MdDialog,
+  MdElevatedCard,
   MdFilledButton,
   MdIcon,
   MdIconButton,
+  MdListItem,
+  MdOutlinedButton,
   MdRadio,
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles,
+} from "@floating-ui/react";
 import { MoreVert } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 type MyReportTableProps = {
   name: string;
@@ -55,6 +75,7 @@ export default function MyReportPage() {
     () => Array.from({ length: 50 }, () => createMyReportData()),
     []
   );
+  const [tableData, setTableData] = useState<MyReportTableProps[]>(tempReports);
   const router = useRouter();
   const columnHelper = createColumnHelper<MyReportTableProps>();
   const columnDefs = [
@@ -172,11 +193,14 @@ export default function MyReportPage() {
       id: "action",
       cell: (info) => (
         <div className="flex justify-center w-10">
-          <MdIconButton>
-            <MdIcon>
-              <MoreVert />
-            </MdIcon>
-          </MdIconButton>
+          <VertOptionComponent
+            report={info.row.original}
+            onDelete={() => {
+              setTableData((prev) => {
+                return prev.filter((r) => r.name !== info.row.original.name);
+              });
+            }}
+          />
         </div>
       ),
       size: 60,
@@ -197,12 +221,23 @@ export default function MyReportPage() {
       </div>
       <div className={styles.area}>
         <BasicTable
-          ActionComponent={() => (
+          ActionComponent={(table) => (
             <div className="flex-1">
-              <MdTextButton>Edit</MdTextButton>
+              {table.getSelectedRowModel().rows.length > 0 && (
+                <MdTextButton
+                  onClick={() => {
+                    router.push(
+                      "/main/shipment/my-report/edit?name=" +
+                        table.getSelectedRowModel().rows[0].original.name
+                    );
+                  }}
+                >
+                  Edit
+                </MdTextButton>
+              )}
             </div>
           )}
-          data={tempReports}
+          data={tableData}
           columns={columnDefs}
           isSingleSelect
           controlColumns={["action"]}
@@ -212,3 +247,83 @@ export default function MyReportPage() {
     </div>
   );
 }
+
+const VertOptionComponent = (props: {
+  report: MyReportTableProps;
+  onDelete?: () => void;
+}) => {
+  const [isOptionOpen, setIsOptionOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { refs, context, floatingStyles, placement } = useFloating({
+    open: isOptionOpen,
+    onOpenChange: setIsOptionOpen,
+    middleware: [shift(), flip(), offset(4)],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { styles: transitionStyles, isMounted } = useTransitionStyles(
+    context,
+    placement === "top"
+      ? getBasicDropdownStyles("up")
+      : getBasicDropdownStyles("down")
+  );
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useClick(context),
+    useDismiss(context),
+    useRole(context, {
+      role: "menu",
+    }),
+  ]);
+
+  return (
+    <>
+      <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
+        <MdIcon>
+          <MoreVert />
+        </MdIcon>
+      </MdIconButton>
+      {isMounted && (
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+          className="z-10"
+        >
+          <MdElevatedCard style={transitionStyles} className="py-1">
+            <MdListItem
+              type="button"
+              onClick={() => {
+                setIsOptionOpen(false);
+                setIsConfirmOpen(true);
+              }}
+            >
+              Delete
+            </MdListItem>
+          </MdElevatedCard>
+        </div>
+      )}
+      <MdDialog open={isConfirmOpen} closed={() => setIsConfirmOpen(false)}>
+        <div slot="headline">Do you want to delete the my report?</div>
+        <div slot="content">{props.report.name}</div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              setIsConfirmOpen(false);
+            }}
+          >
+            Cancel
+          </MdOutlinedButton>
+          <MdFilledButton
+            onClick={() => {
+              setIsConfirmOpen(false);
+              props.onDelete?.();
+            }}
+          >
+            OK
+          </MdFilledButton>
+        </div>
+      </MdDialog>
+    </>
+  );
+};

@@ -66,7 +66,8 @@ export default function ContainerStep() {
         (acc, curr) => acc + curr.quantity,
         0
       ) +
-      containerInformation.tank.reduce((acc, curr) => acc + curr.quantity, 0);
+      containerInformation.tank.reduce((acc, curr) => acc + curr.quantity, 0) +
+      containerInformation.bulk.length;
 
     if (totalContainerQuantity === 0) {
       isValid = false;
@@ -127,6 +128,7 @@ export default function ContainerStep() {
   }
 
   const isValid = useCallback(ValidateContainerInput, [
+    containerInformation.bulk.length,
     containerInformation.dry,
     containerInformation.flatrack,
     containerInformation.opentop,

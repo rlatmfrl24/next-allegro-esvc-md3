@@ -11,6 +11,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 import NAMultiAutoComplete from "@/app/components/na-multi-autocomplete";
 import { SubTitle } from "@/app/components/title-components";
+import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
+import { DividerComponent } from "@/app/components/divider";
+import { UserProfileState } from "@/app/store/global.store";
 
 export default function PartiesStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -18,6 +21,7 @@ export default function PartiesStep() {
     BookingRequestStepState
   );
   const [partiesData, setPartiesData] = useRecoilState(PartiesState);
+  const [userData] = useRecoilState(UserProfileState);
 
   const tempCompaniesData = useMemo(() => {
     return Array.from({ length: 100 }, (_, index) => ({
@@ -50,11 +54,100 @@ export default function PartiesStep() {
     }));
   }, [setBookingRequestStep]);
 
+  useEffect(() => {
+    if (bookingRequestStep.parties.visited) {
+      return;
+    }
+
+    setPartiesData((prev) => ({
+      ...prev,
+      personPlacingRequest: "Shipper",
+      shipper: {
+        name: userData.companyName,
+        address:
+          userData.address.street +
+          ", " +
+          userData.address.city +
+          ", " +
+          userData.address.country +
+          ", " +
+          userData.address.zipCode,
+      },
+      freightForwarder: {
+        name: "",
+        address: "",
+      },
+      consignee: {
+        name: "",
+        address: "",
+      },
+      actualShipper: "",
+    }));
+  }, [
+    bookingRequestStep.parties.visited,
+    setPartiesData,
+    userData.address.city,
+    userData.address.country,
+    userData.address.street,
+    userData.address.zipCode,
+    userData.companyName,
+  ]);
+
   return (
     <div className="w-full flex flex-col">
       <MdTypography variant="title" size="large" className="mb-6">
         Parties
       </MdTypography>
+      <SubTitle title="Person placing Request" className="mb-4" />
+      <SimpleRadioGroup
+        groupName="personPlacingRequest"
+        options={["Shipper", "Forwarder"]}
+        selected={partiesData.personPlacingRequest}
+        onChange={(selected) => {
+          if (selected === "Shipper") {
+            setPartiesData((prev) => ({
+              ...prev,
+              personPlacingRequest: selected as "Shipper" | "Forwarder",
+              shipper: {
+                name: userData.companyName,
+                address:
+                  userData.address.street +
+                  ", " +
+                  userData.address.city +
+                  ", " +
+                  userData.address.country +
+                  ", " +
+                  userData.address.zipCode,
+              },
+              freightForwarder: {
+                name: "",
+                address: "",
+              },
+            }));
+          } else {
+            setPartiesData((prev) => ({
+              ...prev,
+              personPlacingRequest: selected as "Shipper" | "Forwarder",
+              shipper: {
+                name: "",
+                address: "",
+              },
+              freightForwarder: {
+                name: userData.companyName,
+                address:
+                  userData.address.street +
+                  ", " +
+                  userData.address.city +
+                  ", " +
+                  userData.address.country +
+                  ", " +
+                  userData.address.zipCode,
+              },
+            }));
+          }
+        }}
+      />
+      <DividerComponent className="my-6" />
       <SubTitle title="Shipper" className="mb-4" />
       <div className="flex gap-4">
         <NAMultiAutoComplete

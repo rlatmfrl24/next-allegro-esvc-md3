@@ -395,6 +395,7 @@ export const ChargeInquiryTable = (props: {
       {renderDialog()}
       <div className="w-fit">
         <StatusFilterComponent
+          unit="Tariff Type"
           statusOptions={["Demurrage", "Detention", "Combined"]}
           onChange={(selectedStatus) => {
             if (selectedStatus.length === 0) {
