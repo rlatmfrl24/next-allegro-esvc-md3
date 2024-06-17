@@ -126,6 +126,24 @@ export const DetentionStatusTable = (pros: {
       ),
       size: 300,
     }),
+    columnHelper.accessor("por", {
+      id: "por",
+      header: "POR",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
+    }),
+    columnHelper.accessor("pol", {
+      id: "pol",
+      header: "POL",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
+        </MdTypography>
+      ),
+    }),
     columnHelper.accessor("pod", {
       id: "pod",
       header: "POD",
@@ -308,6 +326,9 @@ export const DetentionStatusTable = (pros: {
             </MdTextButton>
           </div>
         )}
+        hiddenColumns={
+          pros.type === "outbound" ? ["pod", "del"] : ["por", "pol"]
+        }
         columns={columnDefs}
         data={tableData}
         isSingleSelect

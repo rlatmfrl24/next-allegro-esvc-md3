@@ -125,7 +125,10 @@ export default function DetentionStatusPage() {
             </MdTextButton>
             <MdFilledButton
               onClick={() => {
-                setPageState("search");
+                setPageState("unsearch");
+                setTimeout(() => {
+                  setPageState("search");
+                }, 50);
               }}
             >
               Search
