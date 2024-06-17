@@ -128,6 +128,9 @@ export const ChargeInquiryTable = (props: {
     columnHelper.accessor("tariffType", {
       id: "tariffType",
       header: "Tariff Type",
+      filterFn: (row, id, filterValue) => {
+        return (filterValue as string[]).includes(row.getValue(id));
+      },
       cell: (info) => (
         <LabelChip
           label={info.getValue()}
@@ -150,9 +153,6 @@ export const ChargeInquiryTable = (props: {
       header: "Type/Size",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {/* {info.getValue().map((typeSize) => (
-            <div key={typeSize}>{typeSize}</div>
-          ))} */}
           {info.getValue().join(", ")}
         </MdTypography>
       ),
@@ -222,41 +222,35 @@ export const ChargeInquiryTable = (props: {
 
   return (
     <>
-      <div className="w-fit">
-        <StatusFilterComponent
-          unit="Tariff Type"
-          statusOptions={[
-            "Demurrage",
-            "Detention",
-            "Demurrage & Detention (Combined Tariff)",
-          ]}
-          onChange={(selectedStatus) => {
-            if (selectedStatus.length === 0) {
-              setTableData(tempData);
-              return;
-            }
-
-            const modifiedSelections = selectedStatus.map((status) => {
-              if (status === "Demurrage") {
-                return "Demurrage";
-              } else if (status === "Detention") {
-                return "Detention";
-              } else {
-                return "Combined";
-              }
-            });
-
-            setTableData(
-              tempData.filter((data) =>
-                modifiedSelections.includes(data.tariffType)
-              )
-            );
-          }}
-        />
-      </div>
       <BasicTable
-        ActionComponent={() => (
-          <div className="flex-1">
+        ActionComponent={(table) => (
+          <div className="flex-1 flex gap-4 items-center">
+            <StatusFilterComponent
+              unit="Tariff Type"
+              statusOptions={[
+                "Demurrage",
+                "Detention",
+                "Demurrage & Detention (Combined Tariff)",
+              ]}
+              onChange={(selectedStatus) => {
+                const modifiedSelections = selectedStatus.map((status) => {
+                  if (status === "Demurrage") {
+                    return "Demurrage";
+                  } else if (status === "Detention") {
+                    return "Detention";
+                  } else {
+                    return "Combined";
+                  }
+                });
+
+                table.setColumnFilters([
+                  {
+                    id: "tariffType",
+                    value: modifiedSelections,
+                  },
+                ]);
+              }}
+            />
             <MdTextButton>
               <MdIcon slot="icon">
                 <Download fontSize="small" />
