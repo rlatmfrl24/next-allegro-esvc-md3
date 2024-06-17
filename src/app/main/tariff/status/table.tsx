@@ -6,10 +6,7 @@ import { useMemo, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
-import {
-  useVesselInfoDialog,
-  useVesselScheduleDialog,
-} from "@/app/components/common-dialog-hooks";
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
 import LabelChip from "@/app/components/chips/label-chip";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { MdIcon, MdTextButton } from "@/app/util/md3";
