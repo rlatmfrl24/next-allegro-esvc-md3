@@ -7,14 +7,20 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import LabelChip from "@/app/components/chips/label-chip";
 import { BasicTable } from "@/app/components/table/basic-table";
-import { MdIcon, MdTextButton } from "@/app/util/md3";
-import { Download } from "@mui/icons-material";
+import {
+  MdDialog,
+  MdIcon,
+  MdOutlinedButton,
+  MdTextButton,
+} from "@/app/util/md3";
+import { Download, FmdGood, FmdGoodOutlined } from "@mui/icons-material";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { useVesselInfoDialog } from "@/app/components/common-dialog-hooks";
+import { DividerComponent } from "@/app/components/divider";
 
 type TariffType = "Demurrage" | "Detention" | "Combined";
 
-interface SimpleTableProps {
+interface ChargeInquiryTableProps {
   bookingNumber: string;
   tariffType: TariffType;
   containerNumber: string;
@@ -37,11 +43,7 @@ interface SimpleTableProps {
     rate: number;
   };
   billingAmount: string;
-}
-
-interface ComplexTableProps extends SimpleTableProps {
-  blNumber: string;
-  vessel: VesselInfoType;
+  vessel: string;
   placeOfReceipt: string;
   placeOfLoading: string;
   placeOfDischarging: string;
@@ -49,7 +51,7 @@ interface ComplexTableProps extends SimpleTableProps {
   commodity: string;
 }
 
-function createDummySimpleCharge(): SimpleTableProps {
+function createDummyChargeInquiry(): ChargeInquiryTableProps {
   return {
     bookingNumber: faker.string.alphanumeric(10).toUpperCase(),
     tariffType: faker.helpers.arrayElement([
@@ -83,39 +85,42 @@ function createDummySimpleCharge(): SimpleTableProps {
       rate: faker.number.int({ min: 10, max: 100 }),
     },
     billingAmount: faker.finance.amount(),
-  } as SimpleTableProps;
-}
-
-function createDummyComplexCharge(): ComplexTableProps {
-  return {
-    ...createDummySimpleCharge(),
-    blNumber: faker.string.alphanumeric(10).toUpperCase(),
-    vessel: createDummyVesselInformation(),
+    vessel: faker.lorem.sentence().toUpperCase(),
     placeOfReceipt: faker.location.city() + ", " + faker.location.country(),
     placeOfLoading: faker.location.city() + ", " + faker.location.country(),
     placeOfDischarging: faker.location.city() + ", " + faker.location.country(),
     placeOfDelivery: faker.location.city() + ", " + faker.location.country(),
     commodity: faker.commerce.productName(),
-  } as ComplexTableProps;
+  } as ChargeInquiryTableProps;
 }
 
 export const ChargeInquiryTable = (props: {
   tableType: "simple" | "complex";
 }) => {
   const tempData = useMemo(() => {
-    return Array.from({ length: 100 }, () => createDummyComplexCharge());
+    return Array.from({ length: 100 }, () => createDummyChargeInquiry());
   }, []);
-  const columnHelper = createColumnHelper<ComplexTableProps>();
+  const columnHelper = createColumnHelper<ChargeInquiryTableProps>();
   const [tableData, setTableData] = useState(tempData);
-  const { renderDialog, setCurrentVessel, setIsVesselInfoDialogOpen } =
-    useVesselInfoDialog();
+  const [isBookingInformationDialogOpen, openBookingInformationDialog] =
+    useState(false);
+  const [selectedBookingInfo, setSelectedBookingInfo] =
+    useState<ChargeInquiryTableProps>();
 
-  const simpleColumnDefs = [
+  const columnDefs = [
     columnHelper.accessor("bookingNumber", {
       id: "bookingNumber",
       header: "Booking No.",
       cell: (info) => (
-        <MdTypography variant="body" size="medium">
+        <MdTypography
+          variant="body"
+          size="medium"
+          className="w-fit underline cursor-pointer"
+          onClick={() => {
+            setSelectedBookingInfo(info.row.original);
+            openBookingInformationDialog(true);
+          }}
+        >
           {info.getValue()}
         </MdTypography>
       ),
@@ -145,11 +150,13 @@ export const ChargeInquiryTable = (props: {
       header: "Type/Size",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
-          {info.getValue().map((typeSize) => (
+          {/* {info.getValue().map((typeSize) => (
             <div key={typeSize}>{typeSize}</div>
-          ))}
+          ))} */}
+          {info.getValue().join(", ")}
         </MdTypography>
       ),
+      size: 300,
     }),
     columnHelper.accessor("freeDays", {
       id: "freeDays",
@@ -213,198 +220,35 @@ export const ChargeInquiryTable = (props: {
     }),
   ];
 
-  const complexColumnDefs = [
-    columnHelper.accessor("blNumber", {
-      id: "blNumber",
-      header: "BL Number",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("tariffType", {
-      id: "tariffType",
-      header: "Tariff Type",
-      cell: (info) => (
-        <LabelChip
-          label={info.getValue()}
-          size="medium"
-          className="bg-surfaceContainerHigh"
-        />
-      ),
-    }),
-    columnHelper.accessor("bookingNumber", {
-      id: "bookingNumber",
-      header: "Booking No.",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("containerNumber", {
-      id: "containerNumber",
-      header: "Container No.",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("vessel", {
-      id: "vessel",
-      header: "Vessel",
-      cell: (info) => (
-        <MdTypography
-          variant="body"
-          size="medium"
-          className="w-fit underline cursor-pointer"
-          onClick={() => {
-            setCurrentVessel(info.getValue());
-            setIsVesselInfoDialogOpen(true);
-          }}
-        >
-          {info.getValue().vesselName}
-        </MdTypography>
-      ),
-      size: 300,
-    }),
-    columnHelper.accessor("placeOfReceipt", {
-      id: "placeOfReceipt",
-      header: "Place of Receipt",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("placeOfLoading", {
-      id: "placeOfLoading",
-      header: "Place of Loading",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("placeOfDischarging", {
-      id: "placeOfDischarging",
-      header: "Place of Discharging",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("placeOfDelivery", {
-      id: "placeOfDelivery",
-      header: "Place of Delivery",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("commodity", {
-      id: "commodity",
-      header: "Commodity",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("typeSize", {
-      id: "typeSize",
-      header: "Type/Size",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue().map((typeSize) => (
-            <div key={typeSize}>{typeSize}</div>
-          ))}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("freeDays", {
-      id: "freeDays",
-      header: "Free Days",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium" className="text-center">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("overDays", {
-      id: "overDays",
-      header: "Over Days",
-      cell: (info) => (
-        <LabelChip
-          label={info.getValue().toString()}
-          size="medium"
-          className="bg-errorContainer text-onErrorContainer"
-        />
-      ),
-    }),
-    columnHelper.accessor("stayingPeriodFreeTime", {
-      id: "stayingPeriodFreeTime",
-      header: "Staying Period Free Time",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue().from.toFormat("yyyy-MM-dd")} -{" "}
-          {info.getValue().to.toFormat("yyyy-MM-dd")}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("freeTime", {
-      id: "freeTime",
-      header: "Free Time",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue().start.toFormat("yyyy-MM-dd")} -{" "}
-          {info.getValue().end.toFormat("yyyy-MM-dd")}
-        </MdTypography>
-      ),
-    }),
-    columnHelper.accessor("ratePerDay", {
-      id: "ratePerDay",
-      header: "Rate Per Day",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue().days.from} - {info.getValue().days.to} days{" ("}
-          {info.getValue().rate}
-          {")"}
-        </MdTypography>
-      ),
-      minSize: 200,
-      size: 200,
-    }),
-    columnHelper.accessor("billingAmount", {
-      id: "billingAmount",
-      header: "Billing Amount",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
-    }),
-  ];
-
   return (
     <>
-      {renderDialog()}
       <div className="w-fit">
         <StatusFilterComponent
           unit="Tariff Type"
-          statusOptions={["Demurrage", "Detention", "Combined"]}
+          statusOptions={[
+            "Demurrage",
+            "Detention",
+            "Demurrage & Detention (Combined Tariff)",
+          ]}
           onChange={(selectedStatus) => {
             if (selectedStatus.length === 0) {
               setTableData(tempData);
               return;
             }
+
+            const modifiedSelections = selectedStatus.map((status) => {
+              if (status === "Demurrage") {
+                return "Demurrage";
+              } else if (status === "Detention") {
+                return "Detention";
+              } else {
+                return "Combined";
+              }
+            });
+
             setTableData(
               tempData.filter((data) =>
-                selectedStatus.includes(data.tariffType)
+                modifiedSelections.includes(data.tariffType)
               )
             );
           }}
@@ -422,11 +266,114 @@ export const ChargeInquiryTable = (props: {
           </div>
         )}
         data={tableData}
-        columns={
-          props.tableType === "simple" ? simpleColumnDefs : complexColumnDefs
-        }
+        columns={columnDefs}
         pinningColumns={["blNumber", "bookingNumber", "tariffType"]}
       />
+      <MdDialog
+        open={isBookingInformationDialogOpen}
+        closed={() => openBookingInformationDialog(false)}
+        className="min-h-[680px]"
+      >
+        <div slot="headline">Booking Information</div>
+        <div slot="content">
+          <div className="grid grid-cols-[0fr_1fr] gap-2">
+            <MdTypography variant="body" size="large" className="text-outline">
+              Vessel
+            </MdTypography>
+            <MdTypography
+              variant="body"
+              size="large"
+              className="text-onSurface ml-2"
+            >
+              {selectedBookingInfo?.vessel}
+            </MdTypography>
+            <MdTypography variant="body" size="large" className="text-outline">
+              Commodity
+            </MdTypography>
+            <MdTypography
+              variant="body"
+              size="large"
+              className="text-onSurface ml-2"
+            >
+              {selectedBookingInfo?.commodity}
+            </MdTypography>
+          </div>
+          <div className="border border-outlineVariant rounded-lg mt-4 p-6">
+            <PortItem
+              title="Place of Receipt"
+              port={selectedBookingInfo?.placeOfReceipt}
+              fill
+            />
+            <DividerComponent
+              orientation="vertical"
+              className="border-dashed h-12 scale-y-125 mx-[11px]"
+            />
+            <PortItem
+              title="Place of Loading"
+              port={selectedBookingInfo?.placeOfLoading}
+            />
+            <DividerComponent
+              orientation="vertical"
+              className="border-dashed h-12 scale-y-125 mx-[11px]"
+            />
+            <PortItem
+              title="Place of Discharging"
+              port={selectedBookingInfo?.placeOfDischarging}
+            />
+            <DividerComponent
+              orientation="vertical"
+              className="border-dashed h-12 scale-y-125 mx-[11px]"
+            />
+            <PortItem
+              title="Place of Delivery"
+              port={selectedBookingInfo?.placeOfDelivery}
+              fill
+            />
+          </div>
+        </div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              openBookingInformationDialog(false);
+            }}
+          >
+            Close
+          </MdOutlinedButton>
+        </div>
+      </MdDialog>
     </>
+  );
+};
+
+const PortItem = ({
+  title,
+  port,
+  fill = false,
+}: {
+  title: string;
+  port?: string;
+  fill?: boolean;
+}) => {
+  return (
+    <div className="flex items-center gap-4">
+      {fill ? (
+        <FmdGood className="text-primary" />
+      ) : (
+        <FmdGoodOutlined className="text-primary" />
+      )}
+      <div className="flex flex-col gap-1">
+        <MdTypography variant="body" size="large">
+          {title}
+        </MdTypography>
+        <MdTypography
+          variant="body"
+          size="large"
+          prominent
+          className="text-primary"
+        >
+          {port ?? "N/A"}
+        </MdTypography>
+      </div>
+    </div>
   );
 };
