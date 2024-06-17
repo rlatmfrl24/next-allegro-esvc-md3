@@ -90,13 +90,13 @@ export default function PartiesStep() {
       <SubTitle title="Person Placing Request" className="mb-4" />
       <SimpleRadioGroup
         groupName="person-placing-request"
-        selected={partiesData.placeOfReceipt}
+        selected={partiesData.personPlacingRequest}
         options={["Shipper", "Forwarder"]}
         onChange={(value) => {
           if (value === "Shipper") {
             setPartiesData((prev) => ({
               ...prev,
-              placeOfReceipt: value as "Shipper" | "Forwarder",
+              personPlacingRequest: value as "Shipper" | "Forwarder",
               shipper: {
                 name: userData.companyName,
                 address:
@@ -116,7 +116,7 @@ export default function PartiesStep() {
           } else {
             setPartiesData((prev) => ({
               ...prev,
-              placeOfReceipt: value as "Shipper" | "Forwarder",
+              personPlacingRequest: value as "Shipper" | "Forwarder",
               shipper: {
                 name: "",
                 address: "",

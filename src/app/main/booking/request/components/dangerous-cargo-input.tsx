@@ -24,9 +24,11 @@ import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 const DangerousCargoInput = ({
   container,
   type,
+  showRequired = true,
 }: {
   container: ContainerInformationType;
   type: ContainerType;
+  showRequired?: boolean;
 }) => {
   const typeKey = type.toString().toLowerCase();
   const setContainerInformation = useSetRecoilState(ContainerState);
@@ -215,7 +217,7 @@ const DangerousCargoInput = ({
               <>
                 <NAOutlinedTextField
                   label="UN No."
-                  required
+                  required={showRequired}
                   type="number"
                   enableNumberSeparator={false}
                   maxInputLength={4}
@@ -249,7 +251,7 @@ const DangerousCargoInput = ({
                 />
                 <NAOutlinedTextField
                   label="Class"
-                  required
+                  required={showRequired}
                   type="number"
                   maxInputLength={3}
                   maxLength={3}
@@ -282,7 +284,7 @@ const DangerousCargoInput = ({
                 />
                 <NAOutlinedTextField
                   label="Flash Point"
-                  required
+                  required={showRequired}
                   disabled
                   className="w-28"
                   suffixText="°C"

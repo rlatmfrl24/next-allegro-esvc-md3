@@ -26,8 +26,10 @@ import { containerVariant } from "./base";
 
 const ReeferContainerInput = ({
   list,
+  showRequired = true,
 }: {
   list: ReeferContainerInformationType[];
+  showRequired?: boolean;
 }) => {
   const [containerInformation, setContainerInformation] =
     useRecoilState(ContainerState);
@@ -102,7 +104,7 @@ const ReeferContainerInput = ({
                             label="Size"
                             className="w-52 text-right"
                             suffixText="ft"
-                            required
+                            required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
                               container.size === ""
@@ -129,7 +131,7 @@ const ReeferContainerInput = ({
                           <NAOutlinedTextField
                             label="Quantity / Total"
                             type="number"
-                            required
+                            required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
                               container.quantity === 0
@@ -177,7 +179,7 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Degree"
                               type="number"
-                              required
+                              required={showRequired}
                               className="w-28"
                               value={container.temperature.toString()}
                               handleValueChange={(value) => {
@@ -211,7 +213,7 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Ventilation"
                               type="number"
-                              required
+                              required={showRequired}
                               className="w-28"
                               maxInputLength={3}
                               maxLength={3}
@@ -256,7 +258,7 @@ const ReeferContainerInput = ({
                           <NAOutlinedListBox
                             label="Nature"
                             className="w-48"
-                            required
+                            required={showRequired}
                             options={["Chilled", "Frozen"]}
                             initialValue={container.nature}
                             onSelection={(nature) => {
@@ -287,7 +289,7 @@ const ReeferContainerInput = ({
                           />
                           <NAOutlinedListBox
                             label="Genset"
-                            required
+                            required={showRequired}
                             className="w-28"
                             options={["Yes", "No"]}
                             initialValue={container.genset ? "Yes" : "No"}
