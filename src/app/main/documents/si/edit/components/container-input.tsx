@@ -236,144 +236,152 @@ export default function ContainerInput({
           <DeleteOutline fontSize="small" />
         </MdIconButton>
       </div>
-      <div className="flex gap-2">
-        <NAOutlinedListBox
-          label="Seal Kind"
-          options={[
-            "Shipper",
-            "Carrier",
-            "Consolidator",
-            "Customs",
-            "Unknown",
-            "Quarantine Agency",
-            "Terminal Agency",
-          ]}
-          className="w-52"
-          initialValue={SealKind[container.firstSeal.kind]}
-          onSelection={(value) => {
-            updateContainerStore(container, "firstSeal", {
-              ...container.firstSeal,
-              kind: SealKind[value as keyof typeof SealKind],
-            });
-          }}
-        />
-        <NAOutlinedListBox
-          label="Seal Type"
-          options={["Merchanical Seal", "Electronic Seal"]}
-          className="w-52"
-          initialValue={
-            container.firstSeal.type === "merchanical"
-              ? "Merchanical Seal"
-              : "Electronic Seal"
-          }
-          onSelection={(value) => {
-            updateContainerStore(container, "firstSeal", {
-              ...container.firstSeal,
-              type: value === "Merchanical Seal" ? "merchanical" : "electronic",
-            });
-          }}
-        />
-        <NAOutlinedTextField
-          value={container.firstSeal.description}
-          placeholder="Seal No. 01"
-          className="flex-1"
-          maxInputLength={20}
-          handleValueChange={(value) => {
-            updateContainerStore(container, "firstSeal", {
-              ...container.firstSeal,
-              description: value,
-            });
-          }}
-        />
-      </div>
-      <div className="flex gap-2">
-        <NAOutlinedListBox
-          label="Seal Kind"
-          options={[
-            "Shipper",
-            "Carrier",
-            "Consolidator",
-            "Customs",
-            "Unknown",
-            "Quarantine Agency",
-            "Terminal Agency",
-          ]}
-          className="w-52"
-          initialValue={SealKind[container.secondSeal.kind]}
-          onSelection={(value) => {
-            updateContainerStore(container, "secondSeal", {
-              ...container.secondSeal,
-              kind: SealKind[value as keyof typeof SealKind],
-            });
-          }}
-        />
-        <NAOutlinedListBox
-          label="Seal Type"
-          options={["Merchanical Seal", "Electronic Seal"]}
-          className="w-52"
-          initialValue={
-            container.secondSeal.type === "merchanical"
-              ? "Merchanical Seal"
-              : "Electronic Seal"
-          }
-          onSelection={(value) => {
-            updateContainerStore(container, "secondSeal", {
-              ...container.secondSeal,
-              type: value === "Merchanical Seal" ? "merchanical" : "electronic",
-            });
-          }}
-        />
-        <NAOutlinedTextField
-          value={container.secondSeal.description}
-          placeholder="Seal No. 02"
-          className="flex-1"
-          maxInputLength={20}
-          handleValueChange={(value) => {
-            updateContainerStore(container, "secondSeal", {
-              ...container.secondSeal,
-              description: value,
-            });
-          }}
-        />
+      <div className="flex gap-4">
+        <div className="flex gap-2">
+          <NAOutlinedListBox
+            label="Seal Kind"
+            options={[
+              "Shipper",
+              "Carrier",
+              "Consolidator",
+              "Customs",
+              "Unknown",
+              "Quarantine Agency",
+              "Terminal Agency",
+            ]}
+            className="w-52"
+            initialValue={SealKind[container.firstSeal.kind]}
+            onSelection={(value) => {
+              updateContainerStore(container, "firstSeal", {
+                ...container.firstSeal,
+                kind: SealKind[value as keyof typeof SealKind],
+              });
+            }}
+          />
+          <NAOutlinedListBox
+            label="Seal Type"
+            options={["Merchanical Seal", "Electronic Seal"]}
+            className="w-52"
+            initialValue={
+              container.firstSeal.type === "merchanical"
+                ? "Merchanical Seal"
+                : "Electronic Seal"
+            }
+            onSelection={(value) => {
+              updateContainerStore(container, "firstSeal", {
+                ...container.firstSeal,
+                type:
+                  value === "Merchanical Seal" ? "merchanical" : "electronic",
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            value={container.firstSeal.description}
+            placeholder="Seal No. 01"
+            className="flex-1"
+            maxInputLength={20}
+            handleValueChange={(value) => {
+              updateContainerStore(container, "firstSeal", {
+                ...container.firstSeal,
+                description: value,
+              });
+            }}
+          />
+        </div>
+        <div className="flex gap-2">
+          <NAOutlinedListBox
+            label="Seal Kind"
+            options={[
+              "Shipper",
+              "Carrier",
+              "Consolidator",
+              "Customs",
+              "Unknown",
+              "Quarantine Agency",
+              "Terminal Agency",
+            ]}
+            className="w-52"
+            initialValue={SealKind[container.secondSeal.kind]}
+            onSelection={(value) => {
+              updateContainerStore(container, "secondSeal", {
+                ...container.secondSeal,
+                kind: SealKind[value as keyof typeof SealKind],
+              });
+            }}
+          />
+          <NAOutlinedListBox
+            label="Seal Type"
+            options={["Merchanical Seal", "Electronic Seal"]}
+            className="w-52"
+            initialValue={
+              container.secondSeal.type === "merchanical"
+                ? "Merchanical Seal"
+                : "Electronic Seal"
+            }
+            onSelection={(value) => {
+              updateContainerStore(container, "secondSeal", {
+                ...container.secondSeal,
+                type:
+                  value === "Merchanical Seal" ? "merchanical" : "electronic",
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            value={container.secondSeal.description}
+            placeholder="Seal No. 02"
+            className="flex-1"
+            maxInputLength={20}
+            handleValueChange={(value) => {
+              updateContainerStore(container, "secondSeal", {
+                ...container.secondSeal,
+                description: value,
+              });
+            }}
+          />
+        </div>
       </div>
 
-      <div className="flex gap-2">
-        <NAOutlinedTextField
-          value={container.packageQuantity.toString()}
-          className="w-1/4"
-          type="number"
-          readOnly={container.hasCargoManifest}
-          label="Package"
-          maxInputLength={16}
-          handleValueChange={(value) => {
-            updateContainerStore(container, "packageQuantity", parseInt(value));
-          }}
-        />
-        <NAOutlinedAutoComplete
-          className="flex-1"
-          readOnly={container.hasCargoManifest}
-          itemList={tempPackageList}
-          placeholder="Package Type"
-          initialValue={container.packageType}
-          isAllowOnlyListItems={false}
-          showAllonFocus
-          onQueryChange={(value) => {
-            updateContainerStore(container, "packageType", value);
-          }}
-          onItemSelection={(value) => {
-            updateContainerStore(container, "packageType", value);
-          }}
-        />
-      </div>
       <div className="flex gap-4">
         <div className="flex gap-2 flex-1">
+          <NAOutlinedTextField
+            value={container.packageQuantity.toString()}
+            className="w-1/4"
+            type="number"
+            readOnly={container.hasCargoManifest}
+            label="Package"
+            maxInputLength={16}
+            handleValueChange={(value) => {
+              updateContainerStore(
+                container,
+                "packageQuantity",
+                parseInt(value)
+              );
+            }}
+          />
+          <NAOutlinedAutoComplete
+            className="flex-1"
+            readOnly={container.hasCargoManifest}
+            itemList={tempPackageList}
+            placeholder="Package Type"
+            initialValue={container.packageType}
+            isAllowOnlyListItems={false}
+            showAllonFocus
+            onQueryChange={(value) => {
+              updateContainerStore(container, "packageType", value);
+            }}
+            onItemSelection={(value) => {
+              updateContainerStore(container, "packageType", value);
+            }}
+          />
+        </div>
+        <div className="flex gap-2">
           <NAOutlinedTextField
             label="Weight"
             value={container.packageWeight.toString()}
             type="number"
             readOnly={container.hasCargoManifest}
             maxInputLength={22}
-            className="flex-1"
+            className="w-48"
             handleValueChange={(value) => {
               updateContainerStore(container, "packageWeight", parseInt(value));
             }}
@@ -381,7 +389,7 @@ export default function ContainerInput({
           <NAOutlinedListBox
             initialValue={SIEditContainerStore.weightUnit}
             options={["KGS", "LBS"]}
-            className="flex-1"
+            className="w-32"
             readOnly={container.hasCargoManifest}
             onSelection={(value) => {
               setSIEditContainerStore((prev) => ({
@@ -391,10 +399,10 @@ export default function ContainerInput({
             }}
           />
         </div>
-        <div className="flex gap-2 flex-1">
+        <div className="flex gap-2">
           <NAOutlinedTextField
             label="Measure"
-            className="flex-1"
+            className="w-48"
             maxInputLength={16}
             value={container.packageMeasurement.toString()}
             type="number"
@@ -410,7 +418,7 @@ export default function ContainerInput({
           <NAOutlinedListBox
             initialValue={SIEditContainerStore.measurementUnit}
             options={["CBM", "CBF"]}
-            className="flex-1"
+            className="w-32"
             readOnly={container.hasCargoManifest}
             onSelection={(value) => {
               setSIEditContainerStore((prev) => ({

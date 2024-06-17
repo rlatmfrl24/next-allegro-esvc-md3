@@ -62,6 +62,9 @@ export default function Test() {
       >
         Go to Main
       </MdFilledButton>
+      <div className="flex gap-2 justify-center">
+        <EmptyResultPlaceholder className="w-full" text="No Data Found." />
+      </div>
 
       <div className="h-fit">
         <HexColorPicker color={color} onChange={setColor} />
@@ -125,9 +128,6 @@ export default function Test() {
         <MdCircularProgress value={0.3} />
         <MdCircularProgress value={0.6} />
         <MdCircularProgress value={0.9} />
-      </div>
-      <div className="flex gap-2 justify-center">
-        <EmptyResultPlaceholder text="No Data Found." />
       </div>
     </div>
   );
