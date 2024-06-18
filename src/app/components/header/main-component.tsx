@@ -19,14 +19,17 @@ import {
 import { AccountCircleOutlined } from "@mui/icons-material";
 import Link from "next/link";
 import { useState, CSSProperties } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { MdTypography } from "../typography";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { LanguageSelector } from "./language-selector";
+import { useRouter } from "next/navigation";
 
 export const HeaderMainComponent = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const userState = useRecoilValue(UserState);
+  // const userState = useRecoilValue(UserState);
+  const [userState, setUserState] = useRecoilState(UserState);
+  const router = useRouter();
 
   const { refs, floatingStyles, context } = useFloating({
     open: isUserMenuOpen,
@@ -87,9 +90,18 @@ export const HeaderMainComponent = () => {
             <Link href={"/main/profile"}>
               <MdMenuItem>My Profile</MdMenuItem>
             </Link>
-            <Link href={"/sign"}>
-              <MdMenuItem>Sign Out</MdMenuItem>
-            </Link>
+            <MdMenuItem
+              onClick={() => {
+                setUserState({
+                  isAuthenticated: false,
+                  email: "",
+                  name: "",
+                });
+                router.push("/sign");
+              }}
+            >
+              Sign Out
+            </MdMenuItem>
           </MdElevatedCard>
         </div>
       )}

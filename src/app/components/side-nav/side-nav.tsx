@@ -2,7 +2,7 @@
 
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import NavOverlay from "./nav-overlay";
 import { DrawerState, UserState } from "@/app/store/global.store";
@@ -14,7 +14,8 @@ import { useEffect } from "react";
 export default function SideNavigation() {
   const pathname = usePathname();
   const [drawer, setDrawer] = useRecoilState(DrawerState);
-  const [userData, setUserData] = useRecoilState(UserState);
+  const [userData] = useRecoilState(UserState);
+  const router = useRouter();
 
   function handleDrawer() {
     setDrawer({
@@ -49,12 +50,20 @@ export default function SideNavigation() {
               <Favorite />
             </MdIcon>
           </MdIconButton>
-          <MdIconButton>
+          <MdIconButton
+            onClick={() => {
+              router.push("/main/guide");
+            }}
+          >
             <MdIcon>
               <ClassOutlined />
             </MdIcon>
           </MdIconButton>
-          <MdIconButton>
+          <MdIconButton
+            onClick={() => {
+              router.push("/main/sitemap");
+            }}
+          >
             <MdIcon>
               <MapOutlined />
             </MdIcon>

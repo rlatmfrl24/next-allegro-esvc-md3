@@ -18,6 +18,8 @@ import { DividerComponent } from "@/app/components/divider";
 import { MdDialog, MdOutlinedButton, MdRippleEffect } from "@/app/util/md3";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { UserState } from "@/app/store/global.store";
 
 export default function Sitemap() {
   return (
@@ -47,6 +49,7 @@ const CategoryItem = (props: MenuItemType) => {
   const router = useRouter();
   const [isLoginRequiredDialogOpen, setIsLoginRequiredDialogOpen] =
     useState(false);
+  const userData = useRecoilValue(UserState);
 
   return (
     <div>
@@ -71,7 +74,8 @@ const CategoryItem = (props: MenuItemType) => {
                 if (
                   allowBeforeLoginMenus.includes(
                     "/" + props.link + "/" + subItem.link
-                  )
+                  ) ||
+                  userData.isAuthenticated
                 ) {
                   router.push("/main/" + props.link + "/" + subItem.link);
                 } else {
