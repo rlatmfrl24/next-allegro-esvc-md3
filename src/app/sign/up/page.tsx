@@ -116,44 +116,67 @@ export default function Register() {
         >
           <div className="h-3 bg-secondaryContainer"></div>
 
-          <Stepper
-            activeStep={currentStep}
-            alternativeLabel
-            connector={
-              <StepConnector
+          {currentStep < 2 && (
+            <Stepper
+              activeStep={currentStep}
+              alternativeLabel
+              connector={
+                <StepConnector
+                  sx={{
+                    mt: 0.5,
+                    px: 1,
+                  }}
+                />
+              }
+            >
+              <Step key={"policy"}>
+                <StepLabel StepIconComponent={CustomStepIcon}>
+                  <MdTypography
+                    variant="label"
+                    size="large"
+                    className="-translate-y-3 text-primary"
+                  >
+                    Privacy and Security Policy
+                  </MdTypography>
+                </StepLabel>
+              </Step>
+              <Step key={"form"}>
+                <StepLabel StepIconComponent={CustomStepIcon}>
+                  <MdTypography
+                    variant="label"
+                    size="large"
+                    className="-translate-y-3 text-primary"
+                  >
+                    Registration info
+                  </MdTypography>
+                </StepLabel>
+              </Step>
+            </Stepper>
+          )}
+
+          {currentStep === 2 && (
+            <div className="bg-surfaceContainerLow flex flex-col items-center mx-8 gap-2 py-6 rounded-lg">
+              <Check
+                className="bg-primary text-white rounded-full"
                 sx={{
-                  mt: 0.5,
-                  px: 1,
+                  fontSize: 36,
+                  p: 1,
                 }}
               />
-            }
-          >
-            <Step key={"policy"}>
-              <StepLabel StepIconComponent={CustomStepIcon}>
-                <MdTypography
-                  variant="label"
-                  size="large"
-                  className="-translate-y-3 text-primary"
-                >
-                  Privacy and Security Policy
-                </MdTypography>
-              </StepLabel>
-            </Step>
-            <Step key={"form"}>
-              <StepLabel StepIconComponent={CustomStepIcon}>
-                <MdTypography
-                  variant="label"
-                  size="large"
-                  className="-translate-y-3 text-primary"
-                >
-                  Registration info
-                </MdTypography>
-              </StepLabel>
-            </Step>
-          </Stepper>
+              <MdTypography variant="title" size="large">
+                Your registration has been completed.
+              </MdTypography>
+              <MdTypography
+                variant="label"
+                size="large"
+                className="text-outline"
+              >
+                Your registration has been completed.
+              </MdTypography>
+            </div>
+          )}
 
           <DividerComponent className="border-dotted" />
-          {/* {currentStep === 0 ? <PolicyContent /> : <></>} */}
           {
             {
               0: <PolicyContent />,
