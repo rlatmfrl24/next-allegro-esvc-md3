@@ -5,6 +5,8 @@ import {
   MenuItemType,
 } from "./typeDef/generic";
 
+export const LanguageOptions = ["English", "Korean", "Japanese", "Chinese"];
+
 export const allowBeforeLoginMenus = [
   "/schedule/ptp",
   "/schedule/vessel",
