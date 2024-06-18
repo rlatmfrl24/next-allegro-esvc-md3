@@ -1,4 +1,4 @@
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { MdCheckbox, MdTextButton } from "@/app/util/md3";

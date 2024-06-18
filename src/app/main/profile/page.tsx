@@ -22,7 +22,7 @@ import { PasswordUpdateDialog } from "./dialog/password";
 import { CompanyUpdateDialog } from "./dialog/company";
 import { WithdrawalDialog } from "./dialog/withdrawal";
 import { ContractUpdateDialog } from "./dialog/contract";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 
 export default function MyProfilePage() {
   const [isRequesting, setIsRequesting] = useState(false);

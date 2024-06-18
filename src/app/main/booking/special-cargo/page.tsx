@@ -40,7 +40,7 @@ import { ColumnHelper, createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import {
   AwkwardCargoStatusProps,
   DangerousCargoStatusProps,
