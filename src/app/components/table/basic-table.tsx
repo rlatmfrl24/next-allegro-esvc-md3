@@ -249,7 +249,6 @@ export const BasicTable = ({
               ...columnSizeVars,
               width: "99.8%", // to prevent horizontal scroll
               // minHeight: "480px",
-              height: "100%",
             }}
           >
             <thead>
@@ -310,6 +309,7 @@ export const BasicTable = ({
             )}
           </table>
         </DndContext>
+        <div className="flex-1"></div>
       </OverlayScrollbarsComponent>
     </div>
   );

@@ -92,7 +92,7 @@ export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 900 }, (_, i) => createDummnyBookingStatus());
+    return Array.from({ length: 200 }, (_, i) => createDummnyBookingStatus());
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);

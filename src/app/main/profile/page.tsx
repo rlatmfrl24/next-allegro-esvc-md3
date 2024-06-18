@@ -279,10 +279,10 @@ export default function MyProfilePage() {
                   required
                   options={contractNumberOptions}
                   label="Contract No."
-                  initialValue={userProfile.recentBLNumber}
-                  onSelection={(value) => {
-                    setUserProfile({ ...userProfile, recentBLNumber: value });
-                  }}
+                  // initialValue={userProfile.nu}
+                  // onSelection={(value) => {
+                  //   setUserProfile({ ...userProfile, recentBLNumber: value });
+                  // }}
                 />
                 <MdOutlinedButton
                   onClick={() => {
