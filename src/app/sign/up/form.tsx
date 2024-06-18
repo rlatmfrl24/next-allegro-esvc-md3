@@ -9,6 +9,7 @@ import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { ComponentProps, useEffect, useMemo, useState } from "react";
 
 export const RegisterForm = (props: {
+  onFormChange?: (form: SignUpFormProps) => void;
   onRequiredFilledChange?: (isRequiredFilled: boolean) => void;
 }) => {
   const [signUpForm, setSignUpForm] = useState<SignUpFormProps>({
@@ -51,8 +52,8 @@ export const RegisterForm = (props: {
       signUpForm.address.city !== "" &&
       signUpForm.address.street !== "" &&
       signUpForm.password === signUpForm.confirmPassword;
-
     props.onRequiredFilledChange?.(isValidationFilled);
+    props.onFormChange?.(signUpForm);
   }, [props, signUpForm]);
 
   return (

@@ -24,6 +24,9 @@ import {
 
 import { PolicyContent } from "./policy-content";
 import { RegisterForm } from "./form";
+import { SignUpPreview } from "./preview";
+import { SignUpFormProps } from "@/app/util/typeDef/sign";
+import Link from "next/link";
 
 const CustomStepIcon = (props: StepIconProps) => {
   const { active, completed, className, icon } = props;
@@ -59,14 +62,7 @@ export default function Register() {
   const cx = classNames.bind(styles);
   const [currentStep, setCurrentStep] = useState(0);
   const [isValidationFilled, setIsValidationFilled] = useState(false);
-
-  const PolicyNextButton = () => {
-    return (
-      <MdFilledButton onClick={() => setCurrentStep(1)}>
-        Agree and Continue
-      </MdFilledButton>
-    );
-  };
+  const [formData, setFormData] = useState({} as SignUpFormProps);
 
   const SubmitButton = (props: { disabled?: boolean }) => {
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -117,41 +113,44 @@ export default function Register() {
           <div className="h-3 bg-secondaryContainer"></div>
 
           {currentStep < 2 && (
-            <Stepper
-              activeStep={currentStep}
-              alternativeLabel
-              connector={
-                <StepConnector
-                  sx={{
-                    mt: 0.5,
-                    px: 1,
-                  }}
-                />
-              }
-            >
-              <Step key={"policy"}>
-                <StepLabel StepIconComponent={CustomStepIcon}>
-                  <MdTypography
-                    variant="label"
-                    size="large"
-                    className="-translate-y-3 text-primary"
-                  >
-                    Privacy and Security Policy
-                  </MdTypography>
-                </StepLabel>
-              </Step>
-              <Step key={"form"}>
-                <StepLabel StepIconComponent={CustomStepIcon}>
-                  <MdTypography
-                    variant="label"
-                    size="large"
-                    className="-translate-y-3 text-primary"
-                  >
-                    Registration info
-                  </MdTypography>
-                </StepLabel>
-              </Step>
-            </Stepper>
+            <>
+              <Stepper
+                activeStep={currentStep}
+                alternativeLabel
+                connector={
+                  <StepConnector
+                    sx={{
+                      mt: 0.5,
+                      px: 1,
+                    }}
+                  />
+                }
+              >
+                <Step key={"policy"}>
+                  <StepLabel StepIconComponent={CustomStepIcon}>
+                    <MdTypography
+                      variant="label"
+                      size="large"
+                      className="-translate-y-3 text-primary"
+                    >
+                      Privacy and Security Policy
+                    </MdTypography>
+                  </StepLabel>
+                </Step>
+                <Step key={"form"}>
+                  <StepLabel StepIconComponent={CustomStepIcon}>
+                    <MdTypography
+                      variant="label"
+                      size="large"
+                      className="-translate-y-3 text-primary"
+                    >
+                      Registration info
+                    </MdTypography>
+                  </StepLabel>
+                </Step>
+              </Stepper>
+              <DividerComponent className="border-dotted" />
+            </>
           )}
 
           {currentStep === 2 && (
@@ -176,17 +175,20 @@ export default function Register() {
             </div>
           )}
 
-          <DividerComponent className="border-dotted" />
           {
             {
               0: <PolicyContent />,
               1: (
                 <RegisterForm
+                  onFormChange={(form: SignUpFormProps) => {
+                    setFormData(form);
+                  }}
                   onRequiredFilledChange={(isFilled: boolean) =>
                     setIsValidationFilled(isFilled)
                   }
                 />
               ),
+              2: <SignUpPreview formData={formData} />,
             }[currentStep]
           }
         </div>
@@ -201,9 +203,17 @@ export default function Register() {
           <MdElevation />
           {
             {
-              0: <PolicyNextButton />,
+              0: (
+                <MdFilledButton onClick={() => setCurrentStep(1)}>
+                  Agree and Continue
+                </MdFilledButton>
+              ),
               1: <SubmitButton />,
-              2: <></>,
+              2: (
+                <Link href="/sign">
+                  <MdFilledButton>Go to Main</MdFilledButton>,
+                </Link>
+              ),
             }[currentStep]
           }
         </div>
