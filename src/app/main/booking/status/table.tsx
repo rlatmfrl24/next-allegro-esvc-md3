@@ -424,7 +424,7 @@ export default function BookingStatusTable() {
     <>
       {renderEstimatedTimeofDepartureDialog()}
       {renderVesselInfoDialog()}
-      <div className="relative w-full max-w-full">
+      <div className="relative w-full max-w-full h-full">
         <BasicTable
           ActionComponent={(table) => {
             return (

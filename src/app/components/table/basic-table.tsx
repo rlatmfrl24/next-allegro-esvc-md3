@@ -225,7 +225,7 @@ export const BasicTable = ({
   }
 
   return (
-    <div className="relative flex flex-col gap-4">
+    <div className="relative flex flex-col gap-4 flex-1 h-full">
       <div className="flex items-end">
         {ActionComponent && <ActionComponent {...table} />}
         <div className="flex gap-2 items-center h-10 z-10">
@@ -236,7 +236,7 @@ export const BasicTable = ({
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
-      <OverlayScrollbarsComponent defer>
+      <OverlayScrollbarsComponent defer className="flex-1">
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
@@ -248,6 +248,8 @@ export const BasicTable = ({
             style={{
               ...columnSizeVars,
               width: "99.8%", // to prevent horizontal scroll
+              // minHeight: "480px",
+              height: "100%",
             }}
           >
             <thead>
