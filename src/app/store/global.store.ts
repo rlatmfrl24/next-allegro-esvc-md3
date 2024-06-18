@@ -39,7 +39,6 @@ const UserProfileState = atom<SignUpFormProps>({
       "Truck or Rail Company",
       "Others",
     ]),
-    recentBLNumber: faker.string.alphanumeric(10).toUpperCase(),
   } as SignUpFormProps,
 });
 

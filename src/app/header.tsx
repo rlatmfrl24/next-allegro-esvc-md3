@@ -25,7 +25,6 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 
 import Logo from "./components/logo";
 import { MdTypography } from "./components/typography";
-import { useRegister } from "./sign/up/main";
 import { basicPopoverStyles } from "./util/constants";
 import {
   MdElevatedCard,
@@ -42,7 +41,9 @@ import { UserState } from "./store/global.store";
 
 export const Header = () => {
   const pathname = usePathname();
-  const isMain = pathname.split("/").includes("main");
+  const userData = useRecoilValue(UserState);
+  const isMain =
+    pathname.split("/").includes("main") && userData.isAuthenticated;
 
   return (
     <header className="relative h-16 flex items-center px-4">

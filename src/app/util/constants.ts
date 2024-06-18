@@ -5,6 +5,16 @@ import {
   MenuItemType,
 } from "./typeDef/generic";
 
+export const allowBeforeLoginMenus = [
+  "/schedule/ptp",
+  "/schedule/vessel",
+  "/schedule/port",
+  "/schedule/long-range",
+  "/pricing/surcharge",
+  "/tariff/dem-det",
+  "/tracking/cargo",
+];
+
 // TODO: 추후에 API로 받아올 예정
 export const menuItems: MenuItemType[] = [
   {
