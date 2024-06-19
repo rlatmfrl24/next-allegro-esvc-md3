@@ -1,19 +1,40 @@
 import { DividerComponent } from "@/app/components/divider";
+import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import Portal from "@/app/components/portal";
+import { useSimpleTable } from "@/app/components/table/simple-table";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { MdElevation, MdFilledButton } from "@/app/util/md3";
+import {
+  MdDialog,
+  MdElevation,
+  MdFilledButton,
+  MdFilledTonalButton,
+  MdOutlinedButton,
+  MdTextButton,
+} from "@/app/util/md3";
 import { SignUpFormProps } from "@/app/util/typeDef/sign";
+import { faker } from "@faker-js/faker";
 import {
   AccessTime,
   ContactPhoneOutlined,
   ManageAccountsOutlined,
   MarkEmailUnreadOutlined,
 } from "@mui/icons-material";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { CSSProperties, ReactNode } from "react";
+import {
+  CSSProperties,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 
 export const SignUpPreview = (props: { formData: SignUpFormProps }) => {
   const router = useRouter();
+  const [isCheckApproverDialogOpen, setIsCheckApproverDialogOpen] =
+    useState(false);
 
   return (
     <div className="px-8 pb-6 pt-2">
@@ -77,10 +98,23 @@ export const SignUpPreview = (props: { formData: SignUpFormProps }) => {
           </div>
         </div>
       </div>
-      <DividerComponent className="border-dashed my-6" />
-      <MdTypography variant="body" size="medium" prominent>
-        e-Service Notice
-      </MdTypography>
+      <DividerComponent className="border-dashed my-4" />
+      <div className="flex items-center justify-between">
+        <MdTypography variant="body" size="medium" prominent>
+          e-Service Notice
+        </MdTypography>
+        <MdFilledTonalButton
+          onClick={() => {
+            setIsCheckApproverDialogOpen(true);
+          }}
+        >
+          Check Approver
+        </MdFilledTonalButton>
+        <CheckApproverDialog
+          open={isCheckApproverDialogOpen}
+          onOpenChage={setIsCheckApproverDialogOpen}
+        />
+      </div>
       <div className="flex gap-4 mt-4">
         <NoticeItem
           title="Standard Approval Procedure"
@@ -140,5 +174,108 @@ const BasicItem = (props: { title: string; value: string }) => {
         ))}
       </MdTypography>
     </>
+  );
+};
+
+const CheckApproverDialog = (props: {
+  open: boolean;
+  onOpenChage: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const tempCountryList = useMemo(() => {
+    return ["China", "Japan", "Korea", "Taiwan", "Thailand", "Vietnam"];
+  }, []);
+
+  const tempContactOfficeList = useMemo(() => {
+    return ["Beijing", "Shanghai", "Tokyo", "Seoul", "Taipei", "Bangkok"];
+  }, []);
+
+  type TableProps = {
+    office: string;
+    country: string;
+    name: string;
+    email: string;
+    tel: string;
+  };
+
+  const tempTableData: TableProps[] = useMemo(() => {
+    return Array.from({ length: 30 }, (_, index) => ({
+      office: faker.helpers.arrayElement(tempContactOfficeList) + ` Branch`,
+      country: faker.helpers.arrayElement(tempCountryList),
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      tel: faker.phone.number(),
+    }));
+  }, [tempContactOfficeList, tempCountryList]);
+
+  const columnHelper = createColumnHelper<TableProps>();
+  const tableColumnDefs = [
+    columnHelper.accessor("office", {
+      id: "office",
+      header: "Office",
+    }),
+    columnHelper.accessor("country", {
+      id: "country",
+      header: "Country",
+    }),
+    columnHelper.accessor("name", {
+      id: "name",
+      header: "Name",
+    }),
+    columnHelper.accessor("email", {
+      id: "email",
+      header: "Email",
+    }),
+    columnHelper.accessor("tel", {
+      id: "tel",
+      header: "Tel",
+    }),
+  ];
+
+  const { renderTable } = useSimpleTable({
+    data: tempTableData,
+    columns: tableColumnDefs,
+  });
+
+  return (
+    <Portal selector="#main-container">
+      <MdDialog
+        open={props.open}
+        closed={() => {
+          props.onOpenChage(false);
+        }}
+        className="min-w-fit"
+      >
+        <div slot="headline">Check Appover</div>
+        <div slot="content" className="flex flex-col gap-4">
+          <div className="flex gap-4">
+            <NAOutlinedListBox
+              className="flex-1"
+              label="Country"
+              options={tempCountryList}
+            />
+            <NAOutlinedListBox
+              className="flex-1"
+              label="Contact Office"
+              options={tempContactOfficeList}
+            />
+          </div>
+          <div className="flex gap-2 justify-end">
+            <MdTextButton>Reset</MdTextButton>
+            <MdFilledButton>Search</MdFilledButton>
+          </div>
+          <DividerComponent />
+          {renderTable()}
+        </div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              props.onOpenChage(false);
+            }}
+          >
+            Close
+          </MdOutlinedButton>
+        </div>
+      </MdDialog>
+    </Portal>
   );
 };
