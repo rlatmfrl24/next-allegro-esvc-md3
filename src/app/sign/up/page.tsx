@@ -2,7 +2,8 @@
 
 import classNames from "classnames";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
+import type { OverlayScrollbarsComponentRef } from "overlayscrollbars-react";
 
 import { DividerComponent } from "@/app/components/divider";
 import { MdTypography } from "@/app/components/typography";
@@ -26,6 +27,8 @@ import { PolicyContent } from "./policy-content";
 import { RegisterForm } from "./form";
 import { SignUpPreview } from "./preview";
 import { SignUpFormProps } from "@/app/util/typeDef/sign";
+import { access } from "fs";
+import { useEventObserver } from "@/app/util/useEventObserver";
 
 const CustomStepIcon = (props: StepIconProps) => {
   const { active, completed, className, icon } = props;
@@ -60,11 +63,42 @@ const CustomStepIcon = (props: StepIconProps) => {
 export default function Register() {
   const cx = classNames.bind(styles);
   const [currentStep, setCurrentStep] = useState(0);
-  const [isValidationFilled, setIsValidationFilled] = useState(false);
   const [formData, setFormData] = useState({} as SignUpFormProps);
+  const [activeEvents, activateEvent] = useEventObserver();
+  const osRef = useRef<OverlayScrollbarsComponentRef>(null);
+
+  function scrollTop() {
+    const { current } = osRef;
+    const osInstance = current?.osInstance();
+
+    if (!osInstance) {
+      return;
+    }
+
+    const { overflowAmount } = osInstance.state();
+    const { scrollOffsetElement } = osInstance.elements();
+    const { scrollLeft, scrollTop } = scrollOffsetElement;
+
+    scrollOffsetElement.scrollTo({
+      left: scrollLeft,
+      top: scrollTop - overflowAmount.y,
+      behavior: "smooth",
+    });
+  }
+
+  useEffect(() => {
+    scrollTop();
+  }, [currentStep]);
 
   return (
-    <OverlayScrollbarsComponent defer className="h-full overflow-auto m-2">
+    <OverlayScrollbarsComponent
+      defer
+      className="h-full overflow-auto m-2"
+      ref={osRef}
+      events={{
+        scroll: () => activateEvent("scroll"),
+      }}
+    >
       <div
         id="signup-container"
         className={cx(styles.container, "items-center")}

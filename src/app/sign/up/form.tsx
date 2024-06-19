@@ -15,13 +15,7 @@ import {
 import { SignUpFormProps } from "@/app/util/typeDef/sign";
 import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  CSSProperties,
-  ComponentProps,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { CSSProperties, ComponentProps, useEffect, useState } from "react";
 
 export const RegisterForm = (props: {
   onFormChange?: (form: SignUpFormProps) => void;

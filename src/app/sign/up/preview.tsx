@@ -1,19 +1,42 @@
 import { DividerComponent } from "@/app/components/divider";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { MdElevation, MdFilledButton } from "@/app/util/md3";
 import { SignUpFormProps } from "@/app/util/typeDef/sign";
 import {
   AccessTime,
   ContactPhoneOutlined,
   ManageAccountsOutlined,
-  MarkEmailUnread,
   MarkEmailUnreadOutlined,
 } from "@mui/icons-material";
-import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { CSSProperties, ReactNode } from "react";
 
 export const SignUpPreview = (props: { formData: SignUpFormProps }) => {
+  const router = useRouter();
+
   return (
     <div className="px-8 pb-6 pt-2">
+      <div className="fixed bottom-0 left-0 w-full px-4 py-2 z-10">
+        <div
+          style={
+            {
+              "--md-elevation-level": "2",
+            } as CSSProperties
+          }
+          className="relative w-full p-2 rounded-full text-right bg-surfaceContainerLow "
+        >
+          <MdElevation />
+          <MdFilledButton
+            onClick={() => {
+              router.push("/sign");
+            }}
+          >
+            Go to Main
+          </MdFilledButton>
+        </div>
+      </div>
+
       <div className="flex gap-6">
         <div className="flex-1">
           <DetailTitle title="User Information" />
