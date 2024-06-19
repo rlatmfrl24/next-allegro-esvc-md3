@@ -273,12 +273,13 @@ export default function BookingTemplate() {
   };
 
   return (
-    <div
-      aria-label="container"
-      className={cx(styles.container, "flex-1 flex-col")}
-    >
+    <div aria-label="container" className={cx(styles.container)}>
       <div className="flex items-center justify-between">
-        <PageTitle title="Booking Template" />
+        <PageTitle
+          title="Booking Template"
+          category="Booking"
+          href="/main/booking/template"
+        />
         <MdOutlinedButton
           onClick={() => {
             router.push("/main/booking/template/create");
@@ -287,7 +288,7 @@ export default function BookingTemplate() {
           Create New Template
         </MdOutlinedButton>
       </div>
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         <BasicTable
           ActionComponent={() => (
             <div className="flex-1 flex gap-4">

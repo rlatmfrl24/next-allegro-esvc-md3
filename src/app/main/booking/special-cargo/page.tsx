@@ -40,7 +40,7 @@ import { ColumnHelper, createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import {
   AwkwardCargoStatusProps,
   DangerousCargoStatusProps,
@@ -61,13 +61,13 @@ export default function SpecialCargoStatusSearch() {
   const [queries, setQueries] = useState<string[]>([]);
 
   const dangerousCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummyDangerousCargoStatus);
+    return Array.from({ length: 3 }, createDummyDangerousCargoStatus);
   }, []);
   const awkwardCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummyAwkwardCargoStatus);
+    return Array.from({ length: 30 }, createDummyAwkwardCargoStatus);
   }, []);
   const reeferCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummySpecialCargoStatus);
+    return Array.from({ length: 5 }, createDummySpecialCargoStatus);
   }, []);
 
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
@@ -218,7 +218,11 @@ export default function SpecialCargoStatusSearch() {
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
-      <PageTitle title="Special Cargo  Status Search" />
+      <PageTitle
+        title="Special Cargo Status Search"
+        category="Booking"
+        href="/main/booking/special-cargo"
+      />
       {renderDialog()}
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
@@ -281,7 +285,13 @@ export default function SpecialCargoStatusSearch() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
+      <div
+        className={cx(
+          styles.area,
+          styles["no-padding"],
+          "overflow-hidden flex-1"
+        )}
+      >
         <MdTabs>
           <MdSecondaryTab
             selected={selectedTab === "dangerous"}

@@ -56,7 +56,7 @@ const BulkContainerInput = ({
             >
               <Add fontSize="small" />
             </MdFilledTonalIconButton>
-            <div className="flex flex-col-reverse">
+            <div className="flex flex-col-reverse flex-1">
               <AnimatePresence>
                 {list.map((container, index) => (
                   <motion.div
@@ -71,7 +71,7 @@ const BulkContainerInput = ({
                       <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
                     )}
                     <div className="flex gap-4">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-1">
                         <NAOutlinedTextField
                           className="w-[120px] min-w-[120px]"
                           label="Package"
@@ -89,6 +89,7 @@ const BulkContainerInput = ({
                           }}
                         />
                         <NAOutlinedListBox
+                          className="flex-1"
                           options={[
                             "Aerosol",
                             "Bag",
@@ -146,8 +147,23 @@ const BulkContainerInput = ({
                           }}
                         />
                       </div>
+
+                      <MdIconButton
+                        className="mt-2"
+                        onClick={() => {
+                          setContainerInformation((prev) => ({
+                            ...prev,
+                            bulk: prev.bulk.filter((c, i) => i !== index),
+                          }));
+                        }}
+                      >
+                        <DeleteOutline fontSize="small" />
+                      </MdIconButton>
+                    </div>
+                    <div className="flex gap-4">
                       <MdOutlinedTextField
                         label="Commodity"
+                        className="flex-1"
                         value={container.commodity.description}
                         onInput={(e) => {
                           const value = e.currentTarget.value;
@@ -167,19 +183,6 @@ const BulkContainerInput = ({
                           }));
                         }}
                       />
-                      <MdIconButton
-                        className="mt-2"
-                        onClick={() => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            bulk: prev.bulk.filter((c, i) => i !== index),
-                          }));
-                        }}
-                      >
-                        <DeleteOutline fontSize="small" />
-                      </MdIconButton>
-                    </div>
-                    <div className="flex gap-4">
                       <NAOutlinedTextField
                         className="w-36 min-w-36"
                         suffixText="cm"
@@ -235,7 +238,7 @@ const BulkContainerInput = ({
                         label="Total Measure"
                         suffixText="CBM"
                         type="number"
-                        className="flex-1"
+                        className="w-36 min-w-36"
                         value={container.totalMeasurement.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({

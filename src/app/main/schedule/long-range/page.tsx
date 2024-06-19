@@ -117,13 +117,17 @@ export default function LongRangeSchedule() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Long Range Schedule" />
+      <PageTitle
+        title="Long Range Schedule"
+        category="Schedule"
+        href="/main/schedule/long-range"
+      />
       <div
         ref={areaRef}
         className={styles.area}
         aria-label="search-condition-area"
       >
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-start">
           <NAOutlinedListBox
             label="Continent From"
             required
@@ -162,27 +166,27 @@ export default function LongRangeSchedule() {
             </MdIcon>
             Add Mailing
           </MdOutlinedButton>
-        </div>
-        <div className="flex gap-2 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-              setSearchCondition({
-                continentFrom: "",
-                continentTo: "",
-              });
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              checkValidAndSearch();
-              FocusOnResult(areaRef, scrollState.instance);
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-2 justify-end items-end h-full flex-1">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+                setSearchCondition({
+                  continentFrom: "",
+                  continentTo: "",
+                });
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                checkValidAndSearch();
+                FocusOnResult(areaRef, scrollState.instance);
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       {pageState === "unsearch" ? (

@@ -20,7 +20,7 @@ import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { useRecoilValue } from "recoil";
 import { AdditionalInformationState } from "@/app/store/booking.store";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 
 const BasicItem = (props: {
   title: string;

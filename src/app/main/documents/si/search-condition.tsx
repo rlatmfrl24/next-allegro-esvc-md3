@@ -310,42 +310,44 @@ export default function SISearchCondition() {
           />
         </MdOutlinedSegmentedButtonSet>
         <div className="flex gap-4">
-          {
+          <div className="flex gap-4">
             {
-              "Request Date": RequestDateFilter,
-              "Departure Date": DepartureDateFilter,
-              "Booking Date": BookingDateFilter,
-              Vessel: VesselVoyageFilter,
-              "Booking No.": BookingNumberFilter,
-            }[conditionType]
-          }
-        </div>
+              {
+                "Request Date": RequestDateFilter,
+                "Departure Date": DepartureDateFilter,
+                "Booking Date": BookingDateFilter,
+                Vessel: VesselVoyageFilter,
+                "Booking No.": BookingNumberFilter,
+              }[conditionType]
+            }
+          </div>
 
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setSearchCondition({
-                conditionType: "Request Date",
-                bookingNo: "",
-                startDate: DateTime.now(),
-                endDate: DateTime.now(),
-                vesselInfo: {} as VesselInfoType,
-                voyage: "",
-                direction: "east",
-                bookingVia: "general" as "general" | "edi" | "web",
-              });
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              console.log(getCondition());
-              FocusOnResult(areaRef, scrollState.instance);
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end h-full items-end flex-1">
+            <MdTextButton
+              onClick={() => {
+                setSearchCondition({
+                  conditionType: "Request Date",
+                  bookingNo: "",
+                  startDate: DateTime.now(),
+                  endDate: DateTime.now(),
+                  vesselInfo: {} as VesselInfoType,
+                  voyage: "",
+                  direction: "east",
+                  bookingVia: "general" as "general" | "edi" | "web",
+                });
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                console.log(getCondition());
+                FocusOnResult(areaRef, scrollState.instance);
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
     </>

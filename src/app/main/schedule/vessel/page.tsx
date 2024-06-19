@@ -20,6 +20,7 @@ import {
   VesselScheduleType,
 } from "@/app/util/typeDef/schedule";
 import { FocusOnResult } from "../../util";
+import classNames from "classnames";
 
 export default function VesselSchedule() {
   const emptyVesselData: VesselInfoType = {
@@ -41,6 +42,7 @@ export default function VesselSchedule() {
     portOfRegistry: "",
   };
 
+  const cx = classNames.bind(styles);
   const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
   const [isSearchConditionSummaryOpen, setIsSearchConditionSummaryOpen] =
@@ -78,13 +80,18 @@ export default function VesselSchedule() {
     <div
       id="content-container"
       aria-label="container"
-      className={styles.container + " relative"}
+      className={cx(styles.container, "relative")}
     >
-      <PageTitle title="Vessel Schedule" />
-      <div ref={areaRef} className={styles.area}>
+      <PageTitle
+        title="Vessel Schedule"
+        category="Schedule"
+        href="/main/schedule/vessel"
+      />
+      <div ref={areaRef} className={cx(styles.area, styles.row)}>
         <NAOutlinedAutoComplete
           label="Vessel Name"
           required
+          className="flex-1"
           icon={<VesselIcon />}
           recentCookieKey="recent-vessel"
           itemList={vesselList.map((vessel) => vessel.vesselName)}
@@ -115,7 +122,7 @@ export default function VesselSchedule() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder text={"Please search for the schedule"} />
         ) : (
@@ -126,7 +133,11 @@ export default function VesselSchedule() {
         )}
       </div>
       <ConditionSummary
-        open={isSearchConditionSummaryOpen && vesselSchedules.length > 0}
+        open={
+          isSearchConditionSummaryOpen &&
+          vesselSchedules.length > 0 &&
+          pageState === "search"
+        }
         condition={vesselData}
         scrollTop={ScrollToTop}
       />

@@ -34,6 +34,7 @@ import {
 } from "@floating-ui/react";
 import { MoreVert } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
+import classNames from "classnames";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -71,6 +72,7 @@ function createMyReportData(): MyReportTableProps {
 }
 
 export default function MyReportPage() {
+  const cx = classNames.bind(styles);
   const tempReports = useMemo(
     () => Array.from({ length: 50 }, () => createMyReportData()),
     []
@@ -210,7 +212,11 @@ export default function MyReportPage() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex justify-between">
-        <PageTitle title="My Report" />
+        <PageTitle
+          title="My Report"
+          category="Shipment"
+          href="/main/shipment/my-report"
+        />
         <MdFilledButton
           onClick={() => {
             router.push("/main/shipment/my-report/create");
@@ -219,7 +225,7 @@ export default function MyReportPage() {
           Create New Report
         </MdFilledButton>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         <BasicTable
           ActionComponent={(table) => (
             <div className="flex-1">

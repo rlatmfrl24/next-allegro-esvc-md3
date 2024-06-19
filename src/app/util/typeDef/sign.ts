@@ -17,6 +17,5 @@ export type SignUpFormProps = {
   email: string;
   trade: string;
   contactOffice: string;
-  recentBLNumber: string;
   comment: string;
 };

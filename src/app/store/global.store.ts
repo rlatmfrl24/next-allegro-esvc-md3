@@ -39,15 +39,26 @@ const UserProfileState = atom<SignUpFormProps>({
       "Truck or Rail Company",
       "Others",
     ]),
-    recentBLNumber: faker.string.alphanumeric(10).toUpperCase(),
   } as SignUpFormProps,
 });
 
 const DrawerState = atom({
   key: "DrawerState",
   default: {
-    open: false,
+    isNavOpen: false,
+    isFavoriteOpen: false,
   },
+});
+
+const FavoriteState = atom<
+  {
+    title: string;
+    category: string;
+    href: string;
+  }[]
+>({
+  key: "FavoriteState",
+  default: [],
 });
 
 const ScrollState = atom({
@@ -59,4 +70,4 @@ const ScrollState = atom({
   },
 });
 
-export { UserState, DrawerState, ScrollState, UserProfileState };
+export { UserState, DrawerState, ScrollState, UserProfileState, FavoriteState };

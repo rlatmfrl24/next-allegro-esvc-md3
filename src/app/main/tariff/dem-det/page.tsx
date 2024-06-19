@@ -10,8 +10,10 @@ import { MdFilledButton, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DemDetTable } from "./table";
+import classNames from "classnames";
 
 export default function DemDetPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [searchType, setSearchType] = useState<"outbound" | "inbound">(
     "outbound"
@@ -29,7 +31,11 @@ export default function DemDetPage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="DEM/DET Tariff" />
+      <PageTitle
+        title="DEM/DET Tariff"
+        category="DEM/DET"
+        href="/main/tariff/dem-det"
+      />
       <div className={styles.area}>
         <div className="flex gap-4">
           <MdTypography
@@ -87,25 +93,25 @@ export default function DemDetPage() {
               />
             </>
           )}
-        </div>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end items-end flex-1 h-full">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder
             className="my-12 "

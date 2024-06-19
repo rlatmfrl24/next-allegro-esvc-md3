@@ -7,7 +7,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { MdIcon, MdTextButton } from "@/app/util/md3";
 import { Download } from "@mui/icons-material";
@@ -180,6 +180,9 @@ export const DetentionStatusTable = (pros: {
     columnHelper.accessor("equipmentStatus", {
       id: "equipmentStatus",
       header: "Equipment Status",
+      filterFn: (row, id, filterValue) => {
+        return filterValue.includes(row.getValue(id));
+      },
       cell: (info) => (
         <LabelChip
           label={info.getValue()}
@@ -256,6 +259,13 @@ export const DetentionStatusTable = (pros: {
     columnHelper.accessor("paymentStatus", {
       id: "paymentStatus",
       header: "Payment Status",
+      filterFn: (row, id, filterValue) => {
+        const modifiedFilterValue = (filterValue as string[]).map((v) =>
+          v === "Yes" ? "Paid" : "Unpaid"
+        );
+
+        return modifiedFilterValue.includes(row.getValue(id));
+      },
       cell: (info) => (
         <LabelChip
           label={info.getValue() === "Paid" ? "Yes" : "No "}
@@ -282,39 +292,39 @@ export const DetentionStatusTable = (pros: {
   return (
     <>
       {renderDialog()}
-      <div className="flex gap-4">
-        <StatusFilterComponent
-          unit="Equipment Status"
-          statusOptions={["Not Returned", "Returned"]}
-          onChange={(status) => {
-            setTableData(
-              tempDetentions.filter((detention) =>
-                status.includes(detention.equipmentStatus)
-              )
-            );
-          }}
-        />
-        <StatusFilterComponent
-          unit="Charge"
-          statusOptions={["Incurred", "Not Incurred"]}
-        />
-        <StatusFilterComponent
-          unit="Payment"
-          statusOptions={["Yes", "No"]}
-          onChange={(status) => {
-            setTableData(
-              tempDetentions.filter((detention) =>
-                status.includes(
-                  detention.paymentStatus === "Paid" ? "Yes" : "No"
-                )
-              )
-            );
-          }}
-        />
-      </div>
       <BasicTable
-        ActionComponent={() => (
-          <div className="flex-1">
+        ActionComponent={(table) => (
+          <div className="flex-1 flex items-center gap-4">
+            <StatusFilterComponent
+              unit="Equipment Status"
+              statusOptions={["Not Returned", "Returned"]}
+              onChange={(status) => {
+                table.setColumnFilters([
+                  ...table.getState().columnFilters,
+                  {
+                    id: "equipmentStatus",
+                    value: status,
+                  },
+                ]);
+              }}
+            />
+            <StatusFilterComponent
+              unit="Charge"
+              statusOptions={["Incurred", "Not Incurred"]}
+            />
+            <StatusFilterComponent
+              unit="Payment"
+              statusOptions={["Yes", "No"]}
+              onChange={(status) => {
+                table.setColumnFilters([
+                  ...table.getState().columnFilters,
+                  {
+                    id: "paymentStatus",
+                    value: status,
+                  },
+                ]);
+              }}
+            />
             <MdTextButton>
               <MdIcon slot="icon">
                 <Download fontSize="small" />

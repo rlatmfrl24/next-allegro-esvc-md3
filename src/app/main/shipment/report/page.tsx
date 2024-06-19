@@ -44,6 +44,7 @@ import { DividerComponent } from "@/app/components/divider";
 import { flushSync } from "react-dom";
 import { ReportTable } from "./table";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import classNames from "classnames";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -239,10 +240,15 @@ export default function ShipmentReportPage() {
     { length: 50 },
     () => faker.location.city() + ", " + faker.location.country()
   );
+  const cx = classNames.bind(styles);
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Report" />
+      <PageTitle
+        title="Report"
+        category="Shipment"
+        href="/main/shipment/report"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
@@ -427,7 +433,7 @@ export default function ShipmentReportPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder text="Please search for the condition." />
         ) : (

@@ -20,7 +20,7 @@ import {
   TankContainerInformationType,
 } from "@/app/util/typeDef/boooking";
 import { Info, ThermostatAuto } from "@mui/icons-material";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import { MdRippleEffect } from "@/app/util/md3";
 import {
   AwkwardIndicator,

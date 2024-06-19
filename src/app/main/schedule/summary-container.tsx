@@ -1,4 +1,6 @@
+import { UserState } from "@/app/store/global.store";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRecoilValue } from "recoil";
 
 export default function SummaryContainer({
   open,
@@ -9,8 +11,16 @@ export default function SummaryContainer({
   children: React.ReactNode;
   collapseSize?: number;
 }) {
+  const userData = useRecoilValue(UserState);
+
   return (
-    <div className="fixed left-0 translate-x-20 -translate-y-8 w-[calc(100%-80px)] pb-2 overflow-hidden rounded-t-2xl z-10">
+    <div
+      className={`fixed left-0 -translate-y-8 pb-2 overflow-hidden rounded-t-2xl z-10 ${
+        userData.isAuthenticated
+          ? "translate-x-20 w-[calc(100%-80px)]"
+          : "w-full"
+      }`}
+    >
       <AnimatePresence>
         {open && (
           <motion.div

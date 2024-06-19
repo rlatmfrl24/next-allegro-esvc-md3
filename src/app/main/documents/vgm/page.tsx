@@ -34,7 +34,7 @@ export default function VGMSearch() {
       aria-label="container"
       className={cx(styles.container)}
     >
-      <PageTitle title="VGM" />
+      <PageTitle title="VGM" category="Documents" href="/main/documents/vgm" />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
@@ -82,7 +82,6 @@ export default function VGMSearch() {
                   label={q}
                   selected={true}
                   remove={() => {
-                    console.log("focus");
                     setQueries((prev) => {
                       const newQueries = prev.filter((_, index) => index !== i);
                       return newQueries;
@@ -111,16 +110,14 @@ export default function VGMSearch() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unseach" ? (
           <EmptyResultPlaceholder
             text="Please search for the condition."
             className="my-20"
           />
         ) : (
-          <>
-            <VGMTable />
-          </>
+          <VGMTable />
         )}
       </div>
     </div>

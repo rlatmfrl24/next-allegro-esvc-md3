@@ -26,7 +26,11 @@ export default function BLSurrenderCheck() {
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
-      <PageTitle title="B/L Surrender Check" />
+      <PageTitle
+        title="B/L Surrender Check"
+        category="Import"
+        href="/main/import/surrender"
+      />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
@@ -96,7 +100,7 @@ export default function BLSurrenderCheck() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <SurrenderTable />
         ) : (

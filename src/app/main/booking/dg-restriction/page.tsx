@@ -68,7 +68,6 @@ export default function DGRestrictionSearch() {
         open={unNumberDialogOpen}
         onOpenChange={setUnNumberDialogOpen}
         onApply={(data) => {
-          console.log(data);
           setSearchCondition((prev) => ({
             ...prev,
             seq: data.unNumber[0],
@@ -78,7 +77,11 @@ export default function DGRestrictionSearch() {
           }));
         }}
       />
-      <PageTitle title="DG Restriction Search" />
+      <PageTitle
+        title="DG Restriction Search"
+        category="Booking"
+        href="/main/booking/dg-restriction"
+      />
       <div className={cx(styles.area, styles.row)}>
         <div className="flex flex-col gap-4 flex-1">
           <div className="flex gap-4">
@@ -196,7 +199,7 @@ export default function DGRestrictionSearch() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unseach" && (
           <EmptyResultPlaceholder text="Please search for the condition." />
         )}

@@ -35,6 +35,7 @@ import {
 import { basicPopoverStyles } from "@/app/util/constants";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
+import classNames from "classnames";
 
 const MoreFilter = (props: { onFilterChange?: (filter: string[]) => void }) => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
@@ -149,6 +150,7 @@ const MoreFilter = (props: { onFilterChange?: (filter: string[]) => void }) => {
 };
 
 export const SurchargeSearch = () => {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("search");
   const [moreFilters, setMoreFilters] = useState<string[]>([]);
   const tempPorts = useMemo(() => {
@@ -161,7 +163,11 @@ export const SurchargeSearch = () => {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Surcharge Search" />
+      <PageTitle
+        title="Surcharge Search"
+        category="Pricing"
+        href="/main/pricing/surcharge"
+      />
       <div className={styles.area}>
         <div className="flex gap-4">
           <NAOutlinedAutoComplete
@@ -267,7 +273,7 @@ export const SurchargeSearch = () => {
           </MdFilledButton>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <SurchargeSearchTable />
         ) : (
