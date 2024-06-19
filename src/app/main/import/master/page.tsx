@@ -138,7 +138,7 @@ export default function InboundMaster() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <InboundMasterTable />
         ) : (

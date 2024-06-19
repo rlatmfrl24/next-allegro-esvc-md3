@@ -22,8 +22,10 @@ import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DetentionStatusTable } from "./table";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import classNames from "classnames";
 
 export default function DetentionStatusPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [boundSelection, setBoundSelection] = useState<"outbound" | "inbound">(
     `outbound`
@@ -140,14 +142,11 @@ export default function DetentionStatusPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <DetentionStatusTable type={boundSelection} />
         ) : (
-          <EmptyResultPlaceholder
-            text="Please select the search criteria and click the search button."
-            className="my-12"
-          />
+          <EmptyResultPlaceholder text="Please select the search criteria and click the search button." />
         )}
       </div>
     </div>

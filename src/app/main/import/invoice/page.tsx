@@ -16,12 +16,14 @@ import {
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import { InvoiceTable } from "./table";
+import classNames from "classnames";
 
 export default function ImportInvoicePage() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [searchType, setSearchType] = useState<"date" | "number">("date");
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
+  const cx = classNames.bind(styles);
 
   return (
     <div aria-label="container" className={styles.container}>
@@ -112,7 +114,7 @@ export default function ImportInvoicePage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {
           {
             unsearch: (

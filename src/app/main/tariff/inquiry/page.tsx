@@ -21,8 +21,10 @@ import { useMemo, useState } from "react";
 import { ChargeInquiryTable } from "./table";
 import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import classNames from "classnames";
 
 export default function ChargeInquiryPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [searchType, setSearchType] = useState<"outbound" | "inbound">(
     "outbound"
@@ -136,14 +138,11 @@ export default function ChargeInquiryPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {
           {
             unsearch: (
-              <EmptyResultPlaceholder
-                className="my-12"
-                text="Please enter search criteria to view the result."
-              />
+              <EmptyResultPlaceholder text="Please enter search criteria to view the result." />
             ),
             search: (
               <ChargeInquiryTable

@@ -10,8 +10,10 @@ import { MdFilledButton, MdRadio, MdTextButton } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DemDetTable } from "./table";
+import classNames from "classnames";
 
 export default function DemDetPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [searchType, setSearchType] = useState<"outbound" | "inbound">(
     "outbound"
@@ -109,7 +111,7 @@ export default function DemDetPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder
             className="my-12 "
