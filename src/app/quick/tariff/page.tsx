@@ -76,7 +76,7 @@ function createDummyTariff(): TariffProps {
 export default function TariffPage() {
   const cx = classNames.bind(styles);
 
-  const tempData = Array.from({ length: 900 }, () => createDummyTariff());
+  const tempData = Array.from({ length: 300 }, () => createDummyTariff());
   const [originCoverage, setOriginCoverage] = useState<string>("");
   const [tableData, setTableData] = useState<TariffProps[]>(tempData);
   const [searchType, setSearchType] = useState<"outbound" | "inbound">(
@@ -220,125 +220,127 @@ export default function TariffPage() {
 
   return (
     <OverlayScrollbarsComponent defer className="h-full overflow-auto m-2">
-      <div aria-label="container" className={cx(styles.container, "h-fit")}>
-        <PageTitle title="DEM/DET  Tariff" hasFavorite={false} />
-        <div className={styles.area}>
-          <div className="flex gap-4">
-            <MdTypography
-              tag="label"
-              variant="label"
-              size="large"
-              className="flex items-center gap-2"
-            >
-              <MdRadio
-                name="type"
-                checked={searchType === "outbound"}
-                onClick={() => setSearchType("outbound")}
+      <div className="h-full flex flex-col">
+        <div aria-label="container" className={cx(styles.container)}>
+          <PageTitle title="DEM/DET  Tariff" hasFavorite={false} />
+          <div className={styles.area}>
+            <div className="flex gap-4">
+              <MdTypography
+                tag="label"
+                variant="label"
+                size="large"
+                className="flex items-center gap-2"
+              >
+                <MdRadio
+                  name="type"
+                  checked={searchType === "outbound"}
+                  onClick={() => setSearchType("outbound")}
+                />
+                Outbound
+              </MdTypography>
+              <MdTypography
+                tag="label"
+                variant="label"
+                size="large"
+                className="flex items-center gap-2"
+              >
+                <MdRadio
+                  name="type"
+                  checked={searchType === "inbound"}
+                  onClick={() => setSearchType("inbound")}
+                />
+                Inbound
+              </MdTypography>
+            </div>
+            <div className="flex gap-4">
+              <NAOutlinedTextField
+                label="Origin Coverage"
+                value={originCoverage}
+                handleValueChange={(valule) => {
+                  setOriginCoverage(valule);
+                }}
               />
-              Outbound
-            </MdTypography>
-            <MdTypography
-              tag="label"
-              variant="label"
-              size="large"
-              className="flex items-center gap-2"
-            >
-              <MdRadio
-                name="type"
-                checked={searchType === "inbound"}
-                onClick={() => setSearchType("inbound")}
+              <NAOutlinedListBox
+                label="Destination"
+                initialValue="All"
+                options={[
+                  "All",
+                  "ASIA",
+                  "EUROPE",
+                  "MIDDLE EAST",
+                  "NORTH AMERICA",
+                  "SOUTH AMERICA",
+                  "AFRICA",
+                  "OCEANIA",
+                ]}
               />
-              Inbound
-            </MdTypography>
+            </div>
+            <div className="flex justify-end gap-2">
+              <MdTextButton>Reset</MdTextButton>
+              <MdFilledButton>Search</MdFilledButton>
+            </div>
           </div>
-          <div className="flex gap-4">
-            <NAOutlinedTextField
-              label="Origin Coverage"
-              value={originCoverage}
-              handleValueChange={(valule) => {
-                setOriginCoverage(valule);
-              }}
-            />
-            <NAOutlinedListBox
-              label="Destination"
-              initialValue="All"
-              options={[
-                "All",
-                "ASIA",
-                "EUROPE",
-                "MIDDLE EAST",
-                "NORTH AMERICA",
-                "SOUTH AMERICA",
-                "AFRICA",
-                "OCEANIA",
-              ]}
-            />
-          </div>
-          <div className="flex justify-end gap-2">
-            <MdTextButton>Reset</MdTextButton>
-            <MdFilledButton>Search</MdFilledButton>
-          </div>
-        </div>
-        <div className={styles.area}>
-          <div className="flex gap-4">
-            <StatusFilterComponent
-              statusOptions={["Demurrage", "Detention", "D&D Combined"]}
-              unit="Tariff Type"
-              onChange={(selected) => {
-                const selectedType = selected.map((type) => {
-                  return {
-                    Demurrage: "dem",
-                    Detention: "det",
-                    "D&D Combined": "both",
-                  }[type];
-                });
-                setTableData(
-                  tempData.filter((data) => selectedType.includes(data.type))
-                );
-              }}
-            />
-            <StatusFilterComponent
-              statusOptions={["General", "Dry", "Reefer", "Dangerous"]}
-              unit="Container Type"
-              onChange={(selected) => {
-                setTableData(
-                  tempData.filter((data) =>
-                    selected.includes(data.containerType)
-                  )
-                );
-              }}
-            />
-            <StatusFilterComponent
-              statusOptions={tempData
-                .reduce((acc, curr) => {
-                  if (!acc.includes(curr.cargoType)) {
-                    acc.push(curr.cargoType);
-                  }
-                  return acc;
-                }, [] as string[])
-                .sort()}
-              unit="Cargo Type"
-              onChange={(selected) => {
-                setTableData(
-                  tempData.filter((data) => selected.includes(data.cargoType))
-                );
-              }}
+          <div className={cx(styles.area, styles.table)}>
+            <div className="flex gap-4">
+              <StatusFilterComponent
+                statusOptions={["Demurrage", "Detention", "D&D Combined"]}
+                unit="Tariff Type"
+                onChange={(selected) => {
+                  const selectedType = selected.map((type) => {
+                    return {
+                      Demurrage: "dem",
+                      Detention: "det",
+                      "D&D Combined": "both",
+                    }[type];
+                  });
+                  setTableData(
+                    tempData.filter((data) => selectedType.includes(data.type))
+                  );
+                }}
+              />
+              <StatusFilterComponent
+                statusOptions={["General", "Dry", "Reefer", "Dangerous"]}
+                unit="Container Type"
+                onChange={(selected) => {
+                  setTableData(
+                    tempData.filter((data) =>
+                      selected.includes(data.containerType)
+                    )
+                  );
+                }}
+              />
+              <StatusFilterComponent
+                statusOptions={tempData
+                  .reduce((acc, curr) => {
+                    if (!acc.includes(curr.cargoType)) {
+                      acc.push(curr.cargoType);
+                    }
+                    return acc;
+                  }, [] as string[])
+                  .sort()}
+                unit="Cargo Type"
+                onChange={(selected) => {
+                  setTableData(
+                    tempData.filter((data) => selected.includes(data.cargoType))
+                  );
+                }}
+              />
+            </div>
+            <BasicTable
+              ActionComponent={() => (
+                <div className="flex-1">
+                  <MdTextButton>
+                    <MdIcon slot="icon">
+                      <Download fontSize="small" />
+                    </MdIcon>
+                    Download
+                  </MdTextButton>
+                </div>
+              )}
+              data={tableData}
+              columns={columnDefs}
             />
           </div>
-          <BasicTable
-            ActionComponent={() => (
-              <div className="flex-1">
-                <MdTextButton>
-                  <MdIcon slot="icon">
-                    <Download fontSize="small" />
-                  </MdIcon>
-                  Download
-                </MdTextButton>
-              </div>
-            )}
-            data={tableData}
-            columns={columnDefs}
-          />
         </div>
       </div>
     </OverlayScrollbarsComponent>
