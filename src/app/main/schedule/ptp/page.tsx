@@ -59,7 +59,11 @@ export default function PointToPointSchedule() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Point to Point Schedule" />
+      <PageTitle
+        title="Point to Point Schedule"
+        category="Schedule"
+        href="/main/schedule/ptp"
+      />
       <SearchCondition
         searchAction={(condition) => {
           setSearchCondition(condition);

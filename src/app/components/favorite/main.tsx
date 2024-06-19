@@ -1,13 +1,11 @@
 "use client";
-
 import { AnimatePresence, motion } from "framer-motion";
-import Portal from "../portal";
 import { useRecoilState } from "recoil";
 import { DrawerState, FavoriteState } from "@/app/store/global.store";
-import { use, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdTypography } from "../typography";
 import { NAOutlinedTextField } from "../na-textfield";
-import { MdIcon, MdIconButton, MdRippleEffect } from "@/app/util/md3";
+import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { Close, Favorite } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
@@ -15,6 +13,7 @@ export default function FavoriteMain() {
   const [drawerState, setDrawerState] = useRecoilState(DrawerState);
   const [favoriteStore, setFavoriteStore] = useRecoilState(FavoriteState);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     // Close drawer when clicking outside
@@ -42,6 +41,60 @@ export default function FavoriteMain() {
   useEffect(() => {
     console.log(favoriteStore);
   }, [favoriteStore]);
+
+  const FavoriteItem = ({
+    name,
+    category,
+    link,
+    query,
+  }: {
+    name: string;
+    link: string;
+    category: string;
+    query: string;
+  }) => {
+    function highlightText(text: string) {
+      return text.replace(new RegExp(query, "gi"), (match) => {
+        return `<span class="text-error">${match}</span>`;
+      });
+    }
+
+    const router = useRouter();
+
+    return (
+      <div
+        className="flex py-4 px-6 relative cursor-pointer hover:bg-surfaceContainerHigh"
+        onClick={() => {
+          router.push(link);
+          setDrawerState({
+            ...drawerState,
+            isFavoriteOpen: false,
+          });
+        }}
+      >
+        <div className="flex-1">
+          <MdTypography variant="label" size="small">
+            {category}
+          </MdTypography>
+          <MdTypography variant="body" size="large">
+            <span dangerouslySetInnerHTML={{ __html: highlightText(name) }} />
+          </MdTypography>
+        </div>
+        <MdIconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setFavoriteStore(
+              favoriteStore.filter((item) => item.title !== name)
+            );
+          }}
+        >
+          <MdIcon>
+            <Favorite className="text-primary" />
+          </MdIcon>
+        </MdIconButton>
+      </div>
+    );
+  };
 
   return (
     <AnimatePresence>
@@ -71,62 +124,27 @@ export default function FavoriteMain() {
               </MdIcon>
             </MdIconButton>
           </div>
-          <NAOutlinedTextField label="Search Name" className="mx-6" />
-          <FavoriteItem
-            name="John Doe dJohn"
-            category="Customer"
-            link="/main/customer"
-            query="John"
+          <NAOutlinedTextField
+            label="Search Name"
+            className="mx-6"
+            value={searchQuery}
+            handleValueChange={(value) => {
+              setSearchQuery(value);
+            }}
           />
+          {favoriteStore.map((item, index) => {
+            return (
+              <FavoriteItem
+                key={index + "_" + item.title}
+                name={item.title}
+                category={item.category}
+                link={item.href}
+                query={searchQuery}
+              />
+            );
+          })}
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
-
-const FavoriteItem = ({
-  name,
-  category,
-  link,
-  query,
-}: {
-  name: string;
-  link: string;
-  category: string;
-  query: string;
-}) => {
-  function highlightText(text: string) {
-    return text.replace(new RegExp(query, "gi"), (match) => {
-      return `<span class="text-error">${match}</span>`;
-    });
-  }
-
-  const router = useRouter();
-
-  return (
-    <div
-      className="flex py-4 px-6 relative cursor-pointer hover:bg-surfaceContainerHigh"
-      onClick={() => {
-        router.push(link);
-      }}
-    >
-      <div className="flex-1">
-        <MdTypography variant="label" size="small">
-          {category}
-        </MdTypography>
-        <MdTypography variant="body" size="large">
-          <span dangerouslySetInnerHTML={{ __html: highlightText(name) }} />
-        </MdTypography>
-      </div>
-      <MdIconButton
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <MdIcon>
-          <Favorite className="text-primary" />
-        </MdIcon>
-      </MdIconButton>
-    </div>
-  );
-};

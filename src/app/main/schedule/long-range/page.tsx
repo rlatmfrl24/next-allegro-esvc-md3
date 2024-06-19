@@ -117,7 +117,11 @@ export default function LongRangeSchedule() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Long Range Schedule" />
+      <PageTitle
+        title="Long Range Schedule"
+        category="Schedule"
+        href="/main/schedule/long-range"
+      />
       <div
         ref={areaRef}
         className={styles.area}
