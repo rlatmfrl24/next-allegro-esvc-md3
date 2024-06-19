@@ -12,8 +12,9 @@ import { useRouter } from "next/navigation";
 export default function FavoriteMain() {
   const [drawerState, setDrawerState] = useRecoilState(DrawerState);
   const [favoriteStore, setFavoriteStore] = useRecoilState(FavoriteState);
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Close drawer when clicking outside
@@ -39,8 +40,8 @@ export default function FavoriteMain() {
   }, [drawerState, setDrawerState]);
 
   useEffect(() => {
-    console.log(favoriteStore);
-  }, [favoriteStore]);
+    setSearchQuery("");
+  }, [drawerState.isFavoriteOpen]);
 
   const FavoriteItem = ({
     name,
@@ -126,23 +127,31 @@ export default function FavoriteMain() {
           </div>
           <NAOutlinedTextField
             label="Search Name"
-            className="mx-6"
+            className="mx-6 mb-4"
             value={searchQuery}
             handleValueChange={(value) => {
               setSearchQuery(value);
             }}
           />
-          {favoriteStore.map((item, index) => {
-            return (
-              <FavoriteItem
-                key={index + "_" + item.title}
-                name={item.title}
-                category={item.category}
-                link={item.href}
-                query={searchQuery}
-              />
-            );
-          })}
+          <div className="flex flex-col-reverse">
+            {favoriteStore
+              .filter((item) => {
+                return item.title
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase());
+              })
+              .map((item, index) => {
+                return (
+                  <FavoriteItem
+                    key={index + "_" + item.title}
+                    name={item.title}
+                    category={item.category}
+                    link={item.href}
+                    query={searchQuery}
+                  />
+                );
+              })}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
