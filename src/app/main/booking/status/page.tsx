@@ -17,7 +17,7 @@ export default function BookingStatusPage() {
   const cx = classNames.bind(styles);
 
   return (
-    <div aria-label="container" className={cx(styles.container, "flex-1")}>
+    <div aria-label="container" className={cx(styles.container)}>
       <div className="flex items-center justify-between">
         <PageTitle
           title="Booking Status"

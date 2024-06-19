@@ -73,7 +73,7 @@ export default function NoticePage() {
         <>
           <div
             aria-label="container"
-            className={cx(styles.container, "min-h-fit flex-1")}
+            className={cx(styles.container, "min-h-fit")}
           >
             <div className="flex items-center h-fit gap-4">
               <MdOutlinedButton
@@ -112,7 +112,7 @@ export default function NoticePage() {
         <>
           <div
             aria-label="container"
-            className={cx(styles.container, "min-h-full flex-1")}
+            className={cx(styles.container, "min-h-full")}
           >
             <div className="flex items-center h-fit gap-4">
               <MdOutlinedButton

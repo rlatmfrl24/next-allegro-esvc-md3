@@ -22,7 +22,7 @@ export default function SimpleSI() {
   const cx = classNames.bind(styles);
 
   return (
-    <div className={cx(styles.container, "h-full flex flex-col")}>
+    <div className={cx(styles.container, "h-full")}>
       <div className="flex items-center h-fit justify-between">
         <PageTitle title="Simple S/I" hasFavorite={false} />
         <div className="flex gap-2">

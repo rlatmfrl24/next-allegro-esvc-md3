@@ -273,10 +273,7 @@ export default function BookingTemplate() {
   };
 
   return (
-    <div
-      aria-label="container"
-      className={cx(styles.container, "flex-1 flex-col")}
-    >
+    <div aria-label="container" className={cx(styles.container)}>
       <div className="flex items-center justify-between">
         <PageTitle
           title="Booking Template"

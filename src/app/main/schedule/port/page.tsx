@@ -21,6 +21,7 @@ import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
+import classNames from "classnames";
 
 export default function PortSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -42,11 +43,12 @@ export default function PortSchedule() {
     });
   }
 
+  const cx = classNames.bind(styles);
   const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
 
   return (
-    <div aria-label="container" className={styles.container}>
+    <div aria-label="container" className={cx(styles.container)}>
       <PageTitle
         title="Port Schedule"
         category="Schedule"
