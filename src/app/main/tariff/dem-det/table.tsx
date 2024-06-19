@@ -213,7 +213,6 @@ export const DemDetTable = () => {
               statusOptions={["Demurrage", "Detention", "Combined"]}
               unit="Tariff Type"
               onChange={(selected) => {
-                console.log(selected);
                 table.setColumnFilters([
                   ...table.getState().columnFilters,
                   {

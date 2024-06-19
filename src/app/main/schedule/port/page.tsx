@@ -47,7 +47,11 @@ export default function PortSchedule() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Port Schedule" />
+      <PageTitle
+        title="Port Schedule"
+        category="Schedule"
+        href="/main/schedule/port"
+      />
       <div
         ref={areaRef}
         aria-label="condition-container"

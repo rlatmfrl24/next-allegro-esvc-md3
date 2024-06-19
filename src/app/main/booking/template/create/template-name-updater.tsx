@@ -1,6 +1,6 @@
 import PageTitle from "@/app/components/title-components";
 import { MdIcon, MdIconButton, MdRippleEffect } from "@/app/util/md3";
-import { Check, Edit } from "@mui/icons-material";
+import { Check, Close, Edit } from "@mui/icons-material";
 import { useState } from "react";
 
 export const TemplateNameUpdater = (props: {
@@ -21,13 +21,13 @@ export const TemplateNameUpdater = (props: {
         }}
       >
         <MdRippleEffect />
-        <Edit />
+        <Edit fontSize="small" />
       </div>
     </div>
   ) : (
     <div className="flex items-center gap-4">
       <input
-        className="outline-primary outline-2 bg-surfaceContainer px-2 py-1.5 font-pretendard w-fit"
+        className="border-2 border-primary rounded outline-primary bg-surfaceContainer px-2 py-1.5 font-pretendard w-fit"
         defaultValue={templateName}
         autoFocus
         onInput={(e) => {
@@ -45,6 +45,15 @@ export const TemplateNameUpdater = (props: {
       >
         <MdRippleEffect />
         <Check />
+      </div>
+      <div
+        className={`relative w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-onSurfaceVariant text-onPrimary`}
+        onClick={() => {
+          setProcess("view");
+        }}
+      >
+        <MdRippleEffect />
+        <Close />
       </div>
     </div>
   );

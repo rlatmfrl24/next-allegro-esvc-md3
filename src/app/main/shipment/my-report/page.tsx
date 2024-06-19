@@ -210,7 +210,11 @@ export default function MyReportPage() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex justify-between">
-        <PageTitle title="My Report" />
+        <PageTitle
+          title="My Report"
+          category="Shipment"
+          href="/main/shipment/my-report"
+        />
         <MdFilledButton
           onClick={() => {
             router.push("/main/shipment/my-report/create");

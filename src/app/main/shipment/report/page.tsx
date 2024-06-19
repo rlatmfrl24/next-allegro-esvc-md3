@@ -242,7 +242,11 @@ export default function ShipmentReportPage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Report" />
+      <PageTitle
+        title="Report"
+        category="Shipment"
+        href="/main/shipment/report"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

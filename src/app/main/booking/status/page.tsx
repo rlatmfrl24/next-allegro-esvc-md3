@@ -19,7 +19,11 @@ export default function BookingStatusPage() {
   return (
     <div aria-label="container" className={cx(styles.container, "flex-1")}>
       <div className="flex items-center justify-between">
-        <PageTitle title="Booking Status" />
+        <PageTitle
+          title="Booking Status"
+          category="Booking"
+          href="/main/booking/status"
+        />
         <MdOutlinedButton
           onClick={() => {
             reset();

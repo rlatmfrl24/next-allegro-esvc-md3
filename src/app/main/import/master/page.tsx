@@ -96,7 +96,11 @@ export default function InboundMaster() {
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
-      <PageTitle title="Inbound Master" />
+      <PageTitle
+        title="Inbound Master"
+        category="Import"
+        href="/main/import/master"
+      />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

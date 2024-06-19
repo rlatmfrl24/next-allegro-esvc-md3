@@ -83,7 +83,11 @@ export default function VesselSchedule() {
       className={cx(styles.container, "relative")}
       // className={styles.container + " relative"}
     >
-      <PageTitle title="Vessel Schedule" />
+      <PageTitle
+        title="Vessel Schedule"
+        category="Schedule"
+        href="/main/schedule/vessel"
+      />
       <div ref={areaRef} className={cx(styles.area, styles.row)}>
         <NAOutlinedAutoComplete
           label="Vessel Name"

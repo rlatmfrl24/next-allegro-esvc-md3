@@ -25,7 +25,11 @@ export default function ImportInvoicePage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Invoice (Inbound)" />
+      <PageTitle
+        title="Invoice (Inbound)"
+        category="Import"
+        href="/main/import/invoice"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

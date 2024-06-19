@@ -22,7 +22,11 @@ export default function FreetimeRequestPage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Freetime Request" />
+      <PageTitle
+        title="Freetime Request"
+        category="DEM/DET"
+        href="/main/tariff/freetime"
+      />
       <div className={styles.area}>
         <div className="flex gap-4">
           <div className="flex-1 flex flex-col gap-2">

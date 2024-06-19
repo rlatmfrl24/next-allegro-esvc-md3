@@ -161,7 +161,11 @@ export const SurchargeSearch = () => {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Surcharge Search" />
+      <PageTitle
+        title="Surcharge Search"
+        category="Pricing"
+        href="/main/pricing/surcharge"
+      />
       <div className={styles.area}>
         <div className="flex gap-4">
           <NAOutlinedAutoComplete

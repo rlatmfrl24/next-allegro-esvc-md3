@@ -27,7 +27,11 @@ export default function ArrivalNoticePage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Arrival Notice" />
+      <PageTitle
+        title="Arrival Notice"
+        category="Import"
+        href="/main/import/notice"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

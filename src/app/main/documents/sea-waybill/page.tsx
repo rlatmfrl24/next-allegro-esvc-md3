@@ -17,7 +17,11 @@ export default function SeaWaybillPrint() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex items-center justify-between">
-        <PageTitle title="Sea Waybill Print" />
+        <PageTitle
+          title="Sea Waybill Print"
+          category="Documents"
+          href="/main/documents/sea-waybill"
+        />
         <MdOutlinedButton
           onClick={() => {
             setIsSurchargeCodeInquiryOpen(true);

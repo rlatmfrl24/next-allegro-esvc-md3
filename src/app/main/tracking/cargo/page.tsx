@@ -12,7 +12,11 @@ export default function CargoTracking() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Cargo Tracking" />
+      <PageTitle
+        title="Cargo Tracking"
+        category="Tracking"
+        href="/main/tracking/cargo"
+      />
       <CargoTrackingSearchCondition
         onSearch={() => setPageState("search")}
         onReset={() => setPageState("unsearch")}

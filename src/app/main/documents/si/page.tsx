@@ -8,7 +8,11 @@ import SITable from "./table";
 export default function SISearch() {
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Shipping Instruction" />
+      <PageTitle
+        title="Shipping Instruction"
+        category="Documents"
+        href="/main/documents/si"
+      />
       <SISearchCondition />
       <div className={styles.area}>
         <SITable />

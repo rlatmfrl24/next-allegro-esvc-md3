@@ -1,14 +1,24 @@
+import { useParams } from "next/navigation";
 import { MdIcon, MdIconButton } from "../util/md3";
 import { MdTypography } from "./typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useRecoilState } from "recoil";
+import { FavoriteState } from "../store/global.store";
+import { Favorite } from "@mui/icons-material";
 
 export default function PageTitle({
   title,
+  category,
+  href,
   hasFavorite = true,
 }: {
   title: string;
+  category?: string;
+  href?: string;
   hasFavorite?: boolean;
 }) {
+  const [favoriteStore, setFavoriteStore] = useRecoilState(FavoriteState);
+
   return (
     <div
       aria-label="page-title"
@@ -18,9 +28,30 @@ export default function PageTitle({
         {title}
       </MdTypography>
       {hasFavorite && (
-        <MdIconButton>
+        <MdIconButton
+          onClick={(e) => {
+            if (favoriteStore.some((item) => item.title === title)) {
+              setFavoriteStore(
+                favoriteStore.filter((item) => item.title !== title)
+              );
+            } else {
+              setFavoriteStore([
+                ...favoriteStore,
+                {
+                  title: title,
+                  category: category ? category : "",
+                  href: href ? href : "",
+                },
+              ]);
+            }
+          }}
+        >
           <MdIcon>
-            <FavoriteBorderIcon />
+            {favoriteStore.some((item) => item.title === title) ? (
+              <Favorite className="text-primary" />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
           </MdIcon>
         </MdIconButton>
       )}
