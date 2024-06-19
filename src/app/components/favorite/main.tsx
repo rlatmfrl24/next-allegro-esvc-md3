@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Portal from "../portal";
 import { useRecoilState } from "recoil";
-import { DrawerState } from "@/app/store/global.store";
+import { DrawerState, FavoriteState } from "@/app/store/global.store";
 import { use, useEffect, useRef } from "react";
 import { MdTypography } from "../typography";
 import { NAOutlinedTextField } from "../na-textfield";
@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 export default function FavoriteMain() {
   const [drawerState, setDrawerState] = useRecoilState(DrawerState);
+  const [favoriteStore, setFavoriteStore] = useRecoilState(FavoriteState);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,6 +38,10 @@ export default function FavoriteMain() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [drawerState, setDrawerState]);
+
+  useEffect(() => {
+    console.log(favoriteStore);
+  }, [favoriteStore]);
 
   return (
     <AnimatePresence>

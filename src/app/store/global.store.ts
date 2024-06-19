@@ -50,11 +50,15 @@ const DrawerState = atom({
   },
 });
 
-const FavoriteState = atom({
+const FavoriteState = atom<
+  {
+    title: string;
+    category: string;
+    href: string;
+  }[]
+>({
   key: "FavoriteState",
-  default: {
-    favoriteList: [],
-  },
+  default: [],
 });
 
 const ScrollState = atom({
@@ -66,4 +70,4 @@ const ScrollState = atom({
   },
 });
 
-export { UserState, DrawerState, ScrollState, UserProfileState };
+export { UserState, DrawerState, ScrollState, UserProfileState, FavoriteState };
