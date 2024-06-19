@@ -42,7 +42,15 @@ export default function SideNavigation() {
         <div className="flex flex-col mt-3 gap-5 h-full">
           <DropdownMenu />
           <div className="flex-1"></div>
-          <MdIconButton>
+          <MdIconButton
+            id="favorite-button"
+            onClick={(e) => {
+              setDrawer({
+                ...drawer,
+                isFavoriteOpen: !drawer.isFavoriteOpen,
+              });
+            }}
+          >
             <MdIcon>
               <Favorite />
             </MdIcon>

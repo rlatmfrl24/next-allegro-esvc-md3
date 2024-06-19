@@ -50,6 +50,13 @@ const DrawerState = atom({
   },
 });
 
+const FavoriteState = atom({
+  key: "FavoriteState",
+  default: {
+    favoriteList: [],
+  },
+});
+
 const ScrollState = atom({
   key: "ScrollState",
   default: {
