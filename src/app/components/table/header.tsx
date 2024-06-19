@@ -47,13 +47,15 @@ export const HeaderComponent = ({
       ref={setNodeRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative max-h-14 h-14"
+      className={`relative max-h-14 h-14`}
     >
       <div className="h-full flex items-center">
         <div
-          className="flex-1 flex justify-between items-center h-full"
           {...attributes}
           {...listeners}
+          className={`flex-1 flex justify-between items-center h-full ${
+            isDragging ? "cursor-move" : "cursor-default"
+          }`}
         >
           <MdTypography
             variant="body"
