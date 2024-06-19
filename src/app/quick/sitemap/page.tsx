@@ -53,7 +53,7 @@ const CategoryItem = (props: MenuItemType) => {
 
   return (
     <div>
-      <div className="flex gap-4 items-center px-8 py-4">
+      <div className="flex gap-4 items-center px-8 py-3">
         <div className="w-fit">{itemIcon}</div>
         <MdTypography
           variant="title"

@@ -1,9 +1,6 @@
 "use client";
-
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
-import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import PageTitle from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import styles from "@/app/styles/base.module.css";
@@ -11,7 +8,6 @@ import {
   MdChipSet,
   MdFilledButton,
   MdInputChip,
-  MdOutlinedButton,
   MdOutlinedSegmentedButton,
   MdOutlinedSegmentedButtonSet,
   MdOutlinedTextField,
@@ -22,8 +18,10 @@ import { faker } from "@faker-js/faker";
 import { useMemo, useState } from "react";
 import { DetentionStatusTable } from "./table";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import classNames from "classnames";
 
 export default function DetentionStatusPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [boundSelection, setBoundSelection] = useState<"outbound" | "inbound">(
     `outbound`
@@ -140,14 +138,11 @@ export default function DetentionStatusPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <DetentionStatusTable type={boundSelection} />
         ) : (
-          <EmptyResultPlaceholder
-            text="Please select the search criteria and click the search button."
-            className="my-12"
-          />
+          <EmptyResultPlaceholder text="Please select the search criteria and click the search button." />
         )}
       </div>
     </div>

@@ -21,6 +21,7 @@ import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
+import classNames from "classnames";
 
 export default function PortSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -31,7 +32,7 @@ export default function PortSchedule() {
   });
 
   const tempPortSchedules = useMemo(() => {
-    return createDummyPortSchedules();
+    return createDummyPortSchedules(5);
   }, []);
 
   function resetPortQuery() {
@@ -42,11 +43,12 @@ export default function PortSchedule() {
     });
   }
 
+  const cx = classNames.bind(styles);
   const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
 
   return (
-    <div aria-label="container" className={styles.container}>
+    <div aria-label="container" className={cx(styles.container)}>
       <PageTitle
         title="Port Schedule"
         category="Schedule"
@@ -114,7 +116,7 @@ export default function PortSchedule() {
       {pageState === "unsearch" ? (
         <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
-        <div className={styles.area}>
+        <div className={cx(styles.area, styles.table)}>
           <PortResultTable data={tempPortSchedules} />
         </div>
       )}

@@ -14,8 +14,10 @@ import {
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import { FreetimeRequestTable } from "./table";
+import classNames from "classnames";
 
 export default function FreetimeRequestPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
@@ -89,14 +91,11 @@ export default function FreetimeRequestPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <FreetimeRequestTable />
         ) : (
-          <EmptyResultPlaceholder
-            text="Please enter B/L No. to search."
-            className="my-12"
-          />
+          <EmptyResultPlaceholder text="Please enter B/L No. to search." />
         )}
       </div>
     </div>

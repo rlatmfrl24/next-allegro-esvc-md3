@@ -8,8 +8,10 @@ import { useState } from "react";
 import BLCheckResultTable from "./reseult-table";
 import { MdOutlinedButton } from "@/app/util/md3";
 import SurchargeCodeInquiry from "../surcharge-code-inquiry";
+import classNames from "classnames";
 
 export default function BLCheck() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
   const [isSurchargeCodeInquiryOpen, setIsSurchargeCodeInquiryOpen] =
     useState(false);
@@ -38,7 +40,7 @@ export default function BLCheck() {
           setPageState("search");
         }}
       />
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <BLCheckResultTable />
         ) : (

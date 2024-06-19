@@ -100,7 +100,7 @@ export default function BLSurrenderCheck() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <SurrenderTable />
         ) : (

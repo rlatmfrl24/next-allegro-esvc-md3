@@ -110,16 +110,14 @@ export default function VGMSearch() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unseach" ? (
           <EmptyResultPlaceholder
             text="Please search for the condition."
             className="my-20"
           />
         ) : (
-          <>
-            <VGMTable />
-          </>
+          <VGMTable />
         )}
       </div>
     </div>

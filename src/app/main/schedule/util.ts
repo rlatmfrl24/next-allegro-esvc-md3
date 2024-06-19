@@ -61,8 +61,10 @@ export function createDummyVesselInformations(
   return Array.from({ length: number }, () => createDummyVesselInformation());
 }
 
-export function createDummyVesselSchedules(): VesselScheduleType[] {
-  return Array.from({ length: 500 }, (_, i) => {
+export function createDummyVesselSchedules(
+  size: number = 500
+): VesselScheduleType[] {
+  return Array.from({ length: size }, (_, i) => {
     const tempDate =
       i > 5
         ? DateTime.fromJSDate(faker.date.future())
@@ -81,8 +83,10 @@ export function createDummyVesselSchedules(): VesselScheduleType[] {
   });
 }
 
-export function createDummyPortSchedules(): PortScheduleType[] {
-  return Array.from({ length: 20 }, (_, i) => {
+export function createDummyPortSchedules(
+  size: number = 20
+): PortScheduleType[] {
+  return Array.from({ length: size }, (_, i) => {
     const tempDate =
       i > 10
         ? DateTime.fromJSDate(faker.date.future())

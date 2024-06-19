@@ -32,7 +32,7 @@ export default function SubscriptionPage() {
   }, [currentTabe, setIsBottomFloatingVisible]);
 
   return (
-    <div aria-label="container" className={cx(styles.container, "flex-1")}>
+    <div aria-label="container" className={cx(styles.container)}>
       <PageTitle title="e-Subscription" hasFavorite={false} />
       <div className={cx(styles.area, "flex-1 mb-12")}>
         <MdOutlinedSegmentedButtonSet>

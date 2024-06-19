@@ -90,10 +90,7 @@ export default function MyProfilePage() {
         open={isContractUpdateDialogOpen}
         onOpenChange={setIsContractUpdateDialogOpen}
       />
-      <div
-        aria-label="container"
-        className={cx(styles.container, "flex-1 flex")}
-      >
+      <div aria-label="container" className={cx(styles.container)}>
         <div className={cx(styles.area, "flex-1 flex")}>
           <div className="border-2 border-secondaryContainer flex-1 rounded-lg flex flex-col">
             <div className="flex items-center justify-between bg-secondaryContainer p-4">

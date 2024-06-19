@@ -81,7 +81,6 @@ export default function VesselSchedule() {
       id="content-container"
       aria-label="container"
       className={cx(styles.container, "relative")}
-      // className={styles.container + " relative"}
     >
       <PageTitle
         title="Vessel Schedule"
@@ -123,7 +122,7 @@ export default function VesselSchedule() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder text={"Please search for the schedule"} />
         ) : (
@@ -134,7 +133,11 @@ export default function VesselSchedule() {
         )}
       </div>
       <ConditionSummary
-        open={isSearchConditionSummaryOpen && vesselSchedules.length > 0}
+        open={
+          isSearchConditionSummaryOpen &&
+          vesselSchedules.length > 0 &&
+          pageState === "search"
+        }
         condition={vesselData}
         scrollTop={ScrollToTop}
       />

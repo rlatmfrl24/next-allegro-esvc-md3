@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { resetBookingState } from "@/app/store/booking.store";
 import classNames from "classnames";
+import { useState } from "react";
 
 export default function BookingStatusPage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function BookingStatusPage() {
   const cx = classNames.bind(styles);
 
   return (
-    <div aria-label="container" className={cx(styles.container, "flex-1")}>
+    <div aria-label="container" className={cx(styles.container)}>
       <div className="flex items-center justify-between">
         <PageTitle
           title="Booking Status"
@@ -35,7 +36,7 @@ export default function BookingStatusPage() {
       </div>
       <BookingStatusCondition />
 
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         <BookingStatusTable />
       </div>
     </div>
