@@ -3,14 +3,29 @@ import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { MdIcon, MdIconButton, MdOutlinedTextField } from "@/app/util/md3";
+import {
+  MdDialog,
+  MdElevation,
+  MdFilledButton,
+  MdIcon,
+  MdIconButton,
+  MdOutlinedButton,
+  MdOutlinedTextField,
+} from "@/app/util/md3";
 import { SignUpFormProps } from "@/app/util/typeDef/sign";
 import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
-import { ComponentProps, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  CSSProperties,
+  ComponentProps,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 export const RegisterForm = (props: {
   onFormChange?: (form: SignUpFormProps) => void;
-  onRequiredFilledChange?: (isRequiredFilled: boolean) => void;
+  onStepChange?: (step: number) => void;
 }) => {
   const [signUpForm, setSignUpForm] = useState<SignUpFormProps>({
     companyName: "",
@@ -33,6 +48,7 @@ export const RegisterForm = (props: {
     contactOffice: "",
     comment: "",
   });
+  const [isValidationFilled, setIsValidationFilled] = useState(false);
 
   useEffect(() => {
     const isValidationFilled =
@@ -52,12 +68,68 @@ export const RegisterForm = (props: {
       signUpForm.address.city !== "" &&
       signUpForm.address.street !== "" &&
       signUpForm.password === signUpForm.confirmPassword;
-    props.onRequiredFilledChange?.(isValidationFilled);
+    setIsValidationFilled(isValidationFilled);
     props.onFormChange?.(signUpForm);
   }, [props, signUpForm]);
 
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
   return (
     <div className="flex flex-col px-6 pb-6 pt-2 gap-6">
+      <AnimatePresence>
+        {
+          // Show the submit button only when all required fields are filled
+          isValidationFilled ? (
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              className="fixed bottom-0 left-0 w-full px-4 py-2 z-10"
+            >
+              <div
+                style={
+                  {
+                    "--md-elevation-level": "2",
+                  } as CSSProperties
+                }
+                className="relative w-full p-2 rounded-full text-right bg-surfaceContainerLow "
+              >
+                <MdElevation />
+                <MdFilledButton
+                  onClick={() => {
+                    setIsConfirmDialogOpen(true);
+                  }}
+                >
+                  Submit
+                </MdFilledButton>
+                <MdDialog
+                  open={isConfirmDialogOpen}
+                  closed={() => setIsConfirmDialogOpen(false)}
+                >
+                  <div slot="headline" className="text-pretty text-left">
+                    Are you sure you want to submit your registration?
+                  </div>
+                  <div slot="actions">
+                    <MdOutlinedButton
+                      onClick={() => setIsConfirmDialogOpen(false)}
+                    >
+                      Cancel
+                    </MdOutlinedButton>
+                    <MdFilledButton
+                      onClick={() => {
+                        setIsConfirmDialogOpen(false);
+                        props.onStepChange?.(2);
+                      }}
+                    >
+                      Submit
+                    </MdFilledButton>
+                  </div>
+                </MdDialog>
+              </div>
+            </motion.div>
+          ) : null
+        }
+      </AnimatePresence>
       <MdTypography variant="body" size="medium">
         Please enter all information in English. (Required field is indicated by
         <span className="text-error">*</span>)

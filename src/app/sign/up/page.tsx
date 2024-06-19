@@ -26,7 +26,6 @@ import { PolicyContent } from "./policy-content";
 import { RegisterForm } from "./form";
 import { SignUpPreview } from "./preview";
 import { SignUpFormProps } from "@/app/util/typeDef/sign";
-import Link from "next/link";
 
 const CustomStepIcon = (props: StepIconProps) => {
   const { active, completed, className, icon } = props;
@@ -64,50 +63,18 @@ export default function Register() {
   const [isValidationFilled, setIsValidationFilled] = useState(false);
   const [formData, setFormData] = useState({} as SignUpFormProps);
 
-  const SubmitButton = (props: { disabled?: boolean }) => {
-    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-
-    return (
-      <>
-        <MdFilledButton
-          disabled={!isValidationFilled || props.disabled}
-          onClick={() => setIsConfirmDialogOpen(true)}
-        >
-          Submit
-        </MdFilledButton>
-        <MdDialog
-          open={isConfirmDialogOpen}
-          closed={() => setIsConfirmDialogOpen(false)}
-        >
-          <div slot="headline" className="text-pretty text-left">
-            Are you sure you want to submit your registration?
-          </div>
-          <div slot="actions">
-            <MdOutlinedButton onClick={() => setIsConfirmDialogOpen(false)}>
-              Cancel
-            </MdOutlinedButton>
-            <MdFilledButton
-              onClick={() => {
-                setIsConfirmDialogOpen(false);
-                setCurrentStep(2);
-              }}
-            >
-              Submit
-            </MdFilledButton>
-          </div>
-        </MdDialog>
-      </>
-    );
-  };
-
   return (
     <OverlayScrollbarsComponent defer className="h-full overflow-auto m-2">
-      <div className={cx(styles.container, "items-center")}>
+      <div
+        id="signup-container"
+        className={cx(styles.container, "items-center")}
+      >
         <div
           className={cx(
             styles.area,
             styles["no-padding"],
-            "w-full max-w-[1240px] overflow-hidden"
+            "w-full max-w-[1240px] overflow-hidden",
+            currentStep > 0 && "mb-16"
           )}
         >
           <div className="h-3 bg-secondaryContainer"></div>
@@ -183,40 +150,30 @@ export default function Register() {
                   onFormChange={(form: SignUpFormProps) => {
                     setFormData(form);
                   }}
-                  onRequiredFilledChange={(isFilled: boolean) =>
-                    setIsValidationFilled(isFilled)
-                  }
+                  onStepChange={(step: number) => {
+                    setCurrentStep(step);
+                  }}
                 />
               ),
               2: <SignUpPreview formData={formData} />,
             }[currentStep]
           }
         </div>
-        <div
-          style={
-            {
-              "--md-elevation-level": "2",
-            } as CSSProperties
-          }
-          className="relative w-full p-2 rounded-full text-right"
-        >
-          <MdElevation />
-          {
-            {
-              0: (
-                <MdFilledButton onClick={() => setCurrentStep(1)}>
-                  Agree and Continue
-                </MdFilledButton>
-              ),
-              1: <SubmitButton />,
-              2: (
-                <Link href="/sign">
-                  <MdFilledButton>Go to Main</MdFilledButton>,
-                </Link>
-              ),
-            }[currentStep]
-          }
-        </div>
+        {currentStep === 0 && (
+          <div
+            style={
+              {
+                "--md-elevation-level": "2",
+              } as CSSProperties
+            }
+            className="relative w-full p-2 rounded-full text-right"
+          >
+            <MdElevation />
+            <MdFilledButton onClick={() => setCurrentStep(1)}>
+              Agree and Continue
+            </MdFilledButton>
+          </div>
+        )}
       </div>
     </OverlayScrollbarsComponent>
   );
