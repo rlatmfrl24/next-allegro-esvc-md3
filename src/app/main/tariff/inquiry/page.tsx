@@ -33,7 +33,11 @@ export default function ChargeInquiryPage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Charge Inquiry" />
+      <PageTitle
+        title="Charge Inquiry"
+        category="DEM/DET"
+        href="/main/tariff/inquiry"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

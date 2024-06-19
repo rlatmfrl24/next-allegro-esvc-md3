@@ -38,7 +38,11 @@ export default function DetentionStatusPage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Detention Status" />
+      <PageTitle
+        title="Detention Status"
+        category="DEM/DET"
+        href="/main/tariff/status"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

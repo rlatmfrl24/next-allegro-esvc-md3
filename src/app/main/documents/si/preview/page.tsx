@@ -240,7 +240,7 @@ function SIPreview() {
             {requestNumber}
           </MdTypography>
         ) : (
-          <PageTitle title="Shipping Instruction Preview" />
+          <PageTitle title="Shipping Instruction Preview" hasFavorite={false} />
         )}
       </div>
 

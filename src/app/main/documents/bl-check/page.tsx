@@ -17,7 +17,11 @@ export default function BLCheck() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex items-center justify-between">
-        <PageTitle title="B/L Check (Outbound)" />
+        <PageTitle
+          title="B/L Check (Outbound)"
+          category="Documents"
+          href="/main/documents/bl-check"
+        />
         <MdOutlinedButton
           onClick={() => {
             setIsSurchargeCodeInquiryOpen(true);

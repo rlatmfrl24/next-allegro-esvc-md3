@@ -278,7 +278,11 @@ export default function BookingTemplate() {
       className={cx(styles.container, "flex-1 flex-col")}
     >
       <div className="flex items-center justify-between">
-        <PageTitle title="Booking Template" />
+        <PageTitle
+          title="Booking Template"
+          category="Booking"
+          href="/main/booking/template"
+        />
         <MdOutlinedButton
           onClick={() => {
             router.push("/main/booking/template/create");

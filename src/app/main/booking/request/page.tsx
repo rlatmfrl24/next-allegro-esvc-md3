@@ -1,5 +1,4 @@
 "use client";
-
 import classNames from "classnames";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -8,7 +7,6 @@ import {
   AdditionalInformationState,
   BookingInformationState,
   BookingRequestStepState,
-  BookingTemplateListState,
   CargoPickUpReturnState,
   ContactInformationState,
   ContainerState,
@@ -17,16 +15,11 @@ import {
 } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import {
-  MdElevatedCard,
   MdElevation,
   MdFilledButton,
   MdFilledTonalButton,
   MdIcon,
-  MdInputChip,
-  MdList,
-  MdListItem,
   MdOutlinedButton,
-  MdRippleEffect,
 } from "@/app/util/md3";
 
 import CargoStep from "./step-cargo";
@@ -35,14 +28,7 @@ import AdditionalInformationStep from "./step-additional-information";
 import StepItem from "./step-item";
 import LoactionScheduleStep from "./step-location-schedule";
 import PartiesStep from "./step-parties";
-import {
-  CSSProperties,
-  Suspense,
-  use,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { CSSProperties, Suspense, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import ContactInformationStep from "./step-contact-information";
@@ -51,21 +37,10 @@ import {
   BookingInformationRequestType,
   BookingStatus,
 } from "@/app/util/typeDef/boooking";
-import { set } from "lodash";
-import { ArrowDropDown, Check, ChevronLeft } from "@mui/icons-material";
+import { ChevronLeft } from "@mui/icons-material";
 import BookingStatusChip from "../status/components/booking-status-chip";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
-import {
-  autoUpdate,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-  useTransitionStyles,
-} from "@floating-ui/react";
-import { basicDropdownStyles } from "@/app/util/constants";
 import {
   BookingTemplateSelect,
   SaveAsTemplate,
@@ -172,11 +147,15 @@ function BookingRequest() {
                 </MdIcon>
                 Back
               </MdOutlinedButton>
-              <PageTitle title="Booking Request(Edit)" />
+              <PageTitle title="Booking Request(Edit)" hasFavorite={false} />
             </>
           ) : (
             <>
-              <PageTitle title="Booking Request" />
+              <PageTitle
+                title="Booking Request"
+                category="Booking"
+                href="/main/booking/request"
+              />
             </>
           )}
         </div>

@@ -340,7 +340,11 @@ export default function VisibilityServicePage() {
         isOpen={isSummaryDialogOpen}
         onOpenChange={setIsSummaryDialogOpen}
       />
-      <PageTitle title="Visibility Service" />
+      <PageTitle
+        title="Visibility Service"
+        category="Tracking"
+        href="/main/tracking/visibility"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

@@ -218,7 +218,11 @@ export default function SpecialCargoStatusSearch() {
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
-      <PageTitle title="Special Cargo  Status Search" />
+      <PageTitle
+        title="Special Cargo Status Search"
+        category="Booking"
+        href="/main/booking/special-cargo"
+      />
       {renderDialog()}
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>

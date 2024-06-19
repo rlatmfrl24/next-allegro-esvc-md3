@@ -29,7 +29,11 @@ export default function DemDetPage() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="DEM/DET Tariff" />
+      <PageTitle
+        title="DEM/DET Tariff"
+        category="DEM/DET"
+        href="/main/tariff/dem-det"
+      />
       <div className={styles.area}>
         <div className="flex gap-4">
           <MdTypography

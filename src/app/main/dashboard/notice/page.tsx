@@ -87,7 +87,7 @@ export default function NoticePage() {
                 </MdIcon>
                 Back
               </MdOutlinedButton>
-              <PageTitle title="e-Service Notice" />
+              <PageTitle title="e-Service Notice" hasFavorite={false} />
             </div>
             <div className={cx(styles.area, styles.row, "justify-between")}>
               <MdOutlinedTextField

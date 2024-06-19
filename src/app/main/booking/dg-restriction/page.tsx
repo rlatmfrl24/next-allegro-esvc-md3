@@ -77,7 +77,11 @@ export default function DGRestrictionSearch() {
           }));
         }}
       />
-      <PageTitle title="DG Restriction Search" />
+      <PageTitle
+        title="DG Restriction Search"
+        category="Booking"
+        href="/main/booking/dg-restriction"
+      />
       <div className={cx(styles.area, styles.row)}>
         <div className="flex flex-col gap-4 flex-1">
           <div className="flex gap-4">

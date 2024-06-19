@@ -34,7 +34,7 @@ export default function VGMSearch() {
       aria-label="container"
       className={cx(styles.container)}
     >
-      <PageTitle title="VGM" />
+      <PageTitle title="VGM" category="Documents" href="/main/documents/vgm" />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
