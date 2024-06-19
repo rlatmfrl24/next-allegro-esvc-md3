@@ -5,7 +5,7 @@ import { createDummyVesselInformation } from "../../schedule/util";
 import { useMemo, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import { BasicTable } from "@/app/components/table/basic-table";
 import {
   MdDialog,

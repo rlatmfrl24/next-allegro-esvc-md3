@@ -12,10 +12,14 @@ import ManageShipmentIcon from "@/../public/icon_menu_manage_shipment.svg";
 import DententionIcon from "@/../public/icon_menu_dentention.svg";
 import SubsumIndicator from "@/../public/icon_subsum_indicator.svg";
 
-import { menuItems } from "@/app/util/constants";
+import { allowBeforeLoginMenus, menuItems } from "@/app/util/constants";
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
-import { MdRippleEffect } from "@/app/util/md3";
+import { MdDialog, MdOutlinedButton, MdRippleEffect } from "@/app/util/md3";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { UserState } from "@/app/store/global.store";
 
 export default function Sitemap() {
   return (
@@ -42,6 +46,11 @@ const CategoryItem = (props: MenuItemType) => {
     "Detention & Demurrage": <DententionIcon />,
   }[props.name];
 
+  const router = useRouter();
+  const [isLoginRequiredDialogOpen, setIsLoginRequiredDialogOpen] =
+    useState(false);
+  const userData = useRecoilValue(UserState);
+
   return (
     <div>
       <div className="flex gap-4 items-center px-8 py-4">
@@ -61,6 +70,18 @@ const CategoryItem = (props: MenuItemType) => {
             <div
               key={subItem.id}
               className="p-4 flex items-center gap-4 relative rounded-full cursor-pointer hover:bg-secondaryContainer"
+              onClick={() => {
+                if (
+                  allowBeforeLoginMenus.includes(
+                    "/" + props.link + "/" + subItem.link
+                  ) ||
+                  userData.isAuthenticated
+                ) {
+                  router.push("/main/" + props.link + "/" + subItem.link);
+                } else {
+                  setIsLoginRequiredDialogOpen(true);
+                }
+              }}
             >
               <MdRippleEffect />
               <SubsumIndicator />
@@ -71,6 +92,25 @@ const CategoryItem = (props: MenuItemType) => {
           );
         })}
       </div>
+      <MdDialog
+        open={isLoginRequiredDialogOpen}
+        closed={() => setIsLoginRequiredDialogOpen(false)}
+      >
+        <div slot="headline">Login Required</div>
+        <div slot="content">
+          In order to see this page, please sign in to e-Service.
+        </div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              setIsLoginRequiredDialogOpen(false);
+              router.push("/sign/in");
+            }}
+          >
+            Sign In
+          </MdOutlinedButton>
+        </div>
+      </MdDialog>
     </div>
   );
 };

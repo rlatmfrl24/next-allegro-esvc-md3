@@ -2,10 +2,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import CloseIcon from "@mui/icons-material/Close";
 import Portal from "@/app/components/portal";
 import { MdTypography } from "@/app/components/typography";
-import { MdIcon, MdIconButton, MdSwitch } from "@/app/util/md3";
+import {
+  MdIcon,
+  MdIconButton,
+  MdOutlinedButton,
+  MdSwitch,
+} from "@/app/util/md3";
 import { cardList } from "../../util/constants";
 import { useRecoilState } from "recoil";
 import { dashboardCardState } from "../../store/dashboard.store";
+import { DividerComponent } from "@/app/components/divider";
+import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 
 export default function SetDashboard(props: {
   isDrawerOpen: boolean;
@@ -23,31 +30,21 @@ export default function SetDashboard(props: {
             animate={{ x: 0 }}
             exit={{ x: 360 }}
             transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-            className="absolute right-0 top-0 w-[360px] h-full bg-white z-10 flex flex-col p-3 border-l border-surfaceVariant"
+            className="absolute right-0 top-0 w-[360px] h-full bg-white z-10 flex flex-col border-l border-surfaceVariant"
           >
-            <div className="flex py-3 items-center">
-              <MdTypography
-                variant="title"
-                size="large"
-                className="flex-1 text-primary"
-              >
-                Set Dashboard
+            <div className="flex items-center px-6 py-5">
+              <MdTypography variant="title" size="large" className="flex-1 ">
+                Setting
               </MdTypography>
-              <MdIconButton onClick={props.toggleDrawer}>
-                <MdIcon>
-                  <CloseIcon />
-                </MdIcon>
-              </MdIconButton>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col flex-1">
               {cardList.map((item) => (
                 <div key={item.id} className="h-12 flex items-center px-6">
                   <MdTypography variant="body" size="large" className="flex-1">
                     {item.title}
                   </MdTypography>
-                  <MdSwitch
-                    selected={enabledCardIds.includes(item.id)}
+                  <MdIconButton
                     onClick={() => {
                       if (enabledCardIds.includes(item.id)) {
                         setEnabledCardIds(
@@ -57,9 +54,23 @@ export default function SetDashboard(props: {
                         setEnabledCardIds([...enabledCardIds, item.id]);
                       }
                     }}
-                  />
+                  >
+                    <MdIcon>
+                      {enabledCardIds.includes(item.id) ? (
+                        <VisibilityOutlined />
+                      ) : (
+                        <VisibilityOffOutlined />
+                      )}
+                    </MdIcon>
+                  </MdIconButton>
                 </div>
               ))}
+            </div>
+            <DividerComponent />
+            <div className="m-4 text-right">
+              <MdOutlinedButton className="w-fit" onClick={props.toggleDrawer}>
+                Close
+              </MdOutlinedButton>
             </div>
           </motion.div>
         )}

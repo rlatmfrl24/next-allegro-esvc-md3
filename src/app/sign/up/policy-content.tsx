@@ -1,68 +1,111 @@
+import { DividerComponent } from "@/app/components/divider";
 import { DetailTitle, SubTitle } from "@/app/components/title-components";
+import { MdTypography } from "@/app/components/typography";
 
 export const PolicyContent = () => {
-  const policyText = `
-Privacy statement for www.djship.co.kr/ 
-DongJin Shipping has created this privacy statement in order to demonstrate our commitment to protect the privacy of our users. 
-
-Personal Information 
-The registration form used for accessing the DongJin Shipping website and its interactive shipping applications requires for users to give us contact details such as (name, address and communication details). This information is being used to send information and promotional material to registered users about our company and new applications to be launched on our website. 
-
-The information or data registered via www.djship.co.kr/ are not made publicly available. 
-
-www.djship.co.kr/ has security measures in place to protect the user information registered in our systems. These measures include restricted access to databases containing user information.
-
-Except as set out below or as may be otherwise agreed, DongJin Shipping does not publish, share, trade, sell or otherwise disseminate any of the information or data registered or provided to us to any other party. DongJin Shipping may, however, be obligated and are entitled to disclose information and data registered or provided to us in compliance with applicable law, court or arbitration orders, judgments awards or other legal processes served or in compliance with requests by any entitled authority, body or person or to protect the interests, rights, property of DongJin Shipping, our users or others
-
-In addition, DongJin Shipping may disclose any information and/or data registered via www.djship.co.kr/ to and co-operate with authorities in any jurisdiction in relation to any direction or request to disclose such information and/or data regarding any user or the use of the website, content or services. 
-
-Should any information or data be transferred to a recipient based outside, DongJin Shipping will ensure prior to such transfer that the recipient’s level of data protection is sufficient. 
-
-During your use of our website we automatically collect IP addresses and other information concerning your use of our website in order to (i) help diagnose problems with our server,? (ii) identify ways of making our site better, (iii) ensure that the website is used in accordance with relevant legislation and the applicable user terms, and (iv) for any processing which DongJin Shipping is required to perform under applicable law, court or arbitration orders, judgments awards or other legal processes served or for the processing of information as set out above. 
-
-Cookies 
-A cookie is information that a web site puts on your hard disk so that it can remember something about you at a later time. (More technically, it is information for future use that is stored by the server on the client side of a client/server communication.) We use 'cookies' to generate digital certificates that identifies the user when logging on to our interactive shipping services. 'Cookies' are also used to control the correct display of the website navigation bar. 
-
-VOC(Voice of Customer)
-What is Voice of Customer?
-VOC is an on-line user and e-business support function providing technical and business support for the DongJin Shipping website. 
-VOC is designed to provide: 
-online problem solving 
-management of customer queries 
-facilitate and ensure follow-up by the DongJin Shipping organization 
-VOC is not intended to negotiate or settle on-line issues of commercial or contractual nature or the like matters. However, VOC will relay and manage such matters internally in DongJin Shipping to ensure follow-up - all to the benefit of our website users. 
-To the benefit of our website users, we will record and keep transcripts of all communications concerning support issues raised through www.djship.co.kr/. 
-This is done only to facilitate any repeated or recurring contacts on issues addressed earlier by the individual user and for internal education and training purposes. Transcripts will be stored in a secure and confidential manner and, except as may be required to comply with prevailing law or judgments, awards, orders and the like, or to meet the well-founded and reasonable requests by a public authority, body or person, will be available only to DongJin Shipping and the concerned user. Transcripts will be stored for 5 years except where a user in writing has specifically requested for its deletion. 
-
-Update/Removal 
-You may update, change or opt for removal of information registered at www.djship.co.kr/ either by sending the changes to your local DongJin Shipping office (use the Contact link on the website to locate your local DongJin Shipping office and its contact details). 
-
-Links 
-This site contains links to other third party websites. www.djship.co.kr/ is not responsible for the privacy practices or content of such third party web sites. 
-
-Contact 
-If you have any questions or comments about privacy, the use of this web site, or your dealings with this web site you can contact: 
-
-Phone : +82-2-2287-6000
-E-mail : webmaster@djship.co.kr
-e-Service Part
-Customer Service Team 
-DongJin Shipping  
-2nd Fl., Paiknam Building, 16, Eulji-ro, Jung-gu 
-SEOUL KOREA
-`;
-
   return (
-    <>
-      <DetailTitle title="Privacy and Security Policy" />
-      <p className="text-balance">
-        {policyText.split("\n").map((line, i) => (
-          <span key={i}>
-            {line}
-            <br />
-          </span>
-        ))}
-      </p>
-    </>
+    <div className="px-6 pb-6 pt-2">
+      <MdTypography variant="title" size="medium">
+        Privacy and Security Policy
+      </MdTypography>
+      <Paragraph
+        text={`
+      e-SERVICE Co.,Ltd. Privacy Policy. 
+
+At e-SERVICE Co.,Ltd.(hereinafter referred to as "the company") we consider the protection of personal information to be one of the most important rights an individual has. 
+Theprotection of a customer's rights is one of the foundations of the company, indeed it is a duty. 
+The company's personal information protection policy is set out as follows. All executives andemployees of the company as well as collaborating third parties undergo thorough training with regard to the policy.
+        `}
+      />
+      <DetailTitle title="1. Appropriate collection, use, provision, and entrustment of personal information." />
+      <Paragraph
+        text={`
+      1) When collecting a user's personal information, it must be made clear to the user for what aim the information is being collected and the user's agreement must be received. 
+The scope of use ofthe personal information must be pre-defined, and the handling of the information must be appropriate.
+ 
+2) In some cases, collected personal information may be provided to third parties in line with the stipulated uses of the information and within the pre-defined scope of use. 
+In such cases the reasonfor collecting the information must be made clear, the agreement of the user must be received and the handling of the information must be appropriate.
+ 
+3) In some cases, collected personal information may be entrusted to third parties to ensure smooth running of the company's business. 
+In such cases, third parties who adhere to adequatepersonal information protection policies must be selected and these protection standards must be drawn up in a contract to ensure appropriate handling of the information.
+      `}
+      />
+      <DividerComponent className="border-dotted mb-4" />
+      <DetailTitle title="2. Prevention and/or redress of loss, destruction, corruption, leaking or unauthorized access of personal information." />
+      <Paragraph
+        text={`
+      The company carefully manages users' personal information and implements preventative measures against risks including corruption, leakage and unauthorized access. 
+There are concrete rules forthe appropriate handling of personal information and the company has appointed staff members who are responsible for their implementation.
+        `}
+      />
+      <DividerComponent className="border-dotted mb-4" />
+      <DetailTitle title="3. Adherence to Rules and Regulations concerning Personal Information" />
+      <Paragraph
+        text={`
+      All executives and employees of the company as well as collaborating third parties strictly adhere to all domestic and international rules and guidelines pertaining to the protection of personalinformation.
+        `}
+      />
+      <DividerComponent className="border-dotted mb-4" />
+      <DetailTitle title="4. Continuous improvement of personal information protection policies and of in-house regulations " />
+      <Paragraph
+        text={`
+        To ensure efficient implementation of personal information protection as required by society, the company is continuously improving its personal information protection policies and in-houseguidelines.
+
+The company may revise the above policies.
+All revisions will be published on this website.
+`}
+      />
+      <MdTypography variant="body" size="medium" prominent>
+        ¡ Personal information collected from users via the company website
+      </MdTypography>
+      <Paragraph
+        text={`The aim of this website is to provide information about Kambara Kisen Co.,Ltd. In some sections of the website, the user is asked to give personal information (questionnaires, inquiries, or whenapplying for employment, etc.). 
+In most cases the user is asked to give his/her name, e-mail address, telephone number, and address. 
+There are times when the site requests further information,but provision of this information is optional and the user only provides it with his/her consent. 
+User information is never altered without the consent of the user.
+ 
+Furthermore, when a users asks for disclosure of the personal information about him/herself, the company takes all measures to ensure that the user's privacy is respected in an appropriatefashion.
+        `}
+      />
+      <MdTypography variant="body" size="medium" prominent>
+        ¡ Applicable Laws
+      </MdTypography>
+      <Paragraph
+        text={`This website is managed by Kambara Kisen Co.,Ltd.
+The website can be accessed from countries around the world, each with their respective laws. 
+However, for both the user and the company,irrespective of the different legal principles they may beunder, the laws applicable to the use of this site will be the laws of Japan and the regulations of Hiroshima Prefecture. Furthermore, the company does make any declaration on this site stipulatingthat the content of the site is appropriate to the environment of the user. The site is accessed on the user's own free will, and the user takes full responsibility for his/her access.
+        `}
+      />
+      <MdTypography variant="body" size="medium" prominent>
+        ¡ Guarantee and Limitation of Liability
+      </MdTypography>
+      <Paragraph
+        text={`The user takes responsibility for his/her use of the site. 
+The company does not take responsibility for any damages or losses incurred due to use of the site or other sites linked to the site.
+`}
+      />
+      <MdTypography variant="body" size="medium" prominent>
+        ¡ Use of Cookies
+      </MdTypography>
+      <Paragraph
+        text={`Cookies are used by the website to ensure greater ease of use for users when visiting the site for the second time. Cookies are pieces of information sent by the site to the user's browser, andthese are stored in the user's computer. However, personal details which may allow for recognition of the user, such as the user's name, address, telephone number, and e-mail address are neverincluded.
+ Furthermore, stored cookies will have no detrimental effect on the user's computer. 
+The user can set his/her browser so that it rejects cookies, and this has no detrimental effect on the browsing experience. 
+For details on how to change the settings of your browser please directinquiries to the software provider.`}
+      />
+    </div>
+  );
+};
+
+const Paragraph = ({ text }: { text: string }) => {
+  return (
+    <MdTypography variant="body" size="medium">
+      {text.split("\n").map((line, index) => (
+        <span key={index}>
+          {line}
+          <br />
+        </span>
+      ))}
+    </MdTypography>
   );
 };

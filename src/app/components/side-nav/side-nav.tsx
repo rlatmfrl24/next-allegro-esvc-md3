@@ -2,23 +2,20 @@
 
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import NavOverlay from "./nav-overlay";
-import { DrawerState } from "@/app/store/global.store";
+import { DrawerState, UserState } from "@/app/store/global.store";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DropdownMenu } from "./nav-dropdown";
-import {
-  Class,
-  ClassOutlined,
-  Favorite,
-  Map,
-  MapOutlined,
-} from "@mui/icons-material";
+import { ClassOutlined, Favorite, MapOutlined } from "@mui/icons-material";
+import { useEffect } from "react";
 
 export default function SideNavigation() {
   const pathname = usePathname();
   const [drawer, setDrawer] = useRecoilState(DrawerState);
+  const [userData] = useRecoilState(UserState);
+  const router = useRouter();
 
   function handleDrawer() {
     setDrawer({
@@ -26,12 +23,18 @@ export default function SideNavigation() {
     });
   }
 
+  useEffect(() => {
+    console.log("userData.isAuthenticated", userData.isAuthenticated);
+  }, [userData.isAuthenticated]);
+
   return (
     <>
       <aside
         className={`flex items-center flex-col py-3
       ${
-        pathname.split("/").includes("main") ? "w-20 visible" : "w-0 invisible"
+        pathname.split("/").includes("main") && userData.isAuthenticated
+          ? "w-20 visible"
+          : "w-0 invisible"
       }`}
       >
         <MdIconButton aria-label="drawer-toggler" onClick={handleDrawer}>
@@ -47,12 +50,20 @@ export default function SideNavigation() {
               <Favorite />
             </MdIcon>
           </MdIconButton>
-          <MdIconButton>
+          <MdIconButton
+            onClick={() => {
+              router.push("/main/guide");
+            }}
+          >
             <MdIcon>
               <ClassOutlined />
             </MdIcon>
           </MdIconButton>
-          <MdIconButton>
+          <MdIconButton
+            onClick={() => {
+              router.push("/main/sitemap");
+            }}
+          >
             <MdIcon>
               <MapOutlined />
             </MdIcon>
