@@ -96,7 +96,7 @@ export default function NoticePage() {
               />
               <MdFilledButton>Search</MdFilledButton>
             </div>
-            <div className={cx(styles.area, "flex-1")}>
+            <div className={cx(styles.area, styles.table)}>
               <BasicTable
                 ActionComponent={() => {
                   return <div className="flex-1"></div>;

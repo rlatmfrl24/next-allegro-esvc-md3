@@ -122,7 +122,7 @@ export default function VesselSchedule() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearch" ? (
           <EmptyResultPlaceholder text={"Please search for the schedule"} />
         ) : (
@@ -133,7 +133,11 @@ export default function VesselSchedule() {
         )}
       </div>
       <ConditionSummary
-        open={isSearchConditionSummaryOpen && vesselSchedules.length > 0}
+        open={
+          isSearchConditionSummaryOpen &&
+          vesselSchedules.length > 0 &&
+          pageState === "search"
+        }
         condition={vesselData}
         scrollTop={ScrollToTop}
       />

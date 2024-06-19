@@ -81,7 +81,7 @@ export default function TARESearch() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <TareContainerTable />
         ) : (

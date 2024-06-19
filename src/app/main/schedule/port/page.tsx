@@ -32,7 +32,7 @@ export default function PortSchedule() {
   });
 
   const tempPortSchedules = useMemo(() => {
-    return createDummyPortSchedules();
+    return createDummyPortSchedules(5);
   }, []);
 
   function resetPortQuery() {
@@ -116,7 +116,7 @@ export default function PortSchedule() {
       {pageState === "unsearch" ? (
         <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
-        <div className={styles.area}>
+        <div className={cx(styles.area, styles.table)}>
           <PortResultTable data={tempPortSchedules} />
         </div>
       )}

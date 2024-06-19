@@ -32,7 +32,7 @@ export default function SimpleSI() {
           <MdFilledTonalButton>Excel Download</MdFilledTonalButton>
         </div>
       </div>
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         <div className="flex flex-col gap-1">
           <DetailTitle title="Simple Shipping Instruction" />
           <MdTypography

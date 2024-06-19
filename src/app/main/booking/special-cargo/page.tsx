@@ -61,13 +61,13 @@ export default function SpecialCargoStatusSearch() {
   const [queries, setQueries] = useState<string[]>([]);
 
   const dangerousCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummyDangerousCargoStatus);
+    return Array.from({ length: 3 }, createDummyDangerousCargoStatus);
   }, []);
   const awkwardCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummyAwkwardCargoStatus);
+    return Array.from({ length: 30 }, createDummyAwkwardCargoStatus);
   }, []);
   const reeferCargos = useMemo(() => {
-    return Array.from({ length: 50 }, createDummySpecialCargoStatus);
+    return Array.from({ length: 5 }, createDummySpecialCargoStatus);
   }, []);
 
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
@@ -285,7 +285,13 @@ export default function SpecialCargoStatusSearch() {
           </div>
         </div>
       </div>
-      <div className={cx(styles.area, styles["no-padding"], "overflow-hidden")}>
+      <div
+        className={cx(
+          styles.area,
+          styles["no-padding"],
+          "overflow-hidden flex-1"
+        )}
+      >
         <MdTabs>
           <MdSecondaryTab
             selected={selectedTab === "dangerous"}

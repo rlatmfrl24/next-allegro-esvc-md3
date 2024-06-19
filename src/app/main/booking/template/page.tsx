@@ -288,7 +288,7 @@ export default function BookingTemplate() {
           Create New Template
         </MdOutlinedButton>
       </div>
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         <BasicTable
           ActionComponent={() => (
             <div className="flex-1 flex gap-4">

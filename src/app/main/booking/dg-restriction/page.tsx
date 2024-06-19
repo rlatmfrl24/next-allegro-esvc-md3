@@ -199,7 +199,7 @@ export default function DGRestrictionSearch() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unseach" && (
           <EmptyResultPlaceholder text="Please search for the condition." />
         )}

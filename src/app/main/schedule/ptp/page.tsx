@@ -22,8 +22,10 @@ import ConditionSummary from "./components/condition-summary";
 import PointToPointCalendarResult from "./result-calendar";
 import PointToPointListResult from "./result-list";
 import SearchCondition from "./search-condition";
+import classNames from "classnames";
 
 export default function PointToPointSchedule() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "list" | "calendar">(
     "unsearch"
   );
@@ -85,7 +87,7 @@ export default function PointToPointSchedule() {
       <div
         id="result-container"
         aria-label="result-panel"
-        className={styles.area}
+        className={cx(styles.area, styles.table)}
       >
         {resultList.length > 0 && (
           <MdOutlinedSegmentedButtonSet className="p-6 pb-0">

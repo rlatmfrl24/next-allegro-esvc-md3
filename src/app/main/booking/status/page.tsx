@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { resetBookingState } from "@/app/store/booking.store";
 import classNames from "classnames";
+import { useState } from "react";
 
 export default function BookingStatusPage() {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function BookingStatusPage() {
       </div>
       <BookingStatusCondition />
 
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         <BookingStatusTable />
       </div>
     </div>
