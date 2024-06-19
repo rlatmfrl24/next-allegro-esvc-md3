@@ -82,7 +82,6 @@ export default function VGMSearch() {
                   label={q}
                   selected={true}
                   remove={() => {
-                    console.log("focus");
                     setQueries((prev) => {
                       const newQueries = prev.filter((_, index) => index !== i);
                       return newQueries;

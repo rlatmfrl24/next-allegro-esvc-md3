@@ -45,7 +45,8 @@ const UserProfileState = atom<SignUpFormProps>({
 const DrawerState = atom({
   key: "DrawerState",
   default: {
-    open: false,
+    isNavOpen: false,
+    isFavoriteOpen: false,
   },
 });
 

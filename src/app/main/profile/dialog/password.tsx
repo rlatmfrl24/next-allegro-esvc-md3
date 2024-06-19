@@ -46,9 +46,9 @@ export const PasswordUpdateDialog = (props: {
   // regex for Use 8 to 16 alphanumeric characters.
   const regex = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,16}$");
 
-  useEffect(() => {
-    console.log("Current Password: ", props.currentPassword);
-  }, [props.currentPassword]);
+  // useEffect(() => {
+  //   console.log("Current Password: ", props.currentPassword);
+  // }, [props.currentPassword]);
 
   return (
     <MdDialog

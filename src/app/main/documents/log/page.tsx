@@ -140,10 +140,6 @@ export default function AdvancedManifestLogPage() {
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
 
-  useEffect(() => {
-    console.log(activeFilters);
-  }, [activeFilters]);
-
   return (
     <div aria-label="container" className={styles.container}>
       <PageTitle title="Advanced Manifest Log" />

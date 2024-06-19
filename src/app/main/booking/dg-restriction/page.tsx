@@ -68,7 +68,6 @@ export default function DGRestrictionSearch() {
         open={unNumberDialogOpen}
         onOpenChange={setUnNumberDialogOpen}
         onApply={(data) => {
-          console.log(data);
           setSearchCondition((prev) => ({
             ...prev,
             seq: data.unNumber[0],

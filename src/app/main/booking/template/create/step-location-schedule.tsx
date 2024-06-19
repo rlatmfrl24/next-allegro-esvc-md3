@@ -230,7 +230,6 @@ export default function LoactionScheduleStep() {
           endDate: DateTime.now(),
         }}
         onSelection={(value) => {
-          console.log(value);
           value &&
             setLoactionScheduleData((prev) => ({
               ...prev,

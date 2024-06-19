@@ -90,7 +90,6 @@ export const UNNumberSearchDialog = (props: {
     data: tableData,
     columns: columnDefs,
     getSelectionRows: (rows) => {
-      console.log(rows);
       if (rows.length === 0) {
         setSelectedData(undefined);
         return;

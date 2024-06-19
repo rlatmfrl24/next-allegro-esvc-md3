@@ -194,12 +194,6 @@ export default function NAMultiAutoComplete({
 
   function getMatchedItems(query: string, itemList: InteralRecordType[]) {
     return itemList.filter((value) => {
-      // console.log(
-      //   value,
-      //   query,
-      //   value.value.toLowerCase().includes(query.toLowerCase()) ||
-      //     value.key.toLowerCase().includes(query.toLowerCase())
-      // );
       return (
         value.value.toLowerCase().includes(query.toLowerCase()) ||
         value.key.toLowerCase().includes(query.toLowerCase())

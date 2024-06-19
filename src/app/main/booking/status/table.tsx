@@ -435,7 +435,6 @@ export default function BookingStatusTable() {
                       <StatusFilterComponent
                         statusOptions={Object.values(BookingStatus)}
                         onChange={(states) => {
-                          console.log(states);
                           table.setColumnFilters([
                             {
                               id: "status",

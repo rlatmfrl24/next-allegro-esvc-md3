@@ -71,7 +71,6 @@ export default function MyProfilePage() {
         open={isPasswordUpdateDialogOpen}
         onOpenChange={setIsPasswordUpdateDialogOpen}
         onRequestUpdate={(password) => {
-          console.log("Password Updated: ", password);
           setUserProfile({ ...userProfile, password: password });
         }}
       />
@@ -80,7 +79,6 @@ export default function MyProfilePage() {
         open={isCompanyUpdateDialogOpen}
         onOpenChange={setIsCompanyUpdateDialogOpen}
         onRequestUpdate={(companyName) => {
-          console.log("Company Updated: ", companyName);
           setUserProfile({ ...userProfile, companyName: companyName });
         }}
       />
