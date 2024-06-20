@@ -73,12 +73,6 @@ export default function NAOutlinedAutoComplete({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [maxHeight, setMaxHeight] = useState(maxListHeight);
 
-  // const recentItems = useMemo(() => {
-  //   return recentCookieKey
-  //     ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
-  //     : ([] as string[]);
-  // }, [recentCookieKey]);
-
   const loadRecentItems = useCallback(() => {
     return recentCookieKey
       ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
