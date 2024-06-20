@@ -16,10 +16,11 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
-import { CancelOutlined as CancelIcon } from "@mui/icons-material";
+import { CancelOutlined as CancelIcon, Delete } from "@mui/icons-material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import {
   autoUpdate,
@@ -63,11 +64,20 @@ export const SearchTextField = ({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [recommandedItems, setRecommandedItems] = useState<string[]>([]);
 
-  const recentItems = recentCookieKey
-    ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
-    : ([] as string[]);
+  // const recentItems = recentCookieKey
+  //   ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
+  //   : ([] as string[]);
 
-  function setRecentItems(value: string) {
+  const loadRecentItems = useCallback(() => {
+    if (recentCookieKey) {
+      return JSON.parse(getCookie(recentCookieKey) || "[]") as string[];
+    }
+    return [];
+  }, [recentCookieKey]);
+
+  const [recentItems, setRecentItems] = useState(loadRecentItems());
+
+  function addRecentItems(value: string) {
     const maxRecentItems = 5;
 
     if (recentCookieKey) {
@@ -88,6 +98,21 @@ export const SearchTextField = ({
         maxAge: 31536000,
       });
     }
+
+    setRecentItems(loadRecentItems());
+  }
+
+  function removeRecentItem(value: string) {
+    if (recentCookieKey) {
+      const recent = JSON.parse(getCookie(recentCookieKey) || "[]") as string[];
+      const index = recent.indexOf(value);
+      recent.splice(index, 1);
+      setCookie(recentCookieKey, JSON.stringify(recent), {
+        maxAge: 31536000,
+      });
+    }
+
+    setRecentItems(loadRecentItems());
   }
 
   const { refs, floatingStyles, context } = useFloating({
@@ -126,7 +151,7 @@ export const SearchTextField = ({
     ) {
       handleItemSelection([...selectionItems, item]);
     }
-    setRecentItems(item.toUpperCase());
+    addRecentItems(item.toUpperCase());
     setValue("");
     setIsMenuOpen(false);
   }
@@ -256,6 +281,19 @@ export const SearchTextField = ({
                       <RestoreIcon />
                     </MdIcon>
                     {highlightText(item, value)}
+                    <MdIconButton
+                      slot="end"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // remove from recentItems
+                        removeRecentItem(item);
+                      }}
+                    >
+                      <MdIcon>
+                        <CancelIcon />
+                      </MdIcon>
+                    </MdIconButton>
                   </MdListItem>
                 </>
               ))}

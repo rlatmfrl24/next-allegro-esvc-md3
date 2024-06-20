@@ -73,13 +73,21 @@ export default function NAOutlinedAutoComplete({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [maxHeight, setMaxHeight] = useState(maxListHeight);
 
-  const recentItems = useMemo(() => {
+  // const recentItems = useMemo(() => {
+  //   return recentCookieKey
+  //     ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
+  //     : ([] as string[]);
+  // }, [recentCookieKey]);
+
+  const loadRecentItems = useCallback(() => {
     return recentCookieKey
       ? (JSON.parse(getCookie(recentCookieKey) || "[]") as string[])
       : ([] as string[]);
   }, [recentCookieKey]);
 
-  function setRecentItems(value: string) {
+  const [recentItems, setRecentItems] = useState(loadRecentItems());
+
+  function addRecentItems(value: string) {
     const maxRecentItems = 5;
 
     if (recentCookieKey) {
@@ -100,6 +108,21 @@ export default function NAOutlinedAutoComplete({
         maxAge: 31536000,
       });
     }
+
+    setRecentItems(loadRecentItems());
+  }
+
+  function removeRecentItem(value: string) {
+    if (recentCookieKey) {
+      const recent = JSON.parse(getCookie(recentCookieKey) || "[]") as string[];
+      const index = recent.indexOf(value);
+      recent.splice(index, 1);
+      setCookie(recentCookieKey, JSON.stringify(recent), {
+        maxAge: 31536000,
+      });
+    }
+
+    setRecentItems(loadRecentItems());
   }
 
   const listRef = useRef<any[]>([]);
@@ -169,7 +192,7 @@ export default function NAOutlinedAutoComplete({
     }
     setIsListOpen(false);
     onSelection?.(returnValue);
-    item !== "" && setRecentItems(returnValue);
+    item !== "" && addRecentItems(returnValue);
   }
 
   const showRecommand = useCallback(() => {
@@ -294,6 +317,18 @@ export default function NAOutlinedAutoComplete({
                         <RestoreIcon />
                       </MdIcon>
                       {highlightText(item, query)}
+                      <MdIconButton
+                        slot="end"
+                        className="ml-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeRecentItem(item);
+                        }}
+                      >
+                        <MdIcon>
+                          <CancelIcon />
+                        </MdIcon>
+                      </MdIconButton>
                     </MdListItem>
                   ))}
               {recentItems &&

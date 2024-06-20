@@ -93,11 +93,21 @@ export default function NAMultiAutoComplete({
     value: "",
   });
 
-  const allRecentItems = recentCookieKey
-    ? (JSON.parse(getCookie(recentCookieKey) || "[]") as InteralRecordType[])
-    : ([] as InteralRecordType[]);
+  // const allRecentItems = recentCookieKey
+  //   ? (JSON.parse(getCookie(recentCookieKey) || "[]") as InteralRecordType[])
+  //   : ([] as InteralRecordType[]);
 
-  function setRecentItems(value: InteralRecordType) {
+  const loadRecentItems = useCallback(() => {
+    if (recentCookieKey) {
+      const recent = JSON.parse(getCookie(recentCookieKey) || "[]");
+      return recent;
+    }
+    return [];
+  }, [recentCookieKey]);
+
+  const [allRecentItems, setRecentItems] = useState(loadRecentItems);
+
+  function addRecentItems(value: InteralRecordType) {
     const maxRecentItems = 5;
 
     if (value.key === "" || value.value === "") {
@@ -126,6 +136,25 @@ export default function NAMultiAutoComplete({
         maxAge: 36000,
       });
     }
+
+    setRecentItems(loadRecentItems());
+  }
+
+  function removeRecentItems(value: InteralRecordType) {
+    if (recentCookieKey) {
+      const recent = JSON.parse(
+        getCookie(recentCookieKey) || "[]"
+      ) as InteralRecordType[];
+
+      const index = recent.findIndex((item) => item.key === value.key);
+      recent.splice(index, 1);
+
+      setCookie(recentCookieKey, JSON.stringify(recent), {
+        maxAge: 36000,
+      });
+    }
+
+    setRecentItems(loadRecentItems());
   }
 
   const [isListOpen, setIsListOpen] = useState(false);
@@ -185,7 +214,7 @@ export default function NAMultiAutoComplete({
     setQuery(item.key);
     setDefaultValue(item);
     setIsListOpen(false);
-    item && setRecentItems(item);
+    item && addRecentItems(item);
     onItemSelection?.({
       [keySet[0]]: item.key,
       [keySet[1]]: item.value,
@@ -315,6 +344,17 @@ export default function NAMultiAutoComplete({
                     >
                       {highlightText(item.value, query)}
                     </MdTypography>
+                    <MdIconButton
+                      slot="end"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeRecentItems(item);
+                      }}
+                    >
+                      <MdIcon>
+                        <CancelIcon />
+                      </MdIcon>
+                    </MdIconButton>
                   </MdListItem>
                 ))}
 
