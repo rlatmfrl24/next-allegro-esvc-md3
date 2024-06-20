@@ -369,7 +369,7 @@ export const EventDialog = (props: {
             }}
           />
         </div>
-        {selectedRadioOption.serviceType === "By Service Route" && (
+        {selectedRadioOption.serviceType === "By Service Route" ? (
           <>
             <div
               className={cx(styles["inner-dialog-box"], "flex flex-col gap-4")}
@@ -419,6 +419,12 @@ export const EventDialog = (props: {
                   </div>
                 ))}
               </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={cx(styles["inner-dialog-box"], "col-span-2")}>
+              12123
             </div>
           </>
         )}
