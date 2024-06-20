@@ -93,10 +93,6 @@ export default function NAMultiAutoComplete({
     value: "",
   });
 
-  // const allRecentItems = recentCookieKey
-  //   ? (JSON.parse(getCookie(recentCookieKey) || "[]") as InteralRecordType[])
-  //   : ([] as InteralRecordType[]);
-
   const loadRecentItems = useCallback(() => {
     if (recentCookieKey) {
       const recent = JSON.parse(getCookie(recentCookieKey) || "[]");
