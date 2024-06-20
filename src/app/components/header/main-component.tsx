@@ -1,4 +1,4 @@
-import { UserState } from "@/app/store/global.store";
+import { SigningState, UserState } from "@/app/store/global.store";
 import { basicPopoverStyles } from "@/app/util/constants";
 import {
   MdElevatedCard,
@@ -29,6 +29,7 @@ export const HeaderMainComponent = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   // const userState = useRecoilValue(UserState);
   const [userState, setUserState] = useRecoilState(UserState);
+  const [isSigning, setIsSigning] = useRecoilState(SigningState);
   const router = useRouter();
 
   const { refs, floatingStyles, context } = useFloating({
@@ -97,6 +98,7 @@ export const HeaderMainComponent = () => {
                   email: "",
                   name: "",
                 });
+                setIsSigning(false);
                 router.push("/sign");
               }}
             >

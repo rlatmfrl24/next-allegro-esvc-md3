@@ -4,6 +4,7 @@ import Portal from "@/app/components/portal";
 import { useSimpleTable } from "@/app/components/table/simple-table";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { SigningState } from "@/app/store/global.store";
 import {
   MdDialog,
   MdElevation,
@@ -30,9 +31,11 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useSetRecoilState } from "recoil";
 
 export const SignUpPreview = (props: { formData: SignUpFormProps }) => {
   const router = useRouter();
+  const setSigningState = useSetRecoilState(SigningState);
   const [isCheckApproverDialogOpen, setIsCheckApproverDialogOpen] =
     useState(false);
 
@@ -50,6 +53,7 @@ export const SignUpPreview = (props: { formData: SignUpFormProps }) => {
           <MdElevation />
           <MdFilledButton
             onClick={() => {
+              setSigningState(false);
               router.push("/sign");
             }}
           >

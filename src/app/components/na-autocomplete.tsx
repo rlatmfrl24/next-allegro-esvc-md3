@@ -223,6 +223,7 @@ export default function NAOutlinedAutoComplete({
         <div slot="trailing-icon" className="mr-2">
           {query !== "" && !props.readOnly && (
             <MdIconButton
+              tabIndex={-1}
               onClick={() => {
                 handleItemSelect("");
               }}

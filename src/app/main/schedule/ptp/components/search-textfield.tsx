@@ -195,6 +195,7 @@ export const SearchTextField = ({
         {value !== "" && (
           <MdIconButton
             slot="trailing-icon"
+            tabIndex={-1}
             onClick={() => {
               setValue("");
             }}
