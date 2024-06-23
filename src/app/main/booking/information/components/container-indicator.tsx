@@ -79,34 +79,37 @@ export const DangerIndicator = (props: {
         >
           <div slot="headline">Danger Cargo Info</div>
           <div slot="content" className="flex flex-col gap-4">
-            {props.containers.length > 1 && (
+            {props.containers.filter((container) => container.isDangerous)
+              .length > 1 && (
               <MdTabs>
-                {props.containers.map((container, index) => (
-                  <MdSecondaryTab
-                    key={index + "_" + container.uuid}
-                    selected={container.size === selectedSize.size}
-                    style={
-                      {
-                        "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
-                      } as CSSProperties
-                    }
-                    onClick={(e) => {
-                      if (container.size === selectedSize.size) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      } else {
-                        setSelectedSize(container);
-                        setSelectedDangerIndex(0);
+                {props.containers
+                  .filter((container) => container.isDangerous)
+                  .map((container, index) => (
+                    <MdSecondaryTab
+                      key={index + "_" + container.uuid}
+                      selected={container.size === selectedSize.size}
+                      style={
+                        {
+                          "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+                        } as CSSProperties
                       }
-                    }}
-                  >
-                    {container.type +
-                      " " +
-                      container.size +
-                      " * " +
-                      container.quantity}
-                  </MdSecondaryTab>
-                ))}
+                      onClick={(e) => {
+                        if (container.size === selectedSize.size) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        } else {
+                          setSelectedSize(container);
+                          setSelectedDangerIndex(0);
+                        }
+                      }}
+                    >
+                      {container.type +
+                        " " +
+                        container.size +
+                        " * " +
+                        container.quantity}
+                    </MdSecondaryTab>
+                  ))}
               </MdTabs>
             )}
             <DetailTitle
