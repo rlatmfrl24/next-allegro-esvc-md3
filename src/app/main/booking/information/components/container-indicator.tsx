@@ -453,15 +453,18 @@ export const ReeferIndicator = (props: {
               <BasicItem
                 title="Ventilation"
                 value={
-                  selectedSize.ventilation.toString() +
-                  " " +
-                  (selectedSize.ventilationType === "open" ? "%Open" : "%Close")
+                  selectedSize.ventilation?.toString() ??
+                  "-" +
+                    " " +
+                    (selectedSize.ventilationType === "open"
+                      ? "%Open"
+                      : "%Close")
                 }
               />
               <BasicItem title="Nature" value={selectedSize.nature} />
               <BasicItem
                 title="Humidity"
-                value={selectedSize.humidity.toString() + "%"}
+                value={selectedSize.humidity?.toString() ?? "-" + "%"}
               />
               <BasicItem
                 title="Genset"

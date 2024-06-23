@@ -35,7 +35,6 @@ export default function CargoStep() {
     if (
       cargoPickUpReturnData.commodity.code === "" ||
       cargoPickUpReturnData.commodity.description === "" ||
-      cargoPickUpReturnData.emptyPickUpDate === undefined ||
       cargoPickUpReturnData.grossWeight === "0"
     ) {
       return false;
@@ -43,7 +42,6 @@ export default function CargoStep() {
       return true;
     }
   }, [
-    cargoPickUpReturnData.emptyPickUpDate,
     cargoPickUpReturnData.commodity.code,
     cargoPickUpReturnData.commodity.description,
     cargoPickUpReturnData.grossWeight,
@@ -201,7 +199,6 @@ export default function CargoStep() {
           <DatePicker
             className="flex-1"
             label="Empty Pick Up Date"
-            required
             initialDate={cargoPickUpReturnData.emptyPickUpDate}
             onDateChange={(date) => {
               setCargoPickUpReturnData((prev) => {
