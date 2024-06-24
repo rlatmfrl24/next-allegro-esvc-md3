@@ -491,7 +491,7 @@ export default function ContainerInput({
             >
               <Add fontSize="small" />
             </MdOutlinedIconButton>
-            <MdChipSet>
+            <MdChipSet className="flex-row-reverse">
               {
                 // display CargoManifest
                 container.cargoManifest.map((cargo, i) => {
