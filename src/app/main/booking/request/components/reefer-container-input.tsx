@@ -180,10 +180,9 @@ const ReeferContainerInput = ({
                             <NAOutlinedNumberField
                               label="Degree"
                               className="w-28"
+                              maxInputLength={5}
                               value={container.temperature?.toString() ?? ""}
                               handleValueChange={(value) => {
-                                console.log(value);
-                                console.log(value ? value : undefined);
                                 setContainerInformation((prev) => ({
                                   ...prev,
                                   reefer: prev.reefer.map((c, i) =>

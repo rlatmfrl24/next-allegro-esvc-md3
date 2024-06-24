@@ -24,14 +24,39 @@ export const NAOutlinedNumberField = ({
     );
   }, [props.value]);
 
+  const [isFocused, setIsFocused] = useState(false);
+
+  const currentValue = useMemo(() => {
+    if (hasValue) {
+      if (isFocused) {
+        return props.value;
+      } else {
+        if (enableNumberSeparator) {
+          return props.value
+            ?.toLocaleString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            .split(".")
+            .map((v, i) => (i === 0 ? v : v.replaceAll(",", "")))
+            .join(".");
+        } else {
+          return props.value;
+        }
+      }
+    } else {
+      return "0";
+    }
+  }, [enableNumberSeparator, hasValue, isFocused, props.value]);
+
   return (
     <>
       <div className={`relative h-fit ${className ? className : ""}`}>
         <MdOutlinedTextFieldBase
           {...props}
           required={false}
-          type="text"
+          type={isFocused ? "number" : "text"}
+          noSpinner
           onFocus={(e) => {
+            setIsFocused(true);
             e.currentTarget.select();
 
             if (!hasValue) {
@@ -45,35 +70,7 @@ export const NAOutlinedNumberField = ({
                 : "inherit",
             } as CSSProperties
           }
-          value={
-            !hasValue
-              ? "0"
-              : enableNumberSeparator
-              ? props.value
-                  ?.toLocaleString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  .split(".")
-                  .map((v, i) => (i === 0 ? v : v.replaceAll(",", "")))
-                  .join(".")
-              : props.value
-          }
-          onKeyDown={(e) => {
-            // allow only numbers, backspace, delete, arrow keys, and tab, dot, and minus sign
-            if (
-              !(
-                (e.key >= "0" && e.key <= "9") ||
-                e.key === "-" ||
-                e.key === "." ||
-                e.key === "Backspace" ||
-                e.key === "Delete" ||
-                e.key === "ArrowLeft" ||
-                e.key === "ArrowRight" ||
-                e.key === "Tab"
-              )
-            ) {
-              e.preventDefault();
-            }
-          }}
+          value={currentValue}
           onInput={(e) => {
             if (
               maxInputLength &&
@@ -86,6 +83,7 @@ export const NAOutlinedNumberField = ({
             }
           }}
           onBlur={(e) => {
+            setIsFocused(false);
             if (enableNumberSeparator) {
               e.currentTarget.value = e.currentTarget.value.replace(
                 /\B(?=(\d{3})+(?!\d))/g,
