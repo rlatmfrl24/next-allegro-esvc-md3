@@ -265,39 +265,45 @@ const DndFileUploadPlaceholder = ({
   maxFiles?: number;
   maxFileSize?: number;
 }) => {
-  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
-    useDropzone({
-      maxFiles: maxFiles,
-      maxSize: maxFileSize,
-      // Accept zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt, odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
-      accept: {
-        "image/jpg": [".jpg"],
-        "image/jpeg": [".jpeg"],
-        "image/svg": [".svg"],
-        "image/tiff": [".tiff"],
-        "image/tif": [".tif"],
-        "image/bmp": [".bmp"],
-        "image/avif": [".avif"],
-        "image/png": [".png"],
-        "application/pdf": [".pdf"],
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
-          ".xlsx",
-        ],
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-          [".docx"],
-        "application/zip": [".zip"],
-        "application/x-7z-compressed": [".7z"],
-        "application/x-rar-compressed": [".rar"],
-        "text/plain": [".txt"],
-        "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
-        "application/vnd.oasis.opendocument.text": [".odt"],
-        "application/vnd.oasis.opendocument.presentation": [".odp"],
-        "application/vnd.ms-powerpoint": [".ppt"],
-        "application/msword": [".doc"],
-        "application/rtf": [".rtf"],
-        "text/html": [".html"],
-      },
-    });
+  const {
+    getRootProps,
+    getInputProps,
+    acceptedFiles,
+    fileRejections,
+    isFocused,
+    isDragAccept,
+  } = useDropzone({
+    maxFiles: maxFiles,
+    maxSize: maxFileSize,
+    // Accept zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt, odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
+    accept: {
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+      "image/svg": [".svg"],
+      "image/tiff": [".tiff"],
+      "image/tif": [".tif"],
+      "image/bmp": [".bmp"],
+      "image/avif": [".avif"],
+      "image/png": [".png"],
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
+      "application/zip": [".zip"],
+      "application/x-7z-compressed": [".7z"],
+      "application/x-rar-compressed": [".rar"],
+      "text/plain": [".txt"],
+      "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
+      "application/vnd.oasis.opendocument.text": [".odt"],
+      "application/vnd.oasis.opendocument.presentation": [".odp"],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "application/msword": [".doc"],
+      "application/rtf": [".rtf"],
+      "text/html": [".html"],
+    },
+  });
   const [files, setFiles] = useState<File[]>(initialFiles || []);
 
   useEffect(() => {
@@ -327,14 +333,20 @@ const DndFileUploadPlaceholder = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
+  useEffect(() => {
+    console.log(isDragAccept);
+  }, [isDragAccept]);
+
   return (
     <div
       className={`flex flex-col gap-4 ${className ? className : ""}
     }`}
     >
       <div
-        className="border-2 border-dashed border-outlineVariant bg-surfaceContainerLow rounded-lg flex flex-col gap-2 items-center justify-center flex-1 py-8"
-        {...getRootProps()}
+        className={`border-2 border-dashed border-outlineVariant rounded-lg flex flex-col gap-2 items-center justify-center flex-1 py-8 hover:cursor-pointer hover:bg-surfaceContainerHigh ${
+          isDragAccept ? "bg-surfaceContainerHigh" : "bg-surfaceContainerLow"
+        }`}
+        {...getRootProps({ isFocused, isDragAccept })}
       >
         <input {...getInputProps()} />
         <BackupOutlined className="text-outline" />
