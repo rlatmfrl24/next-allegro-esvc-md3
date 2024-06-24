@@ -108,6 +108,9 @@ export const UNNumberSearchDialog = (props: {
         clearSelection();
       }}
       className="min-w-fit"
+      cancel={(e) => {
+        e.preventDefault();
+      }}
     >
       <div slot="headline">UN Number Detail Search</div>
       <div slot="content" className="flex flex-col gap-4">
