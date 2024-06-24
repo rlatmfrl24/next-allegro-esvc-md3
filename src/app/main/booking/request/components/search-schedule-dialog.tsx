@@ -141,6 +141,9 @@ export default function SearchScheduleDialog({
           handleOpen(false);
         }}
         className="min-w-[1280px]"
+        cancel={(e) => {
+          e.preventDefault();
+        }}
       >
         <div slot="headline">Search Schedule</div>
         <div slot="content" className="flex flex-col gap-4">

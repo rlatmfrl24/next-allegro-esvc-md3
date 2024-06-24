@@ -62,6 +62,7 @@ export default function SignIn() {
           {id.length > 0 && (
             <MdIconButton
               slot="trailing-icon"
+              tabIndex={-1}
               onClick={() => {
                 setId("");
               }}
@@ -84,6 +85,7 @@ export default function SignIn() {
           {pw.length > 0 && (
             <MdIconButton
               slot="trailing-icon"
+              tabIndex={-1}
               onClick={() => {
                 setPw("");
               }}

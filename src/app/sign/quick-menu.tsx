@@ -42,7 +42,7 @@ const QuickSearch = () => {
   }
 
   return (
-    <MdElevatedCard className=" h-[26rem]">
+    <MdElevatedCard className=" h-[26rem] z-10">
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab
           id="tab-schedule"

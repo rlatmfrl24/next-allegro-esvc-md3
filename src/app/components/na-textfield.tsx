@@ -136,7 +136,9 @@ export const NAOutlinedTextField = ({
         ) &&
           enableClearButton && (
             <MdIconButton
+              // make sure to use tabIndex={-1} to prevent the button from being focused
               slot="trailing-icon"
+              tabIndex={-1}
               className={!props.disabled && hasValue ? "visible" : "invisible"}
               onClick={() => {
                 if (inputRef.current) (inputRef.current as any).value = "";

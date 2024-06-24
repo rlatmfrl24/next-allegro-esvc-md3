@@ -179,9 +179,8 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Degree"
                               type="number"
-                              required={showRequired}
                               className="w-28"
-                              value={container.temperature.toString()}
+                              value={container.temperature?.toString() ?? ""}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
                                   ...prev,
@@ -213,11 +212,10 @@ const ReeferContainerInput = ({
                             <NAOutlinedTextField
                               label="Ventilation"
                               type="number"
-                              required={showRequired}
                               className="w-28"
                               maxInputLength={3}
                               maxLength={3}
-                              value={container.ventilation.toString()}
+                              value={container.ventilation?.toString() ?? ""}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
                                   ...prev,
@@ -277,7 +275,7 @@ const ReeferContainerInput = ({
                             className="w-28"
                             maxLength={3}
                             maxInputLength={3}
-                            value={container.humidity.toString()}
+                            value={container.humidity?.toString() ?? ""}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
