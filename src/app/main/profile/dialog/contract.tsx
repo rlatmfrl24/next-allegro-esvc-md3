@@ -148,6 +148,7 @@ export const ContractUpdateDialog = (props: {
         <MdFilledButton
           onClick={() => {
             props.onRequestUpdate && props.onRequestUpdate();
+            props.onOpenChange(false);
           }}
         >
           Request for Update

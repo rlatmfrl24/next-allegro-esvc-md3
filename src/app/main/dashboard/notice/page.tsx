@@ -73,7 +73,7 @@ export default function NoticePage() {
         <>
           <div
             aria-label="container"
-            className={cx(styles.container, "min-h-fit flex-1")}
+            className={cx(styles.container, "min-h-fit")}
           >
             <div className="flex items-center h-fit gap-4">
               <MdOutlinedButton
@@ -87,7 +87,7 @@ export default function NoticePage() {
                 </MdIcon>
                 Back
               </MdOutlinedButton>
-              <PageTitle title="e-Service Notice" />
+              <PageTitle title="e-Service Notice" hasFavorite={false} />
             </div>
             <div className={cx(styles.area, styles.row, "justify-between")}>
               <MdOutlinedTextField
@@ -96,7 +96,7 @@ export default function NoticePage() {
               />
               <MdFilledButton>Search</MdFilledButton>
             </div>
-            <div className={cx(styles.area, "flex-1")}>
+            <div className={cx(styles.area, styles.table)}>
               <BasicTable
                 ActionComponent={() => {
                   return <div className="flex-1"></div>;
@@ -112,7 +112,7 @@ export default function NoticePage() {
         <>
           <div
             aria-label="container"
-            className={cx(styles.container, "min-h-full flex-1")}
+            className={cx(styles.container, "min-h-full")}
           >
             <div className="flex items-center h-fit gap-4">
               <MdOutlinedButton

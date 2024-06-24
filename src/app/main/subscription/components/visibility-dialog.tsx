@@ -1,11 +1,13 @@
 import { MdTypography } from "@/app/components/typography";
 import {
   MdCheckbox,
+  MdChipSet,
   MdDialog,
   MdFilledButton,
+  MdInputChip,
   MdOutlinedButton,
 } from "@/app/util/md3";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import styles from "@/app/styles/visibility.module.css";
 import classNames from "classnames";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
@@ -18,6 +20,8 @@ import { difference } from "lodash";
 import SubIndicator from "@/../public/icon_subsum_indicator.svg";
 import { InfoOutlined } from "@mui/icons-material";
 import { faker } from "@faker-js/faker";
+import { ContractNumberSelector } from "@/app/components/update-contract-number";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 const CheckTree = (props: {
   name: string;
@@ -99,6 +103,11 @@ export const SummaryDialog = (props: {
 }) => {
   const cx = classNames.bind(styles);
 
+  const tempContractNumbers = useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) =>
+      faker.string.alphanumeric(10).toUpperCase()
+    );
+  }, []);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [initialCheckedServiceRouteItems, setInitialCheckedServiceRouteItems] =
     useState({
@@ -163,12 +172,12 @@ export const SummaryDialog = (props: {
       closed={() => {
         props.onOpenChange(false);
       }}
-      className="min-w-fit"
+      className="min-w-[960px]"
     >
       <div slot="headline">Visibility Summary</div>
       <div slot="content" className="grid grid-cols-2 gap-4">
-        <div className={cx(styles["inner-dialog-box"])}>
-          <MdTypography variant="body" size="large" prominent className="mb-4">
+        <div className={cx(styles["inner-dialog-box"], "flex flex-col gap-6")}>
+          <MdTypography variant="body" size="large" prominent>
             Shipment By
           </MdTypography>
           <SimpleRadioGroup
@@ -182,6 +191,7 @@ export const SummaryDialog = (props: {
               });
             }}
           />
+          <ContractNumberSelector contracts={tempContractNumbers} />
         </div>
         <div className={cx(styles["inner-dialog-box"])}>
           <MdTypography variant="body" size="large" prominent>
@@ -315,6 +325,15 @@ export const EventDialog = (props: {
   const [selectedRadioOption, setSelectedRadioOption] =
     useState(initialRadioOptions);
 
+  const tempContractNumbers = useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) =>
+      faker.string.alphanumeric(10).toUpperCase()
+    );
+  }, []);
+
+  const [inputQuery, setInputQuery] = useState("");
+  const [chips, setChips] = useState<string[]>([]);
+
   function handleReset() {
     setCheckedServiceRouteItems(initialCheckedServiceRouteItems);
     setCheckedReportItems(initialCheckedReportItems);
@@ -336,11 +355,11 @@ export const EventDialog = (props: {
       closed={() => {
         props.onOpenChange(false);
       }}
-      className="min-w-fit"
+      className="min-w-[960px]"
     >
       <div slot="headline">Event Notification</div>
       <div slot="content" className="grid grid-cols-2 gap-4">
-        <div className={cx(styles["inner-dialog-box"], "flex flex-col gap-4")}>
+        <div className="col-span-2 flex gap-6">
           <MdTypography variant="body" size="large" prominent>
             Service Type
           </MdTypography>
@@ -355,51 +374,98 @@ export const EventDialog = (props: {
               });
             }}
           />
-          <MdTypography variant="body" size="large" prominent className="mt-4">
-            Inquiry Option
-          </MdTypography>
-          <SimpleRadioGroup
-            groupName="event-inquiry-option"
-            options={["Shipper", "Consignee", "Contract"]}
-            selected={selectedRadioOption.inquiryOption}
-            onChange={(option) => {
-              setSelectedRadioOption({
-                ...selectedRadioOption,
-                inquiryOption: option,
-              });
-            }}
-          />
         </div>
-        <div className={cx(styles["inner-dialog-box"])}>
-          <MdTypography variant="body" size="large" prominent>
-            Service Route
-          </MdTypography>
-          <div className="grid grid-cols-2 gap-6 my-4">
-            {Object.keys(summaryServiceRouteOptions).map((key) => (
-              <div key={key}>
-                <CheckTree
-                  name={key}
-                  options={
-                    summaryServiceRouteOptions[
-                      key as keyof typeof summaryServiceRouteOptions
-                    ]
-                  }
-                  checkedItems={
-                    checkedServiceRouteItems[
-                      key as keyof typeof checkedServiceRouteItems
-                    ]
-                  }
-                  onCheckedItemsChange={(items) => {
-                    setCheckedServiceRouteItems({
-                      ...checkedServiceRouteItems,
-                      [key]: items,
-                    });
-                  }}
-                />
+        {selectedRadioOption.serviceType === "By Service Route" ? (
+          <>
+            <div
+              className={cx(styles["inner-dialog-box"], "flex flex-col gap-4")}
+            >
+              <MdTypography variant="body" size="large" prominent>
+                Inquiry Option
+              </MdTypography>
+              <SimpleRadioGroup
+                groupName="event-inquiry-option"
+                options={["Shipper", "Consignee", "Contract"]}
+                selected={selectedRadioOption.inquiryOption}
+                onChange={(option) => {
+                  setSelectedRadioOption({
+                    ...selectedRadioOption,
+                    inquiryOption: option,
+                  });
+                }}
+              />
+              <ContractNumberSelector contracts={tempContractNumbers} />
+            </div>
+            <div className={cx(styles["inner-dialog-box"])}>
+              <MdTypography variant="body" size="large" prominent>
+                Service Route
+              </MdTypography>
+              <div className="grid grid-cols-2 gap-6 my-4">
+                {Object.keys(summaryServiceRouteOptions).map((key) => (
+                  <div key={key}>
+                    <CheckTree
+                      name={key}
+                      options={
+                        summaryServiceRouteOptions[
+                          key as keyof typeof summaryServiceRouteOptions
+                        ]
+                      }
+                      checkedItems={
+                        checkedServiceRouteItems[
+                          key as keyof typeof checkedServiceRouteItems
+                        ]
+                      }
+                      onCheckedItemsChange={(items) => {
+                        setCheckedServiceRouteItems({
+                          ...checkedServiceRouteItems,
+                          [key]: items,
+                        });
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              className={cx(
+                styles["inner-dialog-box"],
+                "col-span-2 flex flex-col gap-4"
+              )}
+            >
+              <MdTypography variant="label" size="large" prominent>
+                By Booking No. or Container No.
+              </MdTypography>
+              <NAOutlinedTextField
+                label="By Booking No. or Container No."
+                value={inputQuery}
+                handleValueChange={(value) => setInputQuery(value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (inputQuery && !chips.includes(inputQuery)) {
+                      setChips((prev) => [...prev, inputQuery]);
+                    }
+                    setInputQuery("");
+                  }
+                }}
+              />
+              <MdChipSet>
+                {chips.map((chip) => (
+                  <MdInputChip
+                    selected
+                    key={chip}
+                    label={chip}
+                    remove={() => {
+                      setChips((prev) => prev.filter((c) => c !== chip));
+                    }}
+                  />
+                ))}
+              </MdChipSet>
+            </div>
+          </>
+        )}
         <div className={cx(styles["inner-dialog-box"], "col-span-2")}>
           <MdTypography variant="body" size="large" prominent>
             Report Items
@@ -493,17 +559,25 @@ export const VesselDialog = (props: {
     setIsSaveDialogOpen(false);
   }
 
+  const [inputQuery, setInputQuery] = useState("");
+  const [chips, setChips] = useState<string[]>([]);
+  const tempContractNumbers = useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) =>
+      faker.string.alphanumeric(10).toUpperCase()
+    );
+  }, []);
+
   return (
     <MdDialog
       open={props.open}
       closed={() => {
         props.onOpenChange(false);
       }}
-      className="min-w-fit"
+      className="min-w-[960px]"
     >
       <div slot="headline">Vessel Schedule Updates</div>
       <div slot="content" className="grid grid-cols-2 gap-4">
-        <div className={cx(styles["inner-dialog-box"], "flex flex-col gap-4")}>
+        <div className="col-span-2 flex gap-6">
           <MdTypography variant="body" size="large" prominent>
             Service Type
           </MdTypography>
@@ -518,20 +592,65 @@ export const VesselDialog = (props: {
               });
             }}
           />
-          <MdTypography variant="body" size="large" prominent className="mt-4">
-            Inquiry Option
-          </MdTypography>
-          <SimpleRadioGroup
-            groupName="vessel-inquiry-option"
-            options={["Shipper", "Consignee", "Contract"]}
-            selected={selectedRadioOption.inquiryOption}
-            onChange={(option) => {
-              setSelectedRadioOption({
-                ...selectedRadioOption,
-                inquiryOption: option,
-              });
-            }}
-          />
+        </div>
+        {selectedRadioOption.serviceType ===
+          "By Booking No. or Container No." && (
+          <div
+            className={cx(
+              styles["inner-dialog-box"],
+              "col-span-2 flex flex-col gap-4"
+            )}
+          >
+            <MdTypography variant="body" size="large" prominent>
+              By Booking No. or Container No.
+            </MdTypography>
+            <NAOutlinedTextField
+              label="By Booking No. or Container No."
+              value={inputQuery}
+              handleValueChange={(value) => setInputQuery(value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (inputQuery && !chips.includes(inputQuery)) {
+                    setChips((prev) => [...prev, inputQuery]);
+                  }
+                  setInputQuery("");
+                }
+              }}
+            />
+            <MdChipSet>
+              {chips.map((chip) => (
+                <MdInputChip
+                  selected
+                  key={chip}
+                  label={chip}
+                  remove={() => {
+                    setChips((prev) => prev.filter((c) => c !== chip));
+                  }}
+                />
+              ))}
+            </MdChipSet>
+          </div>
+        )}
+        <div className={cx(styles["inner-dialog-box"], "flex flex-col gap-5")}>
+          {selectedRadioOption.serviceType === "By Service Route" && (
+            <>
+              <MdTypography variant="body" size="large" prominent>
+                Inquiry Option
+              </MdTypography>
+              <SimpleRadioGroup
+                groupName="vessel-inquiry-option"
+                options={["Shipper", "Consignee", "Contract"]}
+                selected={selectedRadioOption.inquiryOption}
+                onChange={(option) => {
+                  setSelectedRadioOption({
+                    ...selectedRadioOption,
+                    inquiryOption: option,
+                  });
+                }}
+              />
+              <ContractNumberSelector contracts={tempContractNumbers} />
+            </>
+          )}
           <MdTypography variant="body" size="large" prominent className="mt-4">
             Type of Schedule
           </MdTypography>

@@ -5,6 +5,7 @@ import SideNavigation from "./components/side-nav/side-nav";
 import Header from "./header";
 import Providers from "./providers";
 import { pretendard, suit } from "./util/font";
+import FavoriteMain from "./components/favorite/main";
 
 export const metadata: Metadata = {
   title: "Next Allegro E-Service",
@@ -31,6 +32,7 @@ export default function RootLayout({
                 id="main-container"
                 className="relative flex-1 overflow-hidden rounded-3xl bg-surfaceContainer"
               >
+                <FavoriteMain />
                 {children}
               </section>
             </main>

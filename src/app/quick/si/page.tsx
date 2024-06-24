@@ -22,7 +22,7 @@ export default function SimpleSI() {
   const cx = classNames.bind(styles);
 
   return (
-    <div className={cx(styles.container, "h-full flex flex-col")}>
+    <div className={cx(styles.container, "h-full")}>
       <div className="flex items-center h-fit justify-between">
         <PageTitle title="Simple S/I" hasFavorite={false} />
         <div className="flex gap-2">
@@ -32,7 +32,7 @@ export default function SimpleSI() {
           <MdFilledTonalButton>Excel Download</MdFilledTonalButton>
         </div>
       </div>
-      <div className={cx(styles.area, "flex-1")}>
+      <div className={cx(styles.area, styles.table)}>
         <div className="flex flex-col gap-1">
           <DetailTitle title="Simple Shipping Instruction" />
           <MdTypography

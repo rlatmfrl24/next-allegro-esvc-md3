@@ -243,105 +243,6 @@ export default function AdditionalInformationStep() {
         </div>
       </div>
 
-      {/* <SubTitle title="Attachment" className="mb-4" />
-      <div className="flex items-center gap-4">
-        <MdOutlinedButton onClick={handleClick}>
-          <div slot="icon">
-            <Upload fontSize="small" />
-          </div>
-          File Upload
-        </MdOutlinedButton>
-        <MdChipSet>
-          {AdditionalInformationData.attachment && (
-            <MdInputChip
-              key={faker.string.uuid()}
-              label={AdditionalInformationData.attachment.name}
-              selected
-              remove={() => {
-                console.log("delete");
-                setAdditionalInformationData((prev) => {
-                  return {
-                    ...prev,
-                    attachment: null,
-                  };
-                });
-              }}
-            />
-          )}
-        </MdChipSet>
-      </div>
-      <input
-        type="file"
-        ref={fileRef}
-        className="hidden"
-        onInput={handleFileChange}
-      /> */}
-
-      {/* 
-      <SubTitle
-        title="Do you want to make duplicate bookings for the same vessel?"
-        className="mt-6"
-      />
-      <MdTypography variant="body" size="medium" className="text-outline">
-        Enter the number of bookings to duplicate. (Maximum 50)
-      </MdTypography>
-      <MdOutlinedTextField
-        value={AdditionalInformationData.duplicateCount.toString()}
-        className="w-fit text-right mt-4"
-        onKeyDown={(e) => {
-          // Only allow numbers and backspace
-          if (
-            !(
-              (e.key >= "0" && e.key <= "9") ||
-              e.key === "Backspace" ||
-              e.key === "Delete" ||
-              e.key === "ArrowLeft" ||
-              e.key === "ArrowRight" ||
-              e.key === "Tab" ||
-              e.key === "Shift" ||
-              e.key === "Control" ||
-              e.key === "Alt" ||
-              e.key === "ArrowUp" ||
-              e.key === "ArrowDown"
-            )
-          ) {
-            e.preventDefault();
-          }
-        }}
-        onBlur={(e) => {
-          const value = parseInt(e.currentTarget.value);
-          if (value > 50) {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                duplicateCount: 50,
-              };
-            });
-          } else if (value < 1) {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                duplicateCount: 1,
-              };
-            });
-          } else if (isNaN(value)) {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                duplicateCount: 1,
-              };
-            });
-          } else {
-            setAdditionalInformationData((prev) => {
-              return {
-                ...prev,
-                duplicateCount: value,
-              };
-            });
-          }
-        }}
-      /> */}
-
       <div className="flex-1 flex items-end justify-end">
         <MdFilledButton onClick={() => moveToContactInformationStep()}>
           Next
@@ -364,39 +265,45 @@ const DndFileUploadPlaceholder = ({
   maxFiles?: number;
   maxFileSize?: number;
 }) => {
-  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
-    useDropzone({
-      maxFiles: maxFiles,
-      maxSize: maxFileSize,
-      // Accept zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt, odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
-      accept: {
-        "image/jpg": [".jpg"],
-        "image/jpeg": [".jpeg"],
-        "image/svg": [".svg"],
-        "image/tiff": [".tiff"],
-        "image/tif": [".tif"],
-        "image/bmp": [".bmp"],
-        "image/avif": [".avif"],
-        "image/png": [".png"],
-        "application/pdf": [".pdf"],
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
-          ".xlsx",
-        ],
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-          [".docx"],
-        "application/zip": [".zip"],
-        "application/x-7z-compressed": [".7z"],
-        "application/x-rar-compressed": [".rar"],
-        "text/plain": [".txt"],
-        "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
-        "application/vnd.oasis.opendocument.text": [".odt"],
-        "application/vnd.oasis.opendocument.presentation": [".odp"],
-        "application/vnd.ms-powerpoint": [".ppt"],
-        "application/msword": [".doc"],
-        "application/rtf": [".rtf"],
-        "text/html": [".html"],
-      },
-    });
+  const {
+    getRootProps,
+    getInputProps,
+    acceptedFiles,
+    fileRejections,
+    isFocused,
+    isDragAccept,
+  } = useDropzone({
+    maxFiles: maxFiles,
+    maxSize: maxFileSize,
+    // Accept zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt, odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
+    accept: {
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+      "image/svg": [".svg"],
+      "image/tiff": [".tiff"],
+      "image/tif": [".tif"],
+      "image/bmp": [".bmp"],
+      "image/avif": [".avif"],
+      "image/png": [".png"],
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
+      "application/zip": [".zip"],
+      "application/x-7z-compressed": [".7z"],
+      "application/x-rar-compressed": [".rar"],
+      "text/plain": [".txt"],
+      "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
+      "application/vnd.oasis.opendocument.text": [".odt"],
+      "application/vnd.oasis.opendocument.presentation": [".odp"],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "application/msword": [".doc"],
+      "application/rtf": [".rtf"],
+      "text/html": [".html"],
+    },
+  });
   const [files, setFiles] = useState<File[]>(initialFiles || []);
 
   useEffect(() => {
@@ -426,14 +333,20 @@ const DndFileUploadPlaceholder = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
+  useEffect(() => {
+    console.log(isDragAccept);
+  }, [isDragAccept]);
+
   return (
     <div
       className={`flex flex-col gap-4 ${className ? className : ""}
     }`}
     >
       <div
-        className="border-2 border-dashed border-outlineVariant bg-surfaceContainerLow rounded-lg flex flex-col gap-2 items-center justify-center flex-1 py-8"
-        {...getRootProps()}
+        className={`border-2 border-dashed border-outlineVariant rounded-lg flex flex-col gap-2 items-center justify-center flex-1 py-8 hover:cursor-pointer hover:bg-surfaceContainerHigh ${
+          isDragAccept ? "bg-surfaceContainerHigh" : "bg-surfaceContainerLow"
+        }`}
+        {...getRootProps({ isFocused, isDragAccept })}
       >
         <input {...getInputProps()} />
         <BackupOutlined className="text-outline" />

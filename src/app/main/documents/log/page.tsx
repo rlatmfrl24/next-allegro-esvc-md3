@@ -34,6 +34,7 @@ import {
 } from "@floating-ui/react";
 import { use, useEffect, useState } from "react";
 import { ManifestLogTable } from "./table";
+import classNames from "classnames";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -139,14 +140,15 @@ export default function AdvancedManifestLogPage() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
-
-  useEffect(() => {
-    console.log(activeFilters);
-  }, [activeFilters]);
+  const cx = classNames.bind(styles);
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Advanced Manifest Log" />
+      <PageTitle
+        title="Advanced Manifest Log"
+        category="Documents"
+        href="/main/documents/advanced-manifest-log"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
@@ -239,7 +241,7 @@ export default function AdvancedManifestLogPage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "unsearched" ? (
           <EmptyResultPlaceholder text="Please search for the condition." />
         ) : (

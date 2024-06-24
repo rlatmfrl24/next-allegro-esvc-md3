@@ -97,7 +97,6 @@ export const VisibilitySubscription = () => {
                 label="Sending Cycle"
                 disabled={isSummarySubscribed ? false : true}
                 onChanges={() => {
-                  console.log("change");
                   setIsBottomFloatingVisible(true);
                 }}
               />

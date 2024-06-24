@@ -14,15 +14,21 @@ import {
 import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import { FreetimeRequestTable } from "./table";
+import classNames from "classnames";
 
 export default function FreetimeRequestPage() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [inputQuery, setInputQuery] = useState("");
   const [queries, setQueries] = useState<string[]>([]);
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Freetime Request" />
+      <PageTitle
+        title="Freetime Request"
+        category="DEM/DET"
+        href="/main/tariff/freetime"
+      />
       <div className={styles.area}>
         <div className="flex gap-4">
           <div className="flex-1 flex flex-col gap-2">
@@ -67,32 +73,29 @@ export default function FreetimeRequestPage() {
             options={["Demurrage", "Detention", "Combined"]}
             initialValue="Demurrage"
           />
-        </div>
-        <div className="flex gap-4 justify-end">
-          <MdTextButton
-            onClick={() => {
-              setPageState("unsearch");
-            }}
-          >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-            }}
-          >
-            Search
-          </MdFilledButton>
+          <div className="flex gap-4 justify-end items-end h-full flex-1">
+            <MdTextButton
+              onClick={() => {
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <FreetimeRequestTable />
         ) : (
-          <EmptyResultPlaceholder
-            text="Please enter B/L No. to search."
-            className="my-12"
-          />
+          <EmptyResultPlaceholder text="Please enter B/L No. to search." />
         )}
       </div>
     </div>

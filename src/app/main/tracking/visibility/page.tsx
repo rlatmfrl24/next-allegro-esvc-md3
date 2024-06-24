@@ -21,7 +21,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { useRouter } from "next/navigation";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import { Download } from "@mui/icons-material";
 import { DividerComponent } from "@/app/components/divider";
 
@@ -340,7 +340,11 @@ export default function VisibilityServicePage() {
         isOpen={isSummaryDialogOpen}
         onOpenChange={setIsSummaryDialogOpen}
       />
-      <PageTitle title="Visibility Service" />
+      <PageTitle
+        title="Visibility Service"
+        category="Tracking"
+        href="/main/tracking/visibility"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton

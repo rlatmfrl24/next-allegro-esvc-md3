@@ -1,4 +1,4 @@
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -504,7 +504,7 @@ export default function ContainerInput({
             >
               <Add fontSize="small" />
             </MdOutlinedIconButton>
-            <MdChipSet>
+            <MdChipSet className="flex-row-reverse">
               {
                 // display CargoManifest
                 container.cargoManifest.map((cargo, i) => {

@@ -8,8 +8,10 @@ import SeaWaybillSearchCondition from "./search-condition";
 import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 import SurchargeCodeInquiry from "../surcharge-code-inquiry";
 import SeaWaybillResultTable from "./reseult-table";
+import classNames from "classnames";
 
 export default function SeaWaybillPrint() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
   const [isSurchargeCodeInquiryOpen, setIsSurchargeCodeInquiryOpen] =
     useState(false);
@@ -17,7 +19,11 @@ export default function SeaWaybillPrint() {
   return (
     <div aria-label="container" className={styles.container}>
       <div className="flex items-center justify-between">
-        <PageTitle title="Sea Waybill Print" />
+        <PageTitle
+          title="Sea Waybill Print"
+          category="Documents"
+          href="/main/documents/sea-waybill"
+        />
         <MdOutlinedButton
           onClick={() => {
             setIsSurchargeCodeInquiryOpen(true);
@@ -34,7 +40,7 @@ export default function SeaWaybillPrint() {
           setPageState("search");
         }}
       />
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <SeaWaybillResultTable />
         ) : (

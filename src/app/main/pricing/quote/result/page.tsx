@@ -10,7 +10,7 @@ export default function OnlineQuoteResult() {
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Online Quote" />
+      <PageTitle title="Instant Quote" hasFavorite={false} />
       <QuotationList
         onResearch={() => {
           router.back();

@@ -77,9 +77,12 @@ importers:
       next:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.23.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      overlayscrollbars:
+        specifier: ^2.8.3
+        version: 2.8.3
       overlayscrollbars-react:
         specifier: ^0.5.4
-        version: 0.5.4(overlayscrollbars@2.4.7)(react@18.2.0)
+        version: 0.5.4(overlayscrollbars@2.8.3)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2696,8 +2699,8 @@ packages:
       overlayscrollbars: ^2.0.0
       react: '>=16.8.0'
 
-  overlayscrollbars@2.4.7:
-    resolution: {integrity: sha512-02X2/nHno35dzebCx+EO2tRDaKAOltZqUKdUqvq3Pt8htCuhJbYi+mjr0CYerVeGRRoZ2Uo6/8XrNg//DJJ+GA==}
+  overlayscrollbars@2.8.3:
+    resolution: {integrity: sha512-7JHA1oWm3Gru3RF5wwaeBdgk4keGtc56HMWEQRQi/RdLdY3pZTUDlSfUk1jyv1yQN12otr828n52rT6VNzYO4w==}
 
   p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
@@ -6124,12 +6127,12 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  overlayscrollbars-react@0.5.4(overlayscrollbars@2.4.7)(react@18.2.0):
+  overlayscrollbars-react@0.5.4(overlayscrollbars@2.8.3)(react@18.2.0):
     dependencies:
-      overlayscrollbars: 2.4.7
+      overlayscrollbars: 2.8.3
       react: 18.2.0
 
-  overlayscrollbars@2.4.7: {}
+  overlayscrollbars@2.8.3: {}
 
   p-limit@3.1.0:
     dependencies:

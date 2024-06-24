@@ -20,7 +20,7 @@ import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { useRecoilValue } from "recoil";
 import { AdditionalInformationState } from "@/app/store/booking.store";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 
 const BasicItem = (props: {
   title: string;
@@ -79,34 +79,37 @@ export const DangerIndicator = (props: {
         >
           <div slot="headline">Danger Cargo Info</div>
           <div slot="content" className="flex flex-col gap-4">
-            {props.containers.length > 1 && (
+            {props.containers.filter((container) => container.isDangerous)
+              .length > 1 && (
               <MdTabs>
-                {props.containers.map((container, index) => (
-                  <MdSecondaryTab
-                    key={index + "_" + container.uuid}
-                    selected={container.size === selectedSize.size}
-                    style={
-                      {
-                        "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
-                      } as CSSProperties
-                    }
-                    onClick={(e) => {
-                      if (container.size === selectedSize.size) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      } else {
-                        setSelectedSize(container);
-                        setSelectedDangerIndex(0);
+                {props.containers
+                  .filter((container) => container.isDangerous)
+                  .map((container, index) => (
+                    <MdSecondaryTab
+                      key={index + "_" + container.uuid}
+                      selected={container.size === selectedSize.size}
+                      style={
+                        {
+                          "--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+                        } as CSSProperties
                       }
-                    }}
-                  >
-                    {container.type +
-                      " " +
-                      container.size +
-                      " * " +
-                      container.quantity}
-                  </MdSecondaryTab>
-                ))}
+                      onClick={(e) => {
+                        if (container.size === selectedSize.size) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        } else {
+                          setSelectedSize(container);
+                          setSelectedDangerIndex(0);
+                        }
+                      }}
+                    >
+                      {container.type +
+                        " " +
+                        container.size +
+                        " * " +
+                        container.quantity}
+                    </MdSecondaryTab>
+                  ))}
               </MdTabs>
             )}
             <DetailTitle
@@ -450,15 +453,18 @@ export const ReeferIndicator = (props: {
               <BasicItem
                 title="Ventilation"
                 value={
-                  selectedSize.ventilation.toString() +
-                  " " +
-                  (selectedSize.ventilationType === "open" ? "%Open" : "%Close")
+                  selectedSize.ventilation?.toString() ??
+                  "-" +
+                    " " +
+                    (selectedSize.ventilationType === "open"
+                      ? "%Open"
+                      : "%Close")
                 }
               />
               <BasicItem title="Nature" value={selectedSize.nature} />
               <BasicItem
                 title="Humidity"
-                value={selectedSize.humidity.toString() + "%"}
+                value={selectedSize.humidity?.toString() ?? "-" + "%"}
               />
               <BasicItem
                 title="Genset"

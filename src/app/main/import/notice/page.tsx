@@ -17,6 +17,7 @@ import {
 } from "@/app/util/md3";
 
 import { ArrivalNoticeTable } from "./table";
+import classNames from "classnames";
 
 export default function ArrivalNoticePage() {
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
@@ -24,10 +25,15 @@ export default function ArrivalNoticePage() {
     "date"
   ); // ["date", "bl", "container"
   const [queries, setQueries] = useState<string[]>([]);
+  const cx = classNames.bind(styles);
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Arrival Notice" />
+      <PageTitle
+        title="Arrival Notice"
+        category="Import"
+        href="/main/import/notice"
+      />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
           <MdOutlinedSegmentedButton
@@ -149,7 +155,7 @@ export default function ArrivalNoticePage() {
           </div>
         </div>
       </div>
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <ArrivalNoticeTable />
         ) : (

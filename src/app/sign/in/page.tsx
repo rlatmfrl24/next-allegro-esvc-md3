@@ -15,14 +15,12 @@ import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { UserState } from "@/app/store/global.store";
 import Image from "next/image";
-import { useRegister } from "../up/main";
 
 export default function SignIn() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const router = useRouter();
   const setUserData = useSetRecoilState(UserState);
-  const { renderRegisterDialog, openDialog } = useRegister();
 
   function DemoSignIn() {
     setUserData({
@@ -39,7 +37,6 @@ export default function SignIn() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      {renderRegisterDialog()}
       <MdElevatedCard className="w-[483px] p-12 flex flex-col items-center">
         <Image
           src="/logo_clt.svg"
@@ -65,6 +62,7 @@ export default function SignIn() {
           {id.length > 0 && (
             <MdIconButton
               slot="trailing-icon"
+              tabIndex={-1}
               onClick={() => {
                 setId("");
               }}
@@ -87,6 +85,7 @@ export default function SignIn() {
           {pw.length > 0 && (
             <MdIconButton
               slot="trailing-icon"
+              tabIndex={-1}
               onClick={() => {
                 setPw("");
               }}
@@ -126,7 +125,7 @@ export default function SignIn() {
           </MdTypography>
           <MdTextButton
             onClick={() => {
-              openDialog();
+              router.push("/sign/up");
             }}
           >
             Sign Up Here

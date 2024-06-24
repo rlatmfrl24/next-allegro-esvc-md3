@@ -22,7 +22,7 @@ import { PasswordUpdateDialog } from "./dialog/password";
 import { CompanyUpdateDialog } from "./dialog/company";
 import { WithdrawalDialog } from "./dialog/withdrawal";
 import { ContractUpdateDialog } from "./dialog/contract";
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 
 export default function MyProfilePage() {
   const [isRequesting, setIsRequesting] = useState(false);
@@ -71,7 +71,6 @@ export default function MyProfilePage() {
         open={isPasswordUpdateDialogOpen}
         onOpenChange={setIsPasswordUpdateDialogOpen}
         onRequestUpdate={(password) => {
-          console.log("Password Updated: ", password);
           setUserProfile({ ...userProfile, password: password });
         }}
       />
@@ -80,7 +79,6 @@ export default function MyProfilePage() {
         open={isCompanyUpdateDialogOpen}
         onOpenChange={setIsCompanyUpdateDialogOpen}
         onRequestUpdate={(companyName) => {
-          console.log("Company Updated: ", companyName);
           setUserProfile({ ...userProfile, companyName: companyName });
         }}
       />
@@ -92,10 +90,7 @@ export default function MyProfilePage() {
         open={isContractUpdateDialogOpen}
         onOpenChange={setIsContractUpdateDialogOpen}
       />
-      <div
-        aria-label="container"
-        className={cx(styles.container, "flex-1 flex")}
-      >
+      <div aria-label="container" className={cx(styles.container)}>
         <div className={cx(styles.area, "flex-1 flex")}>
           <div className="border-2 border-secondaryContainer flex-1 rounded-lg flex flex-col">
             <div className="flex items-center justify-between bg-secondaryContainer p-4">
@@ -279,10 +274,10 @@ export default function MyProfilePage() {
                   required
                   options={contractNumberOptions}
                   label="Contract No."
-                  initialValue={userProfile.recentBLNumber}
-                  onSelection={(value) => {
-                    setUserProfile({ ...userProfile, recentBLNumber: value });
-                  }}
+                  // initialValue={userProfile.nu}
+                  // onSelection={(value) => {
+                  //   setUserProfile({ ...userProfile, recentBLNumber: value });
+                  // }}
                 />
                 <MdOutlinedButton
                   onClick={() => {

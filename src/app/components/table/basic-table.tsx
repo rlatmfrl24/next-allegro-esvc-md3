@@ -1,11 +1,13 @@
 import {
   Cell,
+  ColumnFiltersState,
   PaginationState,
   RowData,
   SortingState,
   Table,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -115,6 +117,7 @@ export const BasicTable = ({
   const [selectedCell, setSelectedCell] = useState<Cell<any, unknown> | null>(
     null
   );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]); // can set initial column filter state here
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -131,6 +134,7 @@ export const BasicTable = ({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       columnPinning: {
         left: pinningColumns,
@@ -138,16 +142,19 @@ export const BasicTable = ({
     },
     state: {
       rowSelection: selectedRows,
+      columnFilters,
       columnOrder,
       sorting,
       columnVisibility,
       pagination,
     },
+    onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setSelectedRows,
     onColumnOrderChange: setColumnOrder,
     onColumnVisibilityChange: setColumnVisibility,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
     autoResetPageIndex,
@@ -218,7 +225,7 @@ export const BasicTable = ({
   }
 
   return (
-    <div className="relative flex flex-col gap-4">
+    <div className="relative flex flex-col gap-4 flex-1 h-full">
       <div className="flex items-end">
         {ActionComponent && <ActionComponent {...table} />}
         <div className="flex gap-2 items-center h-10 z-10">
@@ -229,7 +236,7 @@ export const BasicTable = ({
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
-      <OverlayScrollbarsComponent defer>
+      <OverlayScrollbarsComponent defer className="flex-1">
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
@@ -241,6 +248,7 @@ export const BasicTable = ({
             style={{
               ...columnSizeVars,
               width: "99.8%", // to prevent horizontal scroll
+              // minHeight: "480px",
             }}
           >
             <thead>
@@ -301,6 +309,7 @@ export const BasicTable = ({
             )}
           </table>
         </DndContext>
+        <div className="flex-1"></div>
       </OverlayScrollbarsComponent>
     </div>
   );

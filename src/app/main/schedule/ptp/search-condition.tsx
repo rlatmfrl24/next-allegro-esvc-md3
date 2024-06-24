@@ -281,7 +281,7 @@ export default function SearchCondition({
         />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-end">
         <NAOutlinedListBox
           label="Search On"
           initialValue={searchOn.charAt(0).toUpperCase() + searchOn.slice(1)}
@@ -302,26 +302,26 @@ export default function SearchCondition({
             }
           }}
         />
-      </div>
-      <div className="flex justify-end gap-2">
-        <MdTextButton
-          onClick={() => {
-            clearAllSelection();
-            resetAction();
-          }}
-        >
-          Reset
-        </MdTextButton>
-        <MdFilledButton
-          onClick={() => {
-            if (Validation()) {
-              searchAction(currentCondition);
-              FocusOnResult(areaRef, scrollState.instance);
-            }
-          }}
-        >
-          Search
-        </MdFilledButton>
+        <div className="flex justify-end gap-2 flex-1">
+          <MdTextButton
+            onClick={() => {
+              clearAllSelection();
+              resetAction();
+            }}
+          >
+            Reset
+          </MdTextButton>
+          <MdFilledButton
+            onClick={() => {
+              if (Validation()) {
+                searchAction(currentCondition);
+                FocusOnResult(areaRef, scrollState.instance);
+              }
+            }}
+          >
+            Search
+          </MdFilledButton>
+        </div>
       </div>
     </div>
   );

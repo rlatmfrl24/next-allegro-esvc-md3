@@ -21,6 +21,7 @@ import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
+import classNames from "classnames";
 
 export default function PortSchedule() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -31,7 +32,7 @@ export default function PortSchedule() {
   });
 
   const tempPortSchedules = useMemo(() => {
-    return createDummyPortSchedules();
+    return createDummyPortSchedules(5);
   }, []);
 
   function resetPortQuery() {
@@ -42,18 +43,23 @@ export default function PortSchedule() {
     });
   }
 
+  const cx = classNames.bind(styles);
   const areaRef = useRef<HTMLDivElement>(null);
   const scrollState = useRecoilValue(ScrollState);
 
   return (
-    <div aria-label="container" className={styles.container}>
-      <PageTitle title="Port Schedule" />
+    <div aria-label="container" className={cx(styles.container)}>
+      <PageTitle
+        title="Port Schedule"
+        category="Schedule"
+        href="/main/schedule/port"
+      />
       <div
         ref={areaRef}
         aria-label="condition-container"
         className={styles.area}
       >
-        <div className="flex gap-4 items-start">
+        <div className="flex gap-4 items-end">
           <NAOutlinedAutoComplete
             label="Port Name"
             className="w-full"
@@ -70,7 +76,7 @@ export default function PortSchedule() {
             }}
           />
           <DateRangePicker
-            className="w-80"
+            className="w-96"
             initial={{
               start: portQuery.startDate,
               end: portQuery.endDate,
@@ -84,33 +90,33 @@ export default function PortSchedule() {
                 });
             }}
           />
-        </div>
-        <div
-          aria-label="search-condition-actions"
-          className="flex justify-end gap-2"
-        >
-          <MdTextButton
-            onClick={() => {
-              resetPortQuery();
-              setPageState("unsearch");
-            }}
+          <div
+            aria-label="search-condition-actions"
+            className="flex justify-end gap-2"
           >
-            Reset
-          </MdTextButton>
-          <MdFilledButton
-            onClick={() => {
-              setPageState("search");
-              FocusOnResult(areaRef, scrollState.instance);
-            }}
-          >
-            Search
-          </MdFilledButton>
+            <MdTextButton
+              onClick={() => {
+                resetPortQuery();
+                setPageState("unsearch");
+              }}
+            >
+              Reset
+            </MdTextButton>
+            <MdFilledButton
+              onClick={() => {
+                setPageState("search");
+                FocusOnResult(areaRef, scrollState.instance);
+              }}
+            >
+              Search
+            </MdFilledButton>
+          </div>
         </div>
       </div>
       {pageState === "unsearch" ? (
         <EmptyResultPlaceholder text={"Please search for the schedule"} />
       ) : (
-        <div className={styles.area}>
+        <div className={cx(styles.area, styles.table)}>
           <PortResultTable data={tempPortSchedules} />
         </div>
       )}

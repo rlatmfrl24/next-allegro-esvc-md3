@@ -26,7 +26,11 @@ export default function TARESearch() {
 
   return (
     <div aria-label="container" className={cx(styles.container)}>
-      <PageTitle title="Container Tare Finder" />
+      <PageTitle
+        title="Container Tare Finder"
+        category="Documents"
+        href="/main/documents/tare"
+      />
       <div className={cx(styles.area, styles.row)}>
         <div className="flex flex-col gap-2 flex-1">
           <NAOutlinedTextField
@@ -77,7 +81,7 @@ export default function TARESearch() {
           </MdFilledButton>
         </div>
       </div>
-      <div className={cx(styles.area)}>
+      <div className={cx(styles.area, styles.table)}>
         {pageState === "search" ? (
           <TareContainerTable />
         ) : (

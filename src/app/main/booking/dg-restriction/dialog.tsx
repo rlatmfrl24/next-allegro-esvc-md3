@@ -90,7 +90,6 @@ export const UNNumberSearchDialog = (props: {
     data: tableData,
     columns: columnDefs,
     getSelectionRows: (rows) => {
-      console.log(rows);
       if (rows.length === 0) {
         setSelectedData(undefined);
         return;
@@ -109,6 +108,9 @@ export const UNNumberSearchDialog = (props: {
         clearSelection();
       }}
       className="min-w-fit"
+      cancel={(e) => {
+        e.preventDefault();
+      }}
     >
       <div slot="headline">UN Number Detail Search</div>
       <div slot="content" className="flex flex-col gap-4">

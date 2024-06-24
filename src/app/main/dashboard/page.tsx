@@ -22,7 +22,7 @@ export default function MainPage() {
     <OverlayScrollbarsComponent className="flex-1 w-full">
       <div className="w-full p-4 relative overflow-x-hidden">
         <div className="flex items-center justify-between gap-3 pb-6">
-          <PageTitle title="Dashboard" />
+          <PageTitle title="Dashboard" category="Dashboard" href="/main" />
           <div className="flex items-center gap-4">
             <MdFilterChip
               label="Custom"

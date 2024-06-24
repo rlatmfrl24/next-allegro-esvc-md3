@@ -6,18 +6,24 @@ import styles from "@/app/styles/base.module.css";
 import { useState } from "react";
 import CargoTrackingSearchCondition from "./search-condition";
 import TrackingDataList from "./result-list";
+import classNames from "classnames";
 
 export default function CargoTracking() {
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
+  const cx = classNames.bind(styles);
 
   return (
     <div aria-label="container" className={styles.container}>
-      <PageTitle title="Cargo Tracking" />
+      <PageTitle
+        title="Cargo Tracking"
+        category="Tracking"
+        href="/main/tracking/cargo"
+      />
       <CargoTrackingSearchCondition
         onSearch={() => setPageState("search")}
         onReset={() => setPageState("unsearch")}
       />
-      <div className={styles.area}>
+      <div className={cx(styles.area, styles.table)}>
         {
           {
             search: <TrackingDataList />,

@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CSSProperties, Suspense, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import PageTitle, { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
@@ -240,7 +240,7 @@ function SIPreview() {
             {requestNumber}
           </MdTypography>
         ) : (
-          <PageTitle title="Shipping Instruction Preview" />
+          <PageTitle title="Shipping Instruction Preview" hasFavorite={false} />
         )}
       </div>
 
@@ -1075,7 +1075,6 @@ function SIPreview() {
                   markDescription: markDescriptionData,
                   contactInformation: contactInformationData,
                 } as SIEditDataType;
-                console.log(newSICondition);
                 setCurrentSICondition(newSICondition);
                 router.push("/main/documents/si");
               }}

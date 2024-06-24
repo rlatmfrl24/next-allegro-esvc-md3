@@ -43,6 +43,15 @@ const DangerousCargoInput = ({
   }, [container.dangerousCargoInformation.length]);
 
   function AddDangerousCargo() {
+    const newDangerousCargo = {
+      uuid: faker.string.uuid(),
+      unNumber: "",
+      class: "",
+      flashPoint: "",
+      packingGroup: "None",
+      properShippingName: "",
+    };
+
     setContainerInformation((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -51,19 +60,13 @@ const DangerousCargoInput = ({
               ...c,
               dangerousCargoInformation: [
                 ...c.dangerousCargoInformation,
-                {
-                  uuid: faker.string.uuid(),
-                  unNumber: "",
-                  class: "",
-                  flashPoint: "",
-                  packingGroup: "None",
-                  properShippingName: "",
-                },
+                newDangerousCargo,
               ],
             }
           : c
       ),
     }));
+    setSelectedDangerousCargo(newDangerousCargo.uuid);
   }
 
   function RemoveDangerousCargo(uuid: string) {

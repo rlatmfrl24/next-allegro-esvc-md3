@@ -1,9 +1,9 @@
-import LabelChip from "@/app/components/chips/label-chip";
+import LabelChip from "@/app/components/label-chip";
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { MdIcon, MdTextButton } from "@/app/util/md3";
-import { faker } from "@faker-js/faker";
+import { faker, fi } from "@faker-js/faker";
 import { Download } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
@@ -74,6 +74,13 @@ export const DemDetTable = () => {
     columnHelper.accessor("tariffType", {
       id: "tariffType",
       header: "Tariff Type",
+      filterFn: (row, id, filterValue) => {
+        const modifiedFilterValue = (filterValue as string[]).map((val) =>
+          val === "Combined" ? "D&D Combined" : val
+        );
+
+        return modifiedFilterValue.includes(row.getValue(id));
+      },
       cell: (info) => (
         <LabelChip
           label={info.getValue()}
@@ -85,6 +92,7 @@ export const DemDetTable = () => {
     columnHelper.accessor("originType", {
       id: "originType",
       header: "Origin Type",
+
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -103,6 +111,9 @@ export const DemDetTable = () => {
     columnHelper.accessor("containerType", {
       id: "containerType",
       header: "Container Type",
+      filterFn: (row, id, filterValue) => {
+        return filterValue.includes(row.getValue(id));
+      },
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -112,6 +123,9 @@ export const DemDetTable = () => {
     columnHelper.accessor("cargoType", {
       id: "cargoType",
       header: "Cargo Type",
+      filterFn: (row, id, filterValue) => {
+        return filterValue.includes(row.getValue(id));
+      },
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue()}
@@ -192,44 +206,48 @@ export const DemDetTable = () => {
 
   return (
     <>
-      <div className="flex gap-2">
-        <StatusFilterComponent
-          statusOptions={["Demurrage", "Detention", "Combined"]}
-          unit="Tariff Type"
-          onChange={(selected) => {
-            setTableData(
-              tempDemDetTariff.filter((tariff) =>
-                selected.includes(tariff.tariffType)
-              )
-            );
-          }}
-        />
-        <StatusFilterComponent
-          statusOptions={["Dry", "Reefer", "Flat Rack", "Open Top", "Tank"]}
-          unit="Container Type"
-          onChange={(selected) => {
-            setTableData(
-              tempDemDetTariff.filter((tariff) =>
-                selected.includes(tariff.containerType)
-              )
-            );
-          }}
-        />
-        <StatusFilterComponent
-          statusOptions={["General", "Dangerous", "Awkward", "Reefer"]}
-          unit="Cargo Type"
-          onChange={(selected) => {
-            setTableData(
-              tempDemDetTariff.filter((tariff) =>
-                selected.includes(tariff.cargoType)
-              )
-            );
-          }}
-        />
-      </div>
       <BasicTable
-        ActionComponent={() => (
-          <div className="flex-1">
+        ActionComponent={(table) => (
+          <div className="flex-1 flex gap-2 items-center">
+            <StatusFilterComponent
+              statusOptions={["Demurrage", "Detention", "Combined"]}
+              unit="Tariff Type"
+              onChange={(selected) => {
+                table.setColumnFilters([
+                  ...table.getState().columnFilters,
+                  {
+                    id: "tariffType",
+                    value: selected,
+                  },
+                ]);
+              }}
+            />
+            <StatusFilterComponent
+              statusOptions={["Dry", "Reefer", "Flat Rack", "Open Top", "Tank"]}
+              unit="Container Type"
+              onChange={(selected) => {
+                table.setColumnFilters([
+                  ...table.getState().columnFilters,
+                  {
+                    id: "containerType",
+                    value: selected,
+                  },
+                ]);
+              }}
+            />
+            <StatusFilterComponent
+              statusOptions={["General", "Dangerous", "Awkward", "Reefer"]}
+              unit="Cargo Type"
+              onChange={(selected) => {
+                table.setColumnFilters([
+                  ...table.getState().columnFilters,
+                  {
+                    id: "cargoType",
+                    value: selected,
+                  },
+                ]);
+              }}
+            />
             <MdTextButton>
               <MdIcon slot="icon">
                 <Download fontSize="small" />

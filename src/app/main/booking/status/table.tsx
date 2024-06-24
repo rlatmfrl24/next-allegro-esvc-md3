@@ -92,7 +92,7 @@ export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 900 }, (_, i) => createDummnyBookingStatus());
+    return Array.from({ length: 200 }, (_, i) => createDummnyBookingStatus());
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
@@ -424,24 +424,28 @@ export default function BookingStatusTable() {
     <>
       {renderEstimatedTimeofDepartureDialog()}
       {renderVesselInfoDialog()}
-      <div className="relative w-full max-w-full">
-        <MdChipSet className="mb-4">
-          <StatusFilterComponent
-            statusOptions={Object.values(BookingStatus)}
-            onChange={(states) => {
-              setTableData(
-                tempData.filter((row) => states.includes(row.status))
-              );
-            }}
-          />
-          <MdFilterChip label="My Booking" />
-        </MdChipSet>
+      <div className="relative w-full max-w-full h-full">
         <BasicTable
-          ActionComponent={() => {
+          ActionComponent={(table) => {
             return (
               <div className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
+                    <MdChipSet>
+                      <StatusFilterComponent
+                        statusOptions={Object.values(BookingStatus)}
+                        onChange={(states) => {
+                          table.setColumnFilters([
+                            {
+                              id: "status",
+                              value: states as BookingStatus[],
+                            },
+                          ]);
+                        }}
+                      />
+                      <MdFilterChip label="My Booking" />
+                    </MdChipSet>
+
                     <MdTextButton>
                       <div slot="icon">
                         <Download fontSize="small" />
