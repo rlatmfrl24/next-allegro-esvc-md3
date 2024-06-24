@@ -100,6 +100,22 @@ export default function Test() {
         >
           Preset 3
         </button>
+        <button
+          className="bg-[#506628] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("YG");
+          }}
+        >
+          YG
+        </button>
+        <button
+          className="bg-[#a40020] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("RE");
+          }}
+        >
+          RE
+        </button>
       </div>
 
       <div className="flex gap-2">

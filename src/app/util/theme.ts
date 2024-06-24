@@ -11,6 +11,8 @@ import defaultTheme from "@/../public/preset/default.json";
 import preset_1 from "@/../public/preset/preset_1.json";
 import preset_2 from "@/../public/preset/preset_2.json";
 import preset_3 from "@/../public/preset/preset_3.json";
+import YGTheme from "@/../public/preset/palette/YG.json";
+import RETheme from "@/../public/preset/palette/RE.json";
 
 export function createMDTheme(
   sourceColor: string,
@@ -110,6 +112,12 @@ export function applyPresetTheme(
       break;
     case "preset_3":
       css = preset_3;
+      break;
+    case "YG":
+      css = YGTheme;
+      break;
+    case "RE":
+      css = RETheme;
       break;
     default:
       css = defaultTheme;
