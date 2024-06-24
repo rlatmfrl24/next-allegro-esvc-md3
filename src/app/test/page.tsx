@@ -116,6 +116,54 @@ export default function Test() {
         >
           RE
         </button>
+        <button
+          className="bg-[#004aae] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("BL");
+          }}
+        >
+          BL
+        </button>
+        <button
+          className="bg-[#00513f] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("GR");
+          }}
+        >
+          GR
+        </button>
+        <button
+          className="bg-[#196584] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("NA");
+          }}
+        >
+          NA
+        </button>
+        <button
+          className="bg-[#7e570f] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("OR");
+          }}
+        >
+          OR
+        </button>
+        <button
+          className="bg-[#8c4a60] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("PK");
+          }}
+        >
+          PK
+        </button>
+        <button
+          className="bg-[#64558f] px-4 py-2 text-white font-pretendard rounded-xl"
+          onClick={() => {
+            applyPresetTheme("PU");
+          }}
+        >
+          PU
+        </button>
       </div>
 
       <div className="flex gap-2">
