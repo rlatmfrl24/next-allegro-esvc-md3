@@ -5,16 +5,19 @@ import {
   MdOutlinedButton,
 } from "@/app/util/md3";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuickDEMDETTariffIcon from "@/../public/icon_quick_dem_det_tariff.svg";
 import QuickGuideIcon from "@/../public/icon_quick_guide.svg";
 import QuickSimpleSIIcon from "@/../public/icon_quick_simple_si.svg";
 import QuickSiteMapIcon from "@/../public/icon_quick_sitemap.svg";
 import QuickSurchargeSearchIcon from "@/../public/icon_quick_surcharge_search.svg";
 import { LanguageSelector } from "./language-selector";
+import { useRecoilState } from "recoil";
+import { SigningState } from "@/app/store/global.store";
 
 export const HeaderSignComponent = () => {
-  const [isSigning, setIsSigning] = useState(false);
+  // const [isSigning, setIsSigning] = useState(false);
+  const [isSigning, setIsSigning] = useRecoilState(SigningState);
   const [onHoverAt, setOnHoverAt] = useState(0);
 
   return (
@@ -114,7 +117,12 @@ export const HeaderSignComponent = () => {
         </Link>
       ) : (
         <>
-          <Link href={"/sign/up"}>
+          <Link
+            href={"/sign/up"}
+            onClick={() => {
+              setIsSigning(true);
+            }}
+          >
             <MdOutlinedButton className="w-32 font-pretendard font-medium">
               Register
             </MdOutlinedButton>

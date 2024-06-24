@@ -50,6 +50,11 @@ const DrawerState = atom({
   },
 });
 
+const SigningState = atom({
+  key: "isSigning",
+  default: false,
+});
+
 const FavoriteState = atom<
   {
     title: string;
@@ -70,4 +75,11 @@ const ScrollState = atom({
   },
 });
 
-export { UserState, DrawerState, ScrollState, UserProfileState, FavoriteState };
+export {
+  UserState,
+  DrawerState,
+  ScrollState,
+  UserProfileState,
+  FavoriteState,
+  SigningState,
+};

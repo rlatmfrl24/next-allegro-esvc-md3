@@ -82,8 +82,6 @@ export default function ContainerStep() {
       if (
         container.size === "" ||
         container.quantity === 0 ||
-        container.temperature === undefined ||
-        container.ventilation === undefined ||
         container.nature === "" ||
         container.genset === undefined
       ) {

@@ -152,11 +152,11 @@ export interface ReeferContainerInformationType
   extends ContainerInformationType {
   type: ContainerType.reefer;
   temperatureUnit: "℃" | "℉";
-  temperature: number;
-  ventilation: number;
+  temperature: number | undefined;
+  ventilation: number | undefined;
   ventilationType: "open" | "close";
   nature: string;
-  humidity: number;
+  humidity: number | undefined;
   genset: boolean;
 }
 
