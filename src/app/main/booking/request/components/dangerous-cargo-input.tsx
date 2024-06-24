@@ -229,7 +229,7 @@ const DangerousCargoInput = ({
                       (dci) => dci.uuid === selectedDangerousCargo
                     )?.unNumber
                   }
-                  handleValueChange={(value) =>
+                  handleValueChange={(value) => {
                     setContainerInformation((prev) => ({
                       ...prev,
                       [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -246,8 +246,8 @@ const DangerousCargoInput = ({
                             }
                           : c
                       ),
-                    }))
-                  }
+                    }));
+                  }}
                 />
                 <NAOutlinedTextField
                   label="Class"

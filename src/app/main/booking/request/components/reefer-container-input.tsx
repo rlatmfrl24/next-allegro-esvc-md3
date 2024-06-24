@@ -23,6 +23,7 @@ import { useMemo } from "react";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { AnimatePresence, motion } from "framer-motion";
 import { containerVariant } from "./base";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const ReeferContainerInput = ({
   list,
@@ -176,17 +177,21 @@ const ReeferContainerInput = ({
                         </div>
                         <div className="flex gap-4 items-start">
                           <div className="flex gap-2">
-                            <NAOutlinedTextField
+                            <NAOutlinedNumberField
                               label="Degree"
-                              type="number"
                               className="w-28"
                               value={container.temperature?.toString() ?? ""}
                               handleValueChange={(value) => {
+                                console.log(value);
+                                console.log(value ? value : undefined);
                                 setContainerInformation((prev) => ({
                                   ...prev,
                                   reefer: prev.reefer.map((c, i) =>
                                     i === index
-                                      ? { ...c, temperature: +value }
+                                      ? {
+                                          ...c,
+                                          temperature: value,
+                                        }
                                       : c
                                   ),
                                 }));
@@ -209,11 +214,9 @@ const ReeferContainerInput = ({
                             />
                           </div>
                           <div className="flex gap-2">
-                            <NAOutlinedTextField
+                            <NAOutlinedNumberField
                               label="Ventilation"
-                              type="number"
                               className="w-28"
-                              maxInputLength={3}
                               maxLength={3}
                               value={container.ventilation?.toString() ?? ""}
                               handleValueChange={(value) => {
@@ -221,12 +224,13 @@ const ReeferContainerInput = ({
                                   ...prev,
                                   reefer: prev.reefer.map((c, i) =>
                                     i === index
-                                      ? { ...c, ventilation: +value }
+                                      ? { ...c, ventilation: value }
                                       : c
                                   ),
                                 }));
                               }}
                             />
+
                             <NAOutlinedListBox
                               options={["%Open", "%Close"]}
                               className="w-32"
