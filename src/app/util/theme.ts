@@ -13,6 +13,12 @@ import preset_2 from "@/../public/preset/preset_2.json";
 import preset_3 from "@/../public/preset/preset_3.json";
 import YGTheme from "@/../public/preset/palette/YG.json";
 import RETheme from "@/../public/preset/palette/RE.json";
+import BLTheme from "@/../public/preset/palette/BL.json";
+import GRTheme from "@/../public/preset/palette/GR.json";
+import NATheme from "@/../public/preset/palette/NA.json";
+import ORTheme from "@/../public/preset/palette/OR.json";
+import PKTheme from "@/../public/preset/palette/PK.json";
+import PUTheme from "@/../public/preset/palette/PU.json";
 
 export function createMDTheme(
   sourceColor: string,
@@ -119,6 +125,25 @@ export function applyPresetTheme(
     case "RE":
       css = RETheme;
       break;
+    case "BL":
+      css = BLTheme;
+      break;
+    case "GR":
+      css = GRTheme;
+      break;
+    case "NA":
+      css = NATheme;
+      break;
+    case "OR":
+      css = ORTheme;
+      break;
+    case "PK":
+      css = PKTheme;
+      break;
+    case "PU":
+      css = PUTheme;
+      break;
+
     default:
       css = defaultTheme;
       break;
