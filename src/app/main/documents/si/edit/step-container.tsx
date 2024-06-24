@@ -27,8 +27,6 @@ import ContainerToggleButton from "./components/container-toggle-button";
 import ContainerTypeInputComponent from "./components/container-type-input";
 import { DividerComponent } from "@/app/components/divider";
 
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import SIContainerGrid from "./components/container-grid";
 import {
   TableChart,

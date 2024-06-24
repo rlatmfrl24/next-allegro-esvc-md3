@@ -1,32 +1,69 @@
-import { useState } from "react";
-import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
-import { head } from "lodash";
+import {
+  DataEditor,
+  GridCell,
+  GridCellKind,
+  GridColumn,
+  Item,
+} from "@glideapps/glide-data-grid";
+import "@glideapps/glide-data-grid/dist/index.css";
 
 export default function SIContainerGrid() {
-  const [colDefs, setColDefs] = useState<any>([
-    { field: "containerNumber", editable: true },
+  const data = [
     {
-      field: "soc",
-      headerName: "SOC",
-      editable: true,
-      cellEditor: "agSelectCellEditor",
-      cellEditorParams: {
-        values: ["Y", "N"],
-      },
+      firstName: "John",
+      lastName: "Doe",
     },
-  ]);
-  const [rowData, setRowData] = useState([
-    { containerNumber: "ABCD1234567", soc: "Y" },
-    { containerNumber: "ABCD1234568" },
-    { containerNumber: "ABCD1234569" },
-    { containerNumber: "ABCD1234570" },
-  ]);
+    {
+      firstName: "Maria",
+      lastName: "Garcia",
+    },
+    {
+      firstName: "Nancy",
+      lastName: "Jones",
+    },
+    {
+      firstName: "James",
+      lastName: "Smith",
+    },
+  ];
+
+  // Grid columns may also provide icon, overlayIcon, menu, style, and theme overrides
+  const columns: GridColumn[] = [
+    { title: "First Name", width: 100 },
+    { title: "Last Name", width: 100 },
+  ];
+
+  function getData([col, row]: Item): GridCell {
+    const person = data[row];
+
+    if (col === 0) {
+      return {
+        kind: GridCellKind.Text,
+        data: person.firstName,
+        allowOverlay: false,
+        displayData: person.firstName,
+      };
+    } else if (col === 1) {
+      return {
+        kind: GridCellKind.Text,
+        data: person.lastName,
+        allowOverlay: false,
+        displayData: person.lastName,
+      };
+    } else {
+      throw new Error();
+    }
+  }
 
   return (
     <div
-      className="ag-theme-quartz h-full" // applying the grid theme
+      className="h-full" // applying the grid theme
     >
-      <AgGridReact rowData={rowData} columnDefs={colDefs} />
+      <DataEditor
+        columns={columns}
+        getCellContent={getData}
+        rows={data.length}
+      />
     </div>
   );
 }

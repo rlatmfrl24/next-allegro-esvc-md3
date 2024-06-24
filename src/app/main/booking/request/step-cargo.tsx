@@ -35,6 +35,7 @@ export default function CargoStep() {
     if (
       cargoPickUpReturnData.commodity.code === "" ||
       cargoPickUpReturnData.commodity.description === "" ||
+      cargoPickUpReturnData.emptyPickUpDate === undefined ||
       cargoPickUpReturnData.grossWeight === "0"
     ) {
       return false;
@@ -44,6 +45,7 @@ export default function CargoStep() {
   }, [
     cargoPickUpReturnData.commodity.code,
     cargoPickUpReturnData.commodity.description,
+    cargoPickUpReturnData.emptyPickUpDate,
     cargoPickUpReturnData.grossWeight,
   ]);
 
@@ -198,6 +200,7 @@ export default function CargoStep() {
         <div className="flex gap-4">
           <DatePicker
             className="flex-1"
+            required
             label="Empty Pick Up Date"
             initialDate={cargoPickUpReturnData.emptyPickUpDate}
             onDateChange={(date) => {
