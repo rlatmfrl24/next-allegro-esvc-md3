@@ -67,6 +67,7 @@ const DangerousCargoInput = ({
           : c
       ),
     }));
+
     setSelectedDangerousCargo(newDangerousCargo.uuid);
   }
 
@@ -193,25 +194,7 @@ const DangerousCargoInput = ({
                       ? setSelectedDangerousCargo("")
                       : setSelectedDangerousCargo(dci.uuid)
                   }
-                  remove={() =>
-                    //delete the dangerous cargo
-                    // setContainerInformation((prev) => ({
-                    //   ...prev,
-                    //   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                    //     c.uuid === container.uuid &&
-                    //     c.type !== ContainerType.bulk
-                    //       ? {
-                    //           ...c,
-                    //           dangerousCargoInformation:
-                    //             c.dangerousCargoInformation.filter(
-                    //               (dc) => dc.uuid !== dci.uuid
-                    //             ),
-                    //         }
-                    //       : c
-                    //   ),
-                    // }))
-                    RemoveDangerousCargo(dci.uuid)
-                  }
+                  remove={() => RemoveDangerousCargo(dci.uuid)}
                 />
               ))}
             </MdChipSet>
