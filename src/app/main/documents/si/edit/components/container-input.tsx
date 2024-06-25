@@ -347,35 +347,34 @@ export default function ContainerInput({
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <NAOutlinedNumberField
-          value={container.packageQuantity.toString()}
-          className="w-1/4"
-          readOnly={container.hasCargoManifest}
-          label="Package"
-          maxInputLength={16}
-          handleValueChange={(value) => {
-            updateContainerStore(container, "packageQuantity", value);
-          }}
-        />
-        <NAOutlinedAutoComplete
-          className="flex-1"
-          readOnly={container.hasCargoManifest}
-          itemList={tempPackageList}
-          placeholder="Package Type"
-          initialValue={container.packageType}
-          isAllowOnlyListItems={false}
-          showAllonFocus
-          onQueryChange={(value) => {
-            updateContainerStore(container, "packageType", value);
-          }}
-          onItemSelection={(value) => {
-            updateContainerStore(container, "packageType", value);
-          }}
-        />
-      </div>
       <div className="flex gap-4">
         <div className="flex gap-2 flex-1">
+          <NAOutlinedNumberField
+            value={container.packageQuantity.toString()}
+            readOnly={container.hasCargoManifest}
+            label="Package"
+            maxInputLength={16}
+            handleValueChange={(value) => {
+              updateContainerStore(container, "packageQuantity", value);
+            }}
+          />
+          <NAOutlinedAutoComplete
+            className="flex-1"
+            readOnly={container.hasCargoManifest}
+            itemList={tempPackageList}
+            placeholder="Package Type"
+            initialValue={container.packageType}
+            isAllowOnlyListItems={false}
+            showAllonFocus
+            onQueryChange={(value) => {
+              updateContainerStore(container, "packageType", value);
+            }}
+            onItemSelection={(value) => {
+              updateContainerStore(container, "packageType", value);
+            }}
+          />
+        </div>
+        <div className="flex gap-2 ">
           <NAOutlinedNumberField
             label="Weight"
             value={container.packageWeight.toString()}
@@ -399,7 +398,7 @@ export default function ContainerInput({
             }}
           />
         </div>
-        <div className="flex gap-2 flex-1">
+        <div className="flex gap-2">
           <NAOutlinedNumberField
             label="Measure"
             className="w-48"
@@ -424,6 +423,7 @@ export default function ContainerInput({
           />
         </div>
       </div>
+
       <Portal selector="#main-container">
         <MdDialog
           open={isWarningRemoveCargoManifestDialogOpen}
