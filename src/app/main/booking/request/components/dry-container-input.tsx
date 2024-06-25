@@ -151,13 +151,10 @@ const DryContainerInput = ({
                         error={container.soc > container.quantity}
                         errorText="SOC cannot be greater than Quantity"
                         handleValueChange={(value) => {
-                          let intValue = parseInt(value);
-                          if (isNaN(intValue)) intValue = 0;
-
                           setContainerInformation((prev) => ({
                             ...prev,
                             dry: prev.dry.map((c, i) =>
-                              i === index ? { ...c, soc: +intValue } : c
+                              i === index ? { ...c, soc: value ?? 0 } : c
                             ),
                           }));
                         }}
