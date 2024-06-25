@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.11.0",
     "@floating-ui/react": "^0.26.8",
     "@glideapps/glide-data-grid": "^6.0.3",
+    "@glideapps/glide-data-grid-cells": "^6.0.3",
     "@h6s/calendar": "^2.0.1",
     "@headlessui/react": "^1.7.18",
     "@lit/react": "^1.0.2",

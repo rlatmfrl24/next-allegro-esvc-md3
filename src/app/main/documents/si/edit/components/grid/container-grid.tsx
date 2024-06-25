@@ -1,8 +1,13 @@
+import "@glideapps/glide-data-grid/dist/index.css";
+
+import { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
+
 import { SIEditContainerState } from "@/app/store/si.store";
 import {
+  SealKind,
   SIContainerGridProps,
   SIContainerInputProps,
-  SealKind,
 } from "@/app/util/typeDef/si";
 import {
   DataEditor,
@@ -12,16 +17,21 @@ import {
   GridColumn,
   Item,
 } from "@glideapps/glide-data-grid";
-import "@glideapps/glide-data-grid/dist/index.css";
-import { useCallback, useState } from "react";
-import { useRecoilState } from "recoil";
+
+import { parseData } from "./util";
+
+import {
+  DropdownCell,
+  DropdownCellType,
+  allCells,
+} from "@glideapps/glide-data-grid-cells";
+import { isBoolean } from "lodash";
 
 export default function SIContainerGrid() {
   const [siContainerStore, setSIContainerStore] =
     useRecoilState(SIEditContainerState);
 
   const parsed: SIContainerGridProps[] = parseData(siContainerStore);
-  console.log(parsed);
 
   const [tableData, setTableData] = useState(parsed);
 
@@ -106,49 +116,132 @@ export default function SIContainerGrid() {
           const sealType = dataRow[indexes[col]] as
             | "merchanical"
             | "electronic";
-          const sealTypeText = {
-            merchanical: "Mechanical Seal",
-            electronic: "Electronic Seal",
-          }[sealType];
-
-          return {
-            kind: GridCellKind.Text,
-            allowOverlay: true,
+          const sealTypeCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
             readonly: false,
-            displayData: sealTypeText,
-            data: sealTypeText,
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: sealType,
+              allowedValues: [
+                { value: "merchanical", label: "Merchanical Seal" },
+                { value: "electronic", label: "Electronic Seal" },
+              ],
+            },
           };
-
+          return sealTypeCell;
         case "firstSealKind":
         case "secondSealKind":
           const sealKind = dataRow[indexes[col]] as SealKind;
-          const sealKindText = {
-            [SealKind.Shipper]: "Shipper",
-            [SealKind.Carrier]: "Carrier",
-            [SealKind.Consolidator]: "Consolidator",
-            [SealKind["Quarantine Agency"]]: "Quarantine Agency",
-            [SealKind["Terminal Agency"]]: "Customs Agency",
-            [SealKind.Customs]: "Customs",
-            [SealKind.Unknown]: "Other Agency",
-          }[sealKind];
-
-          return {
-            kind: GridCellKind.Text,
+          const sealKindCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
+            readonly: false,
             allowOverlay: true,
-            readonly: false,
-            displayData: sealKindText,
-            data: sealKindText,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: sealKind.toString(),
+              allowedValues: [
+                { value: SealKind.Shipper.toString(), label: "Shipper" },
+                { value: SealKind.Carrier.toString(), label: "Carrier" },
+                {
+                  value: SealKind.Consolidator.toString(),
+                  label: "Consolidator",
+                },
+                {
+                  value: SealKind["Quarantine Agency"].toString(),
+                  label: "Quarantine Agency",
+                },
+                {
+                  value: SealKind["Terminal Agency"].toString(),
+                  label: "Terminal Agency",
+                },
+                { value: SealKind.Customs.toString(), label: "Customs" },
+                { value: SealKind.Unknown.toString(), label: "Other Agency" },
+              ],
+            },
           };
-        case "isSocContainer":
-          const soc = dataRow[indexes[col]] as boolean;
 
-          return {
-            kind: GridCellKind.Text,
-            allowOverlay: false,
+          return sealKindCell;
+        case "isSocContainer":
+          const soc = dataRow[indexes[col]];
+          const socValue = isBoolean(soc) ? soc : soc === "Y";
+          const socCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
             readonly: false,
-            displayData: soc ? "Y" : "N",
-            data: soc ? "Y" : "N",
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: socValue ? "Y" : "N",
+              allowedValues: [
+                { value: "Y", label: "Yes" },
+                { value: "N", label: "No" },
+              ],
+            },
           };
+
+          return socCell;
+
+        case "containerType":
+          const cntrType = dataRow[indexes[col]]?.toString();
+          const cntrTypeCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
+            readonly: false,
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: cntrType,
+              allowedValues: [
+                { value: "Dry", label: "Dry" },
+                { value: "Reefer", label: "Reefer" },
+                { value: "OpenTop", label: "Open Top" },
+                { value: "FlatRack", label: "Flat Rack" },
+                { value: "Tank", label: "Tank" },
+                { value: "Bulk", label: "Bulk" },
+              ],
+            },
+          };
+          return cntrTypeCell;
+        case "containerSize":
+          const cntrSize = dataRow[indexes[col]]?.toString();
+          const cntrSizeCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
+            readonly: false,
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: cntrSize,
+              allowedValues: [
+                { value: "20", label: "20" },
+                { value: "40", label: "40" },
+                { value: "40HC", label: "40HC" },
+                { value: "45", label: "45" },
+              ],
+            },
+          };
+          return cntrSizeCell;
+        case "packageWeightUnit":
+        case "cargoWeightUnit":
+          const weightUnit = dataRow[indexes[col]]?.toString();
+          const weightUnitCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
+            readonly: false,
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: weightUnit,
+              allowedValues: [
+                { value: "KGS", label: "KGS" },
+                { value: "LBS", label: "LBS" },
+              ],
+            },
+          };
+          return weightUnitCell;
         default:
           const d = dataRow[indexes[col]];
 
@@ -168,11 +261,6 @@ export default function SIContainerGrid() {
     (cell: Item, newValue: EditableGridCell) => {
       console.log(cell, newValue);
 
-      if (newValue.kind !== GridCellKind.Text) {
-        console.error("Unsupported cell kind", newValue.kind);
-        // we only have text cells, might as well just die here.
-        return;
-      }
       const indexes: (keyof SIContainerGridProps)[] = [
         "containerNumber",
         "isSocContainer",
@@ -199,6 +287,29 @@ export default function SIContainerGrid() {
         "htsCodeUS",
         "hisCodeEUASIA",
       ];
+
+      if (
+        newValue.kind === GridCellKind.Custom &&
+        (newValue.data as any).kind === "dropdown-cell"
+      ) {
+        // update the cell with the new value
+        const dropdownValue = (newValue as DropdownCellType).data.value;
+        console.log("Dropdown cell edited", dropdownValue);
+        const [col, row] = cell;
+        const key = indexes[col];
+        const dataRow = tableData[row];
+        const newData = [...tableData];
+        newData[row] = { ...dataRow, [key]: dropdownValue };
+        console.log(newData);
+        setTableData(newData);
+        return;
+      }
+
+      if (newValue.kind !== GridCellKind.Text) {
+        console.error("Unsupported cell kind", newValue.kind);
+        // we only have text cells, might as well just die here.
+        return;
+      }
       const [col, row] = cell;
       const key = indexes[col];
       const dataRow = tableData[row];
@@ -219,98 +330,9 @@ export default function SIContainerGrid() {
           getCellContent={getCellContent}
           rows={tableData.length}
           onCellEdited={onCellEdited}
+          customRenderers={allCells}
         />
       </div>
     </div>
   );
-}
-
-function repackData(data: SIContainerGridProps[]): SIContainerInputProps[] {
-  const repackedData: SIContainerInputProps[] = [];
-
-  // merged by container number
-  const mergedData = {
-    dry: [] as SIContainerInputProps[],
-    reefer: [] as SIContainerInputProps[],
-    opentop: [] as SIContainerInputProps[],
-    tank: [] as SIContainerInputProps[],
-    flatrack: [] as SIContainerInputProps[],
-    bulk: [] as SIContainerInputProps[],
-  };
-
-  return repackedData;
-}
-
-function parseData(store: {
-  dry: SIContainerInputProps[];
-  reefer: SIContainerInputProps[];
-  opentop: SIContainerInputProps[];
-  tank: SIContainerInputProps[];
-  flatrack: SIContainerInputProps[];
-  bulk: SIContainerInputProps[];
-  weightUnit: "KGS" | "LBS";
-  measurementUnit: "CBM" | "CBF";
-}): SIContainerGridProps[] {
-  const mergedList = store.dry.concat(
-    store.reefer,
-    store.opentop,
-    store.flatrack,
-    store.tank,
-    store.bulk
-  );
-
-  const dataset: SIContainerGridProps[] = [];
-
-  mergedList.map((container) => {
-    const baseData = {
-      uuid: container.uuid,
-      containerNumber: container.containerNumber,
-      isSocContainer: container.isSocContainer,
-      containerType: container.containerType,
-      containerSize: container.containerSize,
-      firstSealNumber: container.firstSeal.description,
-      firstSealKind: container.firstSeal.kind,
-      firstSealType: container.firstSeal.type,
-      secondSealNumber: container.secondSeal.description,
-      secondSealKind: container.secondSeal.kind,
-      secondSealType: container.secondSeal.type,
-      packageType: container.packageType,
-      packageQuantity: container.packageQuantity,
-      packageWeight: container.packageWeight,
-      packageWeightUnit: store.weightUnit,
-      packageMeasurement: container.packageMeasurement,
-      packageMeasurementUnit: store.measurementUnit,
-    };
-
-    if (container.hasCargoManifest) {
-      container.cargoManifest.map((manifest) => {
-        dataset.push({
-          ...baseData,
-          cargoPackageQuantity: manifest.packageQuantity,
-          cargoPackageUnit: manifest.packageType,
-          cargoWeight: manifest.weight,
-          cargoWeightUnit: store.weightUnit,
-          cargoMeasurement: manifest.measurement,
-          cargoMeasurementUnit: store.measurementUnit,
-          htsCodeUS: manifest.commodityCode.htsCodeUS,
-          hisCodeEUASIA: manifest.commodityCode.hisCodeEUASIA,
-        });
-      });
-    } else {
-      // dataset.push(baseData);
-      dataset.push({
-        ...baseData,
-        cargoPackageQuantity: undefined,
-        cargoPackageUnit: undefined,
-        cargoWeight: undefined,
-        cargoWeightUnit: undefined,
-        cargoMeasurement: undefined,
-        cargoMeasurementUnit: undefined,
-        htsCodeUS: undefined,
-        hisCodeEUASIA: undefined,
-      });
-    }
-  });
-
-  return dataset;
 }

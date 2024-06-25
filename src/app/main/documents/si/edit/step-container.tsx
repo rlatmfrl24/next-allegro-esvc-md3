@@ -27,7 +27,7 @@ import ContainerToggleButton from "./components/container-toggle-button";
 import ContainerTypeInputComponent from "./components/container-type-input";
 import { DividerComponent } from "@/app/components/divider";
 
-import SIContainerGrid from "./components/container-grid";
+import SIContainerGrid from "./components/grid/container-grid";
 import {
   TableChart,
   TableChartOutlined,
