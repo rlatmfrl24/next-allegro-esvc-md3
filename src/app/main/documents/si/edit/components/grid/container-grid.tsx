@@ -1,6 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { SIEditContainerState } from "@/app/store/si.store";
@@ -20,14 +20,19 @@ import {
 
 import { parseData } from "./util";
 
-import {
-  DropdownCell,
-  DropdownCellType,
-  allCells,
-} from "@glideapps/glide-data-grid-cells";
+import { DropdownCellType, allCells } from "@glideapps/glide-data-grid-cells";
 import { isBoolean } from "lodash";
+import { faker } from "@faker-js/faker";
 
 export default function SIContainerGrid() {
+  const tempPackageList = useMemo(() => {
+    return (
+      Array.from({ length: 20 }, (_, i) => faker.commerce.productMaterial())
+        // remove duplicate packageType
+        .filter((value, index, self) => self.indexOf(value) === index)
+    );
+  }, []);
+
   const [siContainerStore, setSIContainerStore] =
     useRecoilState(SIEditContainerState);
 
@@ -129,7 +134,6 @@ export default function SIContainerGrid() {
         "htsCodeUS",
         "hisCodeEUASIA",
       ];
-      // const d = dataRow[indexes[col]];
 
       switch (indexes[col]) {
         case "firstSealType":
@@ -263,6 +267,71 @@ export default function SIContainerGrid() {
             },
           };
           return weightUnitCell;
+        case "packageMeasurementUnit":
+        case "cargoMeasurementUnit":
+          const measurementUnit = dataRow[indexes[col]]?.toString();
+          const measurementUnitCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
+            readonly: false,
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: measurementUnit,
+              allowedValues: [
+                { value: "CBM", label: "CBM" },
+                { value: "CBF", label: "CBF" },
+              ],
+            },
+          };
+          return measurementUnitCell;
+
+        case "packageWeight":
+        case "packageMeasurement":
+        case "cargoWeight":
+        case "cargoMeasurement":
+        case "packageQuantity":
+        case "cargoPackageQuantity":
+          const numValue = dataRow[indexes[col]] as number;
+          return {
+            kind: GridCellKind.Number,
+            allowOverlay: true,
+            readonly: false,
+            displayData: numValue ? numValue.toLocaleString() : "",
+            data: numValue,
+          };
+
+        case "htsCodeUS":
+        case "hisCodeEUASIA":
+          const code = dataRow[indexes[col]] as number;
+          return {
+            kind: GridCellKind.Number,
+            allowOverlay: true,
+            readonly: false,
+            thousandSeparator: false,
+            displayData: code?.toString() ?? "",
+            data: code,
+          };
+
+        case "packageType":
+        case "cargoPackageUnit":
+          const packageType = dataRow[indexes[col]]?.toString();
+          const packageTypeCell: DropdownCellType = {
+            kind: GridCellKind.Custom,
+            readonly: false,
+            allowOverlay: true,
+            copyData: "4",
+            data: {
+              kind: "dropdown-cell",
+              value: packageType,
+              allowedValues: tempPackageList.map((value) => ({
+                value,
+                label: value,
+              })),
+            },
+          };
+          return packageTypeCell;
+
         default:
           const d = dataRow[indexes[col]];
 
@@ -326,7 +395,10 @@ export default function SIContainerGrid() {
         return;
       }
 
-      if (newValue.kind !== GridCellKind.Text) {
+      if (
+        newValue.kind !== GridCellKind.Text &&
+        newValue.kind !== GridCellKind.Number
+      ) {
         console.error("Unsupported cell kind", newValue.kind);
         // we only have text cells, might as well just die here.
         return;
