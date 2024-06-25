@@ -40,10 +40,14 @@ export default function SIContainerGrid() {
 
   // Grid columns may also provide icon, overlayIcon, menu, style, and theme overrides
   const columns: GridColumn[] = [
-    { title: "Container #", id: "containerNumber", group: "Container" },
-    { title: "S.O.C", id: "isSocContainer", group: "Container" },
-    { title: "Cntr Type", id: "containerType", group: "Container" },
-    { title: "Cntr Size", id: "containerSize", group: "Container" },
+    {
+      title: "Container #",
+      id: "containerNumber",
+      group: "Container",
+    },
+    { title: "S.O.C", id: "isSocContainer", group: "Container", width: 88 },
+    { title: "Cntr Type", id: "containerType", group: "Container", width: 88 },
+    { title: "Cntr Size", id: "containerSize", group: "Container", width: 88 },
     { title: "1st Seal #", id: "firstSealNumber", group: "Container" },
     { title: "Seal Kind", id: "firstSealKind", group: "Container" },
     { title: "Seal Type", id: "firstSealType", group: "Container" },
@@ -51,11 +55,16 @@ export default function SIContainerGrid() {
     { title: "Seal Kind", id: "secondSealKind", group: "Container" },
     { title: "Seal Type", id: "secondSealType", group: "Container" },
     { title: "Package", id: "packageQuantity", group: "Container" },
-    { title: "Unit", id: "packageType", group: "Container" },
+    { title: "Unit", id: "packageType", group: "Container", width: 88 },
     { title: "Weight", id: "packageWeight", group: "Container" },
-    { title: "Unit", id: "packageWeightUnit", group: "Container" },
+    { title: "Unit", id: "packageWeightUnit", group: "Container", width: 88 },
     { title: "Measure", id: "packageMeasurement", group: "Container" },
-    { title: "Unit", id: "packageMeasurementUnit", group: "Container" },
+    {
+      title: "Unit",
+      id: "packageMeasurementUnit",
+      group: "Container",
+      width: 88,
+    },
     {
       title: "Package",
       id: "cargoPackageQuantity",
@@ -65,11 +74,23 @@ export default function SIContainerGrid() {
       title: "Unit",
       id: "cargoPackageUnit",
       group: "Cargo Information",
+      width: 88,
     },
     { title: "Weight", id: "cargoWeight", group: "Cargo Information" },
-    { title: "Unit", id: "cargoWeightUnit", group: "Cargo Information" },
+    {
+      title: "Unit",
+      id: "cargoWeightUnit",
+      group: "Cargo Information",
+      width: 88,
+    },
+
     { title: "Measure", id: "cargoMeasurement", group: "Cargo Information" },
-    { title: "Unit", id: "cargoMeasurementUnit", group: "Cargo Information" },
+    {
+      title: "Unit",
+      id: "cargoMeasurementUnit",
+      group: "Cargo Information",
+      width: 88,
+    },
     { title: "HTS Code US", id: "htsCodeUS", group: "Customs Information" },
     {
       title: "HIS Code EU/ASIA",
