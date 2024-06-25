@@ -211,7 +211,7 @@ export default function ContainerInput({
           label="Size"
           className="w-52"
           initialValue={container.containerSize}
-          options={["20", "40", "45", "53"]}
+          options={["20", "40", "40HC", "45"]}
           onSelection={(size) => {
             updateContainerStore(container, "containerSize", size);
           }}
@@ -700,6 +700,7 @@ export default function ContainerInput({
                 <NAOutlinedTextField
                   label="HTS Code(U.S.)"
                   type="number"
+                  enableNumberSeparator={false}
                   maxInputLength={6}
                   placeholder="Code"
                   value={
@@ -728,6 +729,7 @@ export default function ContainerInput({
                 <NAOutlinedTextField
                   label="HTS Code(EU, ASIA)"
                   type="number"
+                  enableNumberSeparator={false}
                   maxInputLength={6}
                   placeholder="Code"
                   value={

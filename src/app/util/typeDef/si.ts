@@ -132,7 +132,7 @@ export interface SIContainerInputProps {
   uuid: string;
   containerType: ContainerType;
   containerNumber: string;
-  containerSize: "20" | "40" | "45" | "53";
+  containerSize: "20" | "40" | "40HC" | "45";
   isSocContainer: boolean;
   firstSeal: {
     kind: SealKind;
@@ -150,6 +150,34 @@ export interface SIContainerInputProps {
   packageMeasurement: number;
   hasCargoManifest: boolean;
   cargoManifest: CargoManifestType[];
+}
+
+export interface SIContainerGridProps {
+  uuid: string;
+  containerNumber: string;
+  isSocContainer: boolean;
+  containerType: ContainerType;
+  containerSize: "20" | "40" | "40HC" | "45";
+  firstSealNumber: string;
+  firstSealKind: SealKind;
+  firstSealType: "merchanical" | "electronic";
+  secondSealNumber: string;
+  secondSealKind: SealKind;
+  secondSealType: "merchanical" | "electronic";
+  packageType: string;
+  packageQuantity: number;
+  packageWeight: number;
+  packageWeightUnit: string;
+  packageMeasurement: number;
+  packageMeasurementUnit: string;
+  cargoPackageQuantity: number | undefined;
+  cargoPackageUnit: string | undefined;
+  cargoWeight: number | undefined;
+  cargoWeightUnit: string | undefined;
+  cargoMeasurement: number | undefined;
+  cargoMeasurementUnit: string | undefined;
+  htsCodeUS: string | undefined;
+  hisCodeEUASIA: string | undefined;
 }
 
 export type CargoManifestType = {

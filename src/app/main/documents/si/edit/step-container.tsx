@@ -209,9 +209,7 @@ export default function StepContainer() {
         </div>
       </div>
       {viewType === "grid" ? (
-        <>
-          <SIContainerGrid />
-        </>
+        <SIContainerGrid />
       ) : (
         <>
           <div className="flex gap-4">
@@ -444,7 +442,7 @@ export default function StepContainer() {
           </div>
         </>
       )}
-      <div className="flex-1 flex justify-end items-end">
+      <div className="flex justify-end items-end">
         <MdFilledButton
           className="h-fit"
           onClick={() => moveToMarkDescriptionStep()}
