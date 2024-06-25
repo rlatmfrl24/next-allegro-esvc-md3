@@ -129,9 +129,8 @@ const ReeferContainerInput = ({
                               }));
                             }}
                           />
-                          <NAOutlinedTextField
+                          <NAOutlinedNumberField
                             label="Quantity / Total"
-                            type="number"
                             required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
@@ -143,20 +142,21 @@ const ReeferContainerInput = ({
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, quantity: +value } : c
+                                  i === index
+                                    ? { ...c, quantity: value ?? 0 }
+                                    : c
                                 ),
                               }));
                             }}
                           />
-                          <NAOutlinedTextField
+                          <NAOutlinedNumberField
                             label="Quantity / SOC"
-                            type="number"
                             value={container.soc.toString()}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, soc: +value } : c
+                                  i === index ? { ...c, soc: value ?? 0 } : c
                                 ),
                               }));
                             }}
@@ -271,23 +271,22 @@ const ReeferContainerInput = ({
                               }));
                             }}
                           />
-                          <NAOutlinedTextField
+                          <NAOutlinedNumberField
                             label="Humidity"
                             suffixText="%"
-                            type="number"
                             className="w-28"
-                            maxLength={3}
                             maxInputLength={3}
                             value={container.humidity?.toString() ?? ""}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, humidity: +value } : c
+                                  i === index ? { ...c, humidity: value } : c
                                 ),
                               }));
                             }}
                           />
+
                           <NAOutlinedListBox
                             label="Genset"
                             required={showRequired}

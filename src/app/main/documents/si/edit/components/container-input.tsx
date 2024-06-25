@@ -1,5 +1,6 @@
 import LabelChip from "@/app/components/label-chip";
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
@@ -338,15 +339,14 @@ export default function ContainerInput({
       </div>
 
       <div className="flex gap-2">
-        <NAOutlinedTextField
+        <NAOutlinedNumberField
           value={container.packageQuantity.toString()}
           className="w-1/4"
-          type="number"
           readOnly={container.hasCargoManifest}
           label="Package"
           maxInputLength={16}
           handleValueChange={(value) => {
-            updateContainerStore(container, "packageQuantity", parseInt(value));
+            updateContainerStore(container, "packageQuantity", value);
           }}
         />
         <NAOutlinedAutoComplete
@@ -367,15 +367,14 @@ export default function ContainerInput({
       </div>
       <div className="flex gap-4">
         <div className="flex gap-2 flex-1">
-          <NAOutlinedTextField
+          <NAOutlinedNumberField
             label="Weight"
             value={container.packageWeight.toString()}
-            type="number"
             readOnly={container.hasCargoManifest}
             maxInputLength={22}
             className="flex-1"
             handleValueChange={(value) => {
-              updateContainerStore(container, "packageWeight", parseInt(value));
+              updateContainerStore(container, "packageWeight", value);
             }}
           />
           <NAOutlinedListBox
@@ -392,19 +391,14 @@ export default function ContainerInput({
           />
         </div>
         <div className="flex gap-2 flex-1">
-          <NAOutlinedTextField
+          <NAOutlinedNumberField
             label="Measure"
             className="flex-1"
             maxInputLength={16}
             value={container.packageMeasurement.toString()}
-            type="number"
             readOnly={container.hasCargoManifest}
             handleValueChange={(value) => {
-              updateContainerStore(
-                container,
-                "packageMeasurement",
-                parseInt(value)
-              );
+              updateContainerStore(container, "packageMeasurement", value);
             }}
           />
           <NAOutlinedListBox
@@ -531,8 +525,7 @@ export default function ContainerInput({
                 Cargo Information
               </MdTypography>
               <div className="flex gap-2">
-                <NAOutlinedTextField
-                  type="number"
+                <NAOutlinedNumberField
                   className="w-1/4"
                   maxInputLength={16}
                   value={
@@ -548,7 +541,7 @@ export default function ContainerInput({
                         cm.uuid === selectedCargoManifestUuid
                           ? {
                               ...cm,
-                              packageQuantity: parseInt(value),
+                              packageQuantity: value,
                             }
                           : cm
                       )
@@ -599,9 +592,8 @@ export default function ContainerInput({
               </div>
               <div className="flex gap-4">
                 <div className="flex gap-2 flex-1">
-                  <NAOutlinedTextField
+                  <NAOutlinedNumberField
                     label="Weight"
-                    type="number"
                     maxInputLength={22}
                     className="flex-1"
                     value={
@@ -617,7 +609,7 @@ export default function ContainerInput({
                           cm.uuid === selectedCargoManifestUuid
                             ? {
                                 ...cm,
-                                weight: parseInt(value),
+                                weight: value,
                               }
                             : cm
                         )
@@ -637,9 +629,8 @@ export default function ContainerInput({
                   />
                 </div>
                 <div className="flex gap-2 flex-1">
-                  <NAOutlinedTextField
+                  <NAOutlinedNumberField
                     label="Measure"
-                    type="number"
                     maxInputLength={16}
                     className="flex-1"
                     value={
@@ -655,7 +646,7 @@ export default function ContainerInput({
                           cm.uuid === selectedCargoManifestUuid
                             ? {
                                 ...cm,
-                                measurement: parseInt(value),
+                                measurement: value,
                               }
                             : cm
                         )
@@ -763,9 +754,8 @@ export default function ContainerInput({
                 Commodity Code
               </MdTypography>
               <div className="flex gap-2">
-                <NAOutlinedTextField
+                <NAOutlinedNumberField
                   label="HTS Code(U.S.)"
-                  type="number"
                   maxInputLength={6}
                   placeholder="Code"
                   value={
@@ -791,9 +781,8 @@ export default function ContainerInput({
                     );
                   }}
                 />
-                <NAOutlinedTextField
+                <NAOutlinedNumberField
                   label="HTS Code(EU, ASIA)"
-                  type="number"
                   maxInputLength={6}
                   placeholder="Code"
                   value={

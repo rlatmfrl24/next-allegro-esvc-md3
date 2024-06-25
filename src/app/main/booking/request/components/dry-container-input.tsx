@@ -20,6 +20,7 @@ import DangerousCargoInput from "./dangerous-cargo-input";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { AnimatePresence, motion } from "framer-motion";
 import { containerVariant } from "./base";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const DryContainerInput = ({
   list,
@@ -126,7 +127,7 @@ const DryContainerInput = ({
                         }}
                       />
 
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         label="Quantity / Total"
                         required={showRequired}
                         error={
@@ -134,23 +135,21 @@ const DryContainerInput = ({
                           container.quantity === 0
                         }
                         errorText="Quantity is required"
-                        type="number"
                         value={container.quantity.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             dry: prev.dry.map((c, i) =>
-                              i === index ? { ...c, quantity: +value } : c
+                              i === index ? { ...c, quantity: value ?? 0 } : c
                             ),
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         label="Quantity / SOC"
                         value={container.soc.toString()}
                         error={container.soc > container.quantity}
                         errorText="SOC cannot be greater than Quantity"
-                        type="number"
                         handleValueChange={(value) => {
                           let intValue = parseInt(value);
                           if (isNaN(intValue)) intValue = 0;

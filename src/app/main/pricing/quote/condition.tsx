@@ -29,6 +29,7 @@ import {
 import { createDummyPlaceInformation } from "../../schedule/util";
 import { QuotationContainerType } from "@/app/util/typeDef/pricing";
 import { DatePicker } from "@/app/components/datepickers/date-picker";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 export default function Condition({
   onReset,
@@ -152,8 +153,7 @@ export default function Condition({
           readOnly
           className="mr-4 w-96"
         />
-        <NAOutlinedTextField
-          type="number"
+        <NAOutlinedNumberField
           required
           className="mr-2"
           label="Total Estimated Gross Weight"
@@ -161,7 +161,7 @@ export default function Condition({
           handleValueChange={(value) => {
             setQuotationTerms((prev) => ({
               ...prev,
-              grossWeight: parseFloat(value),
+              grossWeight: value ?? 0,
             }));
           }}
         />
@@ -230,8 +230,7 @@ export default function Condition({
                   });
                 }}
               />
-              <NAOutlinedTextField
-                type="number"
+              <NAOutlinedNumberField
                 label="Quantity / Total"
                 value={container.quantity.toString()}
                 handleValueChange={(value) => {
@@ -242,7 +241,7 @@ export default function Condition({
                         ...prev.containers.slice(0, index),
                         {
                           containerType: container.containerType,
-                          quantity: parseInt(value),
+                          quantity: value ?? 0,
                         },
                         ...prev.containers.slice(index + 1),
                       ],

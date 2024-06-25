@@ -20,6 +20,7 @@ import { Add } from "@mui/icons-material";
 import { faker } from "@faker-js/faker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const DangerousCargoInput = ({
   container,
@@ -215,15 +216,12 @@ const DangerousCargoInput = ({
           <div className="flex gap-2">
             {selectedDangerousCargo !== "" && (
               <>
-                <NAOutlinedTextField
+                <NAOutlinedNumberField
                   label="UN No."
                   required={showRequired}
-                  type="number"
                   enableNumberSeparator={false}
                   maxInputLength={4}
-                  maxLength={4}
                   className="w-24"
-                  enableClearButton={false}
                   value={
                     container.dangerousCargoInformation.find(
                       (dci) => dci.uuid === selectedDangerousCargo
@@ -249,14 +247,11 @@ const DangerousCargoInput = ({
                     }));
                   }}
                 />
-                <NAOutlinedTextField
+                <NAOutlinedNumberField
                   label="Class"
                   required={showRequired}
-                  type="number"
                   maxInputLength={3}
-                  maxLength={3}
                   className="w-24"
-                  enableClearButton={false}
                   value={
                     container.dangerousCargoInformation.find(
                       (dci) => dci.uuid === selectedDangerousCargo
