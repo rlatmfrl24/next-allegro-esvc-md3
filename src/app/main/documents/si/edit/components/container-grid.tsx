@@ -6,21 +6,24 @@ import {
 } from "@/app/util/typeDef/si";
 import {
   DataEditor,
+  EditableGridCell,
   GridCell,
   GridCellKind,
   GridColumn,
   Item,
 } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export default function SIContainerGrid() {
   const [siContainerStore, setSIContainerStore] =
     useRecoilState(SIEditContainerState);
 
-  const data: SIContainerGridProps[] = parsedData(siContainerStore);
-  console.log(data);
+  const parsed: SIContainerGridProps[] = parseData(siContainerStore);
+  console.log(parsed);
+
+  const [tableData, setTableData] = useState(parsed);
 
   // const repackedData = repackData(data);
   // console.log(repackedData);
@@ -68,7 +71,7 @@ export default function SIContainerGrid() {
   const getCellContent = useCallback(
     (cell: Item): GridCell => {
       const [col, row] = cell;
-      const dataRow = data[row];
+      const dataRow = tableData[row];
       const indexes: (keyof SIContainerGridProps)[] = [
         "containerNumber",
         "isSocContainer",
@@ -110,7 +113,7 @@ export default function SIContainerGrid() {
 
           return {
             kind: GridCellKind.Text,
-            allowOverlay: false,
+            allowOverlay: true,
             readonly: false,
             displayData: sealTypeText,
             data: sealTypeText,
@@ -131,7 +134,7 @@ export default function SIContainerGrid() {
 
           return {
             kind: GridCellKind.Text,
-            allowOverlay: false,
+            allowOverlay: true,
             readonly: false,
             displayData: sealKindText,
             data: sealKindText,
@@ -158,19 +161,64 @@ export default function SIContainerGrid() {
           };
       }
     },
-    [data]
+    [tableData]
+  );
+
+  const onCellEdited = useCallback(
+    (cell: Item, newValue: EditableGridCell) => {
+      console.log(cell, newValue);
+
+      if (newValue.kind !== GridCellKind.Text) {
+        console.error("Unsupported cell kind", newValue.kind);
+        // we only have text cells, might as well just die here.
+        return;
+      }
+      const indexes: (keyof SIContainerGridProps)[] = [
+        "containerNumber",
+        "isSocContainer",
+        "containerType",
+        "containerSize",
+        "firstSealNumber",
+        "firstSealKind",
+        "firstSealType",
+        "secondSealNumber",
+        "secondSealKind",
+        "secondSealType",
+        "packageQuantity",
+        "packageType",
+        "packageWeight",
+        "packageWeightUnit",
+        "packageMeasurement",
+        "packageMeasurementUnit",
+        "cargoPackageQuantity",
+        "cargoPackageUnit",
+        "cargoWeight",
+        "cargoWeightUnit",
+        "cargoMeasurement",
+        "cargoMeasurementUnit",
+        "htsCodeUS",
+        "hisCodeEUASIA",
+      ];
+      const [col, row] = cell;
+      const key = indexes[col];
+      const dataRow = tableData[row];
+      const newData = [...tableData];
+      newData[row] = { ...dataRow, [key]: newValue.data };
+      setTableData(newData);
+    },
+    [tableData]
   );
 
   return (
     <div
       className="flex flex-1" // applying the grid theme
     >
-      <div id="portal" />
       <div className="flex-auto w-0">
         <DataEditor
           columns={columns}
           getCellContent={getCellContent}
-          rows={data.length}
+          rows={tableData.length}
+          onCellEdited={onCellEdited}
         />
       </div>
     </div>
@@ -193,7 +241,7 @@ function repackData(data: SIContainerGridProps[]): SIContainerInputProps[] {
   return repackedData;
 }
 
-function parsedData(store: {
+function parseData(store: {
   dry: SIContainerInputProps[];
   reefer: SIContainerInputProps[];
   opentop: SIContainerInputProps[];
