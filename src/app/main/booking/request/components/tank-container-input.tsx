@@ -20,6 +20,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 
 import { containerVariant } from "./base";
 import DangerousCargoInput from "./dangerous-cargo-input";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const TankContainerInput = ({
   list,
@@ -125,9 +126,8 @@ const TankContainerInput = ({
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         label="Quantity / Total"
-                        type="number"
                         required={showRequired}
                         error={
                           bookingRequestStep.container.visited &&
@@ -139,14 +139,13 @@ const TankContainerInput = ({
                           setContainerInformation((prev) => ({
                             ...prev,
                             tank: prev.tank.map((c, i) =>
-                              i === index ? { ...c, quantity: +value } : c
+                              i === index ? { ...c, quantity: value ?? 0 } : c
                             ),
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         label="Quantity / SOC"
-                        type="number"
                         value={container.soc.toString()}
                         error={container.soc > container.quantity}
                         errorText="SOC cannot be greater than Quantity"
@@ -154,7 +153,7 @@ const TankContainerInput = ({
                           setContainerInformation((prev) => ({
                             ...prev,
                             tank: prev.tank.map((c, i) =>
-                              i === index ? { ...c, soc: +value } : c
+                              i === index ? { ...c, soc: value ?? 0 } : c
                             ),
                           }));
                         }}
