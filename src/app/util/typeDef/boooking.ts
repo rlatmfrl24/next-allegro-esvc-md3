@@ -179,14 +179,14 @@ export interface TankContainerInformationType extends ContainerInformationType {
 }
 
 export interface BulkContainerInformationInterface {
-  package: number;
+  package: number | undefined;
   packageType: string;
-  grossWeight: number;
+  grossWeight: number | undefined;
   grossWeightUnit: "KGS" | "LBS";
   commodity: CommodityType;
-  length: number;
-  width: number;
-  height: number;
+  length: number | undefined;
+  width: number | undefined;
+  height: number | undefined;
   unit: "CM" | "INCH";
 }
 
@@ -194,12 +194,12 @@ export interface BulkContainerInformationType
   extends BulkContainerInformationInterface {
   uuid: string;
   type: ContainerType.bulk;
-  totalMeasurement: number;
+  totalMeasurement: number | undefined;
 }
 
 export interface AwkwardContainerInformationType
   extends BulkContainerInformationInterface {
-  netWeight: number;
+  netWeight: number | undefined;
   netWeightUnit: "KGS" | "LBS";
   remark: string;
 }

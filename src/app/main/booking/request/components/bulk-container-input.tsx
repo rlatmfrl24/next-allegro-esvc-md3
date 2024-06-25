@@ -18,6 +18,7 @@ import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSetRecoilState } from "recoil";
 import { containerVariant } from "./base";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const BulkContainerInput = ({
   list,
@@ -72,17 +73,16 @@ const BulkContainerInput = ({
                     )}
                     <div className="flex gap-4">
                       <div className="flex gap-2 flex-1">
-                        <NAOutlinedTextField
+                        <NAOutlinedNumberField
                           className="w-[120px] min-w-[120px]"
                           label="Package"
-                          type="number"
-                          value={container.package.toString()}
+                          value={container.package?.toString()}
                           handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               bulk: prev.bulk.map((c) =>
                                 c.uuid === container.uuid
-                                  ? { ...c, package: +value }
+                                  ? { ...c, package: value }
                                   : c
                               ),
                             }));
@@ -115,17 +115,16 @@ const BulkContainerInput = ({
                         />
                       </div>
                       <div className="flex gap-2">
-                        <NAOutlinedTextField
+                        <NAOutlinedNumberField
                           className="w-[120px] min-w-[120px]"
                           label="Gross Weight"
-                          type="number"
-                          value={container.grossWeight.toString()}
+                          value={container.grossWeight?.toString()}
                           handleValueChange={(value) => {
                             setContainerInformation((prev) => ({
                               ...prev,
                               bulk: prev.bulk.map((c) =>
                                 c.uuid === container.uuid
-                                  ? { ...c, grossWeight: +value }
+                                  ? { ...c, grossWeight: value }
                                   : c
                               ),
                             }));
@@ -183,69 +182,65 @@ const BulkContainerInput = ({
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         className="w-36 min-w-36"
                         suffixText="cm"
                         label="Length"
-                        type="number"
-                        value={container.length.toString()}
+                        value={container.length?.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
                               c.uuid === container.uuid
-                                ? { ...c, length: +value }
+                                ? { ...c, length: value }
                                 : c
                             ),
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         className="w-36 min-w-36"
                         suffixText="cm"
                         label="Width"
-                        type="number"
-                        value={container.width.toString()}
+                        value={container.width?.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
                               c.uuid === container.uuid
-                                ? { ...c, width: +value }
+                                ? { ...c, width: value }
                                 : c
                             ),
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         className="w-36 min-w-36"
                         suffixText="cm"
                         label="Height"
-                        type="number"
-                        value={container.height.toString()}
+                        value={container.height?.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
                               c.uuid === container.uuid
-                                ? { ...c, height: +value }
+                                ? { ...c, height: value }
                                 : c
                             ),
                           }));
                         }}
                       />
-                      <NAOutlinedTextField
+                      <NAOutlinedNumberField
                         label="Total Measure"
                         suffixText="CBM"
-                        type="number"
                         className="w-36 min-w-36"
-                        value={container.totalMeasurement.toString()}
+                        value={container.totalMeasurement?.toString()}
                         handleValueChange={(value) => {
                           setContainerInformation((prev) => ({
                             ...prev,
                             bulk: prev.bulk.map((c) =>
                               c.uuid === container.uuid
-                                ? { ...c, totalMeasurement: +value }
+                                ? { ...c, totalMeasurement: value }
                                 : c
                             ),
                           }));

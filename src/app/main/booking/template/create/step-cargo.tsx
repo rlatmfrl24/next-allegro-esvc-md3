@@ -21,6 +21,7 @@ import { QuotationTermsState } from "@/app/store/pricing.store";
 import { DatePicker } from "@/app/components/datepickers/date-picker";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import { getWeightText } from "@/app/main/tracking/cargo/util";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 export default function CargoStep() {
   const [cargoPickUpReturnData, setCargoPickUpReturnData] = useRecoilState(
@@ -103,24 +104,18 @@ export default function CargoStep() {
           }}
         />
 
-        <NAOutlinedTextField
+        <NAOutlinedNumberField
           value={cargoPickUpReturnData.grossWeight}
           className="h-fit"
           label="Gross Weight"
           maxInputLength={9}
           readOnly={params.has("quoteNumber")}
-          type="number"
           handleValueChange={(value) => {
-            const intValue = parseInt(value);
-            if (isNaN(intValue)) {
-              return;
-            }
-
             setCargoPickUpReturnData((prev) => {
               return {
                 ...prev,
                 // grossWeight: intValue > 999999999 ? "999999999" : value,
-                grossWeight: value,
+                grossWeight: value?.toLocaleString() ?? "0",
               };
             });
           }}

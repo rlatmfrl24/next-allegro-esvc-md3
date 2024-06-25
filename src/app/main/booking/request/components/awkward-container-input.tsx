@@ -1,3 +1,4 @@
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
@@ -44,12 +45,11 @@ const AwkwardContainerInput = ({
         <div className="flex flex-col gap-6">
           <div className="flex gap-4">
             <div className="flex gap-2">
-              <NAOutlinedTextField
+              <NAOutlinedNumberField
                 className="w-32 min-w-32"
                 label="Package"
-                type="number"
                 maxInputLength={9}
-                value={container.awkward.package.toString()}
+                value={container.awkward.package?.toString() ?? ""}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -61,7 +61,7 @@ const AwkwardContainerInput = ({
                             ...c,
                             awkward: {
                               ...c.awkward,
-                              package: +value,
+                              package: value,
                             },
                           }
                         : c
@@ -103,12 +103,11 @@ const AwkwardContainerInput = ({
               />
             </div>
             <div className="flex gap-2">
-              <NAOutlinedTextField
+              <NAOutlinedNumberField
                 className="w-[120px] min-w-[120px]"
                 label="Gross Weight"
-                type="number"
                 maxInputLength={15}
-                value={container.awkward.grossWeight.toString()}
+                value={container.awkward.grossWeight?.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -120,7 +119,7 @@ const AwkwardContainerInput = ({
                             ...c,
                             awkward: {
                               ...c.awkward,
-                              grossWeight: +value,
+                              grossWeight: value,
                             },
                           }
                         : c
@@ -153,12 +152,11 @@ const AwkwardContainerInput = ({
               />
             </div>
             <div className="flex gap-2">
-              <NAOutlinedTextField
+              <NAOutlinedNumberField
                 className="w-[120px] min-w-[120px]"
                 label="Net Weight"
-                type="number"
                 maxInputLength={15}
-                value={container.awkward.netWeight.toString()}
+                value={container.awkward.netWeight?.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -170,7 +168,7 @@ const AwkwardContainerInput = ({
                             ...c,
                             awkward: {
                               ...c.awkward,
-                              netWeight: +value,
+                              netWeight: value,
                             },
                           }
                         : c
@@ -232,12 +230,11 @@ const AwkwardContainerInput = ({
               }}
             />
             <div className="flex gap-2">
-              <NAOutlinedTextField
+              <NAOutlinedNumberField
                 className="w-28 min-w-28"
                 label="Length"
-                type="number"
                 maxInputLength={5}
-                value={container.awkward.length.toString()}
+                value={container.awkward.length?.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -249,7 +246,7 @@ const AwkwardContainerInput = ({
                             ...c,
                             awkward: {
                               ...c.awkward,
-                              length: +value,
+                              length: value,
                             },
                           }
                         : c
@@ -257,12 +254,11 @@ const AwkwardContainerInput = ({
                   }));
                 }}
               />
-              <NAOutlinedTextField
+              <NAOutlinedNumberField
                 className="w-28 min-w-28"
                 label="Width"
-                type="number"
                 maxInputLength={5}
-                value={container.awkward.width.toString()}
+                value={container.awkward.width?.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -274,7 +270,7 @@ const AwkwardContainerInput = ({
                             ...c,
                             awkward: {
                               ...c.awkward,
-                              width: +value,
+                              width: value,
                             },
                           }
                         : c
@@ -282,12 +278,11 @@ const AwkwardContainerInput = ({
                   }));
                 }}
               />
-              <NAOutlinedTextField
+              <NAOutlinedNumberField
                 className="w-28 min-w-28"
                 label="Height"
-                type="number"
                 maxInputLength={5}
-                value={container.awkward.height.toString()}
+                value={container.awkward.height?.toString()}
                 handleValueChange={(value) => {
                   setContainerInformation((prev) => ({
                     ...prev,
@@ -299,7 +294,7 @@ const AwkwardContainerInput = ({
                             ...c,
                             awkward: {
                               ...c.awkward,
-                              height: +value,
+                              height: value,
                             },
                           }
                         : c
