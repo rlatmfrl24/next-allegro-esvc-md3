@@ -1,12 +1,14 @@
 "use client";
 
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import {
   MdIcon,
   MdIconButton,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
 } from "@/app/util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
+
 import { MdTypography } from "./typography";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
@@ -43,40 +45,9 @@ export const NAOutlinedTextField = ({
       <MdOutlinedTextFieldBase
         {...props}
         ref={inputRef}
-        type={props.type === "number" ? "text" : props.type}
         className={`flex-1 resize-y [&::-webkit-inner-spin-button]:appearance-none ${
-          props.type === "number" ? "text-right" : ""
-        } ${props.readOnly ? "bg-surfaceContainer" : ""}`}
-        onFocus={(e) => {
-          if (props.type === "number") {
-            e.currentTarget.select();
-          }
-        }}
-        onKeyDown={(e) => {
-          if (props.type === "number") {
-            if (
-              !(
-                (e.key >= "0" && e.key <= "9") ||
-                e.key === "-" ||
-                e.key === "." ||
-                e.key === "Backspace" ||
-                e.key === "Delete" ||
-                e.key === "ArrowLeft" ||
-                e.key === "ArrowRight" ||
-                e.key === "Tab"
-              ) ||
-              (e.key === "-" && e.currentTarget.selectionStart !== 0) ||
-              (e.key === "." && e.currentTarget.value.includes(".")) ||
-              (e.key === "0" &&
-                e.currentTarget.value === "0" &&
-                e.currentTarget.selectionStart === 1)
-            ) {
-              e.preventDefault();
-            }
-          } else {
-            props.onKeyDown?.(e);
-          }
-        }}
+          props.readOnly ? "bg-surfaceContainer" : ""
+        }`}
         onInput={(e) => {
           if (maxInputLength && e.currentTarget.value.length > maxInputLength) {
             e.currentTarget.value = e.currentTarget.value.slice(
@@ -85,55 +56,26 @@ export const NAOutlinedTextField = ({
             );
           }
 
-          if (props.type !== "number") {
-            handleValueChange?.(e.currentTarget.value);
-            if (e.currentTarget.value.length > 0) {
-              setHasValue(true);
-            } else {
-              setHasValue(false);
-            }
+          handleValueChange?.(e.currentTarget.value);
+          if (e.currentTarget.value.length > 0) {
+            setHasValue(true);
           } else {
-            // type === "number"
-            const value = e.currentTarget.value;
-
-            if (value.length === 0) {
-              handleValueChange?.("");
-            }
-            if (value.startsWith("0")) {
-              handleValueChange?.(value.replace(/^0+/, ""));
-            }
+            setHasValue(false);
           }
         }}
         onBlur={(e) => {
-          if (props.type === "number") {
-            let intValue = parseFloat(e.currentTarget.value.replace(/,/g, ""));
-            if (isNaN(intValue)) intValue = 0;
-            handleValueChange?.(intValue.toString());
-          } else {
-            props.onBlur?.(e);
-            handleValueChange?.(e.currentTarget.value);
-          }
+          props.onBlur?.(e);
+          handleValueChange?.(e.currentTarget.value);
         }}
         value={
-          props.type === "number" && enableNumberSeparator
-            ? props.value
-                ?.toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                .split(".")
-                .map((v, i) => (i === 0 ? v : v.replaceAll(",", "")))
-                .join(".")
-            : props.type === "textarea"
+          props.type === "textarea"
             ? props.value?.replaceAll("\n", "\r\n") || ""
             : props.value || ""
         }
         required={false}
       >
         {props.children}
-        {!(
-          props.type === "number" ||
-          props.type === "textarea" ||
-          props.readOnly
-        ) &&
+        {!(props.type === "textarea" || props.readOnly) &&
           enableClearButton && (
             <MdIconButton
               // make sure to use tabIndex={-1} to prevent the button from being focused
