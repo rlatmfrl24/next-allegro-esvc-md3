@@ -43,7 +43,11 @@ export const NAOutlinedNumberField = ({
         }
       }
     } else {
-      return "0";
+      if (isFocused) {
+        return "";
+      } else {
+        return "0";
+      }
     }
   }, [enableNumberSeparator, hasValue, isFocused, props.value]);
 
@@ -52,16 +56,15 @@ export const NAOutlinedNumberField = ({
       <div className={`relative h-fit ${className ? className : ""}`}>
         <MdOutlinedTextFieldBase
           {...props}
+          placeholder="0"
           required={false}
           type={isFocused ? "number" : "text"}
           noSpinner
           onFocus={(e) => {
             setIsFocused(true);
-            e.currentTarget.select();
+            e.currentTarget.value = "";
 
-            if (!hasValue) {
-              e.currentTarget.value = "";
-            }
+            e.currentTarget.select();
           }}
           style={
             {

@@ -216,7 +216,7 @@ const ReeferContainerInput = ({
                             <NAOutlinedNumberField
                               label="Ventilation"
                               className="w-28"
-                              maxLength={3}
+                              maxInputLength={3}
                               value={container.ventilation?.toString() ?? ""}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
