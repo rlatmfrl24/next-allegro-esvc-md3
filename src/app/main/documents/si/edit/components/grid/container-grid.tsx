@@ -1,28 +1,32 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 
-import { useCallback, useMemo, useState } from "react";
+import { isBoolean, set } from "lodash";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { SIEditContainerState } from "@/app/store/si.store";
+import { SealKind, SIContainerGridProps } from "@/app/util/typeDef/si";
+import { faker } from "@faker-js/faker";
 import {
-  SealKind,
-  SIContainerGridProps,
-  SIContainerInputProps,
-} from "@/app/util/typeDef/si";
-import {
+  CompactSelection,
   DataEditor,
   EditableGridCell,
   GridCell,
   GridCellKind,
-  GridColumn,
+  GridSelection,
   Item,
 } from "@glideapps/glide-data-grid";
+import { allCells, DropdownCellType } from "@glideapps/glide-data-grid-cells";
 
-import { parseData } from "./util";
-
-import { DropdownCellType, allCells } from "@glideapps/glide-data-grid-cells";
-import { isBoolean } from "lodash";
-import { faker } from "@faker-js/faker";
+import { parseData } from "./util/parser";
+import { columns } from "./util/columnDef";
+import { getSocCell, getSocValue } from "./cell-type/soc-cell";
+import {
+  getContainerTypeCell,
+  getContainerTypeValue,
+} from "./cell-type/container-type-cell";
+import { getContainerSizeCell } from "./cell-type/container-size-cell";
+import { getSealKindCell, getSealKindValue } from "./cell-type/seal-kind-cell";
 
 export default function SIContainerGrid() {
   const tempPackageList = useMemo(() => {
@@ -38,71 +42,22 @@ export default function SIContainerGrid() {
 
   const parsed: SIContainerGridProps[] = parseData(siContainerStore);
 
-  const [tableData, setTableData] = useState(parsed);
+  const [tableData, setTableData] = useState<SIContainerGridProps[]>(parsed);
+  const [selection, setSelection] = useState<GridSelection>({
+    columns: CompactSelection.empty(),
+    rows: CompactSelection.empty(),
+  });
+
+  useEffect(() => {
+    console.log("Table data changed", tableData);
+  }, [tableData]);
+
+  // useEffect(() => {
+  //   console.log("Selection changed", selection);
+  // }, [selection]);
 
   // const repackedData = repackData(data);
   // console.log(repackedData);
-
-  // Grid columns may also provide icon, overlayIcon, menu, style, and theme overrides
-  const columns: GridColumn[] = [
-    {
-      title: "Container #",
-      id: "containerNumber",
-      group: "Container",
-    },
-    { title: "S.O.C", id: "isSocContainer", group: "Container", width: 88 },
-    { title: "Cntr Type", id: "containerType", group: "Container", width: 88 },
-    { title: "Cntr Size", id: "containerSize", group: "Container", width: 88 },
-    { title: "1st Seal #", id: "firstSealNumber", group: "Container" },
-    { title: "Seal Kind", id: "firstSealKind", group: "Container" },
-    { title: "Seal Type", id: "firstSealType", group: "Container" },
-    { title: "2nd Seal #", id: "secondSealNumber", group: "Container" },
-    { title: "Seal Kind", id: "secondSealKind", group: "Container" },
-    { title: "Seal Type", id: "secondSealType", group: "Container" },
-    { title: "Package", id: "packageQuantity", group: "Container" },
-    { title: "Unit", id: "packageType", group: "Container", width: 88 },
-    { title: "Weight", id: "packageWeight", group: "Container" },
-    { title: "Unit", id: "packageWeightUnit", group: "Container", width: 88 },
-    { title: "Measure", id: "packageMeasurement", group: "Container" },
-    {
-      title: "Unit",
-      id: "packageMeasurementUnit",
-      group: "Container",
-      width: 88,
-    },
-    {
-      title: "Package",
-      id: "cargoPackageQuantity",
-      group: "Cargo Information",
-    },
-    {
-      title: "Unit",
-      id: "cargoPackageUnit",
-      group: "Cargo Information",
-      width: 88,
-    },
-    { title: "Weight", id: "cargoWeight", group: "Cargo Information" },
-    {
-      title: "Unit",
-      id: "cargoWeightUnit",
-      group: "Cargo Information",
-      width: 88,
-    },
-
-    { title: "Measure", id: "cargoMeasurement", group: "Cargo Information" },
-    {
-      title: "Unit",
-      id: "cargoMeasurementUnit",
-      group: "Cargo Information",
-      width: 88,
-    },
-    { title: "HTS Code US", id: "htsCodeUS", group: "Customs Information" },
-    {
-      title: "HIS Code EU/ASIA",
-      id: "hisCodeEUASIA",
-      group: "Customs Information",
-    },
-  ];
 
   const getCellContent = useCallback(
     (cell: Item): GridCell => {
@@ -145,7 +100,10 @@ export default function SIContainerGrid() {
             kind: GridCellKind.Custom,
             readonly: false,
             allowOverlay: true,
-            copyData: "4",
+            copyData:
+              sealType === "merchanical"
+                ? "Merchanical Seal"
+                : "Electronic Seal",
             data: {
               kind: "dropdown-cell",
               value: sealType,
@@ -158,97 +116,14 @@ export default function SIContainerGrid() {
           return sealTypeCell;
         case "firstSealKind":
         case "secondSealKind":
-          const sealKind = dataRow[indexes[col]] as SealKind;
-          const sealKindCell: DropdownCellType = {
-            kind: GridCellKind.Custom,
-            readonly: false,
-            allowOverlay: true,
-            copyData: "4",
-            data: {
-              kind: "dropdown-cell",
-              value: sealKind.toString(),
-              allowedValues: [
-                { value: SealKind.Shipper.toString(), label: "Shipper" },
-                { value: SealKind.Carrier.toString(), label: "Carrier" },
-                {
-                  value: SealKind.Consolidator.toString(),
-                  label: "Consolidator",
-                },
-                {
-                  value: SealKind["Quarantine Agency"].toString(),
-                  label: "Quarantine Agency",
-                },
-                {
-                  value: SealKind["Terminal Agency"].toString(),
-                  label: "Terminal Agency",
-                },
-                { value: SealKind.Customs.toString(), label: "Customs" },
-                { value: SealKind.Unknown.toString(), label: "Other Agency" },
-              ],
-            },
-          };
-
-          return sealKindCell;
+          return getSealKindCell(dataRow[indexes[col]]);
         case "isSocContainer":
           const soc = dataRow[indexes[col]];
-          const socValue = isBoolean(soc) ? soc : soc === "Y";
-          const socCell: DropdownCellType = {
-            kind: GridCellKind.Custom,
-            readonly: false,
-            allowOverlay: true,
-            copyData: "4",
-            data: {
-              kind: "dropdown-cell",
-              value: socValue ? "Y" : "N",
-              allowedValues: [
-                { value: "Y", label: "Yes" },
-                { value: "N", label: "No" },
-              ],
-            },
-          };
-
-          return socCell;
-
+          return getSocCell(soc);
         case "containerType":
-          const cntrType = dataRow[indexes[col]]?.toString();
-          const cntrTypeCell: DropdownCellType = {
-            kind: GridCellKind.Custom,
-            readonly: false,
-            allowOverlay: true,
-            copyData: "4",
-            data: {
-              kind: "dropdown-cell",
-              value: cntrType,
-              allowedValues: [
-                { value: "Dry", label: "Dry" },
-                { value: "Reefer", label: "Reefer" },
-                { value: "OpenTop", label: "Open Top" },
-                { value: "FlatRack", label: "Flat Rack" },
-                { value: "Tank", label: "Tank" },
-                { value: "Bulk", label: "Bulk" },
-              ],
-            },
-          };
-          return cntrTypeCell;
+          return getContainerTypeCell(dataRow[indexes[col]]);
         case "containerSize":
-          const cntrSize = dataRow[indexes[col]]?.toString();
-          const cntrSizeCell: DropdownCellType = {
-            kind: GridCellKind.Custom,
-            readonly: false,
-            allowOverlay: true,
-            copyData: "4",
-            data: {
-              kind: "dropdown-cell",
-              value: cntrSize,
-              allowedValues: [
-                { value: "20", label: "20" },
-                { value: "40", label: "40" },
-                { value: "40HC", label: "40HC" },
-                { value: "45", label: "45" },
-              ],
-            },
-          };
-          return cntrSizeCell;
+          return getContainerSizeCell(dataRow[indexes[col]]);
         case "packageWeightUnit":
         case "cargoWeightUnit":
           const weightUnit = dataRow[indexes[col]]?.toString();
@@ -256,7 +131,7 @@ export default function SIContainerGrid() {
             kind: GridCellKind.Custom,
             readonly: false,
             allowOverlay: true,
-            copyData: "4",
+            copyData: weightUnit ?? "",
             data: {
               kind: "dropdown-cell",
               value: weightUnit,
@@ -274,7 +149,7 @@ export default function SIContainerGrid() {
             kind: GridCellKind.Custom,
             readonly: false,
             allowOverlay: true,
-            copyData: "4",
+            copyData: measurementUnit ?? "",
             data: {
               kind: "dropdown-cell",
               value: measurementUnit,
@@ -296,6 +171,7 @@ export default function SIContainerGrid() {
           return {
             kind: GridCellKind.Number,
             allowOverlay: true,
+            copyData: numValue ? numValue.toString() : "",
             readonly: false,
             displayData: numValue ? numValue.toLocaleString() : "",
             data: numValue,
@@ -308,6 +184,7 @@ export default function SIContainerGrid() {
             kind: GridCellKind.Number,
             allowOverlay: true,
             readonly: false,
+            copyData: code?.toString() ?? "",
             thousandSeparator: false,
             displayData: code?.toString() ?? "",
             data: code,
@@ -320,7 +197,7 @@ export default function SIContainerGrid() {
             kind: GridCellKind.Custom,
             readonly: false,
             allowOverlay: true,
-            copyData: "4",
+            copyData: packageType ?? "",
             data: {
               kind: "dropdown-cell",
               value: packageType,
@@ -339,79 +216,106 @@ export default function SIContainerGrid() {
             kind: GridCellKind.Text,
             allowOverlay: true,
             readonly: false,
-            displayData: d?.toLocaleString() ?? "",
-            data: d?.toLocaleString() ?? "",
+            copyData: d?.toString() ?? "",
+            displayData: d?.toString() ?? "",
+            data: d?.toString() ?? "",
           };
       }
     },
-    [tableData]
+    [tableData, tempPackageList]
   );
 
-  const onCellEdited = useCallback(
-    (cell: Item, newValue: EditableGridCell) => {
-      console.log(cell, newValue);
+  const onCellEdited = useCallback((cell: Item, newValue: EditableGridCell) => {
+    const indexes: (keyof SIContainerGridProps)[] = [
+      "containerNumber",
+      "isSocContainer",
+      "containerType",
+      "containerSize",
+      "firstSealNumber",
+      "firstSealKind",
+      "firstSealType",
+      "secondSealNumber",
+      "secondSealKind",
+      "secondSealType",
+      "packageQuantity",
+      "packageType",
+      "packageWeight",
+      "packageWeightUnit",
+      "packageMeasurement",
+      "packageMeasurementUnit",
+      "cargoPackageQuantity",
+      "cargoPackageUnit",
+      "cargoWeight",
+      "cargoWeightUnit",
+      "cargoMeasurement",
+      "cargoMeasurementUnit",
+      "htsCodeUS",
+      "hisCodeEUASIA",
+    ];
+    const [col, row] = cell;
+    const key = indexes[col];
 
-      const indexes: (keyof SIContainerGridProps)[] = [
-        "containerNumber",
-        "isSocContainer",
-        "containerType",
-        "containerSize",
-        "firstSealNumber",
-        "firstSealKind",
-        "firstSealType",
-        "secondSealNumber",
-        "secondSealKind",
-        "secondSealType",
-        "packageQuantity",
-        "packageType",
-        "packageWeight",
-        "packageWeightUnit",
-        "packageMeasurement",
-        "packageMeasurementUnit",
-        "cargoPackageQuantity",
-        "cargoPackageUnit",
-        "cargoWeight",
-        "cargoWeightUnit",
-        "cargoMeasurement",
-        "cargoMeasurementUnit",
-        "htsCodeUS",
-        "hisCodeEUASIA",
-      ];
+    if (col === 1) {
+      // soc cell
+      const socValue = (newValue as DropdownCellType).data.value;
+      setTableData((prev) => {
+        const newData = [...prev];
+        const dataRow = newData[row];
+        const updatedRow = { ...dataRow, [key]: getSocValue(socValue) };
+        newData[row] = updatedRow;
+        return newData;
+      });
+      return;
+    }
 
-      if (
-        newValue.kind === GridCellKind.Custom &&
-        (newValue.data as any).kind === "dropdown-cell"
-      ) {
-        // update the cell with the new value
-        const dropdownValue = (newValue as DropdownCellType).data.value;
-        console.log("Dropdown cell edited", dropdownValue);
-        const [col, row] = cell;
-        const key = indexes[col];
-        const dataRow = tableData[row];
-        const newData = [...tableData];
-        newData[row] = { ...dataRow, [key]: dropdownValue };
-        console.log(newData);
-        setTableData(newData);
-        return;
-      }
+    if (col === 2) {
+      // container type cell
+      const containerTypeValue = (newValue as DropdownCellType).data.value;
+      setTableData((prev) => {
+        const newData = [...prev];
+        const dataRow = newData[row];
+        const updatedRow = {
+          ...dataRow,
+          [key]: containerTypeValue,
+        };
+        newData[row] = updatedRow;
+        return newData;
+      });
+    }
 
-      if (
-        newValue.kind !== GridCellKind.Text &&
-        newValue.kind !== GridCellKind.Number
-      ) {
-        console.error("Unsupported cell kind", newValue.kind);
-        // we only have text cells, might as well just die here.
-        return;
-      }
-      const [col, row] = cell;
-      const key = indexes[col];
-      const dataRow = tableData[row];
-      const newData = [...tableData];
-      newData[row] = { ...dataRow, [key]: newValue.data };
-      setTableData(newData);
-    },
-    [tableData]
-  );
+    if (
+      newValue.kind === GridCellKind.Custom &&
+      (newValue.data as any).kind === "dropdown-cell"
+    ) {
+      // update the cell with the new value
+      const dropdownValue = (newValue as DropdownCellType).data.value;
+      setTableData((prev) => {
+        const newData = [...prev];
+        const dataRow = newData[row];
+        const updatedRow = { ...dataRow, [key]: dropdownValue };
+        newData[row] = updatedRow;
+        return newData;
+      });
+      return;
+    }
+
+    if (
+      newValue.kind !== GridCellKind.Text &&
+      newValue.kind !== GridCellKind.Number
+    ) {
+      console.error("Unsupported cell kind", newValue.kind);
+      // we only have text cells, might as well just die here.
+      return;
+    }
+    setTableData((prev) => {
+      const newData = [...prev];
+      const dataRow = newData[row];
+      const value = newValue.data;
+      const updatedRow = { ...dataRow, [key]: value };
+      newData[row] = updatedRow;
+      return newData;
+    });
+  }, []);
 
   return (
     <div
@@ -420,10 +324,52 @@ export default function SIContainerGrid() {
       <div className="flex-auto w-0">
         <DataEditor
           columns={columns}
-          getCellContent={getCellContent}
           rows={tableData.length}
+          gridSelection={selection}
+          onGridSelectionChange={setSelection}
+          getCellContent={getCellContent}
           onCellEdited={onCellEdited}
+          onRowAppended={() => {
+            setTableData((prev) => {
+              return [...prev, {} as SIContainerGridProps];
+            });
+          }}
+          fillHandle
           customRenderers={allCells}
+          onPaste={(target, values) => {
+            const [col, row] = target;
+            const newData = [...tableData];
+            values.forEach((rowValues, i) => {
+              rowValues.forEach((value, j) => {
+                const dataRow = newData[row + i];
+                const key = columns[col + j].id;
+                console.log("key", key);
+                // add paste logic here
+                if (key === "isSocContainer") {
+                  set(dataRow, key, getSocValue(value));
+                  return;
+                }
+
+                if (key === "containerType") {
+                  set(dataRow, key, getContainerTypeValue(value));
+                  return;
+                }
+
+                if (key === "firstSealKind" || key === "secondSealKind") {
+                  set(dataRow, key, getSealKindValue(value));
+                  return;
+                }
+
+                if (key) {
+                  set(dataRow, key, value);
+                }
+              });
+            });
+            setTableData(newData);
+
+            return false;
+          }}
+          getCellsForSelection
         />
       </div>
     </div>
