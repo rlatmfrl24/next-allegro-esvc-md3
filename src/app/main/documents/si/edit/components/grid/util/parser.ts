@@ -83,9 +83,9 @@ export function parseData(store: {
         cargoPackageQuantity: undefined,
         cargoPackageUnit: undefined,
         cargoWeight: undefined,
-        cargoWeightUnit: undefined,
+        cargoWeightUnit: store.weightUnit,
         cargoMeasurement: undefined,
-        cargoMeasurementUnit: undefined,
+        cargoMeasurementUnit: store.measurementUnit,
         htsCodeUS: undefined,
         hisCodeEUASIA: undefined,
       });

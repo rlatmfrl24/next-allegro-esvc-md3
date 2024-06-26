@@ -1,11 +1,11 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 
-import { isBoolean, set } from "lodash";
+import { set } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { SIEditContainerState } from "@/app/store/si.store";
-import { SealKind, SIContainerGridProps } from "@/app/util/typeDef/si";
+import { SIContainerGridProps } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import {
   CompactSelection,
@@ -18,15 +18,16 @@ import {
 } from "@glideapps/glide-data-grid";
 import { allCells, DropdownCellType } from "@glideapps/glide-data-grid-cells";
 
-import { parseData } from "./util/parser";
-import { columns } from "./util/columnDef";
-import { getSocCell, getSocValue } from "./cell-type/soc-cell";
+import { getContainerSizeCell } from "./cell-type/container-size-cell";
 import {
   getContainerTypeCell,
   getContainerTypeValue,
 } from "./cell-type/container-type-cell";
-import { getContainerSizeCell } from "./cell-type/container-size-cell";
 import { getSealKindCell, getSealKindValue } from "./cell-type/seal-kind-cell";
+import { getSealTypeCell, getSealTypeValue } from "./cell-type/seal-type-cell";
+import { getSocCell, getSocValue } from "./cell-type/soc-cell";
+import { columns } from "./util/columnDef";
+import { parseData } from "./util/parser";
 
 export default function SIContainerGrid() {
   const tempPackageList = useMemo(() => {
@@ -93,27 +94,7 @@ export default function SIContainerGrid() {
       switch (indexes[col]) {
         case "firstSealType":
         case "secondSealType":
-          const sealType = dataRow[indexes[col]] as
-            | "merchanical"
-            | "electronic";
-          const sealTypeCell: DropdownCellType = {
-            kind: GridCellKind.Custom,
-            readonly: false,
-            allowOverlay: true,
-            copyData:
-              sealType === "merchanical"
-                ? "Merchanical Seal"
-                : "Electronic Seal",
-            data: {
-              kind: "dropdown-cell",
-              value: sealType,
-              allowedValues: [
-                { value: "merchanical", label: "Merchanical Seal" },
-                { value: "electronic", label: "Electronic Seal" },
-              ],
-            },
-          };
-          return sealTypeCell;
+          return getSealTypeCell(dataRow[indexes[col]]);
         case "firstSealKind":
         case "secondSealKind":
           return getSealKindCell(dataRow[indexes[col]]);
@@ -329,9 +310,33 @@ export default function SIContainerGrid() {
           onGridSelectionChange={setSelection}
           getCellContent={getCellContent}
           onCellEdited={onCellEdited}
+          rowMarkers={"both"}
+          onKeyDown={(event) => {
+            if (event.shiftKey && event.key === "Delete") {
+              event.preventDefault();
+              event.stopPropagation();
+              const selectedRowIndex = selection.current?.cell[1];
+
+              if (selectedRowIndex !== undefined) {
+                setTableData((prev) => {
+                  return prev.filter((_, index) => {
+                    return index !== selectedRowIndex;
+                  });
+                });
+              }
+            }
+          }}
           onRowAppended={() => {
             setTableData((prev) => {
-              return [...prev, {} as SIContainerGridProps];
+              return [
+                ...prev,
+                {
+                  packageWeightUnit: siContainerStore.weightUnit,
+                  packageMeasurementUnit: siContainerStore.measurementUnit,
+                  cargoWeightUnit: siContainerStore.weightUnit,
+                  cargoMeasurementUnit: siContainerStore.measurementUnit,
+                } as SIContainerGridProps,
+              ];
             });
           }}
           fillHandle
@@ -357,6 +362,11 @@ export default function SIContainerGrid() {
 
                 if (key === "firstSealKind" || key === "secondSealKind") {
                   set(dataRow, key, getSealKindValue(value));
+                  return;
+                }
+
+                if (key === "firstSealType" || key === "secondSealType") {
+                  set(dataRow, key, getSealTypeValue(value));
                   return;
                 }
 
