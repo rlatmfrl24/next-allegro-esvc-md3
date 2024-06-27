@@ -12,6 +12,7 @@ import { ClassOutlined, Favorite, MapOutlined } from "@mui/icons-material";
 import { CSSProperties, useEffect } from "react";
 import { MenuIconButton } from "./menu-button";
 import path from "path";
+import { Menu } from "@mui/material";
 
 export default function SideNavigation() {
   const pathname = usePathname();
@@ -36,12 +37,9 @@ export default function SideNavigation() {
           : "w-0 invisible"
       }`}
       >
-        <MdFilledIconButton aria-label="drawer-toggler" onClick={handleDrawer}>
-          <MdIcon>
-            <MenuIcon />
-          </MdIcon>
-        </MdFilledIconButton>
-        <div className="flex flex-col mt-3 gap-5 h-full">
+        <MenuIconButton icon={<MenuIcon />} onClick={handleDrawer} />
+
+        <div className="flex flex-col mt-6 gap-5 h-full">
           <DropdownMenu />
           <div className="flex-1"></div>
           <MenuIconButton
