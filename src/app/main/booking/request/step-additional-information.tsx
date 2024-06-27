@@ -18,6 +18,7 @@ import { BackupOutlined } from "@mui/icons-material";
 import { SubTitle } from "@/app/components/title-components";
 import { useDropzone } from "react-dropzone";
 import { faker } from "@faker-js/faker";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function AdditionalInformationStep() {
   // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
@@ -84,17 +85,17 @@ export default function AdditionalInformationStep() {
         <div className="flex flex-col gap-4">
           <SubTitle title="Special Cargo Attachment" />
           <MdOutlinedSegmentedButtonSet>
-            <MdOutlinedSegmentedButton
+            <NaOutlinedSegmentedButton
               label="Dangerous"
               onClick={() => setSelectedSpecialCargoTab("dangerous")}
               selected={selectedSpecialCargoTab === "dangerous"}
             />
-            <MdOutlinedSegmentedButton
+            <NaOutlinedSegmentedButton
               label="Reefer"
               onClick={() => setSelectedSpecialCargoTab("reefer")}
               selected={selectedSpecialCargoTab === "reefer"}
             />
-            <MdOutlinedSegmentedButton
+            <NaOutlinedSegmentedButton
               label="Awkward"
               onClick={() => setSelectedSpecialCargoTab("awkward")}
               selected={selectedSpecialCargoTab === "awkward"}

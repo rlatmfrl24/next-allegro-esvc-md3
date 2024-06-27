@@ -35,7 +35,7 @@ import {
 } from "@floating-ui/react";
 import { Download, InfoOutlined } from "@mui/icons-material";
 import classNames from "classnames";
-import { useMemo, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 import { ColumnHelper, createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
@@ -49,6 +49,7 @@ import {
   createDummyDangerousCargoStatus,
   createDummySpecialCargoStatus,
 } from "./util";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function SpecialCargoStatusSearch() {
   const cx = classNames.bind(styles);
@@ -226,12 +227,12 @@ export default function SpecialCargoStatusSearch() {
       {renderDialog()}
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "polEta"}
             onClick={() => setSearchType("polEta")}
             label="POL ETA"
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "bookingNo"}
             onClick={() => setSearchType("bookingNo")}
             label="Booking or B/L No."

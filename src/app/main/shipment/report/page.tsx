@@ -45,6 +45,7 @@ import { flushSync } from "react-dom";
 import { ReportTable } from "./table";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -251,21 +252,21 @@ export default function ShipmentReportPage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={currentTab === "arrival"}
             label="Arrival Date"
             onClick={() => {
               setCurrentTab("arrival");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={currentTab === "departure"}
             label="Departure Date"
             onClick={() => {
               setCurrentTab("departure");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={currentTab === "vessel"}
             label="Vessel"
             onClick={() => {

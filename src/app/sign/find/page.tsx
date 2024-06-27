@@ -15,6 +15,7 @@ import { PasswordOutlined, PersonSearchOutlined } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CheckApprover } from "./check-approver";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function FindIDPassword() {
   const [findTarget, setFindTarget] = useState<"id" | "password">("id");
@@ -248,14 +249,14 @@ export default function FindIDPassword() {
     <div className="h-full flex justify-center items-center">
       <MdElevatedCard className="p-8 ">
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Find ID"
             selected={findTarget === "id"}
             onClick={() => {
               setFindTarget("id");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Find Password"
             selected={findTarget === "password"}
             onClick={() => {

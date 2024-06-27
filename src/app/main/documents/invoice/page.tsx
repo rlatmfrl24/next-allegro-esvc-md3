@@ -17,6 +17,7 @@ import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import { InvoiceTable } from "./table";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function ImportInvoicePage() {
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
@@ -34,7 +35,7 @@ export default function ImportInvoicePage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "date"}
             onClick={() => {
               setSearchType("date");
@@ -42,7 +43,7 @@ export default function ImportInvoicePage() {
             }}
             label="OnBoard/Arrival Date"
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "number"}
             onClick={() => {
               setSearchType("number");

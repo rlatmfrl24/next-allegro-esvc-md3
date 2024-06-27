@@ -22,6 +22,7 @@ import { ChargeInquiryTable } from "./table";
 import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function ChargeInquiryPage() {
   const cx = classNames.bind(styles);
@@ -42,7 +43,7 @@ export default function ChargeInquiryPage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="B/L No."
             selected={currentTab === "bl"}
             onClick={() => {
@@ -50,7 +51,7 @@ export default function ChargeInquiryPage() {
               setPageState("unsearch");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Container No."
             selected={currentTab === "container"}
             onClick={() => {
@@ -58,7 +59,7 @@ export default function ChargeInquiryPage() {
               setPageState("unsearch");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="By Type of Customer"
             selected={currentTab === "customer"}
             onClick={() => {
@@ -66,7 +67,7 @@ export default function ChargeInquiryPage() {
               setPageState("unsearch");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Contract No."
             selected={currentTab === "contract"}
             onClick={() => {

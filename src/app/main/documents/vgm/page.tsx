@@ -18,6 +18,7 @@ import classNames from "classnames";
 import { CSSProperties, useState } from "react";
 import { VGMTable } from "./table";
 import { AnimatePresence, motion } from "framer-motion";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function VGMSearch() {
   const cx = classNames.bind(styles);
@@ -37,7 +38,7 @@ export default function VGMSearch() {
       <PageTitle title="VGM" category="Documents" href="/main/documents/vgm" />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             onClick={() => {
               setSearchType("booking");
               setQueries([]);
@@ -45,7 +46,7 @@ export default function VGMSearch() {
             selected={searchType === "booking"}
             label="Booking No."
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             onClick={() => {
               setSearchType("container");
               setQueries([]);

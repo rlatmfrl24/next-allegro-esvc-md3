@@ -1,4 +1,5 @@
 import { InfoTooltipButton } from "@/app/components/info-tooltip-button";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import {
   RichTooltipContainer,
@@ -42,7 +43,7 @@ export default function CargoTrackingSearchCondition({
   return (
     <div className={styles.area}>
       <MdOutlinedSegmentedButtonSet>
-        <MdOutlinedSegmentedButton
+        <NaOutlinedSegmentedButton
           selected={searchType === "booking"}
           onClick={() => {
             setSearchType("booking");
@@ -50,7 +51,7 @@ export default function CargoTrackingSearchCondition({
           }}
           label="Booking or B/L No."
         />
-        <MdOutlinedSegmentedButton
+        <NaOutlinedSegmentedButton
           selected={searchType === "container"}
           onClick={() => {
             setSearchType("container");

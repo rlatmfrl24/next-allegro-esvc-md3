@@ -20,6 +20,7 @@ import {
 import { faker } from "@faker-js/faker";
 
 import { InboundMasterTable } from "./table";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 const OnboardConditions = () => {
   const tempPortList = useMemo(() => {
@@ -103,14 +104,14 @@ export default function InboundMaster() {
       />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={currentTab === "onboard"}
             label="Onboard/Arrival Date"
             onClick={() => {
               setCurrentTab("onboard");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={currentTab === "bl"}
             label="B/L No."
             onClick={() => {
