@@ -32,7 +32,7 @@ import { MdTypography } from "../typography";
 import PlaceholdeIcon from "@/../public/icon_tracking_outlined.svg";
 import DropDownArrow from "@/../public/img_dropdown_arrow.svg";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MenuItemType } from "@/app/util/typeDef/generic";
 
 import DashboardIcon from "@/../public/icon_menu_dashboard.svg";
@@ -44,6 +44,7 @@ import TrackTraceIcon from "@/../public/icon_menu_tracktrace.svg";
 import ImportIcon from "@/../public/icon_menu_import.svg";
 import ManageShipmentIcon from "@/../public/icon_menu_manage_shipment.svg";
 import DententionIcon from "@/../public/icon_menu_dentention.svg";
+import { MenuIconButton } from "./menu-button";
 
 export const DropdownMenu = () => {
   return menuItems.map((item) => (
@@ -66,6 +67,7 @@ const MenuComponent = ({
   const nodeId = useFloatingNodeId();
   const arrowRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   const isNested = parentId != null;
 
@@ -148,19 +150,31 @@ const MenuComponent = ({
             <ChevronRightIcon fontSize="small" />
           </MdIcon>
         </div>
+      ) : item.subMenu && item.subMenu.length > 0 ? (
+        <div ref={refs.setReference} {...getReferenceProps()}>
+          <MenuIconButton
+            icon={itemIcon}
+            isSelected={
+              isOpen ||
+              (item.link !== undefined &&
+                pathname.includes("/main/" + item.link))
+            }
+          />
+        </div>
       ) : (
-        <MdFilledIconButton
-          className={`rounded-full ${isOpen && "bg-secondaryContainer"}`}
-          ref={refs.setReference}
-          {...getReferenceProps()}
-          onClick={() => {
+        <MenuIconButton
+          icon={itemIcon}
+          isSelected={
+            isOpen ||
+            (item.link !== undefined && pathname.includes("/main/" + item.link))
+          }
+          onClick={(e) => {
+            console.log(item.link);
             (item.subMenu === undefined || item.subMenu.length === 0) &&
               item.link &&
               router.push("/main/" + path.join("/"));
           }}
-        >
-          <MdIcon>{itemIcon ? itemIcon : <PlaceholdeIcon />}</MdIcon>
-        </MdFilledIconButton>
+        />
       )}
       {item.subMenu && item.subMenu.length > 0 && isOpen && (
         <FloatingPortal>

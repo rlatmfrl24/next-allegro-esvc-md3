@@ -13,7 +13,7 @@ export const MenuIconButton = ({
 }: {
   icon: React.ReactNode;
   isSelected?: boolean;
-} & ComponentProps<"div">) => {
+} & HTMLAttributes<HTMLDivElement>) => {
   return (
     <div {...props}>
       {isSelected ? (
