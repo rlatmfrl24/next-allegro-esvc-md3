@@ -19,7 +19,7 @@ import { DatePicker } from "../components/datepickers/date-picker";
 import { DateRangePicker } from "../components/datepickers/date-range-picker";
 
 export default function Test() {
-  const [color, setColor] = useState("#009FE8");
+  const [color, setColor] = useState("#a12f84");
   const router = useRouter();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Test() {
   }, []);
 
   function HexTest() {
-    const [color, setColor] = useState("#009FE8");
+    const [color, setColor] = useState("#a12f84");
 
     return (
       <div>
