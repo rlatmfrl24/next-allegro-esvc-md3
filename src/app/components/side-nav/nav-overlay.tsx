@@ -23,7 +23,7 @@ const NavOverlay = ({ handleDrawer }: { handleDrawer: () => void }) => {
         animate={{ x: 0 }}
         exit={{ x: -360 }}
         transition={{ type: "spring", bounce: 0, duration: 0.25 }}
-        className="fixed h-screen w-[360px] bg-surfaceContainerLow p-3 z-50 rounded-r-2xl flex flex-col overflow-y-auto"
+        className="fixed h-screen w-[360px] bg-surfaceContainerLowest p-3 z-50 rounded-r-2xl flex flex-col overflow-y-auto"
       >
         <OverlayScrollbarsComponent defer>
           <IconButton

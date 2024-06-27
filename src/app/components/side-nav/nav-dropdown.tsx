@@ -1,5 +1,6 @@
 import {
   MdElevation,
+  MdFilledIconButton,
   MdIcon,
   MdIconButton,
   MdRippleEffect,
@@ -148,7 +149,7 @@ const MenuComponent = ({
           </MdIcon>
         </div>
       ) : (
-        <MdIconButton
+        <MdFilledIconButton
           className={`rounded-full ${isOpen && "bg-secondaryContainer"}`}
           ref={refs.setReference}
           {...getReferenceProps()}
@@ -159,7 +160,7 @@ const MenuComponent = ({
           }}
         >
           <MdIcon>{itemIcon ? itemIcon : <PlaceholdeIcon />}</MdIcon>
-        </MdIconButton>
+        </MdFilledIconButton>
       )}
       {item.subMenu && item.subMenu.length > 0 && isOpen && (
         <FloatingPortal>

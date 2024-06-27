@@ -1,6 +1,6 @@
 "use client";
 
-import { MdIcon, MdIconButton } from "@/app/util/md3";
+import { MdFilledIconButton, MdIcon, MdIconButton } from "@/app/util/md3";
 import { AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -34,11 +34,11 @@ export default function SideNavigation() {
           : "w-0 invisible"
       }`}
       >
-        <MdIconButton aria-label="drawer-toggler" onClick={handleDrawer}>
+        <MdFilledIconButton aria-label="drawer-toggler" onClick={handleDrawer}>
           <MdIcon>
             <MenuIcon />
           </MdIcon>
-        </MdIconButton>
+        </MdFilledIconButton>
         <div className="flex flex-col mt-3 gap-5 h-full">
           <DropdownMenu />
           <div className="flex-1"></div>
