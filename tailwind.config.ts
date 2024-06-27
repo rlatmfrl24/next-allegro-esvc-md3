@@ -82,6 +82,8 @@ const config: Config = {
         extendOnGoodContainer: "#00210B",
         extendPendingContainer: "#FCE186",
         extendOnPendingContainer: "#231B00",
+
+        pointColor: "var(--md-sys-point-color)",
       },
     },
   },
