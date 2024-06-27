@@ -9,6 +9,8 @@ export default function QuickChart(props: {
     return acc + cur.value;
   }, 0);
 
+  // get primary color hex code from tailwind
+
   return (
     <div className="px-4 pb-6 flex flex-col font-pretendard">
       <div className="pt-3 pb-4 flex gap-2 items-center">
@@ -38,7 +40,7 @@ export default function QuickChart(props: {
               {props.data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={props.palette ? props.palette[index].value : ""}
+                  // fill={props.palette ? props.palette[index].value : ""}
                 />
               ))}
             </Pie>

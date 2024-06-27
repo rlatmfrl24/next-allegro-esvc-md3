@@ -155,10 +155,9 @@ const MenuComponent = ({
           <MenuIconButton
             icon={itemIcon}
             isSelected={
-              isOpen ||
-              (item.link !== undefined &&
-                pathname.includes("/main/" + item.link))
+              item.link !== undefined && pathname.includes("/main/" + item.link)
             }
+            isFocused={isOpen}
           />
         </div>
       ) : (
