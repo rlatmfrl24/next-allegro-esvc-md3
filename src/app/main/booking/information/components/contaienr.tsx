@@ -169,7 +169,7 @@ const ContainerTypeItem = (props: {
       <div>
         <LabelChip
           label={containerType}
-          className="bg-surfaceContainerHigh mb-2"
+          className="bg-surfaceContainerHigh text-onSurface mb-2"
           size="medium"
         />
         {props.containers.map((container, index) => (
