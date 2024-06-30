@@ -103,6 +103,14 @@ export function applyFixedStyles(theme: Theme): void {
   }
 }
 
+export function addCustomThemeToken(token: string, color: string) {
+  document.body.style.setProperty(token, color);
+}
+
+export function applyPointColor(color: string) {
+  document.body.style.setProperty("--md-sys-point-color", color);
+}
+
 export function applyPresetTheme(
   presetName: string,
   isDarkMode?: boolean,

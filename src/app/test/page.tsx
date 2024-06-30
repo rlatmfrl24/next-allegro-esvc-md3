@@ -6,7 +6,11 @@ import {
   MdFilledButton,
   MdInputChip,
 } from "../util/md3";
-import { createMDTheme, applyPresetTheme } from "../util/theme";
+import {
+  createMDTheme,
+  applyPresetTheme,
+  addCustomThemeToken,
+} from "../util/theme";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useRouter } from "next/navigation";
@@ -17,6 +21,7 @@ import NAMultiAutoComplete from "../components/na-multi-autocomplete";
 import EmptyResultPlaceholder from "../components/empty-placeholder";
 import { DatePicker } from "../components/datepickers/date-picker";
 import { DateRangePicker } from "../components/datepickers/date-range-picker";
+import { add } from "lodash";
 
 export default function Test() {
   const [color, setColor] = useState("#a12f84");
@@ -151,7 +156,9 @@ export default function Test() {
         <button
           className="bg-[#8c4a60] px-4 py-2 text-white font-pretendard rounded-xl"
           onClick={() => {
-            applyPresetTheme("PK");
+            // applyPresetTheme("PK");
+            createMDTheme("#BE489D");
+            addCustomThemeToken("--md-sys-color-surface-tint", "#BE489D");
           }}
         >
           PK

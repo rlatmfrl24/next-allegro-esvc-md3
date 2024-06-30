@@ -1417,5 +1417,6 @@
   "--m3-static--black": "#24313d",
   "--m3-static--white": "#ffffff",
   "--m3-static--error900": "#7f1d1d",
-  "--m3-static--gray1": "#333333"
+  "--m3-static--gray1": "#333333",
+  "--m3-point-color": "#D5F0FF"
 }

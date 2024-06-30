@@ -1413,5 +1413,6 @@
   "--m3-gray--m3ay0": "#ffffffe6",
   "--m3-gray--m3ay800": "#5d5668e6",
   "--m3-gray--m3ay50": "#e7e6e8",
-  "--m3-yellow-yellow100": "#ffbe4ae6"
+  "--m3-yellow-yellow100": "#ffbe4ae6",
+  "--m3-point-color": "#C9EFFF"
 }

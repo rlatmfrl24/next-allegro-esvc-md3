@@ -1426,5 +1426,6 @@
   "--m3-gray--gray800": "#5d5668e6",
   "--m3-gray--gray50": "#e7e6e8",
   "--m3-yellow-yellow100": "#ffbe4ae6",
-  "--m3-gradient-surface-container-high": "support only solid color"
+  "--m3-gradient-surface-container-high": "support only solid color",
+  "--m3-point-color": "#FFDBE4"
 }

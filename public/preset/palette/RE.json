@@ -1309,5 +1309,6 @@
   "--m3-static--gray1": "#333333",
   "--m3-static--gray900": "#111827",
   "--m3-static--black": "#24313d",
-  "--m3-static--white": "#ffffff"
+  "--m3-static--white": "#ffffff",
+  "--m3-point-color": "#FCE7C0"
 }
