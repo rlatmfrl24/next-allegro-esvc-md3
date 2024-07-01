@@ -69,6 +69,7 @@ const config: Config = {
         onSurface: "var(--md-sys-color-on-surface)",
         surfaceVariant: "var(--md-sys-color-surface-variant)",
         onSurfaceVariant: "var(--md-sys-color-on-surface-variant)",
+        surfaceTint: "var(--md-sys-color-surface-tint)",
         surfaceDim: "var(--md-sys-color-surface-dim)",
         surfaceBright: "var(--md-sys-color-surface-bright)",
         surfaceContainer: "var(--md-sys-color-surface-container)",
@@ -82,6 +83,8 @@ const config: Config = {
         extendOnGoodContainer: "#00210B",
         extendPendingContainer: "#FCE186",
         extendOnPendingContainer: "#231B00",
+
+        pointColor: "var(--md-sys-point-color)",
       },
     },
   },

@@ -31,7 +31,7 @@ import {
   TextFields,
 } from "@mui/icons-material";
 import { set } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export default function ContainerInput({
@@ -195,7 +195,7 @@ export default function ContainerInput({
             ? "Tank"
             : "Bulk"
         } #${containerIndex + 1}`}
-        className="bg-surfaceContainerHigh w-fit"
+        className="bg-surfaceContainerHigh text-onSurface w-fit"
       />
       <div className="flex gap-2 items-start">
         <NAOutlinedTextField
@@ -501,6 +501,12 @@ export default function ContainerInput({
                   return (
                     <div key={cargo.uuid}>
                       <MdFilterChip
+                        style={
+                          {
+                            "--md-filter-chip-selected-container-color":
+                              "var(--md-sys-point-color)",
+                          } as CSSProperties
+                        }
                         label={`Cargo #${i + 1}`}
                         selected={selectedCargoManifestUuid === cargo.uuid}
                         onClick={() => {

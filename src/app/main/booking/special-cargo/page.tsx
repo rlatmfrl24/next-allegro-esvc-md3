@@ -35,7 +35,7 @@ import {
 } from "@floating-ui/react";
 import { Download, InfoOutlined } from "@mui/icons-material";
 import classNames from "classnames";
-import { useMemo, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 import { ColumnHelper, createColumnHelper } from "@tanstack/react-table";
 import { MdTypography } from "@/app/components/typography";
 import { BasicTable } from "@/app/components/table/basic-table";
@@ -49,6 +49,7 @@ import {
   createDummyDangerousCargoStatus,
   createDummySpecialCargoStatus,
 } from "./util";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function SpecialCargoStatusSearch() {
   const cx = classNames.bind(styles);
@@ -226,12 +227,12 @@ export default function SpecialCargoStatusSearch() {
       {renderDialog()}
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "polEta"}
             onClick={() => setSearchType("polEta")}
             label="POL ETA"
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "bookingNo"}
             onClick={() => setSearchType("bookingNo")}
             label="Booking or B/L No."
@@ -266,6 +267,8 @@ export default function SpecialCargoStatusSearch() {
                   {queries.map((query, index) => (
                     <div key={index}>
                       <MdInputChip
+                        className={styles.pointChip}
+                        selected
                         label={query}
                         remove={() => {
                           setQueries((prev) =>
@@ -294,6 +297,12 @@ export default function SpecialCargoStatusSearch() {
       >
         <MdTabs>
           <MdSecondaryTab
+            style={
+              {
+                "--md-secondary-tab-container-color":
+                  "var(--md-sys-color-surface-container-lowest)",
+              } as CSSProperties
+            }
             selected={selectedTab === "dangerous"}
             onClick={() => {
               setSelectedTab("dangerous");
@@ -302,6 +311,12 @@ export default function SpecialCargoStatusSearch() {
             Dangerous Cargo
           </MdSecondaryTab>
           <MdSecondaryTab
+            style={
+              {
+                "--md-secondary-tab-container-color":
+                  "var(--md-sys-color-surface-container-lowest)",
+              } as CSSProperties
+            }
             selected={selectedTab === "awkward"}
             onClick={() => {
               setSelectedTab("awkward");
@@ -310,6 +325,12 @@ export default function SpecialCargoStatusSearch() {
             Awkward Cargo
           </MdSecondaryTab>
           <MdSecondaryTab
+            style={
+              {
+                "--md-secondary-tab-container-color":
+                  "var(--md-sys-color-surface-container-lowest)",
+              } as CSSProperties
+            }
             selected={selectedTab === "reefer"}
             onClick={() => {
               setSelectedTab("reefer");

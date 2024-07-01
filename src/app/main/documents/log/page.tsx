@@ -35,6 +35,7 @@ import {
 import { use, useEffect, useState } from "react";
 import { ManifestLogTable } from "./table";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
   const [moreFilter, setMoreFilter] = useState<string[]>([]);
@@ -151,12 +152,12 @@ export default function AdvancedManifestLogPage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Booking or B/L No."
             selected={currentTab === "booking"}
             onClick={() => setCurrentTab("booking")}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Vessel"
             selected={currentTab === "vessel"}
             onClick={() => setCurrentTab("vessel")}
@@ -184,6 +185,7 @@ export default function AdvancedManifestLogPage() {
                   {queries.map((query) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         key={faker.string.uuid()}
                         selected
                         label={query}

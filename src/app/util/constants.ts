@@ -300,10 +300,10 @@ export const cardList: DashboardCardInfoType[] = [
       { key: "Cancelled", value: faker.number.int(50) },
     ],
     palette: [
-      { key: "Accepted", value: "#196584" },
-      { key: "Requested", value: "#71787D" },
-      { key: "Rejected", value: "#BA1A1A" },
-      { key: "Cancelled", value: "#8DCFF2" },
+      { key: "Accepted", value: "--md-sys-color-primary" },
+      { key: "Requested", value: "--md-sys-color-outline" },
+      { key: "Rejected", value: "--md-sys-color-error" },
+      { key: "Cancelled", value: "--md-sys-color-primary-fixed-dim" },
     ],
   } as DashboardStatisticCardDataType,
   {
@@ -318,10 +318,10 @@ export const cardList: DashboardCardInfoType[] = [
       { key: "Temporary Saved", value: faker.number.int(50) },
     ],
     palette: [
-      { key: "Confirmed", value: "#196584" },
-      { key: "Submit", value: "#71787D" },
-      { key: "Rejected", value: "#BA1A1A" },
-      { key: "Temporary Saved", value: "#8DCFF2" },
+      { key: "Confirmed", value: "--md-sys-color-primary" },
+      { key: "Submit", value: "--md-sys-color-outline" },
+      { key: "Rejected", value: "--md-sys-color-error" },
+      { key: "Temporary Saved", value: "--md-sys-color-primary-fixed-dim" },
     ],
   },
   {
@@ -336,10 +336,13 @@ export const cardList: DashboardCardInfoType[] = [
       { key: "Internet Original B/L", value: faker.number.int(50) },
     ],
     palette: [
-      { key: "Original B/L", value: "#196584" },
-      { key: "Surredered B/L", value: "#8DCFF2" },
-      { key: "Sea Waybill", value: "#C8C2EA" },
-      { key: "Internet Original B.L", value: "#B5C9D7" },
+      { key: "Original B/L", value: "--md-sys-color-primary" },
+      { key: "Surredered B/L", value: "--md-sys-color-primary-fixed-dim" },
+      { key: "Sea Waybill", value: "--md-sys-color-outline-variant" },
+      {
+        key: "Internet Original B.L",
+        value: "--md-sys-color-secondary-fixed-dim",
+      },
     ],
   } as DashboardStatisticCardDataType,
   {

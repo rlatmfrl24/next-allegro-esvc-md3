@@ -9,7 +9,7 @@ import {
   MdTextButton,
 } from "@/app/util/md3";
 import { CancelOutlined as CancelIcon } from "@mui/icons-material";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { MdTypography } from "@/app/components/typography";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
@@ -37,7 +37,15 @@ export default function SignIn() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <MdElevatedCard className="w-[483px] p-12 flex flex-col items-center">
+      <MdElevatedCard
+        className="w-[483px] p-12 flex flex-col items-center"
+        style={
+          {
+            "--md-elevated-card-container-color":
+              "var(--md-sys-color-surface-container-lowest)",
+          } as CSSProperties
+        }
+      >
         <Image
           src="/logo_clt.svg"
           width={120}

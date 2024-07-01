@@ -19,6 +19,7 @@ import VesselIcon from "@/../public/icon_vessel_outline.svg";
 import PortIcon from "@/../public/icon_port.svg";
 import { DateRangePicker } from "../datepickers/date-range-picker";
 import { DateTime } from "luxon";
+import NaOutlinedSegmentedButton from "../na-outlined-segmented-button";
 
 export default function QuickSchedule() {
   const [mode, setMode] = useState("point-to-point");
@@ -26,34 +27,34 @@ export default function QuickSchedule() {
   return (
     <>
       <MdOutlinedSegmentedButtonSet>
-        <MdOutlinedSegmentedButton
+        <NaOutlinedSegmentedButton
           selected={mode === "point-to-point"}
           label="Point to Point"
           onClick={() => {
             setMode("point-to-point");
           }}
-        ></MdOutlinedSegmentedButton>
-        <MdOutlinedSegmentedButton
+        />
+        <NaOutlinedSegmentedButton
           selected={mode === "vessel"}
           label="Vessel"
           onClick={() => {
             setMode("vessel");
           }}
-        ></MdOutlinedSegmentedButton>
-        <MdOutlinedSegmentedButton
+        />
+        <NaOutlinedSegmentedButton
           selected={mode === "port"}
           label="Port"
           onClick={() => {
             setMode("port");
           }}
-        ></MdOutlinedSegmentedButton>
-        <MdOutlinedSegmentedButton
+        />
+        <NaOutlinedSegmentedButton
           selected={mode === "long-range"}
           label="Long Range"
           onClick={() => {
             setMode("long-range");
           }}
-        ></MdOutlinedSegmentedButton>
+        />
       </MdOutlinedSegmentedButtonSet>
       <div className="mt-6 flex-1">
         {

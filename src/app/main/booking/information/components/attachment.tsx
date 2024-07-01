@@ -44,7 +44,12 @@ export default function AttachmentSection({
         <MdChipSet>
           {file &&
             file.map((file, index) => (
-              <LabelChip key={index} label={file.name} />
+              <LabelChip
+                key={index}
+                label={file.name}
+                className="bg-pointColor text-onSurface"
+                size="medium"
+              />
             ))}
         </MdChipSet>
         <MdTypography variant="body" size="medium" className="text-outline">

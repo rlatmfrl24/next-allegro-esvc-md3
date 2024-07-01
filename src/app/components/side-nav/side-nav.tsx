@@ -1,6 +1,6 @@
 "use client";
 
-import { MdIcon, MdIconButton } from "@/app/util/md3";
+import { MdFilledIconButton, MdIcon, MdIconButton } from "@/app/util/md3";
 import { AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -9,7 +9,10 @@ import { DrawerState, UserState } from "@/app/store/global.store";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DropdownMenu } from "./nav-dropdown";
 import { ClassOutlined, Favorite, MapOutlined } from "@mui/icons-material";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
+import { MenuIconButton } from "./menu-button";
+import path from "path";
+import { Menu } from "@mui/material";
 
 export default function SideNavigation() {
   const pathname = usePathname();
@@ -34,45 +37,35 @@ export default function SideNavigation() {
           : "w-0 invisible"
       }`}
       >
-        <MdIconButton aria-label="drawer-toggler" onClick={handleDrawer}>
-          <MdIcon>
-            <MenuIcon />
-          </MdIcon>
-        </MdIconButton>
-        <div className="flex flex-col mt-3 gap-5 h-full">
+        <MenuIconButton icon={<MenuIcon />} onClick={handleDrawer} />
+
+        <div className="flex flex-col mt-6 gap-5 h-full">
           <DropdownMenu />
           <div className="flex-1"></div>
-          <MdIconButton
-            id="favorite-button"
-            onClick={(e) => {
+          <MenuIconButton
+            icon={<Favorite />}
+            isSelected={drawer.isFavoriteOpen}
+            onClick={() => {
               setDrawer({
                 ...drawer,
                 isFavoriteOpen: !drawer.isFavoriteOpen,
               });
             }}
-          >
-            <MdIcon>
-              <Favorite />
-            </MdIcon>
-          </MdIconButton>
-          <MdIconButton
+          />
+          <MenuIconButton
+            icon={<ClassOutlined />}
+            isSelected={pathname === "/main/guide"}
             onClick={() => {
               router.push("/main/guide");
             }}
-          >
-            <MdIcon>
-              <ClassOutlined />
-            </MdIcon>
-          </MdIconButton>
-          <MdIconButton
+          />
+          <MenuIconButton
+            icon={<MapOutlined />}
+            isSelected={pathname === "/main/sitemap"}
             onClick={() => {
               router.push("/main/sitemap");
             }}
-          >
-            <MdIcon>
-              <MapOutlined />
-            </MdIcon>
-          </MdIconButton>
+          />
         </div>
       </aside>
       <AnimatePresence>
