@@ -69,6 +69,68 @@ function useSkipper() {
   return [shouldSkip, skip] as const;
 }
 
+export const useBasicTable = ({
+  data,
+  columns,
+  pinningColumns = [],
+  controlColumns = [],
+  ignoreSelectionColumns = [],
+  disableColumns = [],
+  requiredColumns = [],
+  editableColumns = [],
+  hiddenColumns = [],
+  isSingleSelect = false,
+  ActionComponent,
+  updater,
+}: {
+  data: any[];
+  columns: any[];
+  pinningColumns?: string[];
+  controlColumns?: string[];
+  ignoreSelectionColumns?: string[];
+  disableColumns?: string[];
+  requiredColumns?: string[];
+  editableColumns?: string[];
+  hiddenColumns?: string[];
+  isSingleSelect?: boolean;
+  ActionComponent?: (table: Table<any>) => React.ReactNode;
+  updater?: Dispatch<SetStateAction<any[]>>;
+}) => {
+  // const [data, setData] = useState<any[]>([]);
+  // const [columns, setColumns] = useState<any[]>([]);
+  // const tableData = useMemo(() => data, [data]);
+  // const tableColumns = useMemo(() => columns, [columns]);
+  const [selectedRows, setSelectedRows] = useState<any>({});
+
+  const renderTable = (props: {
+    data: any[];
+    columns: any[];
+    getSelectionRows?: (Rows: any[], table: Table<any>) => void;
+    onRowSelectionChange?: Dispatch<SetStateAction<any>>;
+  }) => (
+    <BasicTable
+      {...props}
+      data={data}
+      columns={columns}
+      pinningColumns={pinningColumns}
+      controlColumns={controlColumns}
+      ignoreSelectionColumns={ignoreSelectionColumns}
+      disableColumns={disableColumns}
+      requiredColumns={requiredColumns}
+      editableColumns={editableColumns}
+      hiddenColumns={hiddenColumns}
+      isSingleSelect={isSingleSelect}
+      getSelectionRows={(rows) => {
+        setSelectedRows(rows);
+      }}
+      ActionComponent={ActionComponent}
+      updater={updater}
+    />
+  );
+
+  return { renderTable, selectedRows, setSelectedRows };
+};
+
 export const BasicTable = ({
   data,
   columns,
@@ -197,6 +259,7 @@ export const BasicTable = ({
         Object.keys(selectedRows).map((key) => data[parseInt(key)]),
         table
       );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRows]);
 
