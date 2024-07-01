@@ -38,6 +38,7 @@ export default function RootLayout({
             </main>
           </div>
         </Providers>
+        <div id="portal" />
       </body>
     </html>
   );

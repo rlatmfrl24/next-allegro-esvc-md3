@@ -102,7 +102,9 @@ export const NAOutlinedNumberField = ({
               );
             }
           }}
-          className="text-right"
+          className={`text-right w-full ${
+            props.readOnly ? "bg-surfaceContainer" : ""
+          }`}
         ></MdOutlinedTextFieldBase>
         {props.required && (
           <MdTypography
