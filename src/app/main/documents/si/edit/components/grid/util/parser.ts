@@ -3,24 +3,6 @@ import {
   SIContainerInputProps,
 } from "@/app/util/typeDef/si";
 
-export function repackData(
-  data: SIContainerGridProps[]
-): SIContainerInputProps[] {
-  const repackedData: SIContainerInputProps[] = [];
-
-  // merged by container number
-  const mergedData = {
-    dry: [] as SIContainerInputProps[],
-    reefer: [] as SIContainerInputProps[],
-    opentop: [] as SIContainerInputProps[],
-    tank: [] as SIContainerInputProps[],
-    flatrack: [] as SIContainerInputProps[],
-    bulk: [] as SIContainerInputProps[],
-  };
-
-  return repackedData;
-}
-
 export function parseData(store: {
   dry: SIContainerInputProps[];
   reefer: SIContainerInputProps[];

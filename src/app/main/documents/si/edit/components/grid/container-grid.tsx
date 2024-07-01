@@ -10,6 +10,7 @@ import { faker } from "@faker-js/faker";
 import {
   CompactSelection,
   DataEditor,
+  DataEditorProps,
   EditableGridCell,
   GridCell,
   GridCellKind,
@@ -28,6 +29,12 @@ import { getSealTypeCell, getSealTypeValue } from "./cell-type/seal-type-cell";
 import { getSocCell, getSocValue } from "./cell-type/soc-cell";
 import { columns } from "./util/columnDef";
 import { parseData } from "./util/parser";
+
+function getHexCodeFromToken(token: string) {
+  return window
+    .getComputedStyle(document.documentElement.querySelector("body") as Element)
+    .getPropertyValue(token);
+}
 
 export default function SIContainerGrid() {
   const tempPackageList = useMemo(() => {
@@ -49,16 +56,40 @@ export default function SIContainerGrid() {
     rows: CompactSelection.empty(),
   });
 
+  const [highlightRegion, setHighlightRegion] = useState<
+    DataEditorProps["highlightRegions"]
+  >([]);
+
+  function addHighlightRegion(col: number, row: number) {
+    setHighlightRegion((prev) => {
+      return [
+        ...(prev as any[]),
+        {
+          color: getHexCodeFromToken("--md-sys-color-error") + "10",
+          range: {
+            x: col,
+            y: row,
+            width: 1,
+            height: 1,
+          },
+          style: "solid",
+        },
+      ];
+    });
+  }
+
+  function removeHighlightRegion(col: number, row: number) {
+    setHighlightRegion((prev) => {
+      return (prev as any[]).filter((region) => {
+        return region.range.x !== col || region.range.y !== row;
+      });
+    });
+  }
+
   useEffect(() => {
-    console.log("Table data changed", tableData);
-  }, [tableData]);
-
-  // useEffect(() => {
-  //   console.log("Selection changed", selection);
-  // }, [selection]);
-
-  // const repackedData = repackData(data);
-  // console.log(repackedData);
+    addHighlightRegion(2, 2);
+    addHighlightRegion(3, 2);
+  }, []);
 
   const getCellContent = useCallback(
     (cell: Item): GridCell => {
@@ -367,6 +398,16 @@ export default function SIContainerGrid() {
           getCellContent={getCellContent}
           onCellEdited={onCellEdited}
           rowMarkers={"both"}
+          highlightRegions={highlightRegion}
+          theme={{
+            accentColor: getHexCodeFromToken("--md-sys-color-primary"),
+            // accentFg: getHexCodeFromToken("--md-sys-color-primary"),
+            accentLight: getHexCodeFromToken(
+              "--md-sys-color-secondary-container"
+            ),
+            // bgBubble: getHexCodeFromToken("--md-sys-color-primary"),
+            // bgBubbleSelected: getHexCodeFromToken("--md-sys-color-primary"),
+          }}
           onKeyDown={(event) => {
             if (event.shiftKey && event.key === "Delete") {
               event.preventDefault();
