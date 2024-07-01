@@ -389,13 +389,13 @@ export default function BookingStatusCondition() {
                 ...styles,
               } as CSSProperties
             }
-            className="bg-surfaceContainerHigh rounded-3xl relative w-72"
+            className="bg-surfaceContainerLow rounded-3xl relative w-72"
           >
             <MdElevation />
             <MdTypography variant="headline" size="small" className="p-6">
               More Filter
             </MdTypography>
-            <MdList className="bg-surfaceContainerHigh">
+            <MdList className="bg-surfaceContainerLow">
               {filterOptions.map((item) => (
                 <MdListItem
                   key={item.id}
