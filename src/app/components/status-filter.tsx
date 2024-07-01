@@ -20,17 +20,22 @@ import {
 } from "@floating-ui/react";
 import { ArrowDropDown, Check } from "@mui/icons-material";
 import { basicPopoverStyles } from "../util/constants";
+import { isEqual } from "lodash";
 
 const StatusFilterComponent = ({
+  initialStatus,
   statusOptions,
   unit = "Status",
   onChange,
 }: {
+  initialStatus?: string[];
   statusOptions: string[];
   unit?: string;
   onChange?: (status: string[]) => void;
 }) => {
-  const [selectedStatus, setSelectedStatus] = useState(statusOptions);
+  const [selectedStatus, setSelectedStatus] = useState(
+    initialStatus ? initialStatus : statusOptions
+  );
   const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
@@ -51,7 +56,16 @@ const StatusFilterComponent = ({
   ]);
 
   useEffect(() => {
-    onChange?.(selectedStatus);
+    // onChange?.(selectedStatus);
+
+    if (initialStatus !== undefined) {
+      if (onChange && !isEqual(selectedStatus, initialStatus)) {
+        onChange(selectedStatus);
+      }
+    } else {
+      onChange?.(selectedStatus);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatus]);
 
