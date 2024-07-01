@@ -25,7 +25,7 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { InfoOutlined } from "@mui/icons-material";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 
 export default function CargoTrackingSearchCondition({
   onSearch,
@@ -98,6 +98,12 @@ export default function CargoTrackingSearchCondition({
             {searchChipList.map((searchChip) => (
               <div key={searchChip}>
                 <MdInputChip
+                  style={
+                    {
+                      "--md-sys-color-secondary-container":
+                        "var(--md-sys-color-point-color)",
+                    } as CSSProperties
+                  }
                   label={searchChip}
                   selected
                   remove={() =>
