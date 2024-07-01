@@ -56,8 +56,6 @@ const StatusFilterComponent = ({
   ]);
 
   useEffect(() => {
-    // onChange?.(selectedStatus);
-
     if (initialStatus !== undefined) {
       if (onChange && !isEqual(selectedStatus, initialStatus)) {
         onChange(selectedStatus);
