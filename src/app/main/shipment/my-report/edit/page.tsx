@@ -161,6 +161,7 @@ export default function EditReport() {
               {origins.map((origin) => (
                 <div key={origin}>
                   <MdInputChip
+                    className={styles.pointChip}
                     label={origin}
                     selected
                     remove={() => {
@@ -185,6 +186,7 @@ export default function EditReport() {
               {destinations.map((destination) => (
                 <div key={destination}>
                   <MdInputChip
+                    className={styles.pointChip}
                     label={destination}
                     selected
                     remove={() => {

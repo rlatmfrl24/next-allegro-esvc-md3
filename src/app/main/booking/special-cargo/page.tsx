@@ -267,6 +267,8 @@ export default function SpecialCargoStatusSearch() {
                   {queries.map((query, index) => (
                     <div key={index}>
                       <MdInputChip
+                        className={styles.pointChip}
+                        selected
                         label={query}
                         remove={() => {
                           setQueries((prev) =>
@@ -295,6 +297,12 @@ export default function SpecialCargoStatusSearch() {
       >
         <MdTabs>
           <MdSecondaryTab
+            style={
+              {
+                "--md-secondary-tab-container-color":
+                  "var(--md-sys-color-surface-container-lowest)",
+              } as CSSProperties
+            }
             selected={selectedTab === "dangerous"}
             onClick={() => {
               setSelectedTab("dangerous");
@@ -303,6 +311,12 @@ export default function SpecialCargoStatusSearch() {
             Dangerous Cargo
           </MdSecondaryTab>
           <MdSecondaryTab
+            style={
+              {
+                "--md-secondary-tab-container-color":
+                  "var(--md-sys-color-surface-container-lowest)",
+              } as CSSProperties
+            }
             selected={selectedTab === "awkward"}
             onClick={() => {
               setSelectedTab("awkward");
@@ -311,6 +325,12 @@ export default function SpecialCargoStatusSearch() {
             Awkward Cargo
           </MdSecondaryTab>
           <MdSecondaryTab
+            style={
+              {
+                "--md-secondary-tab-container-color":
+                  "var(--md-sys-color-surface-container-lowest)",
+              } as CSSProperties
+            }
             selected={selectedTab === "reefer"}
             onClick={() => {
               setSelectedTab("reefer");

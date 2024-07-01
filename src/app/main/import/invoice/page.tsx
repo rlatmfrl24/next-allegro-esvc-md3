@@ -84,6 +84,7 @@ export default function ImportInvoicePage() {
                 {queries.map((query, index) => (
                   <div key={query}>
                     <MdInputChip
+                      className={styles.pointChip}
                       label={query}
                       selected
                       remove={() => {

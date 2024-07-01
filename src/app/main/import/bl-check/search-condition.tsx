@@ -174,6 +174,7 @@ export default function BLCheckSearchCondition({
                   {blNumberList.map((blNumber) => (
                     <div key={blNumber}>
                       <MdInputChip
+                        className={styles.pointChip}
                         selected
                         label={blNumber}
                         remove={() => {

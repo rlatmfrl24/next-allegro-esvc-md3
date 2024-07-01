@@ -113,13 +113,13 @@ export default function PortSchedule() {
           </div>
         </div>
       </div>
-      {pageState === "unsearch" ? (
-        <EmptyResultPlaceholder text={"Please search for the schedule"} />
-      ) : (
-        <div className={cx(styles.area, styles.table)}>
+      <div className={cx(styles.area, styles.table)}>
+        {pageState === "unsearch" ? (
+          <EmptyResultPlaceholder text={"Please search for the schedule"} />
+        ) : (
           <PortResultTable data={tempPortSchedules} />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

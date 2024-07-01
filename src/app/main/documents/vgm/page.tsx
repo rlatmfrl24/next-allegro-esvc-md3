@@ -79,6 +79,7 @@ export default function VGMSearch() {
             <MdChipSet className="mt-2">
               {queris.map((q, i) => (
                 <MdInputChip
+                  className={styles.pointChip}
                   key={faker.string.uuid()}
                   label={q}
                   selected={true}

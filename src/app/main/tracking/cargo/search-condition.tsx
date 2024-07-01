@@ -98,12 +98,7 @@ export default function CargoTrackingSearchCondition({
             {searchChipList.map((searchChip) => (
               <div key={searchChip}>
                 <MdInputChip
-                  style={
-                    {
-                      "--md-sys-color-secondary-container":
-                        "var(--md-sys-color-point-color)",
-                    } as CSSProperties
-                  }
+                  className={styles.pointChip}
                   label={searchChip}
                   selected
                   remove={() =>

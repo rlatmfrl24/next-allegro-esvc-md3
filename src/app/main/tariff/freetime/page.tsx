@@ -51,6 +51,7 @@ export default function FreetimeRequestPage() {
               {queries.map((query, index) => (
                 <div key={index}>
                   <MdInputChip
+                    className={styles.pointChip}
                     label={query}
                     selected
                     remove={() => {

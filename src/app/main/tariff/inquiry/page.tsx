@@ -193,6 +193,7 @@ const BlNumberCriteria = () => {
         {queries.map((query, index) => (
           <div key={query}>
             <MdInputChip
+              className={styles.pointChip}
               label={query}
               selected
               remove={() => {
@@ -234,6 +235,7 @@ const ContainerNumberCriteria = () => {
         {queries.map((query, index) => (
           <div key={query}>
             <MdInputChip
+              className={styles.pointChip}
               label={query}
               selected
               remove={() => {

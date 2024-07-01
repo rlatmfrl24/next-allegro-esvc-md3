@@ -93,6 +93,7 @@ export default function ArrivalNoticePage() {
                   {queries.map((query) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         label={query}
                         selected
                         remove={() => {
@@ -126,6 +127,7 @@ export default function ArrivalNoticePage() {
                   {queries.map((query) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         label={query}
                         selected
                         remove={() => {

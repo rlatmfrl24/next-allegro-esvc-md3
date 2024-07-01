@@ -185,6 +185,7 @@ export default function AdvancedManifestLogPage() {
                   {queries.map((query) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         key={faker.string.uuid()}
                         selected
                         label={query}

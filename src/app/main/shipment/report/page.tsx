@@ -369,6 +369,7 @@ export default function ShipmentReportPage() {
                     {polSelections.map((item) => (
                       <div key={item}>
                         <MdInputChip
+                          className={styles.pointChip}
                           label={item}
                           selected
                           remove={() =>
@@ -396,6 +397,7 @@ export default function ShipmentReportPage() {
                     {podSelections.map((item) => (
                       <div key={item}>
                         <MdInputChip
+                          className={styles.pointChip}
                           label={item}
                           selected
                           remove={() =>

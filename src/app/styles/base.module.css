@@ -22,3 +22,7 @@
 .area.row-direction {
   @apply flex-row gap-0;
 }
+
+.pointChip {
+  --md-input-chip-selected-container-color: var(--md-sys-point-color);
+}
