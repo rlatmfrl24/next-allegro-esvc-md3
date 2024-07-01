@@ -206,97 +206,153 @@ export default function SIContainerGrid() {
     [tableData, tempPackageList]
   );
 
-  const onCellEdited = useCallback((cell: Item, newValue: EditableGridCell) => {
-    const indexes: (keyof SIContainerGridProps)[] = [
-      "containerNumber",
-      "isSocContainer",
-      "containerType",
-      "containerSize",
-      "firstSealNumber",
-      "firstSealKind",
-      "firstSealType",
-      "secondSealNumber",
-      "secondSealKind",
-      "secondSealType",
-      "packageQuantity",
-      "packageType",
-      "packageWeight",
-      "packageWeightUnit",
-      "packageMeasurement",
-      "packageMeasurementUnit",
-      "cargoPackageQuantity",
-      "cargoPackageUnit",
-      "cargoWeight",
-      "cargoWeightUnit",
-      "cargoMeasurement",
-      "cargoMeasurementUnit",
-      "htsCodeUS",
-      "hisCodeEUASIA",
-    ];
-    const [col, row] = cell;
-    const key = indexes[col];
+  const onCellEdited = useCallback(
+    (cell: Item, newValue: EditableGridCell) => {
+      const indexes: (keyof SIContainerGridProps)[] = [
+        "containerNumber",
+        "isSocContainer",
+        "containerType",
+        "containerSize",
+        "firstSealNumber",
+        "firstSealKind",
+        "firstSealType",
+        "secondSealNumber",
+        "secondSealKind",
+        "secondSealType",
+        "packageQuantity",
+        "packageType",
+        "packageWeight",
+        "packageWeightUnit",
+        "packageMeasurement",
+        "packageMeasurementUnit",
+        "cargoPackageQuantity",
+        "cargoPackageUnit",
+        "cargoWeight",
+        "cargoWeightUnit",
+        "cargoMeasurement",
+        "cargoMeasurementUnit",
+        "htsCodeUS",
+        "hisCodeEUASIA",
+      ];
+      const [col, row] = cell;
+      const key = indexes[col];
 
-    if (col === 1) {
-      // soc cell
-      const socValue = (newValue as DropdownCellType).data.value;
+      if (col === 1) {
+        // soc cell
+        const socValue = (newValue as DropdownCellType).data.value;
+        setTableData((prev) => {
+          const newData = [...prev];
+          const dataRow = newData[row];
+          const updatedRow = { ...dataRow, [key]: getSocValue(socValue) };
+          newData[row] = updatedRow;
+          return newData;
+        });
+        return;
+      }
+
+      if (col === 2) {
+        // container type cell
+        const containerTypeValue = (newValue as DropdownCellType).data.value;
+        setTableData((prev) => {
+          const newData = [...prev];
+          const dataRow = newData[row];
+          const updatedRow = {
+            ...dataRow,
+            [key]: containerTypeValue,
+          };
+          newData[row] = updatedRow;
+          return newData;
+        });
+      }
+
+      // case for cargo weight unit and package weight unit
+      if (key === "packageWeightUnit" || key === "cargoWeightUnit") {
+        const weightUnitValue = (newValue as DropdownCellType).data.value as
+          | "KGS"
+          | "LBS";
+
+        setSIContainerStore((prev) => {
+          return {
+            ...prev,
+            weightUnit: weightUnitValue,
+          };
+        });
+
+        // change all the weight unit in the table
+        setTableData((prev) => {
+          return prev.map((data) => {
+            return {
+              ...data,
+              packageWeightUnit: weightUnitValue,
+              cargoWeightUnit: weightUnitValue,
+            };
+          });
+        });
+
+        return;
+      }
+
+      // case for cargo measurement unit and package measurement unit
+      if (key === "packageMeasurementUnit" || key === "cargoMeasurementUnit") {
+        const measurementUnitValue = (newValue as DropdownCellType).data
+          .value as "CBM" | "CBF";
+
+        setSIContainerStore((prev) => {
+          return {
+            ...prev,
+            measurementUnit: measurementUnitValue,
+          };
+        });
+
+        // change all the measurement unit in the table
+        setTableData((prev) => {
+          return prev.map((data) => {
+            return {
+              ...data,
+              packageMeasurementUnit: measurementUnitValue,
+              cargoMeasurementUnit: measurementUnitValue,
+            };
+          });
+        });
+
+        return;
+      }
+
+      if (
+        newValue.kind === GridCellKind.Custom &&
+        (newValue.data as any).kind === "dropdown-cell"
+      ) {
+        // update the cell with the new value
+        const dropdownValue = (newValue as DropdownCellType).data.value;
+        setTableData((prev) => {
+          const newData = [...prev];
+          const dataRow = newData[row];
+          const updatedRow = { ...dataRow, [key]: dropdownValue };
+          newData[row] = updatedRow;
+          return newData;
+        });
+        return;
+      }
+
+      if (
+        newValue.kind !== GridCellKind.Text &&
+        newValue.kind !== GridCellKind.Number
+      ) {
+        console.error("Unsupported cell kind", newValue.kind);
+        // we only have text cells, might as well just die here.
+        return;
+      }
       setTableData((prev) => {
         const newData = [...prev];
         const dataRow = newData[row];
-        const updatedRow = { ...dataRow, [key]: getSocValue(socValue) };
+        const value = newValue.data;
+        const updatedRow = { ...dataRow, [key]: value };
         newData[row] = updatedRow;
         return newData;
       });
-      return;
-    }
-
-    if (col === 2) {
-      // container type cell
-      const containerTypeValue = (newValue as DropdownCellType).data.value;
-      setTableData((prev) => {
-        const newData = [...prev];
-        const dataRow = newData[row];
-        const updatedRow = {
-          ...dataRow,
-          [key]: containerTypeValue,
-        };
-        newData[row] = updatedRow;
-        return newData;
-      });
-    }
-
-    if (
-      newValue.kind === GridCellKind.Custom &&
-      (newValue.data as any).kind === "dropdown-cell"
-    ) {
-      // update the cell with the new value
-      const dropdownValue = (newValue as DropdownCellType).data.value;
-      setTableData((prev) => {
-        const newData = [...prev];
-        const dataRow = newData[row];
-        const updatedRow = { ...dataRow, [key]: dropdownValue };
-        newData[row] = updatedRow;
-        return newData;
-      });
-      return;
-    }
-
-    if (
-      newValue.kind !== GridCellKind.Text &&
-      newValue.kind !== GridCellKind.Number
-    ) {
-      console.error("Unsupported cell kind", newValue.kind);
-      // we only have text cells, might as well just die here.
-      return;
-    }
-    setTableData((prev) => {
-      const newData = [...prev];
-      const dataRow = newData[row];
-      const value = newValue.data;
-      const updatedRow = { ...dataRow, [key]: value };
-      newData[row] = updatedRow;
-      return newData;
-    });
-  }, []);
+    },
+    [setSIContainerStore]
+  );
 
   return (
     <div
