@@ -19,6 +19,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { BottomFloatingState } from "@/app/store/subscription.store";
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function SubscriptionPage() {
   const [currentTabe, setCurrentTab] = useState("Documentation");
@@ -36,27 +37,27 @@ export default function SubscriptionPage() {
       <PageTitle title="e-Subscription" hasFavorite={false} />
       <div className={cx(styles.area, "flex-1 mb-12")}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Documentation"
             onClick={() => setCurrentTab("Documentation")}
             selected={currentTabe === "Documentation"}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Vessel"
             onClick={() => setCurrentTab("Vessel")}
             selected={currentTabe === "Vessel"}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Schedule"
             onClick={() => setCurrentTab("Schedule")}
             selected={currentTabe === "Schedule"}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Report"
             onClick={() => setCurrentTab("Report")}
             selected={currentTabe === "Report"}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Visibility"
             onClick={() => setCurrentTab("Visibility")}
             selected={currentTabe === "Visibility"}

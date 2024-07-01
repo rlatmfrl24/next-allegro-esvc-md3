@@ -171,12 +171,12 @@ export const SIContainerInputState = selector({
     const containerState = get(SIEditContainerState);
 
     const containerCount: {
-      dry: { [key: number]: number };
-      reefer: { [key: number]: number };
-      opentop: { [key: number]: number };
-      tank: { [key: number]: number };
-      flatrack: { [key: number]: number };
-      bulk: { [key: number]: number };
+      dry: { [key: string]: number };
+      reefer: { [key: string]: number };
+      opentop: { [key: string]: number };
+      tank: { [key: string]: number };
+      flatrack: { [key: string]: number };
+      bulk: { [key: string]: number };
     } = {
       dry: {},
       reefer: {},

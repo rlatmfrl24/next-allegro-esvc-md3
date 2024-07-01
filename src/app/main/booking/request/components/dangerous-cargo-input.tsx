@@ -20,6 +20,7 @@ import { Add } from "@mui/icons-material";
 import { faker } from "@faker-js/faker";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const DangerousCargoInput = ({
   container,
@@ -43,6 +44,15 @@ const DangerousCargoInput = ({
   }, [container.dangerousCargoInformation.length]);
 
   function AddDangerousCargo() {
+    const newDangerousCargo = {
+      uuid: faker.string.uuid(),
+      unNumber: "",
+      class: "",
+      flashPoint: "",
+      packingGroup: "None",
+      properShippingName: "",
+    };
+
     setContainerInformation((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -51,19 +61,14 @@ const DangerousCargoInput = ({
               ...c,
               dangerousCargoInformation: [
                 ...c.dangerousCargoInformation,
-                {
-                  uuid: faker.string.uuid(),
-                  unNumber: "",
-                  class: "",
-                  flashPoint: "",
-                  packingGroup: "None",
-                  properShippingName: "",
-                },
+                newDangerousCargo,
               ],
             }
           : c
       ),
     }));
+
+    setSelectedDangerousCargo(newDangerousCargo.uuid);
   }
 
   function RemoveDangerousCargo(uuid: string) {
@@ -189,25 +194,7 @@ const DangerousCargoInput = ({
                       ? setSelectedDangerousCargo("")
                       : setSelectedDangerousCargo(dci.uuid)
                   }
-                  remove={() =>
-                    //delete the dangerous cargo
-                    // setContainerInformation((prev) => ({
-                    //   ...prev,
-                    //   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                    //     c.uuid === container.uuid &&
-                    //     c.type !== ContainerType.bulk
-                    //       ? {
-                    //           ...c,
-                    //           dangerousCargoInformation:
-                    //             c.dangerousCargoInformation.filter(
-                    //               (dc) => dc.uuid !== dci.uuid
-                    //             ),
-                    //         }
-                    //       : c
-                    //   ),
-                    // }))
-                    RemoveDangerousCargo(dci.uuid)
-                  }
+                  remove={() => RemoveDangerousCargo(dci.uuid)}
                 />
               ))}
             </MdChipSet>
@@ -215,21 +202,18 @@ const DangerousCargoInput = ({
           <div className="flex gap-2">
             {selectedDangerousCargo !== "" && (
               <>
-                <NAOutlinedTextField
+                <NAOutlinedNumberField
                   label="UN No."
                   required={showRequired}
-                  type="number"
                   enableNumberSeparator={false}
                   maxInputLength={4}
-                  maxLength={4}
                   className="w-24"
-                  enableClearButton={false}
                   value={
                     container.dangerousCargoInformation.find(
                       (dci) => dci.uuid === selectedDangerousCargo
                     )?.unNumber
                   }
-                  handleValueChange={(value) =>
+                  handleValueChange={(value) => {
                     setContainerInformation((prev) => ({
                       ...prev,
                       [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -246,17 +230,14 @@ const DangerousCargoInput = ({
                             }
                           : c
                       ),
-                    }))
-                  }
+                    }));
+                  }}
                 />
-                <NAOutlinedTextField
+                <NAOutlinedNumberField
                   label="Class"
                   required={showRequired}
-                  type="number"
                   maxInputLength={3}
-                  maxLength={3}
                   className="w-24"
-                  enableClearButton={false}
                   value={
                     container.dangerousCargoInformation.find(
                       (dci) => dci.uuid === selectedDangerousCargo

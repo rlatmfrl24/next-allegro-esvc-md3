@@ -22,7 +22,9 @@ const ContainerToggleButton = ({
   return (
     <div
       className={`relative flex-1 flex flex-col gap-1 justify-center items-center py-4 rounded-lg border min-w-36 ${
-        isSelected ? "border-primary bg-[#19658414]" : "border-outlineVariant"
+        isSelected
+          ? "border-primary bg-surfaceContainer"
+          : "border-outlineVariant"
       } cursor-pointer`}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}

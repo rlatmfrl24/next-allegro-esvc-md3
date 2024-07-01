@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import LabelChip from "@/app/components/label-chip";
 import { Download } from "@mui/icons-material";
 import { DividerComponent } from "@/app/components/divider";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 type ServiceSummaryDialogProps = {
   bookingNumber: string;
@@ -347,17 +348,17 @@ export default function VisibilityServicePage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="By Shipper"
             onClick={() => setCurrentTab("shipper")}
             selected={currentTab === "shipper"}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="By Consignee"
             onClick={() => setCurrentTab("consignee")}
             selected={currentTab === "consignee"}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="By Contract"
             onClick={() => setCurrentTab("contract")}
             selected={currentTab === "contract"}

@@ -23,6 +23,7 @@ import PointToPointCalendarResult from "./result-calendar";
 import PointToPointListResult from "./result-list";
 import SearchCondition from "./search-condition";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function PointToPointSchedule() {
   const cx = classNames.bind(styles);
@@ -91,16 +92,16 @@ export default function PointToPointSchedule() {
       >
         {resultList.length > 0 && (
           <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
-            <MdOutlinedSegmentedButton
+            <NaOutlinedSegmentedButton
               label="List"
               selected={pageState === "list"}
               onClick={() => setPageState("list")}
-            ></MdOutlinedSegmentedButton>
-            <MdOutlinedSegmentedButton
+            />
+            <NaOutlinedSegmentedButton
               label="Calendar"
               selected={pageState === "calendar"}
               onClick={() => setPageState("calendar")}
-            ></MdOutlinedSegmentedButton>
+            />
           </MdOutlinedSegmentedButtonSet>
         )}
 

@@ -23,14 +23,14 @@ export default function RootLayout({
         <Providers>
           <div
             id="nav-container"
-            className="relative flex h-screen overflow-hidden bg-surfaceDim"
+            className="relative flex h-screen overflow-hidden bg-onPrimaryFixedVariant"
           >
             <SideNavigation />
-            <main className="flex-1 flex flex-col overflow-hidden bg-surfaceContainerHighest rounded-l-3xl">
+            <main className="flex-1 flex flex-col overflow-hidden bg-surfaceContainerLowest rounded-l-3xl">
               <Header />
               <section
                 id="main-container"
-                className="relative flex-1 overflow-hidden rounded-3xl bg-surfaceContainer"
+                className="relative flex-1 overflow-hidden rounded-3xl bg-surfaceContainerLow"
               >
                 <FavoriteMain />
                 {children}
@@ -38,6 +38,7 @@ export default function RootLayout({
             </main>
           </div>
         </Providers>
+        <div id="portal" />
       </body>
     </html>
   );

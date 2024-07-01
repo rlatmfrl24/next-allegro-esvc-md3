@@ -25,6 +25,7 @@ import { useEffect, useMemo } from "react";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { AnimatePresence, motion } from "framer-motion";
 import { containerVariant } from "./base";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 
 const FlatRackContainerInput = ({
   list,
@@ -131,9 +132,8 @@ const FlatRackContainerInput = ({
                               }));
                             }}
                           />
-                          <NAOutlinedTextField
+                          <NAOutlinedNumberField
                             label="Quantity / Total"
-                            type="number"
                             required={showRequired}
                             error={
                               bookingRequestStep.container.visited &&
@@ -145,14 +145,15 @@ const FlatRackContainerInput = ({
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 flatrack: prev.flatrack.map((c, i) =>
-                                  i === index ? { ...c, quantity: +value } : c
+                                  i === index
+                                    ? { ...c, quantity: value ?? 0 }
+                                    : c
                                 ),
                               }));
                             }}
                           />
-                          <NAOutlinedTextField
+                          <NAOutlinedNumberField
                             label="Quantity / SOC"
-                            type="number"
                             value={container.soc.toString()}
                             error={container.soc > container.quantity}
                             errorText="SOC cannot be greater than Quantity"
@@ -160,7 +161,7 @@ const FlatRackContainerInput = ({
                               setContainerInformation((prev) => ({
                                 ...prev,
                                 flatrack: prev.flatrack.map((c, i) =>
-                                  i === index ? { ...c, soc: +value } : c
+                                  i === index ? { ...c, soc: value ?? 0 } : c
                                 ),
                               }));
                             }}

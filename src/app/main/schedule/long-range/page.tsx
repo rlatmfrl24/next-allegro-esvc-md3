@@ -29,8 +29,10 @@ import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
+import classNames from "classnames";
 
 export default function LongRangeSchedule() {
+  const cx = classNames.bind(styles);
   const [pageState, setPageState] = useState<"unsearch" | "search">("unsearch");
   const [errorState, setErrorState] = useState<"from" | "to" | null>(null);
   const [searchCondition, setSearchCondition] =
@@ -190,7 +192,9 @@ export default function LongRangeSchedule() {
         </div>
       </div>
       {pageState === "unsearch" ? (
-        <EmptyResultPlaceholder text={"Please search for the schedule"} />
+        <div className={cx(styles.area, styles.table)}>
+          <EmptyResultPlaceholder text={"Please search for the schedule"} />
+        </div>
       ) : (
         <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
           <ServiceLaneSelector

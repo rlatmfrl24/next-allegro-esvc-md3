@@ -18,6 +18,7 @@ import {
 
 import { ArrivalNoticeTable } from "./table";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function ArrivalNoticePage() {
   const [pageState, setPageState] = useState<"search" | "unsearch">("unsearch");
@@ -36,7 +37,7 @@ export default function ArrivalNoticePage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "date"}
             onClick={() => {
               setSearchType("date");
@@ -44,7 +45,7 @@ export default function ArrivalNoticePage() {
             }}
             label="Onboard/Arrival Date"
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "bl"}
             onClick={() => {
               setSearchType("bl");
@@ -52,7 +53,7 @@ export default function ArrivalNoticePage() {
             }}
             label="B/L No."
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "container"}
             onClick={() => {
               setSearchType("container");
@@ -92,6 +93,7 @@ export default function ArrivalNoticePage() {
                   {queries.map((query) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         label={query}
                         selected
                         remove={() => {
@@ -125,6 +127,7 @@ export default function ArrivalNoticePage() {
                   {queries.map((query) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         label={query}
                         selected
                         remove={() => {

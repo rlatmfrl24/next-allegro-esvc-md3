@@ -13,7 +13,7 @@ export default function Providers({
   // When mounted on client, now we can show the UI
   const [isMounted, setIsMounted] = useState(false);
   useLayoutEffect(() => {
-    applyPresetTheme("default", false, () => {
+    applyPresetTheme("NA", false, () => {
       setIsMounted(true);
     });
   }, []);

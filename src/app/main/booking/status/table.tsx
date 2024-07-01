@@ -1,22 +1,19 @@
 "use client";
-
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
 
 import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
-import { CurrentBookingDataState } from "@/app/store/booking.store";
 import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import {
   BookingStatus,
   BookingStatusTableProps,
 } from "@/app/util/typeDef/boooking";
 import { faker } from "@faker-js/faker";
-import { Code, Download, Info } from "@mui/icons-material";
+import { Download, Info } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { createDummyVesselInformation } from "../../schedule/util";
@@ -24,6 +21,8 @@ import BookingStatusChip from "./components/booking-status-chip";
 import { useEstimatedTimeofDepartureDialog } from "./components/estimated-time-of-departure-dialog";
 import { useRouter } from "next/navigation";
 import { CodeCopyButton } from "./components/code-copy-button";
+import { useSetRecoilState } from "recoil";
+import { CurrentBookingDataState } from "@/app/store/booking.store";
 
 const HasShippingInstructionIcon = () => {
   return (
@@ -96,9 +95,10 @@ export default function BookingStatusTable() {
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
-  const [currentBookingData, setCurrentBookingData] = useRecoilState(
-    CurrentBookingDataState
-  );
+  // const [currentBookingData, setCurrentBookingData] = useRecoilState(
+  //   CurrentBookingDataState
+  // );
+  const setCurentBookingData = useSetRecoilState(CurrentBookingDataState);
   const {
     renderDialog: renderVesselInfoDialog,
     setCurrentVessel,
@@ -427,6 +427,8 @@ export default function BookingStatusTable() {
       <div className="relative w-full max-w-full h-full">
         <BasicTable
           ActionComponent={(table) => {
+            const currentSelection = table.getSelectedRowModel().rows as any[];
+
             return (
               <div className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -452,8 +454,10 @@ export default function BookingStatusTable() {
                       </div>
                       Download
                     </MdTextButton>
-                    {currentBookingData &&
-                      getActivatedActionButton(currentBookingData.status).map(
+                    {currentSelection.length > 0 &&
+                      getActivatedActionButton(
+                        currentSelection[0].original.status
+                      ).map(
                         (action) =>
                           ((
                             {
@@ -465,7 +469,10 @@ export default function BookingStatusTable() {
                                   key={action}
                                   onClick={() => {
                                     router.push(
-                                      `/main/booking/request?requestNo=${currentBookingData.requestNo}&bookingNo=${currentBookingData.bookingNo}&status=${currentBookingData.status}&type=edit`
+                                      `/main/booking/request
+                                      ?requestNo=${currentSelection[0].original.requestNo}
+                                      &bookingNo=${currentSelection[0].original.bookingNo}
+                                      &status=${currentSelection[0].original.status}&type=edit`
                                     );
                                   }}
                                 >
@@ -481,7 +488,8 @@ export default function BookingStatusTable() {
                                   onClick={() => {
                                     router.push(
                                       `/main/documents/si${
-                                        !currentBookingData.hasShippingInstruction
+                                        !currentSelection[0]
+                                          .hasShippingInstruction
                                           ? "/edit"
                                           : ""
                                       }`
@@ -508,8 +516,8 @@ export default function BookingStatusTable() {
           columns={columns}
           isSingleSelect={true}
           pinningColumns={["requestNo", "status"]}
-          getSelectionRows={(rows: any[]) => {
-            setCurrentBookingData(rows[0]);
+          getSelectionRows={(rows) => {
+            setCurentBookingData(rows[0]);
           }}
         />
       </div>

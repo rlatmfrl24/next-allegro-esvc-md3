@@ -4,7 +4,7 @@
 }
 
 .area {
-  @apply bg-surface rounded-2xl p-6 flex flex-col gap-4 relative h-fit;
+  @apply bg-surfaceContainerLowest rounded-2xl p-6 flex flex-col gap-4 relative h-fit border-secondaryContainer border;
 }
 
 .area.table {
@@ -21,4 +21,8 @@
 
 .area.row-direction {
   @apply flex-row gap-0;
+}
+
+.pointChip {
+  --md-input-chip-selected-container-color: var(--md-sys-point-color);
 }

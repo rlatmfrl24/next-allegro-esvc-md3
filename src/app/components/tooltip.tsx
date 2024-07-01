@@ -35,7 +35,7 @@ export const RichTooltipContainer = ({
           "--md-elevation-level": 2,
         } as CSSProperties
       }
-      className="relative bg-surfaceContainer pt-3 pb-2 px-4 rounded-xl min-w-80"
+      className="relative bg-surfaceContainerLow pt-3 pb-2 px-4 rounded-xl min-w-80"
     >
       <MdElevation />
       <div

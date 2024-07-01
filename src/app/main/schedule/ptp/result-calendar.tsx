@@ -196,13 +196,17 @@ export default function PointToPointCalendarResult({
                 {list[0] && (
                   <LabelChip
                     label={list[0].vesselInfo.vesselName}
-                    className={isCurrentDate ? "" : "opacity-30"}
+                    className={`bg-secondaryContainer text-onSurface ${
+                      isCurrentMonth ? "" : "opacity-30"
+                    }`}
                   />
                 )}
                 {list[1] && (
                   <LabelChip
                     label={list[1].vesselInfo.vesselName}
-                    className={isCurrentDate ? "" : "opacity-30"}
+                    className={`bg-secondaryContainer text-onSurface ${
+                      isCurrentMonth ? "" : "opacity-30"
+                    }`}
                   />
                 )}
                 {list.length > 2 && (

@@ -17,7 +17,7 @@ export default function Logo({
           alt="logo"
           width={0}
           height={0}
-          style={{ width: "100%", height: "auto" }}
+          style={{ width: "auto", height: "100%" }}
         />
       </div>
       <div className="w-px h-6 bg-outlineVariant mx-4"> </div>

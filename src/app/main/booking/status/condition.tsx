@@ -43,6 +43,7 @@ import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
 import { DividerComponent } from "@/app/components/divider";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 const filterOptions = [
   {
@@ -310,7 +311,7 @@ export default function BookingStatusCondition() {
   return (
     <div ref={areaRef} className={moduleStyles.area}>
       <MdOutlinedSegmentedButtonSet>
-        <MdOutlinedSegmentedButton
+        <NaOutlinedSegmentedButton
           label="Request Date"
           id="requestDate"
           selected={stateCondition === "requestDate"}
@@ -318,7 +319,7 @@ export default function BookingStatusCondition() {
             setStateCondition("requestDate");
           }}
         />
-        <MdOutlinedSegmentedButton
+        <NaOutlinedSegmentedButton
           label="Vessel"
           selected={stateCondition === "vessel"}
           onClick={() => {
@@ -388,13 +389,13 @@ export default function BookingStatusCondition() {
                 ...styles,
               } as CSSProperties
             }
-            className="bg-surfaceContainerHigh rounded-3xl relative w-72"
+            className="bg-surfaceContainerLow rounded-3xl relative w-72"
           >
             <MdElevation />
             <MdTypography variant="headline" size="small" className="p-6">
               More Filter
             </MdTypography>
-            <MdList className="bg-surfaceContainerHigh">
+            <MdList className="bg-surfaceContainerLow">
               {filterOptions.map((item) => (
                 <MdListItem
                   key={item.id}
