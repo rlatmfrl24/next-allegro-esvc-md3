@@ -11,6 +11,14 @@ import defaultTheme from "@/../public/preset/default.json";
 import preset_1 from "@/../public/preset/preset_1.json";
 import preset_2 from "@/../public/preset/preset_2.json";
 import preset_3 from "@/../public/preset/preset_3.json";
+import YGTheme from "@/../public/preset/palette/YG.json";
+import RETheme from "@/../public/preset/palette/RE.json";
+import BLTheme from "@/../public/preset/palette/BL.json";
+import GRTheme from "@/../public/preset/palette/GR.json";
+import NATheme from "@/../public/preset/palette/NA.json";
+import ORTheme from "@/../public/preset/palette/OR.json";
+import PKTheme from "@/../public/preset/palette/PK.json";
+import PUTheme from "@/../public/preset/palette/PU.json";
 
 export function createMDTheme(
   sourceColor: string,
@@ -95,6 +103,14 @@ export function applyFixedStyles(theme: Theme): void {
   }
 }
 
+export function addCustomThemeToken(token: string, color: string) {
+  document.body.style.setProperty(token, color);
+}
+
+export function applyPointColor(color: string) {
+  document.body.style.setProperty("--md-sys-point-color", color);
+}
+
 export function applyPresetTheme(
   presetName: string,
   isDarkMode?: boolean,
@@ -111,6 +127,31 @@ export function applyPresetTheme(
     case "preset_3":
       css = preset_3;
       break;
+    case "YG":
+      css = YGTheme;
+      break;
+    case "RE":
+      css = RETheme;
+      break;
+    case "BL":
+      css = BLTheme;
+      break;
+    case "GR":
+      css = GRTheme;
+      break;
+    case "NA":
+      css = NATheme;
+      break;
+    case "OR":
+      css = ORTheme;
+      break;
+    case "PK":
+      css = PKTheme;
+      break;
+    case "PU":
+      css = PUTheme;
+      break;
+
     default:
       css = defaultTheme;
       break;
@@ -138,6 +179,10 @@ export function applyPresetTheme(
       } else if (!(isDark && isLightKey) && !(!isDark && isDarkKey)) {
         target.style.setProperty(key, theme[key]);
       }
+    }
+    if (key === "--m3-point-color") {
+      console.log("point color", theme[key]);
+      target.style.setProperty("--md-sys-point-color", theme[key]);
     }
   });
 

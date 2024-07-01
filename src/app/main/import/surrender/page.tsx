@@ -16,6 +16,7 @@ import { faker } from "@faker-js/faker";
 import classNames from "classnames";
 import { useState } from "react";
 import { SurrenderTable } from "./table";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function BLSurrenderCheck() {
   const cx = classNames.bind(styles);
@@ -33,12 +34,12 @@ export default function BLSurrenderCheck() {
       />
       <div className={cx(styles.area)}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "bl"}
             onClick={() => setSearchType("bl")}
             label="B/L No."
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             selected={searchType === "container"}
             onClick={() => setSearchType("container")}
             label="Container No."
@@ -69,6 +70,7 @@ export default function BLSurrenderCheck() {
               {queries.map((query, index) => (
                 <div key={query}>
                   <MdInputChip
+                    className={styles.pointChip}
                     label={query}
                     selected={true}
                     remove={() => {

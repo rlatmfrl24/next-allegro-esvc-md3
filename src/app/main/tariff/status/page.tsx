@@ -19,6 +19,7 @@ import { useMemo, useState } from "react";
 import { DetentionStatusTable } from "./table";
 import { ContractNumberSelector } from "@/app/components/update-contract-number";
 import classNames from "classnames";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function DetentionStatusPage() {
   const cx = classNames.bind(styles);
@@ -43,12 +44,12 @@ export default function DetentionStatusPage() {
       />
       <div className={styles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Gate Out Date"
             selected={searchType === "gate"}
             onClick={() => setSearchType("gate")}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Booking No. or B/L No."
             selected={searchType === "number"}
             onClick={() => setSearchType("number")}
@@ -103,6 +104,7 @@ export default function DetentionStatusPage() {
                   {numberQueries.map((query, index) => (
                     <div key={query}>
                       <MdInputChip
+                        className={styles.pointChip}
                         selected
                         label={query}
                         remove={() => {

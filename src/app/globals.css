@@ -89,6 +89,8 @@ body {
   --md-sys-typescale-body-small-size: 12px;
   --md-sys-typescale-body-small-line-height: 16px;
   --md-sys-typescale-body-small-weight: 400;
+
+  --md-dialog-container-color: var(--md-sys-color-surface-container-low);
 }
 
 @layer utilities {

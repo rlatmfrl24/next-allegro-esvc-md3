@@ -17,12 +17,15 @@ export default function SIStateChip({ state }: { state: SIState }) {
           Confirmed: "bg-extendGoodContainer text-extendOnGoodContainer",
           Rejected: "bg-errorContainer text-onErrorContainer",
           Pending: "bg-extendPendingContainer text-extendOnPendingContainer",
-          "B/L Issue Request": "bg-primaryContainer text-onSurface",
-          "B/L Issue Confirm": "bg-primaryContainer text-extendOnGoodContainer",
-          "B/L Issue Rejected": "bg-primaryContainer text-onErrorContainer",
+          "B/L Issue Request":
+            "bg-secondaryContainer text-onSecondaryContainer",
+          "B/L Issue Confirm":
+            "bg-secondaryContainer text-onSecondaryContainer",
+          "B/L Issue Rejected":
+            "bg-secondaryContainer text-onSecondaryContainer",
           "B/L Issue Pending":
-            "bg-primaryContainer text-extendOnPendingContainer",
-          "B/L Issue Closed": "bg-primaryContainer text-onSurface",
+            "bg-secondaryContainer text-onSecondaryContainer",
+          "B/L Issue Closed": "bg-secondaryContainer text-onSecondaryContainer",
         }[state]
       }`}
     >

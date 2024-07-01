@@ -34,6 +34,7 @@ import { ScrollState } from "@/app/store/global.store";
 import { useRecoilValue } from "recoil";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function SeaWaybillSearchCondition({
   onSearch,
@@ -107,14 +108,14 @@ export default function SeaWaybillSearchCondition({
     <div ref={areaRef} className={styles.area}>
       <MdOutlinedSegmentedButtonSet>
         {["B/L No.", "Vessel", "On Board Date"].map((type) => (
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             key={type}
             label={type}
             selected={searchType === type}
             onClick={() => setSearchType(type as any)}
           >
             {type}
-          </MdOutlinedSegmentedButton>
+          </NaOutlinedSegmentedButton>
         ))}
       </MdOutlinedSegmentedButtonSet>
       <div className="flex gap-2">
@@ -173,6 +174,7 @@ export default function SeaWaybillSearchCondition({
                   {blNumberList.map((blNumber) => (
                     <div key={blNumber}>
                       <MdInputChip
+                        className={styles.pointChip}
                         selected
                         label={blNumber}
                         remove={() => {

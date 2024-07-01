@@ -1,6 +1,12 @@
 import { Cell, Pie, PieChart } from "recharts";
 import { MdTypography } from "../typography";
 
+function getHexCodeFromToken(token: string) {
+  return window
+    .getComputedStyle(document.documentElement.querySelector("body") as Element)
+    .getPropertyValue(token);
+}
+
 export default function QuickChart(props: {
   data: { key: string; value: number }[];
   palette?: { key: string; value: string }[];
@@ -35,12 +41,21 @@ export default function QuickChart(props: {
               outerRadius={50}
               innerRadius={20}
             >
-              {props.data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={props.palette ? props.palette[index].value : ""}
-                />
-              ))}
+              {props.data.map((entry, index) => {
+                if (props.palette)
+                  console.log(getHexCodeFromToken(props.palette[index].value));
+
+                return (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      props.palette
+                        ? getHexCodeFromToken(props.palette[index].value)
+                        : ""
+                    }
+                  />
+                );
+              })}
             </Pie>
           </PieChart>
         </div>
@@ -56,7 +71,7 @@ export default function QuickChart(props: {
                     className="w-3 h-3 rounded"
                     style={{
                       backgroundColor: props.palette
-                        ? props.palette[index].value
+                        ? getHexCodeFromToken(props.palette[index].value)
                         : "",
                     }}
                   ></div>

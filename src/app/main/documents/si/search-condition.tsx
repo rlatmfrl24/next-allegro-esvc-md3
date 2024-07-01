@@ -17,6 +17,7 @@ import { useRecoilValue } from "recoil";
 import { ScrollState } from "@/app/store/global.store";
 import { FocusOnResult } from "../../util";
 import { DateRangePicker } from "@/app/components/datepickers/date-range-picker";
+import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
 export default function SISearchCondition() {
   const [conditionType, setConditionType] = useState<
@@ -273,35 +274,35 @@ export default function SISearchCondition() {
     <>
       <div ref={areaRef} className={moduleStyles.area}>
         <MdOutlinedSegmentedButtonSet>
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Request Date"
             selected={conditionType === "Request Date"}
             onClick={() => {
               setConditionType("Request Date");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Departure Date"
             selected={conditionType === "Departure Date"}
             onClick={() => {
               setConditionType("Departure Date");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Booking Date"
             selected={conditionType === "Booking Date"}
             onClick={() => {
               setConditionType("Booking Date");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Vessel"
             selected={conditionType === "Vessel"}
             onClick={() => {
               setConditionType("Vessel");
             }}
           />
-          <MdOutlinedSegmentedButton
+          <NaOutlinedSegmentedButton
             label="Booking No."
             selected={conditionType === "Booking No."}
             onClick={() => {

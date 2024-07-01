@@ -1,5 +1,18 @@
 "use client";
 
+import { getCookie, setCookie } from "cookies-next";
+import {
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import { MdTypography } from "@/app/components/typography";
 import {
   MdChipSet,
   MdElevation,
@@ -11,18 +24,6 @@ import {
   MdRippleEffect,
 } from "@/app/util/md3";
 import {
-  CSSProperties,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { CancelOutlined as CancelIcon, Delete } from "@mui/icons-material";
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
-import {
   autoUpdate,
   offset,
   shift,
@@ -33,10 +34,11 @@ import {
   useListNavigation,
   useRole,
 } from "@floating-ui/react";
-import { MdTypography } from "@/app/components/typography";
+import { CancelOutlined as CancelIcon, Delete } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import RestoreIcon from "@mui/icons-material/Restore";
-import { getCookie, setCookie } from "cookies-next";
+import styles from "@/app/styles/base.module.css";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase
@@ -349,6 +351,7 @@ export const SearchTextField = ({
           return (
             <div key={item + "_" + index}>
               <MdInputChip
+                className={styles.pointChip}
                 label={item}
                 selected
                 remove={() => {
