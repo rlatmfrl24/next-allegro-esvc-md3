@@ -23,7 +23,7 @@ import { Row, createColumnHelper } from "@tanstack/react-table";
 
 import SIStateChip from "./si-state-chip";
 import ActionButtons from "./table-action-buttons";
-import { set } from "lodash";
+import { isEqual, set } from "lodash";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -60,17 +60,21 @@ export default function SITable() {
   const [tableData, setTableData] =
     useState<SISearchTableProps[]>(tempTableData);
   const [selectedRows, setSelectedRows] = useState<SISearchTableProps[]>([]);
-  const [stateFilter, setStateFilter] = useState<SIState[]>([]);
+  const [stateFilter, setStateFilter] = useState<string[]>(
+    Object.values(SIState)
+  );
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
 
-  // useEffect(() => {
-  //   setTableData(tempTableData);
-  // }, [tempTableData]);
-
   useEffect(() => {
-    setSelectedRows([]);
-  }, [tableData]);
+    if (stateFilter.length > 0) {
+      setTableData(
+        tempTableData.filter((row) => stateFilter.includes(row.blState))
+      );
+    } else {
+      setTableData(tempTableData);
+    }
+  }, [stateFilter, tempTableData]);
 
   const columnHelper = createColumnHelper<SISearchTableProps>();
   const columns = [
@@ -351,8 +355,11 @@ export default function SITable() {
             <div className="flex flex-1 gap-2 items-center">
               <MdChipSet>
                 <StatusFilterComponent
+                  initialStatus={stateFilter}
                   statusOptions={Object.values(SIState)}
                   onChange={(states) => {
+                    table.resetRowSelection();
+                    setStateFilter(states);
                     table.setColumnFilters([
                       {
                         id: "blState",
@@ -382,6 +389,8 @@ export default function SITable() {
         controlColumns={["select"]}
         pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
         getSelectionRows={(rows, table) => {
+          // get last selected row
+
           if (selectedRows.length >= rows.length) {
             setSelectedRows(rows);
           } else {
