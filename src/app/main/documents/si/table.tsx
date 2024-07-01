@@ -23,6 +23,7 @@ import { Row, createColumnHelper } from "@tanstack/react-table";
 
 import SIStateChip from "./si-state-chip";
 import ActionButtons from "./table-action-buttons";
+import { set } from "lodash";
 
 function createDummySITableData(count: number = 10) {
   return Array.from({ length: count }, (_, i) => ({
@@ -56,14 +57,16 @@ export default function SITable() {
     () => createDummySITableData(900),
     []
   );
-  const [tableData, setTableData] = useState<SISearchTableProps[]>([]);
+  const [tableData, setTableData] =
+    useState<SISearchTableProps[]>(tempTableData);
   const [selectedRows, setSelectedRows] = useState<SISearchTableProps[]>([]);
+  const [stateFilter, setStateFilter] = useState<SIState[]>([]);
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
 
-  useEffect(() => {
-    setTableData(tempTableData);
-  }, [tempTableData]);
+  // useEffect(() => {
+  //   setTableData(tempTableData);
+  // }, [tempTableData]);
 
   useEffect(() => {
     setSelectedRows([]);
@@ -358,7 +361,7 @@ export default function SITable() {
                     ]);
                   }}
                 />
-                <MdFilterChip label="My Shipment " />
+                <MdFilterChip label="My Shipment" />
               </MdChipSet>
 
               <MdTextButton>
@@ -385,7 +388,6 @@ export default function SITable() {
             const newSelectedRow = rows.filter((row) => {
               return !selectedRows.includes(row);
             })[0];
-
             if (
               newSelectedRow.blState === SIState.Rejected ||
               newSelectedRow.blState === SIState.Pending ||

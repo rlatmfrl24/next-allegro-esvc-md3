@@ -72,7 +72,7 @@ export const TableBody = ({
             return {
               backgroundColor: disableColumns?.includes(cell.column.id)
                 ? `var(--md-sys-color-surface-container-low)`
-                : `var(--md-sys-color-surface)`,
+                : `var(--md-sys-color-surface-container-lowest)`,
               borderBottom: `1px solid var(--md-sys-color-outline-variant)`,
             } as CSSProperties;
           }
