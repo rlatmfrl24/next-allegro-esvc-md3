@@ -5,7 +5,7 @@ import {
   MdTabs,
   MdTextButton,
 } from "../util/md3";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import QuickTracking from "@/app/components/quick/tracking";
 import QuickSchedule from "@/app/components/quick/schedule";
 import QuickNotice from "@/app/components/quick/notice";
@@ -15,7 +15,14 @@ export default function QuickMenu() {
   return (
     <div className="flex flex-col justify-center gap-6 h-full absolute top-0 right-16 w-[848px] px-16">
       <QuickSearch />
-      <MdElevatedCard>
+      <MdElevatedCard
+        style={
+          {
+            "--md-elevated-card-container-color":
+              "var(--md-sys-color-surface-container-lowest)",
+          } as CSSProperties
+        }
+      >
         <div className="px-6 py-2 flex items-center justify-between border-b border-b-outlineVariant">
           <MdTypography variant="title" size="large" className="">
             Notice
@@ -42,9 +49,23 @@ const QuickSearch = () => {
   }
 
   return (
-    <MdElevatedCard className=" h-[26rem] z-10">
+    <MdElevatedCard
+      className="h-[26rem] z-10"
+      style={
+        {
+          "--md-elevated-card-container-color":
+            "var(--md-sys-color-surface-container-lowest)",
+        } as CSSProperties
+      }
+    >
       <MdTabs className="rounded-t-2xl">
         <MdPrimaryTab
+          style={
+            {
+              "--md-primary-tab-container-color":
+                "var(--md-sys-color-surface-container-lowest)",
+            } as CSSProperties
+          }
           id="tab-schedule"
           aria-controls="schedule-panel"
           onClick={() => {
@@ -56,6 +77,12 @@ const QuickSearch = () => {
           </MdTypography>
         </MdPrimaryTab>
         <MdPrimaryTab
+          style={
+            {
+              "--md-primary-tab-container-color":
+                "var(--md-sys-color-surface-container-lowest)",
+            } as CSSProperties
+          }
           id="tab-quick-tracking"
           aria-controls="quick-tracking-panel"
           onClick={() => {

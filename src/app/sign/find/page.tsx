@@ -13,7 +13,7 @@ import {
 import { faker } from "@faker-js/faker";
 import { PasswordOutlined, PersonSearchOutlined } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { CheckApprover } from "./check-approver";
 import NaOutlinedSegmentedButton from "@/app/components/na-outlined-segmented-button";
 
@@ -247,7 +247,15 @@ export default function FindIDPassword() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <MdElevatedCard className="p-8 ">
+      <MdElevatedCard
+        className="p-8"
+        style={
+          {
+            "--md-elevated-card-container-color":
+              "var(--md-sys-color-surface-container-lowest)",
+          } as CSSProperties
+        }
+      >
         <MdOutlinedSegmentedButtonSet>
           <NaOutlinedSegmentedButton
             label="Find ID"
