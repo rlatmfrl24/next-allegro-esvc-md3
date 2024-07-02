@@ -31,6 +31,17 @@ export default function QuickChart(props: {
       <div className="flex justify-center gap-6 px-10 my-2">
         <div aria-label="chart" className="justify-center flex">
           <PieChart width={100} height={100}>
+            {totalCount === 0 && (
+              <Pie
+                data={[{ key: "No Data", value: 1 }]}
+                dataKey="value"
+                fill="#E0E0E0"
+                cx="50%"
+                cy="50%"
+                outerRadius={50}
+                innerRadius={20}
+              />
+            )}
             <Pie
               isAnimationActive={false}
               data={props.data}
