@@ -72,9 +72,9 @@ export default function ContainerInput({
     const newCargoManifest: CargoManifestType = {
       uuid: faker.string.uuid(),
       packageType: "",
-      packageQuantity: 0,
-      weight: 0,
-      measurement: 0,
+      packageQuantity: undefined,
+      weight: undefined,
+      measurement: undefined,
       cargoInformation: {
         description: "",
       },
@@ -144,22 +144,22 @@ export default function ContainerInput({
     if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;
 
     const totalWeight = container.cargoManifest.reduce(
-      (acc, cm) => acc + cm.weight,
+      (acc, cm) => acc + (cm.weight ?? 0),
       0
     );
     const totalMeasurement = container.cargoManifest.reduce(
-      (acc, cm) => acc + cm.measurement,
+      (acc, cm) => acc + (cm.measurement ?? 0),
       0
     );
     const totalPackageQuantity = container.cargoManifest.reduce(
-      (acc, cm) => acc + cm.packageQuantity,
+      (acc, cm) => acc + (cm.packageQuantity ?? 0),
       0
     );
 
     setSIEditContainerStore((prev) => ({
       ...prev,
       [typeKey]: prev[typeKey].map((c, j) =>
-        c.uuid === container.uuid
+        c.uuid === container.uuid && container.hasCargoManifest
           ? {
               ...c,
               packageWeight: totalWeight,
@@ -171,6 +171,7 @@ export default function ContainerInput({
     }));
   }, [
     container.cargoManifest,
+    container.hasCargoManifest,
     container.uuid,
     setSIEditContainerStore,
     typeKey,
@@ -350,7 +351,7 @@ export default function ContainerInput({
       <div className="flex gap-4">
         <div className="flex gap-2 flex-1">
           <NAOutlinedNumberField
-            value={container.packageQuantity.toString()}
+            value={container.packageQuantity?.toString()}
             readOnly={container.hasCargoManifest}
             label="Package"
             maxInputLength={16}
@@ -377,7 +378,7 @@ export default function ContainerInput({
         <div className="flex gap-2 ">
           <NAOutlinedNumberField
             label="Weight"
-            value={container.packageWeight.toString()}
+            value={container.packageWeight?.toString() ?? ""}
             readOnly={container.hasCargoManifest}
             maxInputLength={22}
             className="w-48"
@@ -403,7 +404,7 @@ export default function ContainerInput({
             label="Measure"
             className="w-48"
             maxInputLength={16}
-            value={container.packageMeasurement.toString()}
+            value={container.packageMeasurement?.toString()}
             readOnly={container.hasCargoManifest}
             handleValueChange={(value) => {
               updateContainerStore(container, "packageMeasurement", value);
@@ -543,11 +544,9 @@ export default function ContainerInput({
                 <div className="flex gap-2 flex-1">
                   <NAOutlinedNumberField
                     maxInputLength={16}
-                    value={
-                      container.cargoManifest
-                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
-                        ?.packageQuantity.toString() || ""
-                    }
+                    value={container.cargoManifest
+                      .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                      ?.packageQuantity?.toString()}
                     handleValueChange={(value) => {
                       updateContainerStore(
                         container,
@@ -610,11 +609,9 @@ export default function ContainerInput({
                     label="Weight"
                     maxInputLength={22}
                     className="w-48"
-                    value={
-                      container.cargoManifest
-                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
-                        ?.weight.toString() || ""
-                    }
+                    value={container.cargoManifest
+                      .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                      ?.weight?.toString()}
                     handleValueChange={(value) => {
                       updateContainerStore(
                         container,
@@ -647,11 +644,9 @@ export default function ContainerInput({
                     label="Measure"
                     className="w-48"
                     maxInputLength={16}
-                    value={
-                      container.cargoManifest
-                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
-                        ?.measurement.toString() || ""
-                    }
+                    value={container.cargoManifest
+                      .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                      ?.measurement?.toString()}
                     handleValueChange={(value) => {
                       updateContainerStore(
                         container,
@@ -689,6 +684,8 @@ export default function ContainerInput({
                   label="HTS Code(U.S.)"
                   maxInputLength={6}
                   placeholder="Code"
+                  hideZeroPlaceholder
+                  enableNumberSeparator={false}
                   value={
                     container.cargoManifest.find(
                       (cm) => cm.uuid === selectedCargoManifestUuid
@@ -716,6 +713,8 @@ export default function ContainerInput({
                   label="HTS Code(EU, ASIA)"
                   maxInputLength={6}
                   placeholder="Code"
+                  hideZeroPlaceholder
+                  enableNumberSeparator={false}
                   value={
                     container.cargoManifest.find(
                       (cm) => cm.uuid === selectedCargoManifestUuid

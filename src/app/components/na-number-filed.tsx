@@ -10,12 +10,14 @@ export const NAOutlinedNumberField = ({
   handleValueChange,
   maxInputLength,
   enableNumberSeparator = true,
+  hideZeroPlaceholder = false,
   className,
   ...props
 }: {
   handleValueChange?: (value: number | undefined) => void;
   maxInputLength?: number;
   enableNumberSeparator?: boolean;
+  hideZeroPlaceholder?: boolean;
   className?: string;
 } & MdOutlinedTextFieldProps) => {
   const hasValue = useMemo(() => {
@@ -43,20 +45,32 @@ export const NAOutlinedNumberField = ({
         }
       }
     } else {
-      if (isFocused) {
+      if (isFocused || hideZeroPlaceholder) {
         return "";
       } else {
         return "0";
       }
     }
-  }, [enableNumberSeparator, hasValue, isFocused, props.value]);
+  }, [
+    enableNumberSeparator,
+    hasValue,
+    hideZeroPlaceholder,
+    isFocused,
+    props.value,
+  ]);
 
   return (
     <>
       <div className={`relative h-fit ${className ? className : ""}`}>
         <MdOutlinedTextFieldBase
           {...props}
-          placeholder="0"
+          placeholder={
+            props.placeholder
+              ? props.placeholder
+              : hideZeroPlaceholder
+              ? ""
+              : "0"
+          }
           required={false}
           type={isFocused ? "number" : "text"}
           noSpinner
