@@ -293,12 +293,19 @@ export const cardList: DashboardCardInfoType[] = [
     title: "Booking",
     size: 1,
     type: "chart",
+    // data: [
+    //   { key: "Accepted", value: faker.number.int(50) },
+    //   { key: "Requested", value: faker.number.int(50) },
+    //   { key: "Rejected", value: faker.number.int(50) },
+    //   { key: "Cancelled", value: faker.number.int(50) },
+    // ],
     data: [
-      { key: "Accepted", value: faker.number.int(50) },
-      { key: "Requested", value: faker.number.int(50) },
-      { key: "Rejected", value: faker.number.int(50) },
-      { key: "Cancelled", value: faker.number.int(50) },
+      { key: "Accepted", value: 0 },
+      { key: "Requested", value: 0 },
+      { key: "Rejected", value: 0 },
+      { key: "Cancelled", value: 0 },
     ],
+
     palette: [
       { key: "Accepted", value: "--md-sys-color-primary" },
       { key: "Requested", value: "--md-sys-color-outline" },
