@@ -62,7 +62,17 @@ export const HeaderMainComponent = () => {
       </Link>
       <LanguageSelector />
       <MdIconButton ref={refs.setReference} {...getReferenceProps()}>
-        <AccountCircleOutlined />
+        {/* <AccountCircleOutlined /> */}
+        <div className="bg-pointColor rounded-full w-6 h-6">
+          <MdTypography
+            variant="body"
+            size="large"
+            prominent
+            className="text-onSurface"
+          >
+            {userState.name[0]}
+          </MdTypography>
+        </div>
       </MdIconButton>
       {isMounted && (
         <div
