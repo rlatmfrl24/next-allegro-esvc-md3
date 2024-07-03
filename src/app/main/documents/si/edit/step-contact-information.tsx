@@ -13,10 +13,12 @@ import {
   MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
+  MdIcon,
   MdIconButton,
   MdInputChip,
   MdList,
   MdListItem,
+  MdOutlinedButton,
   MdOutlinedTextField,
   MdRippleEffect,
   MdTextButton,
@@ -167,46 +169,42 @@ export default function StepContactInformation() {
         </div>
         <div className="flex flex-col gap-4">
           <DetailTitle title="Email Recipient" />
-          {contactInformationStore.emailRecipient.length > 0 && (
-            <MdChipSet>
-              {contactInformationStore.emailRecipient.map((email) => {
-                return (
-                  <MdInputChip
-                    key={email}
-                    label={email}
-                    remove={() => {
-                      setContactInformationStore((prev) => {
-                        return {
-                          ...prev,
-                          emailRecipient: prev.emailRecipient.filter(
-                            (e) => e !== email
-                          ),
-                        };
-                      });
-                    }}
-                  />
-                );
-              })}
-            </MdChipSet>
-          )}
-
-          <button
-            className="relative bg-secondaryContainer rounded-full px-3 py-2 w-fit"
-            onClick={() => {
-              setIsManageEmailDialogOpen(true);
-            }}
-          >
-            <MdRippleEffect />
-            <MdTypography variant="label" size="medium">
-              <MailOutline
-                sx={{
-                  fontSize: "16px",
-                }}
-                className="mr-1"
-              />
+          <div className="flex items-center gap-4">
+            <MdOutlinedButton
+              hasIcon
+              onClick={() => {
+                setIsManageEmailDialogOpen(true);
+              }}
+            >
+              <MdIcon slot="icon">
+                <MailOutline fontSize="small" />
+              </MdIcon>
               Manage Email
-            </MdTypography>
-          </button>
+            </MdOutlinedButton>
+            {contactInformationStore.emailRecipient.length > 0 && (
+              <MdChipSet>
+                {contactInformationStore.emailRecipient.map((email) => {
+                  return (
+                    <MdInputChip
+                      key={email}
+                      label={email}
+                      selected
+                      remove={() => {
+                        setContactInformationStore((prev) => {
+                          return {
+                            ...prev,
+                            emailRecipient: prev.emailRecipient.filter(
+                              (e) => e !== email
+                            ),
+                          };
+                        });
+                      }}
+                    />
+                  );
+                })}
+              </MdChipSet>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-4">
@@ -320,7 +318,7 @@ export default function StepContactInformation() {
             <MdTypography variant="label" size="medium" className="mt-6">
               Email Recipient
             </MdTypography>
-            <MdList className="bg-surfaceContainerHigh">
+            <MdList className="bg-surfaceContainerLow">
               {emailRecipients.map((email) => {
                 return (
                   <MdListItem
