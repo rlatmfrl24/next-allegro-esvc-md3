@@ -165,10 +165,10 @@ export interface SIContainerGridProps {
   secondSealKind: SealKind;
   secondSealType: "merchanical" | "electronic";
   packageType: string;
-  packageQuantity: number;
-  packageWeight: number;
+  packageQuantity: number | undefined;
+  packageWeight: number | undefined;
   packageWeightUnit: string;
-  packageMeasurement: number;
+  packageMeasurement: number | undefined;
   packageMeasurementUnit: string;
   cargoPackageQuantity: number | undefined;
   cargoPackageUnit: string | undefined;

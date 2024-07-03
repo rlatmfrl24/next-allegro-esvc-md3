@@ -1211,7 +1211,7 @@ const CargoManifestDetail = (props: {
                   label="Weight"
                   value={
                     (selectedManifest?.weight
-                      .toString()
+                      ?.toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "-") +
                     " " +
                     containerStore.weightUnit
@@ -1221,7 +1221,7 @@ const CargoManifestDetail = (props: {
                   label="Measurement"
                   value={
                     (selectedManifest?.measurement
-                      .toString()
+                      ?.toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "-") +
                     " " +
                     containerStore.measurementUnit
