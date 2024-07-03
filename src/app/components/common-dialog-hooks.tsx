@@ -11,20 +11,30 @@ import {
 import PlaceInformationDialog from "../main/schedule/popup/place-information";
 import VesselInformationDialog from "../main/schedule/popup/vessel-information";
 
-export const usePlaceInfoDialog = () => {
+export const usePlaceInfoDialog = (portal?: string) => {
   const [isPlaceInfoDialogOpen, setIsPlaceInfoDialogOpen] = useState(false);
   const [currentPlace, setCurrentPlace] = useState({} as PlaceInformationType);
 
   function renderDialog() {
-    return (
-      <Portal selector="#main-container">
+    if (portal) {
+      return (
+        <Portal selector={portal}>
+          <PlaceInformationDialog
+            open={isPlaceInfoDialogOpen}
+            handleOpen={setIsPlaceInfoDialogOpen}
+            data={currentPlace}
+          />
+        </Portal>
+      );
+    } else {
+      return (
         <PlaceInformationDialog
           open={isPlaceInfoDialogOpen}
           handleOpen={setIsPlaceInfoDialogOpen}
           data={currentPlace}
         />
-      </Portal>
-    );
+      );
+    }
   }
 
   return {

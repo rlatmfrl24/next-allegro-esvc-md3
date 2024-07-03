@@ -146,15 +146,6 @@ const DangerousCargoInput = ({
         label="Dangerous Cargo"
         state={container.isDangerous ? "checked" : "unchecked"}
         onClick={() => {
-          // setContainerInformation((prev) => ({
-          //   ...prev,
-          //   [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-          //     c.uuid === container.uuid && c.type !== ContainerType.bulk
-          //       ? { ...c, isDangerous: !c.isDangerous }
-          //       : c
-          //   ),
-          // }));
-
           if (!container.isDangerous) {
             AddDangerousCargo();
             setContainerInformation((prev) => ({
@@ -205,6 +196,7 @@ const DangerousCargoInput = ({
                 <NAOutlinedNumberField
                   label="UN No."
                   required={showRequired}
+                  hideZeroPlaceholder
                   enableNumberSeparator={false}
                   maxInputLength={4}
                   className="w-24"
@@ -237,6 +229,7 @@ const DangerousCargoInput = ({
                   label="Class"
                   required={showRequired}
                   maxInputLength={3}
+                  hideZeroPlaceholder
                   className="w-24"
                   value={
                     container.dangerousCargoInformation.find(

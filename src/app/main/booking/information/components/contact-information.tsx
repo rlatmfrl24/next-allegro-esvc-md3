@@ -66,6 +66,7 @@ export default function ContactInformationSection({
           />
           {data.emailRecipient.map((email, index) => (
             <LabelChip
+              size="medium"
               key={index}
               label={email}
               className="bg-pointColor text-onSurface"

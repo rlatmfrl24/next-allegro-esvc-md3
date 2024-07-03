@@ -80,6 +80,7 @@ export default function StepContainer() {
 
     const typeKey = type.toLowerCase() as keyof typeof siContainerStore;
     const emptyContainerData = getEmptySIEditContainerData(type);
+    console.log("emptyContainerData", emptyContainerData);
 
     if (siContainerStore[typeKey].length === 0) {
       if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;

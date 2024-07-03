@@ -145,9 +145,9 @@ export interface SIContainerInputProps {
     description: string;
   };
   packageType: string;
-  packageQuantity: number;
-  packageWeight: number;
-  packageMeasurement: number;
+  packageQuantity: number | undefined;
+  packageWeight: number | undefined;
+  packageMeasurement: number | undefined;
   hasCargoManifest: boolean;
   cargoManifest: CargoManifestType[];
 }
@@ -165,10 +165,10 @@ export interface SIContainerGridProps {
   secondSealKind: SealKind;
   secondSealType: "merchanical" | "electronic";
   packageType: string;
-  packageQuantity: number;
-  packageWeight: number;
+  packageQuantity: number | undefined;
+  packageWeight: number | undefined;
   packageWeightUnit: string;
-  packageMeasurement: number;
+  packageMeasurement: number | undefined;
   packageMeasurementUnit: string;
   cargoPackageQuantity: number | undefined;
   cargoPackageUnit: string | undefined;
@@ -183,9 +183,9 @@ export interface SIContainerGridProps {
 export type CargoManifestType = {
   uuid: string;
   packageType: string;
-  packageQuantity: number;
-  weight: number;
-  measurement: number;
+  packageQuantity: number | undefined;
+  weight: number | undefined;
+  measurement: number | undefined;
   cargoInformation: {
     // wpmStatus: "Y" | "N" | "N/A";
     // combo: string;

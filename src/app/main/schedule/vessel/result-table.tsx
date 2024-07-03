@@ -9,6 +9,7 @@ import { MdFilterChip, MdIcon, MdTextButton } from "@/app/util/md3";
 import { Download } from "@mui/icons-material";
 import { usePlaceInfoDialog } from "@/app/components/common-dialog-hooks";
 import { DividerComponent } from "@/app/components/divider";
+import Portal from "@/app/components/portal";
 
 const DateCell = ({
   info,
@@ -27,7 +28,6 @@ const DateCell = ({
   );
 };
 
-// TODO: Convert use Custom Hook at PlaceInformationDialog
 export default function VesselResultTable({
   data,
 }: {

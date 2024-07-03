@@ -85,9 +85,9 @@ export function getEmptySIEditContainerData(type: ContainerType) {
       description: "",
     },
     packageType: "",
-    packageQuantity: 0,
-    packageWeight: 0,
-    packageMeasurement: 0,
+    packageQuantity: undefined,
+    packageWeight: undefined,
+    packageMeasurement: undefined,
     hasCargoManifest: false,
     cargoManifest: [],
   } as SIContainerInputProps;
@@ -217,7 +217,7 @@ export function getEmptyContainerData(
 export function sumContainerWeight(siContainers: SIContainerInputProps[]) {
   return siContainers
     .reduce((acc, container) => {
-      return acc + container.packageWeight;
+      return acc + (container.packageWeight ?? 0);
     }, 0)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -226,7 +226,7 @@ export function sumContainerWeight(siContainers: SIContainerInputProps[]) {
 export function sumContainerQuantity(siContainers: SIContainerInputProps[]) {
   return siContainers
     .reduce((acc, container) => {
-      return acc + container.packageQuantity;
+      return acc + (container.packageQuantity ?? 0);
     }, 0)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -235,7 +235,7 @@ export function sumContainerQuantity(siContainers: SIContainerInputProps[]) {
 export function sumContainerMeasurement(siContainers: SIContainerInputProps[]) {
   return siContainers
     .reduce((acc, container) => {
-      return acc + container.packageMeasurement;
+      return acc + (container.packageMeasurement ?? 0);
     }, 0)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
