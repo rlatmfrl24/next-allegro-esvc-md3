@@ -315,7 +315,7 @@ export default function StepContactInformation() {
                 Add Email
               </MdFilledTonalButton>
             </div>
-            <MdTypography variant="label" size="medium" className="mt-6">
+            <MdTypography variant="title" size="medium" className="mt-6">
               Email Recipient
             </MdTypography>
             <MdList className="bg-surfaceContainerLow">
@@ -337,7 +337,7 @@ export default function StepContactInformation() {
                       slot="start"
                       checked={newEmailRecipients.includes(email)}
                     />
-                    <MdTypography variant="label" size="medium">
+                    <MdTypography variant="body" size="large">
                       {email}
                     </MdTypography>
                     <div slot="end">
