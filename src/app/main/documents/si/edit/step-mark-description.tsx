@@ -168,8 +168,6 @@ export default function StepMarkDescription() {
               SIEditStep.markDescription.visited &&
               markDescriptionStore.customsCommodity === ""
             }
-            type="textarea"
-            rows={5}
             maxInputLength={350}
             errorText="Customs Commodity is required."
             placeholder="Customs Commodity"
