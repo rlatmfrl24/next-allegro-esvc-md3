@@ -133,7 +133,7 @@ export default function ContactInformationStep() {
       <MdTypography variant="title" size="large" className="mb-6">
         Contact Information
       </MdTypography>
-      <div className="grid grid-cols-2 gap-4 w-full">
+      <div className="grid grid-cols-4 gap-4 w-full">
         <NAOutlinedTextField
           required
           error={
@@ -152,7 +152,7 @@ export default function ContactInformationStep() {
             });
           }}
         />
-        <NAOutlinedTextField
+        {/* <NAOutlinedTextField
           required
           error={
             bookingRequestStep.contactInformation.visited &&
@@ -169,7 +169,7 @@ export default function ContactInformationStep() {
               };
             });
           }}
-        />
+        /> */}
 
         <NAOutlinedTextField
           required
