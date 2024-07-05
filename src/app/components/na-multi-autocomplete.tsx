@@ -32,6 +32,7 @@ import {
   MdList,
   MdListItem,
   MdOutlinedTextField as MdOutlinedTextFieldBase,
+  MdRippleEffect,
 } from "../util/md3";
 import { MdTypography } from "./typography";
 
@@ -275,16 +276,28 @@ export default function NAMultiAutoComplete({
         {icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
         <div slot="trailing-icon" className="mr-2">
           {query !== "" && !props.readOnly && (
-            <MdIconButton
+            <div
+              className="cursor-pointer relative flex items-center justify-center w-10 h-10 rounded-full"
               tabIndex={-1}
               onClick={() => {
                 handleItemSelect({ key: "", value: "" });
               }}
             >
+              <MdRippleEffect />
               <MdIcon>
                 <CancelIcon />
               </MdIcon>
-            </MdIconButton>
+            </div>
+            // <MdIconButton
+            //   tabIndex={-1}
+            //   onClick={() => {
+            //     handleItemSelect({ key: "", value: "" });
+            //   }}
+            // >
+            //   <MdIcon>
+            //     <CancelIcon />
+            //   </MdIcon>
+            // </MdIconButton>
           )}
         </div>
       </MdOutlinedTextFieldBase>

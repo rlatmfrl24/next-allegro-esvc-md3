@@ -76,7 +76,7 @@ export default function StepContactInformation() {
         Contact Information
       </MdTypography>
       <div className="flex flex-col gap-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           <NAOutlinedTextField
             required
             error={
@@ -95,7 +95,7 @@ export default function StepContactInformation() {
               });
             }}
           />
-          <NAOutlinedTextField
+          {/* <NAOutlinedTextField
             required
             error={
               SIEditStep.contactInformation.visited &&
@@ -113,7 +113,7 @@ export default function StepContactInformation() {
                 };
               });
             }}
-          />
+          /> */}
           <NAOutlinedTextField
             required
             error={
@@ -315,7 +315,7 @@ export default function StepContactInformation() {
                 Add Email
               </MdFilledTonalButton>
             </div>
-            <MdTypography variant="label" size="medium" className="mt-6">
+            <MdTypography variant="title" size="medium" className="mt-6">
               Email Recipient
             </MdTypography>
             <MdList className="bg-surfaceContainerLow">
@@ -337,7 +337,7 @@ export default function StepContactInformation() {
                       slot="start"
                       checked={newEmailRecipients.includes(email)}
                     />
-                    <MdTypography variant="label" size="medium">
+                    <MdTypography variant="body" size="large">
                       {email}
                     </MdTypography>
                     <div slot="end">

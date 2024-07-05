@@ -164,14 +164,12 @@ export default function StepMarkDescription() {
         <div className="flex flex-col gap-4">
           <DetailTitle title="Customs Commodity" />
           <NAOutlinedTextField
-            error={
-              SIEditStep.markDescription.visited &&
-              markDescriptionStore.customsCommodity === ""
-            }
-            type="textarea"
-            rows={5}
+            // error={
+            //   SIEditStep.markDescription.visited &&
+            //   markDescriptionStore.customsCommodity === ""
+            // }
             maxInputLength={350}
-            errorText="Customs Commodity is required."
+            // errorText="Customs Commodity is required."
             placeholder="Customs Commodity"
             value={markDescriptionStore.customsCommodity}
             handleValueChange={(value) => {
