@@ -43,7 +43,7 @@ export default function QuickChart(props: {
               />
             )}
             <Pie
-              isAnimationActive={false}
+              // isAnimationActive={false}
               data={props.data}
               dataKey="value"
               nameKey="key"

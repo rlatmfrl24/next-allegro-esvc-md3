@@ -10,6 +10,7 @@ import {
 import { Cell, flexRender, Row, Table } from "@tanstack/react-table";
 
 import { getCommonPinningStyles } from "./util";
+import { MdTypography } from "../typography";
 
 export const TableBody = ({
   table,
@@ -17,6 +18,7 @@ export const TableBody = ({
   onCellSelected,
   ignoreSelectionColumns,
   disableColumns,
+  onlyNumberColumns,
   editableColumns,
 }: {
   table: Table<any>;
@@ -25,6 +27,7 @@ export const TableBody = ({
   ignoreSelectionColumns?: string[];
   disableColumns?: string[];
   editableColumns?: string[];
+  onlyNumberColumns?: string[];
 }) => {
   const inputRef = useRef<any>(null);
   const [hoverInfo, setHoverInfo] = useState<{
@@ -96,7 +99,11 @@ export const TableBody = ({
                     ...getCommonPinningStyles(cell.column),
                     ...getCellStyles(cell),
                   }}
-                  className="p-2 border-box border-x border-x-transparent border-y border-y-transparent"
+                  className={`p-2 border-box border-x border-x-transparent border-y border-y-transparent ${
+                    onlyNumberColumns?.includes(cell.column.id)
+                      ? "text-right"
+                      : ""
+                  }`}
                   onMouseEnter={(e) => {
                     setHoverInfo({ row, cell });
                   }}
@@ -121,6 +128,18 @@ export const TableBody = ({
                     row.toggleSelected();
                   }}
                 >
+                  {editableColumns?.includes(cell.column.id) &&
+                    (cell.getValue()?.toString() ?? "") === "" && (
+                      <MdTypography
+                        variant="body"
+                        size="medium"
+                        className="text-outlineVariant"
+                      >
+                        {onlyNumberColumns?.includes(cell.column.id)
+                          ? "0"
+                          : cell.column.columnDef.header?.toString()}
+                      </MdTypography>
+                    )}
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ) : (
@@ -129,21 +148,33 @@ export const TableBody = ({
                     <input
                       autoFocus
                       ref={inputRef}
-                      className="flex-1 px-4 outline-primary max-w-full"
+                      placeholder={
+                        onlyNumberColumns?.includes(cell.column.id)
+                          ? "0"
+                          : cell.column.columnDef.header?.toString()
+                      }
+                      className={`font-pretendard flex-1 px-4 outline-primary max-w-full ${
+                        onlyNumberColumns?.includes(cell.column.id)
+                          ? "text-right"
+                          : ""
+                      }`}
                       type={
-                        typeof cell.getContext().getValue() === "number"
+                        onlyNumberColumns?.includes(cell.column.id)
                           ? "number"
                           : "text"
                       }
                       defaultValue={
                         (cell.getContext().getValue() as string) || ""
                       }
+                      // value={(cell.getContext().getValue() as string) || ""}
                       onBlur={() => {
-                        if (typeof cell.getContext().getValue() === "number") {
+                        if (onlyNumberColumns?.includes(cell.column.id)) {
                           table.options.meta?.updateData(
                             parseInt(row.id),
                             cell.column.id,
-                            parseFloat(inputRef.current.value)
+                            isNaN(parseFloat(inputRef.current.value))
+                              ? undefined
+                              : parseFloat(inputRef.current.value)
                           );
                         } else {
                           table.options.meta?.updateData(

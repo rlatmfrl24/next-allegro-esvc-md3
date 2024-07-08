@@ -141,6 +141,7 @@ export const BasicTable = ({
   requiredColumns = [],
   editableColumns = [],
   hiddenColumns = [],
+  onlyNumberColumns = [],
   isSingleSelect = false,
   getSelectionRows,
   ActionComponent,
@@ -155,6 +156,7 @@ export const BasicTable = ({
   requiredColumns?: string[];
   disableColumns?: string[];
   editableColumns?: string[];
+  onlyNumberColumns?: string[];
   isSingleSelect?: boolean;
   getSelectionRows?: (Rows: any[], table: Table<any>) => void;
   ActionComponent?: (table: Table<any>) => React.ReactNode;
@@ -359,6 +361,7 @@ export const BasicTable = ({
                 ignoreSelectionColumns={ignoreSelectionColumns}
                 disableColumns={disableColumns}
                 editableColumns={editableColumns}
+                onlyNumberColumns={onlyNumberColumns}
               />
             ) : (
               <TableBody
@@ -368,6 +371,7 @@ export const BasicTable = ({
                 ignoreSelectionColumns={ignoreSelectionColumns}
                 disableColumns={disableColumns}
                 editableColumns={editableColumns}
+                onlyNumberColumns={onlyNumberColumns}
               />
             )}
           </table>
