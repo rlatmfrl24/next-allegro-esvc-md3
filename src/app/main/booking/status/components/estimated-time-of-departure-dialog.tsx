@@ -1,7 +1,7 @@
 import { useState } from "react";
 import VesselStatusNotesDialog from "./vessel-status-notes";
 import Portal from "@/app/components/portal";
-import { BookingStatusTableProps } from "@/app/util/typeDef/boooking";
+import { BookingStatusTableProps } from "@/app/util/typeDef/booking";
 import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 

@@ -13,7 +13,7 @@ import {
   OpenTopContainerInformationType,
   FlatRackContainerInformationType,
   ReeferContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { Info, ThermostatAuto, Warning } from "@mui/icons-material";
 import { CSSProperties, useState } from "react";
 import { DetailTitle } from "@/app/components/title-components";

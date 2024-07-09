@@ -3,7 +3,7 @@ import { Section } from "./base";
 import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
-import { CargoPickUpReturnType } from "@/app/util/typeDef/boooking";
+import { CargoPickUpReturnType } from "@/app/util/typeDef/booking";
 
 export default function CargoSection({
   data,

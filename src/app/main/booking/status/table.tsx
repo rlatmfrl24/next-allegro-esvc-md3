@@ -11,7 +11,7 @@ import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
 import {
   BookingStatus,
   BookingStatusTableProps,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { Download, Info } from "@mui/icons-material";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { CodeCopyButton } from "./components/code-copy-button";
 import { useSetRecoilState } from "recoil";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
+import { getCookie, setCookie } from "cookies-next";
 
 const HasShippingInstructionIcon = () => {
   return (
@@ -45,7 +46,7 @@ const HasShippingInstructionIcon = () => {
   );
 };
 
-function createDummnyBookingStatus() {
+function createDummyBookingStatus() {
   return {
     requestNo: `R${faker.string.numeric(12)}`,
     status: faker.helpers.arrayElement(
@@ -91,14 +92,14 @@ export default function BookingStatusTable() {
   const columnHelper = createColumnHelper<BookingStatusTableProps>();
 
   const tempData: BookingStatusTableProps[] = useMemo(() => {
-    return Array.from({ length: 200 }, (_, i) => createDummnyBookingStatus());
+    return Array.from({ length: 200 }, (_, i) => createDummyBookingStatus());
   }, []);
 
   const [tableData, setTableData] = useState<BookingStatusTableProps[]>([]);
   // const [currentBookingData, setCurrentBookingData] = useRecoilState(
   //   CurrentBookingDataState
   // );
-  const setCurentBookingData = useSetRecoilState(CurrentBookingDataState);
+  const setCurrentBookingData = useSetRecoilState(CurrentBookingDataState);
   const {
     renderDialog: renderVesselInfoDialog,
     setCurrentVessel,
@@ -224,6 +225,7 @@ export default function BookingStatusTable() {
     columnHelper.accessor("requestDepartureTime", {
       id: "requestDepartureTime",
       header: "Request Departure Time",
+
       cell: (info) => (
         <MdTypography
           variant="body"
@@ -426,9 +428,9 @@ export default function BookingStatusTable() {
       {renderVesselInfoDialog()}
       <div className="relative w-full max-w-full h-full">
         <BasicTable
+          cookieKey="bookingStatusTable"
           ActionComponent={(table) => {
             const currentSelection = table.getSelectedRowModel().rows as any[];
-
             return (
               <div className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -517,7 +519,7 @@ export default function BookingStatusTable() {
           isSingleSelect={true}
           pinningColumns={["requestNo", "status"]}
           getSelectionRows={(rows) => {
-            setCurentBookingData(rows[0]);
+            setCurrentBookingData(rows[0]);
           }}
         />
       </div>

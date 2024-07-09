@@ -2,7 +2,7 @@ import { DetailTitle } from "@/app/components/title-components";
 import { getEmptySIEditContainerData } from "@/app/main/util";
 import { SIEditContainerState } from "@/app/store/si.store";
 import { MdFilledTonalIconButton } from "@/app/util/md3";
-import { ContainerType } from "@/app/util/typeDef/boooking";
+import { ContainerType } from "@/app/util/typeDef/booking";
 import { SIContainerInputProps } from "@/app/util/typeDef/si";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown } from "@mui/icons-material";

@@ -5,7 +5,7 @@ import LabelChip from "@/app/components/label-chip";
 import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
-import { ContactInformationType } from "@/app/util/typeDef/boooking";
+import { ContactInformationType } from "@/app/util/typeDef/booking";
 
 export default function ContactInformationSection({
   data,

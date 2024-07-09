@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { PlaceInformationType, VesselInfoType } from "./schedule";
-import { ContainerType } from "./boooking";
+import { ContainerType } from "./booking";
 
 export enum SealKind {
   Shipper,

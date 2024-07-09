@@ -12,7 +12,7 @@ import { MdFilledTonalIconButton, MdIconButton } from "@/app/util/md3";
 import {
   ContainerType,
   DryContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 

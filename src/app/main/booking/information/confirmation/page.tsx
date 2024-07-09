@@ -16,7 +16,7 @@ import {
 } from "@/app/store/booking.store";
 import styles from "@/app/styles/base.module.css";
 import { MdIcon, MdOutlinedButton, MdOutlinedTextField } from "@/app/util/md3";
-import { BookingStatus } from "@/app/util/typeDef/boooking";
+import { BookingStatus } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { ChevronLeft } from "@mui/icons-material";
 

@@ -6,7 +6,7 @@ import { ContainerState } from "@/app/store/booking.store";
 import {
   ContainerInformationType,
   ContainerType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import {
   MdChipSet,
   MdDialog,
