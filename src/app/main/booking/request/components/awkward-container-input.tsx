@@ -8,7 +8,7 @@ import {
   ContainerType,
   FlatRackContainerInformationType,
   OpenTopContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { useSetRecoilState } from "recoil";
 
 const AwkwardContainerInput = ({

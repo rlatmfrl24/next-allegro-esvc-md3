@@ -25,7 +25,12 @@ const config: Config = {
         roboto: ["var(--font-roboto)"],
       },
       colors: {
-        primary: "var(--md-sys-color-primary)",
+        primary: {
+          DEFAULT: "var(--md-sys-color-primary)",
+          50: "color-mix(in srgb, var(--md-sys-color-primary) 5%, white)",
+          80: "color-mix(in srgb, var(--md-sys-color-primary) 8%, white)",
+          160: "color-mix(in srgb, var(--md-sys-color-primary) 12%, white)",
+        },
         onPrimary: "var(--md-sys-color-on-primary)",
         primaryContainer: "var(--md-sys-color-primary-container)",
         onPrimaryContainer: "var(--md-sys-color-on-primary-container)",
@@ -66,7 +71,11 @@ const config: Config = {
         onTertiaryFixedVariant: "var(--md-sys-color-on-tertiary-fixed-variant)",
 
         surface: "var(--md-sys-color-surface)",
-        onSurface: "var(--md-sys-color-on-surface)",
+        onSurface: {
+          DEFAULT: "var(--md-sys-color-on-surface)",
+          80: "color-mix(in srgb, var(--md-sys-color-on-surface) 8%, white)",
+          120: "color-mix(in srgb, var(--md-sys-color-on-surface) 12%, white)",
+        },
         surfaceVariant: "var(--md-sys-color-surface-variant)",
         onSurfaceVariant: "var(--md-sys-color-on-surface-variant)",
         surfaceTint: "var(--md-sys-color-surface-tint)",

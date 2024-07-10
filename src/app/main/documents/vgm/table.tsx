@@ -1,4 +1,5 @@
 import { BottomFloatingBar } from "@/app/components/bottom-floating-bar";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 import Portal from "@/app/components/portal";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { GridSelectComponent } from "@/app/components/table/grid-select";
@@ -8,11 +9,12 @@ import {
   MdElevation,
   MdFilledButton,
   MdIcon,
+  MdOutlinedTextField,
   MdTextButton,
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Download, Publish, Upload } from "@mui/icons-material";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, RowData } from "@tanstack/react-table";
 import { AnimatePresence, motion } from "framer-motion";
 import { DateTime } from "luxon";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
@@ -20,7 +22,7 @@ import { CSSProperties, useEffect, useMemo, useState } from "react";
 type VGMTableProps = {
   containerNumber: string;
   bookingNumber: string;
-  vgm: number;
+  vgm: number | undefined;
   tareWeight: number;
   maxPayload: number;
   signatory: string | undefined;
@@ -94,26 +96,20 @@ export const VGMTable = () => {
     columnHelper.accessor("vgm", {
       id: "vgm",
       header: "VGM (KGS) (Cargo + Tare Weight)",
-      cell: (info) => {
-        const intValue = parseInt(info.getValue().toString());
-
-        return (
-          <MdTypography variant="body" size="medium" className="text-right">
-            {intValue
-              .toFixed(2)
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </MdTypography>
-        );
+      meta: {
+        format: (value) =>
+          value
+            ?.toFixed(2)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",") ?? "",
       },
+      cell: (info) => info.getValue()?.toFixed(2).toString(),
     }),
-
     columnHelper.accessor("tareWeight", {
       id: "tareWeight",
       header: "Tare Weight (KGS)",
       cell: (info) => {
         const intValue = parseInt(info.getValue().toString());
-
         return (
           <MdTypography variant="body" size="medium" className="text-right">
             {intValue
@@ -144,17 +140,9 @@ export const VGMTable = () => {
       id: "signatory",
       header: "Signatory",
       cell: (info) => {
-        return info.getValue() ? (
+        return (
           <MdTypography variant="body" size="medium">
             {info.getValue()}
-          </MdTypography>
-        ) : (
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-outlineVariant"
-          >
-            Signatory
           </MdTypography>
         );
       },
@@ -266,6 +254,7 @@ export const VGMTable = () => {
         columns={columnDefs}
         isSingleSelect
         editableColumns={["vgm", "signatory", "emailNotification"]}
+        onlyNumberColumns={["vgm"]}
         updater={setTableData}
       />
       <Portal selector="#vgm-container">

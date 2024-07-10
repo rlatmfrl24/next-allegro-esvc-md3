@@ -20,7 +20,7 @@ import {
   MdOutlinedTextField,
   MdRippleEffect,
 } from "@/app/util/md3";
-import { BookingTemplateProps } from "@/app/util/typeDef/boooking";
+import { BookingTemplateProps } from "@/app/util/typeDef/booking";
 import {
   autoUpdate,
   useClick,

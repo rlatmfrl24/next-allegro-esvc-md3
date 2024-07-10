@@ -36,7 +36,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   BookingInformationRequestType,
   BookingStatus,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { ChevronLeft } from "@mui/icons-material";
 import BookingStatusChip from "../status/components/booking-status-chip";
 import { MdTypography } from "@/app/components/typography";

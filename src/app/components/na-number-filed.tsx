@@ -100,6 +100,7 @@ export const NAOutlinedNumberField = ({
             }
           }}
           onBlur={(e) => {
+            console.log("onBlur");
             setIsFocused(false);
             if (enableNumberSeparator) {
               e.currentTarget.value = e.currentTarget.value.replace(

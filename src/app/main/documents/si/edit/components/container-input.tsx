@@ -17,7 +17,7 @@ import {
   MdOutlinedIconButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
-import { ContainerType } from "@/app/util/typeDef/boooking";
+import { ContainerType } from "@/app/util/typeDef/booking";
 import {
   CargoManifestType,
   SIContainerInputProps,

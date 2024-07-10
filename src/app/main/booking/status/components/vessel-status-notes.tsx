@@ -1,6 +1,6 @@
 import { MdTypography } from "@/app/components/typography";
 import { MdDialog, MdFilledButton, MdTextButton } from "@/app/util/md3";
-import { BookingStatusTableProps } from "@/app/util/typeDef/boooking";
+import { BookingStatusTableProps } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { ArrowForward } from "@mui/icons-material";
 import { DateTime } from "luxon";

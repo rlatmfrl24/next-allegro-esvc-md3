@@ -26,7 +26,7 @@ import {
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
-import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
+import { BookingInformationRequestType } from "@/app/util/typeDef/booking";
 import { ChevronLeft } from "@mui/icons-material";
 
 import AdditionalInformationStep from "./step-additional-information";

@@ -45,11 +45,19 @@ import { HeaderComponent } from "./header";
 import { ColumnFilterButton } from "./column-filter";
 import { TablePaginator } from "./paginator";
 import { getCommonPinningStyles } from "./util";
+import { size } from "lodash";
+import { getCookie, setCookie } from "cookies-next";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
     updateRow: (rowIndex: number, value: unknown) => void;
+  }
+}
+
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    format?: (value: TValue) => string;
   }
 }
 
@@ -118,7 +126,7 @@ export const useBasicTable = ({
       disableColumns={disableColumns}
       requiredColumns={requiredColumns}
       editableColumns={editableColumns}
-      hiddenColumns={hiddenColumns}
+      // hiddenColumns={hiddenColumns}
       isSingleSelect={isSingleSelect}
       getSelectionRows={(rows) => {
         setSelectedRows(rows);
@@ -141,7 +149,9 @@ export const BasicTable = ({
   requiredColumns = [],
   editableColumns = [],
   hiddenColumns = [],
+  onlyNumberColumns = [],
   isSingleSelect = false,
+  cookieKey,
   getSelectionRows,
   ActionComponent,
   updater,
@@ -151,30 +161,51 @@ export const BasicTable = ({
   pinningColumns?: string[];
   controlColumns?: string[];
   ignoreSelectionColumns?: string[];
-  hiddenColumns?: string[];
   requiredColumns?: string[];
   disableColumns?: string[];
   editableColumns?: string[];
+  onlyNumberColumns?: string[];
+  hiddenColumns?: string[];
   isSingleSelect?: boolean;
+  cookieKey?: string;
   getSelectionRows?: (Rows: any[], table: Table<any>) => void;
   ActionComponent?: (table: Table<any>) => React.ReactNode;
   updater?: Dispatch<SetStateAction<any[]>>;
 }) => {
+  const defaultColumnInfo = useMemo(() => {
+    const columnInfo = getCookie(cookieKey ?? "");
+    if (columnInfo) {
+      return JSON.parse(columnInfo);
+    }
+    return [];
+  }, [cookieKey]);
+
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [columnSizes, setColumnSizes] = useState(
+    defaultColumnInfo.length > 0
+      ? defaultColumnInfo.reduce((acc: any, cur: any) => {
+          acc[cur.id] = cur.size;
+          return acc;
+        }, {})
+      : {}
+  );
   const [columnVisibility, setColumnVisibility] = useState(
-    columns.reduce((acc, column) => {
-      acc[column.id] = !hiddenColumns.includes(column.id);
+    hiddenColumns.reduce((acc: any, cur: any) => {
+      acc[cur] = false;
       return acc;
-    }, {} as Record<string, boolean>)
+    }, {} as any)
   );
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedRows, setSelectedRows] = useState({});
   const [columnOrder, setColumnOrder] = useState<string[]>(
-    columns.map((column) => column.id)
+    // columns.map((column) => column.id)
+    defaultColumnInfo.length > 0
+      ? defaultColumnInfo.map((column: any) => column.id)
+      : columns.map((column) => column.id)
   );
   const [selectedCell, setSelectedCell] = useState<Cell<any, unknown> | null>(
     null
@@ -204,6 +235,7 @@ export const BasicTable = ({
     },
     state: {
       rowSelection: selectedRows,
+      columnSizing: columnSizes,
       columnFilters,
       columnOrder,
       sorting,
@@ -216,7 +248,7 @@ export const BasicTable = ({
     onColumnVisibilityChange: setColumnVisibility,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
-
+    onColumnSizingChange: setColumnSizes,
     enableMultiRowSelection: !isSingleSelect,
     // enableMultiSort: true,
     autoResetPageIndex,
@@ -250,8 +282,37 @@ export const BasicTable = ({
   });
 
   useEffect(() => {
-    setColumnOrder(columns.map((column) => column.id));
-  }, [columns, table]);
+    const invisibleColumnIds = defaultColumnInfo
+      .filter((column: any) => !column.isVisible)
+      .map((column: any) => column.id);
+
+    table.getAllColumns().forEach((column) => {
+      column.toggleVisibility(!invisibleColumnIds.includes(column.id));
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const columnInfo = table
+      .getAllColumns()
+      .map((column) => {
+        return {
+          id: column.id,
+          size: column.getSize(),
+          isVisible: column.getIsVisible(),
+        };
+      })
+      .sort((a, b) => {
+        return columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id);
+      });
+
+    if (cookieKey) {
+      setCookie(cookieKey, JSON.stringify(columnInfo));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnSizes, columnOrder, columnVisibility]);
 
   useEffect(() => {
     getSelectionRows &&
@@ -359,6 +420,7 @@ export const BasicTable = ({
                 ignoreSelectionColumns={ignoreSelectionColumns}
                 disableColumns={disableColumns}
                 editableColumns={editableColumns}
+                onlyNumberColumns={onlyNumberColumns}
               />
             ) : (
               <TableBody
@@ -368,6 +430,7 @@ export const BasicTable = ({
                 ignoreSelectionColumns={ignoreSelectionColumns}
                 disableColumns={disableColumns}
                 editableColumns={editableColumns}
+                onlyNumberColumns={onlyNumberColumns}
               />
             )}
           </table>

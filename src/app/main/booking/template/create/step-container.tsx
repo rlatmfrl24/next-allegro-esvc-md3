@@ -20,7 +20,7 @@ import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import {
   ContainerType,
   DryContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
