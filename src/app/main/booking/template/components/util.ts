@@ -14,7 +14,7 @@ import {
   PartiesType,
   ReeferContainerInformationType,
   TankContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 

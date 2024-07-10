@@ -9,7 +9,7 @@ import {
   OpenTopContainerInformationType,
   ReeferContainerInformationType,
   TankContainerInformationType,
-} from "../util/typeDef/boooking";
+} from "../util/typeDef/booking";
 import {
   CargoManifestType,
   SIContainerInputProps,

@@ -21,7 +21,7 @@ import { MdIcon, MdOutlinedButton, MdOutlinedTextField } from "@/app/util/md3";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import RequestNumberSection from "../components/request-number";
-import { BookingStatus } from "@/app/util/typeDef/boooking";
+import { BookingStatus } from "@/app/util/typeDef/booking";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { ChevronLeft } from "@mui/icons-material";
 import { DividerComponent } from "@/app/components/divider";

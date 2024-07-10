@@ -21,7 +21,7 @@ import {
   ContainerType,
   DangerousContainerInformationType,
   DryContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 
 import { getEmptyContainerData } from "../../util";

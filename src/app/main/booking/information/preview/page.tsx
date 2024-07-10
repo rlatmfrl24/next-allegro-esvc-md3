@@ -32,7 +32,7 @@ import {
   ContainerState,
 } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
-import { BookingInformationRequestType } from "@/app/util/typeDef/boooking";
+import { BookingInformationRequestType } from "@/app/util/typeDef/booking";
 import { ChevronLeft } from "@mui/icons-material";
 import { DividerComponent } from "@/app/components/divider";
 

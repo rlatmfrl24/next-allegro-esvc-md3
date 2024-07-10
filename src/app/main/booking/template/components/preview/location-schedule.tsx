@@ -3,7 +3,7 @@ import ShipRouteIcon from "@/../public/icon_ship_route.svg";
 import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
-import { LocationScheduleType } from "@/app/util/typeDef/boooking";
+import { LocationScheduleType } from "@/app/util/typeDef/booking";
 import { Section } from "../../../information/components/base";
 
 export default function LocationScheduleSection({

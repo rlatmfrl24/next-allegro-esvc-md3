@@ -13,7 +13,7 @@ import {
 import {
   ContainerType,
   OpenTopContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import { useRecoilState, useSetRecoilState } from "recoil";

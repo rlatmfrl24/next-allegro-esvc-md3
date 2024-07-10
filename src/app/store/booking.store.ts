@@ -18,7 +18,7 @@ import {
   BulkContainerInformationType,
   BookingStatusTableProps,
   BookingTemplateProps,
-} from "../util/typeDef/boooking";
+} from "../util/typeDef/booking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 import { createDummyBooking } from "../main/booking/template/components/util";
 

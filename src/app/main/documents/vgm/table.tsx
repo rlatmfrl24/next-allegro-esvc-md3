@@ -94,16 +94,20 @@ export const VGMTable = () => {
     columnHelper.accessor("vgm", {
       id: "vgm",
       header: "VGM (KGS) (Cargo + Tare Weight)",
-      cell: (info) => {
-        const intValue = parseInt(info.getValue().toString());
 
+      cell: (info) => {
+        const intValue = isNaN(parseInt(info.getValue()?.toString()))
+          ? undefined
+          : parseInt(info.getValue()?.toString());
         return (
-          <MdTypography variant="body" size="medium" className="text-right">
-            {intValue
-              .toFixed(2)
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </MdTypography>
+          intValue !== undefined && (
+            <MdTypography variant="body" size="medium" className="text-right">
+              {intValue
+                .toFixed(2)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </MdTypography>
+          )
         );
       },
     }),
@@ -144,17 +148,9 @@ export const VGMTable = () => {
       id: "signatory",
       header: "Signatory",
       cell: (info) => {
-        return info.getValue() ? (
+        return (
           <MdTypography variant="body" size="medium">
             {info.getValue()}
-          </MdTypography>
-        ) : (
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="text-outlineVariant"
-          >
-            Signatory
           </MdTypography>
         );
       },
@@ -266,6 +262,7 @@ export const VGMTable = () => {
         columns={columnDefs}
         isSingleSelect
         editableColumns={["vgm", "signatory", "emailNotification"]}
+        onlyNumberColumns={["vgm"]}
         updater={setTableData}
       />
       <Portal selector="#vgm-container">

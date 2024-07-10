@@ -18,7 +18,7 @@ import {
   OpenTopContainerInformationType,
   ReeferContainerInformationType,
   TankContainerInformationType,
-} from "@/app/util/typeDef/boooking";
+} from "@/app/util/typeDef/booking";
 import { Info, ThermostatAuto } from "@mui/icons-material";
 import LabelChip from "@/app/components/label-chip";
 import { MdRippleEffect } from "@/app/util/md3";

@@ -21,7 +21,7 @@ import {
   SIEditStepState,
 } from "@/app/store/si.store";
 import { MdFilledButton, MdRippleEffect, MdSwitch } from "@/app/util/md3";
-import { ContainerType } from "@/app/util/typeDef/boooking";
+import { ContainerType } from "@/app/util/typeDef/booking";
 
 import ContainerToggleButton from "./components/container-toggle-button";
 import ContainerTypeInputComponent from "./components/container-type-input";

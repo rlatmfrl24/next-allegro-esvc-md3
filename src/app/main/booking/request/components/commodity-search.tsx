@@ -22,7 +22,7 @@ import {
   useListNavigation,
 } from "@floating-ui/react";
 import { ArrowDropDown, CancelOutlined } from "@mui/icons-material";
-import { CommodityType } from "@/app/util/typeDef/boooking";
+import { CommodityType } from "@/app/util/typeDef/booking";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
   typeof MdOutlinedTextFieldBase

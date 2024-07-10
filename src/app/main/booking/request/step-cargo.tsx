@@ -11,7 +11,7 @@ import {
   CargoPickUpReturnState,
 } from "@/app/store/booking.store";
 import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
-import { CommodityType } from "@/app/util/typeDef/boooking";
+import { CommodityType } from "@/app/util/typeDef/booking";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { faker } from "@faker-js/faker";
 

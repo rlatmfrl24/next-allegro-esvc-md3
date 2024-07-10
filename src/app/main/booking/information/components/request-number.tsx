@@ -1,4 +1,4 @@
-import { BookingStatus } from "@/app/util/typeDef/boooking";
+import { BookingStatus } from "@/app/util/typeDef/booking";
 import BookingStatusChip from "../../status/components/booking-status-chip";
 import { MdTypography } from "@/app/components/typography";
 
