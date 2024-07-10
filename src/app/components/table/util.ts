@@ -22,7 +22,7 @@ export const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
     position: isPinned ? "sticky" : "relative",
     width: column.columnDef?.size === undefined ? "auto" : column.getSize(),
     minWidth: column.columnDef.minSize,
-    zIndex: isPinned ? 20 : undefined,
+    zIndex: isPinned ? 30 : undefined,
   };
 };
 
