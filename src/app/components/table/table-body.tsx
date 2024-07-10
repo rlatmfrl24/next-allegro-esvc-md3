@@ -129,18 +129,6 @@ export const TableBody = ({
                     row.toggleSelected();
                   }}
                 >
-                  {editableColumns?.includes(cell.column.id) &&
-                    (cell.getValue()?.toString() ?? "") === "" && (
-                      <MdTypography
-                        variant="body"
-                        size="medium"
-                        className="text-outlineVariant"
-                      >
-                        {onlyNumberColumns?.includes(cell.column.id)
-                          ? "0"
-                          : cell.column.columnDef.header?.toString()}
-                      </MdTypography>
-                    )}
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ) : (
