@@ -62,7 +62,7 @@ export type BookingStatusTableProps = {
 
 export type CargoPickUpReturnType = {
   commodity: CommodityType;
-  grossWeight: string;
+  grossWeight: string | undefined;
   grossWeightUnit: "KGS" | "LBS";
   emptyPickUpDate: DateTime | undefined;
   fullReturnDate: DateTime | undefined;
