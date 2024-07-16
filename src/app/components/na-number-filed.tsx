@@ -75,13 +75,16 @@ export const NAOutlinedNumberField = ({
           type={isFocused ? "number" : "text"}
           noSpinner
           onFocus={(e) => {
+            console.log("onFocus");
             setIsFocused(true);
-            e.currentTarget.value = "";
-
             e.currentTarget.select();
+            // e.currentTarget.value = "";
           }}
           style={
             {
+              "--md-outlined-text-field-error-input-text-color": !hasValue
+                ? "var(--md-sys-color-outline-variant)"
+                : "inherit",
               "--md-outlined-text-field-input-text-color": !hasValue
                 ? "var(--md-sys-color-outline-variant)"
                 : "inherit",

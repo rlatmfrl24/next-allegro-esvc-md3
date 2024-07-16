@@ -37,7 +37,8 @@ export default function CargoStep() {
       cargoPickUpReturnData.commodity.code === "" ||
       cargoPickUpReturnData.commodity.description === "" ||
       cargoPickUpReturnData.emptyPickUpDate === undefined ||
-      cargoPickUpReturnData.grossWeight === "0"
+      cargoPickUpReturnData.grossWeight === "0" ||
+      cargoPickUpReturnData.grossWeight === undefined
     ) {
       return false;
     } else {
@@ -164,7 +165,8 @@ export default function CargoStep() {
           required
           error={
             bookingRequestStep.cargoPickUpReturn.visited &&
-            cargoPickUpReturnData.grossWeight === "0"
+            (cargoPickUpReturnData.grossWeight === "0" ||
+              cargoPickUpReturnData.grossWeight === undefined)
           }
           errorText="Gross Weight is required."
           readOnly={params.has("quoteNumber")}
@@ -173,7 +175,7 @@ export default function CargoStep() {
               return {
                 ...prev,
                 // grossWeight: intValue > 999999999 ? "999999999" : value,
-                grossWeight: value?.toString() || "0",
+                grossWeight: value?.toString(),
               };
             });
           }}

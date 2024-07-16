@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { MdRadio } from "../util/md3";
 import { MdTypography } from "./typography";
-import { on } from "events";
 
 export const SimpleRadioGroup = ({
   options,
