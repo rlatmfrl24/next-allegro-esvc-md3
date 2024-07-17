@@ -81,6 +81,24 @@ export const TableBody = ({
   //   }
   // }
 
+  function getZIndex(cell: Cell<any, unknown>) {
+    if (cell.column.getIsPinned()) {
+      // pinned columns
+      if (selectedCell?.id === cell.id) {
+        return "z-50";
+      } else {
+        return "z-30 hover:z-40";
+      }
+    } else {
+      // non-pinned columns
+      if (selectedCell?.id === cell.id) {
+        return "z-20";
+      } else {
+        return "z-0 hover:z-10";
+      }
+    }
+  }
+
   return (
     <tbody>
       {table.getRowModel().rows.map((row) => {
@@ -99,20 +117,20 @@ export const TableBody = ({
                   className={`p-2
                     ${
                       selectedCell?.id === cell.id
-                        ? `bg-primary-160 outline-2 outline outline-primary z-20 `
+                        ? `bg-primary-160 outline-2 outline outline-primary`
                         : row.getIsSelected()
                         ? `bg-primary-80`
                         : `bg-surfaceContainerLowest
                             group-hover:bg-onSurface-80
                             group-hover:outline-1
-                            hover:outline
-                            hover:z-10`
+                            hover:outline`
                     }
-                     ${
-                       onlyNumberColumns?.includes(cell.column.id)
-                         ? "text-right"
-                         : ""
-                     }`}
+                    ${getZIndex(cell)}
+                    ${
+                      onlyNumberColumns?.includes(cell.column.id)
+                        ? "text-right"
+                        : ""
+                    }`}
                   // onDoubleClick={(e) => {
                   //   row.toggleSelected();
                   //   row.getIsSelected()
