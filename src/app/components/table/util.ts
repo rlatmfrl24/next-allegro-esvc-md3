@@ -1,6 +1,6 @@
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { Column } from "@tanstack/react-table";
+import { Column, Row } from "@tanstack/react-table";
 import { CSSProperties, Dispatch, SetStateAction } from "react";
 
 export const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
@@ -22,7 +22,7 @@ export const getCommonPinningStyles = (column: Column<any>): CSSProperties => {
     position: isPinned ? "sticky" : "relative",
     width: column.columnDef?.size === undefined ? "auto" : column.getSize(),
     minWidth: column.columnDef.minSize,
-    zIndex: isPinned ? 30 : undefined,
+    // zIndex: isPinned ? (row?.getIsSelected() ? 10 : 5) : undefined,
   };
 };
 

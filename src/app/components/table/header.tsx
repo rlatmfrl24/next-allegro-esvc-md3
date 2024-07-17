@@ -47,7 +47,7 @@ export const HeaderComponent = ({
       ref={setNodeRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative max-h-14 h-14`}
+      className={`relative max-h-14 h-14 ${isPinned ? "z-30" : ""}`}
     >
       <div className="h-full flex items-center">
         <div
