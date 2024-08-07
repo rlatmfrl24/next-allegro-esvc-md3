@@ -1,11 +1,19 @@
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
-import { MdCheckbox, MdRadio } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdDialog,
+  MdOutlinedButton,
+  MdRadio,
+} from "@/app/util/md3";
 import { PlaceInformationType } from "@/app/util/typeDef/schedule";
 import { fa, faker } from "@faker-js/faker";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { PricePanel } from "./components/price-panel";
+import { QuotationContainerType } from "@/app/util/typeDef/pricing";
 
 interface AgreementTableProps {
   uuid: string;
@@ -22,6 +30,9 @@ interface AgreementTableProps {
 }
 
 export const AgreementTable = () => {
+  const router = useRouter();
+  const [isPriceDialogOpen, setIsPriceDialogOpen] = useState(false);
+  const [dialogAgreementNumber, setDialogAgreementNumber] = useState("");
   const tempData = useMemo(() => {
     return Array.from(
       { length: 900 },
@@ -75,6 +86,10 @@ export const AgreementTable = () => {
           variant="body"
           size="medium"
           className="underline w-fit cursor-pointer"
+          onClick={() => {
+            setDialogAgreementNumber(info.getValue());
+            setIsPriceDialogOpen(true);
+          }}
         >
           {info.getValue()}
         </MdTypography>
@@ -155,11 +170,22 @@ export const AgreementTable = () => {
     columnHelper.accessor("bookingRequestNumber", {
       header: "Booking Request No.",
       id: "bookingRequestNumber",
-      cell: (info) => (
-        <MdTypography variant="body" size="medium">
-          {info.getValue()}
-        </MdTypography>
-      ),
+      cell: (info) => {
+        return info.getValue() !== undefined ? (
+          <MdTypography variant="body" size="medium">
+            {info.getValue()}
+          </MdTypography>
+        ) : (
+          <MdOutlinedButton
+            onClick={() => {
+              router.push(`/main/booking/request`);
+            }}
+          >
+            Booking Request
+          </MdOutlinedButton>
+        );
+      },
+      minSize: 150,
     }),
   ];
 
@@ -173,6 +199,41 @@ export const AgreementTable = () => {
         data={tableData}
         isSingleSelect
       />
+      <MdDialog
+        open={isPriceDialogOpen}
+        closed={() => {
+          setIsPriceDialogOpen(false);
+        }}
+        className="min-w-fit"
+      >
+        <div slot="headline">Agreement Price</div>
+        <div slot="content">
+          <MdTypography variant="body" size="medium">
+            {dialogAgreementNumber}
+          </MdTypography>
+          <PricePanel
+            containers={[
+              {
+                containerType: QuotationContainerType.Dry20,
+                quantity: 2,
+              },
+              {
+                containerType: QuotationContainerType.Dry40,
+                quantity: 4,
+              },
+            ]}
+          />
+        </div>
+        <div slot="actions">
+          <MdOutlinedButton
+            onClick={() => {
+              setIsPriceDialogOpen(false);
+            }}
+          >
+            Close
+          </MdOutlinedButton>
+        </div>
+      </MdDialog>
     </>
   );
 };
