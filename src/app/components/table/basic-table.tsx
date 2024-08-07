@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
+import React, {
   Dispatch,
   SetStateAction,
   useCallback,
@@ -40,13 +40,18 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import {
+  OverlayScrollbarsComponent,
+  useOverlayScrollbars,
+} from "overlayscrollbars-react";
 import { HeaderComponent } from "./header";
 import { ColumnFilterButton } from "./column-filter";
 import { TablePaginator } from "./paginator";
 import { getCommonPinningStyles } from "./util";
 import { size } from "lodash";
 import { getCookie, setCookie } from "cookies-next";
+import { useDraggable } from "react-use-draggable-scroll";
+import { tr } from "@faker-js/faker";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -348,6 +353,22 @@ export const BasicTable = ({
     }
   }
 
+  const scrollRef =
+    useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
+
+  const { events } = useDraggable(scrollRef, {
+    applyRubberBandEffect: true,
+    isMounted: !!scrollRef.current,
+  }); // Now we pass the reference to the useDraggable hook:
+
+  // const [initialize, instance] = useOverlayScrollbars({
+  //   defer: true,
+  // });
+  // useEffect(() => {
+  //   initialize(scrollRef.current!);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [instance]);
+
   return (
     <div className="relative flex flex-col gap-4 flex-1 h-full">
       <div className="flex items-end">
@@ -360,7 +381,7 @@ export const BasicTable = ({
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
-      <OverlayScrollbarsComponent defer className="flex-1">
+      <div className={styles.tableWrapper} {...events} ref={scrollRef}>
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
@@ -438,7 +459,11 @@ export const BasicTable = ({
           </table>
         </DndContext>
         <div className="flex-1"></div>
-      </OverlayScrollbarsComponent>
+      </div>
+      {/* <OverlayScrollbarsComponent
+        defer
+        className="flex-1"
+      ></OverlayScrollbarsComponent> */}
     </div>
   );
 };
