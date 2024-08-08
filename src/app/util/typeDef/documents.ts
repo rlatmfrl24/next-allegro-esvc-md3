@@ -30,4 +30,5 @@ export interface BLIssueRequestTableProps {
   demdet: boolean;
   requestBlType: "Surrender" | "Original" | "Switch" | "SeaWaybill";
   requestBlTypeDate: DateTime;
+  requestBlPic: string;
 }

@@ -7,8 +7,10 @@ import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import {
+  MdChipSet,
   MdDialog,
   MdFilledButton,
+  MdInputChip,
   MdPrimaryTab,
   MdSecondaryTab,
   MdTabs,
@@ -16,14 +18,17 @@ import {
 } from "@/app/util/md3";
 import { BLIssueRequestTableProps } from "@/app/util/typeDef/documents";
 import { faker } from "@faker-js/faker";
+import { BackupOutlined } from "@mui/icons-material";
 import {
   CSSProperties,
   Dispatch,
   SetStateAction,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { useDropzone } from "react-dropzone";
 import { useDraggable } from "react-use-draggable-scroll";
 
 export const HandlingInstructionDialog = ({
@@ -70,7 +75,7 @@ export const HandlingInstructionDialog = ({
           <div
             ref={tabWrapperRef}
             {...events}
-            className="max-w-full whitespace-nowrap overflow-x-scroll scrollbar-hide border-b border-b-outlineVariant"
+            className="flex max-w-full whitespace-nowrap overflow-x-scroll scrollbar-hide border-b border-b-outlineVariant"
           >
             {data.map((item, index) => (
               <MdSecondaryTab
@@ -84,7 +89,7 @@ export const HandlingInstructionDialog = ({
                 onClick={() => {
                   setCurrentEdit(item);
                 }}
-                className={`${
+                className={`flex-1  ${
                   currentEdit.uuid === item.uuid
                     ? "border-b-2 border-b-primary"
                     : ""
@@ -247,6 +252,7 @@ export const HandlingInstructionDialog = ({
             placeholder="Additional Request"
           />
           <DetailTitle title="Attachment" className="mt-6 mb-4" />
+          <DndFileUploadPlaceholder className="mb-6" />
         </div>
       </div>
       <div slot="actions">
@@ -260,5 +266,141 @@ export const HandlingInstructionDialog = ({
         <MdFilledButton>Save</MdFilledButton>
       </div>
     </MdDialog>
+  );
+};
+
+const DndFileUploadPlaceholder = ({
+  className,
+  initialFiles,
+  onFilesChange,
+  maxFiles = 10,
+  maxFileSize = 10485760, // 10MB
+}: {
+  className?: string;
+  initialFiles?: File[];
+  onFilesChange?: (files: File[]) => void;
+  maxFiles?: number;
+  maxFileSize?: number;
+}) => {
+  const {
+    getRootProps,
+    getInputProps,
+    acceptedFiles,
+    fileRejections,
+    isFocused,
+    isDragAccept,
+  } = useDropzone({
+    maxFiles: maxFiles,
+    maxSize: maxFileSize,
+    // Accept zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt, odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
+    accept: {
+      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg"],
+      "image/svg": [".svg"],
+      "image/tiff": [".tiff"],
+      "image/tif": [".tif"],
+      "image/bmp": [".bmp"],
+      "image/avif": [".avif"],
+      "image/png": [".png"],
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
+      "application/zip": [".zip"],
+      "application/x-7z-compressed": [".7z"],
+      "application/x-rar-compressed": [".rar"],
+      "text/plain": [".txt"],
+      "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
+      "application/vnd.oasis.opendocument.text": [".odt"],
+      "application/vnd.oasis.opendocument.presentation": [".odp"],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "application/msword": [".doc"],
+      "application/rtf": [".rtf"],
+      "text/html": [".html"],
+    },
+  });
+  const [files, setFiles] = useState<File[]>(initialFiles || []);
+
+  useEffect(() => {
+    // add accepted files to state
+    setFiles((prev) => [...prev, ...acceptedFiles]);
+
+    // if files exceed 10, remove the last file
+    if (files.length + acceptedFiles.length > maxFiles) {
+      setFiles((prev) => prev.slice(0, maxFiles - 1));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [acceptedFiles]);
+
+  useEffect(() => {
+    // if file rejections exist, show alert
+    if (fileRejections.length > 0) {
+      alert("Some files are rejected. Please check the file types and sizes.");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileRejections]);
+
+  useEffect(() => {
+    onFilesChange && onFilesChange(files);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files]);
+
+  useEffect(() => {
+    console.log(isDragAccept);
+  }, [isDragAccept]);
+
+  return (
+    <div
+      className={`flex flex-col gap-4 ${className ? className : ""}
+      }`}
+    >
+      <div
+        className={`border-2 border-dashed border-outlineVariant rounded-lg flex flex-col gap-2 items-center justify-center flex-1 py-8 hover:cursor-pointer hover:bg-surfaceContainerHigh ${
+          isDragAccept ? "bg-surfaceContainerHigh" : "bg-surfaceContainerLow"
+        }`}
+        {...getRootProps({ isFocused, isDragAccept })}
+      >
+        <input {...getInputProps()} />
+        <BackupOutlined className="text-outline" />
+        <MdTypography variant="body" size="large" prominent>
+          <span className="underline text-primary cursor-pointer">
+            Click to upload
+          </span>
+          &nbsp;or drop files here
+        </MdTypography>
+        <MdTypography
+          variant="body"
+          size="small"
+          prominent
+          className="text-outline"
+        >
+          {`(Maximum ${maxFiles} files, Max file size : ${
+            maxFileSize / 1024 / 1024
+          }MB)`}
+        </MdTypography>
+        <MdTypography variant="body" size="small" className="text-outline mt-4">
+          zip, 7z, rar, txt, pdf, xlsx, doc, docx, rtf, html, ppt, ods, odt,
+          odp, jpg, tif, png, .avif, .bmp, jpeg, jpg, svg, tiff
+        </MdTypography>
+      </div>
+      <MdChipSet>
+        {files.map((file) => (
+          <div key={faker.string.uuid()}>
+            <MdInputChip
+              label={file.name}
+              selected
+              remove={() => {
+                setFiles((prev) => prev.filter((f) => f.name !== file.name));
+              }}
+            />
+          </div>
+        ))}
+      </MdChipSet>
+    </div>
   );
 };

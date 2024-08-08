@@ -75,6 +75,7 @@ export function BLIssueRequestTable() {
             "SeaWaybill",
           ]),
           requestBlTypeDate: DateTime.fromJSDate(faker.date.recent()),
+          requestBlPic: "",
         } as BLIssueRequestTableProps)
     );
   }, []);
@@ -308,6 +309,15 @@ export function BLIssueRequestTable() {
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+        </MdTypography>
+      ),
+    }),
+    columnHelper.accessor("requestBlPic", {
+      id: "requestBlPic",
+      header: "Request B/L PIC",
+      cell: (info) => (
+        <MdTypography variant="body" size="medium">
+          {info.getValue()}
         </MdTypography>
       ),
     }),
