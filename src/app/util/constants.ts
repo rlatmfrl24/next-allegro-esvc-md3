@@ -74,6 +74,12 @@ export const menuItems: MenuItemType[] = [
         subMenu: [],
       },
       {
+        id: "agreement",
+        name: "My Agreement List",
+        link: "agreement",
+        subMenu: [],
+      },
+      {
         id: "surcharge",
         name: "Surcharge Search",
         link: "surcharge",
@@ -127,6 +133,12 @@ export const menuItems: MenuItemType[] = [
         id: "si",
         name: "Shipping Instruction",
         link: "si",
+        subMenu: [],
+      },
+      {
+        id: "bl_issue_request",
+        name: "B/L Issue Request",
+        link: "bl-issue",
         subMenu: [],
       },
       {
