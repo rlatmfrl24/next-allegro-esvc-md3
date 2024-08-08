@@ -11,29 +11,26 @@ import {
 } from "../../schedule/util";
 import { useEffect, useMemo, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { MdCheckbox } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdDialog,
+  MdFilledButton,
+  MdIconButton,
+  MdOutlinedButton,
+  MdTextButton,
+} from "@/app/util/md3";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { set } from "lodash";
-
-interface BLIssueRequestTableProps {
-  uuid: string;
-  isFreight: boolean;
-  status: "Requested" | "Confirmed" | "Pending" | "Rejected";
-  blType: "Original B/L" | "eB/L" | "Switch B/L" | "SeaWaybill";
-  bookingNumber: string;
-  actualShipper: string;
-  vvd: VesselInfoType;
-  polEtb: DateTime;
-  polEtd: DateTime;
-  pol: string;
-  pod: string;
-  qty: string;
-  demdet: boolean;
-  requestBlType: "Surrender" | "Original" | "Switch" | "SeaWaybill";
-  requestBlTypeDate: DateTime;
-}
+import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
+import { BLStateCell } from "./components/bl-state";
+import { ManageSearch } from "@mui/icons-material";
+import { BLPrintDialog } from "./components/bl-print-dialog";
+import { InvoiceDialog } from "./components/invoice-dialog";
+import { BLIssueRequestTableProps } from "@/app/util/typeDef/documents";
+import { ReasonDialog } from "./components/reason-dialog";
+import { HandlingInstructionDialog } from "./components/handling-instruction-dialog";
 
 export function BLIssueRequestTable() {
   const router = useRouter();
@@ -82,6 +79,20 @@ export function BLIssueRequestTable() {
     );
   }, []);
   const [tableData, setTableData] = useState<BLIssueRequestTableProps[]>([]);
+  const [printDialogOpen, setPrintDialogOpen] = useState(false);
+  const [invoiceDialogOpen, setInvoiceDialogOpen] = useState(false);
+  const [reasonDialogOpen, setReasonDialogOpen] = useState(false);
+  const [
+    blHandlingInstructionsDialogOpen,
+    setBlHandlingInstructionsDialogOpen,
+  ] = useState(false);
+  const [targetReasonData, setTargetReasonData] =
+    useState<BLIssueRequestTableProps>();
+  const [currentHandlingData, setCurrentHandlingData] =
+    useState<BLIssueRequestTableProps>();
+
+  const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
+    useVesselScheduleDialog();
 
   useEffect(() => {
     setTableData(tempData);
@@ -104,26 +115,65 @@ export function BLIssueRequestTable() {
       cell: (info) => (
         <MdCheckbox checked={info.row.getIsSelected()} className="ml-2" />
       ),
-      size: 44,
-      minSize: 44,
-      maxSize: 44,
+      size: 48,
+      minSize: 48,
+      maxSize: 48,
     }),
     columnHelper.accessor("isFreight", {
       id: "isFreight",
-      header: "Freight",
+      header: () => {
+        return (
+          <NaToggleButton
+            label="Freight"
+            state={
+              tableData.every((row) => row.isFreight) ? "checked" : "unchecked"
+            }
+            onClick={() => {
+              setTableData(
+                tableData.map((row) => {
+                  return set(row, "isFreight", true);
+                })
+              );
+            }}
+          />
+        );
+      },
       cell: (info) => (
         <NaToggleButton
           label="Include"
           state={info.getValue() ? "checked" : "unchecked"}
           onClick={() => {
-            tableData.map((row, index) => {
-              if (index === info.row.index) {
-                return set(row, "isFreight", !info.getValue());
-              }
-              return row;
-            });
+            setTableData(
+              tableData.map((row, index) => {
+                if (index === info.row.index) {
+                  return set(row, "isFreight", !info.getValue());
+                }
+                return row;
+              })
+            );
           }}
         />
+      ),
+    }),
+    columnHelper.accessor("status", {
+      id: "status",
+      header: "Status",
+      cell: (info) => (
+        <div className="flex gap-2">
+          <BLStateCell state={info.getValue()} />
+          {(info.getValue() === "Rejected" ||
+            info.getValue() === "Pending") && (
+            <MdIconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setTargetReasonData(info.row.original);
+                setReasonDialogOpen(true);
+              }}
+            >
+              <ManageSearch />
+            </MdIconButton>
+          )}
+        </div>
       ),
     }),
     columnHelper.accessor("blType", {
@@ -134,6 +184,9 @@ export function BLIssueRequestTable() {
           variant="body"
           size="medium"
           className="underline cursor-pointer w-fit"
+          onClick={() => {
+            setPrintDialogOpen(true);
+          }}
         >
           {info.getValue()}
         </MdTypography>
@@ -147,6 +200,9 @@ export function BLIssueRequestTable() {
           variant="body"
           size="medium"
           className="underline cursor-pointer w-fit"
+          onClick={() => {
+            router.push(`/main/booking/information/confirmation/`);
+          }}
         >
           {info.getValue()}
         </MdTypography>
@@ -160,8 +216,8 @@ export function BLIssueRequestTable() {
           {info.getValue()}
         </MdTypography>
       ),
-      size: 300,
-      minSize: 300,
+      size: 150,
+      minSize: 150,
     }),
     columnHelper.accessor("vvd", {
       id: "vvd",
@@ -171,12 +227,16 @@ export function BLIssueRequestTable() {
           variant="body"
           size="medium"
           className="underline cursor-pointer w-fit"
+          onClick={() => {
+            setCurrentVessel(info.getValue());
+            setIsVesselScheduleDialogOpen(true);
+          }}
         >
           {info.getValue().vesselName}
         </MdTypography>
       ),
-      size: 200,
-      minSize: 200,
+      size: 300,
+      minSize: 300,
     }),
     columnHelper.accessor("polEtb", {
       id: "polEtb",
@@ -254,13 +314,51 @@ export function BLIssueRequestTable() {
 
   return (
     <>
+      {renderDialog()}
+      <BLPrintDialog open={printDialogOpen} onOpenChange={setPrintDialogOpen} />
+      <InvoiceDialog
+        open={invoiceDialogOpen}
+        onOpenChange={setInvoiceDialogOpen}
+      />
+      {targetReasonData && (
+        <ReasonDialog
+          open={reasonDialogOpen}
+          onOpenChange={setReasonDialogOpen}
+          data={targetReasonData}
+        />
+      )}
+      <HandlingInstructionDialog
+        open={blHandlingInstructionsDialogOpen}
+        onOpenChange={setBlHandlingInstructionsDialogOpen}
+      />
+
       <BasicTable
         ActionComponent={() => {
-          return <div className="flex-1"></div>;
+          return (
+            <div className="flex-1 flex gap-2">
+              <MdTextButton onClick={() => {}}>B/L Issue Request</MdTextButton>
+              <MdTextButton
+                onClick={() => {
+                  setPrintDialogOpen(true);
+                }}
+              >
+                Draft B/L
+              </MdTextButton>
+              <MdTextButton
+                onClick={() => {
+                  setInvoiceDialogOpen(true);
+                }}
+              >
+                Invoice
+              </MdTextButton>
+            </div>
+          );
         }}
         columns={columns}
         data={tableData}
         ignoreSelectionColumns={["isFreight"]}
+        controlColumns={["isFreight", "checkbox"]}
+        getSelectionRows={(rows) => {}}
       />
     </>
   );

@@ -390,7 +390,7 @@ export const BasicTable = ({
                             width: `calc(var(--header-${header?.id}-size) * 1px)`,
                             ...getCommonPinningStyles(header.column),
                           }}
-                          className={`max-h-14 h-14 p-2 min-w-fit ${
+                          className={`relative max-h-14 h-14 p-2 min-w-fit ${
                             header.column.getIsPinned() ? "z-30" : ""
                           }`}
                         >
@@ -398,6 +398,17 @@ export const BasicTable = ({
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+                          <div
+                            onMouseDown={(e) => {
+                              // table.resetRowSelection();
+                              header.getResizeHandler()(e);
+                            }}
+                            onTouchStart={(e) => {
+                              // table.resetRowSelection();
+                              header.getResizeHandler()(e);
+                            }}
+                            className={`absolute top-2 right-0 z-20 w-3 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
+                          ></div>
                         </th>
                       ) : (
                         <HeaderComponent
