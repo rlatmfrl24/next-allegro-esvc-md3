@@ -72,6 +72,12 @@ export const DatePicker = ({
   const [beforeCursorDate, setBeforeCursorDate] = useState<Date>(cursorDate);
 
   useEffect(() => {
+    if (initialDate) {
+      setSelectedDate(initialDate);
+    }
+  }, [initialDate]);
+
+  useEffect(() => {
     if (cursorDate.toDateString() !== beforeCursorDate.toDateString()) {
       setBeforeCursorDate(cursorDate);
     }

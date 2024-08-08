@@ -88,8 +88,9 @@ export function BLIssueRequestTable() {
   ] = useState(false);
   const [targetReasonData, setTargetReasonData] =
     useState<BLIssueRequestTableProps>();
-  const [currentHandlingData, setCurrentHandlingData] =
-    useState<BLIssueRequestTableProps>();
+  const [currentHandlingData, setCurrentHandlingData] = useState<
+    BLIssueRequestTableProps[]
+  >([]);
 
   const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
     useVesselScheduleDialog();
@@ -303,7 +304,7 @@ export function BLIssueRequestTable() {
     }),
     columnHelper.accessor("requestBlTypeDate", {
       id: "requestBlTypeDate",
-      header: "Request B/L Type Date",
+      header: "Request B/L Date",
       cell: (info) => (
         <MdTypography variant="body" size="medium">
           {info.getValue().toFormat("yyyy-MM-dd HH:mm")}
@@ -327,16 +328,25 @@ export function BLIssueRequestTable() {
           data={targetReasonData}
         />
       )}
-      <HandlingInstructionDialog
-        open={blHandlingInstructionsDialogOpen}
-        onOpenChange={setBlHandlingInstructionsDialogOpen}
-      />
+      {currentHandlingData.length > 0 && (
+        <HandlingInstructionDialog
+          open={blHandlingInstructionsDialogOpen}
+          onOpenChange={setBlHandlingInstructionsDialogOpen}
+          data={currentHandlingData}
+        />
+      )}
 
       <BasicTable
         ActionComponent={() => {
           return (
             <div className="flex-1 flex gap-2">
-              <MdTextButton onClick={() => {}}>B/L Issue Request</MdTextButton>
+              <MdTextButton
+                onClick={() => {
+                  setBlHandlingInstructionsDialogOpen(true);
+                }}
+              >
+                B/L Issue Request
+              </MdTextButton>
               <MdTextButton
                 onClick={() => {
                   setPrintDialogOpen(true);
@@ -358,7 +368,9 @@ export function BLIssueRequestTable() {
         data={tableData}
         ignoreSelectionColumns={["isFreight"]}
         controlColumns={["isFreight", "checkbox"]}
-        getSelectionRows={(rows) => {}}
+        getSelectionRows={(rows) => {
+          setCurrentHandlingData(rows);
+        }}
       />
     </>
   );
