@@ -357,7 +357,7 @@ export const BasicTable = ({
     useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 
   const { events } = useDraggable(scrollRef, {
-    applyRubberBandEffect: true,
+    // applyRubberBandEffect: true,
     isMounted: !!scrollRef.current,
   }); // Now we pass the reference to the useDraggable hook:
 
@@ -402,6 +402,7 @@ export const BasicTable = ({
                   <SortableContext
                     items={columnOrder}
                     strategy={horizontalListSortingStrategy}
+                    disabled
                   >
                     {headerGroup.headers.map((header) =>
                       controlColumns.includes(header.id) ? (
