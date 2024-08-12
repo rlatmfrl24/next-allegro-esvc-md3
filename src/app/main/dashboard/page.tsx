@@ -5,7 +5,7 @@ import { MdFilledTonalIconButton, MdFilterChip, MdIcon } from "../../util/md3";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useRecoilState } from "recoil";
 import { draggableState } from "../../store/dashboard.store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dashboard from "./dashboard";
 import SetDashboard from "./set-dashboard";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
@@ -26,7 +26,8 @@ export default function MainPage() {
           <div className="flex items-center gap-4">
             <MdFilterChip
               label="Custom"
-              defaultChecked={customizabled}
+              selected={customizabled}
+              // defaultChecked={customizabled}
               onClick={() => {
                 setCustomizabled(!customizabled);
               }}
