@@ -102,6 +102,10 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* ::-webkit-scrollbar {
+    background-color: transparent;
+  } */
 }
 
 @import "overlayscrollbars/overlayscrollbars.css";
