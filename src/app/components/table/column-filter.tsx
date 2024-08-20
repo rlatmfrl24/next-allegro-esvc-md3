@@ -26,7 +26,7 @@ import {
   MdOutlinedIconButton,
   MdTextButton,
 } from "@/app/util/md3";
-import { Settings } from "@mui/icons-material";
+import { PlaylistAddCheck, Settings } from "@mui/icons-material";
 import { DividerComponent } from "../divider";
 
 export const ColumnFilterButton = ({
@@ -79,7 +79,8 @@ export const ColumnFilterButton = ({
     <>
       <MdOutlinedIconButton ref={refs.setReference} {...getReferenceProps()}>
         <MdIcon>
-          <Settings />
+          {/* <Settings /> */}
+          <PlaylistAddCheck />
         </MdIcon>
       </MdOutlinedIconButton>
       <div

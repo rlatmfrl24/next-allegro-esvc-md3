@@ -52,6 +52,8 @@ import { size } from "lodash";
 import { getCookie, setCookie } from "cookies-next";
 import { useDraggable } from "react-use-draggable-scroll";
 import { tr } from "@faker-js/faker";
+import { MdFilledIconButton, MdOutlinedIconButton } from "@/app/util/md3";
+import { Check, MoveDown } from "@mui/icons-material";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -217,6 +219,8 @@ export const BasicTable = ({
   );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]); // can set initial column filter state here
 
+  const [canReorderColumns, setCanReorderColumns] = useState(false);
+
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
@@ -358,7 +362,7 @@ export const BasicTable = ({
 
   const { events } = useDraggable(scrollRef, {
     // applyRubberBandEffect: true,
-    isMounted: !!scrollRef.current,
+    isMounted: !!scrollRef.current && !canReorderColumns,
   }); // Now we pass the reference to the useDraggable hook:
 
   // const [initialize, instance] = useOverlayScrollbars({
@@ -378,6 +382,23 @@ export const BasicTable = ({
           <MdTypography variant="label" size="large" className="text-outline">
             Total: {data.length}
           </MdTypography>
+          {canReorderColumns ? (
+            <MdFilledIconButton
+              onClick={() => {
+                setCanReorderColumns(false);
+              }}
+            >
+              <Check />
+            </MdFilledIconButton>
+          ) : (
+            <MdOutlinedIconButton
+              onClick={() => {
+                setCanReorderColumns(true);
+              }}
+            >
+              <MoveDown className="rotate-90" />
+            </MdOutlinedIconButton>
+          )}
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
@@ -402,7 +423,7 @@ export const BasicTable = ({
                   <SortableContext
                     items={columnOrder}
                     strategy={horizontalListSortingStrategy}
-                    disabled
+                    disabled={!canReorderColumns}
                   >
                     {headerGroup.headers.map((header) =>
                       controlColumns.includes(header.id) ? (
