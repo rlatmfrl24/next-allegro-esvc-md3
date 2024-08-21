@@ -362,7 +362,7 @@ export const BasicTable = ({
 
   const { events } = useDraggable(scrollRef, {
     // applyRubberBandEffect: true,
-    isMounted: !!scrollRef.current && !canReorderColumns,
+    isMounted: !!scrollRef.current,
   }); // Now we pass the reference to the useDraggable hook:
 
   // const [initialize, instance] = useOverlayScrollbars({
@@ -402,7 +402,11 @@ export const BasicTable = ({
           <ColumnFilterButton table={table} expectColumnIds={controlColumns} />
         </div>
       </div>
-      <div className={styles.tableWrapper} {...events} ref={scrollRef}>
+      <div
+        className={styles.tableWrapper}
+        ref={scrollRef}
+        onMouseDown={!canReorderColumns ? events.onMouseDown : undefined}
+      >
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToHorizontalAxis]}
