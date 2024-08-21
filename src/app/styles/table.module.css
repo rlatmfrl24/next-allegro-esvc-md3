@@ -17,3 +17,21 @@
 .table tbody td {
   @apply border-b border-b-outlineVariant;
 }
+
+.tableWrapper {
+  @apply flex-1 max-w-full overflow-x-scroll;
+}
+
+.tableWrapper::-webkit-scrollbar {
+  /* width: 8px; */
+  @apply bg-transparent h-2.5;
+  /* background-color: transparent; */
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  @apply bg-outlineVariant bg-clip-padding border-2 border-solid border-transparent rounded-full;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}

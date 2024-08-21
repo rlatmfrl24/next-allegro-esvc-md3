@@ -381,7 +381,7 @@ export default function StepContactInformation() {
                 setIsManageEmailDialogOpen(false);
               }}
             >
-              Save
+              Apply
             </MdFilledButton>
           </div>
         </MdDialog>

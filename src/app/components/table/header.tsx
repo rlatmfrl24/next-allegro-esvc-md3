@@ -103,7 +103,11 @@ export const HeaderComponent = ({
             // table.resetRowSelection();
             header.getResizeHandler()(e);
           }}
-          className={`absolute right-0 z-20 w-3 h-[calc(100%-16px)] cursor-col-resize border-r border-r-outlineVariant`}
+          className={`absolute right-0 z-20 w-3 h-[calc(100%-16px)] cursor-col-resize border-r ${
+            header.column.getIsPinned() && header.column.getIsLastColumn("left")
+              ? "border-r-onSurfaceVariant"
+              : "border-r-outlineVariant"
+          }`}
         ></div>
         {required && (
           <MdTypography
