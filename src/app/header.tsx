@@ -15,7 +15,7 @@ export const Header = () => {
     pathname.split("/").includes("main") && userData.isAuthenticated;
 
   return (
-    <header className="relative h-16 flex items-center px-4">
+    <header className="relative h-14 flex items-center px-6">
       <Link href={isMain ? "/main/dashboard" : "/"}>
         <Logo />
       </Link>

@@ -178,7 +178,7 @@ function SIEdit() {
           "min-h-[720px]"
         )}
       >
-        <div className="flex flex-col gap-4 py-6 px-4 border-r border-r-outlineVariant">
+        <div className="flex flex-col gap-4 p-4 border-r border-r-outlineVariant">
           {Object.keys(siEditStep).map((key) => {
             const item = siEditStep[key as keyof typeof siEditStep];
             return (
@@ -197,7 +197,7 @@ function SIEdit() {
             );
           })}
         </div>
-        <div className="flex-1 flex p-6 min-h-fit">
+        <div className="flex-1 flex px-6 py-4 min-h-fit">
           {
             {
               parties: <StepParties />,

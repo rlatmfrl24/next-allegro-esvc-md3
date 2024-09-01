@@ -21,7 +21,7 @@ const ContainerToggleButton = ({
 
   return (
     <div
-      className={`relative flex-1 flex flex-col gap-1 justify-center items-center  py-4 rounded-lg border ${
+      className={`relative flex-1 flex flex-col gap-1 justify-center items-center py-2 rounded-lg border ${
         isSelected ? "border-primary bg-[#19658414]" : "border-outlineVariant"
       } cursor-pointer`}
       onClick={onClick}

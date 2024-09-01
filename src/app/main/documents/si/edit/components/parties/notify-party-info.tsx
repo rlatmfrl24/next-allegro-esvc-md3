@@ -39,7 +39,7 @@ export const NotifyPartyInfo = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center">
         <DetailTitle title="Notify Party" />
         <NaToggleButton
           label="Same as Consignee"
@@ -103,10 +103,9 @@ export const NotifyPartyInfo = () => {
           }}
         />
       </div>
-      <div className={`flex flex-col gap-4 mb-6`}>
+      <div className={`flex flex-col gap-4`}>
         <NAMultiAutoComplete
           label="Company Name"
-          maxLength={70}
           className="flex-1"
           required
           type="textarea"
@@ -187,7 +186,6 @@ export const NotifyPartyInfo = () => {
         <NAOutlinedTextField
           required
           rows={3}
-          maxLength={105}
           error={
             SIEditStep.parties.visited &&
             partiesStore.notifyParty.fullAddress === ""
@@ -261,7 +259,6 @@ export const NotifyPartyInfo = () => {
           <div className="flex gap-2">
             <NAOutlinedTextField
               label="City"
-              maxLength={30}
               value={partiesStore.notifyParty.addressCity || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
@@ -277,7 +274,6 @@ export const NotifyPartyInfo = () => {
             />
             <NAOutlinedTextField
               label="State"
-              maxLength={2}
               enableClearButton={false}
               className="w-24"
               value={partiesStore.notifyParty.addressState || ""}
@@ -298,7 +294,6 @@ export const NotifyPartyInfo = () => {
           <NAOutlinedTextField
             label="Zip Code"
             className="w-44"
-            maxLength={10}
             value={partiesStore.notifyParty.addressZipCode || ""}
             handleValueChange={(value) => {
               setPartiesStore((prev) => {
@@ -315,7 +310,6 @@ export const NotifyPartyInfo = () => {
         </div>
         <NAOutlinedTextField
           label="Street / P.O Box"
-          maxLength={50}
           className="flex-1"
           value={partiesStore.notifyParty.addressStreet || ""}
           handleValueChange={(value) => {
@@ -355,7 +349,6 @@ export const NotifyPartyInfo = () => {
               <Disclosure.Panel className={`grid grid-cols-4 gap-4`}>
                 <NAOutlinedTextField
                   label="EORI No"
-                  maxLength={17}
                   className="col-span-2"
                   value={partiesStore.notifyParty.eoriNumber || ""}
                   handleValueChange={(value) => {
@@ -372,7 +365,6 @@ export const NotifyPartyInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="USCC No"
-                  maxLength={30}
                   className="col-span-2"
                   value={partiesStore.notifyParty.usccNumber || ""}
                   handleValueChange={(value) => {
@@ -389,7 +381,6 @@ export const NotifyPartyInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="Tax ID"
-                  maxLength={30}
                   value={partiesStore.notifyParty.taxID || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -406,7 +397,6 @@ export const NotifyPartyInfo = () => {
                 <NAOutlinedTextField
                   label="Phone"
                   type="tel"
-                  maxLength={20}
                   value={partiesStore.notifyParty.phone || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -423,7 +413,6 @@ export const NotifyPartyInfo = () => {
                 <NAOutlinedTextField
                   label="Fax"
                   type="tel"
-                  maxLength={20}
                   value={partiesStore.notifyParty.fax || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -440,7 +429,6 @@ export const NotifyPartyInfo = () => {
                 <NAOutlinedTextField
                   label="Email"
                   type="email"
-                  maxLength={100}
                   className="col-span-2"
                   value={partiesStore.notifyParty.email || ""}
                   handleValueChange={(value) => {

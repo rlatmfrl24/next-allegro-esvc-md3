@@ -127,7 +127,7 @@ export default function StepContainer() {
           Container
         </MdTypography>
         <div className="flex gap-4">
-          <div className="bg-surfaceContainerHigh rounded-2xl px-4 py-1 flex items-center relative">
+          <div className="bg-surfaceContainerLow rounded-2xl px-4 py-1 flex items-center relative">
             <MdTypography
               variant="label"
               size="small"

@@ -57,7 +57,6 @@ export const ShipperInfo = () => {
           type="textarea"
           rows={2}
           isAllowOnlyListItems={false}
-          maxLength={70}
           itemList={companyList.map((company) => {
             return {
               name: company.name,
@@ -121,7 +120,6 @@ export const ShipperInfo = () => {
             SIEditStep.parties.visited &&
             partiesStore.shipper.fullAddress === ""
           }
-          maxLength={105}
           rows={3}
           errorText="Full Address is required"
           label="Address (State Name, City, State & Zip Code, Country Name)"
@@ -191,7 +189,6 @@ export const ShipperInfo = () => {
           <div className="flex gap-2">
             <NAOutlinedTextField
               label="City"
-              maxLength={30}
               value={partiesStore.shipper.addressCity || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
@@ -207,7 +204,6 @@ export const ShipperInfo = () => {
             />
             <NAOutlinedTextField
               label="State"
-              maxLength={2}
               className="w-24"
               enableClearButton={false}
               value={partiesStore.shipper.addressState || ""}
@@ -227,7 +223,6 @@ export const ShipperInfo = () => {
           <NAOutlinedTextField
             label="Zip Code"
             className="w-44"
-            maxLength={10}
             value={partiesStore.shipper.addressZipCode || ""}
             handleValueChange={(value) => {
               setPartiesStore((prev) => {
@@ -245,7 +240,6 @@ export const ShipperInfo = () => {
         <NAOutlinedTextField
           label="Street / P.O Box"
           className="col-span-4"
-          maxLength={50}
           value={partiesStore.shipper.addressStreet || ""}
           handleValueChange={(value) => {
             setPartiesStore((prev) => {
@@ -283,7 +277,6 @@ export const ShipperInfo = () => {
                 <NAOutlinedTextField
                   label="EORI No"
                   className="col-span-2"
-                  maxLength={17}
                   value={partiesStore.shipper.eoriNumber || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -299,7 +292,6 @@ export const ShipperInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="USCC No"
-                  maxLength={30}
                   className="col-span-2"
                   value={partiesStore.shipper.usccNumber || ""}
                   handleValueChange={(value) => {
@@ -316,7 +308,6 @@ export const ShipperInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="Tax ID"
-                  maxLength={30}
                   value={partiesStore.shipper.taxID || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -333,7 +324,6 @@ export const ShipperInfo = () => {
                 <NAOutlinedTextField
                   label="Phone"
                   type="tel"
-                  maxLength={20}
                   value={partiesStore.shipper.phone || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -350,7 +340,6 @@ export const ShipperInfo = () => {
                 <NAOutlinedTextField
                   label="Fax"
                   type="tel"
-                  maxLength={20}
                   value={partiesStore.shipper.fax || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -367,7 +356,6 @@ export const ShipperInfo = () => {
                 <NAOutlinedTextField
                   label="Email"
                   type="email"
-                  maxLength={100}
                   className="col-span-2"
                   value={partiesStore.shipper.email || ""}
                   handleValueChange={(value) => {

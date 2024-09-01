@@ -33,7 +33,7 @@ export default function SideNavigation() {
         className={`flex items-center flex-col py-3
       ${
         pathname.split("/").includes("main") && userData.isAuthenticated
-          ? "w-20 visible"
+          ? "w-[72px] visible"
           : "w-0 invisible"
       }`}
       >
