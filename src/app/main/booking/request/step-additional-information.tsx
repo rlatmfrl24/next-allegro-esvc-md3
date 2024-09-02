@@ -59,7 +59,7 @@ export default function AdditionalInformationStep() {
 
   return (
     <div className="w-full flex flex-col">
-      <MdTypography variant="title" size="large" className="mb-6">
+      <MdTypography variant="title" size="large" className="mb-4">
         Additional Information
       </MdTypography>
       <div className="grid grid-cols-2 gap-8">

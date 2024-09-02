@@ -15,7 +15,7 @@ export default function StepItem({
   return (
     <div
       {...props}
-      className={`relative flex gap-4 w-[268px] p-4 rounded-lg cursor-pointer ${
+      className={`relative flex gap-4 w-[252px] p-4 rounded-lg cursor-pointer ${
         isSelected ? "bg-primary" : "bg-surfaceContainerLow"
       }`}
     >

@@ -130,7 +130,7 @@ export default function ContactInformationStep() {
 
   return (
     <div className="w-full">
-      <MdTypography variant="title" size="large" className="mb-6">
+      <MdTypography variant="title" size="large" className="mb-4">
         Contact Information
       </MdTypography>
       <div className="grid grid-cols-4 gap-4 w-full">

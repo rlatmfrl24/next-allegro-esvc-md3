@@ -211,7 +211,7 @@ function BookingRequest() {
           "min-h-[720px] "
         )}
       >
-        <div className="flex flex-col gap-4 py-6 px-4 border-r border-r-outlineVariant">
+        <div className="flex flex-col gap-4 p-4 border-r border-r-outlineVariant">
           {Object.keys(bookingRequestStepState).map((key) => {
             const item =
               bookingRequestStepState[
@@ -231,7 +231,7 @@ function BookingRequest() {
           })}
         </div>
         <Suspense>
-          <div className="flex-1 flex p-6">
+          <div className="flex-1 flex p-6 pt-4">
             {
               {
                 locationSchedule: <LoactionScheduleStep />,

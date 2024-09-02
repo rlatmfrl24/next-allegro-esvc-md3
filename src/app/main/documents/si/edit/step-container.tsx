@@ -122,7 +122,7 @@ export default function StepContainer() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <MdTypography variant="title" size="large">
           Container
         </MdTypography>
