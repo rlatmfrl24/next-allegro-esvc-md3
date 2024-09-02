@@ -1,10 +1,10 @@
 .container {
   /*max-w-[1400px] Deprecated*/
-  @apply w-full p-6 flex flex-col flex-1 gap-4;
+  @apply w-full p-5 pt-2 flex flex-col flex-1 gap-4;
 }
 
 .area {
-  @apply bg-surfaceContainerLowest rounded-2xl p-6 flex flex-col gap-4 relative h-fit border-secondaryContainer border;
+  @apply bg-surfaceContainerLowest rounded-2xl p-4 flex flex-col gap-4 relative h-fit border-secondaryContainer border;
 }
 
 .area.table {

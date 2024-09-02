@@ -70,10 +70,10 @@ export default function StepMarkDescription() {
 
   return (
     <div className="w-full flex flex-col">
-      <MdTypography variant="title" size="large" className="mb-6">
+      <MdTypography variant="title" size="large" className="mb-4">
         Mark & Description
       </MdTypography>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         <div className="flex gap-6">
           <div className="flex-1 flex flex-col gap-4">
             <DetailTitle title="Mark" />

@@ -75,8 +75,8 @@ export default function StepRouteBL() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-6">
-      <MdTypography variant="title" size="large" className="mb-6">
+    <div className="w-full flex flex-col gap-4">
+      <MdTypography variant="title" size="large">
         Route & BL Information
       </MdTypography>
       <div className="grid grid-cols-[1fr_1fr_auto] gap-4">

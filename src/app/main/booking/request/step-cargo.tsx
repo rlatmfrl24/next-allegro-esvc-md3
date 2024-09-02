@@ -121,7 +121,7 @@ export default function CargoStep() {
 
   return (
     <div className="w-full flex flex-col">
-      <MdTypography variant="title" size="large" className="mb-6">
+      <MdTypography variant="title" size="large" className="mb-4">
         Cargo & Pick Up/Return
       </MdTypography>
       <SubTitle title="Cargo" className="mb-4" />

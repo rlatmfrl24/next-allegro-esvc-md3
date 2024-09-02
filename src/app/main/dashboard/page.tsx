@@ -1,15 +1,16 @@
 "use client";
 
-import { MdTypography } from "../../components/typography";
-import { MdFilledTonalIconButton, MdFilterChip, MdIcon } from "../../util/md3";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
+
+import PageTitle from "@/app/components/title-components";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+
 import { draggableState } from "../../store/dashboard.store";
-import { useEffect, useState } from "react";
+import { MdFilledTonalIconButton, MdFilterChip, MdIcon } from "../../util/md3";
 import Dashboard from "./dashboard";
 import SetDashboard from "./set-dashboard";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import PageTitle from "@/app/components/title-components";
 
 export default function MainPage() {
   const [customizabled, setCustomizabled] = useRecoilState(draggableState);
@@ -27,7 +28,6 @@ export default function MainPage() {
             <MdFilterChip
               label="Custom"
               selected={customizabled}
-              // defaultChecked={customizabled}
               onClick={() => {
                 setCustomizabled(!customizabled);
               }}

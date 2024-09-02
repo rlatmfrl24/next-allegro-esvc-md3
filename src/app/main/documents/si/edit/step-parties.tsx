@@ -18,6 +18,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ShipperInfo } from "./components/parties/shipper-info";
 import { ConsigneeInfo } from "./components/parties/consignee-info";
 import { NotifyPartyInfo } from "./components/parties/notify-party-info";
+import { DividerComponent } from "@/app/components/divider";
 
 export default function StepParties() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
@@ -78,7 +79,7 @@ export default function StepParties() {
   }, [setSIEditStep, ValidateRequired]);
 
   return (
-    <div className="w-full flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-4">
       <MdTypography variant="title" size="large">
         Parties
       </MdTypography>
@@ -90,7 +91,6 @@ export default function StepParties() {
             label="Forwarding Agent References"
             type="textarea"
             rows={5}
-            maxLength={175}
             value={partiesStore.forwardingAgentReference || ""}
             handleValueChange={(value) => {
               setPartiesStore((prev) => {
@@ -118,15 +118,21 @@ export default function StepParties() {
             }}
           />
         </div>
+      </div>
+      <DividerComponent className="border-dotted" />
+      <div className="grid grid-cols-2 gap-6">
         <ConsigneeInfo />
         <NotifyPartyInfo />
+      </div>
+      <DividerComponent className="border-dotted" />
+
+      <div className="grid grid-cols-2 gap-6">
         <div>
           <DetailTitle title="Also Notify" className="mb-4" />
-          <div className={`mb-6`}>
+          <div>
             <MdOutlinedTextField
               label="Also Notify"
               type="textarea"
-              maxLength={175}
               className="w-full"
               rows={5}
               value={partiesStore.notifyParty.alsoNotify || ""}
@@ -170,7 +176,6 @@ export default function StepParties() {
               label="Export References"
               type="textarea"
               rows={5}
-              maxLength={175}
               value={partiesStore.exportReference || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {

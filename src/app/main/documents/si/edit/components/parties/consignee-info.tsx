@@ -39,7 +39,7 @@ export const ConsigneeInfo = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center">
         <DetailTitle title="Consignee" />
         <NaToggleButton
           label="To Order"
@@ -73,7 +73,7 @@ export const ConsigneeInfo = () => {
           }}
         />
       </div>
-      <div className={`flex flex-col gap-4 mb-6`}>
+      <div className={`flex flex-col gap-4`}>
         <NAMultiAutoComplete
           label="Company Name"
           className="flex-1"
@@ -83,7 +83,6 @@ export const ConsigneeInfo = () => {
             partiesStore.consignee.companyName === ""
           }
           type="textarea"
-          maxLength={70}
           rows={2}
           errorText="Company Name is required"
           isAllowOnlyListItems={false}
@@ -160,7 +159,6 @@ export const ConsigneeInfo = () => {
           }
           errorText="Full Address is required"
           label="Address (State Name, City, State & Zip Code, Country Name)"
-          maxLength={105}
           rows={3}
           className="flex-1"
           type="textarea"
@@ -228,7 +226,6 @@ export const ConsigneeInfo = () => {
           <div className="flex gap-2">
             <NAOutlinedTextField
               label="City"
-              maxLength={30}
               value={partiesStore.consignee.addressCity || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
@@ -245,7 +242,6 @@ export const ConsigneeInfo = () => {
 
             <NAOutlinedTextField
               label="State"
-              maxLength={2}
               enableClearButton={false}
               className="w-24"
               value={partiesStore.consignee.addressState || ""}
@@ -267,7 +263,6 @@ export const ConsigneeInfo = () => {
             <NAOutlinedTextField
               label="Zip Code"
               className="w-44"
-              maxLength={10}
               value={partiesStore.consignee.addressZipCode || ""}
               handleValueChange={(value) => {
                 setPartiesStore((prev) => {
@@ -286,7 +281,6 @@ export const ConsigneeInfo = () => {
         <NAOutlinedTextField
           label="Street / P.O Box"
           className="flex-1"
-          maxLength={50}
           value={partiesStore.consignee.addressStreet || ""}
           handleValueChange={(value) => {
             setPartiesStore((prev) => {
@@ -325,7 +319,6 @@ export const ConsigneeInfo = () => {
               <Disclosure.Panel className={`grid grid-cols-4 gap-4`}>
                 <NAOutlinedTextField
                   label="EORI No"
-                  maxLength={17}
                   className="col-span-2"
                   value={partiesStore.consignee.eoriNumber || ""}
                   handleValueChange={(value) => {
@@ -342,7 +335,6 @@ export const ConsigneeInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="USCC No"
-                  maxLength={30}
                   className="col-span-2"
                   value={partiesStore.consignee.usccNumber || ""}
                   handleValueChange={(value) => {
@@ -359,7 +351,6 @@ export const ConsigneeInfo = () => {
                 />
                 <NAOutlinedTextField
                   label="Tax ID"
-                  maxLength={30}
                   value={partiesStore.consignee.taxID || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -376,7 +367,6 @@ export const ConsigneeInfo = () => {
                 <NAOutlinedTextField
                   label="Phone"
                   type="tel"
-                  maxLength={20}
                   value={partiesStore.consignee.phone || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -393,7 +383,6 @@ export const ConsigneeInfo = () => {
                 <NAOutlinedTextField
                   label="Fax"
                   type="tel"
-                  maxLength={20}
                   value={partiesStore.consignee.fax || ""}
                   handleValueChange={(value) => {
                     setPartiesStore((prev) => {
@@ -410,7 +399,6 @@ export const ConsigneeInfo = () => {
                 <NAOutlinedTextField
                   label="Email"
                   type="email"
-                  maxLength={100}
                   className="col-span-2"
                   value={partiesStore.consignee.email || ""}
                   handleValueChange={(value) => {

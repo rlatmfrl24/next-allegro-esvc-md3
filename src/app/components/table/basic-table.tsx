@@ -374,7 +374,7 @@ export const BasicTable = ({
   // }, [instance]);
 
   return (
-    <div className="relative flex flex-col gap-4 flex-1 h-full">
+    <div className="relative flex flex-col gap-2 flex-1 h-full">
       <div className="flex items-end">
         {ActionComponent && <ActionComponent {...table} />}
         <div className="flex gap-2 items-center h-10 z-10">

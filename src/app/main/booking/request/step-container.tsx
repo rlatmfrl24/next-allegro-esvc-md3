@@ -244,7 +244,7 @@ export default function ContainerStep() {
       </MdTypography>
       {params.has("quoteNumber") ? (
         <>
-          <div className="w-fit mt-6">
+          <div className="w-fit mt-4">
             <ContainerToggleButton
               image={<DryContainerImage />}
               isSelected={typeSelections.includes(ContainerType.dry)}

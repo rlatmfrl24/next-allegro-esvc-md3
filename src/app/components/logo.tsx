@@ -10,7 +10,7 @@ export default function Logo({
 }> & { children?: React.ReactNode }) {
   return (
     <div className="flex items-center" {...props}>
-      <div className="flex items-center ml-4">
+      <div className="flex items-center">
         <Image
           aria-label="company logo"
           src="/logo_clt.svg"

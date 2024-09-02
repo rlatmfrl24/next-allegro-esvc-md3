@@ -84,7 +84,7 @@ export default function PartiesStep() {
 
   return (
     <div className="w-full flex flex-col">
-      <MdTypography variant="title" size="large" className="mb-6">
+      <MdTypography variant="title" size="large" className="mb-4">
         Parties
       </MdTypography>
       <SubTitle title="Person Placing Request" className="mb-4" />
@@ -136,14 +136,13 @@ export default function PartiesStep() {
           }
         }}
       />
-      <DividerComponent className="my-6" />
+      <DividerComponent className="my-4" />
       <SubTitle title="Shipper" className="mb-4" />
       <div className="flex gap-4">
         <NAMultiAutoComplete
           label="Company Name"
           itemList={tempCompaniesData}
           required
-          maxLength={70}
           error={
             bookingRequestStep.parties.visited &&
             partiesData.shipper.name === ""
@@ -178,7 +177,6 @@ export default function PartiesStep() {
         <NAOutlinedTextField
           className="flex-1"
           label="Address"
-          maxLength={105}
           placeholder="Address (State Name, City, State & Zip Code, Country Name)"
           required
           error={
@@ -198,11 +196,10 @@ export default function PartiesStep() {
           }}
         />
       </div>
-      <SubTitle title="Freight Forwarder" className="mt-8 mb-4" />
+      <SubTitle title="Freight Forwarder" className="my-4" />
       <div className="flex gap-4 items-start">
         <NAMultiAutoComplete
           label="Company Name"
-          maxLength={70}
           itemList={tempCompaniesData}
           initialValue={{
             name: partiesData.freightForwarder.name,
@@ -233,7 +230,6 @@ export default function PartiesStep() {
         <NAOutlinedTextField
           className="flex-1"
           label="Address"
-          maxLength={105}
           placeholder="Address (State Name, City, State & Zip Code, Country Name)"
           value={partiesData.freightForwarder.address}
           handleValueChange={(value) => {
@@ -283,11 +279,10 @@ export default function PartiesStep() {
           }}
         />
       </div>
-      <SubTitle title="Consignee" className="mt-8 mb-4" />
+      <SubTitle title="Consignee" className="my-4" />
       <div className="flex gap-4">
         <NAMultiAutoComplete
           label="Company Name"
-          maxLength={70}
           itemList={tempCompaniesData}
           initialValue={{
             name: partiesData.consignee.name,
@@ -318,7 +313,6 @@ export default function PartiesStep() {
         <NAOutlinedTextField
           className="flex-1"
           label="Address"
-          maxLength={105}
           placeholder="Address (State Name, City, State & Zip Code, Country Name)"
           value={partiesData.consignee.address}
           handleValueChange={(value) => {
@@ -332,10 +326,9 @@ export default function PartiesStep() {
           }}
         />
       </div>
-      <SubTitle title="Actual" className="mt-8 mb-4" />
+      <SubTitle title="Actual" className="my-4" />
       <NAOutlinedTextField
         label="Shipper Name"
-        maxLength={105}
         value={partiesData.actualShipper}
         handleValueChange={(value) => {
           setPartiesData((prev) => ({
