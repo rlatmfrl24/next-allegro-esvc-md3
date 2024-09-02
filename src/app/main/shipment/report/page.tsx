@@ -83,7 +83,7 @@ const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
-          className="z-10"
+          className="z-20"
         >
           <MdElevatedCard style={transitionStyles} className="py-2">
             <MdTypography variant="headline" size="small" className="m-6">

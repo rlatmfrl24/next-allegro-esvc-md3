@@ -31,7 +31,7 @@ export const LanguageSelector = () => {
           >
             <div slot="headline">{language}</div>
             {currentLanguage === language && (
-              <MdIcon slot="start">
+              <MdIcon slot="end">
                 <Check />
               </MdIcon>
             )}

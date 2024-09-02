@@ -24,7 +24,7 @@ export default function PointToPointListResult({
     renderDialog: renderPlaceDialog,
     setCurrentPlace,
     setIsPlaceInfoDialogOpen,
-  } = usePlaceInfoDialog();
+  } = usePlaceInfoDialog("#main-container");
   const {
     renderDialog: renderVesselDialog,
     setCurrentVessel,
@@ -47,52 +47,55 @@ export default function PointToPointListResult({
   }
 
   return (
-    <div className="flex flex-col gap-4 p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <MdTextButton>
-            <div slot="icon">
-              <DownloadIcon fontSize="small" />
-            </div>
-            Download
-          </MdTextButton>
-
-          <FilterChipMenu
-            initialValue="Earliest Departure"
-            options={[
-              "Earliest Departure",
-              "Earliest Arrival",
-              "Fatest Transit Time",
-            ]}
-          />
-
-          <MdFilterChip label="Direct Only" />
-        </div>
-
-        <MdTypography variant="label" size="large" className="text-outline ">
-          Total: {list.length}
-        </MdTypography>
-      </div>
+    <>
       {renderDialog()}
       {renderPlaceDialog()}
       {renderVesselDialog()}
+
       <div className="flex flex-col gap-4">
-        {list.map((item, index) => (
-          <ListItem
-            key={index}
-            item={item}
-            onVesselScheduleClick={(vessel) => {
-              handleVesselScheduleClick(vessel);
-            }}
-            onVesselInformationClick={(vessel) => {
-              handleVesselInfoClick(vessel);
-            }}
-            onPlaceInformationClick={(place) => {
-              handlePlaceInfoClick(place);
-            }}
-          />
-        ))}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <MdTextButton>
+              <div slot="icon">
+                <DownloadIcon fontSize="small" />
+              </div>
+              Download
+            </MdTextButton>
+
+            <FilterChipMenu
+              initialValue="Earliest Departure"
+              options={[
+                "Earliest Departure",
+                "Earliest Arrival",
+                "Fastest Transit Time",
+              ]}
+            />
+
+            <MdFilterChip label="Direct Only" />
+          </div>
+
+          <MdTypography variant="label" size="large" className="text-outline ">
+            Total: {list.length}
+          </MdTypography>
+        </div>
+        <div className="flex flex-col gap-4">
+          {list.map((item, index) => (
+            <ListItem
+              key={index}
+              item={item}
+              onVesselScheduleClick={(vessel) => {
+                handleVesselScheduleClick(vessel);
+              }}
+              onVesselInformationClick={(vessel) => {
+                handleVesselInfoClick(vessel);
+              }}
+              onPlaceInformationClick={(place) => {
+                handlePlaceInfoClick(place);
+              }}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
