@@ -201,12 +201,15 @@ export function getEmptyContainerData(
         },
         grossWeight: undefined,
         grossWeightUnit: "KGS",
+        netWeight: undefined,
+        netWeightUnit: "KGS",
         package: undefined,
         packageType: "",
         height: undefined,
         width: undefined,
         length: undefined,
         unit: "CM",
+        remark: "",
         totalMeasurement: undefined,
       } as BulkContainerInformationType;
     default:

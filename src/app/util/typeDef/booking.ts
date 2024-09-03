@@ -195,11 +195,14 @@ export interface BulkContainerInformationInterface {
   packageType: string;
   grossWeight: number | undefined;
   grossWeightUnit: "KGS" | "LBS";
+  netWeight: number | undefined;
+  netWeightUnit: "KGS" | "LBS";
   commodity: CommodityType;
   length: number | undefined;
   width: number | undefined;
   height: number | undefined;
   unit: "CM" | "INCH";
+  remark: string;
 }
 
 export interface BulkContainerInformationType
