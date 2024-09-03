@@ -15,7 +15,7 @@
 }
 
 .table tbody td {
-  @apply border-b border-b-outlineVariant;
+  @apply border-b border-b-outlineVariant align-top;
 }
 
 .tableWrapper {

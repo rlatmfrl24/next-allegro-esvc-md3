@@ -91,7 +91,7 @@ export default function PointToPointSchedule() {
         className={cx(styles.area, styles.table)}
       >
         {resultList.length > 0 && (
-          <MdOutlinedSegmentedButtonSet className="p-6 pb-0">
+          <MdOutlinedSegmentedButtonSet className="">
             <NaOutlinedSegmentedButton
               label="List"
               selected={pageState === "list"}

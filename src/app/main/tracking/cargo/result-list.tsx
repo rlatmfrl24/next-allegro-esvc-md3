@@ -25,7 +25,7 @@ export default function TrackingDataList() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-4">
       {tempData.map((data, index) => (
         <TrackingDataCard key={index} data={data} />
       ))}
@@ -76,7 +76,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
         )}
       </Portal>
       <div
-        className="px-6 py-4 bg-surface border border-outlineVariant rounded-lg flex relative"
+        className="px-6 py-4 bg-surfaceContainerLow border border-outlineVariant rounded-lg flex relative"
         onClick={() => {
           setIsDetailOpen(!isDetailOpen);
         }}

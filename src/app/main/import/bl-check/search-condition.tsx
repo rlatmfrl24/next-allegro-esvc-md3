@@ -244,7 +244,7 @@ export default function BLCheckSearchCondition({
             ),
           }[searchType]
         }
-        <div className="flex gap-2 justify-end items-center flex-1 h-full">
+        <div className="flex gap-2 justify-end items-end flex-1 h-full">
           <MdTextButton
             onClick={() => {
               setBlQuery("");
