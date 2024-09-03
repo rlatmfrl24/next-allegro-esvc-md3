@@ -163,17 +163,8 @@ const DangerousCargoInput = ({
       />
       {container.isDangerous && (
         <div className="flex flex-col gap-6">
-          <div className="flex gap-4 items-center">
-            <MdOutlinedIconButton
-              onClick={() => {
-                AddDangerousCargo();
-              }}
-            >
-              <MdIcon>
-                <Add />
-              </MdIcon>
-            </MdOutlinedIconButton>
-            <MdChipSet className="flex flex-row-reverse">
+          <div className="flex gap-2 items-center">
+            <MdChipSet className="flex flex-row">
               {container.dangerousCargoInformation.map((dci, index) => (
                 <MdFilterChip
                   key={dci.uuid}
@@ -189,6 +180,16 @@ const DangerousCargoInput = ({
                 />
               ))}
             </MdChipSet>
+            <MdOutlinedIconButton
+              className="w-8 h-8"
+              onClick={() => {
+                AddDangerousCargo();
+              }}
+            >
+              <MdIcon>
+                <Add />
+              </MdIcon>
+            </MdOutlinedIconButton>
           </div>
           <div className="flex gap-4">
             {selectedDangerousCargo !== "" && (

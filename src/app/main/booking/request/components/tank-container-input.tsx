@@ -97,7 +97,7 @@ const TankContainerInput = ({
                     exit="remove"
                     animate="add"
                   >
-                    <div className="mt-6 flex flex-1 flex-col gap-2">
+                    <div className="mt-6 flex flex-1 flex-col gap-1">
                       {list.length - 1 !== index && (
                         <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
                       )}
