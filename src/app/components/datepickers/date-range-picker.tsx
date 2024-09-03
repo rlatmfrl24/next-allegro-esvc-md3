@@ -56,6 +56,7 @@ export const DateRangePicker = ({
   readonly = false,
   buttonMode = "none",
   onDateChange,
+  className,
   ...props
 }: {
   format?: string;
@@ -63,6 +64,7 @@ export const DateRangePicker = ({
   buttonMode?: "none" | "before" | "after";
   readonly?: boolean;
   onDateChange?: (date: DateRange) => void;
+  className?: string;
   props?: ComponentProps<typeof MdOutlinedTextField>;
 } & ComponentProps<typeof MdOutlinedTextField>) => {
   const [maxHeight, setMaxHeight] = useState(0);
@@ -165,7 +167,11 @@ export const DateRangePicker = ({
 
   return (
     <>
-      <div className={`relative ${props.className}`}>
+      <div
+        className={`relative ${
+          className?.includes("w-full") ? "w-full" : "w-[272px]"
+        } ${className}`}
+      >
         <MdOutlinedTextField
           {...props}
           ref={refs.setReference}

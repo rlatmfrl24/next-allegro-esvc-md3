@@ -156,7 +156,7 @@ const PortSearch = () => {
       />
       <DateRangePicker
         label="Date"
-        className="w-fit"
+        className="w-full"
         initial={{
           start: DateTime.now(),
           end: DateTime.now().plus({ days: 7 }),
