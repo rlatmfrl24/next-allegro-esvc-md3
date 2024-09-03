@@ -226,7 +226,7 @@ export const NotifyPartyInfo = () => {
             }
           }}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <NAOutlinedAutoComplete
             label="Country"
             itemList={countryList}
@@ -256,40 +256,38 @@ export const NotifyPartyInfo = () => {
             }}
           />
 
-          <div className="flex gap-2">
-            <NAOutlinedTextField
-              label="City"
-              value={partiesStore.notifyParty.addressCity || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    notifyParty: {
-                      ...prev.notifyParty,
-                      addressCity: value,
-                    },
-                  };
-                });
-              }}
-            />
-            <NAOutlinedTextField
-              label="State"
-              enableClearButton={false}
-              className="w-24"
-              value={partiesStore.notifyParty.addressState || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    notifyParty: {
-                      ...prev.notifyParty,
-                      addressState: value,
-                    },
-                  };
-                });
-              }}
-            />
-          </div>
+          <NAOutlinedTextField
+            label="City"
+            value={partiesStore.notifyParty.addressCity || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  notifyParty: {
+                    ...prev.notifyParty,
+                    addressCity: value,
+                  },
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            label="State"
+            enableClearButton={false}
+            className="w-24"
+            value={partiesStore.notifyParty.addressState || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  notifyParty: {
+                    ...prev.notifyParty,
+                    addressState: value,
+                  },
+                };
+              });
+            }}
+          />
 
           <NAOutlinedTextField
             label="Zip Code"

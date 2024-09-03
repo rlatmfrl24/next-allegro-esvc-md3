@@ -157,7 +157,7 @@ export const ShipperInfo = () => {
             }
           }}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <NAOutlinedAutoComplete
             label="Country"
             itemList={countryList}
@@ -186,40 +186,38 @@ export const ShipperInfo = () => {
               });
             }}
           />
-          <div className="flex gap-2">
-            <NAOutlinedTextField
-              label="City"
-              value={partiesStore.shipper.addressCity || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    shipper: {
-                      ...prev.shipper,
-                      addressCity: value,
-                    },
-                  };
-                });
-              }}
-            />
-            <NAOutlinedTextField
-              label="State"
-              className="w-24"
-              enableClearButton={false}
-              value={partiesStore.shipper.addressState || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    shipper: {
-                      ...prev.shipper,
-                      addressState: value,
-                    },
-                  };
-                });
-              }}
-            />
-          </div>
+          <NAOutlinedTextField
+            label="City"
+            value={partiesStore.shipper.addressCity || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  shipper: {
+                    ...prev.shipper,
+                    addressCity: value,
+                  },
+                };
+              });
+            }}
+          />
+          <NAOutlinedTextField
+            label="State"
+            className="w-24"
+            enableClearButton={false}
+            value={partiesStore.shipper.addressState || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  shipper: {
+                    ...prev.shipper,
+                    addressState: value,
+                  },
+                };
+              });
+            }}
+          />
           <NAOutlinedTextField
             label="Zip Code"
             className="w-44"
