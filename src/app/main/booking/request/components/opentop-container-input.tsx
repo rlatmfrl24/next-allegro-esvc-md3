@@ -8,6 +8,7 @@ import {
 import {
   MdFilledTonalIconButton,
   MdIconButton,
+  MdOutlinedIconButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import {
@@ -87,112 +88,248 @@ const OpenTopContainerInput = ({
               >
                 <Add fontSize="small" />
               </MdFilledTonalIconButton>
-              <div className="flex flex-col-reverse">
+              <div className="flex flex-1 flex-col-reverse">
                 <AnimatePresence>
                   {list.map((container, index) => {
                     return (
                       <motion.div
                         key={container.uuid}
+                        className="flex flex-1 gap-4"
                         variants={containerVariant}
                         initial="initial"
                         animate="add"
                         exit="remove"
-                        className="mt-6 flex flex-col gap-4"
                       >
-                        {list.length - 1 !== index && (
-                          <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                        )}
-                        <div className="flex gap-4 items-start">
-                          <NAOutlinedListBox
-                            label="Size"
-                            className="w-52 text-right"
-                            suffixText="ft"
-                            required={showRequired}
-                            error={
-                              bookingRequestStep.container.visited &&
-                              container.size === ""
-                            }
-                            errorText="Size is required"
-                            initialValue={container.size}
-                            options={
-                              container.size !== ""
-                                ? [
-                                    container.size,
-                                    ...selectableContainerSizeOptions,
-                                  ].sort()
-                                : selectableContainerSizeOptions
-                            }
-                            onSelection={(size) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                opentop: prev.opentop.map((c, i) =>
-                                  i === index ? { ...c, size: size as any } : c
-                                ),
-                              }));
-                            }}
+                        <div
+                          key={container.uuid}
+                          className="mt-6 flex flex-col flex-1 gap-2"
+                        >
+                          {list.length - 1 !== index && (
+                            <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                          )}
+                          <div className="flex gap-4 items-start">
+                            <div className="flex gap-2">
+                              <NAOutlinedListBox
+                                label="Size"
+                                className="w-[136px] text-right"
+                                suffixText="ft"
+                                required={showRequired}
+                                error={
+                                  bookingRequestStep.container.visited &&
+                                  container.size === ""
+                                }
+                                errorText="Size is required"
+                                initialValue={container.size}
+                                options={
+                                  container.size !== ""
+                                    ? [
+                                        container.size,
+                                        ...selectableContainerSizeOptions,
+                                      ].sort()
+                                    : selectableContainerSizeOptions
+                                }
+                                onSelection={(size) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? { ...c, size: size as any }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedNumberField
+                                label="Quantity / Total"
+                                className="w-[136px]"
+                                required={showRequired}
+                                error={
+                                  bookingRequestStep.container.visited &&
+                                  container.quantity === 0
+                                }
+                                errorText="Quantity is required"
+                                value={container.quantity.toString()}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? { ...c, quantity: value ?? 0 }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                                onBlur={(e) => {
+                                  e.target.value =
+                                    container.quantity.toString();
+                                }}
+                              />
+                              <NAOutlinedNumberField
+                                label="Quantity / SOC"
+                                className="w-[136px]"
+                                value={container.soc.toString()}
+                                error={container.soc > container.quantity}
+                                errorText="SOC cannot be greater than Quantity"
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? { ...c, soc: value ?? 0 }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                                onBlur={(e) => {
+                                  e.target.value = container.soc.toString();
+                                }}
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <NAOutlinedNumberField
+                                label="Package"
+                                maxInputLength={9}
+                                value={container.package?.toString() ?? ""}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? { ...c, package: value ?? undefined }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedListBox
+                                label=""
+                                initialValue={container.packageType}
+                                options={[
+                                  "Aerosol",
+                                  "Bag",
+                                  "Box",
+                                  "Crate",
+                                  "Drum",
+                                  "Pallet",
+                                  "Reel",
+                                  "Roll",
+                                  "Other",
+                                ]}
+                                onSelection={(packageType) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index ? { ...c, packageType } : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <NAOutlinedNumberField
+                                label="Gross Weight"
+                                value={container.grossWeight?.toString() ?? ""}
+                                maxInputLength={9}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? {
+                                            ...c,
+                                            grossWeight: value ?? undefined,
+                                          }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedListBox
+                                className="w-36"
+                                options={["KGS", "LBS"]}
+                                initialValue={container.grossWeightUnit}
+                                onSelection={(selectedUnit) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? {
+                                            ...c,
+                                            grossWeightUnit:
+                                              selectedUnit as any,
+                                            netWeightUnit: selectedUnit as any,
+                                          }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <NAOutlinedNumberField
+                                label="Net Weight"
+                                maxInputLength={9}
+                                value={container.netWeight?.toString() ?? ""}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? {
+                                            ...c,
+                                            netWeight: value ?? undefined,
+                                          }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedListBox
+                                className="w-36"
+                                options={["KGS", "LBS"]}
+                                initialValue={container.netWeightUnit}
+                                onSelection={(selectedUnit) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    opentop: prev.opentop.map((c, i) =>
+                                      i === index
+                                        ? {
+                                            ...c,
+                                            grossWeightUnit:
+                                              selectedUnit as any,
+                                            netWeightUnit: selectedUnit as any,
+                                          }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <AwkwardContainerInput
+                            container={container}
+                            type={ContainerType.opentop}
                           />
-                          <NAOutlinedNumberField
-                            label="Quantity / Total"
-                            required={showRequired}
-                            error={
-                              bookingRequestStep.container.visited &&
-                              container.quantity === 0
-                            }
-                            errorText="Quantity is required"
-                            value={container.quantity.toString()}
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                opentop: prev.opentop.map((c, i) =>
-                                  i === index
-                                    ? { ...c, quantity: value ?? 0 }
-                                    : c
-                                ),
-                              }));
-                            }}
-                            onBlur={(e) => {
-                              e.target.value = container.quantity.toString();
-                            }}
+                          <DangerousCargoInput
+                            container={container}
+                            type={ContainerType.opentop}
                           />
-                          <NAOutlinedNumberField
-                            label="Quantity / SOC"
-                            value={container.soc.toString()}
-                            error={container.soc > container.quantity}
-                            errorText="SOC cannot be greater than Quantity"
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                opentop: prev.opentop.map((c, i) =>
-                                  i === index ? { ...c, soc: value ?? 0 } : c
-                                ),
-                              }));
-                            }}
-                            onBlur={(e) => {
-                              e.target.value = container.soc.toString();
-                            }}
-                          />
-                          <MdIconButton
-                            className="mt-2"
-                            onClick={() => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                opentop: prev.opentop.filter(
-                                  (c, i) => i !== index
-                                ),
-                              }));
-                            }}
-                          >
-                            <DeleteOutline fontSize="small" />
-                          </MdIconButton>
                         </div>
-                        <AwkwardContainerInput
-                          container={container}
-                          type={ContainerType.opentop}
-                        />
-                        <DangerousCargoInput
-                          container={container}
-                          type={ContainerType.opentop}
-                        />
+                        <MdOutlinedIconButton
+                          className={
+                            list.length - 1 !== index ? "mt-16" : "mt-8"
+                          }
+                          onClick={() => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              opentop: prev.opentop.filter(
+                                (c, i) => i !== index
+                              ),
+                            }));
+                          }}
+                        >
+                          <DeleteOutline fontSize="small" />
+                        </MdOutlinedIconButton>
                       </motion.div>
                     );
                   })}

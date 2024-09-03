@@ -190,107 +190,109 @@ const DangerousCargoInput = ({
               ))}
             </MdChipSet>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-4">
             {selectedDangerousCargo !== "" && (
               <>
-                <NAOutlinedNumberField
-                  label="UN No."
-                  required={showRequired}
-                  hideZeroPlaceholder
-                  enableNumberSeparator={false}
-                  maxInputLength={4}
-                  className="w-24"
-                  value={
-                    container.dangerousCargoInformation.find(
-                      (dci) => dci.uuid === selectedDangerousCargo
-                    )?.unNumber
-                  }
-                  handleValueChange={(value) => {
-                    setContainerInformation((prev) => ({
-                      ...prev,
-                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                        c.uuid === container.uuid &&
-                        c.type !== ContainerType.bulk
-                          ? {
-                              ...c,
-                              dangerousCargoInformation:
-                                c.dangerousCargoInformation.map((dci) =>
-                                  dci.uuid === selectedDangerousCargo
-                                    ? { ...dci, unNumber: value }
-                                    : dci
-                                ),
-                            }
-                          : c
-                      ),
-                    }));
-                  }}
-                />
-                <NAOutlinedNumberField
-                  label="Class"
-                  required={showRequired}
-                  maxInputLength={3}
-                  hideZeroPlaceholder
-                  className="w-24"
-                  value={
-                    container.dangerousCargoInformation.find(
-                      (dci) => dci.uuid === selectedDangerousCargo
-                    )?.class
-                  }
-                  handleValueChange={(value) =>
-                    setContainerInformation((prev) => ({
-                      ...prev,
-                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                        c.uuid === container.uuid &&
-                        c.type !== ContainerType.bulk
-                          ? {
-                              ...c,
-                              dangerousCargoInformation:
-                                c.dangerousCargoInformation.map((dci) =>
-                                  dci.uuid === selectedDangerousCargo
-                                    ? { ...dci, class: value }
-                                    : dci
-                                ),
-                            }
-                          : c
-                      ),
-                    }))
-                  }
-                />
-                <NAOutlinedTextField
-                  label="Flash Point"
-                  required={showRequired}
-                  disabled
-                  className="w-28"
-                  suffixText="°C"
-                  enableClearButton={false}
-                  value={
-                    container.dangerousCargoInformation.find(
-                      (dci) => dci.uuid === selectedDangerousCargo
-                    )?.flashPoint
-                  }
-                  handleValueChange={(value) =>
-                    setContainerInformation((prev) => ({
-                      ...prev,
-                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                        c.uuid === container.uuid &&
-                        c.type !== ContainerType.bulk
-                          ? {
-                              ...c,
-                              dangerousCargoInformation:
-                                c.dangerousCargoInformation.map((dci) =>
-                                  dci.uuid === selectedDangerousCargo
-                                    ? { ...dci, flashPoint: value }
-                                    : dci
-                                ),
-                            }
-                          : c
-                      ),
-                    }))
-                  }
-                />
+                <div className="flex gap-2">
+                  <NAOutlinedNumberField
+                    label="UN No."
+                    required={showRequired}
+                    hideZeroPlaceholder
+                    enableNumberSeparator={false}
+                    maxInputLength={4}
+                    className="w-[136px]"
+                    value={
+                      container.dangerousCargoInformation.find(
+                        (dci) => dci.uuid === selectedDangerousCargo
+                      )?.unNumber
+                    }
+                    handleValueChange={(value) => {
+                      setContainerInformation((prev) => ({
+                        ...prev,
+                        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                          c.uuid === container.uuid &&
+                          c.type !== ContainerType.bulk
+                            ? {
+                                ...c,
+                                dangerousCargoInformation:
+                                  c.dangerousCargoInformation.map((dci) =>
+                                    dci.uuid === selectedDangerousCargo
+                                      ? { ...dci, unNumber: value }
+                                      : dci
+                                  ),
+                              }
+                            : c
+                        ),
+                      }));
+                    }}
+                  />
+                  <NAOutlinedNumberField
+                    label="Class"
+                    required={showRequired}
+                    maxInputLength={3}
+                    hideZeroPlaceholder
+                    className="w-[136px]"
+                    value={
+                      container.dangerousCargoInformation.find(
+                        (dci) => dci.uuid === selectedDangerousCargo
+                      )?.class
+                    }
+                    handleValueChange={(value) =>
+                      setContainerInformation((prev) => ({
+                        ...prev,
+                        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                          c.uuid === container.uuid &&
+                          c.type !== ContainerType.bulk
+                            ? {
+                                ...c,
+                                dangerousCargoInformation:
+                                  c.dangerousCargoInformation.map((dci) =>
+                                    dci.uuid === selectedDangerousCargo
+                                      ? { ...dci, class: value }
+                                      : dci
+                                  ),
+                              }
+                            : c
+                        ),
+                      }))
+                    }
+                  />
+                  <NAOutlinedTextField
+                    label="Flash Point"
+                    required={showRequired}
+                    disabled
+                    className="w-[136px]"
+                    suffixText="°C"
+                    enableClearButton={false}
+                    value={
+                      container.dangerousCargoInformation.find(
+                        (dci) => dci.uuid === selectedDangerousCargo
+                      )?.flashPoint
+                    }
+                    handleValueChange={(value) =>
+                      setContainerInformation((prev) => ({
+                        ...prev,
+                        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+                          c.uuid === container.uuid &&
+                          c.type !== ContainerType.bulk
+                            ? {
+                                ...c,
+                                dangerousCargoInformation:
+                                  c.dangerousCargoInformation.map((dci) =>
+                                    dci.uuid === selectedDangerousCargo
+                                      ? { ...dci, flashPoint: value }
+                                      : dci
+                                  ),
+                              }
+                            : c
+                        ),
+                      }))
+                    }
+                  />
+                </div>
                 <NAOutlinedListBox
                   label="Packing Group"
-                  className="w-36"
+                  className="w-[232px]"
                   options={["None", "I", "II", "III"]}
                   initialValue={
                     container.dangerousCargoInformation.find(

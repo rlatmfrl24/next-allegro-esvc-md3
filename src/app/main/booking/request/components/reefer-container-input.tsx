@@ -7,6 +7,7 @@ import {
 import {
   MdFilledTonalIconButton,
   MdIconButton,
+  MdOutlinedIconButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import {
@@ -85,231 +86,246 @@ const ReeferContainerInput = ({
               >
                 <Add fontSize="small" />
               </MdFilledTonalIconButton>
-              <div className="flex flex-col-reverse">
+              <div className="flex flex-col-reverse flex-1">
                 <AnimatePresence>
                   {list.map((container, index) => {
                     return (
                       <motion.div
                         key={container.uuid}
                         variants={containerVariant}
+                        className="flex flex-1 gap-4"
                         initial="initial"
                         animate="add"
                         exit="remove"
-                        className="mt-6 flex flex-col gap-4"
                       >
-                        {list.length - 1 !== index && (
-                          <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                        )}
-                        <div className="flex gap-4 items-start">
-                          <NAOutlinedListBox
-                            label="Size"
-                            className="w-52 text-right"
-                            suffixText="ft"
-                            required={showRequired}
-                            error={
-                              bookingRequestStep.container.visited &&
-                              container.size === ""
-                            }
-                            errorText="Size is required"
-                            initialValue={container.size}
-                            options={
-                              container.size !== ""
-                                ? [
-                                    container.size,
-                                    ...selectableContainerSizeOptions,
-                                  ].sort()
-                                : selectableContainerSizeOptions
-                            }
-                            onSelection={(size) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, size: size as any } : c
-                                ),
-                              }));
-                            }}
-                          />
-                          <NAOutlinedNumberField
-                            label="Quantity / Total"
-                            required={showRequired}
-                            error={
-                              bookingRequestStep.container.visited &&
-                              container.quantity === 0
-                            }
-                            errorText="Quantity is required"
-                            value={container.quantity.toString()}
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.map((c, i) =>
-                                  i === index
-                                    ? { ...c, quantity: value ?? 0 }
-                                    : c
-                                ),
-                              }));
-                            }}
-                          />
-                          <NAOutlinedNumberField
-                            label="Quantity / SOC"
-                            value={container.soc.toString()}
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, soc: value ?? 0 } : c
-                                ),
-                              }));
-                            }}
-                          />
-                          <MdIconButton
-                            className="mt-2"
-                            onClick={() => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.filter(
-                                  (c, i) => i !== index
-                                ),
-                              }));
-                            }}
-                          >
-                            <DeleteOutline fontSize="small" />
-                          </MdIconButton>
-                        </div>
-                        <div className="flex gap-4 items-start">
-                          <div className="flex gap-2">
-                            <NAOutlinedNumberField
-                              label="Degree"
-                              className="w-28"
-                              maxInputLength={5}
-                              value={container.temperature?.toString() ?? ""}
-                              handleValueChange={(value) => {
-                                setContainerInformation((prev) => ({
-                                  ...prev,
-                                  reefer: prev.reefer.map((c, i) =>
-                                    i === index
-                                      ? {
-                                          ...c,
-                                          temperature: value,
-                                        }
-                                      : c
-                                  ),
-                                }));
-                              }}
-                            />
+                        <div
+                          key={container.uuid}
+                          className="mt-6 flex flex-col gap-2 flex-1"
+                        >
+                          {list.length - 1 !== index && (
+                            <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                          )}
+                          <div className="flex gap-4 items-start">
+                            <div className="flex gap-2">
+                              <NAOutlinedListBox
+                                label="Size"
+                                className="w-[136px] text-right"
+                                suffixText="ft"
+                                required={showRequired}
+                                error={
+                                  bookingRequestStep.container.visited &&
+                                  container.size === ""
+                                }
+                                errorText="Size is required"
+                                initialValue={container.size}
+                                options={
+                                  container.size !== ""
+                                    ? [
+                                        container.size,
+                                        ...selectableContainerSizeOptions,
+                                      ].sort()
+                                    : selectableContainerSizeOptions
+                                }
+                                onSelection={(size) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? { ...c, size: size as any }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedNumberField
+                                label="Quantity / Total"
+                                className="w-[136px]"
+                                required={showRequired}
+                                error={
+                                  bookingRequestStep.container.visited &&
+                                  container.quantity === 0
+                                }
+                                errorText="Quantity is required"
+                                value={container.quantity.toString()}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? { ...c, quantity: value ?? 0 }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedNumberField
+                                label="Quantity / SOC"
+                                className="w-[136px]"
+                                value={container.soc.toString()}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? { ...c, soc: value ?? 0 }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <NAOutlinedNumberField
+                                label="Degree"
+                                className="w-[120px]"
+                                maxInputLength={5}
+                                value={container.temperature?.toString() ?? ""}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? {
+                                            ...c,
+                                            temperature: value,
+                                          }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedListBox
+                                options={["℃", "℉"]}
+                                className="w-[104px]"
+                                initialValue={
+                                  container.temperatureUnit as string
+                                }
+                                onSelection={(unit) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? { ...c, temperatureUnit: unit as any }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
+                            <div className="flex flex-1 gap-2">
+                              <NAOutlinedNumberField
+                                label="Ventilation"
+                                className="w-28"
+                                maxInputLength={3}
+                                value={container.ventilation?.toString() ?? ""}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? { ...c, ventilation: value }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+
+                              <NAOutlinedListBox
+                                options={["%Open", "%Close"]}
+                                className="w-32"
+                                initialValue={
+                                  container.ventilationType
+                                    ? container.ventilationType === "open"
+                                      ? "%Open"
+                                      : "%Close"
+                                    : ""
+                                }
+                                onSelection={(type) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    reefer: prev.reefer.map((c, i) =>
+                                      i === index
+                                        ? {
+                                            ...c,
+                                            ventilationType:
+                                              type === "%Open"
+                                                ? "open"
+                                                : "close",
+                                          }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
                             <NAOutlinedListBox
-                              options={["℃", "℉"]}
-                              className="w-28"
-                              initialValue={container.temperatureUnit as string}
-                              onSelection={(unit) => {
+                              label="Nature"
+                              className="flex-1"
+                              required={showRequired}
+                              options={["Chilled", "Frozen"]}
+                              initialValue={container.nature}
+                              onSelection={(nature) => {
                                 setContainerInformation((prev) => ({
                                   ...prev,
                                   reefer: prev.reefer.map((c, i) =>
-                                    i === index
-                                      ? { ...c, temperatureUnit: unit as any }
-                                      : c
+                                    i === index ? { ...c, nature } : c
                                   ),
                                 }));
                               }}
                             />
-                          </div>
-                          <div className="flex gap-2">
                             <NAOutlinedNumberField
-                              label="Ventilation"
+                              label="Humidity"
+                              suffixText="%"
                               className="w-28"
                               maxInputLength={3}
-                              value={container.ventilation?.toString() ?? ""}
+                              value={container.humidity?.toString() ?? ""}
                               handleValueChange={(value) => {
                                 setContainerInformation((prev) => ({
                                   ...prev,
                                   reefer: prev.reefer.map((c, i) =>
-                                    i === index
-                                      ? { ...c, ventilation: value }
-                                      : c
+                                    i === index ? { ...c, humidity: value } : c
                                   ),
                                 }));
                               }}
                             />
 
                             <NAOutlinedListBox
-                              options={["%Open", "%Close"]}
-                              className="w-32"
-                              initialValue={
-                                container.ventilationType
-                                  ? container.ventilationType === "open"
-                                    ? "%Open"
-                                    : "%Close"
-                                  : ""
-                              }
-                              onSelection={(type) => {
+                              label="Genset"
+                              required={showRequired}
+                              className="w-28"
+                              options={["Yes", "No"]}
+                              initialValue={container.genset ? "Yes" : "No"}
+                              onSelection={(gen) => {
                                 setContainerInformation((prev) => ({
                                   ...prev,
                                   reefer: prev.reefer.map((c, i) =>
                                     i === index
-                                      ? {
-                                          ...c,
-                                          ventilationType:
-                                            type === "%Open" ? "open" : "close",
-                                        }
+                                      ? { ...c, genset: gen === "Yes" }
                                       : c
                                   ),
                                 }));
                               }}
                             />
                           </div>
-                          <NAOutlinedListBox
-                            label="Nature"
-                            className="w-48"
-                            required={showRequired}
-                            options={["Chilled", "Frozen"]}
-                            initialValue={container.nature}
-                            onSelection={(nature) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, nature } : c
-                                ),
-                              }));
-                            }}
-                          />
-                          <NAOutlinedNumberField
-                            label="Humidity"
-                            suffixText="%"
-                            className="w-28"
-                            maxInputLength={3}
-                            value={container.humidity?.toString() ?? ""}
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.map((c, i) =>
-                                  i === index ? { ...c, humidity: value } : c
-                                ),
-                              }));
-                            }}
-                          />
 
-                          <NAOutlinedListBox
-                            label="Genset"
-                            required={showRequired}
-                            className="w-28"
-                            options={["Yes", "No"]}
-                            initialValue={container.genset ? "Yes" : "No"}
-                            onSelection={(gen) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                reefer: prev.reefer.map((c, i) =>
-                                  i === index
-                                    ? { ...c, genset: gen === "Yes" }
-                                    : c
-                                ),
-                              }));
-                            }}
+                          <DangerousCargoInput
+                            container={container}
+                            type={ContainerType.reefer}
                           />
                         </div>
-
-                        <DangerousCargoInput
-                          container={container}
-                          type={ContainerType.reefer}
-                        />
+                        <MdOutlinedIconButton
+                          className={
+                            list.length - 1 !== index ? "mt-16" : "mt-8"
+                          }
+                          onClick={() => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              reefer: prev.reefer.filter((c, i) => i !== index),
+                            }));
+                          }}
+                        >
+                          <DeleteOutline fontSize="small" />
+                        </MdOutlinedIconButton>
                       </motion.div>
                     );
                   })}

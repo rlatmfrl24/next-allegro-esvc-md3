@@ -163,6 +163,12 @@ export interface ReeferContainerInformationType
 export interface OpenTopContainerInformationType
   extends ContainerInformationType {
   type: ContainerType.opentop;
+  package: number | undefined;
+  packageType: string;
+  grossWeight: number | undefined;
+  grossWeightUnit: "KGS" | "LBS";
+  netWeight: number | undefined;
+  netWeightUnit: "KGS" | "LBS";
   isAwkward: boolean;
   awkward: AwkwardContainerInformationType;
 }
@@ -170,6 +176,12 @@ export interface OpenTopContainerInformationType
 export interface FlatRackContainerInformationType
   extends ContainerInformationType {
   type: ContainerType.flatrack;
+  package: number | undefined;
+  packageType: string;
+  grossWeight: number | undefined;
+  grossWeightUnit: "KGS" | "LBS";
+  netWeight: number | undefined;
+  netWeightUnit: "KGS" | "LBS";
   isAwkward: boolean;
   awkward: AwkwardContainerInformationType;
 }
@@ -197,10 +209,12 @@ export interface BulkContainerInformationType
   totalMeasurement: number | undefined;
 }
 
-export interface AwkwardContainerInformationType
-  extends BulkContainerInformationInterface {
-  netWeight: number | undefined;
-  netWeightUnit: "KGS" | "LBS";
+export interface AwkwardContainerInformationType {
+  commodity: CommodityType;
+  length: number | undefined;
+  width: number | undefined;
+  height: number | undefined;
+  unit: "CM" | "INCH";
   remark: string;
 }
 
