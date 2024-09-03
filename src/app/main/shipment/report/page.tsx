@@ -85,12 +85,13 @@ const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
           {...getFloatingProps()}
           className="z-20"
         >
-          <MdElevatedCard style={transitionStyles} className="py-2">
+          <MdElevatedCard style={transitionStyles} className="py-2 w-[240px]">
             <MdTypography variant="headline" size="small" className="m-6">
               More Filter
             </MdTypography>
             <MdList className="bg-surfaceContainerLow">
               <MdListItem
+                className="border-b border-outlineVariant"
                 type="button"
                 onClick={() => {
                   if (moreFilter.includes("Port of Loading")) {
@@ -110,6 +111,7 @@ const MoreFilter = (props: { onFilterChange: (filter: string[]) => void }) => {
               </MdListItem>
               <MdListItem
                 type="button"
+                className="border-b border-outlineVariant"
                 onClick={() => {
                   if (moreFilter.includes("Port of Discharging")) {
                     setMoreFilter(

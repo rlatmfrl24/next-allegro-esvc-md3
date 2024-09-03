@@ -41,6 +41,7 @@ export const ContractNumberSelector = (props: {
         Update Contract No.
       </MdOutlinedButton>
       <MdDialog
+        className="w-[520px]"
         open={isEditingDialogOpen}
         closed={() => {
           setIsEditingDialogOpen(false);

@@ -71,8 +71,8 @@ export default function SimpleSI() {
             </MdTypography>
           </p>
         </div>
-        <DividerComponent />
-        <div className="flex gap-6 flex-1">
+        <DividerComponent className="border-dotted my-2" />
+        <div className="flex gap-6 flex-1 mb-2">
           <div className="flex flex-col">
             <DetailTitle
               title="Benefits by Simple S/I Service"
