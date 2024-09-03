@@ -36,14 +36,10 @@ const NoticeItem = ({ date, content }: { date: string; content: string }) => {
 
   return (
     <div className="flex items-center gap-2">
-      <MdTypography variant="label" size="large" className="flex-1">
+      <MdTypography variant="body" size="medium" className="flex-1">
         {content}
       </MdTypography>
-      <MdTypography
-        variant="label"
-        size="medium"
-        className="text-onSurface opacity-35"
-      >
+      <MdTypography variant="body" size="small" className="text-outline">
         {dateObject.toFormat("yyyy-MM-dd ")}
       </MdTypography>
     </div>

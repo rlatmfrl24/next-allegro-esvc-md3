@@ -104,7 +104,7 @@ export default function PointToPointCalendarResult({
 
   return (
     <div>
-      <div className="flex p-6 justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-2 mb-2">
         <MdIconButton
           onClick={() => {
             navigation.toPrev();
@@ -223,9 +223,9 @@ export default function PointToPointCalendarResult({
       <Portal selector="#result-container">
         {isDetailListOpen && (
           <div className="absolute top-0 right-0 w-full min-h-full h-fit bg-surface rounded-2xl border border-outlineVariant">
-            <div className="p-6 flex items-center justify-center relative">
+            <div className="p-4 pb-0 flex items-center justify-center relative">
               <MdOutlinedButton
-                className="absolute left-6 top-6"
+                className="absolute left-4 top-4"
                 onClick={() => {
                   setIsDetailListOpen(false);
                 }}
@@ -272,7 +272,9 @@ export default function PointToPointCalendarResult({
               </MdIconButton>
             </div>
             {selectedData && (
-              <PointToPointListResult list={selectedData?.list} />
+              <div className="p-4">
+                <PointToPointListResult list={selectedData?.list} />
+              </div>
             )}
           </div>
         )}

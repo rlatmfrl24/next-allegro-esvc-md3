@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function QuickTracking() {
   return (
     <div className="flex flex-col justify-between flex-1">
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 gap-4">
         <MdTypography variant="body" size="medium">
           {`It's fast and easy to track your shipment.`}
         </MdTypography>

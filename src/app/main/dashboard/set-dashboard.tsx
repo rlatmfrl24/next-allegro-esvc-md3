@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 import { dashboardCardState } from "../../store/dashboard.store";
 import { DividerComponent } from "@/app/components/divider";
 import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { useEffect, useRef } from "react";
 
 export default function SetDashboard(props: {
   isDrawerOpen: boolean;
@@ -20,12 +21,28 @@ export default function SetDashboard(props: {
 }) {
   const [enabledCardIds, setEnabledCardIds] =
     useRecoilState(dashboardCardState);
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  // close drawer when click outside
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        props.toggleDrawer();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [drawerRef, props]);
 
   return (
     <Portal selector="#main-container">
       <AnimatePresence>
         {props.isDrawerOpen && (
           <motion.div
+            ref={drawerRef}
             initial={{ x: 360 }}
             animate={{ x: 0 }}
             exit={{ x: 360 }}

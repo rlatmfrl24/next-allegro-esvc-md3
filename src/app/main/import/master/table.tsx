@@ -342,21 +342,25 @@ export const InboundMasterTable = () => {
       <BasicTable
         ActionComponent={() => (
           <div className="flex-1 flex gap-4">
-            <MdTextButton
-              onClick={() => {
-                router.push("/main/import/notice");
-              }}
-            >
-              Arrival Notice
-            </MdTextButton>
-            <MdTextButton
-              disabled={selectedRow === null || selectedRow === undefined}
-              onClick={() => {
-                setIsVesselStatusNotesDialogOpen(true);
-              }}
-            >
-              Advance/Delay Notice
-            </MdTextButton>
+            {selectedRow && (
+              <>
+                <MdTextButton
+                  onClick={() => {
+                    router.push("/main/import/notice");
+                  }}
+                >
+                  Arrival Notice
+                </MdTextButton>
+                <MdTextButton
+                  disabled={selectedRow === null || selectedRow === undefined}
+                  onClick={() => {
+                    setIsVesselStatusNotesDialogOpen(true);
+                  }}
+                >
+                  Advance/Delay Notice
+                </MdTextButton>
+              </>
+            )}
           </div>
         )}
         data={tempData}

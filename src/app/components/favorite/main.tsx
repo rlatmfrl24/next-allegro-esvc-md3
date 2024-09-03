@@ -8,6 +8,8 @@ import { NAOutlinedTextField } from "../na-textfield";
 import { MdIcon, MdIconButton } from "@/app/util/md3";
 import { Close, Favorite } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { OverlayScrollbars } from "overlayscrollbars";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 export default function FavoriteMain() {
   const [drawerState, setDrawerState] = useRecoilState(DrawerState);
@@ -133,25 +135,27 @@ export default function FavoriteMain() {
               setSearchQuery(value);
             }}
           />
-          <div className="flex flex-col-reverse">
-            {favoriteStore
-              .filter((item) => {
-                return item.title
-                  .toLowerCase()
-                  .includes(searchQuery.toLowerCase());
-              })
-              .map((item, index) => {
-                return (
-                  <FavoriteItem
-                    key={index + "_" + item.title}
-                    name={item.title}
-                    category={item.category}
-                    link={item.href}
-                    query={searchQuery}
-                  />
-                );
-              })}
-          </div>
+          <OverlayScrollbarsComponent defer>
+            <div className="flex flex-col-reverse overflow-auto">
+              {favoriteStore
+                .filter((item) => {
+                  return item.title
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase());
+                })
+                .map((item, index) => {
+                  return (
+                    <FavoriteItem
+                      key={index + "_" + item.title}
+                      name={item.title}
+                      category={item.category}
+                      link={item.href}
+                      query={searchQuery}
+                    />
+                  );
+                })}
+            </div>
+          </OverlayScrollbarsComponent>
         </motion.div>
       )}
     </AnimatePresence>
