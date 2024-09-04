@@ -121,7 +121,7 @@ export default function BookingStatusTable() {
       id: "requestNo",
       header: "Request No",
       cell: (info) => (
-        <div className="flex items-center relative">
+        <div className="flex items-center relative -translate-y-1">
           <MdRadio
             // name="requestNo"
             className="mr-2"
@@ -164,7 +164,7 @@ export default function BookingStatusTable() {
       id: "bookingNo",
       header: "Booking No",
       cell: (info) => (
-        <div className="flex items-center">
+        <div className="flex items-center -translate-y-1">
           <Link
             href={`/main/booking/information/confirmation`}
             className="block w-fit"
@@ -243,7 +243,7 @@ export default function BookingStatusTable() {
       header: "Estimated Time of Departure",
       cell: (info) => (
         <div
-          className="flex p-2 "
+          className="flex"
           onClick={(e) => {
             e.stopPropagation();
             setIsVesselStatusNotesDialogOpen(true);

@@ -149,7 +149,7 @@ export default function SeaWaybillResultTable() {
       cell: (info) => (
         <NaToggleButton
           label="Include"
-          className="my-0"
+          className="my-0 -translate-y-1.5"
           state={info.getValue() ? "checked" : "unchecked"}
           onClick={() => {
             setTableData(
