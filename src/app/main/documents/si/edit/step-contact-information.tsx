@@ -58,14 +58,14 @@ export default function StepContactInformation() {
         isCompleted:
           !!contactInformationStore.name &&
           !!contactInformationStore.telNumber &&
-          !!contactInformationStore.address &&
-          !!contactInformationStore.email,
+          !!contactInformationStore.address,
+        // !!contactInformationStore.email,
       },
     }));
   }, [
     contactInformationStore.name,
     contactInformationStore.telNumber,
-    contactInformationStore.email,
+    // contactInformationStore.email,
     contactInformationStore.address,
     setSIEditStep,
   ]);

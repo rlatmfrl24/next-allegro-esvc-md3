@@ -76,7 +76,7 @@ const TrackingDataCard = ({ data }: { data: CargoTrackingProps }) => {
         )}
       </Portal>
       <div
-        className="px-6 py-4 bg-surfaceContainerLow border border-outlineVariant rounded-lg flex relative"
+        className="px-6 py-4 bg-surfaceContainerLowest border border-outlineVariant rounded-lg flex relative"
         onClick={() => {
           setIsDetailOpen(!isDetailOpen);
         }}

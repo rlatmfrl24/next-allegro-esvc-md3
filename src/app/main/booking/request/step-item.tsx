@@ -33,11 +33,19 @@ export default function StepItem({
         <MdTypography
           variant="title"
           size="medium"
-          className={`select-none ${
+          className={`select-none text-balance ${
             isSelected ? "text-surface" : "text-onsurface"
           }`}
         >
-          {title}
+          {
+            // show title, if title contains new line, split it and show each line
+            title.split("\n").map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))
+          }
         </MdTypography>
         <MdTypography
           variant="body"

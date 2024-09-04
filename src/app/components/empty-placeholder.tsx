@@ -14,7 +14,7 @@ export default function EmptyResultPlaceholder({
         <EmptyResultIcon className="mb-8" />
         <MdTypography
           variant="headline"
-          size="medium"
+          size="small"
           className="text-outlineVariant"
         >
           {text}

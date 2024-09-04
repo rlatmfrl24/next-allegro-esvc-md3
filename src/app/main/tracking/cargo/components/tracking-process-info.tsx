@@ -138,7 +138,7 @@ export const TrackingProcessInfo = ({ data }: { data: CargoTrackingProps }) => {
         {data.ratio < 95 && data.ratio > 5 && (
           <>
             <div
-              className="absolute top-1/2 -translate-y-1/2 bg-surface px-2 w-fit text-primary"
+              className="absolute top-1/2 -translate-y-1/2 bg-surfaceContainerLowest px-2 w-fit text-primary"
               style={{ left: `calc(${data.ratio}% - 32px)` }}
               ref={refs.setReference}
             >

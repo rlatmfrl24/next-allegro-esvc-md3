@@ -25,7 +25,7 @@ export const SIEditStepState = atom({
     },
     routeBL: {
       id: "routeBL",
-      title: "Route & B/L Information",
+      title: `Route \n& B/L Information`,
       isSelected: false,
       isCompleted: false,
       visited: false,

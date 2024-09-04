@@ -115,7 +115,7 @@ export function BLIssueRequestTable() {
         />
       ),
       cell: (info) => (
-        <MdCheckbox checked={info.row.getIsSelected()} className="ml-2" />
+        <MdCheckbox checked={info.row.getIsSelected()} className="m-1 ml-2" />
       ),
       size: 48,
       minSize: 48,
@@ -143,6 +143,7 @@ export function BLIssueRequestTable() {
       cell: (info) => (
         <NaToggleButton
           label="Include"
+          className="-translate-y-2"
           state={info.getValue() ? "checked" : "unchecked"}
           onClick={() => {
             setTableData(
@@ -161,11 +162,12 @@ export function BLIssueRequestTable() {
       id: "status",
       header: "Status",
       cell: (info) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-start">
           <BLStateCell state={info.getValue()} />
           {(info.getValue() === "Rejected" ||
             info.getValue() === "Pending") && (
             <MdIconButton
+              className="-translate-y-2"
               onClick={(e) => {
                 e.stopPropagation();
                 setTargetReasonData(info.row.original);
