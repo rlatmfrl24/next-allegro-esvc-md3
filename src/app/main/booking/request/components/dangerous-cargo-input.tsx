@@ -142,7 +142,7 @@ const DangerousCargoInput = ({
         </div>
       </MdDialog>
       <NaToggleButton
-        className="w-fit"
+        className="w-fit my-0"
         label="Dangerous Cargo"
         state={container.isDangerous ? "checked" : "unchecked"}
         onClick={() => {

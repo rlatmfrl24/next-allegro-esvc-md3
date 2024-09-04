@@ -172,134 +172,144 @@ const FlatRackContainerInput = ({
                                 }}
                               />
                             </div>
-                            <div className="flex gap-2">
-                              <NAOutlinedNumberField
-                                label="Package"
-                                maxInputLength={9}
-                                value={container.package?.toString() ?? ""}
-                                handleValueChange={(value) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    flatrack: prev.flatrack.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            package: value,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                              <NAOutlinedListBox
-                                label=""
-                                initialValue={container.packageType}
-                                options={[
-                                  "Aerosol",
-                                  "Bag",
-                                  "Box",
-                                  "Crate",
-                                  "Drum",
-                                  "Pallet",
-                                  "Reel",
-                                  "Roll",
-                                  "Other",
-                                ]}
-                                onSelection={(packageType) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    flatrack: prev.flatrack.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            packageType: packageType as any,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </div>
-                            <div className="flex gap-2">
-                              <NAOutlinedNumberField
-                                label="Gross Weight"
-                                value={container.grossWeight?.toString() ?? ""}
-                                maxInputLength={9}
-                                handleValueChange={(value) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    flatrack: prev.flatrack.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            grossWeight: value,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                              <NAOutlinedListBox
-                                label=""
-                                className="w-36"
-                                initialValue={container.grossWeightUnit}
-                                options={["KGS", "LBS"]}
-                                onSelection={(unit) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    flatrack: prev.flatrack.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            grossWeightUnit: unit as any,
-                                            netWeightUnit: unit as any,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </div>
-                            <div className="flex gap-2">
-                              <NAOutlinedNumberField
-                                label="Net Weight"
-                                value={container.netWeight?.toString() ?? ""}
-                                maxInputLength={9}
-                                handleValueChange={(value) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    flatrack: prev.flatrack.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            netWeight: value,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                              <NAOutlinedListBox
-                                label=""
-                                className="w-36"
-                                initialValue={container.netWeightUnit}
-                                options={["KGS", "LBS"]}
-                                onSelection={(unit) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    flatrack: prev.flatrack.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            grossWeightUnit: unit as any,
-                                            netWeightUnit: unit as any,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </div>
+                            {container.isAwkward && (
+                              <>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Package"
+                                    maxInputLength={9}
+                                    value={container.package?.toString() ?? ""}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                package: value,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    initialValue={container.packageType}
+                                    options={[
+                                      "Aerosol",
+                                      "Bag",
+                                      "Box",
+                                      "Crate",
+                                      "Drum",
+                                      "Pallet",
+                                      "Reel",
+                                      "Roll",
+                                      "Other",
+                                    ]}
+                                    onSelection={(packageType) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                packageType: packageType as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Gross Weight"
+                                    className="flex-1"
+                                    value={
+                                      container.grossWeight?.toString() ?? ""
+                                    }
+                                    maxInputLength={9}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeight: value,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    className="w-28"
+                                    initialValue={container.grossWeightUnit}
+                                    options={["KGS", "LBS"]}
+                                    onSelection={(unit) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeightUnit: unit as any,
+                                                netWeightUnit: unit as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Net Weight"
+                                    className="flex-1"
+                                    value={
+                                      container.netWeight?.toString() ?? ""
+                                    }
+                                    maxInputLength={9}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                netWeight: value,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    className="w-28"
+                                    initialValue={container.netWeightUnit}
+                                    options={["KGS", "LBS"]}
+                                    onSelection={(unit) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeightUnit: unit as any,
+                                                netWeightUnit: unit as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                              </>
+                            )}
                           </div>
                           <AwkwardContainerInput
                             container={container}

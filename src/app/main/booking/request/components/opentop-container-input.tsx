@@ -185,126 +185,143 @@ const OpenTopContainerInput = ({
                                 }}
                               />
                             </div>
-                            <div className="flex gap-2">
-                              <NAOutlinedNumberField
-                                label="Package"
-                                maxInputLength={9}
-                                value={container.package?.toString() ?? ""}
-                                handleValueChange={(value) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    opentop: prev.opentop.map((c, i) =>
-                                      i === index
-                                        ? { ...c, package: value ?? undefined }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                              <NAOutlinedListBox
-                                label=""
-                                initialValue={container.packageType}
-                                options={[
-                                  "Aerosol",
-                                  "Bag",
-                                  "Box",
-                                  "Crate",
-                                  "Drum",
-                                  "Pallet",
-                                  "Reel",
-                                  "Roll",
-                                  "Other",
-                                ]}
-                                onSelection={(packageType) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    opentop: prev.opentop.map((c, i) =>
-                                      i === index ? { ...c, packageType } : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </div>
-                            <div className="flex gap-2">
-                              <NAOutlinedNumberField
-                                label="Gross Weight"
-                                value={container.grossWeight?.toString() ?? ""}
-                                maxInputLength={9}
-                                handleValueChange={(value) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    opentop: prev.opentop.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            grossWeight: value ?? undefined,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                              <NAOutlinedListBox
-                                className="w-36"
-                                options={["KGS", "LBS"]}
-                                initialValue={container.grossWeightUnit}
-                                onSelection={(selectedUnit) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    opentop: prev.opentop.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            grossWeightUnit:
-                                              selectedUnit as any,
-                                            netWeightUnit: selectedUnit as any,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </div>
-                            <div className="flex gap-2">
-                              <NAOutlinedNumberField
-                                label="Net Weight"
-                                maxInputLength={9}
-                                value={container.netWeight?.toString() ?? ""}
-                                handleValueChange={(value) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    opentop: prev.opentop.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            netWeight: value ?? undefined,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                              <NAOutlinedListBox
-                                className="w-36"
-                                options={["KGS", "LBS"]}
-                                initialValue={container.netWeightUnit}
-                                onSelection={(selectedUnit) => {
-                                  setContainerInformation((prev) => ({
-                                    ...prev,
-                                    opentop: prev.opentop.map((c, i) =>
-                                      i === index
-                                        ? {
-                                            ...c,
-                                            grossWeightUnit:
-                                              selectedUnit as any,
-                                            netWeightUnit: selectedUnit as any,
-                                          }
-                                        : c
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </div>
+                            {container.isAwkward && (
+                              <>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Package"
+                                    maxInputLength={9}
+                                    value={container.package?.toString() ?? ""}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        opentop: prev.opentop.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                package: value ?? undefined,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    initialValue={container.packageType}
+                                    options={[
+                                      "Aerosol",
+                                      "Bag",
+                                      "Box",
+                                      "Crate",
+                                      "Drum",
+                                      "Pallet",
+                                      "Reel",
+                                      "Roll",
+                                      "Other",
+                                    ]}
+                                    onSelection={(packageType) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        opentop: prev.opentop.map((c, i) =>
+                                          i === index
+                                            ? { ...c, packageType }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Gross Weight"
+                                    className="flex-1"
+                                    value={
+                                      container.grossWeight?.toString() ?? ""
+                                    }
+                                    maxInputLength={9}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        opentop: prev.opentop.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeight: value ?? undefined,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    className="w-28 min-w-[28]"
+                                    options={["KGS", "LBS"]}
+                                    initialValue={container.grossWeightUnit}
+                                    onSelection={(selectedUnit) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        opentop: prev.opentop.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeightUnit:
+                                                  selectedUnit as any,
+                                                netWeightUnit:
+                                                  selectedUnit as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Net Weight"
+                                    className="flex-1"
+                                    maxInputLength={9}
+                                    value={
+                                      container.netWeight?.toString() ?? ""
+                                    }
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        opentop: prev.opentop.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                netWeight: value ?? undefined,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    className="w-28"
+                                    options={["KGS", "LBS"]}
+                                    initialValue={container.netWeightUnit}
+                                    onSelection={(selectedUnit) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        opentop: prev.opentop.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeightUnit:
+                                                  selectedUnit as any,
+                                                netWeightUnit:
+                                                  selectedUnit as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                              </>
+                            )}
                           </div>
                           <AwkwardContainerInput
                             container={container}

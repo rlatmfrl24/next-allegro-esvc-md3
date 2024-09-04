@@ -24,7 +24,7 @@ const AwkwardContainerInput = ({
   return (
     <>
       <NaToggleButton
-        className="w-fit"
+        className="w-fit my-0"
         label="Awkward Cargo"
         state={container.isAwkward ? "checked" : "unchecked"}
         onClick={() => {
