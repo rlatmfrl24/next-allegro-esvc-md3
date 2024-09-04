@@ -1,16 +1,13 @@
 "use client";
-
 import PageTitle from "@/app/components/title-components";
 import styles from "@/app/styles/base.module.css";
 import { MdOutlinedButton } from "@/app/util/md3";
-import Link from "next/link";
 import BookingStatusCondition from "./condition";
 import BookingStatusTable from "./table";
 import { useRouter } from "next/navigation";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { resetBookingState } from "@/app/store/booking.store";
 import classNames from "classnames";
-import { useState } from "react";
 
 export default function BookingStatusPage() {
   const router = useRouter();
