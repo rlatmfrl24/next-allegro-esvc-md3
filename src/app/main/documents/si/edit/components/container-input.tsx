@@ -1,48 +1,38 @@
-import LabelChip from "@/app/components/label-chip";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { useRecoilState } from "recoil";
+
 import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import Portal from "@/app/components/portal";
-import { MdTypography } from "@/app/components/typography";
 import { SIEditContainerState } from "@/app/store/si.store";
 import {
   MdChipSet,
   MdDialog,
   MdFilledButton,
   MdFilterChip,
-  MdIconButton,
   MdOutlinedButton,
   MdOutlinedIconButton,
-  MdOutlinedTextField,
 } from "@/app/util/md3";
 import { ContainerType } from "@/app/util/typeDef/booking";
 import {
   CargoManifestType,
   SIContainerInputProps,
-  SealKind,
 } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import {
-  Add,
-  DeleteOutline,
-  TableChart,
-  TextFields,
-} from "@mui/icons-material";
-import { set } from "lodash";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
+import { Add, DeleteOutline } from "@mui/icons-material";
+
+import { SealTextField } from "./seal-textfield";
 
 export default function ContainerInput({
   container,
   containerIndex,
-  isFirstItem = false,
   isLastItem = false,
 }: {
   container: SIContainerInputProps;
   containerIndex: number;
-  isFirstItem?: boolean;
   isLastItem?: boolean;
 }) {
   const [
@@ -186,158 +176,66 @@ export default function ContainerInput({
           <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
         )}
 
-        <div className="flex gap-2 items-start">
-          <NAOutlinedTextField
-            label="Type"
-            className="w-[216px]"
-            readOnly
-            value={`${
-              container.containerType === ContainerType.dry
-                ? "Dry"
-                : container.containerType === ContainerType.reefer
-                ? "Reefer"
-                : container.containerType === ContainerType.opentop
-                ? "Open Top"
-                : container.containerType === ContainerType.flatrack
-                ? "Flat Rack"
-                : container.containerType === ContainerType.tank
-                ? "Tank"
-                : "Bulk"
-            } #${containerIndex + 1}`}
-          />
-          <NAOutlinedTextField
-            label="Container No."
-            maxInputLength={14}
-            className="w-[216px]"
-            value={container.containerNumber}
-            handleValueChange={(value) => {
-              updateContainerStore(container, "containerNumber", value);
-            }}
-          />
-          <NAOutlinedListBox
-            suffixText="ft"
-            label="Size"
-            className="w-52"
-            initialValue={container.containerSize}
-            options={["20", "40", "40HC", "45"]}
-            onSelection={(size) => {
-              updateContainerStore(container, "containerSize", size);
-            }}
-          />
-          <NAOutlinedListBox
-            label="S.O.C"
-            className="w-24"
-            initialValue={container.isSocContainer ? "Y" : "N"}
-            options={["Y", "N"]}
-            onSelection={(value) => {
-              updateContainerStore(container, "isSocContainer", value === "Y");
+        <div className="flex gap-4">
+          <div className="flex gap-2 items-start">
+            <NAOutlinedTextField
+              label="Type"
+              className="w-[216px]"
+              readOnly
+              value={`${
+                container.containerType === ContainerType.dry
+                  ? "Dry"
+                  : container.containerType === ContainerType.reefer
+                  ? "Reefer"
+                  : container.containerType === ContainerType.opentop
+                  ? "Open Top"
+                  : container.containerType === ContainerType.flatrack
+                  ? "Flat Rack"
+                  : container.containerType === ContainerType.tank
+                  ? "Tank"
+                  : "Bulk"
+              } #${containerIndex + 1}`}
+            />
+            <NAOutlinedTextField
+              label="Container No."
+              maxInputLength={14}
+              className="w-[216px]"
+              value={container.containerNumber}
+              handleValueChange={(value) => {
+                updateContainerStore(container, "containerNumber", value);
+              }}
+            />
+            <NAOutlinedListBox
+              suffixText="ft"
+              label="Size"
+              className="w-52"
+              initialValue={container.containerSize}
+              options={["20", "40", "40HC", "45"]}
+              onSelection={(size) => {
+                updateContainerStore(container, "containerSize", size);
+              }}
+            />
+            <NAOutlinedListBox
+              label="S.O.C"
+              className="w-24"
+              initialValue={container.isSocContainer ? "Y" : "N"}
+              options={["Y", "N"]}
+              onSelection={(value) => {
+                updateContainerStore(
+                  container,
+                  "isSocContainer",
+                  value === "Y"
+                );
+              }}
+            />
+          </div>
+          <SealTextField
+            initialSealData={container.sealData}
+            onUpdated={(newSealData) => {
+              updateContainerStore(container, "sealData", newSealData);
             }}
           />
         </div>
-        {/* <div className="flex gap-4">
-          <div className="flex gap-2">
-            <NAOutlinedListBox
-              label="Seal Kind"
-              options={[
-                "Shipper",
-                "Carrier",
-                "Consolidator",
-                "Customs",
-                "Unknown",
-                "Quarantine Agency",
-                "Terminal Agency",
-              ]}
-              className="w-52"
-              initialValue={SealKind[container.firstSeal.kind]}
-              onSelection={(value) => {
-                updateContainerStore(container, "firstSeal", {
-                  ...container.firstSeal,
-                  kind: SealKind[value as keyof typeof SealKind],
-                });
-              }}
-            />
-            <NAOutlinedListBox
-              label="Seal Type"
-              options={["Merchanical Seal", "Electronic Seal"]}
-              className="w-52"
-              initialValue={
-                container.firstSeal.type === "merchanical"
-                  ? "Merchanical Seal"
-                  : "Electronic Seal"
-              }
-              onSelection={(value) => {
-                updateContainerStore(container, "firstSeal", {
-                  ...container.firstSeal,
-                  type:
-                    value === "Merchanical Seal" ? "merchanical" : "electronic",
-                });
-              }}
-            />
-            <NAOutlinedTextField
-              value={container.firstSeal.description}
-              placeholder="Seal No. 01"
-              className="flex-1"
-              maxInputLength={20}
-              handleValueChange={(value) => {
-                updateContainerStore(container, "firstSeal", {
-                  ...container.firstSeal,
-                  description: value,
-                });
-              }}
-            />
-          </div>
-          <div className="flex gap-2">
-            <NAOutlinedListBox
-              label="Seal Kind"
-              options={[
-                "Shipper",
-                "Carrier",
-                "Consolidator",
-                "Customs",
-                "Unknown",
-                "Quarantine Agency",
-                "Terminal Agency",
-              ]}
-              className="w-52"
-              initialValue={SealKind[container.secondSeal.kind]}
-              onSelection={(value) => {
-                updateContainerStore(container, "secondSeal", {
-                  ...container.secondSeal,
-                  kind: SealKind[value as keyof typeof SealKind],
-                });
-              }}
-            />
-            <NAOutlinedListBox
-              label="Seal Type"
-              options={["Merchanical Seal", "Electronic Seal"]}
-              className="w-52"
-              initialValue={
-                container.secondSeal.type === "merchanical"
-                  ? "Merchanical Seal"
-                  : "Electronic Seal"
-              }
-              onSelection={(value) => {
-                updateContainerStore(container, "secondSeal", {
-                  ...container.secondSeal,
-                  type:
-                    value === "Merchanical Seal" ? "merchanical" : "electronic",
-                });
-              }}
-            />
-            <NAOutlinedTextField
-              value={container.secondSeal.description}
-              placeholder="Seal No. 02"
-              className="flex-1"
-              maxInputLength={20}
-              handleValueChange={(value) => {
-                updateContainerStore(container, "secondSeal", {
-                  ...container.secondSeal,
-                  description: value,
-                });
-              }}
-            />
-          </div>
-        </div> */}
 
         <div className="flex gap-4">
           <div className="flex gap-2 flex-1">

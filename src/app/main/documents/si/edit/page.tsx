@@ -181,7 +181,6 @@ function SIEdit() {
         <div className="flex flex-col gap-4 p-4 border-r border-r-outlineVariant">
           {Object.keys(siEditStep).map((key) => {
             const item = siEditStep[key as keyof typeof siEditStep];
-            console.log(item.title);
             return (
               <StepItem
                 key={key}
