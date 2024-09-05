@@ -339,7 +339,7 @@ export default function SpecialCargoStatusSearch() {
             Reefer Cargo
           </MdSecondaryTab>
         </MdTabs>
-        <div className="p-6 pt-2 ">
+        <div className="p-6 pt-0">
           {selectedTab === "dangerous" && (
             <BasicTable
               ActionComponent={() => {

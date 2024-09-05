@@ -377,70 +377,72 @@ export default function StepContainer() {
               }
             />
           </div>
-          <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
-            {typeSelections.map((type) => {
-              return (
-                <div key={type}>
-                  {type === ContainerType.dry && (
-                    <ContainerTypeInputComponent
-                      title="Dry Container"
-                      type={ContainerType.dry}
-                      list={siContainerStore.dry}
-                    />
-                  )}
-                  {type === ContainerType.reefer && (
-                    <ContainerTypeInputComponent
-                      title="Reefer Container"
-                      type={ContainerType.reefer}
-                      list={siContainerStore.reefer}
-                    />
-                  )}
-                  {type === ContainerType.opentop && (
-                    <ContainerTypeInputComponent
-                      title="Open Top Container"
-                      type={ContainerType.opentop}
-                      list={siContainerStore.opentop}
-                    />
-                  )}
-                  {type === ContainerType.flatrack && (
-                    <ContainerTypeInputComponent
-                      title="Flat Rack Container"
-                      type={ContainerType.flatrack}
-                      list={siContainerStore.flatrack}
-                    />
-                  )}
-                  {type === ContainerType.tank && (
-                    <ContainerTypeInputComponent
-                      title="Tank Container"
-                      type={ContainerType.tank}
-                      list={siContainerStore.tank}
-                    />
-                  )}
-                  {type === ContainerType.bulk && (
-                    <ContainerTypeInputComponent
-                      title="Bulk Container"
-                      type={ContainerType.bulk}
-                      list={siContainerStore.bulk}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
-            {typeSelections.length === 0 && (
+          {typeSelections.length !== 0 && (
+            <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
+              {typeSelections.map((type) => {
+                return (
+                  <div key={type}>
+                    {type === ContainerType.dry && (
+                      <ContainerTypeInputComponent
+                        title="Dry Container"
+                        type={ContainerType.dry}
+                        list={siContainerStore.dry}
+                      />
+                    )}
+                    {type === ContainerType.reefer && (
+                      <ContainerTypeInputComponent
+                        title="Reefer Container"
+                        type={ContainerType.reefer}
+                        list={siContainerStore.reefer}
+                      />
+                    )}
+                    {type === ContainerType.opentop && (
+                      <ContainerTypeInputComponent
+                        title="Open Top Container"
+                        type={ContainerType.opentop}
+                        list={siContainerStore.opentop}
+                      />
+                    )}
+                    {type === ContainerType.flatrack && (
+                      <ContainerTypeInputComponent
+                        title="Flat Rack Container"
+                        type={ContainerType.flatrack}
+                        list={siContainerStore.flatrack}
+                      />
+                    )}
+                    {type === ContainerType.tank && (
+                      <ContainerTypeInputComponent
+                        title="Tank Container"
+                        type={ContainerType.tank}
+                        list={siContainerStore.tank}
+                      />
+                    )}
+                    {type === ContainerType.bulk && (
+                      <ContainerTypeInputComponent
+                        title="Bulk Container"
+                        type={ContainerType.bulk}
+                        list={siContainerStore.bulk}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {typeSelections.length === 0 && (
+            <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
               <div className="flex-1 flex-col flex items-center justify-center gap-8">
                 <EmptyContainerPlaceholder />
                 <MdTypography
                   variant="headline"
-                  size="medium"
+                  size="small"
                   className="text-outlineVariant"
                 >
                   Please select the container type you want to add.
                 </MdTypography>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </>
       )}
       <div className="flex justify-end items-end">

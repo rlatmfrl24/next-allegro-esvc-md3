@@ -27,18 +27,9 @@ const ContainerTypeInputComponent = ({
     <Disclosure defaultOpen>
       {({ open }) => (
         <>
-          <Disclosure.Button className={`flex w-full items-center gap-2`}>
-            <DetailTitle title={title} />
-            <div className="flex-1 border-b border-b-outlineVariant"></div>
-            <ArrowDropDown
-              className={`transform transition-transform ${
-                open ? "rotate-180" : "rotate-0"
-              }`}
-            />
-          </Disclosure.Button>
-          <Disclosure.Panel className={`flex gap-4`}>
+          <div className="flex gap-2 justify-center items-center">
             <MdFilledTonalIconButton
-              className="mt-20 min-w-[40px] min-h-[40px]"
+              className="min-w-[40px] min-h-[40px] h-fit"
               onClick={() => {
                 if (typeKey === "weightUnit" || typeKey === "measurementUnit")
                   return;
@@ -54,6 +45,17 @@ const ContainerTypeInputComponent = ({
             >
               <Add fontSize="small" />
             </MdFilledTonalIconButton>
+            <Disclosure.Button className={`flex w-full items-center gap-2`}>
+              <DetailTitle title={title} />
+              <div className="flex-1 border-b border-b-outlineVariant"></div>
+              <ArrowDropDown
+                className={`transform transition-transform ${
+                  open ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            </Disclosure.Button>
+          </div>
+          <Disclosure.Panel className={`flex pl-12 gap-4`}>
             <div className="flex flex-col-reverse w-full">
               {list.map((container, index) => {
                 return (
@@ -61,6 +63,7 @@ const ContainerTypeInputComponent = ({
                     key={container.uuid}
                     container={container}
                     containerIndex={index}
+                    isFirstItem={index === 0}
                     isLastItem={list.length - 1 === index}
                   />
                 );

@@ -229,28 +229,36 @@ export const SurchargeSearch = () => {
           />
         </div>
         {moreFilters.length > 0 && <DividerComponent />}
-        <div className="flex gap-4">
-          {moreFilters.includes("Charge") && (
-            <NAOutlinedListBox
-              label="Charge"
-              options={["All"]}
-              initialValue="All"
-            />
-          )}
-          {moreFilters.includes("Per Type") && (
-            <NAOutlinedListBox
-              label="Per Type"
-              options={["All"]}
-              initialValue="All"
-            />
-          )}
-          {moreFilters.includes("Cargo Type") && (
-            <NAOutlinedListBox
-              label="Cargo Type"
-              options={["Dry", "Reefer", "Dangerous", "Awkward", "Break Bulk"]}
-            />
-          )}
-        </div>
+        {moreFilters.length > 0 && (
+          <div className="flex gap-4">
+            {moreFilters.includes("Charge") && (
+              <NAOutlinedListBox
+                label="Charge"
+                options={["All"]}
+                initialValue="All"
+              />
+            )}
+            {moreFilters.includes("Per Type") && (
+              <NAOutlinedListBox
+                label="Per Type"
+                options={["All"]}
+                initialValue="All"
+              />
+            )}
+            {moreFilters.includes("Cargo Type") && (
+              <NAOutlinedListBox
+                label="Cargo Type"
+                options={[
+                  "Dry",
+                  "Reefer",
+                  "Dangerous",
+                  "Awkward",
+                  "Break Bulk",
+                ]}
+              />
+            )}
+          </div>
+        )}
         <div className="flex gap-4 justify-end">
           <MdTextButton
             onClick={() => {

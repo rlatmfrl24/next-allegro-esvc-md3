@@ -69,15 +69,15 @@ export const AgreementTable = () => {
 
   const columnHelper = createColumnHelper<AgreementTableProps>();
   const columns = [
-    columnHelper.display({
-      id: "radio",
-      cell: (info) => (
-        <MdRadio className="ml-2" checked={info.row.getIsSelected()} />
-      ),
-      size: 40,
-      minSize: 40,
-      maxSize: 40,
-    }),
+    // columnHelper.display({
+    //   id: "radio",
+    //   cell: (info) => (
+    //     <MdRadio className="ml-2" checked={info.row.getIsSelected()} />
+    //   ),
+    //   size: 40,
+    //   minSize: 40,
+    //   maxSize: 40,
+    // }),
     columnHelper.accessor("agreementNumber", {
       header: "Agreement No.",
       id: "agreementNumber",

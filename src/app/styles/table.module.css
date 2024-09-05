@@ -11,7 +11,7 @@
 }
 
 .table tbody tr {
-  @apply h-12;
+  /* @apply h-8; */
 }
 
 .table tbody td {

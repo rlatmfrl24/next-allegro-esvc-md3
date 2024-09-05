@@ -17,6 +17,9 @@ import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 import { createDummyVesselInformation } from "../../../schedule/util";
 import { FilterChipMenu } from "@/app/components/filter-chip-menu";
+import { useMemo } from "react";
+import classNames from "classnames";
+import EmptyResultPlaceholder from "@/app/components/empty-placeholder";
 
 export default function QuotationList({
   onResearch,
@@ -24,10 +27,31 @@ export default function QuotationList({
   onResearch: () => void;
 }) {
   const quotationTerms = useRecoilValue(QuotationTermsState);
+  const quotationItems = useMemo(() => {
+    return Array.from({
+      length: faker.number.int({
+        min: 0,
+        max: 5,
+      }),
+    }).map((_, index) => ({
+      id: faker.string.uuid(),
+      etd: DateTime.fromJSDate(faker.date.past()),
+      eta: DateTime.fromJSDate(faker.date.future()),
+      origin: quotationTerms.origin,
+      destination: quotationTerms.destination,
+      vessel: createDummyVesselInformation(),
+      containers: quotationTerms.containers,
+    }));
+  }, [
+    quotationTerms.containers,
+    quotationTerms.destination,
+    quotationTerms.origin,
+  ]);
+  const cx = classNames.bind(styles);
 
   return (
     <>
-      <div className={styles.area}>
+      <div className={cx(styles.area)}>
         <div className="flex items-end">
           <div>
             <MdTypography
@@ -94,39 +118,47 @@ export default function QuotationList({
           <MdOutlinedButton onClick={onResearch}>Re-Search</MdOutlinedButton>
         </div>
       </div>
-      <div className={styles.area}>
-        <div className="flex gap-4 justify-between items-center ">
-          <div className="flex gap-4 items-center ">
-            <FilterChipMenu
-              initialValue="Earliest Departure"
-              options={[
-                "Earliest Departure",
-                "Earliest Arrival",
-                "Fastest Transit Time",
-              ]}
-            />
-            <MdFilterChip label="Direct Only" />
-          </div>
-          <MdTextButton hasIcon className="h-fit">
-            <MdIcon slot="icon">
-              <Download fontSize="small" />
-            </MdIcon>
-            Download
-          </MdTextButton>
-        </div>
-        <div className="flex flex-col gap-4">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <QuotationListItem
-              key={index}
-              eta={DateTime.fromJSDate(faker.date.future())}
-              etd={DateTime.fromJSDate(faker.date.past())}
-              origin={quotationTerms.origin}
-              destination={quotationTerms.destination}
-              vessel={createDummyVesselInformation()}
-              containers={quotationTerms.containers}
-            />
-          ))}
-        </div>
+      <div className={cx(styles.area, "flex-1")}>
+        {quotationItems.length === 0 ? (
+          <>
+            <EmptyResultPlaceholder text={"No Quotation Available"} />
+          </>
+        ) : (
+          <>
+            <div className="flex gap-4 justify-between items-center ">
+              <div className="flex gap-4 items-center ">
+                <FilterChipMenu
+                  initialValue="Earliest Departure"
+                  options={[
+                    "Earliest Departure",
+                    "Earliest Arrival",
+                    "Fastest Transit Time",
+                  ]}
+                />
+                <MdFilterChip label="Direct Only" />
+              </div>
+              <MdTextButton hasIcon className="h-fit">
+                <MdIcon slot="icon">
+                  <Download fontSize="small" />
+                </MdIcon>
+                Download
+              </MdTextButton>
+            </div>
+            <div className="flex flex-col gap-4">
+              {quotationItems.map((item) => (
+                <QuotationListItem
+                  key={item.id}
+                  eta={item.eta}
+                  etd={item.etd}
+                  origin={item.origin}
+                  destination={item.destination}
+                  vessel={item.vessel}
+                  containers={item.containers}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

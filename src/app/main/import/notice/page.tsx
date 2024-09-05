@@ -65,7 +65,7 @@ export default function ArrivalNoticePage() {
         <div className="flex gap-4 items-end">
           <div className="flex-1">
             {searchType === "date" && (
-              <DateRangePicker label="Onboard/Arrival Date" className="w-fit" />
+              <DateRangePicker label="Onboard/Arrival Date" />
             )}
             {searchType === "bl" && (
               <div className="flex flex-col gap-2">

@@ -142,7 +142,7 @@ export default function SITable() {
       header: "Request No.",
       cell: (info) => {
         return (
-          <span className="flex justify-between items-center gap-2">
+          <span className="flex justify-between items-start gap-2">
             <Link href={`/main/documents/si/preview?reqNo=` + info.getValue()}>
               <MdTypography variant="body" size="medium" className="underline">
                 {info.getValue()}
@@ -150,6 +150,7 @@ export default function SITable() {
             </Link>
             {info.row.original.remarks && (
               <MdIconButton
+                className="-translate-y-2"
                 onClick={(e) => {
                   e.stopPropagation();
                 }}

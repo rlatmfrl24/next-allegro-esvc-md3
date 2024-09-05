@@ -55,7 +55,7 @@ export default function ImportInvoicePage() {
         <div className="flex gap-4 items-end">
           {searchType === "date" && (
             <div className="flex-1">
-              <DateRangePicker label="OnBoard/Arrival Date" className="w-fit" />
+              <DateRangePicker label="OnBoard/Arrival Date" />
             </div>
           )}
           {searchType === "number" && (

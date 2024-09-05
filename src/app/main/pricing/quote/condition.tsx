@@ -65,7 +65,7 @@ export default function Condition({
   return (
     <div className={styles.area}>
       <SubTitle title="Route" />
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-start">
         <NAOutlinedAutoComplete
           label="Origin"
           required
@@ -93,6 +93,7 @@ export default function Condition({
           }}
         />
         <MdIconButton
+          className="mt-2"
           onClick={() => {
             setQuotationTerms((prev) => ({
               ...prev,

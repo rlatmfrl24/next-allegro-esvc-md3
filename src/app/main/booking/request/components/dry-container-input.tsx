@@ -8,7 +8,11 @@ import {
   BookingRequestStepState,
   ContainerState,
 } from "@/app/store/booking.store";
-import { MdFilledTonalIconButton, MdIconButton } from "@/app/util/md3";
+import {
+  MdFilledTonalIconButton,
+  MdIconButton,
+  MdOutlinedIconButton,
+} from "@/app/util/md3";
 import {
   ContainerType,
   DryContainerInformationType,
@@ -87,98 +91,105 @@ const DryContainerInput = ({
                 {list.map((container, index) => (
                   <motion.div
                     key={container.uuid}
+                    className="flex gap-4"
                     variants={containerVariant}
                     initial="initial"
                     animate="add"
                     exit="remove"
-                    className="mt-6 flex flex-col gap-4 flex-1"
                   >
-                    {list.length - 1 !== index && (
-                      <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                    )}
+                    <div
+                      key={container.uuid}
+                      className="mt-6 flex flex-col gap-2 flex-1"
+                    >
+                      {list.length - 1 !== index && (
+                        <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                      )}
+                      <div className="flex gap-2 items-start flex-1">
+                        <NAOutlinedListBox
+                          label="Size"
+                          required={showRequired}
+                          error={
+                            bookingRequestStep.container.visited &&
+                            container.size === ""
+                          }
+                          errorText="Size is required"
+                          className="w-[136px] text-right"
+                          suffixText="ft"
+                          initialValue={container.size}
+                          options={
+                            container.size !== ""
+                              ? [
+                                  container.size,
+                                  ...selectableContainerSizeOptions,
+                                ].sort()
+                              : selectableContainerSizeOptions
+                          }
+                          onSelection={(size) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              dry: prev.dry.map((c, i) =>
+                                i === index ? { ...c, size: size } : c
+                              ),
+                            }));
+                          }}
+                        />
 
-                    <div className="flex gap-4 items-start">
-                      <NAOutlinedListBox
-                        label="Size"
-                        required={showRequired}
-                        error={
-                          bookingRequestStep.container.visited &&
-                          container.size === ""
-                        }
-                        errorText="Size is required"
-                        className="w-52 text-right"
-                        suffixText="ft"
-                        initialValue={container.size}
-                        options={
-                          container.size !== ""
-                            ? [
-                                container.size,
-                                ...selectableContainerSizeOptions,
-                              ].sort()
-                            : selectableContainerSizeOptions
-                        }
-                        onSelection={(size) => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            dry: prev.dry.map((c, i) =>
-                              i === index ? { ...c, size: size } : c
-                            ),
-                          }));
-                        }}
-                      />
+                        <NAOutlinedNumberField
+                          label="Quantity / Total"
+                          required={showRequired}
+                          className="w-[136px]"
+                          error={
+                            bookingRequestStep.container.visited &&
+                            container.quantity === 0
+                          }
+                          errorText="Quantity is required"
+                          value={container.quantity.toString()}
+                          handleValueChange={(value) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              dry: prev.dry.map((c, i) =>
+                                i === index ? { ...c, quantity: value ?? 0 } : c
+                              ),
+                            }));
+                          }}
+                        />
+                        <NAOutlinedNumberField
+                          label="Quantity / SOC"
+                          className="w-[136px]"
+                          value={container.soc.toString()}
+                          error={container.soc > container.quantity}
+                          errorText="SOC cannot be greater than Quantity"
+                          handleValueChange={(value) => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              dry: prev.dry.map((c, i) =>
+                                i === index ? { ...c, soc: value ?? 0 } : c
+                              ),
+                            }));
+                          }}
+                          onBlur={(e) => {
+                            e.target.value = container.soc.toString();
+                          }}
+                        />
+                      </div>
 
-                      <NAOutlinedNumberField
-                        label="Quantity / Total"
-                        required={showRequired}
-                        error={
-                          bookingRequestStep.container.visited &&
-                          container.quantity === 0
-                        }
-                        errorText="Quantity is required"
-                        value={container.quantity.toString()}
-                        handleValueChange={(value) => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            dry: prev.dry.map((c, i) =>
-                              i === index ? { ...c, quantity: value ?? 0 } : c
-                            ),
-                          }));
-                        }}
+                      <DangerousCargoInput
+                        container={container}
+                        type={ContainerType.dry}
+                        showRequired={showRequired}
                       />
-                      <NAOutlinedNumberField
-                        label="Quantity / SOC"
-                        value={container.soc.toString()}
-                        error={container.soc > container.quantity}
-                        errorText="SOC cannot be greater than Quantity"
-                        handleValueChange={(value) => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            dry: prev.dry.map((c, i) =>
-                              i === index ? { ...c, soc: value ?? 0 } : c
-                            ),
-                          }));
-                        }}
-                        onBlur={(e) => {
-                          e.target.value = container.soc.toString();
-                        }}
-                      />
-                      <MdIconButton
-                        className="mt-2"
-                        onClick={() => {
-                          setContainerInformation((prev) => ({
-                            ...prev,
-                            dry: prev.dry.filter((c, i) => i !== index),
-                          }));
-                        }}
-                      >
-                        <DeleteOutline fontSize="small" />
-                      </MdIconButton>
                     </div>
-                    <DangerousCargoInput
-                      container={container}
-                      type={ContainerType.dry}
-                      showRequired={showRequired}
-                    />
+                    <MdOutlinedIconButton
+                      className={list.length - 1 !== index ? "mt-16" : "mt-8"}
+                      onClick={() => {
+                        setContainerInformation((prev) => ({
+                          ...prev,
+                          dry: prev.dry.filter((c, i) => i !== index),
+                        }));
+                      }}
+                    >
+                      <DeleteOutline fontSize="small" />
+                    </MdOutlinedIconButton>
                   </motion.div>
                 ))}
               </AnimatePresence>

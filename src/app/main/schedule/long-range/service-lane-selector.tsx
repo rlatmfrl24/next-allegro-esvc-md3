@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { MdIconButton, MdSecondaryTab, MdTabs } from "@/app/util/md3";
@@ -32,7 +32,7 @@ export default function ServiceLaneSelector({
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <div
         className="overflow-x-scroll scrollbar-hide"
         {...events}
@@ -64,7 +64,16 @@ export default function ServiceLaneSelector({
           }}
         >
           {items.map((item, index) => (
-            <MdSecondaryTab key={index}>{item}</MdSecondaryTab>
+            <MdSecondaryTab
+              style={
+                {
+                  "--md-secondary-tab-container-color": "#fff",
+                } as CSSProperties
+              }
+              key={index}
+            >
+              {item}
+            </MdSecondaryTab>
           ))}
         </MdTabs>
       </div>

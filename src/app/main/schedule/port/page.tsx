@@ -62,7 +62,7 @@ export default function PortSchedule() {
         <div className="flex gap-4 items-end">
           <NAOutlinedAutoComplete
             label="Port Name"
-            className="w-full"
+            className="flex-1"
             recentCookieKey="recent-port"
             required
             itemList={Array.from({ length: 60 }, (_, i) => {
@@ -76,7 +76,6 @@ export default function PortSchedule() {
             }}
           />
           <DateRangePicker
-            className="w-96"
             initial={{
               start: portQuery.startDate,
               end: portQuery.endDate,
