@@ -63,7 +63,6 @@ const ContainerTypeInputComponent = ({
                     key={container.uuid}
                     container={container}
                     containerIndex={index}
-                    isFirstItem={index === 0}
                     isLastItem={list.length - 1 === index}
                   />
                 );

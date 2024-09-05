@@ -293,27 +293,19 @@ export const AwkwardIndicator = (props: {
             <div className="grid grid-cols-3 gap-4">
               <BasicItem
                 title="Package"
-                value={
-                  selectedSize.awkward.package +
-                  " " +
-                  selectedSize.awkward.packageType
-                }
+                value={selectedSize.package + " " + selectedSize.packageType}
                 className="col-span-3"
               />
               <BasicItem
                 title="Gross Weight"
                 value={
-                  selectedSize.awkward.grossWeight +
-                  " " +
-                  selectedSize.awkward.grossWeightUnit
+                  selectedSize.grossWeight + " " + selectedSize.grossWeightUnit
                 }
               />
               <BasicItem
                 title="Net Weight"
                 value={
-                  selectedSize.awkward.netWeight +
-                  " " +
-                  selectedSize.awkward.netWeightUnit
+                  selectedSize.netWeight + " " + selectedSize.netWeightUnit
                 }
               />
               <BasicItem

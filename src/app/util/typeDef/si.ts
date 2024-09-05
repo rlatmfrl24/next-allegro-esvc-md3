@@ -167,11 +167,11 @@ export interface SIContainerGridProps {
   containerType: ContainerType;
   containerSize: "20" | "40" | "40HC" | "45";
   firstSealNumber: string;
-  firstSealKind: SealKind;
-  firstSealType: "merchanical" | "electronic";
+  firstSealKind: string;
+  firstSealType: string;
   secondSealNumber: string;
-  secondSealKind: SealKind;
-  secondSealType: "merchanical" | "electronic";
+  secondSealKind: string;
+  secondSealType: string;
   packageType: string;
   packageQuantity: number | undefined;
   packageWeight: number | undefined;

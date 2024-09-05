@@ -2,6 +2,7 @@ import {
   SIContainerGridProps,
   SIContainerInputProps,
 } from "@/app/util/typeDef/si";
+import { fi } from "@faker-js/faker";
 
 export function parseData(store: {
   dry: SIContainerInputProps[];
@@ -30,12 +31,18 @@ export function parseData(store: {
       isSocContainer: container.isSocContainer,
       containerType: container.containerType,
       containerSize: container.containerSize,
-      firstSealNumber: container.firstSeal.description,
-      firstSealKind: container.firstSeal.kind,
-      firstSealType: container.firstSeal.type,
-      secondSealNumber: container.secondSeal.description,
-      secondSealKind: container.secondSeal.kind,
-      secondSealType: container.secondSeal.type,
+      // firstSealNumber: container.firstSeal.description,
+      // firstSealKind: container.firstSeal.kind,
+      // firstSealType: container.firstSeal.type,
+      // secondSealNumber: container.secondSeal.description,
+      // secondSealKind: container.secondSeal.kind,
+      // secondSealType: container.secondSeal.type,
+      firstSealNumber: container.sealData[0].sealNumber,
+      firstSealKind: container.sealData[0].sealKind,
+      firstSealType: container.sealData[0].sealType,
+      secondSealNumber: container.sealData[1].sealNumber,
+      secondSealKind: container.sealData[1].sealKind,
+      secondSealType: container.sealData[1].sealType,
       packageType: container.packageType,
       packageQuantity: container.packageQuantity,
       packageWeight: container.packageWeight,

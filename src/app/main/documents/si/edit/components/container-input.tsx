@@ -626,7 +626,7 @@ export default function ContainerInput({
         )}
       </div>
       <MdOutlinedIconButton
-        className={isLastItem ? "mt-8" : "mt-16"}
+        className={`min-w-10 ${isLastItem ? "mt-8" : "mt-16"}`}
         onClick={() => {
           // delete Container
           if (typeKey === "weightUnit" || typeKey === "measurementUnit") return;

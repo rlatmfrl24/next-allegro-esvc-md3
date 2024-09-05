@@ -184,7 +184,7 @@ export const SealTextField = ({
   return (
     <div
       ref={wrapRef}
-      className="flex border border-outline w-full rounded relative items-center"
+      className="flex flex-1 border border-outline rounded relative items-center"
     >
       <MdTypography
         variant="body"
@@ -319,7 +319,7 @@ export const SealTextField = ({
         aria-label="seal-number-text-field"
         onFocus={() => setFocusedComponent("sealNumber")}
         onBlur={() => setFocusedComponent(null)}
-        className={`h-full flex-1 rounded flex items-center px-4 font-pretendard outline-none border-2 cursor-pointer ${
+        className={`h-full flex-1 w-0 rounded flex items-center px-4 font-pretendard outline-none border-2 cursor-pointer ${
           focusedComponent === "sealNumber"
             ? "border-primary"
             : "border-transparent"

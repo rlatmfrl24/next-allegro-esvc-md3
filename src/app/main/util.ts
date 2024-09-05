@@ -74,16 +74,24 @@ export function getEmptySIEditContainerData(type: ContainerType) {
     containerSize: "20",
     containerNumber: "",
     isSocContainer: false,
-    firstSeal: {
-      kind: SealKind.Shipper,
-      type: "merchanical",
-      description: "",
-    },
-    secondSeal: {
-      kind: SealKind.Shipper,
-      type: "merchanical",
-      description: "",
-    },
+    // firstSeal: {
+    //   kind: SealKind.Shipper,
+    //   type: "merchanical",
+    //   description: "",
+    // },
+    // secondSeal: {
+    //   kind: SealKind.Shipper,
+    //   type: "merchanical",
+    //   description: "",
+    // },
+    sealData: [
+      {
+        index: 0,
+        sealNumber: "",
+        sealKind: "",
+        sealType: "",
+      },
+    ],
     packageType: "",
     packageQuantity: undefined,
     packageWeight: undefined,
