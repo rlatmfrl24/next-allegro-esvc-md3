@@ -199,12 +199,14 @@ export default function ListItem({
           <div className="rounded-lg border border-outlineVariant py-6 px-4 bg-surfaceContainerLow">
             <div className="border border-outlineVariant bg-surfaceContainerLowest rounded-2xl overflow-hidden">
               <div className="h-2 bg-secondaryContainer"></div>
-              <ItemDetail
-                item={item}
-                cutoffData={cutoffData}
-                detailInfo={detailInfo}
-                vesselInfo={tempVesselInfo}
-              />
+              <div className="px-6 py-4">
+                <ItemDetail
+                  item={item}
+                  cutoffData={cutoffData}
+                  detailInfo={detailInfo}
+                  vesselInfo={tempVesselInfo}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -253,12 +255,14 @@ const VesselPortComponent = ({
   } = usePlaceInfoDialog("#main-container");
 
   return (
-    <div className="flex items-center w-full">
-      {portState === "origin" || portState === "destination" ? (
-        <FmdGood className="text-primary" />
-      ) : (
-        <FmdGoodOutlined className="text-primary" />
-      )}
+    <div className="flex w-full">
+      <div className="flex h-full items-start">
+        {portState === "origin" || portState === "destination" ? (
+          <FmdGood className="text-primary" />
+        ) : (
+          <FmdGoodOutlined className="text-primary" />
+        )}
+      </div>
       <div className="ml-6 flex-1">
         <div className="flex items-center gap-2">
           <div className="flex flex-1 gap-2 items-center">
@@ -325,7 +329,7 @@ const VesselPortComponent = ({
           </MdTypography>
         </div>
         {portState === "origin" && (
-          <div className="flex items-center text-primary mt-1">
+          <div className="flex items-center text-primary mt-2">
             <AccessTime
               className="mr-0.5"
               sx={{
@@ -400,8 +404,10 @@ const VesselPortComponent = ({
 
 const VesselRouteComponent = ({
   tempVesselInfo,
+  isFirst = false,
 }: {
   tempVesselInfo: VesselInfoType;
+  isFirst?: boolean;
 }) => {
   const data = useMemo(() => {
     return {
@@ -425,11 +431,16 @@ const VesselRouteComponent = ({
   } = useVesselInfoDialog();
 
   return (
-    <div className="flex items-center relative">
-      <div className="mr-6 bg-surfaceContainerLowest z-10 text-primary">
+    <div className="bg-inherit flex items-center relative">
+      <div className="mr-6 bg-inherit z-10 text-primary">
         <ArrowDropDown />
       </div>
-      <div className="border-r-2 border-r-outlineVariant border-dotted h-24 absolute left-3 -translate-x-px"></div>
+      <div
+        className={`border-r-2 border-r-outlineVariant border-dotted absolute left-3  -translate-x-px ${
+          isFirst ? "h-20 -translate-y-12" : "h-12 -translate-y-9"
+        }`}
+      ></div>
+      <div className="border-r-2 border-r-outlineVariant border-dotted h-7 absolute left-3 translate-y-7 -translate-x-px"></div>
       <div className="bg-secondaryContainer rounded-2xl flex flex-1 px-4 py-1 gap-2 items-center">
         <MdIcon className="text-primary">
           <VesselIcon />
@@ -504,11 +515,14 @@ export const ItemDetail = ({
     const portCount = faker.number.int({ min: 1, max: 3 });
     return (
       <>
-        {Array.from({ length: portCount }).map(() => {
+        {Array.from({ length: portCount }).map((_, index) => {
           return (
             <>
               {vesselInfo && (
-                <VesselRouteComponent tempVesselInfo={vesselInfo} />
+                <VesselRouteComponent
+                  tempVesselInfo={vesselInfo}
+                  isFirst={index === 0}
+                />
               )}
               <VesselPortComponent
                 item={createDummyPlaceInformation(faker.location.city())}
@@ -526,7 +540,7 @@ export const ItemDetail = ({
   }, [item.arrivalDate, item.departureDate]);
 
   return (
-    <div className="py-4 px-6 flex flex-col relative">
+    <div className="flex flex-col relative">
       <div className="absolute top-4 right-6 flex gap-2 px-4 py-2 bg-background rounded-2xl">
         <MdTypography variant="label" size="medium" className="text-outline">
           Total

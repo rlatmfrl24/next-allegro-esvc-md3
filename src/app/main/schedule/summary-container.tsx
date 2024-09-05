@@ -15,7 +15,7 @@ export default function SummaryContainer({
 
   return (
     <div
-      className={`fixed left-0 -translate-y-7 pb-2 overflow-hidden rounded-t-2xl z-10 ${
+      className={`fixed left-0 -translate-y-6 pb-2 overflow-hidden rounded-t-2xl z-10 ${
         userData.isAuthenticated
           ? "translate-x-[72px] w-[calc(100%-72px)]"
           : "w-full"
