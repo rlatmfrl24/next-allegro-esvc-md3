@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  MdDialog,
+  MdFilledButton,
   MdIcon,
   MdIconButton,
   MdOutlinedButton,
@@ -29,10 +31,11 @@ const ViewMoreButton = ({
     <MdTypography
       variant="label"
       size="medium"
-      className={`bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center ${
+      className={`relative bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center cursor-pointer ${
         !isCurrentMonth && "opacity-30"
       }`}
     >
+      <MdRippleEffect />
       {`View ${cnt} More >`}
     </MdTypography>
   );
@@ -96,7 +99,7 @@ export default function PointToPointCalendarResult({
 }) {
   const { headers, body, navigation, cursorDate } = useCalendar();
   const classified = classifyByDate(list);
-  const [isDetailListOpen, setIsDetailListOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<{
     date: DateTime;
     list: PtPScheduleType[];
@@ -167,15 +170,15 @@ export default function PointToPointCalendarResult({
             return (
               <div
                 key={key}
-                className={`relative flex flex-col gap-2 h-[152px] p-2 bg-surface cursor-pointer`}
-                onClick={() => {
-                  if (list.length > 0) {
-                    setSelectedData({ date: DateTime.fromJSDate(value), list });
-                    setIsDetailListOpen(true);
-                  }
-                }}
+                className={`relative flex flex-col gap-2 h-[152px] p-2 bg-surface`}
+                // onClick={() => {
+                //   if (list.length > 0) {
+                //     setSelectedData({ date: DateTime.fromJSDate(value), list });
+                //     setIsDetailListOpen(true);
+                //   }
+                // }}
               >
-                <MdRippleEffect />
+                {/* <MdRippleEffect /> */}
                 <MdTypography
                   variant="title"
                   size="small"
@@ -196,9 +199,16 @@ export default function PointToPointCalendarResult({
                 {list[0] && (
                   <LabelChip
                     label={list[0].vesselInfo.vesselName}
-                    className={`bg-secondaryContainer text-onSurface ${
+                    className={`bg-secondaryContainer text-onSurface  ${
                       isCurrentMonth ? "" : "opacity-30"
                     }`}
+                    onClick={() => {
+                      setSelectedData({
+                        date: DateTime.fromJSDate(value),
+                        list: [list[0]],
+                      });
+                      setIsDetailOpen(true);
+                    }}
                   />
                 )}
                 {list[1] && (
@@ -207,27 +217,44 @@ export default function PointToPointCalendarResult({
                     className={`bg-secondaryContainer text-onSurface ${
                       isCurrentMonth ? "" : "opacity-30"
                     }`}
+                    onClick={() => {
+                      setSelectedData({
+                        date: DateTime.fromJSDate(value),
+                        list: [list[1]],
+                      });
+                      setIsDetailOpen(true);
+                    }}
                   />
                 )}
                 {list.length > 2 && (
-                  <ViewMoreButton
-                    cnt={list.length - 2}
-                    isCurrentMonth={isCurrentMonth}
-                  />
+                  <div
+                    onClick={() => {
+                      setSelectedData({
+                        date: DateTime.fromJSDate(value),
+                        list,
+                      });
+                      setIsDetailOpen(true);
+                    }}
+                  >
+                    <ViewMoreButton
+                      cnt={list.length - 2}
+                      isCurrentMonth={isCurrentMonth}
+                    />
+                  </div>
                 )}
               </div>
             );
           });
         })}
       </div>
-      <Portal selector="#result-container">
-        {isDetailListOpen && (
+      {/* <Portal selector="#result-container">
+        {isDetailOpen && (
           <div className="absolute top-0 right-0 w-full min-h-full h-fit bg-surface rounded-2xl border border-outlineVariant">
             <div className="p-4 pb-0 flex items-center justify-center relative">
               <MdOutlinedButton
                 className="absolute left-4 top-4"
                 onClick={() => {
-                  setIsDetailListOpen(false);
+                  setIsDetailOpen(false);
                 }}
               >
                 <MdIcon slot="icon">
@@ -278,7 +305,18 @@ export default function PointToPointCalendarResult({
             )}
           </div>
         )}
-      </Portal>
+      </Portal> */}
+      <MdDialog
+        open={isDetailOpen}
+        closed={() => {
+          setIsDetailOpen(false);
+        }}
+      >
+        <div slot="headline">
+          {`Schedule Detail - ` + selectedData?.date.toFormat("dd MMM yyyy")}
+        </div>
+        <div slot="content"></div>
+      </MdDialog>
     </div>
   );
 }
