@@ -196,7 +196,7 @@ export default function LongRangeSchedule() {
           <EmptyResultPlaceholder text={"Please search for the schedule"} />
         </div>
       ) : (
-        <div className="bg-surface rounded-2xl flex flex-col relative overflow-hidden">
+        <div className="bg-surfaceContainerLowest rounded-2xl flex flex-col relative overflow-hidden">
           <ServiceLaneSelector
             items={serviceLaneItems}
             onChange={(value) => {

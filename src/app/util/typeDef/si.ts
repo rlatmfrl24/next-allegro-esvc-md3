@@ -128,22 +128,30 @@ export type SIEditMarkDescriptionType = {
   customsCommodity: string;
 };
 
+export interface SealDataProps {
+  index: number;
+  sealKind: string;
+  sealType: string;
+  sealNumber: string;
+}
+
 export interface SIContainerInputProps {
   uuid: string;
   containerType: ContainerType;
   containerNumber: string;
   containerSize: "20" | "40" | "40HC" | "45";
   isSocContainer: boolean;
-  firstSeal: {
-    kind: SealKind;
-    type: "merchanical" | "electronic";
-    description: string;
-  };
-  secondSeal: {
-    kind: SealKind;
-    type: "merchanical" | "electronic";
-    description: string;
-  };
+  sealData: SealDataProps[];
+  // firstSeal: {
+  //   kind: SealKind;
+  //   type: "merchanical" | "electronic";
+  //   description: string;
+  // };
+  // secondSeal: {
+  //   kind: SealKind;
+  //   type: "merchanical" | "electronic";
+  //   description: string;
+  // };
   packageType: string;
   packageQuantity: number | undefined;
   packageWeight: number | undefined;
@@ -159,11 +167,11 @@ export interface SIContainerGridProps {
   containerType: ContainerType;
   containerSize: "20" | "40" | "40HC" | "45";
   firstSealNumber: string;
-  firstSealKind: SealKind;
-  firstSealType: "merchanical" | "electronic";
+  firstSealKind: string;
+  firstSealType: string;
   secondSealNumber: string;
-  secondSealKind: SealKind;
-  secondSealType: "merchanical" | "electronic";
+  secondSealKind: string;
+  secondSealType: string;
   packageType: string;
   packageQuantity: number | undefined;
   packageWeight: number | undefined;

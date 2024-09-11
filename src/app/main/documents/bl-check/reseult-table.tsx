@@ -136,6 +136,7 @@ export default function BLCheckResultTable() {
       cell: (info) => (
         <NaToggleButton
           label="Include"
+          className="my-0 -translate-y-1.5"
           state={info.getValue() ? "checked" : "unchecked"}
           onClick={(e) => {
             setTableData(

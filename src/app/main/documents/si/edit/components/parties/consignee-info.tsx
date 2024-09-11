@@ -194,7 +194,7 @@ export const ConsigneeInfo = () => {
             }
           }}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <NAOutlinedAutoComplete
             label="Country"
             itemList={countryList}
@@ -223,41 +223,39 @@ export const ConsigneeInfo = () => {
               });
             }}
           />
-          <div className="flex gap-2">
-            <NAOutlinedTextField
-              label="City"
-              value={partiesStore.consignee.addressCity || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    consignee: {
-                      ...prev.consignee,
-                      addressCity: value,
-                    },
-                  };
-                });
-              }}
-            />
+          <NAOutlinedTextField
+            label="City"
+            value={partiesStore.consignee.addressCity || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  consignee: {
+                    ...prev.consignee,
+                    addressCity: value,
+                  },
+                };
+              });
+            }}
+          />
 
-            <NAOutlinedTextField
-              label="State"
-              enableClearButton={false}
-              className="w-24"
-              value={partiesStore.consignee.addressState || ""}
-              handleValueChange={(value) => {
-                setPartiesStore((prev) => {
-                  return {
-                    ...prev,
-                    consignee: {
-                      ...prev.consignee,
-                      addressState: value,
-                    },
-                  };
-                });
-              }}
-            />
-          </div>
+          <NAOutlinedTextField
+            label="State"
+            enableClearButton={false}
+            className="w-24"
+            value={partiesStore.consignee.addressState || ""}
+            handleValueChange={(value) => {
+              setPartiesStore((prev) => {
+                return {
+                  ...prev,
+                  consignee: {
+                    ...prev.consignee,
+                    addressState: value,
+                  },
+                };
+              });
+            }}
+          />
 
           <div className="col-span-2 flex gap-4">
             <NAOutlinedTextField

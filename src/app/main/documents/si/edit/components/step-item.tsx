@@ -37,7 +37,12 @@ export default function StepItem({
             isSelected ? "text-surface" : "text-onsurface"
           }`}
         >
-          {title}
+          {title.split("\n").map((line, index) => (
+            <span key={index}>
+              {line}
+              <br />
+            </span>
+          ))}
         </MdTypography>
         <MdTypography
           variant="body"

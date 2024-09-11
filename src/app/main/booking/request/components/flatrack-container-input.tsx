@@ -1,5 +1,4 @@
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { MdTypography } from "@/app/components/typography";
 import { getEmptyContainerData } from "@/app/main/util";
 import {
   BookingRequestStepState,
@@ -8,21 +7,19 @@ import {
 import {
   MdFilledTonalIconButton,
   MdIconButton,
-  MdOutlinedTextField,
+  MdOutlinedIconButton,
 } from "@/app/util/md3";
 import {
   ContainerType,
   FlatRackContainerInformationType,
-  OpenTopContainerInformationType,
 } from "@/app/util/typeDef/booking";
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import DangerousCargoInput from "./dangerous-cargo-input";
 import AwkwardContainerInput from "./awkward-container-input";
 import { DetailTitle } from "@/app/components/title-components";
-import { useEffect, useMemo } from "react";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { containerVariant } from "./base";
 import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
@@ -88,106 +85,256 @@ const FlatRackContainerInput = ({
               >
                 <Add fontSize="small" />
               </MdFilledTonalIconButton>
-              <div className="flex flex-col-reverse">
+              <div className="flex flex-1 flex-col-reverse">
                 <AnimatePresence>
                   {list.map((container, index) => {
                     return (
                       <motion.div
                         key={container.uuid}
+                        className="flex gap-4 flex-1"
                         variants={containerVariant}
                         initial="initial"
                         animate="add"
                         exit="remove"
-                        className="mt-6 flex flex-col gap-4"
                       >
-                        {list.length - 1 !== index && (
-                          <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
-                        )}
-                        <div className="flex gap-4 items-start">
-                          <NAOutlinedListBox
-                            label="Size"
-                            className="w-52 text-right"
-                            suffixText="ft"
-                            required={showRequired}
-                            error={
-                              bookingRequestStep.container.visited &&
-                              container.size === ""
-                            }
-                            errorText="Size is required"
-                            initialValue={container.size}
-                            options={
-                              container.size !== ""
-                                ? [
-                                    container.size,
-                                    ...selectableContainerSizeOptions,
-                                  ].sort()
-                                : selectableContainerSizeOptions
-                            }
-                            onSelection={(size) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                flatrack: prev.flatrack.map((c, i) =>
-                                  i === index ? { ...c, size: size as any } : c
-                                ),
-                              }));
-                            }}
+                        <div className="mt-6 flex flex-col flex-1 gap-2">
+                          {list.length - 1 !== index && (
+                            <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
+                          )}
+                          <div className="flex gap-4 items-start">
+                            <div className="flex gap-2">
+                              <NAOutlinedListBox
+                                label="Size"
+                                className="w-[136px] text-right"
+                                suffixText="ft"
+                                required={showRequired}
+                                error={
+                                  bookingRequestStep.container.visited &&
+                                  container.size === ""
+                                }
+                                errorText="Size is required"
+                                initialValue={container.size}
+                                options={
+                                  container.size !== ""
+                                    ? [
+                                        container.size,
+                                        ...selectableContainerSizeOptions,
+                                      ].sort()
+                                    : selectableContainerSizeOptions
+                                }
+                                onSelection={(size) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    flatrack: prev.flatrack.map((c, i) =>
+                                      i === index
+                                        ? { ...c, size: size as any }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedNumberField
+                                label="Quantity / Total"
+                                className="w-[136px]"
+                                required={showRequired}
+                                error={
+                                  bookingRequestStep.container.visited &&
+                                  container.quantity === 0
+                                }
+                                errorText="Quantity is required"
+                                value={container.quantity.toString()}
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    flatrack: prev.flatrack.map((c, i) =>
+                                      i === index
+                                        ? { ...c, quantity: value ?? 0 }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                              <NAOutlinedNumberField
+                                label="Quantity / SOC"
+                                className="w-[136px]"
+                                value={container.soc.toString()}
+                                error={container.soc > container.quantity}
+                                errorText="SOC cannot be greater than Quantity"
+                                handleValueChange={(value) => {
+                                  setContainerInformation((prev) => ({
+                                    ...prev,
+                                    flatrack: prev.flatrack.map((c, i) =>
+                                      i === index
+                                        ? { ...c, soc: value ?? 0 }
+                                        : c
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </div>
+                            {container.isAwkward && (
+                              <>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Package"
+                                    maxInputLength={9}
+                                    value={container.package?.toString() ?? ""}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                package: value,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    initialValue={container.packageType}
+                                    options={[
+                                      "Aerosol",
+                                      "Bag",
+                                      "Box",
+                                      "Crate",
+                                      "Drum",
+                                      "Pallet",
+                                      "Reel",
+                                      "Roll",
+                                      "Other",
+                                    ]}
+                                    onSelection={(packageType) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                packageType: packageType as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Gross Weight"
+                                    className="flex-1"
+                                    value={
+                                      container.grossWeight?.toString() ?? ""
+                                    }
+                                    maxInputLength={9}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeight: value,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    className="w-28"
+                                    initialValue={container.grossWeightUnit}
+                                    options={["KGS", "LBS"]}
+                                    onSelection={(unit) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeightUnit: unit as any,
+                                                netWeightUnit: unit as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <NAOutlinedNumberField
+                                    label="Net Weight"
+                                    className="flex-1"
+                                    value={
+                                      container.netWeight?.toString() ?? ""
+                                    }
+                                    maxInputLength={9}
+                                    handleValueChange={(value) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                netWeight: value,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                  <NAOutlinedListBox
+                                    label=""
+                                    className="w-28"
+                                    initialValue={container.netWeightUnit}
+                                    options={["KGS", "LBS"]}
+                                    onSelection={(unit) => {
+                                      setContainerInformation((prev) => ({
+                                        ...prev,
+                                        flatrack: prev.flatrack.map((c, i) =>
+                                          i === index
+                                            ? {
+                                                ...c,
+                                                grossWeightUnit: unit as any,
+                                                netWeightUnit: unit as any,
+                                              }
+                                            : c
+                                        ),
+                                      }));
+                                    }}
+                                  />
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          <AwkwardContainerInput
+                            container={container}
+                            type={ContainerType.flatrack}
                           />
-                          <NAOutlinedNumberField
-                            label="Quantity / Total"
-                            required={showRequired}
-                            error={
-                              bookingRequestStep.container.visited &&
-                              container.quantity === 0
-                            }
-                            errorText="Quantity is required"
-                            value={container.quantity.toString()}
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                flatrack: prev.flatrack.map((c, i) =>
-                                  i === index
-                                    ? { ...c, quantity: value ?? 0 }
-                                    : c
-                                ),
-                              }));
-                            }}
+                          <DangerousCargoInput
+                            container={container}
+                            type={ContainerType.flatrack}
                           />
-                          <NAOutlinedNumberField
-                            label="Quantity / SOC"
-                            value={container.soc.toString()}
-                            error={container.soc > container.quantity}
-                            errorText="SOC cannot be greater than Quantity"
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                flatrack: prev.flatrack.map((c, i) =>
-                                  i === index ? { ...c, soc: value ?? 0 } : c
-                                ),
-                              }));
-                            }}
-                          />
-                          <MdIconButton
-                            className="mt-2"
-                            onClick={() => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                flatrack: prev.flatrack.filter(
-                                  (c, i) => i !== index
-                                ),
-                              }));
-                            }}
-                          >
-                            <DeleteOutline fontSize="small" />
-                          </MdIconButton>
                         </div>
-                        <AwkwardContainerInput
-                          container={container}
-                          type={ContainerType.flatrack}
-                        />
-                        <DangerousCargoInput
-                          container={container}
-                          type={ContainerType.flatrack}
-                        />
+                        <MdOutlinedIconButton
+                          className={
+                            list.length - 1 !== index ? "mt-16" : "mt-8"
+                          }
+                          onClick={() => {
+                            setContainerInformation((prev) => ({
+                              ...prev,
+                              flatrack: prev.flatrack.filter(
+                                (c, i) => i !== index
+                              ),
+                            }));
+                          }}
+                        >
+                          <DeleteOutline fontSize="small" />
+                        </MdOutlinedIconButton>
                       </motion.div>
                     );
                   })}

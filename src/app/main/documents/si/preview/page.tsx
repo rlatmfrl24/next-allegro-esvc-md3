@@ -1297,11 +1297,11 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
           Seal 01
         </MdTypography>
         <MdTypography variant="body" size="small" prominent className="flex-1">
-          {containerData.firstSeal.description || "-"}
+          {containerData.sealData[0].sealNumber || "-"}
         </MdTypography>
         <DividerComponent orientation="vertical" className="h-3" />
         <MdTypography variant="label" size="small" className="text-outline">
-          {{
+          {/* {{
             electronic: "Electronic Seal",
             merchanical: "Merchanical Seal",
           }[containerData.firstSeal.type] +
@@ -1314,10 +1314,13 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
               [SealKind.Unknown]: "Unknown",
               [SealKind["Quarantine Agency"]]: "Quarantine Agency",
               [SealKind["Terminal Agency"]]: "Terminal Agency",
-            }[containerData.firstSeal.kind]}
+            }[containerData.firstSeal.kind]} */}
+          {containerData.sealData[0].sealType +
+            ", " +
+            containerData.sealData[0].sealKind}
         </MdTypography>
       </div>
-      {containerData.secondSeal.description && (
+      {containerData.sealData.length > 1 && (
         <div className="flex items-center gap-2">
           <MdTypography
             variant="body"
@@ -1333,11 +1336,11 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
             prominent
             className="flex-1"
           >
-            {containerData.secondSeal.description || "-"}
+            {containerData.sealData[1].sealNumber || "-"}
           </MdTypography>
           <DividerComponent orientation="vertical" className="h-3" />
           <MdTypography variant="label" size="small" className="text-outline">
-            {{
+            {/* {{
               electronic: "Electronic Seal",
               merchanical: "Merchanical Seal",
             }[containerData.secondSeal.type] +
@@ -1350,7 +1353,10 @@ const ContainerPreview = (containerData: SIContainerInputProps) => {
                 [SealKind.Unknown]: "Unknown",
                 [SealKind["Quarantine Agency"]]: "Quarantine Agency",
                 [SealKind["Terminal Agency"]]: "Terminal Agency",
-              }[containerData.secondSeal.kind]}
+              }[containerData.secondSeal.kind]} */}
+            {containerData.sealData[1].sealType +
+              ", " +
+              containerData.sealData[1].sealKind}
           </MdTypography>
         </div>
       )}

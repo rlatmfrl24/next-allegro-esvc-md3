@@ -12,13 +12,15 @@ import {
 } from "@/app/util/md3";
 import { faker } from "@faker-js/faker";
 import { Disclosure } from "@headlessui/react";
-import { ArrowDropDown, InfoOutlined } from "@mui/icons-material";
+import { ArrowDropDown, Forward, InfoOutlined } from "@mui/icons-material";
 import { useCallback, useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ShipperInfo } from "./components/parties/shipper-info";
 import { ConsigneeInfo } from "./components/parties/consignee-info";
 import { NotifyPartyInfo } from "./components/parties/notify-party-info";
 import { DividerComponent } from "@/app/components/divider";
+import NAOutlinedSelect from "@/app/components/na-outlined-select";
+import { ForwardingAgentInfo } from "./components/parties/forwarding-agent-info";
 
 export default function StepParties() {
   const setSIEditStep = useSetRecoilState(SIEditStepState);
@@ -85,39 +87,7 @@ export default function StepParties() {
       </MdTypography>
       <div className="grid grid-cols-2 gap-6">
         <ShipperInfo />
-        <div>
-          <DetailTitle title="Forwarding Agent References" className="mb-4" />
-          <NAOutlinedTextField
-            label="Forwarding Agent References"
-            type="textarea"
-            rows={5}
-            value={partiesStore.forwardingAgentReference || ""}
-            handleValueChange={(value) => {
-              setPartiesStore((prev) => {
-                return {
-                  ...prev,
-                  forwardingAgentReference: value,
-                };
-              });
-            }}
-            onBlur={(e) => {
-              // split 35 characters
-              let splitTexts = e.currentTarget.value
-                .replaceAll("\n", "")
-                .match(/.{1,35}/g)
-                ?.join("\n")
-                .toUpperCase();
-
-              if (splitTexts) {
-                e.currentTarget.value = splitTexts;
-                setPartiesStore((prev) => ({
-                  ...prev,
-                  forwardingAgentReference: splitTexts as string,
-                }));
-              }
-            }}
-          />
-        </div>
+        <ForwardingAgentInfo />
       </div>
       <DividerComponent className="border-dotted" />
       <div className="grid grid-cols-2 gap-6">

@@ -295,7 +295,7 @@ export default function ContainerStep() {
         </>
       ) : (
         <>
-          <div className="flex gap-4 mt-6">
+          <div className="flex gap-4 mt-4">
             <ContainerToggleButton
               image={<DryContainerImage />}
               isSelected={typeSelections.includes(ContainerType.dry)}
@@ -554,7 +554,7 @@ export default function ContainerStep() {
         </>
       )}
 
-      <div className="flex items-end justify-end mt-6 flex-1">
+      <div className="flex items-end justify-end mt-6 ">
         <MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
           Next
         </MdFilledButton>
