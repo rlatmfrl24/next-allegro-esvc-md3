@@ -371,7 +371,20 @@ const SealSettingDialog = ({
           setIsSettingDialogOpen(true);
         }}
       >
-        <AddCircleOutline />
+        {currentSealData.length > 1 ? (
+          <>
+            <MdTypography
+              variant="label"
+              size="large"
+              prominent
+              className="bg-outline text-white rounded-full flex items-center justify-center"
+            >{`+${currentSealData.length - 1}`}</MdTypography>
+          </>
+        ) : (
+          <>
+            <AddCircleOutline />
+          </>
+        )}
       </MdIconButton>
       <MdDialog
         open={isSettingDialogOpen}

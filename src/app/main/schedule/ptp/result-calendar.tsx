@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  MdIcon,
-  MdIconButton,
-  MdOutlinedButton,
-  MdRippleEffect,
-} from "@/app/util/md3";
+import { MdDialog, MdIcon, MdIconButton, MdRippleEffect } from "@/app/util/md3";
 
 import { MdTypography } from "@/app/components/typography";
 import { useCalendar } from "@h6s/calendar";
@@ -13,10 +8,14 @@ import { DateTime } from "luxon";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Portal from "@/app/components/portal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import PointToPointListResult from "./result-list";
 import LabelChip from "@/app/components/label-chip";
 import { PtPScheduleType } from "@/app/util/typeDef/schedule";
+import { ItemDetail } from "./components/listItem";
+import { faker } from "@faker-js/faker";
+import { createDummyVesselInformation } from "../util";
+import VesselIcon from "@/../public/icon_vessel_outline.svg";
 
 const ViewMoreButton = ({
   cnt,
@@ -29,10 +28,11 @@ const ViewMoreButton = ({
     <MdTypography
       variant="label"
       size="medium"
-      className={`bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center ${
+      className={`relative bg-surfaceContainerHigh px-2 h-5 rounded-lg flex items-center cursor-pointer ${
         !isCurrentMonth && "opacity-30"
       }`}
     >
+      <MdRippleEffect />
       {`View ${cnt} More >`}
     </MdTypography>
   );
@@ -96,11 +96,41 @@ export default function PointToPointCalendarResult({
 }) {
   const { headers, body, navigation, cursorDate } = useCalendar();
   const classified = classifyByDate(list);
-  const [isDetailListOpen, setIsDetailListOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<{
     date: DateTime;
     list: PtPScheduleType[];
+    index?: number;
   } | null>(null);
+
+  const cutoffData = useMemo(() => {
+    const item = selectedData?.list[0];
+
+    return {
+      documentation: item?.departureDate.minus({ days: 1 }) ?? DateTime.now(),
+      EDI: item?.departureDate.minus({ hours: 3 }) ?? DateTime.now(),
+      cargo: item?.departureDate.minus({ hours: 6 }) ?? DateTime.now(),
+    };
+  }, [selectedData]);
+
+  const detailInfo = useMemo(() => {
+    return {
+      cyInfo: {
+        loadingTerminal: faker.airline.airport().name,
+        customNo: faker.string.numeric(10),
+        import: faker.phone.number(),
+      },
+      csfInfo: {
+        companyName: faker.company.name(),
+        title: faker.person.fullName(),
+        phone: faker.phone.number(),
+      },
+    };
+  }, []);
+
+  const tempVesselInfo = useMemo(() => {
+    return createDummyVesselInformation();
+  }, []);
 
   return (
     <div>
@@ -167,15 +197,15 @@ export default function PointToPointCalendarResult({
             return (
               <div
                 key={key}
-                className={`relative flex flex-col gap-2 h-[152px] p-2 bg-surface cursor-pointer`}
-                onClick={() => {
-                  if (list.length > 0) {
-                    setSelectedData({ date: DateTime.fromJSDate(value), list });
-                    setIsDetailListOpen(true);
-                  }
-                }}
+                className={`relative flex flex-col gap-2 h-[152px] p-2 bg-surface`}
+                // onClick={() => {
+                //   if (list.length > 0) {
+                //     setSelectedData({ date: DateTime.fromJSDate(value), list });
+                //     setIsDetailListOpen(true);
+                //   }
+                // }}
               >
-                <MdRippleEffect />
+                {/* <MdRippleEffect /> */}
                 <MdTypography
                   variant="title"
                   size="small"
@@ -196,9 +226,16 @@ export default function PointToPointCalendarResult({
                 {list[0] && (
                   <LabelChip
                     label={list[0].vesselInfo.vesselName}
-                    className={`bg-secondaryContainer text-onSurface ${
+                    className={`bg-secondaryContainer text-onSurface  ${
                       isCurrentMonth ? "" : "opacity-30"
                     }`}
+                    onClick={() => {
+                      setSelectedData({
+                        date: DateTime.fromJSDate(value),
+                        list: [list[0]],
+                      });
+                      setIsDetailOpen(true);
+                    }}
                   />
                 )}
                 {list[1] && (
@@ -207,27 +244,45 @@ export default function PointToPointCalendarResult({
                     className={`bg-secondaryContainer text-onSurface ${
                       isCurrentMonth ? "" : "opacity-30"
                     }`}
+                    onClick={() => {
+                      setSelectedData({
+                        date: DateTime.fromJSDate(value),
+                        list: [list[1]],
+                      });
+                      setIsDetailOpen(true);
+                    }}
                   />
                 )}
                 {list.length > 2 && (
-                  <ViewMoreButton
-                    cnt={list.length - 2}
-                    isCurrentMonth={isCurrentMonth}
-                  />
+                  <div
+                    onClick={() => {
+                      setSelectedData({
+                        date: DateTime.fromJSDate(value),
+                        list,
+                        index: 0,
+                      });
+                      setIsDetailOpen(true);
+                    }}
+                  >
+                    <ViewMoreButton
+                      cnt={list.length - 2}
+                      isCurrentMonth={isCurrentMonth}
+                    />
+                  </div>
                 )}
               </div>
             );
           });
         })}
       </div>
-      <Portal selector="#result-container">
-        {isDetailListOpen && (
+      {/* <Portal selector="#result-container">
+        {isDetailOpen && (
           <div className="absolute top-0 right-0 w-full min-h-full h-fit bg-surface rounded-2xl border border-outlineVariant">
             <div className="p-4 pb-0 flex items-center justify-center relative">
               <MdOutlinedButton
                 className="absolute left-4 top-4"
                 onClick={() => {
-                  setIsDetailListOpen(false);
+                  setIsDetailOpen(false);
                 }}
               >
                 <MdIcon slot="icon">
@@ -278,7 +333,61 @@ export default function PointToPointCalendarResult({
             )}
           </div>
         )}
-      </Portal>
+      </Portal> */}
+      {selectedData && (
+        <Portal selector="#main-container">
+          <MdDialog
+            open={isDetailOpen}
+            closed={() => {
+              setIsDetailOpen(false);
+            }}
+            className="w-fit min-w-fit h-[800px] min-h-[800px]"
+          >
+            <div slot="headline">
+              {`Schedule Detail - ` +
+                selectedData?.date.toFormat("dd MMM yyyy")}
+            </div>
+            <div slot="content" className="flex gap-2 max-w-[1240px] h-[720px]">
+              {selectedData.list.length > 1 && (
+                <div>
+                  {selectedData.list.map((item) => (
+                    <div
+                      key={item.vesselInfo.vesselCode}
+                      className={`relative flex gap-4 cursor-pointer px-4 py-3 rounded-lg ${
+                        selectedData.index === selectedData.list.indexOf(item)
+                          ? "bg-surfaceContainerHighest"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setSelectedData({
+                          ...selectedData,
+                          index: selectedData.list.indexOf(item),
+                        });
+                      }}
+                    >
+                      <MdRippleEffect />
+                      <VesselIcon />
+                      <MdTypography variant="body" size="large">
+                        {item.vesselInfo.vesselName}
+                      </MdTypography>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex-1 overflow-auto">
+                <ItemDetail
+                  item={selectedData.list[selectedData.index || 0]}
+                  cutoffData={cutoffData}
+                  detailInfo={detailInfo}
+                  vesselInfo={
+                    selectedData.list[selectedData.index || 0].vesselInfo
+                  }
+                />
+              </div>
+            </div>
+          </MdDialog>
+        </Portal>
+      )}
     </div>
   );
 }
