@@ -40,6 +40,7 @@ import {
   useVesselScheduleDialog,
 } from "@/app/components/common-dialog-hooks";
 import { DividerComponent } from "@/app/components/divider";
+import Portal from "@/app/components/portal";
 
 export default function ListItem({
   item,
@@ -252,7 +253,7 @@ const VesselPortComponent = ({
     renderDialog: renderPlaceDialog,
     setCurrentPlace,
     setIsPlaceInfoDialogOpen,
-  } = usePlaceInfoDialog("#main-container");
+  } = usePlaceInfoDialog();
 
   return (
     <div className="flex w-full">
