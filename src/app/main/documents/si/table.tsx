@@ -348,7 +348,7 @@ export default function SITable() {
   ];
 
   return (
-    <>
+    <div>
       {renderDialog()}
       <BasicTable
         ActionComponent={(table) => {
@@ -431,7 +431,7 @@ export default function SITable() {
           }
         }}
       />
-    </>
+    </div>
   );
 
   function handleSITableRowSelection(newRow: SISearchTableProps) {

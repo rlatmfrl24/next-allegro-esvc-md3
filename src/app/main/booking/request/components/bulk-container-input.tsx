@@ -74,7 +74,7 @@ const BulkContainerInput = ({
                         <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
                       )}
                       <div className="flex gap-4">
-                        <div className="flex gap-2 flex-1">
+                        <div className="flex gap-2">
                           <NAOutlinedNumberField
                             className="w-[104px] min-w-[104px]"
                             label="Package"
@@ -91,7 +91,7 @@ const BulkContainerInput = ({
                             }}
                           />
                           <NAOutlinedListBox
-                            className="w-36"
+                            className="w-[296px]"
                             options={[
                               "Aerosol",
                               "Bag",
@@ -152,7 +152,7 @@ const BulkContainerInput = ({
                             }}
                           />
                         </div>
-                        <div className="flex gap-2">
+                        {/* <div className="flex gap-2">
                           <NAOutlinedNumberField
                             label="Net Weight"
                             className="w-[120px] min-w-[120px]"
@@ -187,7 +187,7 @@ const BulkContainerInput = ({
                               }));
                             }}
                           />
-                        </div>
+                        </div> */}
                         <MdOutlinedTextField
                           label="Commodity"
                           className="flex-1"
@@ -212,8 +212,9 @@ const BulkContainerInput = ({
                         />
                         <div className="flex gap-2">
                           <NAOutlinedNumberField
-                            className="w-24 min-w-24"
+                            className="w-[126px] min-w-[126px]"
                             label="Length"
+                            suffixText="cm"
                             value={container.length?.toString()}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
@@ -227,8 +228,9 @@ const BulkContainerInput = ({
                             }}
                           />
                           <NAOutlinedNumberField
-                            className="w-24 min-w-24"
+                            className="w-[126px] min-w-[126px]"
                             label="Width"
+                            suffixText="cm"
                             value={container.width?.toString()}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
@@ -242,8 +244,9 @@ const BulkContainerInput = ({
                             }}
                           />
                           <NAOutlinedNumberField
-                            className="w-24 min-w-24"
+                            className="w-[126px] min-w-[126px]"
                             label="Height"
+                            suffixText="cm"
                             value={container.height?.toString()}
                             handleValueChange={(value) => {
                               setContainerInformation((prev) => ({
@@ -256,7 +259,7 @@ const BulkContainerInput = ({
                               }));
                             }}
                           />
-                          <NAOutlinedListBox
+                          {/* <NAOutlinedListBox
                             label="Unit"
                             className="w-24"
                             initialValue={container.unit}
@@ -271,7 +274,7 @@ const BulkContainerInput = ({
                                 ),
                               }));
                             }}
-                          />
+                          /> */}
                         </div>
                       </div>
                       <div className="flex gap-4">
