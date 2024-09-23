@@ -95,7 +95,7 @@ export default function LongRangeTable({
             key={i}
             className={`${
               hasDeparture ? "h-24" : "h-12"
-            } flex justify-between pb-px bg-surface border-b border-b-outlineVariant`}
+            } flex justify-between pb-px bg-surfaceContainerLowest border-b border-b-outlineVariant`}
           >
             <div className="flex p-2 flex-1 items-center">
               <div
@@ -190,7 +190,7 @@ export default function LongRangeTable({
                     key={j}
                     className={`${
                       hasDeparture ? "h-24" : "h-12"
-                    } col-span-1 border-b border-b-outlineVariant bg-surface flex flex-col`}
+                    } col-span-1 border-b border-b-outlineVariant bg-surfaceContainerLowest flex flex-col`}
                   >
                     <FloatingDelayGroup
                       delay={{

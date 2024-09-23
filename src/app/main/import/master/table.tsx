@@ -335,7 +335,7 @@ export const InboundMasterTable = () => {
   ];
 
   return (
-    <>
+    <div>
       {renderEstimatedTimeofDepartureDialog()}
       {renderDialog()}
       {renderPlaceDialog()}
@@ -370,6 +370,6 @@ export const InboundMasterTable = () => {
         }}
         isSingleSelect
       />
-    </>
+    </div>
   );
 };
