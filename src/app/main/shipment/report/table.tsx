@@ -157,7 +157,7 @@ export const ReportTable = () => {
   ];
 
   return (
-    <>
+    <div>
       {renderDialog()}
       <BasicTable
         ActionComponent={() => (
@@ -175,6 +175,6 @@ export const ReportTable = () => {
         columns={columnDefs}
         pinningColumns={["blNumber"]}
       />
-    </>
+    </div>
   );
 };

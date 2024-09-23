@@ -185,7 +185,7 @@ const MenuComponent = ({
           >
             <div
               ref={refs.setFloating}
-              className="flex flex-col bg-white rounded-lg p-1 relative z-10"
+              className="flex flex-col bg-white rounded-lg relative z-10 w-[308px] max-w-[308px]"
               style={
                 {
                   "--md-elevation-level": 4,
@@ -197,11 +197,12 @@ const MenuComponent = ({
               <MdElevation />
               {!isNested && (
                 <>
-                  <div className="h-10 flex items-center">
+                  <div className="h-8 flex items-center bg-secondaryContainer rounded-t-lg">
                     <MdTypography
                       variant="label"
-                      size="large"
-                      className="flex-1 px-4"
+                      size="medium"
+                      prominent
+                      className="flex-1 px-4 text-outline"
                     >
                       {item.name}
                     </MdTypography>
@@ -209,7 +210,7 @@ const MenuComponent = ({
                   <div className="w-full h-px bg-surfaceVariant"></div>
                 </>
               )}
-              <div className="flex flex-col my-1">
+              <div className="flex flex-col mx-2 my-1">
                 {item.subMenu.map((subItem) =>
                   subItem.subMenu && subItem.subMenu.length > 0 ? (
                     <MenuComponent
@@ -220,7 +221,7 @@ const MenuComponent = ({
                   ) : (
                     <div
                       key={subItem.id}
-                      className="relative h-10 flex items-center pl-4 pr-2.5 cursor-pointer rounded-lg"
+                      className="relative h-10 flex items-center pl-4 pr-10 cursor-pointer rounded-full hover:font-bold"
                       role="menuitem"
                       {...getItemProps({
                         onClick(event) {
@@ -232,14 +233,10 @@ const MenuComponent = ({
                       })}
                     >
                       <MdRippleEffect />
-                      <MdTypography
-                        variant="label"
-                        size="large"
-                        className="flex-1"
-                      >
+                      <MdTypography variant="body" size="large">
                         {subItem.name}
                       </MdTypography>
-                      <MdIcon className="w-1 h-1 ml-8 rounded-full bg-surfaceVariant"></MdIcon>
+                      {/* <MdIcon className="w-1 h-1 ml-8 rounded-full bg-surfaceVariant"></MdIcon> */}
                     </div>
                   )
                 )}
@@ -247,7 +244,7 @@ const MenuComponent = ({
 
               <div
                 ref={arrowRef}
-                className={`absolute left-${middlewareData.arrow?.x} top-${middlewareData.arrow?.y} w-4 h-4 -ml-7 -mt-1`}
+                className={`absolute left-${middlewareData.arrow?.x} top-${middlewareData.arrow?.y} w-4 h-4 -ml-6 -mt-1`}
               >
                 <DropDownArrow />
               </div>

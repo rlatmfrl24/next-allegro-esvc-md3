@@ -44,22 +44,32 @@ export const usePlaceInfoDialog = (portal?: string) => {
   };
 };
 
-export const useVesselInfoDialog = () => {
+export const useVesselInfoDialog = (portal?: string) => {
   const [isVesselInfoDialogOpen, setIsVesselInfoDialogOpen] = useState(false);
   const [currentVessel, setCurrentVessel] = useState<VesselInfoType>(
     {} as VesselInfoType
   );
 
   function renderDialog() {
-    return (
-      <Portal selector="#main-container">
+    if (portal) {
+      return (
+        <Portal selector={portal}>
+          <VesselInformationDialog
+            open={isVesselInfoDialogOpen}
+            handleOpen={setIsVesselInfoDialogOpen}
+            data={currentVessel}
+          />
+        </Portal>
+      );
+    } else {
+      return (
         <VesselInformationDialog
           open={isVesselInfoDialogOpen}
           handleOpen={setIsVesselInfoDialogOpen}
           data={currentVessel}
         />
-      </Portal>
-    );
+      );
+    }
   }
 
   return {
@@ -69,7 +79,7 @@ export const useVesselInfoDialog = () => {
   };
 };
 
-export const useVesselScheduleDialog = () => {
+export const useVesselScheduleDialog = (portal?: string) => {
   const [isVesselScheduleDialogOpen, setIsVesselScheduleDialogOpen] =
     useState(false);
   const [currentVessel, setCurrentVessel] = useState<VesselInfoType>(
@@ -77,18 +87,31 @@ export const useVesselScheduleDialog = () => {
   );
 
   function renderDialog() {
-    return (
-      currentVessel && (
-        <Portal selector="#main-container">
+    if (portal) {
+      return (
+        currentVessel && (
+          <Portal selector="#main-container">
+            <VesselScheduleDialog
+              open={isVesselScheduleDialogOpen}
+              handleOpen={setIsVesselScheduleDialogOpen}
+              vesselInfo={currentVessel}
+              vesselSchedules={createDummyVesselSchedules()}
+            />
+          </Portal>
+        )
+      );
+    } else {
+      return (
+        currentVessel && (
           <VesselScheduleDialog
             open={isVesselScheduleDialogOpen}
             handleOpen={setIsVesselScheduleDialogOpen}
             vesselInfo={currentVessel}
             vesselSchedules={createDummyVesselSchedules()}
           />
-        </Portal>
-      )
-    );
+        )
+      );
+    }
   }
 
   return {

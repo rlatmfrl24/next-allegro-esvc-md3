@@ -171,147 +171,148 @@ export default function ContainerInput({
 
   return (
     <div className="flex gap-4">
-      <div className="mt-6 flex flex-col gap-4">
+      <div className="mt-6 flex flex-col">
         {!isLastItem && (
           <div className="w-full border-dotted border-b border-b-outlineVariant mb-4"></div>
         )}
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-4">
+            <div className="flex gap-2 items-start">
+              <NAOutlinedTextField
+                label="Type"
+                className="w-[216px]"
+                readOnly
+                value={`${
+                  container.containerType === ContainerType.dry
+                    ? "Dry"
+                    : container.containerType === ContainerType.reefer
+                    ? "Reefer"
+                    : container.containerType === ContainerType.opentop
+                    ? "Open Top"
+                    : container.containerType === ContainerType.flatrack
+                    ? "Flat Rack"
+                    : container.containerType === ContainerType.tank
+                    ? "Tank"
+                    : "Bulk"
+                } #${containerIndex + 1}`}
+              />
+              <NAOutlinedTextField
+                label="Container No."
+                maxInputLength={14}
+                className="w-[216px]"
+                value={container.containerNumber}
+                handleValueChange={(value) => {
+                  updateContainerStore(container, "containerNumber", value);
+                }}
+              />
+              <NAOutlinedListBox
+                suffixText="ft"
+                label="Size"
+                className="w-52"
+                initialValue={container.containerSize}
+                options={["20", "40", "40HC", "45"]}
+                onSelection={(size) => {
+                  updateContainerStore(container, "containerSize", size);
+                }}
+              />
+              <NAOutlinedListBox
+                label="S.O.C"
+                className="w-24"
+                initialValue={container.isSocContainer ? "Y" : "N"}
+                options={["Y", "N"]}
+                onSelection={(value) => {
+                  updateContainerStore(
+                    container,
+                    "isSocContainer",
+                    value === "Y"
+                  );
+                }}
+              />
+            </div>
+            <SealTextField
+              initialSealData={container.sealData}
+              onUpdated={(newSealData) => {
+                updateContainerStore(container, "sealData", newSealData);
+              }}
+            />
+          </div>
 
-        <div className="flex gap-4">
-          <div className="flex gap-2 items-start">
-            <NAOutlinedTextField
-              label="Type"
-              className="w-[216px]"
-              readOnly
-              value={`${
-                container.containerType === ContainerType.dry
-                  ? "Dry"
-                  : container.containerType === ContainerType.reefer
-                  ? "Reefer"
-                  : container.containerType === ContainerType.opentop
-                  ? "Open Top"
-                  : container.containerType === ContainerType.flatrack
-                  ? "Flat Rack"
-                  : container.containerType === ContainerType.tank
-                  ? "Tank"
-                  : "Bulk"
-              } #${containerIndex + 1}`}
-            />
-            <NAOutlinedTextField
-              label="Container No."
-              maxInputLength={14}
-              className="w-[216px]"
-              value={container.containerNumber}
-              handleValueChange={(value) => {
-                updateContainerStore(container, "containerNumber", value);
-              }}
-            />
-            <NAOutlinedListBox
-              suffixText="ft"
-              label="Size"
-              className="w-52"
-              initialValue={container.containerSize}
-              options={["20", "40", "40HC", "45"]}
-              onSelection={(size) => {
-                updateContainerStore(container, "containerSize", size);
-              }}
-            />
-            <NAOutlinedListBox
-              label="S.O.C"
-              className="w-24"
-              initialValue={container.isSocContainer ? "Y" : "N"}
-              options={["Y", "N"]}
-              onSelection={(value) => {
-                updateContainerStore(
-                  container,
-                  "isSocContainer",
-                  value === "Y"
-                );
-              }}
-            />
-          </div>
-          <SealTextField
-            initialSealData={container.sealData}
-            onUpdated={(newSealData) => {
-              updateContainerStore(container, "sealData", newSealData);
-            }}
-          />
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex gap-2 flex-1">
-            <NAOutlinedNumberField
-              value={container.packageQuantity?.toString()}
-              readOnly={container.hasCargoManifest}
-              label="Package"
-              className="w-[216px]"
-              maxInputLength={16}
-              handleValueChange={(value) => {
-                updateContainerStore(container, "packageQuantity", value);
-              }}
-            />
-            <NAOutlinedAutoComplete
-              className="w-[536px]"
-              readOnly={container.hasCargoManifest}
-              itemList={tempPackageList}
-              placeholder="Package Type"
-              initialValue={container.packageType}
-              isAllowOnlyListItems={false}
-              showAllonFocus
-              onQueryChange={(value) => {
-                updateContainerStore(container, "packageType", value);
-              }}
-              onItemSelection={(value) => {
-                updateContainerStore(container, "packageType", value);
-              }}
-            />
-          </div>
-          <div className="flex gap-2 ">
-            <NAOutlinedNumberField
-              label="Weight"
-              value={container.packageWeight?.toString() ?? ""}
-              readOnly={container.hasCargoManifest}
-              maxInputLength={22}
-              className="flex-1"
-              handleValueChange={(value) => {
-                updateContainerStore(container, "packageWeight", value);
-              }}
-            />
-            <NAOutlinedListBox
-              initialValue={SIEditContainerStore.weightUnit}
-              options={["KGS", "LBS"]}
-              className="w-28"
-              readOnly={container.hasCargoManifest}
-              onSelection={(value) => {
-                setSIEditContainerStore((prev) => ({
-                  ...prev,
-                  weightUnit: value as "KGS" | "LBS",
-                }));
-              }}
-            />
-          </div>
-          <div className="flex gap-2">
-            <NAOutlinedNumberField
-              label="Measure"
-              className="flex-1"
-              maxInputLength={16}
-              value={container.packageMeasurement?.toString()}
-              readOnly={container.hasCargoManifest}
-              handleValueChange={(value) => {
-                updateContainerStore(container, "packageMeasurement", value);
-              }}
-            />
-            <NAOutlinedListBox
-              initialValue={SIEditContainerStore.measurementUnit}
-              options={["CBM", "CBF"]}
-              className="w-28"
-              readOnly={container.hasCargoManifest}
-              onSelection={(value) => {
-                setSIEditContainerStore((prev) => ({
-                  ...prev,
-                  measurementUnit: value as "CBM" | "CBF",
-                }));
-              }}
-            />
+          <div className="flex gap-4">
+            <div className="flex gap-2 flex-1">
+              <NAOutlinedNumberField
+                value={container.packageQuantity?.toString()}
+                readOnly={container.hasCargoManifest}
+                label="Package"
+                className="w-[216px]"
+                maxInputLength={16}
+                handleValueChange={(value) => {
+                  updateContainerStore(container, "packageQuantity", value);
+                }}
+              />
+              <NAOutlinedAutoComplete
+                className="w-[536px]"
+                readOnly={container.hasCargoManifest}
+                itemList={tempPackageList}
+                placeholder="Package Type"
+                initialValue={container.packageType}
+                isAllowOnlyListItems={false}
+                showAllonFocus
+                onQueryChange={(value) => {
+                  updateContainerStore(container, "packageType", value);
+                }}
+                onItemSelection={(value) => {
+                  updateContainerStore(container, "packageType", value);
+                }}
+              />
+            </div>
+            <div className="flex gap-2 ">
+              <NAOutlinedNumberField
+                label="Weight"
+                value={container.packageWeight?.toString() ?? ""}
+                readOnly={container.hasCargoManifest}
+                maxInputLength={22}
+                className="flex-1"
+                handleValueChange={(value) => {
+                  updateContainerStore(container, "packageWeight", value);
+                }}
+              />
+              <NAOutlinedListBox
+                initialValue={SIEditContainerStore.weightUnit}
+                options={["KGS", "LBS"]}
+                className="w-28"
+                readOnly={container.hasCargoManifest}
+                onSelection={(value) => {
+                  setSIEditContainerStore((prev) => ({
+                    ...prev,
+                    weightUnit: value as "KGS" | "LBS",
+                  }));
+                }}
+              />
+            </div>
+            <div className="flex gap-2">
+              <NAOutlinedNumberField
+                label="Measure"
+                className="flex-1"
+                maxInputLength={16}
+                value={container.packageMeasurement?.toString()}
+                readOnly={container.hasCargoManifest}
+                handleValueChange={(value) => {
+                  updateContainerStore(container, "packageMeasurement", value);
+                }}
+              />
+              <NAOutlinedListBox
+                initialValue={SIEditContainerStore.measurementUnit}
+                options={["CBM", "CBF"]}
+                className="w-28"
+                readOnly={container.hasCargoManifest}
+                onSelection={(value) => {
+                  setSIEditContainerStore((prev) => ({
+                    ...prev,
+                    measurementUnit: value as "CBM" | "CBF",
+                  }));
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -359,271 +360,273 @@ export default function ContainerInput({
             </div>
           </MdDialog>
         </Portal>
-        <NaToggleButton
-          className="w-fit my-0"
-          label="Cargo Manifest"
-          state={container.hasCargoManifest ? "checked" : "unchecked"}
-          onClick={(isChecked) => {
-            if (isChecked) {
-              setIsWarningRemoveCargoManifestDialogOpen(true);
-            } else {
-              updateContainerStore(container, "hasCargoManifest", !isChecked);
-              if (container.cargoManifest.length === 0) {
-                addNewCargoManifestToContainer();
-              }
-            }
-          }}
-        />
-        {container.hasCargoManifest && (
-          <>
-            <div className="flex gap-2 flex-1">
-              <MdChipSet className="flex-row">
-                {
-                  // display CargoManifest
-                  container.cargoManifest.map((cargo, i) => {
-                    return (
-                      <div key={cargo.uuid}>
-                        <MdFilterChip
-                          style={
-                            {
-                              "--md-filter-chip-selected-container-color":
-                                "var(--md-sys-point-color)",
-                            } as CSSProperties
-                          }
-                          label={`Cargo #${i + 1}`}
-                          selected={selectedCargoManifestUuid === cargo.uuid}
-                          onClick={() => {
-                            if (selectedCargoManifestUuid === cargo.uuid) {
-                              setSelectedCargoManifestUuid("");
-                            } else {
-                              setSelectedCargoManifestUuid(cargo.uuid);
-                            }
-                          }}
-                          remove={(e) => {
-                            removeCargoManifestFromContainer(cargo.uuid);
-                          }}
-                          removable
-                        />
-                      </div>
-                    );
-                  })
-                }
-              </MdChipSet>
-              <MdOutlinedIconButton
-                className="w-8 h-8 min-w-8"
-                onClick={() => {
+        <div className="flex flex-col gap-2 mt-2">
+          <NaToggleButton
+            className="w-fit"
+            label="Cargo Manifest"
+            state={container.hasCargoManifest ? "checked" : "unchecked"}
+            onClick={(isChecked) => {
+              if (isChecked) {
+                setIsWarningRemoveCargoManifestDialogOpen(true);
+              } else {
+                updateContainerStore(container, "hasCargoManifest", !isChecked);
+                if (container.cargoManifest.length === 0) {
                   addNewCargoManifestToContainer();
-                }}
-              >
-                <Add fontSize="small" />
-              </MdOutlinedIconButton>
-            </div>
-            {container.cargoManifest.find(
-              (cm) => cm.uuid === selectedCargoManifestUuid
-            ) && (
-              <>
-                <div className="flex gap-4 flex-1">
-                  <div className="flex gap-2 flex-1">
-                    <NAOutlinedNumberField
-                      label="Package"
-                      className="w-[104px]"
-                      maxInputLength={16}
-                      value={container.cargoManifest
-                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
-                        ?.packageQuantity?.toString()}
-                      handleValueChange={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  packageQuantity: value,
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                    />
-                    <NAOutlinedAutoComplete
-                      placeholder="Package"
-                      className="w-40"
-                      itemList={tempPackageList}
-                      initialValue={
-                        container.cargoManifest.find(
-                          (cm) => cm.uuid === selectedCargoManifestUuid
-                        )?.packageType || ""
-                      }
-                      isAllowOnlyListItems={false}
-                      showAllonFocus
-                      onQueryChange={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  packageType: value,
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                      onItemSelection={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  packageType: value,
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                    />
-                    <NAOutlinedNumberField
-                      label="Weight"
-                      maxInputLength={22}
-                      className="w-[104px]"
-                      value={container.cargoManifest
-                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
-                        ?.weight?.toString()}
-                      handleValueChange={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  weight: value,
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                    />
-                    <NAOutlinedListBox
-                      options={["KGS", "LBS"]}
-                      className="w-28"
-                      initialValue={SIEditContainerStore.weightUnit}
-                      onSelection={(value) => {
-                        setSIEditContainerStore((prev) => ({
-                          ...prev,
-                          weightUnit: value as "KGS" | "LBS",
-                        }));
-                      }}
-                    />
-                    <NAOutlinedNumberField
-                      label="Measure"
-                      className="w-[104px]"
-                      maxInputLength={16}
-                      value={container.cargoManifest
-                        .find((cm) => cm.uuid === selectedCargoManifestUuid)
-                        ?.measurement?.toString()}
-                      handleValueChange={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  measurement: value,
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                    />
-                    <NAOutlinedListBox
-                      options={["CBM", "CBF"]}
-                      className="w-28"
-                      initialValue={SIEditContainerStore.measurementUnit}
-                      onSelection={(value) => {
-                        setSIEditContainerStore((prev) => ({
-                          ...prev,
-                          measurementUnit: value as "CBM" | "CBF",
-                        }));
-                      }}
-                    />
-                    <NAOutlinedTextField
-                      label="Description of Goods"
-                      className="flex-1"
-                    />
+                }
+              }
+            }}
+          />
+          {container.hasCargoManifest && (
+            <>
+              <div className="flex gap-2 flex-1">
+                <MdOutlinedIconButton
+                  className="w-8 h-8 min-w-8"
+                  onClick={() => {
+                    addNewCargoManifestToContainer();
+                  }}
+                >
+                  <Add fontSize="small" />
+                </MdOutlinedIconButton>
+                <MdChipSet className="flex-row mb-2">
+                  {
+                    // display CargoManifest
+                    container.cargoManifest.map((cargo, i) => {
+                      return (
+                        <div key={cargo.uuid}>
+                          <MdFilterChip
+                            style={
+                              {
+                                "--md-filter-chip-selected-container-color":
+                                  "var(--md-sys-point-color)",
+                              } as CSSProperties
+                            }
+                            label={`Cargo #${i + 1}`}
+                            selected={selectedCargoManifestUuid === cargo.uuid}
+                            onClick={() => {
+                              if (selectedCargoManifestUuid === cargo.uuid) {
+                                setSelectedCargoManifestUuid("");
+                              } else {
+                                setSelectedCargoManifestUuid(cargo.uuid);
+                              }
+                            }}
+                            remove={(e) => {
+                              removeCargoManifestFromContainer(cargo.uuid);
+                            }}
+                            removable
+                          />
+                        </div>
+                      );
+                    })
+                  }
+                </MdChipSet>
+              </div>
+              {container.cargoManifest.find(
+                (cm) => cm.uuid === selectedCargoManifestUuid
+              ) && (
+                <>
+                  <div className="flex gap-4 flex-1">
+                    <div className="flex gap-2 flex-1">
+                      <NAOutlinedNumberField
+                        label="Package"
+                        className="w-[104px]"
+                        maxInputLength={16}
+                        value={container.cargoManifest
+                          .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                          ?.packageQuantity?.toString()}
+                        handleValueChange={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    packageQuantity: value,
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                      />
+                      <NAOutlinedAutoComplete
+                        placeholder="Package"
+                        className="w-40"
+                        itemList={tempPackageList}
+                        initialValue={
+                          container.cargoManifest.find(
+                            (cm) => cm.uuid === selectedCargoManifestUuid
+                          )?.packageType || ""
+                        }
+                        isAllowOnlyListItems={false}
+                        showAllonFocus
+                        onQueryChange={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    packageType: value,
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                        onItemSelection={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    packageType: value,
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                      />
+                      <NAOutlinedNumberField
+                        label="Weight"
+                        maxInputLength={22}
+                        className="w-[104px]"
+                        value={container.cargoManifest
+                          .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                          ?.weight?.toString()}
+                        handleValueChange={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    weight: value,
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                      />
+                      <NAOutlinedListBox
+                        options={["KGS", "LBS"]}
+                        className="w-28"
+                        initialValue={SIEditContainerStore.weightUnit}
+                        onSelection={(value) => {
+                          setSIEditContainerStore((prev) => ({
+                            ...prev,
+                            weightUnit: value as "KGS" | "LBS",
+                          }));
+                        }}
+                      />
+                      <NAOutlinedNumberField
+                        label="Measure"
+                        className="w-[104px]"
+                        maxInputLength={16}
+                        value={container.cargoManifest
+                          .find((cm) => cm.uuid === selectedCargoManifestUuid)
+                          ?.measurement?.toString()}
+                        handleValueChange={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    measurement: value,
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                      />
+                      <NAOutlinedListBox
+                        options={["CBM", "CBF"]}
+                        className="w-28"
+                        initialValue={SIEditContainerStore.measurementUnit}
+                        onSelection={(value) => {
+                          setSIEditContainerStore((prev) => ({
+                            ...prev,
+                            measurementUnit: value as "CBM" | "CBF",
+                          }));
+                        }}
+                      />
+                      <NAOutlinedTextField
+                        label="Description of Goods"
+                        className="flex-1"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <NAOutlinedNumberField
+                        label="HTS Code(EU, ASIA)"
+                        maxInputLength={6}
+                        className="w-[184px]"
+                        placeholder="Code"
+                        hideZeroPlaceholder
+                        enableNumberSeparator={false}
+                        value={
+                          container.cargoManifest.find(
+                            (cm) => cm.uuid === selectedCargoManifestUuid
+                          )?.commodityCode.hisCodeEUASIA || ""
+                        }
+                        handleValueChange={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    commodityCode: {
+                                      ...cm.commodityCode,
+                                      hisCodeEUASIA: value,
+                                    },
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                      />
+                      <NAOutlinedNumberField
+                        label="HTS Code(U.S.)"
+                        maxInputLength={6}
+                        placeholder="Code"
+                        className="w-[136px]"
+                        hideZeroPlaceholder
+                        enableNumberSeparator={false}
+                        value={
+                          container.cargoManifest.find(
+                            (cm) => cm.uuid === selectedCargoManifestUuid
+                          )?.commodityCode.htsCodeUS || ""
+                        }
+                        handleValueChange={(value) => {
+                          updateContainerStore(
+                            container,
+                            "cargoManifest",
+                            container.cargoManifest.map((cm) =>
+                              cm.uuid === selectedCargoManifestUuid
+                                ? {
+                                    ...cm,
+                                    commodityCode: {
+                                      ...cm.commodityCode,
+                                      htsCodeUS: value,
+                                    },
+                                  }
+                                : cm
+                            )
+                          );
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <NAOutlinedNumberField
-                      label="HTS Code(EU, ASIA)"
-                      maxInputLength={6}
-                      className="w-[184px]"
-                      placeholder="Code"
-                      hideZeroPlaceholder
-                      enableNumberSeparator={false}
-                      value={
-                        container.cargoManifest.find(
-                          (cm) => cm.uuid === selectedCargoManifestUuid
-                        )?.commodityCode.hisCodeEUASIA || ""
-                      }
-                      handleValueChange={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  commodityCode: {
-                                    ...cm.commodityCode,
-                                    hisCodeEUASIA: value,
-                                  },
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                    />
-                    <NAOutlinedNumberField
-                      label="HTS Code(U.S.)"
-                      maxInputLength={6}
-                      placeholder="Code"
-                      className="w-[136px]"
-                      hideZeroPlaceholder
-                      enableNumberSeparator={false}
-                      value={
-                        container.cargoManifest.find(
-                          (cm) => cm.uuid === selectedCargoManifestUuid
-                        )?.commodityCode.htsCodeUS || ""
-                      }
-                      handleValueChange={(value) => {
-                        updateContainerStore(
-                          container,
-                          "cargoManifest",
-                          container.cargoManifest.map((cm) =>
-                            cm.uuid === selectedCargoManifestUuid
-                              ? {
-                                  ...cm,
-                                  commodityCode: {
-                                    ...cm.commodityCode,
-                                    htsCodeUS: value,
-                                  },
-                                }
-                              : cm
-                          )
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-          </>
-        )}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
       <MdOutlinedIconButton
         className={`min-w-10 ${isLastItem ? "mt-8" : "mt-16"}`}
