@@ -162,7 +162,7 @@ const DangerousCargoInput = ({
         }}
       />
       {container.isDangerous && (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3">
           <div className="flex gap-2 items-center">
             <MdChipSet className="flex flex-row">
               {container.dangerousCargoInformation.map((dci, index) => (

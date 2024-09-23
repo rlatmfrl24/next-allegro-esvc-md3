@@ -25,7 +25,7 @@ export default function NaToggleButton({
       tag="label"
       variant="label"
       size="large"
-      className={` flex items-center cursor-pointer gap-0.5 my-1.5 min-w-fit ${className} ${
+      className={` flex items-center cursor-pointer gap-0.5 my-0.5 min-w-fit ${className} ${
         state === "disabled" || state === "disabled-checked"
           ? "text-outlineVariant"
           : "text-primary"
