@@ -233,7 +233,7 @@ const MenuComponent = ({
                       })}
                     >
                       <MdRippleEffect />
-                      <MdTypography variant="body" size="large">
+                      <MdTypography variant="body" size="medium">
                         {subItem.name}
                       </MdTypography>
                       {/* <MdIcon className="w-1 h-1 ml-8 rounded-full bg-surfaceVariant"></MdIcon> */}
