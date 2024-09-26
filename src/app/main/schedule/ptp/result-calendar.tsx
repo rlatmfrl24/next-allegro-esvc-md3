@@ -1,6 +1,13 @@
 "use client";
 
-import { MdDialog, MdIcon, MdIconButton, MdRippleEffect } from "@/app/util/md3";
+import {
+  MdDialog,
+  MdFilledButton,
+  MdIcon,
+  MdIconButton,
+  MdOutlinedButton,
+  MdRippleEffect,
+} from "@/app/util/md3";
 
 import { MdTypography } from "@/app/components/typography";
 import { useCalendar } from "@h6s/calendar";
@@ -16,6 +23,7 @@ import { ItemDetail } from "./components/listItem";
 import { faker } from "@faker-js/faker";
 import { createDummyVesselInformation } from "../util";
 import VesselIcon from "@/../public/icon_vessel_outline.svg";
+import { useRouter } from "next/navigation";
 
 const ViewMoreButton = ({
   cnt,
@@ -131,6 +139,7 @@ export default function PointToPointCalendarResult({
   const tempVesselInfo = useMemo(() => {
     return createDummyVesselInformation();
   }, []);
+  const router = useRouter();
 
   return (
     <div>
@@ -334,8 +343,8 @@ export default function PointToPointCalendarResult({
           </div>
         )}
       </Portal> */}
-      {selectedData && (
-        <Portal selector="#main-container">
+      <Portal selector="#main-container">
+        {selectedData && (
           <MdDialog
             open={isDetailOpen}
             closed={() => {
@@ -347,9 +356,12 @@ export default function PointToPointCalendarResult({
               {`Schedule Detail - ` +
                 selectedData?.date.toFormat("dd MMM yyyy")}
             </div>
-            <div slot="content" className="flex gap-2 max-w-[1240px] h-[720px]">
+            <div
+              slot="content"
+              className="relative flex gap-2 max-w-[1240px] py-0"
+            >
               {selectedData.list.length > 1 && (
-                <div>
+                <div className="sticky h-fit top-2">
                   {selectedData.list.map((item) => (
                     <div
                       key={item.vesselInfo.vesselCode}
@@ -385,9 +397,26 @@ export default function PointToPointCalendarResult({
                 />
               </div>
             </div>
+            <div slot="actions">
+              <MdOutlinedButton
+                onClick={() => {
+                  setIsDetailOpen(false);
+                }}
+              >
+                Close
+              </MdOutlinedButton>
+              <MdFilledButton
+                onClick={() => {
+                  setIsDetailOpen(false);
+                  router.push("/main/booking/request");
+                }}
+              >
+                Booking Request
+              </MdFilledButton>
+            </div>
           </MdDialog>
-        </Portal>
-      )}
+        )}
+      </Portal>
     </div>
   );
 }
