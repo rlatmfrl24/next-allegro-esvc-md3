@@ -45,6 +45,7 @@ import ImportIcon from "@/../public/icon_menu_import.svg";
 import ManageShipmentIcon from "@/../public/icon_menu_manage_shipment.svg";
 import DententionIcon from "@/../public/icon_menu_dentention.svg";
 import { MenuIconButton } from "./menu-button";
+import { OpenInNew } from "@mui/icons-material";
 
 export const DropdownMenu = () => {
   return menuItems.map((item) => (
@@ -197,10 +198,10 @@ const MenuComponent = ({
               <MdElevation />
               {!isNested && (
                 <>
-                  <div className="h-8 flex items-center bg-secondaryContainer rounded-t-lg">
+                  <div className="h-9 flex items-center bg-secondaryContainer rounded-t-lg">
                     <MdTypography
                       variant="label"
-                      size="medium"
+                      size="large"
                       prominent
                       className="flex-1 px-4 text-outline"
                     >
@@ -221,7 +222,7 @@ const MenuComponent = ({
                   ) : (
                     <div
                       key={subItem.id}
-                      className="relative h-10 flex items-center pl-4 pr-10 cursor-pointer rounded-full hover:font-bold"
+                      className="relative h-10 flex items-center pl-4 cursor-pointer rounded-lg hover:font-semibold hover:bg-surfaceContainerLow"
                       role="menuitem"
                       {...getItemProps({
                         onClick(event) {
@@ -232,10 +233,25 @@ const MenuComponent = ({
                         },
                       })}
                     >
-                      <MdRippleEffect />
-                      <MdTypography variant="body" size="medium">
+                      {/* <MdRippleEffect /> */}
+                      <MdTypography
+                        variant="body"
+                        size="medium"
+                        className="flex-1"
+                      >
                         {subItem.name}
                       </MdTypography>
+                      <MdIconButton
+                        onClick={() => {
+                          // open in new tab
+                          window.open(
+                            "/main/" + [...path, subItem.link || ""].join("/"),
+                            "_blank"
+                          );
+                        }}
+                      >
+                        <OpenInNew className="text-outlineVariant" />
+                      </MdIconButton>
                       {/* <MdIcon className="w-1 h-1 ml-8 rounded-full bg-surfaceVariant"></MdIcon> */}
                     </div>
                   )
