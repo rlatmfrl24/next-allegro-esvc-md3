@@ -23,6 +23,7 @@ const config: Config = {
         suit: ["var(--font-suit)"],
         pretendard: ["var(--font-pretendard)"],
         roboto: ["var(--font-roboto)"],
+        notoSans: ["var(--font-noto-sans)"],
       },
       colors: {
         primary: {

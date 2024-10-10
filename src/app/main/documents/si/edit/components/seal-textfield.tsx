@@ -319,7 +319,7 @@ export const SealTextField = ({
         aria-label="seal-number-text-field"
         onFocus={() => setFocusedComponent("sealNumber")}
         onBlur={() => setFocusedComponent(null)}
-        className={`h-full flex-1 w-0 rounded flex items-center px-4 font-pretendard outline-none border-2 cursor-pointer ${
+        className={`h-full flex-1 w-0 rounded flex items-center px-4 font-notoSans outline-none border-2 cursor-pointer ${
           focusedComponent === "sealNumber"
             ? "border-primary"
             : "border-transparent"
