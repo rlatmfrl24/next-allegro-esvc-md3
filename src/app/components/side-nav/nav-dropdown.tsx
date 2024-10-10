@@ -260,7 +260,7 @@ const MenuComponent = ({
 
               <div
                 ref={arrowRef}
-                className={`absolute left-${middlewareData.arrow?.x} top-${middlewareData.arrow?.y} w-4 h-4 -ml-6 -mt-1`}
+                className={`absolute left-${middlewareData.arrow?.x} top-${middlewareData.arrow?.y} w-4 h-4 -ml-6 -mt-1 text-secondaryContainer`}
               >
                 <DropDownArrow />
               </div>
