@@ -11,7 +11,7 @@ export default function BreadCrumbs() {
   }, [pathName]);
 
   return (
-    <div className="flex items-center text-sm font-pretendard">
+    <div className="flex items-center text-sm font-notoSans">
       {routes.map((item, index) => (
         <div
           key={`breadcrumb-` + index}

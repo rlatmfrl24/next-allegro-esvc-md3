@@ -85,7 +85,7 @@ export default function Test() {
 
       <div className="flex gap-2">
         <button
-          className="bg-[#004aae] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#004aae] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("preset_1");
           }}
@@ -93,7 +93,7 @@ export default function Test() {
           Preset 1
         </button>
         <button
-          className="bg-[#2a6c00] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#2a6c00] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("preset_2");
           }}
@@ -101,7 +101,7 @@ export default function Test() {
           Preset 2
         </button>
         <button
-          className="bg-[#8b4a61] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#8b4a61] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("preset_3");
           }}
@@ -109,7 +109,7 @@ export default function Test() {
           Preset 3
         </button>
         <button
-          className="bg-[#506628] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#506628] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("YG");
           }}
@@ -117,7 +117,7 @@ export default function Test() {
           YG
         </button>
         <button
-          className="bg-[#a40020] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#a40020] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("RE");
           }}
@@ -125,7 +125,7 @@ export default function Test() {
           RE
         </button>
         <button
-          className="bg-[#004aae] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#004aae] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("BL");
           }}
@@ -133,7 +133,7 @@ export default function Test() {
           BL
         </button>
         <button
-          className="bg-[#00513f] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#00513f] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("GR");
           }}
@@ -141,7 +141,7 @@ export default function Test() {
           GR
         </button>
         <button
-          className="bg-[#196584] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#196584] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("NA");
           }}
@@ -149,7 +149,7 @@ export default function Test() {
           NA
         </button>
         <button
-          className="bg-[#7e570f] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#7e570f] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("OR");
           }}
@@ -157,7 +157,7 @@ export default function Test() {
           OR
         </button>
         <button
-          className="bg-[#8c4a60] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#8c4a60] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             // applyPresetTheme("PK");
             createMDTheme("#BE489D");
@@ -167,7 +167,7 @@ export default function Test() {
           PK
         </button>
         <button
-          className="bg-[#64558f] px-4 py-2 text-white font-pretendard rounded-xl"
+          className="bg-[#64558f] px-4 py-2 text-white font-notoSans rounded-xl"
           onClick={() => {
             applyPresetTheme("PU");
           }}

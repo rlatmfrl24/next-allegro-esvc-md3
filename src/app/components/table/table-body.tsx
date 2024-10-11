@@ -155,7 +155,7 @@ export const TableBody = ({
                   {editableColumns?.includes(cell.column.id) ? (
                     <>
                       <input
-                        className={`border border-outlineVariant rounded w-full bg-transparent outline-primary px-3 py-2 font-pretendard ${
+                        className={`border border-outlineVariant rounded w-full bg-transparent outline-primary px-3 py-2 font-notoSans ${
                           onlyNumberColumns?.includes(cell.column.id)
                             ? "text-right"
                             : ""

@@ -4,7 +4,7 @@ import "./globals.css";
 import SideNavigation from "./components/side-nav/side-nav";
 import Header from "./header";
 import Providers from "./providers";
-import { pretendard, suit } from "./util/font";
+import { notoSans, pretendard, suit } from "./util/font";
 import FavoriteMain from "./components/favorite/main";
 
 export const metadata: Metadata = {
@@ -19,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${suit.variable} ${pretendard.variable}`}>
+      <body
+        className={`${suit.variable} ${pretendard.variable} ${notoSans.variable}`}
+      >
         <Providers>
           <div
             id="nav-container"
