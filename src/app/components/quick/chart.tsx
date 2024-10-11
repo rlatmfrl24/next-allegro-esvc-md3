@@ -16,7 +16,7 @@ export default function QuickChart(props: {
   }, 0);
 
   return (
-    <div className="px-4 pb-6 flex flex-col font-pretendard">
+    <div className="px-4 pb-6 flex flex-col font-notoSans">
       <div className="pt-3 pb-4 flex gap-2 items-center">
         <MdTypography variant="body" size="medium" className="text-outline">
           Total

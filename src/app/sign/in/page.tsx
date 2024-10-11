@@ -103,7 +103,7 @@ export default function SignIn() {
           )}
         </MdOutlinedTextField>
         <div className="flex justify-between w-full mt-4">
-          <label className="flex items-center font-pretendard font-medium text-sm">
+          <label className="flex items-center font-notoSans font-medium text-sm">
             <MdCheckbox touch-target="wrapper"></MdCheckbox>
             Remember me
           </label>

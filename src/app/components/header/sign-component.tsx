@@ -111,7 +111,7 @@ export const HeaderSignComponent = () => {
             setIsSigning(false);
           }}
         >
-          <MdOutlinedButton className="w-32 font-pretendard font-medium">
+          <MdOutlinedButton className="w-32 font-notoSans font-medium">
             Cancel
           </MdOutlinedButton>
         </Link>
@@ -123,7 +123,7 @@ export const HeaderSignComponent = () => {
               setIsSigning(true);
             }}
           >
-            <MdOutlinedButton className="w-32 font-pretendard font-medium">
+            <MdOutlinedButton className="w-32 font-notoSans font-medium">
               Register
             </MdOutlinedButton>
           </Link>
@@ -133,7 +133,7 @@ export const HeaderSignComponent = () => {
               setIsSigning(true);
             }}
           >
-            <MdFilledButton className="w-32 font-pretendard font-medium">
+            <MdFilledButton className="w-32 font-notoSans font-medium">
               Sign In
             </MdFilledButton>
           </Link>

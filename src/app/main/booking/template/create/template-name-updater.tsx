@@ -27,7 +27,7 @@ export const TemplateNameUpdater = (props: {
   ) : (
     <div className="flex items-center gap-4">
       <input
-        className="border-2 border-primary rounded outline-primary bg-surfaceContainer px-2 py-1.5 font-pretendard w-fit"
+        className="border-2 border-primary rounded outline-primary bg-surfaceContainer px-2 py-1.5 font-notoSans w-fit"
         defaultValue={templateName}
         autoFocus
         onInput={(e) => {

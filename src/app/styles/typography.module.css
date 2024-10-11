@@ -1,5 +1,5 @@
 .display {
-  @apply font-pretendard font-semibold;
+  @apply font-notoSans font-semibold;
 }
 
 .display.large {
@@ -15,7 +15,7 @@
 }
 
 .headline {
-  @apply font-pretendard font-semibold;
+  @apply font-notoSans font-semibold;
 }
 
 .headline.large {
@@ -31,7 +31,7 @@
 }
 
 .title {
-  @apply font-pretendard font-semibold;
+  @apply font-notoSans font-semibold;
 }
 
 .title.large {
@@ -47,7 +47,7 @@
 }
 
 .body {
-  @apply font-pretendard;
+  @apply font-notoSans;
 }
 
 .body.large {
@@ -75,7 +75,7 @@
 }
 
 .label {
-  @apply font-pretendard;
+  @apply font-notoSans;
 }
 
 .label.large {
