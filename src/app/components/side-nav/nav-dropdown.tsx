@@ -222,7 +222,7 @@ const MenuComponent = ({
                   ) : (
                     <div
                       key={subItem.id}
-                      className="relative h-10 flex items-center pl-4 cursor-pointer rounded-lg hover:font-semibold hover:bg-surfaceContainerLow"
+                      className="group relative h-10 flex items-center pl-4 cursor-pointer rounded-lg hover:font-semibold hover:bg-surfaceContainerLow"
                       role="menuitem"
                       {...getItemProps({
                         onClick(event) {
@@ -242,6 +242,7 @@ const MenuComponent = ({
                         {subItem.name}
                       </MdTypography>
                       <MdIconButton
+                        className="group-hover:visible group-hover:opacity-100 invisible opacity-0"
                         onClick={() => {
                           // open in new tab
                           window.open(
@@ -250,7 +251,10 @@ const MenuComponent = ({
                           );
                         }}
                       >
-                        <OpenInNew className="text-outlineVariant" />
+                        <OpenInNew
+                          fontSize="small"
+                          className="text-outlineVariant"
+                        />
                       </MdIconButton>
                       {/* <MdIcon className="w-1 h-1 ml-8 rounded-full bg-surfaceVariant"></MdIcon> */}
                     </div>
