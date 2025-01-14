@@ -7,7 +7,13 @@ import StatusFilterComponent from "@/app/components/status-filter";
 import { BasicTable } from "@/app/components/table/basic-table";
 import { MdTypography } from "@/app/components/typography";
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
-import { MdChipSet, MdFilterChip, MdRadio, MdTextButton } from "@/app/util/md3";
+import {
+  MdCheckbox,
+  MdChipSet,
+  MdFilterChip,
+  MdRadio,
+  MdTextButton,
+} from "@/app/util/md3";
 import {
   BookingStatus,
   BookingStatusTableProps,
@@ -23,7 +29,8 @@ import { useRouter } from "next/navigation";
 import { CodeCopyButton } from "./components/code-copy-button";
 import { useSetRecoilState } from "recoil";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
-import { getCookie, setCookie } from "cookies-next";
+import VesselStatusNotesDialog from "./components/vessel-status-notes";
+import { useBookingMergeDialog } from "./components/booking-merge-dialog";
 
 const HasShippingInstructionIcon = () => {
   return (
@@ -112,6 +119,11 @@ export default function BookingStatusTable() {
     setIsVesselStatusNotesDialogOpen,
   } = useEstimatedTimeofDepartureDialog();
 
+  const {
+    renderDialog: renderBookingMergeDialog,
+    setOpen: setIsBookingMergeDialogOpen,
+  } = useBookingMergeDialog();
+
   useEffect(() => {
     setTableData(tempData);
   }, [tempData]);
@@ -122,11 +134,7 @@ export default function BookingStatusTable() {
       header: "Request No",
       cell: (info) => (
         <div className="flex items-center relative -translate-y-1">
-          <MdRadio
-            // name="requestNo"
-            className="mr-2"
-            checked={info.row.getIsSelected()}
-          />
+          <MdCheckbox className="mr-2" checked={info.row.getIsSelected()} />
           <Link href={`/main/booking/information/request`}>
             <MdTypography
               tag="label"
@@ -165,18 +173,17 @@ export default function BookingStatusTable() {
       header: "Booking No",
       cell: (info) => (
         <div className="flex items-center -translate-y-1">
-          <Link
-            href={`/main/booking/information/confirmation`}
-            className="block w-fit"
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="text-onSurfaceVariant underline cursor-pointer w-fit"
+            onClick={() => {
+              setCurrentBookingData(info.row.original);
+              router.push(`/main/booking/information/confirmation`);
+            }}
           >
-            <MdTypography
-              variant="body"
-              size="medium"
-              className="text-onSurfaceVariant underline cursor-pointer w-fit"
-            >
-              {info.getValue()}
-            </MdTypography>
-          </Link>
+            {info.getValue()}
+          </MdTypography>
           <CodeCopyButton code={info.getValue()} />
         </div>
       ),
@@ -413,7 +420,15 @@ export default function BookingStatusTable() {
       case BookingStatus.Cancelled:
         return ["Copy"];
       case BookingStatus.Accepted:
-        return ["Copy", "Edit", "Cancel", "S/I", "Print Receipt"];
+        return [
+          "Copy",
+          "Edit",
+          "Cancel",
+          "S/I",
+          "Print Receipt",
+          "Merge",
+          "Split",
+        ];
       case BookingStatus.Rejected:
       case BookingStatus.Pending:
         return ["Copy"];
@@ -426,6 +441,7 @@ export default function BookingStatusTable() {
     <>
       {renderEstimatedTimeofDepartureDialog()}
       {renderVesselInfoDialog()}
+      {renderBookingMergeDialog()}
       <div className="relative w-full max-w-full h-full">
         <BasicTable
           cookieKey="bookingStatusTable"
@@ -505,6 +521,20 @@ export default function BookingStatusTable() {
                                 <MdTextButton key={action}>
                                   Print Receipt
                                 </MdTextButton>
+                              ),
+                              Merge: (
+                                <MdTextButton
+                                  key={action}
+                                  onClick={() => {
+                                    console.log("Merge Clicked");
+                                    setIsBookingMergeDialogOpen(true);
+                                  }}
+                                >
+                                  Merge
+                                </MdTextButton>
+                              ),
+                              Split: (
+                                <MdTextButton key={action}>Split</MdTextButton>
                               ),
                             } as Record<string, JSX.Element>
                           )[action])

@@ -92,7 +92,7 @@ const StatusFilterComponent = ({
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="z-10"
+        className="z-40"
       >
         {transitionProps.isMounted && (
           <div
