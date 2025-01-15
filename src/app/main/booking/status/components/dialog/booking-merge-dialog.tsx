@@ -1,6 +1,6 @@
 "use client";
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import Portal from "@/app/components/portal";
@@ -188,55 +188,16 @@ const BookingMergeConfirmation = ({
 }: {
   handleAction: (action: string) => void;
 }) => {
-  const [mergeData, setMergeData] = useRecoilState(BookingMergeState);
-  // const mergedData = useMemo(() => {
-  //   const result = mergeData.reduce(
-  //     (acc, cur) => {
-  //       const mergedContainers = cur.containers.reduce((acc, cur) => {
-  //         const index = acc.findIndex(
-  //           (t) => t.type === cur.type && t.size === cur.size
-  //         );
-  //         if (index !== -1) {
-  //           acc.splice(index, 1, {
-  //             ...acc[index],
-  //             quantity: acc[index].quantity + cur.quantity,
-  //           });
-  //         } else {
-  //           acc.push(cur);
-  //         }
-  //         return acc;
-  //       }, acc.containers);
-
-  //       acc.bookingNumber = cur.bookingNumber;
-  //       acc.totalWeight = (
-  //         parseInt(acc.totalWeight) + parseInt(cur.totalWeight)
-  //       ).toString();
-  //       acc.containers = mergedContainers;
-  //       acc.emptyPickupPlace = cur.emptyPickupPlace;
-  //       acc.emptyPickupDate =
-  //         acc.emptyPickupDate > cur.emptyPickupDate
-  //           ? acc.emptyPickupDate
-  //           : cur.emptyPickupDate;
-  //       return acc;
-  //     },
-  //     {
-  //       bookingNumber: mergeData[0].bookingNumber,
-  //       totalWeight: "0",
-  //       containers: [],
-  //       emptyPickupPlace: mergeData[0].emptyPickupPlace,
-  //       emptyPickupDate: mergeData[0].emptyPickupDate,
-  //     } as MergeTableType
-  //   );
-  //   return result;
-  // }, [mergeData]);
-
+  const mergeData = useRecoilValue(BookingMergeState);
   const mergedData = useRecoilValue(BookingMergeSelector);
 
   const { renderTable: beforeRenderTable } = useMergeSelectionTable({
     candidateData: mergeData,
+    disableSelection: true,
   });
   const { renderTable: afterRenderTable } = useMergeSelectionTable({
     candidateData: mergedData,
+    disableSelection: true,
   });
 
   return (

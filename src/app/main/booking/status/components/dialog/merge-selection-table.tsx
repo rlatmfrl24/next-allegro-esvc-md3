@@ -14,8 +14,10 @@ import {
 
 export const useMergeSelectionTable = ({
   candidateData,
+  disableSelection,
 }: {
   candidateData: MergeTableType[];
+  disableSelection?: boolean;
 }) => {
   const columnHelper = createColumnHelper<MergeTableType>();
   const [mergeCandidateData, setMergeCandidateData] =
@@ -24,6 +26,7 @@ export const useMergeSelectionTable = ({
   const columns = [
     columnHelper.display({
       id: "selection",
+      enableHiding: disableSelection,
       cell: (props) => {
         return (
           <MdCheckbox
@@ -173,7 +176,11 @@ export const useMergeSelectionTable = ({
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="mx-2 group">
+                  <th
+                    key={header.id}
+                    className="mx-2 group"
+                    hidden={header.column.columnDef.enableHiding}
+                  >
                     <div
                       className={`mx-px w-full border-r border-r-outlineVariant h-8 flex items-center px-2 group-last:border-r-0 group-first:border-r-0`}
                     >
@@ -194,14 +201,24 @@ export const useMergeSelectionTable = ({
           <tbody>
             {table.getRowModel().rows.map((row) => {
               return (
-                <tr key={row.id} className="group cursor-pointer">
+                <tr
+                  key={row.id}
+                  className={`group ${
+                    disableSelection ? "" : "cursor-pointer"
+                  }`}
+                >
                   {row.getVisibleCells().map((cell) => {
                     return (
                       <td
                         key={cell.id}
-                        className="mx-2 p-0 group bg-white border-r border-r-outlineVariant last:border-r-0 first:border-r-0 group-hover:bg-primary-80 group-first:bg-primary-80"
+                        hidden={cell.column.columnDef.enableHiding}
+                        className={`mx-2 p-0 group bg-white border-r border-r-outlineVariant last:border-r-0 first:border-r-0 ${
+                          disableSelection
+                            ? ""
+                            : "group-hover:bg-primary-80 group-first:bg-primary-80"
+                        } `}
                         onClick={() => {
-                          if (row.index === 0) return;
+                          if (row.index === 0 || disableSelection) return;
 
                           if (
                             mergeCandidateData.findIndex(
