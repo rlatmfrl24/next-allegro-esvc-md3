@@ -18,6 +18,7 @@ import {
   BulkContainerInformationType,
   BookingStatusTableProps,
   BookingTemplateProps,
+  MergeTableType,
 } from "../util/typeDef/booking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 import { createDummyBooking } from "../main/booking/template/components/util";
@@ -363,4 +364,9 @@ export const BookingTemplateListState = atom<BookingTemplateProps[]>({
       information: createDummyBooking(),
     },
   ],
+});
+
+export const BookingMergeState = atom<MergeTableType[]>({
+  key: "bookingMergeState",
+  default: [],
 });

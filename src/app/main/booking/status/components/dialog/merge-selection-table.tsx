@@ -1,103 +1,254 @@
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+
 import {
+  BookingMergeState,
+  CurrentBookingDataState,
+} from "@/app/store/booking.store";
+import tableStyles from "@/app/styles/table.module.css";
+import { MdCheckbox } from "@/app/util/md3";
+import { MergeTableType } from "@/app/util/typeDef/booking";
+import {
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
-  Table,
   useReactTable,
 } from "@tanstack/react-table";
-import tableStyles from "@/app/styles/table.module.css";
-import { MdTypography } from "../../../../../components/typography";
-import { use, useEffect, useState } from "react";
+import { MdTypography } from "@/app/components/typography";
 
-export const MergeSelectionTable = ({
-  data,
-  columnDefs,
-  className,
-  onRowSelectionChange,
+export const useMergeSelectionTable = ({
+  candidateData,
 }: {
-  data: any[];
-  columnDefs: any[];
-  className?: string;
-  onRowSelectionChange?: (rowSelection: any) => void;
+  candidateData: MergeTableType[];
 }) => {
-  const [rowSelection, setRowSelection] = useState({});
+  const columnHelper = createColumnHelper<MergeTableType>();
+  const [mergeCandidateData, setMergeCandidateData] =
+    useRecoilState(BookingMergeState);
+
+  const columns = [
+    columnHelper.display({
+      id: "selection",
+      cell: (props) => {
+        return (
+          <MdCheckbox
+            disabled={props.row.index === 0}
+            className="m-2"
+            checked={
+              mergeCandidateData.findIndex(
+                (data) =>
+                  data.bookingNumber === props.row.original.bookingNumber
+              ) !== -1
+            }
+          />
+        );
+      },
+    }),
+
+    columnHelper.display({
+      id: "sequence",
+      header: "Seq.",
+      cell: (props) => {
+        return (
+          <MdTypography variant="body" size="medium" className="flex-1 p-2">
+            {props.row.index + 1}
+          </MdTypography>
+        );
+      },
+    }),
+    columnHelper.accessor("bookingNumber", {
+      id: "bookingNo",
+      header: "Booking No.",
+      cell: (props) => {
+        return (
+          <MdTypography variant="body" size="medium" className="flex-1 p-2">
+            {props.cell.getValue()}
+          </MdTypography>
+        );
+      },
+    }),
+    columnHelper.accessor("totalWeight", {
+      id: "totalWeight",
+      header: "Total Weight(KG)",
+      size: 120,
+      cell: (props) => {
+        return (
+          <MdTypography
+            variant="body"
+            size="medium"
+            className="flex-1 text-right p-2"
+          >
+            {props.cell
+              .getValue()
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </MdTypography>
+        );
+      },
+    }),
+    columnHelper.accessor("containers", {
+      id: "typeSize",
+      header: "Type/Size",
+      size: 240,
+      cell: (props) => {
+        return (
+          <div className="flex flex-col flex-1">
+            {props.cell.getValue().map((container, index) => {
+              return (
+                <MdTypography
+                  key={index}
+                  variant="body"
+                  size="medium"
+                  className="flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0"
+                >
+                  {container.type + " " + container.size + "ft"}
+                </MdTypography>
+              );
+            })}
+          </div>
+        );
+      },
+    }),
+    columnHelper.accessor("containers", {
+      id: "quantity",
+      header: "Qty",
+      size: 80,
+      cell: (props) => {
+        return (
+          <div className="flex flex-col flex-1">
+            {props.cell.getValue().map((container, index) => {
+              return (
+                <MdTypography
+                  key={index}
+                  variant="body"
+                  size="medium"
+                  className="flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0 text-right"
+                >
+                  {container.quantity}
+                </MdTypography>
+              );
+            })}
+          </div>
+        );
+      },
+    }),
+    columnHelper.accessor("emptyPickupPlace", {
+      id: "emptyPickupPlace",
+      header: "Empty Pick-up CY",
+      size: 240,
+      cell: (props) => {
+        return (
+          <MdTypography variant="body" size="medium" className="flex-1 p-2">
+            {props.cell.getValue().code}
+          </MdTypography>
+        );
+      },
+    }),
+    columnHelper.accessor("emptyPickupDate", {
+      id: "emptyPickupDate",
+      header: "Empty Pick-up Date",
+      size: 200,
+      cell: (props) => {
+        return (
+          <MdTypography variant="body" size="medium" className="flex-1 p-2">
+            {props.cell.getValue().toFormat("yyyy. MM. dd")}
+          </MdTypography>
+        );
+      },
+    }),
+  ];
+
   const table = useReactTable({
-    data,
-    columns: columnDefs,
-    state: {
-      rowSelection,
-    },
+    data: candidateData,
+    columns,
     enableRowSelection: true,
     getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
   });
 
-  useEffect(() => {
-    table.getRowModel().rows[0].toggleSelected();
-  }, [table]);
+  function resetSelection() {
+    console.log("reset");
+    setMergeCandidateData([candidateData[0]]);
+  }
 
-  useEffect(() => {
-    const selectedRows = table
-      .getRowModel()
-      .rows.filter((row) => row.getIsSelected())
-      .map((row) => row.original);
-
-    onRowSelectionChange && onRowSelectionChange(selectedRows);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rowSelection]);
-
-  return (
-    <div className={`w-full flex relative ${className}`}>
-      <table className={tableStyles.table}>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="mx-2 group">
-                  <div
-                    className={`mx-px w-full border-r border-r-outlineVariant h-8 flex items-center px-2 group-last:border-r-0 group-first:border-r-0`}
-                  >
-                    <MdTypography variant="body" size="medium" prominent>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </MdTypography>
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id} className="group cursor-pointer">
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td
-                      key={cell.id}
-                      className="mx-2 p-0 group bg-white border-r border-r-outlineVariant last:border-r-0 first:border-r-0 group-hover:bg-primary-80 group-first:bg-primary-80"
-                      onClick={() => {
-                        row.index !== 0 && row.toggleSelected();
-                      }}
+  function renderTable() {
+    return (
+      <div className={`w-full flex relative mt-2`}>
+        <table className={tableStyles.table}>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="mx-2 group">
+                    <div
+                      className={`mx-px w-full border-r border-r-outlineVariant h-8 flex items-center px-2 group-last:border-r-0 group-first:border-r-0`}
                     >
-                      <div className={`w-full flex-1 flex items-center`}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </div>
-                    </td>
-                  );
-                })}
+                      <MdTypography variant="body" size="medium" prominent>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </MdTypography>
+                    </div>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => {
+              return (
+                <tr key={row.id} className="group cursor-pointer">
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td
+                        key={cell.id}
+                        className="mx-2 p-0 group bg-white border-r border-r-outlineVariant last:border-r-0 first:border-r-0 group-hover:bg-primary-80 group-first:bg-primary-80"
+                        onClick={() => {
+                          if (row.index === 0) return;
+
+                          if (
+                            mergeCandidateData.findIndex(
+                              (data) =>
+                                data.bookingNumber ===
+                                cell.row.original.bookingNumber
+                            ) !== -1
+                          ) {
+                            setMergeCandidateData((prev) =>
+                              prev.filter(
+                                (data) =>
+                                  data.bookingNumber !==
+                                  cell.row.original.bookingNumber
+                              )
+                            );
+                          } else {
+                            setMergeCandidateData((prev) => [
+                              ...prev,
+                              cell.row.original,
+                            ]);
+                          }
+                        }}
+                      >
+                        <div className={`w-full flex-1 flex items-center`}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  return {
+    renderTable,
+    resetSelection,
+  };
 };

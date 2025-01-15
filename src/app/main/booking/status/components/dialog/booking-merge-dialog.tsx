@@ -1,31 +1,36 @@
 "use client";
+import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/merge-selection-table";
 import {
-  CargoPickUpReturnState,
-  ContainerState,
+  BookingMergeState,
   CurrentBookingDataState,
   LocationScheduleState,
 } from "@/app/store/booking.store";
-import {
-  MdCheckbox,
-  MdDialog,
-  MdFilledButton,
-  MdOutlinedButton,
-} from "@/app/util/md3";
-import { createColumnHelper } from "@tanstack/react-table";
-import { DateTime } from "luxon";
-import { PlaceInformationType } from "@/app/util/typeDef/schedule";
-import { MergeSelectionTable } from "@/app/main/booking/status/components/dialog/merge-selection-table";
-import { createDummyPlaceInformation } from "@/app/main/schedule/util";
+import { MdDialog, MdFilledButton, MdOutlinedButton } from "@/app/util/md3";
+import { MergeTableType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
+import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 
 export function useBookingMergeDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState<"selection" | "confirmation">(
+    "selection"
+  );
+  const [mergeData, setMergeData] = useRecoilState(BookingMergeState);
+  const currentBookingData = useRecoilValue(CurrentBookingDataState);
+  const candidateData = useMemo(() => {
+    return makeMergeCandidateData(currentBookingData?.bookingNo || "");
+  }, [currentBookingData?.bookingNo]);
+
+  useEffect(() => {
+    setMergeData([candidateData[0]]);
+  }, [candidateData, setMergeData]);
 
   function renderDialog() {
     return (
@@ -33,6 +38,7 @@ export function useBookingMergeDialog() {
         <MdDialog
           open={isDialogOpen}
           closed={() => {
+            setCurrentStep("selection");
             setIsDialogOpen(false);
           }}
           cancel={(e) => {
@@ -40,15 +46,28 @@ export function useBookingMergeDialog() {
           }}
           className="min-w-[960px]"
         >
-          <BookingMergeSelection
-            handleAction={(action) => {
-              if (action === "merge") {
-                console.log("Merge");
-              } else {
-                setIsDialogOpen(false);
-              }
-            }}
-          />
+          {currentStep === "selection" ? (
+            <BookingMergeSelection
+              data={candidateData}
+              handleAction={(action) => {
+                if (action === "merge") {
+                  setCurrentStep("confirmation");
+                } else {
+                  setIsDialogOpen(false);
+                }
+              }}
+            />
+          ) : (
+            <BookingMergeConfirmation
+              handleAction={(action) => {
+                if (action === "back") {
+                  setCurrentStep("selection");
+                } else {
+                  setIsDialogOpen(false);
+                }
+              }}
+            />
+          )}
         </MdDialog>
       </Portal>
     );
@@ -61,12 +80,18 @@ export function useBookingMergeDialog() {
 }
 
 const BookingMergeSelection = ({
+  data,
   handleAction,
 }: {
+  data: MergeTableType[];
   handleAction: (action: string) => void;
 }) => {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
   const currentLocationScheduleData = useRecoilValue(LocationScheduleState);
+  const [selectedData, setSelectedData] = useRecoilState(BookingMergeState);
+  const { renderTable, resetSelection } = useMergeSelectionTable({
+    candidateData: data,
+  });
 
   return (
     <>
@@ -133,17 +158,19 @@ const BookingMergeSelection = ({
           </MdTypography>
         </div>
         <DetailTitle title="Container Information" />
-        <BookingMergeTable />
+        {renderTable()}
       </div>
       <div slot="actions">
         <MdOutlinedButton
           onClick={() => {
+            resetSelection();
             handleAction("close");
           }}
         >
           Close
         </MdOutlinedButton>
         <MdFilledButton
+          disabled={selectedData.length < 2}
           onClick={() => {
             handleAction("merge");
           }}
@@ -155,266 +182,102 @@ const BookingMergeSelection = ({
   );
 };
 
-const BookingMergeConfirmation = () => {
+const BookingMergeConfirmation = ({
+  handleAction,
+}: {
+  handleAction: (action: string) => void;
+}) => {
+  const [mergeData, setMergeData] = useRecoilState(BookingMergeState);
+
   return (
     <>
       <div slot="headline">Merge Information</div>
-      <div slot="actions">
-        <MdOutlinedButton>Cancel</MdOutlinedButton>
-        <MdFilledButton>Merge</MdFilledButton>
+      <div slot="actions" className="justify-between">
+        <MdOutlinedButton
+          onClick={() => {
+            handleAction("back");
+          }}
+        >
+          Back
+        </MdOutlinedButton>
+        <div className="flex gap-2">
+          <MdOutlinedButton
+            onClick={() => {
+              handleAction("close");
+            }}
+          >
+            Close
+          </MdOutlinedButton>
+          <MdFilledButton
+            onClick={() => {
+              handleAction("confirm");
+            }}
+          >
+            Confirm
+          </MdFilledButton>
+        </div>
       </div>
     </>
   );
 };
 
-const BookingMergeTable = () => {
-  type MergeTableType = {
-    bookingNumber: string;
-    totalWeight: string;
-    containers: {
-      type: string;
-      size: string;
-      quantity: number;
-    }[];
-    emptyPickupPlace: PlaceInformationType;
-    emptyPickupDate: DateTime;
-  };
-  const columnHelper = createColumnHelper<MergeTableType>();
-
-  const currentBookingData = useRecoilValue(CurrentBookingDataState);
-  const currentCargoPickUpReturnData = useRecoilValue(CargoPickUpReturnState);
-  const currentContainerData = useRecoilValue(ContainerState);
-
-  const sourceData = useMemo(() => {
-    return {
-      bookingNumber: currentBookingData?.bookingNo,
-      totalWeight: currentCargoPickUpReturnData?.grossWeight,
-      containers: [
-        ...currentContainerData?.dry.map((container) => {
-          return {
-            type: container.type,
-            size: container.size,
-            quantity: container.quantity,
-          };
+function makeMergeCandidateData(sourceBookingNumber: string) {
+  return Array.from({ length: 10 }).map((_, index) => {
+    const containers = Array.from({
+      length: faker.number.int({
+        min: 1,
+        max: 5,
+      }),
+    }).map(() => {
+      return {
+        type: faker.helpers.arrayElement([
+          "Dry",
+          "Reefer",
+          "Open Top",
+          "Flat Rack",
+          "Tank",
+        ]),
+        size: faker.helpers.arrayElement(["20", "40"]),
+        quantity: faker.number.int({
+          min: 1,
+          max: 10,
         }),
-        ...currentContainerData?.reefer.map((container) => {
-          return {
-            type: container.type,
-            size: container.size,
-            quantity: container.quantity,
-          };
-        }),
-        ...currentContainerData?.opentop.map((container) => {
-          return {
-            type: container.type,
-            size: container.size,
-            quantity: container.quantity,
-          };
-        }),
-        ...currentContainerData?.flatrack.map((container) => {
-          return {
-            type: container.type,
-            size: container.size,
-            quantity: container.quantity,
-          };
-        }),
-        ...currentContainerData?.tank.map((container) => {
-          return {
-            type: container.type,
-            size: container.size,
-            quantity: container.quantity,
-          };
-        }),
-      ],
-      emptyPickupPlace: currentCargoPickUpReturnData?.emptyPickUpLocation,
-      emptyPickupDate: currentCargoPickUpReturnData?.emptyPickUpDate,
-    } as MergeTableType;
-  }, [currentBookingData, currentCargoPickUpReturnData, currentContainerData]);
-
-  const isSourceDataEmpty = useMemo(() => {
-    return Object.values(sourceData).some((value) => {
-      if (value === null || value === undefined) {
-        return true;
-      }
-
-      if (Array.isArray(value) && value.length === 0) {
-        return true;
-      }
-
-      return false;
+      };
     });
-  }, [sourceData]);
 
-  const candidateData = Array.from({ length: 10 }).map((_, index) => {
+    //remove data if type and size are duplicated and sort by type and size
+    const uniqueContainers = containers
+      .filter(
+        (container, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.type === container.type && t.size === container.size
+          )
+      )
+      .sort((a, b) => {
+        if (a.type > b.type) {
+          return 1;
+        } else if (a.type < b.type) {
+          return -1;
+        } else {
+          return parseInt(a.size) - parseInt(b.size);
+        }
+      });
+
     return {
-      bookingNumber: faker.string.alphanumeric(10).toUpperCase(),
+      bookingNumber:
+        index === 0
+          ? sourceBookingNumber
+          : faker.string.alphanumeric(10).toUpperCase(),
       totalWeight: faker.number
         .int({
           min: 1000,
-          max: 10000,
+          max: 100000,
         })
         .toString(),
-      containers: Array.from({
-        length: faker.number.int({
-          min: 1,
-          max: 5,
-        }),
-      }).map(() => {
-        return {
-          type: faker.helpers.arrayElement([
-            "Dry",
-            "Reefer",
-            "Open Top",
-            "Flat Rack",
-            "Tank",
-          ]),
-          size: faker.helpers.arrayElement(["20", "40"]),
-          quantity: faker.number.int({
-            min: 1,
-            max: 10,
-          }),
-        };
-      }),
+      containers: uniqueContainers,
       emptyPickupPlace: createDummyPlaceInformation(faker.location.city()),
       emptyPickupDate: DateTime.fromJSDate(faker.date.recent()),
     } as MergeTableType;
   });
-
-  const columns = [
-    columnHelper.display({
-      id: "selection",
-      cell: (props) => {
-        return (
-          <MdCheckbox
-            disabled={props.row.index === 0}
-            className="m-2"
-            checked={props.row.getIsSelected()}
-          />
-        );
-      },
-    }),
-
-    columnHelper.display({
-      id: "sequence",
-      header: "Seq.",
-      cell: (props) => {
-        return (
-          <MdTypography variant="body" size="medium" className="flex-1 p-2">
-            {props.row.index + 1}
-          </MdTypography>
-        );
-      },
-    }),
-    columnHelper.accessor("bookingNumber", {
-      id: "bookingNo",
-      header: "Booking No.",
-      cell: (props) => {
-        return (
-          <MdTypography variant="body" size="medium" className="flex-1 p-2">
-            {props.cell.getValue()}
-          </MdTypography>
-        );
-      },
-    }),
-    columnHelper.accessor("totalWeight", {
-      id: "totalWeight",
-      header: "Total Weight(KG)",
-      size: 120,
-      cell: (props) => {
-        return (
-          <MdTypography
-            variant="body"
-            size="medium"
-            className="flex-1 text-right p-2"
-          >
-            {props.cell
-              .getValue()
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </MdTypography>
-        );
-      },
-    }),
-    columnHelper.accessor("containers", {
-      id: "typeSize",
-      header: "Type/Size",
-      size: 240,
-      cell: (props) => {
-        return (
-          <div className="flex flex-col flex-1">
-            {props.cell.getValue().map((container, index) => {
-              return (
-                <MdTypography
-                  key={index}
-                  variant="body"
-                  size="medium"
-                  className="flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0"
-                >
-                  {container.type + " " + container.size + "ft"}
-                </MdTypography>
-              );
-            })}
-          </div>
-        );
-      },
-    }),
-    columnHelper.accessor("containers", {
-      id: "quantity",
-      header: "Qty",
-      size: 80,
-      cell: (props) => {
-        return (
-          <div className="flex flex-col flex-1">
-            {props.cell.getValue().map((container, index) => {
-              return (
-                <MdTypography
-                  key={index}
-                  variant="body"
-                  size="medium"
-                  className="flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0 text-right"
-                >
-                  {container.quantity}
-                </MdTypography>
-              );
-            })}
-          </div>
-        );
-      },
-    }),
-    columnHelper.accessor("emptyPickupPlace", {
-      id: "emptyPickupPlace",
-      header: "Empty Pick-up CY",
-      size: 240,
-      cell: (props) => {
-        return (
-          <MdTypography variant="body" size="medium" className="flex-1 p-2">
-            {props.cell.getValue().code}
-          </MdTypography>
-        );
-      },
-    }),
-    columnHelper.accessor("emptyPickupDate", {
-      id: "emptyPickupDate",
-      header: "Empty Pick-up Date",
-      size: 200,
-      cell: (props) => {
-        return (
-          <MdTypography variant="body" size="medium" className="flex-1 p-2">
-            {props.cell.getValue().toFormat("yyyy. MM. dd")}
-          </MdTypography>
-        );
-      },
-    }),
-  ];
-
-  return (
-    <MergeSelectionTable
-      data={isSourceDataEmpty ? candidateData : [sourceData, ...candidateData]}
-      columnDefs={columns}
-      className="mt-2"
-      onRowSelectionChange={(selectedRows) => {
-        console.log(selectedRows);
-      }}
-    />
-  );
-};
+}
