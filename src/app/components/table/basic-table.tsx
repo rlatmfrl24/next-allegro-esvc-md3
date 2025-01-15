@@ -65,7 +65,6 @@ declare module "@tanstack/react-table" {
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData extends RowData, TValue> {
     format?: (value: TValue) => string;
-    enableRowSpan?: boolean;
   }
 }
 

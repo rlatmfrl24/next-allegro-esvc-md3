@@ -30,7 +30,7 @@ import { CodeCopyButton } from "./components/code-copy-button";
 import { useSetRecoilState } from "recoil";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
 import VesselStatusNotesDialog from "./components/vessel-status-notes";
-import { useBookingMergeDialog } from "./components/booking-merge-dialog";
+import { useBookingMergeDialog } from "./components/dialog/booking-merge-dialog";
 
 const HasShippingInstructionIcon = () => {
   return (
@@ -121,7 +121,7 @@ export default function BookingStatusTable() {
 
   const {
     renderDialog: renderBookingMergeDialog,
-    setOpen: setIsBookingMergeDialogOpen,
+    setIsDialogOpen: setIsBookingMergeDialogOpen,
   } = useBookingMergeDialog();
 
   useEffect(() => {
