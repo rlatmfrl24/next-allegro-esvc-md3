@@ -198,6 +198,7 @@ const BookingMergeConfirmation = ({
   const { renderTable: afterRenderTable } = useMergeSelectionTable({
     candidateData: mergedData,
     disableSelection: true,
+    isMerged: true,
   });
 
   return (
@@ -208,7 +209,7 @@ const BookingMergeConfirmation = ({
           <DetailTitle title="Before" />
           {beforeRenderTable()}
         </div>
-        <div className="p-4 bg-white rounded-lg">
+        <div className="p-4 bg-white rounded-lg border-2 border-primary">
           <DetailTitle title="After" />
           {afterRenderTable()}
         </div>

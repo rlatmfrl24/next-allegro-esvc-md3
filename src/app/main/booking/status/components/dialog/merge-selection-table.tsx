@@ -15,9 +15,11 @@ import {
 export const useMergeSelectionTable = ({
   candidateData,
   disableSelection,
+  isMerged,
 }: {
   candidateData: MergeTableType[];
   disableSelection?: boolean;
+  isMerged?: boolean;
 }) => {
   const columnHelper = createColumnHelper<MergeTableType>();
   const [mergeCandidateData, setMergeCandidateData] =
@@ -89,15 +91,33 @@ export const useMergeSelectionTable = ({
       header: "Type/Size",
       size: 240,
       cell: (props) => {
+        const firstContainer = mergeCandidateData[0].containers;
+
         return (
           <div className="flex flex-col flex-1">
             {props.cell.getValue().map((container, index) => {
+              // compare with first mergeCandidateData container
+              const currentContainerTypeSize = container.type + container.size;
+              const currentContainerQuantity = container.quantity;
+              const firstContainerQuantity = firstContainer.find(
+                (firstContainer) =>
+                  firstContainer.type + firstContainer.size ===
+                  currentContainerTypeSize
+              )?.quantity;
+
+              const isDifferentQuantity =
+                currentContainerQuantity !== firstContainerQuantity;
+
               return (
                 <MdTypography
                   key={index}
                   variant="body"
                   size="medium"
-                  className="flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0"
+                  className={`flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0 ${
+                    isMerged && isDifferentQuantity
+                      ? "text-primary font-semibold bg-primary-80"
+                      : ""
+                  }`}
                 >
                   {container.type + " " + container.size + "ft"}
                 </MdTypography>
@@ -112,15 +132,32 @@ export const useMergeSelectionTable = ({
       header: "Qty",
       size: 80,
       cell: (props) => {
+        const firstContainer = mergeCandidateData[0].containers;
+
         return (
           <div className="flex flex-col flex-1">
             {props.cell.getValue().map((container, index) => {
+              const currentContainerTypeSize = container.type + container.size;
+              const currentContainerQuantity = container.quantity;
+              const firstContainerQuantity = firstContainer.find(
+                (firstContainer) =>
+                  firstContainer.type + firstContainer.size ===
+                  currentContainerTypeSize
+              )?.quantity;
+
+              const isDifferentQuantity =
+                currentContainerQuantity !== firstContainerQuantity;
+
               return (
                 <MdTypography
                   key={index}
                   variant="body"
                   size="medium"
-                  className="flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0 text-right"
+                  className={`flex-1 h-12 p-2 border-b border-b-outlineVariant w-full last:border-b-0 text-right ${
+                    isMerged && isDifferentQuantity
+                      ? "text-primary font-semibold bg-primary-80"
+                      : ""
+                  }`}
                 >
                   {container.quantity}
                 </MdTypography>
@@ -212,11 +249,15 @@ export const useMergeSelectionTable = ({
                       <td
                         key={cell.id}
                         hidden={cell.column.columnDef.enableHiding}
-                        className={`mx-2 p-0 group bg-white border-r border-r-outlineVariant last:border-r-0 first:border-r-0 ${
+                        className={`mx-2 p-0 group border-r border-r-outlineVariant last:border-r-0 first:border-r-0 ${
                           disableSelection
                             ? ""
                             : "group-hover:bg-primary-80 group-first:bg-primary-80"
-                        } `}
+                        } ${
+                          isMerged && cell.column.id === "totalWeight"
+                            ? "bg-primary-80 text-primary font-semibold"
+                            : "bg-white"
+                        }`}
                         onClick={() => {
                           if (row.index === 0 || disableSelection) return;
 
