@@ -18,6 +18,7 @@ import {
   BulkContainerInformationType,
   BookingStatusTableProps,
   BookingTemplateProps,
+  MergeTableType,
 } from "../util/typeDef/booking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 import { createDummyBooking } from "../main/booking/template/components/util";
@@ -363,4 +364,52 @@ export const BookingTemplateListState = atom<BookingTemplateProps[]>({
       information: createDummyBooking(),
     },
   ],
+});
+
+export const BookingMergeState = atom<MergeTableType[]>({
+  key: "bookingMergeState",
+  default: [],
+});
+
+export const BookingMergeSelector = selector({
+  key: "bookingMergeSelector",
+  get: ({ get }) => {
+    const totalData = get(BookingMergeState);
+    const result = totalData.reduce(
+      (acc, cur) => {
+        const mergedContainers = cur.containers.reduce((acc, cur) => {
+          const index = acc.findIndex(
+            (t) => t.type === cur.type && t.size === cur.size
+          );
+          if (index !== -1) {
+            acc.splice(index, 1, {
+              ...acc[index],
+              quantity: acc[index].quantity + cur.quantity,
+            });
+          } else {
+            acc.push(cur);
+          }
+          return acc;
+        }, acc.containers);
+
+        acc.bookingNumber = acc.bookingNumber;
+        acc.totalWeight = (
+          parseInt(acc.totalWeight) + parseInt(cur.totalWeight)
+        ).toString();
+        acc.containers = mergedContainers;
+        acc.emptyPickupPlace = acc.emptyPickupPlace;
+        acc.emptyPickupDate = acc.emptyPickupDate;
+        return acc;
+      },
+      {
+        bookingNumber: totalData[0].bookingNumber,
+        totalWeight: "0",
+        containers: [],
+        emptyPickupPlace: totalData[0].emptyPickupPlace,
+        emptyPickupDate: totalData[0].emptyPickupDate,
+      } as MergeTableType
+    );
+
+    return [result];
+  },
 });
