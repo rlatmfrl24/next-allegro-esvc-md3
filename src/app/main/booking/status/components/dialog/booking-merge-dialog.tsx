@@ -9,6 +9,7 @@ import { MdTypography } from "@/app/components/typography";
 import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/merge-selection-table";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import {
+  BookingMergeSelector,
   BookingMergeState,
   CurrentBookingDataState,
   LocationScheduleState,
@@ -188,10 +189,69 @@ const BookingMergeConfirmation = ({
   handleAction: (action: string) => void;
 }) => {
   const [mergeData, setMergeData] = useRecoilState(BookingMergeState);
+  // const mergedData = useMemo(() => {
+  //   const result = mergeData.reduce(
+  //     (acc, cur) => {
+  //       const mergedContainers = cur.containers.reduce((acc, cur) => {
+  //         const index = acc.findIndex(
+  //           (t) => t.type === cur.type && t.size === cur.size
+  //         );
+  //         if (index !== -1) {
+  //           acc.splice(index, 1, {
+  //             ...acc[index],
+  //             quantity: acc[index].quantity + cur.quantity,
+  //           });
+  //         } else {
+  //           acc.push(cur);
+  //         }
+  //         return acc;
+  //       }, acc.containers);
+
+  //       acc.bookingNumber = cur.bookingNumber;
+  //       acc.totalWeight = (
+  //         parseInt(acc.totalWeight) + parseInt(cur.totalWeight)
+  //       ).toString();
+  //       acc.containers = mergedContainers;
+  //       acc.emptyPickupPlace = cur.emptyPickupPlace;
+  //       acc.emptyPickupDate =
+  //         acc.emptyPickupDate > cur.emptyPickupDate
+  //           ? acc.emptyPickupDate
+  //           : cur.emptyPickupDate;
+  //       return acc;
+  //     },
+  //     {
+  //       bookingNumber: mergeData[0].bookingNumber,
+  //       totalWeight: "0",
+  //       containers: [],
+  //       emptyPickupPlace: mergeData[0].emptyPickupPlace,
+  //       emptyPickupDate: mergeData[0].emptyPickupDate,
+  //     } as MergeTableType
+  //   );
+  //   return result;
+  // }, [mergeData]);
+
+  const mergedData = useRecoilValue(BookingMergeSelector);
+
+  const { renderTable: beforeRenderTable } = useMergeSelectionTable({
+    candidateData: mergeData,
+  });
+  const { renderTable: afterRenderTable } = useMergeSelectionTable({
+    candidateData: mergedData,
+  });
 
   return (
     <>
       <div slot="headline">Merge Information</div>
+      <div slot="content" className="flex flex-col gap-4">
+        <div className="p-4 bg-white rounded-lg">
+          <DetailTitle title="Before" />
+          {beforeRenderTable()}
+        </div>
+        <div className="p-4 bg-white rounded-lg">
+          <DetailTitle title="After" />
+          {afterRenderTable()}
+        </div>
+      </div>
       <div slot="actions" className="justify-between">
         <MdOutlinedButton
           onClick={() => {
