@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
-import {
-  BookingMergeState,
-  CurrentBookingDataState,
-} from "@/app/store/booking.store";
+import { MdTypography } from "@/app/components/typography";
+import { BookingMergeState } from "@/app/store/booking.store";
 import tableStyles from "@/app/styles/table.module.css";
 import { MdCheckbox } from "@/app/util/md3";
 import { MergeTableType } from "@/app/util/typeDef/booking";
@@ -14,7 +11,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MdTypography } from "@/app/components/typography";
 
 export const useMergeSelectionTable = ({
   candidateData,

@@ -7,6 +7,7 @@ import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/merge-selection-table";
+import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import {
   BookingMergeState,
   CurrentBookingDataState,
@@ -15,7 +16,6 @@ import {
 import { MdDialog, MdFilledButton, MdOutlinedButton } from "@/app/util/md3";
 import { MergeTableType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
-import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 
 export function useBookingMergeDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
