@@ -31,6 +31,7 @@ import { useSetRecoilState } from "recoil";
 import { CurrentBookingDataState } from "@/app/store/booking.store";
 import VesselStatusNotesDialog from "./components/vessel-status-notes";
 import { useBookingMergeDialog } from "./components/dialog/booking-merge-dialog";
+import { useBookingSplitDialog } from "./components/dialog/booking-split-dialog";
 
 const HasShippingInstructionIcon = () => {
   return (
@@ -123,6 +124,11 @@ export default function BookingStatusTable() {
     renderDialog: renderBookingMergeDialog,
     setIsDialogOpen: setIsBookingMergeDialogOpen,
   } = useBookingMergeDialog();
+
+  const {
+    renderDialog: renderBookingSplitDialog,
+    setIsDialogOpen: setIsBookingSplitDialogOpen,
+  } = useBookingSplitDialog();
 
   useEffect(() => {
     setTableData(tempData);
@@ -442,6 +448,7 @@ export default function BookingStatusTable() {
       {renderEstimatedTimeofDepartureDialog()}
       {renderVesselInfoDialog()}
       {renderBookingMergeDialog()}
+      {renderBookingSplitDialog()}
       <div className="relative w-full max-w-full h-full">
         <BasicTable
           cookieKey="bookingStatusTable"
@@ -526,7 +533,6 @@ export default function BookingStatusTable() {
                                 <MdTextButton
                                   key={action}
                                   onClick={() => {
-                                    console.log("Merge Clicked");
                                     setIsBookingMergeDialogOpen(true);
                                   }}
                                 >
@@ -534,7 +540,14 @@ export default function BookingStatusTable() {
                                 </MdTextButton>
                               ),
                               Split: (
-                                <MdTextButton key={action}>Split</MdTextButton>
+                                <MdTextButton
+                                  key={action}
+                                  onClick={() => {
+                                    setIsBookingSplitDialogOpen(true);
+                                  }}
+                                >
+                                  Split
+                                </MdTextButton>
                               ),
                             } as Record<string, JSX.Element>
                           )[action])
