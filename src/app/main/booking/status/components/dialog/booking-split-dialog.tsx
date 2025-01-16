@@ -21,7 +21,7 @@ export function useBookingSplitDialog() {
           cancel={(e) => {
             e.preventDefault();
           }}
-          className="min-w-[960px]"
+          className="min-w-[1200px]"
         >
           {currentStep === "process" ? (
             <BookingSplitProcess

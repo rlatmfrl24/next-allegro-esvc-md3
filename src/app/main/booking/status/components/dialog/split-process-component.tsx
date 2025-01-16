@@ -15,7 +15,7 @@ import { BookingSplitType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { CSSProperties, useCallback, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { SplitValidationTable } from "./booking-split-table";
+import { SplitInputTable, SplitValidationTable } from "./booking-split-table";
 
 const BookingSplitInformation = ({
   originBooking,
@@ -108,6 +108,8 @@ export const BookingSplitProcess = ({
 }) => {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
   const [originBooking, setOriginBooking] = useState<BookingSplitType>();
+  const [splitCountQuery, setSplitCountQuery] = useState<string>("2");
+  const [splitCount, setSplitCount] = useState<number>(2);
 
   const makeOriginBooking = useCallback(
     (bookingNumber: string): BookingSplitType => {
@@ -133,6 +135,10 @@ export const BookingSplitProcess = ({
 
       return {
         bookingNumber,
+        weight: faker.number.int({
+          min: 1000,
+          max: 100000,
+        }),
         containers: typeSizeList.map((typeSize, index) => {
           return {
             slot: index + 1,
@@ -140,10 +146,6 @@ export const BookingSplitProcess = ({
             quantity: faker.number.int({
               min: 1,
               max: 10,
-            }),
-            weight: faker.number.int({
-              min: 1000,
-              max: 100000,
             }),
           };
         }),
@@ -191,10 +193,40 @@ export const BookingSplitProcess = ({
                   } as CSSProperties
                 }
                 className="text-right w-28 pt-0"
+                type="number"
+                noSpinner
+                value={splitCountQuery}
+                onInput={(e) => {
+                  const value = e.currentTarget.value;
+                  if (value === "") {
+                    setSplitCountQuery(value);
+                    return;
+                  }
+                  if (value.match(/^[0-9]*$/)) {
+                    setSplitCountQuery(value);
+                  }
+                }}
               />
-              <MdFilledTonalButton className="h-fit">Apply</MdFilledTonalButton>
+              <MdFilledTonalButton
+                className="h-fit"
+                onClick={() => {
+                  setSplitCount(
+                    parseInt(splitCountQuery) > 0
+                      ? parseInt(splitCountQuery)
+                      : 2
+                  );
+                }}
+              >
+                Apply
+              </MdFilledTonalButton>
             </div>
           </div>
+          {originBooking && (
+            <SplitInputTable
+              originBooking={originBooking}
+              splitCount={splitCount}
+            />
+          )}
         </div>
       </div>
       <div slot="actions">

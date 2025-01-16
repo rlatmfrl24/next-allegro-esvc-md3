@@ -254,20 +254,20 @@ export type MergeTableType = {
 
 export type BookingSplitType = {
   bookingNumber: string;
+  weight: number;
   containers: {
     slot: number;
     typeSize: string;
     quantity: number;
-    weight: number;
   }[];
 };
 
 export type SplitTableType = {
-  bookingNumber: string;
+  bookingNumber: string | undefined;
+  weight: number | undefined;
   containers: {
-    typeSize: string;
-    slot: number;
-    quantity: number;
-    weight: number;
+    typeSize: string | undefined;
+    slot: number | undefined;
+    quantity: number | undefined;
   }[];
 };

@@ -60,11 +60,9 @@ declare module "@tanstack/react-table" {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
     updateRow: (rowIndex: number, value: unknown) => void;
   }
-}
-
-declare module "@tanstack/react-table" {
   interface ColumnMeta<TData extends RowData, TValue> {
     format?: (value: TValue) => string;
+    rowSpan?: number;
   }
 }
 

@@ -415,10 +415,7 @@ export const BookingMergeSelector = selector({
   },
 });
 
-export const BookingSplitState = atom<SplitTableType>({
+export const BookingSplitState = atom<SplitTableType[]>({
   key: "bookingSplitState",
-  default: {
-    bookingNumber: "",
-    containers: [],
-  },
+  default: [],
 });
