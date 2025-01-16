@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { CSSProperties, useCallback, useEffect, useMemo } from "react";
 import { useRecoilState } from "recoil";
 
 import { MdTypography } from "@/app/components/typography";
@@ -11,7 +11,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MdOutlinedTextField } from "@/app/util/md3";
+import { MdIcon, MdIconButton, MdOutlinedTextField } from "@/app/util/md3";
+import { AddBoxOutlined, DeleteOutline } from "@mui/icons-material";
 
 export const SplitValidationTable = ({
   originBooking,
@@ -29,6 +30,26 @@ export const SplitValidationTable = ({
       </th>
     );
   };
+  const OriginalContainerList = useMemo(() => {
+    const containerSet = [] as SplitTableType["containers"];
+    let slotCursor = 1;
+
+    originBooking.containers.map((container) => {
+      Array.from({ length: container.quantity }).map(() => {
+        containerSet.push({
+          typeSize: container.typeSize,
+          slot: slotCursor,
+          quantity: 1,
+        });
+        slotCursor++;
+      });
+    });
+
+    console.log("originalBooking: ", originBooking);
+    console.log("containerSet: ", containerSet);
+
+    return containerSet;
+  }, [originBooking]);
 
   return (
     <div className="w-full flex relative mt-2">
@@ -62,14 +83,14 @@ export const SplitValidationTable = ({
                 size="medium"
                 className="text-onSurface text-right px-2 py-3"
               >
-                1
+                TBU
               </MdTypography>
             </td>
             <td className="mx-2 p-0 border-r border-r-outlineVariant">
-              {originBooking.containers.map((container) => {
+              {OriginalContainerList.map((container) => {
                 return (
                   <div
-                    key={container.typeSize}
+                    key={container.typeSize + "_" + container.slot}
                     className="p-2 border-b border-b-outlineVariant last:border-b-0"
                   >
                     {container.typeSize}
@@ -78,11 +99,11 @@ export const SplitValidationTable = ({
               })}
             </td>
             <td className="mx-2 p-0 border-r border-r-outlineVariant">
-              {originBooking.containers.map((container) => {
+              {OriginalContainerList.map((container) => {
                 return (
                   <div
-                    key={container.typeSize}
-                    className="p-2 border-b border-b-outlineVariant text-right last:border-b-0"
+                    key={container.typeSize + "_" + container.slot}
+                    className="p-2 border-b border-b-outlineVariant last:border-b-0 text-right"
                   >
                     {container.slot}
                   </div>
@@ -90,11 +111,11 @@ export const SplitValidationTable = ({
               })}
             </td>
             <td className="mx-2 p-0 border-r border-r-outlineVariant">
-              {originBooking.containers.map((container) => {
+              {OriginalContainerList.map((container) => {
                 return (
                   <div
-                    key={container.typeSize}
-                    className="p-2 border-b border-b-outlineVariant text-right last:border-b-0"
+                    key={container.typeSize + "_" + container.slot}
+                    className="p-2 border-b border-b-outlineVariant last:border-b-0 text-right"
                   >
                     {container.quantity}
                   </div>
@@ -102,13 +123,13 @@ export const SplitValidationTable = ({
               })}
             </td>
             <td className="mx-2 p-0">
-              {originBooking.containers.map((container) => {
+              {OriginalContainerList.map((container) => {
                 return (
                   <div
-                    key={container.typeSize}
-                    className="p-2 border-b border-b-outlineVariant text-right last:border-b-0"
+                    key={container.typeSize + "_" + container.slot}
+                    className="p-2 border-b border-b-outlineVariant last:border-b-0 text-right"
                   >
-                    {container.quantity}
+                    TBU
                   </div>
                 );
               })}
@@ -128,7 +149,6 @@ export const SplitInputTable = ({
   splitCount: number;
 }) => {
   const [tableData, setTableData] = useRecoilState(BookingSplitState);
-
   const columnHelper = createColumnHelper<SplitTableType>();
 
   const initializeSplitTableData = useCallback(
@@ -137,13 +157,13 @@ export const SplitInputTable = ({
         {
           bookingNumber: originBooking.bookingNumber,
           weight: originBooking.weight,
-          containers: originBooking.containers.map((container) => {
-            return {
-              typeSize: container.typeSize,
-              slot: container.slot,
-              quantity: container.quantity,
-            };
-          }),
+          containers: [
+            {
+              typeSize: undefined,
+              slot: undefined,
+              quantity: undefined,
+            },
+          ],
         },
         ...Array.from({ length: splitCount - 1 }).map(() => {
           return {
@@ -167,9 +187,11 @@ export const SplitInputTable = ({
     setTableData(initializeSplitTableData(originBooking, splitCount));
   }, [initializeSplitTableData, originBooking, setTableData, splitCount]);
 
-  useEffect(() => {
-    console.log(tableData);
-  }, [tableData]);
+  const InputStyles = {
+    "--md-sys-typescale-body-large-size": "14px",
+    "--md-outlined-field-top-space": "6px",
+    "--md-outlined-field-bottom-space": "6px",
+  } as CSSProperties;
 
   const columnDefs = [
     columnHelper.display({
@@ -180,7 +202,7 @@ export const SplitInputTable = ({
           <MdTypography
             variant="body"
             size="medium"
-            className="text-onSurface flex items-center h-full"
+            className="text-onSurface flex items-center h-full px-2"
           >
             {props.row.index + 1}
           </MdTypography>
@@ -201,7 +223,7 @@ export const SplitInputTable = ({
           <MdTypography
             variant="body"
             size="medium"
-            className="text-onSurface flex items-center h-full"
+            className="text-onSurface flex items-center h-full px-2"
           >
             {props.getValue() || "-"}
           </MdTypography>
@@ -213,7 +235,14 @@ export const SplitInputTable = ({
       header: "Total Weight (KG)",
       cell: (props) => {
         return (
-          <MdOutlinedTextField className="w-full" type="number" noSpinner />
+          <div className="p-2">
+            <MdOutlinedTextField
+              style={InputStyles}
+              className="w-full text-right"
+              type="number"
+              noSpinner
+            />
+          </div>
         );
       },
     }),
@@ -232,10 +261,59 @@ export const SplitInputTable = ({
         columnHelper.accessor("containers.quantity", {
           id: "quantity",
           header: "Qty",
+          cell: (props) => {
+            return (
+              <div className="w-full flex flex-col">
+                {props.row.original.containers.map((container) => {
+                  return (
+                    <div
+                      className="flex items-center gap-2 p-2 border-b border-b-outlineVariant last:border-b-0"
+                      key={container.typeSize}
+                    >
+                      <MdOutlinedTextField
+                        style={InputStyles}
+                        className="w-full text-right"
+                        type="number"
+                        noSpinner
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          },
         }),
         columnHelper.display({
           id: "edit",
           header: "Edit",
+          cell: (props) => {
+            return (
+              <div className="w-full flex flex-col">
+                {props.row.original.containers.map((container, index) => {
+                  return (
+                    <div
+                      key={container.typeSize}
+                      className="p-1.5 flex justify-center border-b border-b-outlineVariant last:border-b-0"
+                    >
+                      {index === 0 ? (
+                        <MdIconButton>
+                          <MdIcon>
+                            <AddBoxOutlined />
+                          </MdIcon>
+                        </MdIconButton>
+                      ) : (
+                        <MdIconButton>
+                          <MdIcon>
+                            <DeleteOutline />
+                          </MdIcon>
+                        </MdIconButton>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          },
         }),
       ],
     }),
@@ -264,7 +342,6 @@ export const SplitInputTable = ({
                   const leafs = header.getLeafHeaders();
                   rowSpan = leafs[leafs.length - 1].depth - header.depth;
                 }
-                console.log(header.id, rowSpan);
 
                 return (
                   <th
@@ -300,7 +377,7 @@ export const SplitInputTable = ({
                   return (
                     <td
                       key={cell.id}
-                      className="h-0 p-2 border-r border-r-outlineVariant last:border-r-0"
+                      className="p-0 h-0 border-r border-r-outlineVariant last:border-r-0"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

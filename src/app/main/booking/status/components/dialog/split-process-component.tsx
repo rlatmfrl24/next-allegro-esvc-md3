@@ -145,7 +145,7 @@ export const BookingSplitProcess = ({
             typeSize,
             quantity: faker.number.int({
               min: 1,
-              max: 10,
+              max: 5,
             }),
           };
         }),
