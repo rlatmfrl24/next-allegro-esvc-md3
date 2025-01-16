@@ -45,9 +45,6 @@ export const SplitValidationTable = ({
       });
     });
 
-    console.log("originalBooking: ", originBooking);
-    console.log("containerSet: ", containerSet);
-
     return containerSet;
   }, [originBooking]);
 
