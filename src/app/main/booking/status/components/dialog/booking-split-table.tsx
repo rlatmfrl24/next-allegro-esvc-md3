@@ -148,6 +148,8 @@ export const SplitInputTable = ({
   const [tableData, setTableData] = useRecoilState(BookingSplitState);
   const columnHelper = createColumnHelper<SplitTableType>();
 
+  //TODO: Implement Split Table Data Initialization
+
   const initializeSplitTableData = useCallback(
     (originBooking: BookingSplitType, splitCount: number) => {
       return [
