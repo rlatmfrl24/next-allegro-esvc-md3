@@ -264,8 +264,10 @@ export type BookingSplitType = {
 
 export type SplitTableType = {
   bookingNumber: string;
-  weight: number;
-  typeSize: string;
-  slot: number;
-  quantity: number;
+  containers: {
+    typeSize: string;
+    slot: number;
+    quantity: number;
+    weight: number;
+  }[];
 };

@@ -5,10 +5,15 @@ import {
   CurrentBookingDataState,
   LocationScheduleState,
 } from "@/app/store/booking.store";
-import { MdFilledButton, MdOutlinedButton } from "@/app/util/md3";
+import {
+  MdFilledButton,
+  MdFilledTonalButton,
+  MdOutlinedButton,
+  MdOutlinedTextField,
+} from "@/app/util/md3";
 import { BookingSplitType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
-import { useCallback, useEffect, useState } from "react";
+import { CSSProperties, useCallback, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { SplitValidationTable } from "./booking-split-table";
 
@@ -167,7 +172,29 @@ export const BookingSplitProcess = ({
           </>
         )}
         <div className="bg-white p-4 rounded-lg mt-5">
-          <DetailTitle title="Split Information" />
+          <div className="flex items-center justify-between">
+            <DetailTitle title="Split Information" />
+            <div className="flex gap-2 relative">
+              <MdTypography
+                variant="label"
+                size="medium"
+                className="text-onSurface absolute top-1/2 left-3 transform -translate-y-1/2 z-10 bg-white pr-2"
+              >
+                Split
+              </MdTypography>
+              <MdOutlinedTextField
+                style={
+                  {
+                    "--md-sys-typescale-body-large-size": "14px",
+                    "--md-outlined-field-top-space": "0px",
+                    "--md-outlined-field-bottom-space": "0px",
+                  } as CSSProperties
+                }
+                className="text-right w-28 pt-0"
+              />
+              <MdFilledTonalButton className="h-fit">Apply</MdFilledTonalButton>
+            </div>
+          </div>
         </div>
       </div>
       <div slot="actions">

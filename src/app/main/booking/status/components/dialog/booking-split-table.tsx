@@ -1,6 +1,7 @@
 import { MdTypography } from "@/app/components/typography";
 import tableStyles from "@/app/styles/table.module.css";
-import { BookingSplitType } from "@/app/util/typeDef/booking";
+import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
+import { createColumnHelper, useReactTable } from "@tanstack/react-table";
 
 export const SplitValidationTable = ({
   originBooking,
@@ -108,4 +109,18 @@ export const SplitValidationTable = ({
       </table>
     </div>
   );
+};
+
+export const SplitInputTable = () => {
+  const columnHelper = createColumnHelper<SplitTableType>();
+
+  const columnDefs = [
+    columnHelper.display({
+      id: "sequence",
+      header: "Seq.",
+      cell: (props) => {
+        return props.row.index + 1;
+      },
+    }),
+  ];
 };
