@@ -18,6 +18,10 @@
   @apply border-b border-b-outlineVariant align-top;
 }
 
+.table tbody td.split {
+  @apply p-0 h-0 border-r border-r-outlineVariant last:border-r-0 border-b-black;
+}
+
 .tableWrapper {
   @apply flex-1 max-w-full overflow-x-scroll;
 }
