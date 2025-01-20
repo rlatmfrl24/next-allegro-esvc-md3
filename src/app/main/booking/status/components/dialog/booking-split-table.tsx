@@ -22,13 +22,34 @@ import {
   Table,
   useReactTable,
 } from "@tanstack/react-table";
-import { MdIcon, MdIconButton, MdOutlinedTextField } from "@/app/util/md3";
+import {
+  MdIcon,
+  MdIconButton,
+  MdList,
+  MdListItem,
+  MdOutlinedTextField,
+} from "@/app/util/md3";
 import {
   AddBoxOutlined,
   ArrowDropDown,
   DeleteOutline,
 } from "@mui/icons-material";
 import { Listbox } from "@headlessui/react";
+import {
+  flip,
+  offset,
+  shift,
+  useFloating,
+  size,
+  autoUpdate,
+  useInteractions,
+  useFocus,
+  useClick,
+  useDismiss,
+  FloatingFocusManager,
+} from "@floating-ui/react";
+import { flushSync } from "react-dom";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 function useSkipper() {
   const shouldSkipRef = useRef(true);
@@ -252,7 +273,7 @@ export const SplitInputTable = ({
 
       return containerSet
         .filter((container) => container.typeSize === typeSize)
-        .map((container) => container.slot);
+        .map((container) => container.slot) as unknown as string[];
     },
     [originBooking.containers]
   );
@@ -269,6 +290,7 @@ export const SplitInputTable = ({
       columnHelper.display({
         id: "sequence",
         header: "Seq.",
+        size: 60,
         cell: (props) => {
           return (
             <MdTypography
@@ -335,15 +357,17 @@ export const SplitInputTable = ({
           columnHelper.accessor("containers.typeSize", {
             id: "typeSize",
             header: "Type/Size",
+            size: 160,
             cell: (props) => {
               return (
                 <>
                   {props.row.original.containers.map((container, index) => {
                     return (
-                      <Listbox
+                      <GridSelectionComponent
                         key={`${container}_${index}`}
                         value={container.typeSize}
-                        onChange={(value) => {
+                        options={typeSizeOptions}
+                        onSelectionChange={(value) => {
                           const newContainers = [
                             ...props.row.original.containers,
                           ];
@@ -360,29 +384,7 @@ export const SplitInputTable = ({
                             newContainers
                           );
                         }}
-                      >
-                        <div className="relative border-b border-b-outlineVariant last:border-b-0">
-                          <Listbox.Button className="relative w-full text-left h-[52px] p-2">
-                            {container.typeSize}
-                            <ArrowDropDown className="absolute right-0 top-0 bottom-0 m-auto h-5 w-5 text-onSurface" />
-                          </Listbox.Button>
-                          <Listbox.Options
-                            className={`absolute w-full z-10 bg-white p-1 border border-outlineVariant top-[calc(100%-1px)]`}
-                          >
-                            {typeSizeOptions.map((typeSize, index) => {
-                              return (
-                                <Listbox.Option
-                                  key={index}
-                                  value={typeSize}
-                                  className="cursor-pointer bg-white hover:bg-primary hover:text-white p-1"
-                                >
-                                  {typeSize}
-                                </Listbox.Option>
-                              );
-                            })}
-                          </Listbox.Options>
-                        </div>
-                      </Listbox>
+                      />
                     );
                   })}
                 </>
@@ -394,19 +396,75 @@ export const SplitInputTable = ({
             header: "Slot No.",
             cell: (props) => {
               return (
-                <div className="w-full flex flex-col">
+                // <div className="w-full flex flex-col">
+                //   {props.row.original.containers.map((container, index) => {
+                //     return (
+                //       <Listbox
+                //         key={`${container}_${index}`}
+                //         value={container.slot}
+                //         onChange={(value) => {
+                //           const newContainers = [
+                //             ...props.row.original.containers,
+                //           ];
+                //           newContainers[index] = {
+                //             ...container,
+                //             slot: value,
+                //             quantity: undefined,
+                //           };
+
+                //           props.table.options.meta?.updateData(
+                //             props.row.index,
+                //             "containers",
+                //             newContainers
+                //           );
+                //         }}
+                //       >
+                //         <div className="relative border-b border-b-outlineVariant last:border-b-0">
+                //           <Listbox.Button className="relative w-full text-left h-[52px] p-2">
+                //             {container.slot}
+                //             <ArrowDropDown className="absolute right-0 top-0 bottom-0 m-auto h-5 w-5 text-onSurface" />
+                //           </Listbox.Button>
+                //           <Listbox.Options
+                //             className={`absolute w-full z-10 bg-white p-1 border border-outlineVariant top-[calc(100%-1px)]`}
+                //           >
+                //             {container.typeSize &&
+                //               getSlotOptionsByTypeSize(container.typeSize).map(
+                //                 (slot, index) => {
+                //                   return (
+                //                     <Listbox.Option
+                //                       key={index}
+                //                       value={slot}
+                //                       className="cursor-pointer bg-white hover:bg-primary hover:text-white p-1"
+                //                     >
+                //                       {slot}
+                //                     </Listbox.Option>
+                //                   );
+                //                 }
+                //               )}
+                //           </Listbox.Options>
+                //         </div>
+                //       </Listbox>
+                //     );
+                //   })}
+                // </div>
+                <>
                   {props.row.original.containers.map((container, index) => {
                     return (
-                      <Listbox
+                      <GridSelectionComponent
                         key={`${container}_${index}`}
-                        value={container.slot}
-                        onChange={(value) => {
+                        value={container.slot?.toString() || ""}
+                        options={
+                          container.typeSize
+                            ? getSlotOptionsByTypeSize(container.typeSize)
+                            : []
+                        }
+                        onSelectionChange={(value) => {
                           const newContainers = [
                             ...props.row.original.containers,
                           ];
                           newContainers[index] = {
                             ...container,
-                            slot: value,
+                            slot: parseFloat(value) || 0,
                             quantity: undefined,
                           };
 
@@ -416,35 +474,10 @@ export const SplitInputTable = ({
                             newContainers
                           );
                         }}
-                      >
-                        <div className="relative border-b border-b-outlineVariant last:border-b-0">
-                          <Listbox.Button className="relative w-full text-left h-[52px] p-2">
-                            {container.slot}
-                            <ArrowDropDown className="absolute right-0 top-0 bottom-0 m-auto h-5 w-5 text-onSurface" />
-                          </Listbox.Button>
-                          <Listbox.Options
-                            className={`absolute w-full z-10 bg-white p-1 border border-outlineVariant top-[calc(100%-1px)]`}
-                          >
-                            {container.typeSize &&
-                              getSlotOptionsByTypeSize(container.typeSize).map(
-                                (slot, index) => {
-                                  return (
-                                    <Listbox.Option
-                                      key={index}
-                                      value={slot}
-                                      className="cursor-pointer bg-white hover:bg-primary hover:text-white p-1"
-                                    >
-                                      {slot}
-                                    </Listbox.Option>
-                                  );
-                                }
-                              )}
-                          </Listbox.Options>
-                        </div>
-                      </Listbox>
+                      />
                     );
                   })}
-                </div>
+                </>
               );
             },
           }),
@@ -496,6 +529,7 @@ export const SplitInputTable = ({
           columnHelper.display({
             id: "edit",
             header: "Edit",
+            size: 60,
             cell: (props) => {
               return (
                 <div className="w-full flex flex-col">
@@ -659,7 +693,13 @@ const RenderTable = ({
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id} className={tableStyles.split}>
+                    <td
+                      key={cell.id}
+                      className={tableStyles.split}
+                      style={{
+                        width: `${cell.column.columnDef.size}px`,
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -673,5 +713,98 @@ const RenderTable = ({
         </tbody>
       </table>
     </>
+  );
+};
+
+const GridSelectionComponent = ({
+  value,
+  options,
+  onSelectionChange,
+}: {
+  value?: string;
+  options?: string[];
+  onSelectionChange?: (value: string) => void;
+}) => {
+  const [isListOpen, setIsListOpen] = useState(false);
+  const [maxHeight, setMaxHeight] = useState(0);
+
+  const { refs, floatingStyles, context, placement } = useFloating({
+    open: isListOpen,
+    onOpenChange: setIsListOpen,
+    middleware: [
+      offset(2),
+      shift(),
+      flip({
+        padding: 20,
+      }),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            width: `${rects.reference.width}px`,
+          });
+          flushSync(() => {
+            setMaxHeight(availableHeight);
+          });
+        },
+      }),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useFocus(context),
+    useClick(context),
+    useDismiss(context),
+  ]);
+
+  return (
+    <div
+      ref={refs.setReference}
+      {...getReferenceProps()}
+      className="relative w-full cursor-pointer py-0.5 border-b border-b-outlineVariant last:border-b-0"
+    >
+      <div className="flex items-center h-12 p-2">
+        <div className="flex-1">{value}</div>
+        <ArrowDropDown />
+      </div>
+      {isListOpen && options && options.length > 0 && (
+        <FloatingFocusManager context={context}>
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            className="z-10 rounded"
+            {...getFloatingProps()}
+          >
+            <MdList
+              style={
+                {
+                  boxShadow:
+                    "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3) ",
+                  maxHeight: maxHeight,
+                  minHeight: "2rem",
+                } as CSSProperties
+              }
+              className="relative bg-surfaceContainerLow rounded overflow-y-auto"
+            >
+              <OverlayScrollbarsComponent defer>
+                {options?.map((option, index) => {
+                  return (
+                    <MdListItem
+                      key={index}
+                      className="cursor-pointer hover:bg-surfaceContainerHighest"
+                      onClick={() => {
+                        onSelectionChange?.(option);
+                      }}
+                    >
+                      {option}
+                    </MdListItem>
+                  );
+                })}
+              </OverlayScrollbarsComponent>
+            </MdList>
+          </div>
+        </FloatingFocusManager>
+      )}
+    </div>
   );
 };
