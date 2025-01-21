@@ -1,6 +1,7 @@
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import {
+  BookingSplitState,
   ContainerState,
   CurrentBookingDataState,
   LocationScheduleState,
@@ -11,10 +12,16 @@ import {
   MdOutlinedButton,
   MdOutlinedTextField,
 } from "@/app/util/md3";
-import { BookingSplitType } from "@/app/util/typeDef/booking";
+import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
-import { CSSProperties, useCallback, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { SplitInputTable, SplitValidationTable } from "./booking-split-table";
 
 const BookingSplitInformation = ({
@@ -110,6 +117,76 @@ export const BookingSplitProcess = ({
   const [originBooking, setOriginBooking] = useState<BookingSplitType>();
   const [splitCountQuery, setSplitCountQuery] = useState<string>("2");
   const [splitCount, setSplitCount] = useState<number>(2);
+  const splitProcessData = useRecoilValue(BookingSplitState);
+
+  const isDataValid = useMemo(() => {
+    const weightSum = splitProcessData.reduce((acc, cur) => {
+      return acc + (cur.weight || 0);
+    }, 0);
+
+    // 1. make slot list with sum of slot quantity
+    const slotList: {
+      slot: number;
+      quantity: number;
+    }[] = [];
+
+    splitProcessData.map((data) => {
+      data.containers.map((container) => {
+        const slot = container.slot;
+
+        // if slotList has slot, add quantity
+        const slotIndex = slotList.findIndex(
+          (slotData) => slotData.slot === slot
+        );
+
+        if (slotIndex !== -1) {
+          slotList[slotIndex].quantity += container.quantity || 0;
+        } else {
+          slotList.push({
+            slot: slot || 0,
+            quantity: container.quantity || 0,
+          });
+        }
+      });
+    });
+
+    const containerSet = [] as SplitTableType["containers"];
+    let slotCursor = 1;
+
+    originBooking?.containers.map((container) => {
+      Array.from({ length: container.quantity }).map(() => {
+        containerSet.push({
+          typeSize: container.typeSize,
+          slot: slotCursor,
+          quantity: 1,
+        });
+        slotCursor++;
+      });
+    });
+
+    console.log("containerSet", containerSet);
+    console.log("slotList", slotList);
+
+    // 2. compare slot list with container set
+    // if slot number is same, quantity is same
+    const slotValid = containerSet.every((container, index) => {
+      return (
+        container.slot === slotList[index]?.slot &&
+        container.quantity === slotList[index]?.quantity
+      );
+    });
+
+    return (
+      weightSum === originBooking?.weight &&
+      splitProcessData.length === splitCount &&
+      slotValid
+    );
+  }, [
+    originBooking?.containers,
+    originBooking?.weight,
+    splitCount,
+    splitProcessData,
+  ]);
 
   const makeOriginBooking = useCallback(
     (bookingNumber: string): BookingSplitType => {
@@ -238,6 +315,7 @@ export const BookingSplitProcess = ({
           Cancel
         </MdOutlinedButton>
         <MdFilledButton
+          disabled={!isDataValid}
           onClick={() => {
             handleAction("split");
           }}

@@ -1,27 +1,21 @@
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import {
   CSSProperties,
   Dispatch,
-  memo,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import { useRecoilState } from "recoil";
 
+import StatusGoodIcon from "@/../public/icon_status_good.svg";
+import StatusWarningIcon from "@/../public/icon_status_warning.svg";
 import { MdTypography } from "@/app/components/typography";
 import { BookingSplitState } from "@/app/store/booking.store";
 import tableStyles from "@/app/styles/table.module.css";
-import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  Table,
-  useReactTable,
-} from "@tanstack/react-table";
 import {
   MdIcon,
   MdIconButton,
@@ -29,27 +23,31 @@ import {
   MdListItem,
   MdOutlinedTextField,
 } from "@/app/util/md3";
+import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
+import {
+  autoUpdate,
+  flip,
+  FloatingFocusManager,
+  offset,
+  shift,
+  size,
+  useClick,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useInteractions,
+} from "@floating-ui/react";
 import {
   AddBoxOutlined,
   ArrowDropDown,
   DeleteOutline,
 } from "@mui/icons-material";
-import { Listbox } from "@headlessui/react";
 import {
-  flip,
-  offset,
-  shift,
-  useFloating,
-  size,
-  autoUpdate,
-  useInteractions,
-  useFocus,
-  useClick,
-  useDismiss,
-  FloatingFocusManager,
-} from "@floating-ui/react";
-import { flushSync } from "react-dom";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 function useSkipper() {
   const shouldSkipRef = useRef(true);
@@ -72,9 +70,8 @@ export const SplitValidationTable = ({
 }: {
   originBooking: BookingSplitType;
 }) => {
-  useEffect(() => {
-    console.log("SplitValidationTable: ", originBooking);
-  }, [originBooking]);
+  // TODO: Add Validation Components
+  const [tableData, setTableData] = useRecoilState(BookingSplitState);
 
   const HeaderComponent = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -105,6 +102,12 @@ export const SplitValidationTable = ({
     return containerSet;
   }, [originBooking]);
 
+  const totalSplitWeight = useMemo(() => {
+    return tableData.reduce((acc, row) => {
+      return acc + (row.weight || 0);
+    }, 0);
+  }, [tableData]);
+
   return (
     <div className="w-full flex relative mt-2">
       <table className={tableStyles.table}>
@@ -131,13 +134,26 @@ export const SplitValidationTable = ({
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </MdTypography>
             </td>
-            <td className="mx-2 p-0 border-r border-r-outlineVariant">
+            <td
+              className={`mx-2 p-0 border-r border-r-outlineVariant ${
+                originBooking.weight !== totalSplitWeight
+                  ? "bg-[#BA1A1A14]"
+                  : "bg-[#19658414]"
+              }`}
+            >
               <MdTypography
                 variant="body"
                 size="medium"
-                className="text-onSurface text-right px-2 py-3"
+                className={`text-onSurface justify-end gap-2 px-2 py-3 h-full flex`}
               >
-                TBU
+                {totalSplitWeight
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                {originBooking.weight !== totalSplitWeight ? (
+                  <StatusWarningIcon />
+                ) : (
+                  <StatusGoodIcon />
+                )}
               </MdTypography>
             </td>
             <td className="mx-2 p-0 border-r border-r-outlineVariant">
@@ -178,12 +194,36 @@ export const SplitValidationTable = ({
             </td>
             <td className="mx-2 p-0">
               {OriginalContainerList.map((container) => {
+                const currentSlotQuantity = tableData.reduce((acc, row) => {
+                  return (
+                    acc +
+                    row.containers.reduce((acc, splitContainer) => {
+                      return (
+                        acc +
+                        (splitContainer.typeSize === container.typeSize &&
+                        splitContainer.slot === container.slot
+                          ? splitContainer.quantity || 0
+                          : 0)
+                      );
+                    }, 0)
+                  );
+                }, 0);
+
                 return (
                   <div
                     key={container.typeSize + "_" + container.slot}
-                    className="p-2 border-b border-b-outlineVariant last:border-b-0 text-right"
+                    className={`flex gap-2 justify-end p-2 border-b border-b-outlineVariant last:border-b-0 ${
+                      1 === currentSlotQuantity
+                        ? "bg-[#19658414]"
+                        : "bg-[#BA1A1A14]"
+                    }`}
                   >
-                    TBU
+                    {currentSlotQuantity}
+                    {currentSlotQuantity === 1 ? (
+                      <StatusGoodIcon />
+                    ) : (
+                      <StatusWarningIcon />
+                    )}
                   </div>
                 );
               })}
@@ -235,10 +275,6 @@ export const SplitInputTable = ({
     },
     []
   );
-
-  useEffect(() => {
-    console.log("SplitInputTable: ", originBooking);
-  }, [originBooking]);
 
   useEffect(() => {
     setTableData(initializeSplitTableData(originBooking, splitCount));
@@ -396,57 +432,6 @@ export const SplitInputTable = ({
             header: "Slot No.",
             cell: (props) => {
               return (
-                // <div className="w-full flex flex-col">
-                //   {props.row.original.containers.map((container, index) => {
-                //     return (
-                //       <Listbox
-                //         key={`${container}_${index}`}
-                //         value={container.slot}
-                //         onChange={(value) => {
-                //           const newContainers = [
-                //             ...props.row.original.containers,
-                //           ];
-                //           newContainers[index] = {
-                //             ...container,
-                //             slot: value,
-                //             quantity: undefined,
-                //           };
-
-                //           props.table.options.meta?.updateData(
-                //             props.row.index,
-                //             "containers",
-                //             newContainers
-                //           );
-                //         }}
-                //       >
-                //         <div className="relative border-b border-b-outlineVariant last:border-b-0">
-                //           <Listbox.Button className="relative w-full text-left h-[52px] p-2">
-                //             {container.slot}
-                //             <ArrowDropDown className="absolute right-0 top-0 bottom-0 m-auto h-5 w-5 text-onSurface" />
-                //           </Listbox.Button>
-                //           <Listbox.Options
-                //             className={`absolute w-full z-10 bg-white p-1 border border-outlineVariant top-[calc(100%-1px)]`}
-                //           >
-                //             {container.typeSize &&
-                //               getSlotOptionsByTypeSize(container.typeSize).map(
-                //                 (slot, index) => {
-                //                   return (
-                //                     <Listbox.Option
-                //                       key={index}
-                //                       value={slot}
-                //                       className="cursor-pointer bg-white hover:bg-primary hover:text-white p-1"
-                //                     >
-                //                       {slot}
-                //                     </Listbox.Option>
-                //                   );
-                //                 }
-                //               )}
-                //           </Listbox.Options>
-                //         </div>
-                //       </Listbox>
-                //     );
-                //   })}
-                // </div>
                 <>
                   {props.row.original.containers.map((container, index) => {
                     return (

@@ -256,7 +256,6 @@ export type BookingSplitType = {
   bookingNumber: string;
   weight: number;
   containers: {
-    slot: number;
     typeSize: string;
     quantity: number;
   }[];
