@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/merge-selection-table";
+import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/table/merge-selection-table";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import {
   BookingMergeSelector,

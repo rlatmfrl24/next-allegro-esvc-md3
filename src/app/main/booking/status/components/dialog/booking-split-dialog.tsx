@@ -12,7 +12,6 @@ import {
   BookingSplitState,
   CurrentBookingDataState,
 } from "@/app/store/booking.store";
-import { Book } from "@mui/icons-material";
 
 export function useBookingSplitDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

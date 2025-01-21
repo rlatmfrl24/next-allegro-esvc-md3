@@ -2,7 +2,6 @@ import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import {
   BookingSplitState,
-  ContainerState,
   CurrentBookingDataState,
   LocationScheduleState,
 } from "@/app/store/booking.store";
@@ -13,18 +12,16 @@ import {
   MdOutlinedTextField,
 } from "@/app/util/md3";
 import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
-import { faker } from "@faker-js/faker";
 import {
   CSSProperties,
   Dispatch,
   SetStateAction,
-  useCallback,
-  useEffect,
   useMemo,
   useState,
 } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { SplitInputTable, SplitValidationTable } from "./booking-split-table";
+import { useRecoilValue } from "recoil";
+import { SplitInputTable } from "./table/split-input-table";
+import { SplitValidationTable } from "./table/split-validation-table";
 
 const BookingSplitInformation = ({
   originBooking,
