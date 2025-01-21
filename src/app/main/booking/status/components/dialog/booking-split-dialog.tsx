@@ -138,15 +138,18 @@ export function useBookingSplitDialog() {
               }}
             />
           ) : (
-            <BookingSplitConfirmation
-              handleAction={(action) => {
-                if (action === "back") {
-                  setCurrentStep("process");
-                } else {
-                  setIsDialogOpen(false);
-                }
-              }}
-            />
+            originBooking && (
+              <BookingSplitConfirmation
+                originBooking={originBooking}
+                handleAction={(action) => {
+                  if (action === "back") {
+                    setCurrentStep("process");
+                  } else {
+                    setIsDialogOpen(false);
+                  }
+                }}
+              />
+            )
           )}
         </MdDialog>
       </Portal>

@@ -22,6 +22,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { SplitInputTable } from "./table/split-input-table";
 import { SplitValidationTable } from "./table/split-validation-table";
+import { SplitConfirmTable } from "./table/split-confirm-table";
 
 const BookingSplitInformation = ({
   originBooking,
@@ -273,8 +274,10 @@ export const BookingSplitProcess = ({
 };
 
 export const BookingSplitConfirmation = ({
+  originBooking,
   handleAction,
 }: {
+  originBooking: BookingSplitType;
   handleAction: (action: string) => void;
 }) => {
   return (
@@ -283,6 +286,7 @@ export const BookingSplitConfirmation = ({
       <div slot="content" className="gap-4 flex flex-col">
         <div className="bg-white p-4 rounded-lg">
           <DetailTitle title="Before" />
+          <SplitConfirmTable originData={originBooking} />
         </div>
         <div className="bg-white p-4 rounded-lg">
           <DetailTitle title="After" />
