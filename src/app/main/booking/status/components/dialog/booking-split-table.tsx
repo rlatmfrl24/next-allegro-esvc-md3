@@ -70,7 +70,6 @@ export const SplitValidationTable = ({
 }: {
   originBooking: BookingSplitType;
 }) => {
-  // TODO: Add Validation Components
   const [tableData, setTableData] = useRecoilState(BookingSplitState);
 
   const HeaderComponent = ({ children }: { children: React.ReactNode }) => {
@@ -237,48 +236,10 @@ export const SplitValidationTable = ({
 
 export const SplitInputTable = ({
   originBooking,
-  splitCount,
 }: {
   originBooking: BookingSplitType;
-  splitCount: number;
 }) => {
   const [tableData, setTableData] = useRecoilState(BookingSplitState);
-
-  const initializeSplitTableData = useCallback(
-    (originBooking: BookingSplitType, splitCount: number) => {
-      return [
-        {
-          bookingNumber: originBooking.bookingNumber,
-          weight: originBooking.weight,
-          containers: [
-            {
-              typeSize: undefined,
-              slot: undefined,
-              quantity: undefined,
-            },
-          ],
-        },
-        ...Array.from({ length: splitCount - 1 }).map(() => {
-          return {
-            bookingNumber: undefined,
-            weight: undefined,
-            containers: [
-              {
-                typeSize: undefined,
-                slot: undefined,
-                quantity: undefined,
-              },
-            ],
-          };
-        }),
-      ];
-    },
-    []
-  );
-
-  useEffect(() => {
-    setTableData(initializeSplitTableData(originBooking, splitCount));
-  }, [initializeSplitTableData, originBooking, setTableData, splitCount]);
 
   const typeSizeOptions = useMemo(() => {
     const options = originBooking.containers.reduce((acc, container) => {

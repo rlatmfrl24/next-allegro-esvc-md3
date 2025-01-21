@@ -16,6 +16,8 @@ import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import {
   CSSProperties,
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -109,14 +111,17 @@ const BookingSplitInformation = ({
 };
 
 export const BookingSplitProcess = ({
+  originBooking,
   handleAction,
+  splitCount,
+  setSplitCount,
 }: {
+  splitCount: number;
+  setSplitCount: Dispatch<SetStateAction<number>>;
+  originBooking: BookingSplitType;
   handleAction: (action: string) => void;
 }) => {
-  const currentBookingData = useRecoilValue(CurrentBookingDataState);
-  const [originBooking, setOriginBooking] = useState<BookingSplitType>();
   const [splitCountQuery, setSplitCountQuery] = useState<string>("2");
-  const [splitCount, setSplitCount] = useState<number>(2);
   const splitProcessData = useRecoilValue(BookingSplitState);
 
   const isDataValid = useMemo(() => {
@@ -164,17 +169,14 @@ export const BookingSplitProcess = ({
       });
     });
 
-    console.log("containerSet", containerSet);
     console.log("slotList", slotList);
 
     // 2. compare slot list with container set
     // if slot number is same, quantity is same
-    const slotValid = containerSet.every((container, index) => {
-      return (
-        container.slot === slotList[index]?.slot &&
-        container.quantity === slotList[index]?.quantity
-      );
-    });
+    const slotValid =
+      slotList.every((slot, index) => {
+        return slot.quantity === 1;
+      }) && slotList.length === containerSet.length;
 
     return (
       weightSum === originBooking?.weight &&
@@ -187,55 +189,6 @@ export const BookingSplitProcess = ({
     splitCount,
     splitProcessData,
   ]);
-
-  const makeOriginBooking = useCallback(
-    (bookingNumber: string): BookingSplitType => {
-      const typeSizeList = Array.from({
-        length: faker.number.int({
-          min: 1,
-          max: 5,
-        }),
-      })
-        .map((_, index) => {
-          const type = faker.helpers.arrayElement([
-            "Dry",
-            "Reefer",
-            "Open Top",
-            "Flat Rack",
-            "Tank",
-          ]);
-          const size = faker.helpers.arrayElement(["20", "40", "45"]);
-          return `${type} ${size}ft`;
-        })
-        // remove duplicate
-        .filter((value, index, self) => self.indexOf(value) === index);
-
-      return {
-        bookingNumber,
-        weight: faker.number.int({
-          min: 1000,
-          max: 100000,
-        }),
-        containers: typeSizeList.map((typeSize, index) => {
-          return {
-            slot: index + 1,
-            typeSize,
-            quantity: faker.number.int({
-              min: 1,
-              max: 5,
-            }),
-          };
-        }),
-      };
-    },
-    []
-  );
-
-  useEffect(() => {
-    if (currentBookingData?.bookingNo) {
-      setOriginBooking(makeOriginBooking(currentBookingData.bookingNo));
-    }
-  }, [currentBookingData?.bookingNo, makeOriginBooking]);
 
   return (
     <>
@@ -298,12 +251,7 @@ export const BookingSplitProcess = ({
               </MdFilledTonalButton>
             </div>
           </div>
-          {originBooking && (
-            <SplitInputTable
-              originBooking={originBooking}
-              splitCount={splitCount}
-            />
-          )}
+          {originBooking && <SplitInputTable originBooking={originBooking} />}
         </div>
       </div>
       <div slot="actions">
