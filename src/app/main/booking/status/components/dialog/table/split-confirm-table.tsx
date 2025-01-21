@@ -1,7 +1,6 @@
 import { MdTypography } from "@/app/components/typography";
 import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
 import {
-  createColumn,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
