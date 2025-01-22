@@ -1,17 +1,4 @@
-import {
-  Cell,
-  ColumnFiltersState,
-  PaginationState,
-  RowData,
-  SortingState,
-  Table,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { getCookie, setCookie } from "cookies-next";
 import React, {
   Dispatch,
   SetStateAction,
@@ -21,50 +8,57 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useDraggable } from "react-use-draggable-scroll";
+
 import styles from "@/app/styles/table.module.css";
-import { MemoizedTableBody, TableBody } from "./table-body";
-import { MdTypography } from "../typography";
+import { MdFilledIconButton, MdOutlinedIconButton } from "@/app/util/md3";
 import {
+  closestCenter,
   DndContext,
   DragEndEvent,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 import {
-  OverlayScrollbarsComponent,
-  useOverlayScrollbars,
-} from "overlayscrollbars-react";
-import { HeaderComponent } from "./header";
-import { ColumnFilterButton } from "./column-filter";
-import { TablePaginator } from "./paginator";
-import { getCommonPinningStyles } from "./util";
-import { size } from "lodash";
-import { getCookie, setCookie } from "cookies-next";
-import { useDraggable } from "react-use-draggable-scroll";
-import { tr } from "@faker-js/faker";
-import { MdFilledIconButton, MdOutlinedIconButton } from "@/app/util/md3";
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
 import { Check, MoveDown } from "@mui/icons-material";
+import {
+  Cell,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  PaginationState,
+  RowData,
+  SortingState,
+  Table,
+  useReactTable,
+} from "@tanstack/react-table";
+
+import { MdTypography } from "../typography";
+import { ColumnFilterButton } from "./column-filter";
+import { HeaderComponent } from "./header";
+import { TablePaginator } from "./paginator";
+import { MemoizedTableBody, TableBody } from "./table-body";
+import { getCommonPinningStyles } from "./util";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
     updateRow: (rowIndex: number, value: unknown) => void;
   }
-}
-
-declare module "@tanstack/react-table" {
   interface ColumnMeta<TData extends RowData, TValue> {
     format?: (value: TValue) => string;
+    rowSpan?: number;
   }
 }
 

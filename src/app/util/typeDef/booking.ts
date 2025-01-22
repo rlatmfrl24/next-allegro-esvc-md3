@@ -239,3 +239,34 @@ export interface BookingTemplateProps {
     contactInformation: ContactInformationType | undefined;
   };
 }
+
+export type MergeTableType = {
+  bookingNumber: string;
+  totalWeight: string;
+  containers: {
+    type: string;
+    size: string;
+    quantity: number;
+  }[];
+  emptyPickupPlace: PlaceInformationType;
+  emptyPickupDate: DateTime;
+};
+
+export type BookingSplitType = {
+  bookingNumber: string;
+  weight: number;
+  containers: {
+    typeSize: string;
+    quantity: number;
+  }[];
+};
+
+export type SplitTableType = {
+  bookingNumber: string | undefined;
+  weight: number | undefined;
+  containers: {
+    typeSize: string | undefined;
+    slot: number | undefined;
+    quantity: number | undefined;
+  }[];
+};
