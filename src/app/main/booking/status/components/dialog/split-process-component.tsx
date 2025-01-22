@@ -6,6 +6,7 @@ import {
   LocationScheduleState,
 } from "@/app/store/booking.store";
 import {
+  MdDialog,
   MdFilledButton,
   MdFilledTonalButton,
   MdOutlinedButton,
@@ -280,16 +281,69 @@ export const BookingSplitConfirmation = ({
   originBooking: BookingSplitType;
   handleAction: (action: string) => void;
 }) => {
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] =
+    useState<boolean>(false);
+  const splitProcessData = useRecoilValue(BookingSplitState);
+  const parsedOriginBooking = useMemo(() => {
+    const containerSet = [] as SplitTableType["containers"];
+    let slotCursor = 1;
+
+    originBooking.containers.map((container) => {
+      Array.from({ length: container.quantity }).map(() => {
+        containerSet.push({
+          typeSize: container.typeSize,
+          slot: slotCursor,
+          quantity: 1,
+        });
+        slotCursor++;
+      });
+    });
+
+    return [
+      {
+        bookingNumber: originBooking.bookingNumber,
+        weight: originBooking.weight,
+        containers: containerSet,
+      },
+    ] as SplitTableType[];
+  }, [originBooking]);
+
   return (
     <>
       <div slot="headline">Split Information</div>
       <div slot="content" className="gap-4 flex flex-col">
+        <MdDialog open={isConfirmDialogOpen}>
+          <div slot="headline">
+            The values you entered will be discarded. <br />
+            Do you want to proceed with the changes?
+          </div>
+          <div slot="actions">
+            <MdOutlinedButton
+              onClick={() => {
+                setIsConfirmDialogOpen(false);
+              }}
+            >
+              Close
+            </MdOutlinedButton>
+            <MdFilledButton
+              onClick={() => {
+                handleAction("close");
+              }}
+            >
+              Yes
+            </MdFilledButton>
+          </div>
+        </MdDialog>
         <div className="bg-white p-4 rounded-lg">
           <DetailTitle title="Before" />
-          <SplitConfirmTable originData={originBooking} />
+          <SplitConfirmTable data={parsedOriginBooking} />
         </div>
         <div className="bg-white p-4 rounded-lg">
           <DetailTitle title="After" />
+          <SplitConfirmTable
+            data={splitProcessData}
+            compareData={parsedOriginBooking}
+          />
         </div>
       </div>
       <div slot="actions" className="justify-between">
@@ -303,7 +357,8 @@ export const BookingSplitConfirmation = ({
         <div className="flex gap-2">
           <MdOutlinedButton
             onClick={() => {
-              handleAction("close");
+              // handleAction("close");
+              setIsConfirmDialogOpen(true);
             }}
           >
             Close

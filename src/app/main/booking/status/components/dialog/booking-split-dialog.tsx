@@ -7,11 +7,12 @@ import {
 } from "./split-process-component";
 import { BookingSplitType } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   BookingSplitState,
   CurrentBookingDataState,
 } from "@/app/store/booking.store";
+import { set } from "lodash";
 
 export function useBookingSplitDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -21,7 +22,8 @@ export function useBookingSplitDialog() {
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
   const [originBooking, setOriginBooking] = useState<BookingSplitType>();
   const [splitCount, setSplitCount] = useState(2);
-  const [splitTableData, setSplitTableData] = useRecoilState(BookingSplitState);
+  // const [splitTableData, setSplitTableData] = useRecoilState(BookingSplitState);
+  const setSplitTableData = useSetRecoilState(BookingSplitState);
 
   const makeOriginBooking = useCallback(
     (bookingNumber: string): BookingSplitType => {
@@ -118,7 +120,10 @@ export function useBookingSplitDialog() {
       <Portal selector="#main-container">
         <MdDialog
           open={isDialogOpen}
-          closed={() => setIsDialogOpen(false)}
+          closed={() => {
+            setIsDialogOpen(false);
+            setCurrentStep("process");
+          }}
           cancel={(e) => {
             e.preventDefault();
           }}

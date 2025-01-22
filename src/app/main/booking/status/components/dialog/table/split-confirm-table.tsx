@@ -1,53 +1,25 @@
 import { MdTypography } from "@/app/components/typography";
-import { BookingSplitType, SplitTableType } from "@/app/util/typeDef/booking";
+import { SplitTableType } from "@/app/util/typeDef/booking";
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Dispatch, useEffect, useMemo } from "react";
 import { useSkipper } from "./util";
 import tableStyles from "@/app/styles/table.module.css";
 
 export const SplitConfirmTable = ({
-  originData,
+  data,
+  compareData,
 }: {
-  originData?: BookingSplitType;
+  data?: SplitTableType[];
+  compareData?: SplitTableType[];
 }) => {
   const columnHelper = createColumnHelper<SplitTableType>();
-
-  const data = useMemo(() => {
-    if (!originData) {
-      return [];
-    }
-
-    const containerSet = [] as SplitTableType["containers"];
-    let slotCursor = 1;
-
-    originData.containers.map((container) => {
-      Array.from({ length: container.quantity }).map(() => {
-        containerSet.push({
-          typeSize: container.typeSize,
-          slot: slotCursor,
-          quantity: 1,
-        });
-        slotCursor++;
-      });
-    });
-
-    return [
-      {
-        bookingNumber: originData.bookingNumber,
-        weight: originData.weight,
-        containers: containerSet,
-      },
-    ] as SplitTableType[];
-  }, [originData]);
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
+  const cellStyles =
+    "text-onSurface flex items-center h-12 px-2 border-b border-b-outlineVariant last:border-b-0";
+  const highlightStyles = "bg-primary-80 font-semibold text-primary";
 
   const columnDefs = [
     columnHelper.display({
@@ -95,9 +67,18 @@ export const SplitConfirmTable = ({
           <MdTypography
             variant="body"
             size="medium"
-            className="text-onSurface justify-end flex items-center h-12 px-2"
+            className={`text-onSurface flex h-full py-3 px-2 border-b border-b-outlineVariant last:border-b-0 justify-end ${
+              // if the value is different from the compareData, highlight the cell
+              compareData &&
+              props.getValue() !== null &&
+              props.getValue() !== undefined &&
+              props.getValue() !== 0 &&
+              compareData[props.row.index]?.weight !== props.getValue()
+                ? highlightStyles
+                : ""
+            }`}
           >
-            {props.getValue()?.toLocaleString() || "-"}
+            {props.getValue()?.toLocaleString() || "0"}
           </MdTypography>
         );
       },
@@ -118,7 +99,18 @@ export const SplitConfirmTable = ({
                       key={index}
                       variant="body"
                       size="medium"
-                      className="text-onSurface flex items-center h-12 px-2 border-b border-b-outlineVariant last:border-b-0"
+                      className={`${cellStyles} ${
+                        // if the value is different from the compareData, highlight the cell
+                        compareData &&
+                        container.quantity !== null &&
+                        container.quantity !== undefined &&
+                        container.quantity !== 0 &&
+                        compareData[props.row.index]?.containers.find(
+                          (c) => c.slot === container.slot
+                        )?.quantity !== container.quantity
+                          ? highlightStyles
+                          : ""
+                      }`}
                     >
                       {container.typeSize || "-"}
                     </MdTypography>
@@ -140,7 +132,18 @@ export const SplitConfirmTable = ({
                       key={index}
                       variant="body"
                       size="medium"
-                      className="text-onSurface flex items-center h-12 px-2 border-b border-b-outlineVariant last:border-b-0"
+                      className={`${cellStyles} ${
+                        // if the value is different from the compareData, highlight the cell
+                        compareData &&
+                        container.quantity !== null &&
+                        container.quantity !== undefined &&
+                        container.quantity !== 0 &&
+                        compareData[props.row.index]?.containers.find(
+                          (c) => c.slot === container.slot
+                        )?.quantity !== container.quantity
+                          ? highlightStyles
+                          : ""
+                      }`}
                     >
                       {container.slot || "-"}
                     </MdTypography>
@@ -162,7 +165,18 @@ export const SplitConfirmTable = ({
                       key={index}
                       variant="body"
                       size="medium"
-                      className="text-onSurface flex items-center h-12 px-2 border-b border-b-outlineVariant last:border-b-0"
+                      className={`${cellStyles} ${
+                        // if the value is different from the compareData, highlight the cell`}
+                        compareData &&
+                        container.quantity !== null &&
+                        container.quantity !== undefined &&
+                        container.quantity !== 0 &&
+                        compareData[props.row.index]?.containers.find(
+                          (c) => c.slot === container.slot
+                        )?.quantity !== container.quantity
+                          ? highlightStyles
+                          : ""
+                      }`}
                     >
                       {container.quantity || "-"}
                     </MdTypography>
@@ -178,7 +192,7 @@ export const SplitConfirmTable = ({
 
   return (
     <div className="w-full flex relative mt-2">
-      <RenderTable data={data} columns={columnDefs} />
+      {data && <RenderTable data={data} columns={columnDefs} />}
     </div>
   );
 };
@@ -186,11 +200,9 @@ export const SplitConfirmTable = ({
 const RenderTable = ({
   data,
   columns,
-  updater,
 }: {
   data: SplitTableType[];
   columns: any[];
-  updater?: Dispatch<React.SetStateAction<SplitTableType[]>>;
 }) => {
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
@@ -199,23 +211,6 @@ const RenderTable = ({
     columns,
     getCoreRowModel: getCoreRowModel(),
     autoResetPageIndex,
-    meta: {
-      updateData: (rowIndex, columnId, value) => {
-        skipAutoResetPageIndex();
-        updater?.((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex]!,
-                [columnId]: value,
-              };
-            }
-            return row;
-          })
-        );
-      },
-      updateRow: (rowIndex, value) => {},
-    },
   });
 
   return (
