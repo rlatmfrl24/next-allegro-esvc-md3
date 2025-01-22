@@ -19,6 +19,7 @@ import {
   BookingStatusTableProps,
   BookingTemplateProps,
   MergeTableType,
+  SplitTableType,
 } from "../util/typeDef/booking";
 import { PlaceInformationType, VesselInfoType } from "../util/typeDef/schedule";
 import { createDummyBooking } from "../main/booking/template/components/util";
@@ -412,4 +413,9 @@ export const BookingMergeSelector = selector({
 
     return [result];
   },
+});
+
+export const BookingSplitState = atom<SplitTableType[]>({
+  key: "bookingSplitState",
+  default: [],
 });

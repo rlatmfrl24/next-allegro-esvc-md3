@@ -251,3 +251,22 @@ export type MergeTableType = {
   emptyPickupPlace: PlaceInformationType;
   emptyPickupDate: DateTime;
 };
+
+export type BookingSplitType = {
+  bookingNumber: string;
+  weight: number;
+  containers: {
+    typeSize: string;
+    quantity: number;
+  }[];
+};
+
+export type SplitTableType = {
+  bookingNumber: string | undefined;
+  weight: number | undefined;
+  containers: {
+    typeSize: string | undefined;
+    slot: number | undefined;
+    quantity: number | undefined;
+  }[];
+};

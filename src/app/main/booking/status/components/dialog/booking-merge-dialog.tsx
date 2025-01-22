@@ -1,12 +1,12 @@
 "use client";
 import { DateTime } from "luxon";
 import { useEffect, useMemo, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import Portal from "@/app/components/portal";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
-import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/merge-selection-table";
+import { useMergeSelectionTable } from "@/app/main/booking/status/components/dialog/table/merge-selection-table";
 import { createDummyPlaceInformation } from "@/app/main/schedule/util";
 import {
   BookingMergeSelector,
@@ -23,7 +23,7 @@ export function useBookingMergeDialog() {
   const [currentStep, setCurrentStep] = useState<"selection" | "confirmation">(
     "selection"
   );
-  const [mergeData, setMergeData] = useRecoilState(BookingMergeState);
+  const setMergeData = useSetRecoilState(BookingMergeState);
   const currentBookingData = useRecoilValue(CurrentBookingDataState);
   const candidateData = useMemo(() => {
     return makeMergeCandidateData(currentBookingData?.bookingNo || "");
