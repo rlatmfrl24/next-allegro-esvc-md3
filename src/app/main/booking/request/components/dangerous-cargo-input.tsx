@@ -1,13 +1,12 @@
 import { type CSSProperties, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
+import { DividerComponent } from "@/app/components/divider";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
+import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { ContainerState } from "@/app/store/booking.store";
-import {
-	type ContainerInformationType,
-	ContainerType,
-	type DangerousContainerDataType,
-} from "@/app/util/typeDef/booking";
+import { tinyInputStyles } from "@/app/util/constants";
 import {
 	MdChipSet,
 	MdDialog,
@@ -16,30 +15,23 @@ import {
 	MdIcon,
 	MdIconButton,
 	MdOutlinedButton,
-	MdOutlinedIconButton,
 	MdOutlinedTextField,
 } from "@/app/util/md3";
 import {
-	Add,
-	AddBox,
-	AddBoxOutlined,
-	Delete,
-	DeleteOutlineOutlined,
-} from "@mui/icons-material";
+	type ContainerInformationType,
+	type DangerousContainerDataType,
+	ContainerType,
+} from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import NAOutlinedListBox from "@/app/components/na-outline-listbox";
-import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
-import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
-import { DividerComponent } from "@/app/components/divider";
-import { useSimpleTable } from "@/app/components/table/simple-table";
+import { AddBoxOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
 import {
 	createColumnHelper,
 	flexRender,
 	getCoreRowModel,
+	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
-import { tinyInputStyles } from "@/app/util/constants";
+
 import { GridSelectionComponent } from "../../status/components/dialog/table/util";
 
 const DangerousCargoInput = ({
@@ -118,8 +110,8 @@ const DangerousCargoInput = ({
 				header: "UN Number",
 				size: 150,
 				cell: (cell) => (
-					<NAOutlinedTextField
-						className="m-2"
+					<MdOutlinedTextField
+						className="p-2 w-full text-right"
 						style={tinyInputStyles}
 						value={cell.getValue()}
 						onBlur={(e) => {
@@ -137,8 +129,8 @@ const DangerousCargoInput = ({
 				header: "Class",
 				size: 150,
 				cell: (cell) => (
-					<NAOutlinedTextField
-						className="m-2"
+					<MdOutlinedTextField
+						className="p-2 w-full text-right"
 						style={tinyInputStyles}
 						value={cell.getValue()}
 						required={showRequired}
@@ -158,13 +150,7 @@ const DangerousCargoInput = ({
 				cell: (cell) => (
 					<MdOutlinedTextField
 						className="p-2 w-full"
-						style={
-							{
-								"--md-sys-typescale-body-large-size": "14px",
-								"--md-outlined-field-top-space": "8px",
-								"--md-outlined-field-bottom-space": "8px",
-							} as CSSProperties
-						}
+						style={tinyInputStyles}
 						value={cell.getValue()}
 						suffixText="°C"
 						disabled
@@ -192,8 +178,8 @@ const DangerousCargoInput = ({
 				header: "Proper Shipping Name",
 				size: 400,
 				cell: (cell) => (
-					<NAOutlinedTextField
-						className="m-2"
+					<MdOutlinedTextField
+						className="p-2 w-full"
 						style={tinyInputStyles}
 						value={cell.getValue()}
 						onBlur={(e) => {
@@ -454,58 +440,61 @@ const DangerousCargoInput = ({
 							)}
 						</MdChipSet>
 					</div>
-					<table>
-						<thead>
-							{table.getHeaderGroups().map((headerGroup) => (
-								<tr key={headerGroup.id}>
-									{headerGroup.headers.map((header) => (
-										<th
-											key={header.id}
-											className="bg-surfaceContainerHigh"
-											style={{ minWidth: header.column.columnDef.size }}
-										>
-											<div className="flex justify-between items-center">
-												<span className="font-notoSans text-sm text-left p-2">
-													{header.isPlaceholder
-														? null
-														: flexRender(
-																header.column.columnDef.header,
-																header.getContext(),
-															)}
-												</span>
-												{header.column.columnDef.header === "Edit" ? null : (
-													<DividerComponent
-														orientation="vertical"
-														className="h-5 translate-x-0.5"
-													/>
-												)}
-											</div>
-										</th>
-									))}
-								</tr>
-							))}
-						</thead>
-						<tbody>
-							{table.getRowModel().rows.map((row) => (
-								<tr key={row.id}>
-									{row.getVisibleCells().map((cell) => (
-										<td
-											key={cell.id}
-											className="font-notoSans border-b border-r border-outlineVariant last:border-r-0"
-										>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext(),
-											)}
-										</td>
-									))}
-								</tr>
-							))}
-						</tbody>
-					</table>
+					<DGCargoTable {...table} />
 				</div>
 			)}
 		</>
+	);
+};
+
+const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
+	return (
+		<table>
+			<thead>
+				{table.getHeaderGroups().map((headerGroup) => (
+					<tr key={headerGroup.id}>
+						{headerGroup.headers.map((header) => (
+							<th
+								key={header.id}
+								className="bg-surfaceContainerHigh"
+								style={{ minWidth: header.column.columnDef.size }}
+							>
+								<div className="flex justify-between items-center">
+									<span className="font-notoSans text-sm text-left p-2">
+										{header.isPlaceholder
+											? null
+											: flexRender(
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
+									</span>
+									{header.column.columnDef.header === "Edit" ? null : (
+										<DividerComponent
+											orientation="vertical"
+											className="h-5 translate-x-0.5"
+										/>
+									)}
+								</div>
+							</th>
+						))}
+					</tr>
+				))}
+			</thead>
+			<tbody>
+				{table.getRowModel().rows.map((row) => (
+					<tr key={row.id}>
+						{row.getVisibleCells().map((cell) => (
+							<td
+								key={cell.id}
+								className="font-notoSans border-b border-r border-outlineVariant last:border-r-0"
+							>
+								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+							</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
 	);
 };
 

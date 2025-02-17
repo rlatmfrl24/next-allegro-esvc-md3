@@ -114,7 +114,16 @@ export default function ContainerStep() {
 			...containerInformation.flatrack,
 			...containerInformation.tank,
 		].reduce((acc, curr) => {
-			return acc.concat(curr.dangerousCargoInformation);
+			return acc.concat(
+				curr.dangerousCargoInformation.map(
+					(dangerousCargo) =>
+						({
+							...dangerousCargo,
+							containerIndex: curr.uuid,
+						}) as unknown as DangerousContainerDataType,
+				),
+			);
+			// return acc.concat(curr.dangerousCargoInformation);
 		}, [] as DangerousContainerDataType[]);
 
 		// Check if Dangerous Cargo required data is empty
