@@ -4,6 +4,7 @@ import type {
 	DashboardStatisticCardDataType,
 	MenuItemType,
 } from "./typeDef/generic";
+import type { CSSProperties } from "react";
 
 export const LanguageOptions = ["English", "Korean", "Japanese", "Chinese"];
 
@@ -476,3 +477,9 @@ export const basicPopoverStyles = {
 	open: { opacity: 1, transform: "translateY(0px)" },
 	close: { opacity: 0, transform: "translateY(-8px)" },
 };
+
+export const tinyInputStyles = {
+	"--md-sys-typescale-body-large-size": "14px",
+	"--md-outlined-field-top-space": "6px",
+	"--md-outlined-field-bottom-space": "6px",
+} as CSSProperties;
