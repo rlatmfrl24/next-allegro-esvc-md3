@@ -110,11 +110,11 @@ const DangerousCargoInput = ({
 				header: "UN Number",
 				size: 150,
 				cell: (cell) => (
-					<MdOutlinedTextField
+					<DGTableInput
 						className="p-2 w-full text-right"
 						style={tinyInputStyles}
 						value={cell.getValue()}
-						onBlur={(e) => {
+						onBlur={(e: { currentTarget: { value: unknown } }) => {
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
@@ -129,12 +129,12 @@ const DangerousCargoInput = ({
 				header: "Class",
 				size: 150,
 				cell: (cell) => (
-					<MdOutlinedTextField
+					<DGTableInput
 						className="p-2 w-full text-right"
 						style={tinyInputStyles}
 						value={cell.getValue()}
 						required={showRequired}
-						onBlur={(e) => {
+						onBlur={(e: { currentTarget: { value: unknown } }) => {
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
@@ -447,6 +447,29 @@ const DangerousCargoInput = ({
 	);
 };
 
+const DGTableInput = ({ ...props }) => {
+	return (
+		<div className="relative">
+			<MdOutlinedTextField
+				className="p-2 w-full"
+				style={tinyInputStyles}
+				{...props}
+			/>
+			<span
+				className="absolute
+				top-3
+				left-3
+				text-xs
+				text-red-500
+				font-bold
+				pointer-events-none"
+			>
+				*
+			</span>
+		</div>
+	);
+};
+
 const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
 	return (
 		<table>
@@ -457,7 +480,10 @@ const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
 							<th
 								key={header.id}
 								className="bg-surfaceContainerHigh"
-								style={{ minWidth: header.column.columnDef.size }}
+								style={{
+									minWidth: header.column.columnDef.size,
+									width: header.column.columnDef.size,
+								}}
 							>
 								<div className="flex justify-between items-center">
 									<span className="font-notoSans text-sm text-left p-2">
