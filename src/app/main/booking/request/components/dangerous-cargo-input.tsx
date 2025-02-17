@@ -1,8 +1,7 @@
-import { type CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { DividerComponent } from "@/app/components/divider";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import NaToggleButton from "@/app/components/na-toggle-button";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { ContainerState } from "@/app/store/booking.store";
