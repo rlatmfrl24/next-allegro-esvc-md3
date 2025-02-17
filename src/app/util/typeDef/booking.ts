@@ -132,11 +132,13 @@ export interface ContainerInformationType {
 	quantity: number;
 	soc: number;
 	isDangerous: boolean;
-	dangerousCargoInformation: DangerousContainerInformationType[];
+	isSeparated: boolean;
+	dangerousCargoInformation: DangerousContainerDataType[];
 }
 
-export type DangerousContainerInformationType = {
+export type DangerousContainerDataType = {
 	uuid: string;
+	containerIndex: number; // if isSeparated is true, this will be the index of the container. if not, it will be 0
 	unNumber: string;
 	class: string;
 	flashPoint: string;

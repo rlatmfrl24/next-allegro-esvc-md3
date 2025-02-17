@@ -12,15 +12,15 @@ import BulkContainerImage from "@/../public/img_bulk_container.svg";
 import { SubTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import {
-  BookingRequestStepState,
-  ContainerState,
+	BookingRequestStepState,
+	ContainerState,
 } from "@/app/store/booking.store";
 import { QuotationTermsState } from "@/app/store/pricing.store";
 import { MdFilledButton, MdOutlinedTextField } from "@/app/util/md3";
 import {
-  ContainerType,
-  DangerousContainerInformationType,
-  DryContainerInformationType,
+	ContainerType,
+	type DangerousContainerDataType,
+	type DryContainerInformationType,
 } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 
@@ -37,528 +37,551 @@ import { DividerComponent } from "@/app/components/divider";
 import { DangerousCargoStatusProps } from "../special-cargo/util";
 
 export default function ContainerStep() {
-  // const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
-    BookingRequestStepState
-  );
-  const [containerInformation, setContainerInformation] =
-    useRecoilState(ContainerState);
-  const [typeSelections, setTypeSelections] = useState<ContainerType[]>(
-    Object.keys(ContainerType).map(
-      (key) => ContainerType[key as keyof typeof ContainerType]
-    )
-  );
+	// const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+	const [bookingRequestStep, setBookingRequestStep] = useRecoilState(
+		BookingRequestStepState,
+	);
+	const [containerInformation, setContainerInformation] =
+		useRecoilState(ContainerState);
+	const [typeSelections, setTypeSelections] = useState<ContainerType[]>(
+		Object.keys(ContainerType).map(
+			(key) => ContainerType[key as keyof typeof ContainerType],
+		),
+	);
 
-  function ValidateContainerInput() {
-    let isValid = true;
+	function ValidateContainerInput() {
+		let isValid = true;
 
-    const totalContainerQuantity =
-      containerInformation.dry.reduce((acc, curr) => acc + curr.quantity, 0) +
-      containerInformation.reefer.reduce(
-        (acc, curr) => acc + curr.quantity,
-        0
-      ) +
-      containerInformation.opentop.reduce(
-        (acc, curr) => acc + curr.quantity,
-        0
-      ) +
-      containerInformation.flatrack.reduce(
-        (acc, curr) => acc + curr.quantity,
-        0
-      ) +
-      containerInformation.tank.reduce((acc, curr) => acc + curr.quantity, 0) +
-      containerInformation.bulk.length;
+		const totalContainerQuantity =
+			containerInformation.dry.reduce((acc, curr) => acc + curr.quantity, 0) +
+			containerInformation.reefer.reduce(
+				(acc, curr) => acc + curr.quantity,
+				0,
+			) +
+			containerInformation.opentop.reduce(
+				(acc, curr) => acc + curr.quantity,
+				0,
+			) +
+			containerInformation.flatrack.reduce(
+				(acc, curr) => acc + curr.quantity,
+				0,
+			) +
+			containerInformation.tank.reduce((acc, curr) => acc + curr.quantity, 0) +
+			containerInformation.bulk.length;
 
-    if (totalContainerQuantity === 0) {
-      isValid = false;
-    }
+		if (totalContainerQuantity === 0) {
+			isValid = false;
+		}
 
-    containerInformation.dry.forEach((container) => {
-      if (container.size === "" || container.quantity === 0) {
-        isValid = false;
-      }
-    });
-    containerInformation.reefer.forEach((container) => {
-      if (
-        container.size === "" ||
-        container.quantity === 0 ||
-        container.nature === "" ||
-        container.genset === undefined
-      ) {
-        isValid = false;
-      }
-    });
-    containerInformation.opentop.forEach((container) => {
-      if (container.size === "" || container.quantity === 0) {
-        isValid = false;
-      }
-    });
-    containerInformation.flatrack.forEach((container) => {
-      if (container.size === "" || container.quantity === 0) {
-        isValid = false;
-      }
-    });
-    containerInformation.tank.forEach((container) => {
-      if (container.size === "" || container.quantity === 0) {
-        isValid = false;
-      }
-    });
+		for (const container of containerInformation.dry) {
+			if (container.size === "" || container.quantity === 0) {
+				isValid = false;
+			}
+		}
 
-    // get All Dangerous Cargo Data from All container
-    const allDangerousCargo: DangerousContainerInformationType[] = [
-      ...containerInformation.dry,
-      ...containerInformation.reefer,
-      ...containerInformation.opentop,
-      ...containerInformation.flatrack,
-      ...containerInformation.tank,
-    ].reduce((acc, curr) => {
-      return [...acc, ...curr.dangerousCargoInformation];
-    }, [] as DangerousContainerInformationType[]);
+		for (const container of containerInformation.reefer) {
+			if (
+				container.size === "" ||
+				container.quantity === 0 ||
+				container.nature === "" ||
+				container.genset === undefined
+			) {
+				isValid = false;
+			}
+		}
 
-    // Check if Dangerous Cargo required data is empty
-    allDangerousCargo.forEach((dangerousCargo) => {
-      if (dangerousCargo.unNumber === "" || dangerousCargo.class === "") {
-        isValid = false;
-      }
-    });
+		for (const container of containerInformation.opentop) {
+			if (container.size === "" || container.quantity === 0) {
+				isValid = false;
+			}
+		}
+		for (const container of containerInformation.flatrack) {
+			if (container.size === "" || container.quantity === 0) {
+				isValid = false;
+			}
+		}
+		for (const container of containerInformation.tank) {
+			if (container.size === "" || container.quantity === 0) {
+				isValid = false;
+			}
+		}
 
-    return isValid;
-  }
+		// get All Dangerous Cargo Data from All container
+		const allDangerousCargo: DangerousContainerDataType[] = [
+			...containerInformation.dry,
+			...containerInformation.reefer,
+			...containerInformation.opentop,
+			...containerInformation.flatrack,
+			...containerInformation.tank,
+		].reduce((acc, curr) => {
+			return acc.concat(curr.dangerousCargoInformation);
+		}, [] as DangerousContainerDataType[]);
 
-  const isValid = useCallback(ValidateContainerInput, [
-    containerInformation.bulk.length,
-    containerInformation.dry,
-    containerInformation.flatrack,
-    containerInformation.opentop,
-    containerInformation.reefer,
-    containerInformation.tank,
-  ]);
+		// Check if Dangerous Cargo required data is empty
+		for (const dangerousCargo of allDangerousCargo) {
+			if (dangerousCargo.unNumber === "" || dangerousCargo.class === "") {
+				isValid = false;
+			}
+		}
 
-  useEffect(() => {
-    setBookingRequestStep((prev) => ({
-      ...prev,
-      container: {
-        ...prev.container,
-        isCompleted: isValid(),
-      },
-    }));
-  }, [isValid, setBookingRequestStep]);
+		return isValid;
+	}
 
-  const moveToAdditionalInformationStep = () => {
-    setBookingRequestStep((prev) => ({
-      ...prev,
-      container: {
-        ...prev.container,
-        isSelected: false,
-        visited: true,
-      },
-      additionalInformation: {
-        ...prev.additionalInformation,
-        isSelected: true,
-      },
-    }));
-  };
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	const isValid = useCallback(ValidateContainerInput, [
+		containerInformation.bulk.length,
+		containerInformation.dry,
+		containerInformation.flatrack,
+		containerInformation.opentop,
+		containerInformation.reefer,
+		containerInformation.tank,
+	]);
 
-  function handleTypeSelections(type: ContainerType) {
-    if (typeSelections.includes(type)) {
-      setTypeSelections((prev) => prev.filter((t) => t !== type));
-    } else {
-      setTypeSelections((prev) => [...prev, type]);
-    }
+	useEffect(() => {
+		setBookingRequestStep((prev) => ({
+			...prev,
+			container: {
+				...prev.container,
+				isCompleted: isValid(),
+			},
+		}));
+	}, [isValid, setBookingRequestStep]);
 
-    const defaultContainerSizeOptions = ["20", "40", "40HC"];
+	const moveToAdditionalInformationStep = () => {
+		setBookingRequestStep((prev) => ({
+			...prev,
+			container: {
+				...prev.container,
+				isSelected: false,
+				visited: true,
+			},
+			additionalInformation: {
+				...prev.additionalInformation,
+				isSelected: true,
+			},
+		}));
+	};
 
-    const typeKey = type.toLowerCase() as keyof typeof containerInformation;
-    const emptyData = getEmptyContainerData(type, defaultContainerSizeOptions);
+	function handleTypeSelections(type: ContainerType) {
+		if (typeSelections.includes(type)) {
+			setTypeSelections((prev) => prev.filter((t) => t !== type));
+		} else {
+			setTypeSelections((prev) => [...prev, type]);
+		}
 
-    if (containerInformation[typeKey].length === 0) {
-      setContainerInformation((prev) => ({
-        ...prev,
-        [typeKey]: [
-          ...prev[type.toLowerCase() as keyof typeof prev],
-          emptyData,
-        ],
-      }));
-    }
-  }
+		const defaultContainerSizeOptions = ["20", "40", "40HC"];
 
-  useEffect(() => {
-    containerInformation.dry.length === 0 &&
-      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.dry));
-    containerInformation.reefer.length === 0 &&
-      setTypeSelections((prev) =>
-        prev.filter((t) => t !== ContainerType.reefer)
-      );
-    containerInformation.opentop.length === 0 &&
-      setTypeSelections((prev) =>
-        prev.filter((t) => t !== ContainerType.opentop)
-      );
-    containerInformation.flatrack.length === 0 &&
-      setTypeSelections((prev) =>
-        prev.filter((t) => t !== ContainerType.flatrack)
-      );
-    containerInformation.tank.length === 0 &&
-      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.tank));
-    containerInformation.bulk.length === 0 &&
-      setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.bulk));
-  }, [
-    containerInformation.bulk.length,
-    containerInformation.dry.length,
-    containerInformation.flatrack.length,
-    containerInformation.opentop.length,
-    containerInformation.reefer.length,
-    containerInformation.tank.length,
-  ]);
+		const typeKey = type.toLowerCase() as keyof typeof containerInformation;
+		const emptyData = getEmptyContainerData(type, defaultContainerSizeOptions);
 
-  // use Quotation Data
-  const params = useSearchParams();
-  const quotationTerms = useRecoilValue(QuotationTermsState);
+		if (containerInformation[typeKey].length === 0) {
+			setContainerInformation((prev) => ({
+				...prev,
+				[typeKey]: [
+					...prev[type.toLowerCase() as keyof typeof prev],
+					emptyData,
+				],
+			}));
+		}
+	}
 
-  useEffect(() => {
-    if (params.has("quoteNumber")) {
-      const dryList = quotationTerms.containers.map((container) => {
-        return {
-          uuid: faker.string.uuid(),
-          size: {
-            "Dry 20": "20",
-            "Dry 40": "40",
-            "Dry 45": "45",
-          }[container.containerType],
-          type: ContainerType.dry,
-          soc: 0,
-          quantity: container.quantity,
-        } as DryContainerInformationType;
-      });
+	useEffect(() => {
+		containerInformation.dry.length === 0 &&
+			setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.dry));
+		containerInformation.reefer.length === 0 &&
+			setTypeSelections((prev) =>
+				prev.filter((t) => t !== ContainerType.reefer),
+			);
+		containerInformation.opentop.length === 0 &&
+			setTypeSelections((prev) =>
+				prev.filter((t) => t !== ContainerType.opentop),
+			);
+		containerInformation.flatrack.length === 0 &&
+			setTypeSelections((prev) =>
+				prev.filter((t) => t !== ContainerType.flatrack),
+			);
+		containerInformation.tank.length === 0 &&
+			setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.tank));
+		containerInformation.bulk.length === 0 &&
+			setTypeSelections((prev) => prev.filter((t) => t !== ContainerType.bulk));
+	}, [
+		containerInformation.bulk.length,
+		containerInformation.dry.length,
+		containerInformation.flatrack.length,
+		containerInformation.opentop.length,
+		containerInformation.reefer.length,
+		containerInformation.tank.length,
+	]);
 
-      setContainerInformation((prev) => ({
-        ...prev,
-        dry: dryList,
-      }));
-    }
-  }, [quotationTerms, params, setContainerInformation]);
+	// use Quotation Data
+	const params = useSearchParams();
+	const quotationTerms = useRecoilValue(QuotationTermsState);
 
-  return (
-    <div className="w-full flex flex-col">
-      <MdTypography variant="title" size="large">
-        Container
-      </MdTypography>
-      {params.has("quoteNumber") ? (
-        <>
-          <div className="w-fit mt-4">
-            <ContainerToggleButton
-              image={<DryContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.dry)}
-              onClick={() => {
-                // handleTypeSelections(ContainerType.dry);
-              }}
-              title="Dry"
-              count={
-                containerInformation.dry.length === 0
-                  ? undefined
-                  : containerInformation.dry.length
-              }
-            />
-          </div>
-          <div className="mt-6">
-            <SubTitle title="Dry Container" className="mb-6" />
-            {quotationTerms.containers.map((container, index) => {
-              return (
-                <>
-                  <div className="flex gap-4">
-                    <NAOutlinedTextField
-                      readOnly
-                      label="Size"
-                      className="text-right"
-                      value={
-                        {
-                          "Dry 20": "20",
-                          "Dry 40": "40",
-                          "Dry 45": "45",
-                        }[container.containerType]
-                      }
-                      suffixText="ft"
-                    />
-                    <NAOutlinedTextField
-                      readOnly
-                      className="text-right"
-                      label="Quantity / Total"
-                      value={container.quantity.toString()}
-                    />
-                  </div>
-                  {index !== quotationTerms.containers.length - 1 && (
-                    <DividerComponent className="border-dotted my-4" />
-                  )}
-                </>
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex gap-4 mt-4">
-            <ContainerToggleButton
-              image={<DryContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.dry)}
-              onClick={() => {
-                handleTypeSelections(ContainerType.dry);
-              }}
-              title="Dry"
-              // count={
-              //   containerInformation.dry.length === 0
-              //     ? undefined
-              //     : containerInformation.dry.length
-              // }
-              count={
-                containerInformation.dry.length === 0
-                  ? undefined
-                  : containerInformation.dry.reduce(
-                      (acc, curr) => acc + curr.quantity,
-                      0
-                    )
-              }
-              hoverText={
-                <div>
-                  {containerInformation.dry.map((container, index) => {
-                    return (
-                      container.size &&
-                      container.quantity !== 0 && (
-                        <div key={index} className="flex gap-4">
-                          <MdTypography
-                            variant="title"
-                            size="medium"
-                            className="text-white"
-                          >
-                            {container.size + " x" + container.quantity}
-                          </MdTypography>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
-              }
-            />
-            <ContainerToggleButton
-              image={<ReeferContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.reefer)}
-              onClick={() => {
-                handleTypeSelections(ContainerType.reefer);
-              }}
-              title="Reefer"
-              count={
-                containerInformation.reefer.length === 0
-                  ? undefined
-                  : containerInformation.reefer.reduce(
-                      (acc, curr) => acc + curr.quantity,
-                      0
-                    )
-              }
-              hoverText={
-                <div>
-                  {containerInformation.reefer.map((container, index) => {
-                    return (
-                      container.size &&
-                      container.quantity !== 0 && (
-                        <div key={index} className="flex gap-4">
-                          <MdTypography
-                            variant="title"
-                            size="medium"
-                            className="text-white"
-                          >
-                            {container.size + " x" + container.quantity}
-                          </MdTypography>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
-              }
-            />
-            <ContainerToggleButton
-              image={<OpenTopContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.opentop)}
-              onClick={() => {
-                handleTypeSelections(ContainerType.opentop);
-              }}
-              title="Open Top"
-              count={
-                containerInformation.opentop.length === 0
-                  ? undefined
-                  : containerInformation.opentop.reduce(
-                      (acc, curr) => acc + curr.quantity,
-                      0
-                    )
-              }
-              hoverText={
-                <div>
-                  {containerInformation.opentop.map((container, index) => {
-                    return (
-                      container.size &&
-                      container.quantity !== 0 && (
-                        <div key={index} className="flex gap-4">
-                          <MdTypography
-                            variant="title"
-                            size="medium"
-                            className="text-white"
-                          >
-                            {container.size + " x" + container.quantity}
-                          </MdTypography>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
-              }
-            />
-            <ContainerToggleButton
-              image={<FlatRackContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.flatrack)}
-              onClick={() => {
-                handleTypeSelections(ContainerType.flatrack);
-              }}
-              title="Flat Rack"
-              count={
-                containerInformation.flatrack.length === 0
-                  ? undefined
-                  : containerInformation.flatrack.reduce(
-                      (acc, curr) => acc + curr.quantity,
-                      0
-                    )
-              }
-              hoverText={
-                <div>
-                  {containerInformation.flatrack.map((container, index) => {
-                    return (
-                      container.size &&
-                      container.quantity !== 0 && (
-                        <div key={index} className="flex gap-4">
-                          <MdTypography
-                            variant="title"
-                            size="medium"
-                            className="text-white"
-                          >
-                            {container.size + " x" + container.quantity}
-                          </MdTypography>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
-              }
-            />
-            <ContainerToggleButton
-              image={<TankContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.tank)}
-              onClick={() => {
-                handleTypeSelections(ContainerType.tank);
-              }}
-              title="Tank"
-              count={
-                containerInformation.tank.length === 0
-                  ? undefined
-                  : containerInformation.tank.reduce(
-                      (acc, curr) => acc + curr.quantity,
-                      0
-                    )
-              }
-              hoverText={
-                <div>
-                  {containerInformation.tank.map((container, index) => {
-                    return (
-                      container.size &&
-                      container.quantity !== 0 && (
-                        <div key={index} className="flex gap-4">
-                          <MdTypography
-                            variant="title"
-                            size="medium"
-                            className="text-white"
-                          >
-                            {container.size + " x" + container.quantity}
-                          </MdTypography>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
-              }
-            />
-            <ContainerToggleButton
-              image={<BulkContainerImage />}
-              isSelected={typeSelections.includes(ContainerType.bulk)}
-              onClick={() => {
-                handleTypeSelections(ContainerType.bulk);
-              }}
-              title="Bulk"
-              // Bulk container does not have quantity
-              count={
-                containerInformation.bulk.length === 0
-                  ? undefined
-                  : containerInformation.bulk.length
-              }
-              hoverText={
-                <div>
-                  {containerInformation.bulk.length !== 0 && (
-                    <MdTypography
-                      variant="title"
-                      size="medium"
-                      className="text-white"
-                    >
-                      {"Bulk x" + containerInformation.bulk.length}
-                    </MdTypography>
-                  )}
-                </div>
-              }
-            />
-          </div>
-          <div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
-            {typeSelections.map((type) => {
-              return (
-                <div key={type}>
-                  {type === ContainerType.dry && (
-                    <DryContainerInput list={containerInformation.dry} />
-                  )}
-                  {type === ContainerType.reefer && (
-                    <ReeferContainerInput list={containerInformation.reefer} />
-                  )}
-                  {type === ContainerType.opentop && (
-                    <OpenTopContainerInput
-                      list={containerInformation.opentop}
-                    />
-                  )}
-                  {type === ContainerType.flatrack && (
-                    <FlatRackContainerInput
-                      list={containerInformation.flatrack}
-                    />
-                  )}
-                  {type === ContainerType.tank && (
-                    <TankContainerInput list={containerInformation.tank} />
-                  )}
-                  {type === ContainerType.bulk && (
-                    <BulkContainerInput list={containerInformation.bulk} />
-                  )}
-                </div>
-              );
-            })}
-            {typeSelections.length === 0 && (
-              <div className="flex-1 flex-col flex items-center justify-center gap-8">
-                <EmptyContainerPlaceholder />
-                <MdTypography
-                  variant="headline"
-                  size="medium"
-                  className="text-outlineVariant"
-                >
-                  Please select the container type you want to add.
-                </MdTypography>
-              </div>
-            )}
-          </div>
-        </>
-      )}
+	useEffect(() => {
+		if (params.has("quoteNumber")) {
+			const dryList = quotationTerms.containers.map((container) => {
+				return {
+					uuid: faker.string.uuid(),
+					size: {
+						"Dry 20": "20",
+						"Dry 40": "40",
+						"Dry 45": "45",
+					}[container.containerType],
+					type: ContainerType.dry,
+					soc: 0,
+					quantity: container.quantity,
+				} as DryContainerInformationType;
+			});
 
-      <div className="flex items-end justify-end mt-6 ">
-        <MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
-          Next
-        </MdFilledButton>
-      </div>
-    </div>
-  );
+			setContainerInformation((prev) => ({
+				...prev,
+				dry: dryList,
+			}));
+		}
+	}, [quotationTerms, params, setContainerInformation]);
+
+	return (
+		<div className="w-full flex flex-col">
+			<MdTypography variant="title" size="large">
+				Container
+			</MdTypography>
+			{params.has("quoteNumber") ? (
+				<>
+					<div className="w-fit mt-4">
+						<ContainerToggleButton
+							image={<DryContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.dry)}
+							onClick={() => {
+								// handleTypeSelections(ContainerType.dry);
+							}}
+							title="Dry"
+							count={
+								containerInformation.dry.length === 0
+									? undefined
+									: containerInformation.dry.length
+							}
+						/>
+					</div>
+					<div className="mt-6">
+						<SubTitle title="Dry Container" className="mb-6" />
+						{quotationTerms.containers.map((container, index) => {
+							return (
+								<>
+									<div
+										key={
+											container.containerType + container.quantity.toString()
+										}
+										className="flex gap-4"
+									>
+										<NAOutlinedTextField
+											readOnly
+											label="Size"
+											className="text-right"
+											value={
+												{
+													"Dry 20": "20",
+													"Dry 40": "40",
+													"Dry 45": "45",
+												}[container.containerType]
+											}
+											suffixText="ft"
+										/>
+										<NAOutlinedTextField
+											readOnly
+											className="text-right"
+											label="Quantity / Total"
+											value={container.quantity.toString()}
+										/>
+									</div>
+									{index !== quotationTerms.containers.length - 1 && (
+										<DividerComponent className="border-dotted my-4" />
+									)}
+								</>
+							);
+						})}
+					</div>
+				</>
+			) : (
+				<>
+					<div className="flex gap-4 mt-4">
+						<ContainerToggleButton
+							image={<DryContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.dry)}
+							onClick={() => {
+								handleTypeSelections(ContainerType.dry);
+							}}
+							title="Dry"
+							// count={
+							//   containerInformation.dry.length === 0
+							//     ? undefined
+							//     : containerInformation.dry.length
+							// }
+							count={
+								containerInformation.dry.length === 0
+									? undefined
+									: containerInformation.dry.reduce(
+											(acc, curr) => acc + curr.quantity,
+											0,
+										)
+							}
+							hoverText={
+								<div>
+									{containerInformation.dry.map((container, index) => {
+										return (
+											container.size &&
+											container.quantity !== 0 && (
+												<div
+													key={container.size + container.quantity.toString()}
+													className="flex gap-4"
+												>
+													<MdTypography
+														variant="title"
+														size="medium"
+														className="text-white"
+													>
+														{`${container.size} x${container.quantity}`}
+													</MdTypography>
+												</div>
+											)
+										);
+									})}
+								</div>
+							}
+						/>
+						<ContainerToggleButton
+							image={<ReeferContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.reefer)}
+							onClick={() => {
+								handleTypeSelections(ContainerType.reefer);
+							}}
+							title="Reefer"
+							count={
+								containerInformation.reefer.length === 0
+									? undefined
+									: containerInformation.reefer.reduce(
+											(acc, curr) => acc + curr.quantity,
+											0,
+										)
+							}
+							hoverText={
+								<div>
+									{containerInformation.reefer.map((container, index) => {
+										return (
+											container.size &&
+											container.quantity !== 0 && (
+												<div
+													key={container.size + container.quantity.toString()}
+													className="flex gap-4"
+												>
+													<MdTypography
+														variant="title"
+														size="medium"
+														className="text-white"
+													>
+														{`${container.size} x${container.quantity}`}
+													</MdTypography>
+												</div>
+											)
+										);
+									})}
+								</div>
+							}
+						/>
+						<ContainerToggleButton
+							image={<OpenTopContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.opentop)}
+							onClick={() => {
+								handleTypeSelections(ContainerType.opentop);
+							}}
+							title="Open Top"
+							count={
+								containerInformation.opentop.length === 0
+									? undefined
+									: containerInformation.opentop.reduce(
+											(acc, curr) => acc + curr.quantity,
+											0,
+										)
+							}
+							hoverText={
+								<div>
+									{containerInformation.opentop.map((container, index) => {
+										return (
+											container.size &&
+											container.quantity !== 0 && (
+												<div
+													key={container.size + container.quantity.toString()}
+													className="flex gap-4"
+												>
+													<MdTypography
+														variant="title"
+														size="medium"
+														className="text-white"
+													>
+														{`${container.size} x${container.quantity}`}
+													</MdTypography>
+												</div>
+											)
+										);
+									})}
+								</div>
+							}
+						/>
+						<ContainerToggleButton
+							image={<FlatRackContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.flatrack)}
+							onClick={() => {
+								handleTypeSelections(ContainerType.flatrack);
+							}}
+							title="Flat Rack"
+							count={
+								containerInformation.flatrack.length === 0
+									? undefined
+									: containerInformation.flatrack.reduce(
+											(acc, curr) => acc + curr.quantity,
+											0,
+										)
+							}
+							hoverText={
+								<div>
+									{containerInformation.flatrack.map((container, index) => {
+										return (
+											container.size &&
+											container.quantity !== 0 && (
+												<div
+													key={container.size + container.quantity.toString()}
+													className="flex gap-4"
+												>
+													<MdTypography
+														variant="title"
+														size="medium"
+														className="text-white"
+													>
+														{`${container.size} x${container.quantity}`}
+													</MdTypography>
+												</div>
+											)
+										);
+									})}
+								</div>
+							}
+						/>
+						<ContainerToggleButton
+							image={<TankContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.tank)}
+							onClick={() => {
+								handleTypeSelections(ContainerType.tank);
+							}}
+							title="Tank"
+							count={
+								containerInformation.tank.length === 0
+									? undefined
+									: containerInformation.tank.reduce(
+											(acc, curr) => acc + curr.quantity,
+											0,
+										)
+							}
+							hoverText={
+								<div>
+									{containerInformation.tank.map((container, index) => {
+										return (
+											container.size &&
+											container.quantity !== 0 && (
+												<div
+													key={container.size + container.quantity.toString()}
+													className="flex gap-4"
+												>
+													<MdTypography
+														variant="title"
+														size="medium"
+														className="text-white"
+													>
+														{`${container.size} x${container.quantity}`}
+													</MdTypography>
+												</div>
+											)
+										);
+									})}
+								</div>
+							}
+						/>
+						<ContainerToggleButton
+							image={<BulkContainerImage />}
+							isSelected={typeSelections.includes(ContainerType.bulk)}
+							onClick={() => {
+								handleTypeSelections(ContainerType.bulk);
+							}}
+							title="Bulk"
+							// Bulk container does not have quantity
+							count={
+								containerInformation.bulk.length === 0
+									? undefined
+									: containerInformation.bulk.length
+							}
+							hoverText={
+								<div>
+									{containerInformation.bulk.length !== 0 && (
+										<MdTypography
+											variant="title"
+											size="medium"
+											className="text-white"
+										>
+											{`Bulk x${containerInformation.bulk.length}`}
+										</MdTypography>
+									)}
+								</div>
+							}
+						/>
+					</div>
+					<div className="flex flex-1 justify-end flex-col-reverse w-full mt-6 gap-6">
+						{typeSelections.map((type) => {
+							return (
+								<div key={type}>
+									{type === ContainerType.dry && (
+										<DryContainerInput list={containerInformation.dry} />
+									)}
+									{type === ContainerType.reefer && (
+										<ReeferContainerInput list={containerInformation.reefer} />
+									)}
+									{type === ContainerType.opentop && (
+										<OpenTopContainerInput
+											list={containerInformation.opentop}
+										/>
+									)}
+									{type === ContainerType.flatrack && (
+										<FlatRackContainerInput
+											list={containerInformation.flatrack}
+										/>
+									)}
+									{type === ContainerType.tank && (
+										<TankContainerInput list={containerInformation.tank} />
+									)}
+									{type === ContainerType.bulk && (
+										<BulkContainerInput list={containerInformation.bulk} />
+									)}
+								</div>
+							);
+						})}
+						{typeSelections.length === 0 && (
+							<div className="flex-1 flex-col flex items-center justify-center gap-8">
+								<EmptyContainerPlaceholder />
+								<MdTypography
+									variant="headline"
+									size="medium"
+									className="text-outlineVariant"
+								>
+									Please select the container type you want to add.
+								</MdTypography>
+							</div>
+						)}
+					</div>
+				</>
+			)}
+
+			<div className="flex items-end justify-end mt-6 ">
+				<MdFilledButton onClick={() => moveToAdditionalInformationStep()}>
+					Next
+				</MdFilledButton>
+			</div>
+		</div>
+	);
 }
