@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { DividerComponent } from "@/app/components/divider";
@@ -15,11 +15,13 @@ import {
 	MdIconButton,
 	MdOutlinedButton,
 	MdOutlinedTextField,
+	MdSwitch,
 } from "@/app/util/md3";
 import {
 	type ContainerInformationType,
 	type DangerousContainerDataType,
 	ContainerType,
+	type DryContainerInformationType,
 } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { AddBoxOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
@@ -32,8 +34,9 @@ import {
 } from "@tanstack/react-table";
 
 import { GridSelectionComponent } from "../../status/components/dialog/table/util";
+import { MdTypography } from "@/app/components/typography";
 
-const DangerousCargoInput = ({
+export const DangerousCargoInput = ({
 	container,
 	type,
 	showRequired = true,
@@ -300,62 +303,6 @@ const DangerousCargoInput = ({
 
 	return (
 		<>
-			<MdDialog
-				open={isResetConfirmDialogOpen}
-				closed={() => setIsResetConfirmDialogOpen(false)}
-			>
-				<div slot="headline">
-					All input contents of the Cargo Manifest will be discarded.
-				</div>
-				<div slot="content">Are you sure you want to uncheck?</div>
-				<div slot="actions">
-					<MdOutlinedButton
-						onClick={() => {
-							setIsResetConfirmDialogOpen(false);
-						}}
-					>
-						Cancel
-					</MdOutlinedButton>
-					<MdFilledButton
-						onClick={() => {
-							setIsResetConfirmDialogOpen(false);
-							setContainerInformation((prev) => ({
-								...prev,
-								[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-									c.uuid === container.uuid && c.type !== ContainerType.bulk
-										? {
-												...c,
-												isDangerous: !c.isDangerous,
-												dangerousCargoInformation: [],
-											}
-										: c,
-								),
-							}));
-						}}
-					>
-						Yes
-					</MdFilledButton>
-				</div>
-			</MdDialog>
-			<NaToggleButton
-				className="w-fit my-0"
-				label="Dangerous Cargo"
-				state={container.isDangerous ? "checked" : "unchecked"}
-				onClick={() => {
-					if (!container.isDangerous) {
-						setContainerInformation((prev) => ({
-							...prev,
-							[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-								c.uuid === container.uuid && c.type !== ContainerType.bulk
-									? { ...c, isDangerous: !c.isDangerous }
-									: c,
-							),
-						}));
-					} else {
-						setIsResetConfirmDialogOpen(true);
-					}
-				}}
-			/>
 			{container.isDangerous && (
 				<div className="flex flex-col border border-outlineVariant rounded-lg p-4 gap-3">
 					<div className="flex gap-4">
@@ -523,4 +470,96 @@ const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
 	);
 };
 
-export default DangerousCargoInput;
+export const DangerousCargoTrigger = ({
+	container,
+	type,
+}: {
+	container: DryContainerInformationType;
+	type: ContainerType;
+}) => {
+	const typeKey = type.toString().toLowerCase();
+	const [isResetConfirmDialogOpen, setIsResetConfirmDialogOpen] =
+		useState(false);
+	const setContainerInformation = useSetRecoilState(ContainerState);
+
+	return (
+		<>
+			<MdDialog
+				open={isResetConfirmDialogOpen}
+				closed={() => setIsResetConfirmDialogOpen(false)}
+			>
+				<div slot="headline">
+					All input contents of the Cargo Manifest will be discarded.
+				</div>
+				<div slot="content">Are you sure you want to uncheck?</div>
+				<div slot="actions">
+					<MdOutlinedButton
+						onClick={() => {
+							setIsResetConfirmDialogOpen(false);
+						}}
+					>
+						Cancel
+					</MdOutlinedButton>
+					<MdFilledButton
+						onClick={() => {
+							setIsResetConfirmDialogOpen(false);
+							setContainerInformation((prev) => ({
+								...prev,
+								[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+									c.uuid === container.uuid && c.type !== ContainerType.bulk
+										? {
+												...c,
+												isDangerous: !c.isDangerous,
+												dangerousCargoInformation: [],
+											}
+										: c,
+								),
+							}));
+						}}
+					>
+						Yes
+					</MdFilledButton>
+				</div>
+			</MdDialog>
+			<label
+				htmlFor={`${container.uuid}-dangerous-cargo-switch`}
+				className="flex items-center gap-2 w-fit"
+				style={
+					{
+						"--md-switch-track-height": "18px",
+						"--md-switch-track-width": "32px",
+						"--md-switch-handle-height": "12px",
+						"--md-switch-handle-width": "12px",
+						"--md-switch-selected-handle-height": "12px",
+						"--md-switch-selected-handle-width": "12px",
+						"--md-switch-pressed-handle-height": "12px",
+						"--md-switch-pressed-handle-width": "12px",
+						"--md-switch-state-layer-size": "18px",
+					} as CSSProperties
+				}
+			>
+				<MdSwitch
+					id={`${container.uuid}-dangerous-cargo-switch`}
+					selected={container.isDangerous}
+					onClick={() => {
+						if (!container.isDangerous) {
+							setContainerInformation((prev) => ({
+								...prev,
+								[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+									c.uuid === container.uuid && c.type !== ContainerType.bulk
+										? { ...c, isDangerous: !c.isDangerous }
+										: c,
+								),
+							}));
+						} else {
+							setIsResetConfirmDialogOpen(true);
+						}
+					}}
+				/>
+				<MdTypography variant="body" size="small" prominent>
+					Dangerous Cargo
+				</MdTypography>
+			</label>
+		</>
+	);
+};
