@@ -115,7 +115,7 @@ export default function ContainerStep() {
 			...containerInformation.tank,
 		].reduce((acc, curr) => {
 			return acc.concat(
-				curr.dangerousCargoInformation.map(
+				curr.dgInfo.data.map(
 					(dangerousCargo) =>
 						({
 							...dangerousCargo,
@@ -320,11 +320,6 @@ export default function ContainerStep() {
 								handleTypeSelections(ContainerType.dry);
 							}}
 							title="Dry"
-							// count={
-							//   containerInformation.dry.length === 0
-							//     ? undefined
-							//     : containerInformation.dry.length
-							// }
 							count={
 								containerInformation.dry.length === 0
 									? undefined

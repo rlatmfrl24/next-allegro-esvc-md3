@@ -114,9 +114,12 @@ export function getEmptyContainerData(
 				size: sizeOptions ? sizeOptions[0] : "",
 				soc: 0,
 				quantity: 1,
-				isDangerous: false,
-				isSeparated: false,
-				dangerousCargoInformation: [],
+				dgInfo: {
+					quantity: 0,
+					isDangerous: false,
+					isSeparated: false,
+					data: [],
+				},
 			} as DryContainerInformationType;
 		case ContainerType.reefer:
 			return {
@@ -132,9 +135,12 @@ export function getEmptyContainerData(
 				nature: "",
 				humidity: undefined,
 				genset: false,
-				isDangerous: false,
-				isSeparated: false,
-				dangerousCargoInformation: [],
+				dgInfo: {
+					quantity: 0,
+					isDangerous: false,
+					isSeparated: false,
+					data: [],
+				},
 			} as ReeferContainerInformationType;
 		case ContainerType.opentop:
 			return {
@@ -161,9 +167,12 @@ export function getEmptyContainerData(
 					unit: "CM",
 					remark: "",
 				},
-				isDangerous: false,
-				isSeparated: false,
-				dangerousCargoInformation: [],
+				dgInfo: {
+					quantity: 0,
+					isDangerous: false,
+					isSeparated: false,
+					data: [],
+				},
 			} as OpenTopContainerInformationType;
 		case ContainerType.flatrack:
 			return {
@@ -190,9 +199,12 @@ export function getEmptyContainerData(
 					unit: "CM",
 					remark: "",
 				},
-				isDangerous: false,
-				isSeparated: false,
-				dangerousCargoInformation: [],
+				dgInfo: {
+					quantity: 0,
+					isDangerous: false,
+					isSeparated: false,
+					data: [],
+				},
 			} as FlatRackContainerInformationType;
 		case ContainerType.tank:
 			return {
@@ -201,9 +213,12 @@ export function getEmptyContainerData(
 				size: sizeOptions ? sizeOptions[0] : "",
 				soc: 0,
 				quantity: 1,
-				isDangerous: false,
-				isSeparated: false,
-				dangerousCargoInformation: [],
+				dgInfo: {
+					quantity: 0,
+					isDangerous: false,
+					isSeparated: false,
+					data: [],
+				},
 			} as TankContainerInformationType;
 		case ContainerType.bulk:
 			return {

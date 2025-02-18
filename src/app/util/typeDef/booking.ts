@@ -131,15 +131,14 @@ export interface ContainerInformationType {
 	type: ContainerType;
 	quantity: number;
 	soc: number;
-	isDangerous: boolean;
-	// dangerousCargoInformation: DangerousContainerDataType[];
-	isSeparated: boolean;
-	dangerousCargoInformation: dangerousCargoInformationType[];
+	dgInfo: DangerousCargoInformationType;
 }
 
-export type dangerousCargoInformationType = {
-	containerIndex: number;
-	data: DangerousContainerDataType[];
+export type DangerousCargoInformationType = {
+	isDangerous: boolean;
+	isSeparated: boolean;
+	quantity: number;
+	data: DangerousContainerDataType[][];
 };
 
 export type DangerousContainerDataType = {

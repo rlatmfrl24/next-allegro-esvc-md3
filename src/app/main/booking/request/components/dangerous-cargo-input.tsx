@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { DividerComponent } from "@/app/components/divider";
@@ -33,7 +33,10 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 
-import { GridSelectionComponent } from "../../status/components/dialog/table/util";
+import {
+	GridSelectionComponent,
+	useSkipper,
+} from "../../status/components/dialog/table/util";
 import { MdTypography } from "@/app/components/typography";
 
 export const DangerousCargoInput = ({
@@ -47,60 +50,30 @@ export const DangerousCargoInput = ({
 }) => {
 	const typeKey = type.toString().toLowerCase();
 	const setContainerInformation = useSetRecoilState(ContainerState);
-	const [isResetConfirmDialogOpen, setIsResetConfirmDialogOpen] =
-		useState(false);
 
 	const [selectedContainerIndex, setSelectedContainerIndex] = useState(0);
-	const columnHelper = createColumnHelper<DangerousContainerDataType>();
+	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
 
 	useEffect(() => {
 		console.log("container", container);
 	}, [container]);
 
 	useEffect(() => {
-		if (container.isDangerous) {
-			setContainerInformation((prev) => ({
-				...prev,
-				[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-					c.uuid === container.uuid && c.type !== ContainerType.bulk
-						? {
-								...c,
-								dangerousCargoInformation: Array.from({
-									length: container.quantity,
-								}).map((_, index) => {
-									return {
-										containerIndex: index,
-										data: [
-											{
-												uuid: faker.string.uuid(),
-												unNumber: "",
-												class: "",
-												flashPoint: "",
-												packingGroup: "None",
-												properShippingName: "",
-											},
-										],
-									};
-								}),
-							}
-						: c,
-				),
-			}));
-		}
+		console.log(
+			"selectedTableData",
+			container.dgInfo.isSeparated
+				? container.dgInfo.data[selectedContainerIndex]
+				: container.dgInfo.data[0],
+		);
 	}, [
-		container.isDangerous,
-		container.quantity,
-		container.uuid,
-		setContainerInformation,
-		typeKey,
+		container.dgInfo.data,
+		container.dgInfo.isSeparated,
+		selectedContainerIndex,
 	]);
 
-	const table = useReactTable<DangerousContainerDataType>({
-		data:
-			(container.isDangerous &&
-				container.dangerousCargoInformation[selectedContainerIndex]?.data) ||
-			[],
-		columns: [
+	const columnDefs = useMemo(() => {
+		const columnHelper = createColumnHelper<DangerousContainerDataType>();
+		return [
 			columnHelper.display({
 				header: "No.",
 				size: 80,
@@ -210,25 +183,38 @@ export const DangerousCargoInput = ({
 										c.uuid === container.uuid && c.type !== ContainerType.bulk
 											? {
 													...c,
-													dangerousCargoInformation:
-														c.dangerousCargoInformation.map((d) =>
-															d.containerIndex === selectedContainerIndex
-																? {
-																		...d,
-																		data: [
-																			...d.data,
-																			{
-																				uuid: faker.string.uuid(),
-																				unNumber: "",
-																				class: "",
-																				flashPoint: "",
-																				packingGroup: "None",
-																				properShippingName: "",
-																			},
-																		],
-																	}
-																: d,
-														),
+													dgInfo: {
+														...c.dgInfo,
+														//add empty row in selected container index if separated
+														data: c.dgInfo.isSeparated
+															? c.dgInfo.data.map((d, i) =>
+																	i === selectedContainerIndex
+																		? [
+																				...d,
+																				{
+																					uuid: faker.string.uuid(),
+																					unNumber: "",
+																					class: "",
+																					flashPoint: "",
+																					packingGroup: "",
+																					properShippingName: "",
+																				},
+																			]
+																		: d,
+																)
+															: //add empty row in all container if not separated
+																c.dgInfo.data.map((d) => [
+																	...d,
+																	{
+																		uuid: faker.string.uuid(),
+																		unNumber: "",
+																		class: "",
+																		flashPoint: "",
+																		packingGroup: "",
+																		properShippingName: "",
+																	},
+																]),
+													},
 												}
 											: c,
 									),
@@ -241,17 +227,22 @@ export const DangerousCargoInput = ({
 										c.uuid === container.uuid && c.type !== ContainerType.bulk
 											? {
 													...c,
-													dangerousCargoInformation:
-														c.dangerousCargoInformation.map((d) =>
-															d.containerIndex === selectedContainerIndex
-																? {
-																		...d,
-																		data: d.data.filter(
-																			(_, index) => index !== cell.row.index,
-																		),
-																	}
-																: d,
-														),
+													dgInfo: {
+														...c.dgInfo,
+														data: c.dgInfo.isSeparated
+															? c.dgInfo.data.map((d, i) =>
+																	i === selectedContainerIndex
+																		? d.filter(
+																				(_, index) => index !== cell.row.index,
+																			)
+																		: d,
+																)
+															: c.dgInfo.data.map((d) =>
+																	d.filter(
+																		(_, index) => index !== cell.row.index,
+																	),
+																),
+													},
 												}
 											: c,
 									),
@@ -269,33 +260,66 @@ export const DangerousCargoInput = ({
 					</MdIconButton>
 				),
 			}),
-		],
+		];
+	}, [
+		container.uuid,
+		selectedContainerIndex,
+		setContainerInformation,
+		showRequired,
+		typeKey,
+	]);
+
+	const table = useReactTable<DangerousContainerDataType>({
+		data: container.dgInfo.isSeparated
+			? container.dgInfo.data[selectedContainerIndex]
+			: container.dgInfo.data[0],
+		columns: columnDefs,
+		autoResetPageIndex,
 		getCoreRowModel: getCoreRowModel<DangerousContainerDataType>(),
 		meta: {
 			updateData: (rowIndex, columnId, value) => {
-				setContainerInformation((prev) => ({
-					...prev,
-					[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-						c.uuid === container.uuid && c.type !== ContainerType.bulk
-							? {
-									...c,
-									dangerousCargoInformation: c.dangerousCargoInformation.map(
-										(d) =>
-											d.containerIndex === selectedContainerIndex
-												? {
-														...d,
-														data: d.data.map((data, index) =>
-															index === rowIndex
-																? { ...data, [columnId]: value }
-																: data,
-														),
-													}
-												: d,
-									),
-								}
-							: c,
-					),
-				}));
+				resetAutoRestPageIndex();
+				if (container.dgInfo.isSeparated) {
+					setContainerInformation((prev) => ({
+						...prev,
+						[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+							c.uuid === container.uuid && c.type !== ContainerType.bulk
+								? {
+										...c,
+										dgInfo: {
+											...c.dgInfo,
+											data: c.dgInfo.data.map((d, index) =>
+												index === selectedContainerIndex
+													? d.map((r, i) =>
+															i === rowIndex ? { ...r, [columnId]: value } : r,
+														)
+													: d,
+											),
+										},
+									}
+								: c,
+						),
+					}));
+				} else {
+					setContainerInformation((prev) => ({
+						...prev,
+						[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+							c.uuid === container.uuid && c.type !== ContainerType.bulk
+								? {
+										...c,
+										dgInfo: {
+											...c.dgInfo,
+											data: c.dgInfo.data.map((d) =>
+												d.map((r, i) =>
+													i === rowIndex ? { ...r, [columnId]: value } : r,
+												),
+											),
+										},
+									}
+								: c,
+						),
+					}));
+				}
 			},
 			updateRow: (rowIndex, data) => {},
 		},
@@ -303,14 +327,14 @@ export const DangerousCargoInput = ({
 
 	return (
 		<>
-			{container.isDangerous && (
+			{container.dgInfo.isDangerous && (
 				<div className="flex flex-col border border-outlineVariant rounded-lg p-4 gap-3">
 					<div className="flex gap-4">
 						<SimpleRadioGroup
 							groupName={`dangerous-cargo-separation-${container.uuid}`}
 							options={["Same per Container", "Different per Container"]}
 							selected={
-								container.isSeparated
+								container.dgInfo.isSeparated
 									? "Different per Container"
 									: "Same per Container"
 							}
@@ -322,41 +346,10 @@ export const DangerousCargoInput = ({
 										c.uuid === container.uuid && c.type !== ContainerType.bulk
 											? {
 													...c,
-													isSeparated: value === "Different per Container",
-													dangerousCargoInformation:
-														value === "Different per Container"
-															? Array.from({ length: c.quantity }).map(
-																	(_, index) => {
-																		return {
-																			containerIndex: index,
-																			data: [
-																				{
-																					uuid: faker.string.uuid(),
-																					unNumber: "",
-																					class: "",
-																					flashPoint: "",
-																					packingGroup: "None",
-																					properShippingName: "",
-																				},
-																			],
-																		};
-																	},
-																)
-															: [
-																	{
-																		containerIndex: 0,
-																		data: [
-																			{
-																				uuid: faker.string.uuid(),
-																				unNumber: "",
-																				class: "",
-																				flashPoint: "",
-																				packingGroup: "None",
-																				properShippingName: "",
-																			},
-																		],
-																	},
-																],
+													dgInfo: {
+														...c.dgInfo,
+														isSeparated: value === "Different per Container",
+													},
 												}
 											: c,
 									),
@@ -365,22 +358,24 @@ export const DangerousCargoInput = ({
 						/>
 						<DividerComponent orientation="vertical" />
 						<MdChipSet>
-							{container.isSeparated ? (
-								Array.from({ length: container.quantity }).map((_, index) => (
-									<MdFilterChip
-										key={`container-${index + 1}`}
-										label={`Container #${index + 1}`}
-										selected={selectedContainerIndex === index}
-										onClick={(e) => {
-											if (selectedContainerIndex !== index) {
-												setSelectedContainerIndex(index);
-											} else {
-												e.preventDefault();
-												e.stopPropagation();
-											}
-										}}
-									/>
-								))
+							{container.dgInfo.isSeparated ? (
+								Array.from({ length: container.dgInfo.data.length }).map(
+									(_, index) => (
+										<MdFilterChip
+											key={`container-${index + 1}`}
+											label={`Container #${index + 1}`}
+											selected={selectedContainerIndex === index}
+											onClick={(e) => {
+												if (selectedContainerIndex !== index) {
+													setSelectedContainerIndex(index);
+												} else {
+													e.preventDefault();
+													e.stopPropagation();
+												}
+											}}
+										/>
+									),
+								)
 							) : (
 								<MdFilterChip label="All Container" selected />
 							)}
@@ -509,8 +504,12 @@ export const DangerousCargoTrigger = ({
 									c.uuid === container.uuid && c.type !== ContainerType.bulk
 										? {
 												...c,
-												isDangerous: !c.isDangerous,
-												dangerousCargoInformation: [],
+												dgInfo: {
+													...c.dgInfo,
+													isDangerous: !c.dgInfo.isDangerous,
+													quantity: 0,
+													data: [[]],
+												},
 											}
 										: c,
 								),
@@ -540,14 +539,34 @@ export const DangerousCargoTrigger = ({
 			>
 				<MdSwitch
 					id={`${container.uuid}-dangerous-cargo-switch`}
-					selected={container.isDangerous}
-					onClick={() => {
-						if (!container.isDangerous) {
+					selected={container.dgInfo.isDangerous}
+					onClick={(e) => {
+						e.preventDefault();
+						if (!container.dgInfo.isDangerous) {
 							setContainerInformation((prev) => ({
 								...prev,
 								[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
 									c.uuid === container.uuid && c.type !== ContainerType.bulk
-										? { ...c, isDangerous: !c.isDangerous }
+										? {
+												...c,
+												dgInfo: {
+													...c.dgInfo,
+													isDangerous: !c.dgInfo.isDangerous,
+													quantity: 1,
+													data: [
+														[
+															{
+																uuid: faker.string.uuid(),
+																unNumber: "",
+																class: "",
+																flashPoint: "",
+																packingGroup: "",
+																properShippingName: "",
+															},
+														],
+													],
+												},
+											}
 										: c,
 								),
 							}));

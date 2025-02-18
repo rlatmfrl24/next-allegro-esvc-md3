@@ -23,6 +23,7 @@ import {
 	DangerousCargoInput,
 	DangerousCargoTrigger,
 } from "./dangerous-cargo-input";
+import { faker } from "@faker-js/faker";
 
 const DryContainerInput = ({
 	list,
@@ -171,23 +172,37 @@ const DryContainerInput = ({
 														e.target.value = container.soc.toString();
 													}}
 												/>
-												{container.isDangerous && (
+												{container.dgInfo.isDangerous && (
 													<NAOutlinedNumberField
 														label="Quantity / DG"
 														required={showRequired}
 														className="w-[136px]"
-														error={
-															bookingRequestStep.container.visited &&
-															container.quantity === 0
-														}
-														errorText="Quantity is required"
-														value={container.quantity.toString()}
+														value={container.dgInfo.quantity.toString()}
 														handleValueChange={(value) => {
 															setContainerInformation((prev) => ({
 																...prev,
 																dry: prev.dry.map((c, i) =>
 																	i === index
-																		? { ...c, quantity: value ?? 0 }
+																		? {
+																				...c,
+																				dgInfo: {
+																					...c.dgInfo,
+																					quantity: value ?? 0,
+																					data: Array.from(
+																						{ length: value ?? 0 },
+																						(_, i) => [
+																							{
+																								uuid: faker.string.uuid(),
+																								unNumber: "",
+																								class: "",
+																								flashPoint: "",
+																								packingGroup: "",
+																								properShippingName: "",
+																							},
+																						],
+																					),
+																				},
+																			}
 																		: c,
 																),
 															}));
