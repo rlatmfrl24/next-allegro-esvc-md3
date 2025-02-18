@@ -355,7 +355,6 @@ export const DangerousCargoInput = ({
 								setSelectedContainerIndex(0);
 								const newDGCargoData = prevDGCargoData;
 								setPrevDGCargoData(container.dgInfo.data);
-
 								setContainerInformation((prev) => ({
 									...prev,
 									[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
