@@ -325,6 +325,19 @@ export const DangerousCargoInput = ({
 		},
 	});
 
+	const [prevDGCargoData, setPrevDGCargoData] = useState([
+		[
+			{
+				uuid: faker.string.uuid(),
+				unNumber: "",
+				class: "",
+				flashPoint: "",
+				packingGroup: "",
+				properShippingName: "",
+			},
+		],
+	]);
+
 	return (
 		<>
 			{container.dgInfo.isDangerous && (
@@ -340,6 +353,9 @@ export const DangerousCargoInput = ({
 							}
 							onChange={(value) => {
 								setSelectedContainerIndex(0);
+								const newDGCargoData = prevDGCargoData;
+								setPrevDGCargoData(container.dgInfo.data);
+
 								setContainerInformation((prev) => ({
 									...prev,
 									[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -349,6 +365,7 @@ export const DangerousCargoInput = ({
 													dgInfo: {
 														...c.dgInfo,
 														isSeparated: value === "Different per Container",
+														data: newDGCargoData,
 													},
 												}
 											: c,
@@ -395,6 +412,8 @@ const DGTableInput = ({ ...props }) => {
 				className="p-2 w-full"
 				style={tinyInputStyles}
 				{...props}
+				type="number"
+				noSpinner
 			/>
 			<span
 				className="absolute
