@@ -529,7 +529,7 @@ export const DangerousCargoTrigger = ({
 	container,
 	type,
 }: {
-	container: DryContainerInformationType;
+	container: ContainerInformationType;
 	type: ContainerType;
 }) => {
 	const typeKey = type.toString().toLowerCase();
@@ -581,7 +581,7 @@ export const DangerousCargoTrigger = ({
 				</div>
 			</MdDialog>
 			<label
-				htmlFor={`${container.uuid}-dangerous-cargo-switch`}
+				htmlFor={`${container.uuid}-${typeKey}-dangerous-cargo-switch`}
 				className="flex items-center gap-2 w-fit"
 				style={
 					{
@@ -598,7 +598,7 @@ export const DangerousCargoTrigger = ({
 				}
 			>
 				<MdSwitch
-					id={`${container.uuid}-dangerous-cargo-switch`}
+					id={`${container.uuid}-${typeKey}-dangerous-cargo-switch`}
 					selected={container.dgInfo.isDangerous}
 					onClick={(e) => {
 						e.preventDefault();
