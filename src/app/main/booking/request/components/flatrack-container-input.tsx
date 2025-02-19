@@ -16,7 +16,6 @@ import {
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import { useRecoilState } from "recoil";
-import AwkwardContainerInput from "./awkward-container-input";
 import { DetailTitle } from "@/app/components/title-components";
 import { useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,6 +25,10 @@ import {
 	DangerousCargoInput,
 	DangerousCargoTrigger,
 } from "./dangerous-cargo-input";
+import {
+	AwkwardContainerInput,
+	AwkwardContainerTrigger,
+} from "./awkward-container-input";
 
 const FlatRackContainerInput = ({
 	list,
@@ -354,18 +357,24 @@ const FlatRackContainerInput = ({
 															</>
 														)}
 													</div>
-													<AwkwardContainerInput
-														container={container}
-														type={ContainerType.flatrack}
-													/>
-													<DangerousCargoTrigger
-														container={container}
-														type={ContainerType.flatrack}
-													/>
+													<div className="flex gap-4 items-start">
+														<DangerousCargoTrigger
+															container={container}
+															type={ContainerType.flatrack}
+														/>
+														<AwkwardContainerTrigger
+															container={container}
+															type={ContainerType.flatrack}
+														/>
+													</div>
 													<DangerousCargoInput
 														container={container}
 														type={ContainerType.flatrack}
 														showRequired={showRequired}
+													/>
+													<AwkwardContainerInput
+														container={container}
+														type={ContainerType.flatrack}
 													/>
 												</div>
 												<MdOutlinedIconButton
