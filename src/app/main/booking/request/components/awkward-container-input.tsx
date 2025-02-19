@@ -96,10 +96,12 @@ export const AwkwardContainerInput = ({
 									<th key={header}>
 										<div>
 											<span>{header}</span>
-											<DividerComponent
-												orientation="vertical"
-												className="h-5 translate-x-0.5"
-											/>
+											{index === headerList.length - 1 ? null : (
+												<DividerComponent
+													orientation="vertical"
+													className="h-5 translate-x-0.5"
+												/>
+											)}
 										</div>
 									</th>
 								))}
@@ -111,7 +113,7 @@ export const AwkwardContainerInput = ({
 									<div className="flex">
 										<NAOutlinedNumberField
 											sizeVariant="tiny"
-											className="p-2 w-24"
+											className="p-2 w-24 border-r border-r-outlineVariant"
 											required
 											maxInputLength={9}
 											value={container.package?.toString() ?? ""}
