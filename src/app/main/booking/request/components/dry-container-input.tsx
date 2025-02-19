@@ -23,7 +23,6 @@ import {
 	DangerousCargoInput,
 	DangerousCargoTrigger,
 } from "./dangerous-cargo-input";
-import { faker } from "@faker-js/faker";
 
 const DryContainerInput = ({
 	list,
@@ -175,10 +174,17 @@ const DryContainerInput = ({
 												{container.dgInfo.isDangerous && (
 													<NAOutlinedNumberField
 														label="Quantity / DG"
-														required={showRequired}
 														className="w-[136px]"
 														value={container.dgInfo.quantity.toString()}
 														handleValueChange={(value) => {
+															// adjust value should be less than or equal to quantity and least 1
+															const adjustedValue =
+																(value ?? 0) > container.quantity
+																	? container.quantity
+																	: (value ?? 0) < 1
+																		? 1
+																		: value;
+
 															setContainerInformation((prev) => ({
 																...prev,
 																dry: prev.dry.map((c, i) =>
@@ -187,20 +193,7 @@ const DryContainerInput = ({
 																				...c,
 																				dgInfo: {
 																					...c.dgInfo,
-																					quantity: value ?? 0,
-																					data: Array.from(
-																						{ length: value ?? 0 },
-																						(_, i) => [
-																							{
-																								uuid: faker.string.uuid(),
-																								unNumber: "",
-																								class: "",
-																								flashPoint: "",
-																								packingGroup: "",
-																								properShippingName: "",
-																							},
-																						],
-																					),
+																					quantity: adjustedValue ?? 0,
 																				},
 																			}
 																		: c,

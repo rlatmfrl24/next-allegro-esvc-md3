@@ -2,7 +2,6 @@ import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { DividerComponent } from "@/app/components/divider";
-import NaToggleButton from "@/app/components/na-toggle-button";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { ContainerState } from "@/app/store/booking.store";
 import { tinyInputStyles } from "@/app/util/constants";
@@ -55,7 +54,7 @@ export const DangerousCargoInput = ({
 	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
 
 	useEffect(() => {
-		console.log("container", container);
+		console.log("container", container.dgInfo.data);
 	}, [container]);
 
 	useEffect(() => {
@@ -72,7 +71,76 @@ export const DangerousCargoInput = ({
 	]);
 
 	const columnDefs = useMemo(() => {
+		function AddNewDGCargo() {
+			setContainerInformation((prev) => ({
+				...prev,
+				[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+					c.uuid === container.uuid && c.type !== ContainerType.bulk
+						? {
+								...c,
+								dgInfo: {
+									...c.dgInfo,
+									//add empty row in selected container index if separated
+									data: c.dgInfo.isSeparated
+										? c.dgInfo.data.map((d, i) =>
+												i === selectedContainerIndex
+													? [
+															...d,
+															{
+																uuid: faker.string.uuid(),
+																unNumber: "",
+																class: "",
+																flashPoint: "",
+																packingGroup: "",
+																properShippingName: "",
+															},
+														]
+													: d,
+											)
+										: //add empty row in all container if not separated
+											c.dgInfo.data.map((d) => [
+												...d,
+												{
+													uuid: faker.string.uuid(),
+													unNumber: "",
+													class: "",
+													flashPoint: "",
+													packingGroup: "",
+													properShippingName: "",
+												},
+											]),
+								},
+							}
+						: c,
+				),
+			}));
+		}
+		function RemoveDGCargo(rowIndex: number) {
+			setContainerInformation((prev) => ({
+				...prev,
+				[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+					c.uuid === container.uuid && c.type !== ContainerType.bulk
+						? {
+								...c,
+								dgInfo: {
+									...c.dgInfo,
+									data: c.dgInfo.isSeparated
+										? c.dgInfo.data.map((d, i) =>
+												i === selectedContainerIndex
+													? d.filter((_, index) => index !== rowIndex)
+													: d,
+											)
+										: c.dgInfo.data.map((d) =>
+												d.filter((_, index) => index !== rowIndex),
+											),
+								},
+							}
+						: c,
+				),
+			}));
+		}
 		const columnHelper = createColumnHelper<DangerousContainerDataType>();
+
 		return [
 			columnHelper.display({
 				header: "No.",
@@ -174,79 +242,10 @@ export const DangerousCargoInput = ({
 					<MdIconButton
 						className="m-2"
 						onClick={() => {
-							console.log("Edit", cell.row.index);
-							// add empty row to the end
 							if (cell.row.index === 0) {
-								setContainerInformation((prev) => ({
-									...prev,
-									[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-										c.uuid === container.uuid && c.type !== ContainerType.bulk
-											? {
-													...c,
-													dgInfo: {
-														...c.dgInfo,
-														//add empty row in selected container index if separated
-														data: c.dgInfo.isSeparated
-															? c.dgInfo.data.map((d, i) =>
-																	i === selectedContainerIndex
-																		? [
-																				...d,
-																				{
-																					uuid: faker.string.uuid(),
-																					unNumber: "",
-																					class: "",
-																					flashPoint: "",
-																					packingGroup: "",
-																					properShippingName: "",
-																				},
-																			]
-																		: d,
-																)
-															: //add empty row in all container if not separated
-																c.dgInfo.data.map((d) => [
-																	...d,
-																	{
-																		uuid: faker.string.uuid(),
-																		unNumber: "",
-																		class: "",
-																		flashPoint: "",
-																		packingGroup: "",
-																		properShippingName: "",
-																	},
-																]),
-													},
-												}
-											: c,
-									),
-								}));
+								AddNewDGCargo();
 							} else {
-								// remove row
-								setContainerInformation((prev) => ({
-									...prev,
-									[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-										c.uuid === container.uuid && c.type !== ContainerType.bulk
-											? {
-													...c,
-													dgInfo: {
-														...c.dgInfo,
-														data: c.dgInfo.isSeparated
-															? c.dgInfo.data.map((d, i) =>
-																	i === selectedContainerIndex
-																		? d.filter(
-																				(_, index) => index !== cell.row.index,
-																			)
-																		: d,
-																)
-															: c.dgInfo.data.map((d) =>
-																	d.filter(
-																		(_, index) => index !== cell.row.index,
-																	),
-																),
-													},
-												}
-											: c,
-									),
-								}));
+								RemoveDGCargo(cell.row.index);
 							}
 						}}
 					>
@@ -336,6 +335,49 @@ export const DangerousCargoInput = ({
 				properShippingName: "",
 			},
 		],
+	]);
+
+	useEffect(() => {
+		setContainerInformation((prev) => ({
+			...prev,
+			[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+				c.uuid === container.uuid && c.type !== ContainerType.bulk
+					? {
+							...c,
+							dgInfo: {
+								...c.dgInfo,
+								data: Array.from({ length: container.dgInfo.quantity }, () => [
+									{
+										uuid: faker.string.uuid(),
+										unNumber: "",
+										class: "",
+										flashPoint: "",
+										packingGroup: "",
+										properShippingName: "",
+									},
+								]),
+							},
+						}
+					: c,
+			),
+		}));
+		setPrevDGCargoData(
+			Array.from({ length: container.dgInfo.quantity }, () => [
+				{
+					uuid: faker.string.uuid(),
+					unNumber: "",
+					class: "",
+					flashPoint: "",
+					packingGroup: "",
+					properShippingName: "",
+				},
+			]),
+		);
+	}, [
+		container.dgInfo.quantity,
+		container.uuid,
+		setContainerInformation,
+		typeKey,
 	]);
 
 	return (
