@@ -383,8 +383,11 @@ export const DangerousCargoInput = ({
 	return (
 		<>
 			{container.dgInfo.isDangerous && (
-				<div className="flex flex-col border border-outlineVariant rounded-lg p-4 gap-3">
-					<div className="flex gap-4">
+				<div className="flex flex-col border border-outlineVariant rounded-lg px-4 pt-3 pb-4 gap-3">
+					<div className="flex gap-4 items-center">
+						<MdTypography variant="title" size="small" className="text-primary">
+							Dangerous Cargo
+						</MdTypography>
 						<SimpleRadioGroup
 							groupName={`dangerous-cargo-separation-${container.uuid}`}
 							options={["Same per Container", "Different per Container"]}
