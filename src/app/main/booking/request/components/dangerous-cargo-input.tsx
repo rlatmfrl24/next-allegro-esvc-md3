@@ -4,7 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { DividerComponent } from "@/app/components/divider";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { ContainerState } from "@/app/store/booking.store";
-import { tinyInputStyles } from "@/app/util/constants";
+import { tinyInputStyles, tinySwitchStyles } from "@/app/util/constants";
 import {
 	MdChipSet,
 	MdDialog,
@@ -20,7 +20,6 @@ import {
 	type ContainerInformationType,
 	type DangerousContainerDataType,
 	ContainerType,
-	type DryContainerInformationType,
 } from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
 import { AddBoxOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
@@ -52,23 +51,6 @@ export const DangerousCargoInput = ({
 
 	const [selectedContainerIndex, setSelectedContainerIndex] = useState(0);
 	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
-
-	useEffect(() => {
-		console.log("container", container.dgInfo.data);
-	}, [container]);
-
-	useEffect(() => {
-		console.log(
-			"selectedTableData",
-			container.dgInfo.isSeparated
-				? container.dgInfo.data[selectedContainerIndex]
-				: container.dgInfo.data[0],
-		);
-	}, [
-		container.dgInfo.data,
-		container.dgInfo.isSeparated,
-		selectedContainerIndex,
-	]);
 
 	const columnDefs = useMemo(() => {
 		function AddNewDGCargo() {
@@ -459,15 +441,7 @@ const DGTableInput = ({ ...props }) => {
 				type="number"
 				noSpinner
 			/>
-			<span
-				className="absolute
-				top-3
-				left-3
-				text-xs
-				text-red-500
-				font-bold
-				pointer-events-none"
-			>
+			<span className="absolute top-3 left-3 text-xs text-red-500 font-bold pointer-events-none">
 				*
 			</span>
 		</div>
@@ -586,19 +560,7 @@ export const DangerousCargoTrigger = ({
 			<label
 				htmlFor={`${container.uuid}-${typeKey}-dangerous-cargo-switch`}
 				className="flex items-center gap-2 w-fit"
-				style={
-					{
-						"--md-switch-track-height": "18px",
-						"--md-switch-track-width": "32px",
-						"--md-switch-handle-height": "12px",
-						"--md-switch-handle-width": "12px",
-						"--md-switch-selected-handle-height": "12px",
-						"--md-switch-selected-handle-width": "12px",
-						"--md-switch-pressed-handle-height": "12px",
-						"--md-switch-pressed-handle-width": "12px",
-						"--md-switch-state-layer-size": "18px",
-					} as CSSProperties
-				}
+				style={tinySwitchStyles}
 			>
 				<MdSwitch
 					id={`${container.uuid}-${typeKey}-dangerous-cargo-switch`}

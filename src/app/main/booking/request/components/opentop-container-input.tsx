@@ -18,7 +18,6 @@ import {
 import { Disclosure } from "@headlessui/react";
 import { Add, ArrowDropDown, DeleteOutline } from "@mui/icons-material";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import AwkwardContainerInput from "./awkward-container-input";
 import { DetailTitle } from "@/app/components/title-components";
 import { useMemo } from "react";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
@@ -29,6 +28,10 @@ import {
 	DangerousCargoInput,
 	DangerousCargoTrigger,
 } from "./dangerous-cargo-input";
+import {
+	AwkwardContainerInput,
+	AwkwardContainerTrigger,
+} from "./awkward-container-input";
 
 const OpenTopContainerInput = ({
 	list,
@@ -361,6 +364,10 @@ const OpenTopContainerInput = ({
 															</>
 														)}
 													</div>
+													<AwkwardContainerTrigger
+														container={container}
+														type={ContainerType.opentop}
+													/>
 													<AwkwardContainerInput
 														container={container}
 														type={ContainerType.opentop}

@@ -483,3 +483,15 @@ export const tinyInputStyles = {
 	"--md-outlined-field-top-space": "6px",
 	"--md-outlined-field-bottom-space": "6px",
 } as CSSProperties;
+
+export const tinySwitchStyles = {
+	"--md-switch-track-height": "18px",
+	"--md-switch-track-width": "32px",
+	"--md-switch-handle-height": "12px",
+	"--md-switch-handle-width": "12px",
+	"--md-switch-selected-handle-height": "12px",
+	"--md-switch-selected-handle-width": "12px",
+	"--md-switch-pressed-handle-height": "12px",
+	"--md-switch-pressed-handle-width": "12px",
+	"--md-switch-state-layer-size": "18px",
+} as CSSProperties;
