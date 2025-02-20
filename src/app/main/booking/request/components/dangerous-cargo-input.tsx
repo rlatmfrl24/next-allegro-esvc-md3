@@ -1,10 +1,10 @@
-import { type CSSProperties, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { DividerComponent } from "@/app/components/divider";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { ContainerState } from "@/app/store/booking.store";
-import { tinyInputStyles, tinySwitchStyles } from "@/app/util/constants";
+import { tinySwitchStyles } from "@/app/util/constants";
 import {
 	MdChipSet,
 	MdDialog,
@@ -13,7 +13,6 @@ import {
 	MdIcon,
 	MdIconButton,
 	MdOutlinedButton,
-	MdOutlinedTextField,
 	MdSwitch,
 } from "@/app/util/md3";
 import {
