@@ -154,7 +154,13 @@ const FlatRackContainerInput = ({
 																		...prev,
 																		flatrack: prev.flatrack.map((c, i) =>
 																			i === index
-																				? { ...c, quantity: value ?? 0 }
+																				? {
+																						...c,
+																						quantity:
+																							(value ?? 0) < 1
+																								? 1
+																								: (value ?? 0),
+																					}
 																				: c,
 																		),
 																	}));

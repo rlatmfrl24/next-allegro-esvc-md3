@@ -303,7 +303,7 @@ export const AwkwardContainerInput = ({
 								<td>
 									<NAOutlinedNumberField
 										sizeVariant="tiny"
-										className="p-2"
+										className="p-2 w-20"
 										required
 										value={container.awkward.length?.toString()}
 										handleValueChange={(value) => {
@@ -330,7 +330,7 @@ export const AwkwardContainerInput = ({
 								<td>
 									<NAOutlinedNumberField
 										sizeVariant="tiny"
-										className="p-2"
+										className="p-2 w-20"
 										required
 										value={container.awkward.width?.toString()}
 										handleValueChange={(value) => {
@@ -357,7 +357,7 @@ export const AwkwardContainerInput = ({
 								<td>
 									<NAOutlinedNumberField
 										sizeVariant="tiny"
-										className="p-2"
+										className="p-2 w-20"
 										required
 										value={container.awkward.height?.toString()}
 										handleValueChange={(value) => {

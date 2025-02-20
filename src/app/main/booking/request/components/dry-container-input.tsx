@@ -143,11 +143,17 @@ const DryContainerInput = ({
 													errorText="Quantity is required"
 													value={container.quantity.toString()}
 													handleValueChange={(value) => {
+														// value should be greater than 1
+
 														setContainerInformation((prev) => ({
 															...prev,
 															dry: prev.dry.map((c, i) =>
 																i === index
-																	? { ...c, quantity: value ?? 0 }
+																	? {
+																			...c,
+																			quantity:
+																				(value ?? 0) < 1 ? 1 : (value ?? 0),
+																		}
 																	: c,
 															),
 														}));
