@@ -106,28 +106,6 @@ export default function ContainerStep() {
 			}
 		}
 
-		// get All Dangerous Cargo Data from All container
-		// const allDangerousCargo: DangerousContainerDataType[] = [
-		// 	...containerInformation.dry,
-		// 	...containerInformation.reefer,
-		// 	...containerInformation.opentop,
-		// 	...containerInformation.flatrack,
-		// 	...containerInformation.tank,
-		// ].reduce((acc, curr) => {
-		// 	return acc.concat(
-		// 		curr.dgInfo.data.map(
-		// 			(dangerousCargo) =>
-		// 				({
-		// 					...dangerousCargo,
-		// 					containerType: curr.type,
-		// 					containerSize: curr.size,
-		// 					containerQuantity: curr.quantity,
-		// 				}) as unknown as DangerousContainerDataType,
-		// 		),
-		// 	);
-		// 	// return acc.concat(curr.dangerousCargoInformation);
-		// }, [] as DangerousContainerDataType[]);
-
 		const allDangerousCargo: DangerousContainerDataType[] = [
 			...containerInformation.dry,
 			...containerInformation.reefer,
