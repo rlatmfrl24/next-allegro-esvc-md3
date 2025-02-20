@@ -75,7 +75,6 @@ export const NAOutlinedNumberField = ({
 					type={isFocused ? "number" : "text"}
 					noSpinner
 					onFocus={(e) => {
-						console.log("onFocus");
 						setIsFocused(true);
 						e.currentTarget.select();
 						// e.currentTarget.value = "";
@@ -105,7 +104,6 @@ export const NAOutlinedNumberField = ({
 						}
 					}}
 					onBlur={(e) => {
-						console.log("onBlur");
 						setIsFocused(false);
 						if (enableNumberSeparator) {
 							e.currentTarget.value = e.currentTarget.value.replace(
