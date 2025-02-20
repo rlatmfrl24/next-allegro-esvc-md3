@@ -48,7 +48,7 @@ export const DangerIndicator = (props: {
 }) => {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const dangerContainers = props.containers.filter(
-		(container) => container.isDangerous,
+		(container) => container.dgInfo.isDangerous,
 	);
 
 	const bookingAdditionalData = useRecoilValue(AdditionalInformationState);
@@ -60,6 +60,7 @@ export const DangerIndicator = (props: {
 
 	return (
 		<>
+			{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 			<div
 				className="relative w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
 				onClick={() => {
@@ -79,18 +80,20 @@ export const DangerIndicator = (props: {
 				>
 					<div slot="headline">Danger Cargo Info</div>
 					<div slot="content" className="flex flex-col gap-4">
-						{props.containers.filter((container) => container.isDangerous)
-							.length > 1 && (
+						{props.containers.filter(
+							(container) => container.dgInfo.isDangerous,
+						).length > 1 && (
 							<MdTabs>
 								{props.containers
-									.filter((container) => container.isDangerous)
+									.filter((container) => container.dgInfo.isDangerous)
 									.map((container, index) => (
 										<MdSecondaryTab
-											key={index + "_" + container.uuid}
+											key={`${index}_${container.uuid}`}
 											selected={container.size === selectedSize.size}
 											style={
 												{
-													"--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+													"--md-secondary-tab-container-color":
+														"var(--md-sys-color-surface-container-high)",
 												} as CSSProperties
 											}
 											onClick={(e) => {
@@ -103,25 +106,18 @@ export const DangerIndicator = (props: {
 												}
 											}}
 										>
-											{container.type +
-												" " +
-												container.size +
-												" * " +
-												container.quantity}
+											{`${container.type} ${container.size} * ${container.quantity}`}
 										</MdSecondaryTab>
 									))}
 							</MdTabs>
 						)}
 						<DetailTitle
-							title={
-								selectedSize.type +
-								" " +
-								selectedSize.size +
-								" * " +
-								selectedSize.quantity
-							}
+							title={`${selectedSize.type} ${selectedSize.size} * ${selectedSize.quantity}`}
 						/>
-						<MdChipSet>
+						{
+							//TODO: Add dangerous cargo information after design is finalized
+						}
+						{/* <MdChipSet>
 							{selectedSize.dangerousCargoInformation.map((info, index) => (
 								<MdFilterChip
 									key={index}
@@ -138,7 +134,7 @@ export const DangerIndicator = (props: {
 									label={`Dangerous Cargo #` + (index + 1)}
 								/>
 							))}
-						</MdChipSet>
+						</MdChipSet> */}
 						{/* <div className="grid grid-cols-2 gap-4">
 							<BasicItem
 								title="UN Number"
@@ -189,7 +185,7 @@ export const DangerIndicator = (props: {
 							<MdChipSet>
 								{bookingAdditionalData.specialCargoAttachment.dangerousCargo.map(
 									(file, index) => (
-										<LabelChip key={index} label={file.name} size="small" />
+										<LabelChip key={file.name} label={file.name} size="small" />
 									),
 								)}
 							</MdChipSet>
@@ -229,6 +225,7 @@ export const AwkwardIndicator = (props: {
 
 	return (
 		<>
+			{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 			<div
 				className="relative w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
 				onClick={() => {
@@ -253,11 +250,12 @@ export const AwkwardIndicator = (props: {
 								{awkwardContainers.map((container, index) => {
 									return (
 										<MdSecondaryTab
-											key={index + "_" + container.uuid}
+											key={`${index}_${container.uuid}`}
 											selected={container.size === selectedSize.size}
 											style={
 												{
-													"--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+													"--md-secondary-tab-container-color":
+														"var(--md-sys-color-surface-container-high)",
 												} as CSSProperties
 											}
 											onClick={(e) => {
@@ -271,42 +269,28 @@ export const AwkwardIndicator = (props: {
 												}
 											}}
 										>
-											{container.type +
-												" " +
-												container.size +
-												" * " +
-												container.quantity}
+											{`${container.type} ${container.size} * ${container.quantity}`}
 										</MdSecondaryTab>
 									);
 								})}
 							</MdTabs>
 						)}
 						<DetailTitle
-							title={
-								selectedSize.type +
-								" " +
-								selectedSize.size +
-								" * " +
-								selectedSize.quantity
-							}
+							title={`${selectedSize.type} ${selectedSize.size} * ${selectedSize.quantity}`}
 						/>
 						<div className="grid grid-cols-3 gap-4">
 							<BasicItem
 								title="Package"
-								value={selectedSize.package + " " + selectedSize.packageType}
+								value={`${selectedSize.package} ${selectedSize.packageType}`}
 								className="col-span-3"
 							/>
 							<BasicItem
 								title="Gross Weight"
-								value={
-									selectedSize.grossWeight + " " + selectedSize.grossWeightUnit
-								}
+								value={`${selectedSize.grossWeight} ${selectedSize.grossWeightUnit}`}
 							/>
 							<BasicItem
 								title="Net Weight"
-								value={
-									selectedSize.netWeight + " " + selectedSize.netWeightUnit
-								}
+								value={`${selectedSize.netWeight} ${selectedSize.netWeightUnit}`}
 							/>
 							<BasicItem
 								title="Commodity"
@@ -314,21 +298,15 @@ export const AwkwardIndicator = (props: {
 							/>
 							<BasicItem
 								title="Length"
-								value={
-									selectedSize.awkward.length + " " + selectedSize.awkward.unit
-								}
+								value={`${selectedSize.awkward.length} ${selectedSize.awkward.unit}`}
 							/>
 							<BasicItem
 								title="Width"
-								value={
-									selectedSize.awkward.width + " " + selectedSize.awkward.unit
-								}
+								value={`${selectedSize.awkward.width} ${selectedSize.awkward.unit}`}
 							/>
 							<BasicItem
 								title="Height"
-								value={
-									selectedSize.awkward.height + " " + selectedSize.awkward.unit
-								}
+								value={`${selectedSize.awkward.height} ${selectedSize.awkward.unit}`}
 							/>
 							<BasicItem title="Remark" value={selectedSize.awkward.remark} />
 						</div>
@@ -345,7 +323,11 @@ export const AwkwardIndicator = (props: {
 								{bookingAdditionalData.specialCargoAttachment.awkwardCargo.map(
 									(file, index) => {
 										return (
-											<LabelChip key={index} label={file.name} size="small" />
+											<LabelChip
+												key={file.name}
+												label={file.name}
+												size="small"
+											/>
 										);
 									},
 								)}
@@ -378,6 +360,7 @@ export const ReeferIndicator = (props: {
 
 	return (
 		<>
+			{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 			<div
 				className="relative w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
 				onClick={() => {
@@ -401,11 +384,12 @@ export const ReeferIndicator = (props: {
 							<MdTabs>
 								{props.containers.map((container, index) => (
 									<MdSecondaryTab
-										key={index + "_" + container.uuid}
+										key={`${index}_${container.uuid}`}
 										selected={container.size === selectedSize.size}
 										style={
 											{
-												"--md-secondary-tab-container-color": `var(--md-sys-color-surface-container-high)`,
+												"--md-secondary-tab-container-color":
+													"var(--md-sys-color-surface-container-high)",
 											} as CSSProperties
 										}
 										onClick={(e) => {
@@ -417,40 +401,26 @@ export const ReeferIndicator = (props: {
 											}
 										}}
 									>
-										{container.type +
-											" " +
-											container.size +
-											" * " +
-											container.quantity}
+										{`${container.type} ${container.size} * ${container.quantity}`}
 									</MdSecondaryTab>
 								))}
 							</MdTabs>
 						)}
 						<DetailTitle
-							title={
-								selectedSize.type +
-								" " +
-								selectedSize.size +
-								" * " +
-								selectedSize.quantity
-							}
+							title={`${selectedSize.type} ${selectedSize.size} * ${selectedSize.quantity}`}
 						/>
 						<div className="grid grid-cols-3 gap-4">
 							<BasicItem
 								title="Degree"
-								value={
-									selectedSize.temperature + " " + selectedSize.temperatureUnit
-								}
+								value={`${selectedSize.temperature} ${selectedSize.temperatureUnit}`}
 							/>
 							<BasicItem
 								title="Ventilation"
 								value={
 									selectedSize.ventilation?.toString() ??
-									"-" +
-										" " +
-										(selectedSize.ventilationType === "open"
-											? "%Open"
-											: "%Close")
+									`- ${
+										selectedSize.ventilationType === "open" ? "%Open" : "%Close"
+									}`
 								}
 							/>
 							<BasicItem title="Nature" value={selectedSize.nature} />
@@ -475,7 +445,7 @@ export const ReeferIndicator = (props: {
 							<MdChipSet>
 								{bookingAdditionalData.specialCargoAttachment.reeferCargo.map(
 									(file, index) => (
-										<LabelChip key={index} label={file.name} size="small" />
+										<LabelChip key={file.name} label={file.name} size="small" />
 									),
 								)}
 							</MdChipSet>
