@@ -72,7 +72,7 @@ export const DangerousCargoInput = ({
 															...d,
 															{
 																uuid: faker.string.uuid(),
-																unNumber: "",
+																unNumber: undefined,
 																class: "",
 																flashPoint: "",
 																packingGroup: "",
@@ -147,7 +147,7 @@ export const DangerousCargoInput = ({
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
-								value,
+								value ?? "",
 							);
 						}}
 					/>
@@ -167,7 +167,7 @@ export const DangerousCargoInput = ({
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
-								value,
+								value ?? "",
 							);
 						}}
 					/>
@@ -181,7 +181,8 @@ export const DangerousCargoInput = ({
 						sizeVariant="tiny"
 						className="p-2"
 						suffixText="°C"
-						required={showRequired}
+						disabled
+						hideZeroPlaceholder
 						value={cell.getValue()}
 						handleValueChange={(value) => {
 							cell.table.options.meta?.updateData(
@@ -217,7 +218,6 @@ export const DangerousCargoInput = ({
 					<NAOutlinedTextField
 						sizeVariant="tiny"
 						className="p-2"
-						required={showRequired}
 						value={cell.getValue()}
 						handleValueChange={(value) => {
 							cell.table.options.meta?.updateData(

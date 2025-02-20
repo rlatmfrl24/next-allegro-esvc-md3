@@ -107,6 +107,27 @@ export default function ContainerStep() {
 		}
 
 		// get All Dangerous Cargo Data from All container
+		// const allDangerousCargo: DangerousContainerDataType[] = [
+		// 	...containerInformation.dry,
+		// 	...containerInformation.reefer,
+		// 	...containerInformation.opentop,
+		// 	...containerInformation.flatrack,
+		// 	...containerInformation.tank,
+		// ].reduce((acc, curr) => {
+		// 	return acc.concat(
+		// 		curr.dgInfo.data.map(
+		// 			(dangerousCargo) =>
+		// 				({
+		// 					...dangerousCargo,
+		// 					containerType: curr.type,
+		// 					containerSize: curr.size,
+		// 					containerQuantity: curr.quantity,
+		// 				}) as unknown as DangerousContainerDataType,
+		// 		),
+		// 	);
+		// 	// return acc.concat(curr.dangerousCargoInformation);
+		// }, [] as DangerousContainerDataType[]);
+
 		const allDangerousCargo: DangerousContainerDataType[] = [
 			...containerInformation.dry,
 			...containerInformation.reefer,
@@ -114,21 +135,27 @@ export default function ContainerStep() {
 			...containerInformation.flatrack,
 			...containerInformation.tank,
 		].reduce((acc, curr) => {
+			const dangerousCargo = curr.dgInfo.data.reduce((acc, curr) => {
+				return acc.concat(...curr);
+			}, [] as DangerousContainerDataType[]);
+
 			return acc.concat(
-				curr.dgInfo.data.map(
-					(dangerousCargo) =>
-						({
-							...dangerousCargo,
-							containerIndex: curr.uuid,
-						}) as unknown as DangerousContainerDataType,
-				),
+				dangerousCargo.map((dangerousCargo) => {
+					return dangerousCargo;
+				}),
 			);
-			// return acc.concat(curr.dangerousCargoInformation);
 		}, [] as DangerousContainerDataType[]);
+
+		console.log(allDangerousCargo);
 
 		// Check if Dangerous Cargo required data is empty
 		for (const dangerousCargo of allDangerousCargo) {
-			if (dangerousCargo.unNumber === "" || dangerousCargo.class === "") {
+			if (
+				dangerousCargo.unNumber === "" ||
+				dangerousCargo.class === "" ||
+				dangerousCargo.unNumber === "0" ||
+				dangerousCargo.class === "0"
+			) {
 				isValid = false;
 			}
 		}

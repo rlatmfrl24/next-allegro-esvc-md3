@@ -1,6 +1,6 @@
 import { MdTypography } from "./typography";
 import { MdCheckbox } from "../util/md3";
-import type { HTMLAttributes } from "react";
+import type { CSSProperties, HTMLAttributes } from "react";
 
 export default function NaToggleButton({
 	label,
@@ -36,7 +36,12 @@ export default function NaToggleButton({
 			// }}
 		>
 			<MdCheckbox
-				className="m-1.5"
+				className="m-1.5 outline-none"
+				style={
+					{
+						"--md-focus-ring-width": 0,
+					} as CSSProperties
+				}
 				checked={
 					state === "checked" || state === "disabled-checked"
 						? true
