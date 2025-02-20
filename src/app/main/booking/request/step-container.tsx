@@ -136,6 +136,30 @@ export default function ContainerStep() {
 			}
 		}
 
+		//check if awkward cargo required data is empty
+		[...containerInformation.flatrack, ...containerInformation.opentop]
+			.filter((container) => container.isAwkward)
+			.map((container) => {
+				if (
+					container.package === 0 ||
+					container.package === undefined ||
+					container.packageType === "" ||
+					container.packageType === undefined ||
+					container.grossWeight === 0 ||
+					container.grossWeight === undefined ||
+					container.awkward.commodity.description === "" ||
+					container.awkward.commodity.description === undefined ||
+					container.awkward.height === 0 ||
+					container.awkward.height === undefined ||
+					container.awkward.length === 0 ||
+					container.awkward.length === undefined ||
+					container.awkward.width === 0 ||
+					container.awkward.width === undefined
+				) {
+					isValid = false;
+				}
+			});
+
 		return isValid;
 	}
 
