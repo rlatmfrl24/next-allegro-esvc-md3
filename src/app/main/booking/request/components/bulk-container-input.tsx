@@ -152,42 +152,6 @@ const BulkContainerInput = ({
 														}}
 													/>
 												</div>
-												{/* <div className="flex gap-2">
-                          <NAOutlinedNumberField
-                            label="Net Weight"
-                            className="w-[120px] min-w-[120px]"
-                            value={container.netWeight?.toString()}
-                            handleValueChange={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                bulk: prev.bulk.map((c) =>
-                                  c.uuid === container.uuid
-                                    ? { ...c, netWeight: value }
-                                    : c
-                                ),
-                              }));
-                            }}
-                          />
-                          <NAOutlinedListBox
-                            className="w-[104px] min-w-[104px]"
-                            options={["KGS", "LBS"]}
-                            initialValue={container.netWeightUnit}
-                            onSelection={(value) => {
-                              setContainerInformation((prev) => ({
-                                ...prev,
-                                bulk: prev.bulk.map((c) =>
-                                  c.uuid === container.uuid
-                                    ? {
-                                        ...c,
-                                        grossWeightUnit: value as any,
-                                        netWeightUnit: value as any,
-                                      }
-                                    : c
-                                ),
-                              }));
-                            }}
-                          />
-                        </div> */}
 												<MdOutlinedTextField
 													label="Commodity"
 													className="flex-1"
