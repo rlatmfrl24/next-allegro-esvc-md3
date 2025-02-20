@@ -36,6 +36,7 @@ import {
 	useSkipper,
 } from "../../status/components/dialog/table/util";
 import { MdTypography } from "@/app/components/typography";
+import specialCargoStyle from "@/app/styles/special-cargo.module.css";
 
 export const DangerousCargoInput = ({
 	container,
@@ -450,21 +451,20 @@ const DGTableInput = ({ ...props }) => {
 
 const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
 	return (
-		<table>
+		<table className={specialCargoStyle.table}>
 			<thead>
 				{table.getHeaderGroups().map((headerGroup) => (
 					<tr key={headerGroup.id}>
 						{headerGroup.headers.map((header) => (
 							<th
 								key={header.id}
-								className="bg-surfaceContainerHigh"
 								style={{
 									minWidth: header.column.columnDef.size,
 									width: header.column.columnDef.size,
 								}}
 							>
-								<div className="flex justify-between items-center">
-									<span className="font-notoSans text-sm text-left p-2">
+								<div>
+									<span>
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -488,10 +488,7 @@ const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
 				{table.getRowModel().rows.map((row) => (
 					<tr key={row.id}>
 						{row.getVisibleCells().map((cell) => (
-							<td
-								key={cell.id}
-								className="font-notoSans border-b border-r border-outlineVariant last:border-r-0"
-							>
+							<td key={cell.id}>
 								{flexRender(cell.column.columnDef.cell, cell.getContext())}
 							</td>
 						))}
