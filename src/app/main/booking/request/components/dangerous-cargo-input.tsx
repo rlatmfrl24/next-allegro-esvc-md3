@@ -37,6 +37,8 @@ import {
 } from "../../status/components/dialog/table/util";
 import { MdTypography } from "@/app/components/typography";
 import specialCargoStyle from "@/app/styles/special-cargo.module.css";
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export const DangerousCargoInput = ({
 	container,
@@ -136,18 +138,19 @@ export const DangerousCargoInput = ({
 				header: "UN Number",
 				size: 150,
 				cell: (cell) => (
-					<DGTableInput
-						className="p-2 w-full text-right"
-						style={tinyInputStyles}
+					<NAOutlinedNumberField
+						sizeVariant="tiny"
+						className="p-2"
+						enableNumberSeparator={false}
+						required={showRequired}
 						value={cell.getValue()}
-						onBlur={(e: { currentTarget: { value: unknown } }) => {
+						handleValueChange={(value) => {
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
-								e.currentTarget.value,
+								value,
 							);
 						}}
-						required={showRequired}
 					/>
 				),
 			}),
@@ -155,16 +158,17 @@ export const DangerousCargoInput = ({
 				header: "Class",
 				size: 150,
 				cell: (cell) => (
-					<DGTableInput
-						className="p-2 w-full text-right"
-						style={tinyInputStyles}
-						value={cell.getValue()}
+					<NAOutlinedNumberField
+						sizeVariant="tiny"
+						className="p-2"
+						enableNumberSeparator={false}
 						required={showRequired}
-						onBlur={(e: { currentTarget: { value: unknown } }) => {
+						value={cell.getValue()}
+						handleValueChange={(value) => {
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
-								e.currentTarget.value,
+								value,
 							);
 						}}
 					/>
@@ -174,12 +178,19 @@ export const DangerousCargoInput = ({
 				header: "Flash Point",
 				size: 150,
 				cell: (cell) => (
-					<MdOutlinedTextField
-						className="p-2 w-full"
-						style={tinyInputStyles}
-						value={cell.getValue()}
+					<NAOutlinedNumberField
+						sizeVariant="tiny"
+						className="p-2"
 						suffixText="°C"
-						disabled
+						required={showRequired}
+						value={cell.getValue()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
 					/>
 				),
 			}),
@@ -204,15 +215,16 @@ export const DangerousCargoInput = ({
 				header: "Proper Shipping Name",
 				size: 400,
 				cell: (cell) => (
-					<MdOutlinedTextField
-						className="p-2 w-full"
-						style={tinyInputStyles}
+					<NAOutlinedTextField
+						sizeVariant="tiny"
+						className="p-2"
+						required={showRequired}
 						value={cell.getValue()}
-						onBlur={(e) => {
+						handleValueChange={(value) => {
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
-								e.currentTarget.value,
+								value,
 							);
 						}}
 					/>
@@ -429,23 +441,6 @@ export const DangerousCargoInput = ({
 				</div>
 			)}
 		</>
-	);
-};
-
-const DGTableInput = ({ ...props }) => {
-	return (
-		<div className="relative">
-			<MdOutlinedTextField
-				className="p-2 w-full"
-				style={tinyInputStyles}
-				{...props}
-				type="number"
-				noSpinner
-			/>
-			<span className="absolute top-3 left-3 text-xs text-red-500 font-bold pointer-events-none">
-				*
-			</span>
-		</div>
 	);
 };
 
