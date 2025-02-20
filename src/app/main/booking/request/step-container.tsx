@@ -146,8 +146,6 @@ export default function ContainerStep() {
 			);
 		}, [] as DangerousContainerDataType[]);
 
-		console.log(allDangerousCargo);
-
 		// Check if Dangerous Cargo required data is empty
 		for (const dangerousCargo of allDangerousCargo) {
 			if (
