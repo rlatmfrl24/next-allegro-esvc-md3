@@ -318,20 +318,19 @@ export const DangerousCargoInput = ({
 		},
 	});
 
-	const [prevDGCargoData, setPrevDGCargoData] = useState([
-		[
-			{
-				uuid: faker.string.uuid(),
-				unNumber: "",
-				class: "",
-				flashPoint: "",
-				packingGroup: "",
-				properShippingName: "",
-			},
-		],
-	]);
+	const [prevDGCargoData, setPrevDGCargoData] = useState(container.dgInfo.data);
 
 	useEffect(() => {
+		// reset dg data when quantity changed
+		console.log("reset dg data");
+
+		// if container.dgInfo.quantity is changed, reset the dg data
+		// if not, do nothing
+
+		if (container.dgInfo.quantity === prevDGCargoData.length) {
+			return;
+		}
+
 		setContainerInformation((prev) => ({
 			...prev,
 			[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
@@ -355,6 +354,7 @@ export const DangerousCargoInput = ({
 					: c,
 			),
 		}));
+
 		setPrevDGCargoData(
 			Array.from({ length: container.dgInfo.quantity }, () => [
 				{
@@ -370,6 +370,7 @@ export const DangerousCargoInput = ({
 	}, [
 		container.dgInfo.quantity,
 		container.uuid,
+		prevDGCargoData.length,
 		setContainerInformation,
 		typeKey,
 	]);
