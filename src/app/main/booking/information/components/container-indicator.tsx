@@ -285,7 +285,7 @@ export const AwkwardIndicator = (props: {
 					closed={() => {
 						setIsDialogOpen(false);
 					}}
-					className="min-w-[400px]"
+					className="min-w-[660px]"
 				>
 					<div slot="headline">Awkward Cargo Info</div>
 					<div slot="content" className="flex flex-col gap-4">
