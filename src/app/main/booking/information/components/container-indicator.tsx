@@ -4,6 +4,7 @@ import {
 	MdDialog,
 	MdFilterChip,
 	MdOutlinedButton,
+	MdPrimaryTab,
 	MdRippleEffect,
 	MdSecondaryTab,
 	MdTabs,
@@ -56,6 +57,8 @@ export const DangerIndicator = (props: {
 	const [selectedSize, setSelectedSize] = useState<ContainerInformationType>(
 		dangerContainers[0],
 	);
+
+	const [selectedContainerIndex, setSelectedContainerIndex] = useState(0);
 	const [selectedDangerIndex, setSelectedDangerIndex] = useState(0);
 
 	return (
@@ -76,7 +79,7 @@ export const DangerIndicator = (props: {
 					closed={() => {
 						setIsDialogOpen(false);
 					}}
-					className="min-w-[400px] max-w-[960px]"
+					className="min-w-[660px] max-w-[960px]"
 				>
 					<div slot="headline">Danger Cargo Info</div>
 					<div slot="content" className="flex flex-col gap-4">
@@ -111,68 +114,109 @@ export const DangerIndicator = (props: {
 									))}
 							</MdTabs>
 						)}
-						<DetailTitle
-							title={`${selectedSize.type} ${selectedSize.size} * ${selectedSize.quantity}`}
-						/>
-						{
-							//TODO: Add dangerous cargo information after design is finalized
-						}
-						{/* <MdChipSet>
-							{selectedSize.dangerousCargoInformation.map((info, index) => (
-								<MdFilterChip
-									key={index}
-									elevated
-									selected={selectedDangerIndex === index}
-									onClick={(e) => {
-										if (selectedDangerIndex === index) {
-											e.preventDefault();
-											e.stopPropagation();
-										} else {
-											setSelectedDangerIndex(index);
+						<MdTabs>
+							{selectedSize.dgInfo.data.map((info, index) => {
+								return (
+									<MdSecondaryTab
+										key={
+											selectedSize.type +
+											selectedSize.size +
+											selectedSize.quantity
 										}
-									}}
-									label={`Dangerous Cargo #` + (index + 1)}
-								/>
-							))}
-						</MdChipSet> */}
-						{/* <div className="grid grid-cols-2 gap-4">
+										selected={selectedContainerIndex === index}
+										style={
+											{
+												"--md-secondary-tab-container-color":
+													"var(--md-sys-color-surface-container-low)",
+											} as CSSProperties
+										}
+										onClick={(e) => {
+											if (selectedContainerIndex === index) {
+												e.preventDefault();
+												e.stopPropagation();
+											} else {
+												setSelectedContainerIndex(index);
+												setSelectedDangerIndex(0);
+											}
+										}}
+									>
+										{`${selectedSize.type} ${selectedSize.size} #${index + 1}`}
+									</MdSecondaryTab>
+								);
+							})}
+						</MdTabs>
+						<DetailTitle
+							title={`${selectedSize.type} ${selectedSize.size} #${selectedContainerIndex + 1}`}
+						/>
+						<MdChipSet>
+							{selectedSize.dgInfo.data[selectedContainerIndex].map(
+								(info, index) => (
+									<MdFilterChip
+										key={
+											selectedSize.type +
+											selectedSize.size +
+											selectedSize.quantity +
+											info.uuid
+										}
+										elevated
+										selected={selectedDangerIndex === index}
+										onClick={(e) => {
+											if (selectedDangerIndex === index) {
+												e.preventDefault();
+												e.stopPropagation();
+											} else {
+												setSelectedDangerIndex(index);
+											}
+										}}
+										label={`Dangerous Cargo #${index + 1}`}
+									/>
+								),
+							)}
+						</MdChipSet>
+						<div className="grid grid-cols-2 gap-4">
 							<BasicItem
 								title="UN Number"
 								value={
-									selectedSize.dangerousCargoInformation[selectedDangerIndex]
-										.unNumber
+									selectedSize.dgInfo.data[selectedContainerIndex][
+										selectedDangerIndex
+									].unNumber
 								}
 							/>
 							<BasicItem
 								title="Class"
 								value={
-									selectedSize.dangerousCargoInformation[selectedDangerIndex]
-										.class
+									selectedSize.dgInfo.data[selectedContainerIndex][
+										selectedDangerIndex
+									].class
 								}
 							/>
 							<BasicItem
 								title="Flash Point"
 								value={
-									selectedSize.dangerousCargoInformation[selectedDangerIndex]
-										.flashPoint
+									selectedSize.dgInfo.data[selectedContainerIndex][
+										selectedDangerIndex
+									].flashPoint
 								}
 							/>
 							<BasicItem
 								title="Packaging Group"
 								value={
-									selectedSize.dangerousCargoInformation[selectedDangerIndex]
-										.packingGroup
+									selectedSize.dgInfo.data[selectedContainerIndex][
+										selectedDangerIndex
+									].packingGroup
 								}
 							/>
 							<BasicItem
 								title="Proper Shipping Name"
 								value={
-									selectedSize.dangerousCargoInformation[selectedDangerIndex]
-										.properShippingName
+									selectedSize.dgInfo.data[selectedContainerIndex][
+										selectedDangerIndex
+									].properShippingName
 								}
 								className="col-span-2"
 							/>
-						</div> */}
+						</div>
+
 						<div>
 							<MdTypography
 								variant="body"
