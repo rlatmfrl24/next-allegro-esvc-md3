@@ -1,0 +1,19 @@
+.table {
+    @apply font-notoSans
+}
+
+.table th {
+    @apply bg-surfaceContainerHigh
+}
+
+.table th div {
+    @apply flex justify-between items-center
+}
+
+.table th div span {
+    @apply text-sm text-left p-2
+}
+
+.table td {
+    @apply border-b border-r border-outlineVariant last:border-r-0
+}

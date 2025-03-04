@@ -10,98 +10,96 @@ import { useSetRecoilState } from "recoil";
 import { BookingRequestStepState } from "@/app/store/booking.store";
 import { useRouter } from "next/navigation";
 import {
-  BulkContainerInformationType,
-  ContainerInformationType,
-  ContainerType,
-  DryContainerInformationType,
-  FlatRackContainerInformationType,
-  OpenTopContainerInformationType,
-  ReeferContainerInformationType,
-  TankContainerInformationType,
+	type BulkContainerInformationType,
+	type ContainerInformationType,
+	ContainerType,
+	type DryContainerInformationType,
+	type FlatRackContainerInformationType,
+	type OpenTopContainerInformationType,
+	type ReeferContainerInformationType,
+	type TankContainerInformationType,
 } from "@/app/util/typeDef/booking";
-import { Info, ThermostatAuto } from "@mui/icons-material";
 import LabelChip from "@/app/components/label-chip";
-import { MdRippleEffect } from "@/app/util/md3";
 import {
-  AwkwardIndicator,
-  DangerIndicator,
-  ReeferIndicator,
+	AwkwardIndicator,
+	DangerIndicator,
+	ReeferIndicator,
 } from "./container-indicator";
 
 export default function ContainerSection({
-  hasEdit,
-  data,
+	hasEdit,
+	data,
 }: {
-  hasEdit?: boolean;
-  data: {
-    dry: DryContainerInformationType[];
-    reefer: ReeferContainerInformationType[];
-    flatrack: FlatRackContainerInformationType[];
-    opentop: OpenTopContainerInformationType[];
-    tank: TankContainerInformationType[];
-    bulk: BulkContainerInformationType[];
-  };
+	hasEdit?: boolean;
+	data: {
+		dry: DryContainerInformationType[];
+		reefer: ReeferContainerInformationType[];
+		flatrack: FlatRackContainerInformationType[];
+		opentop: OpenTopContainerInformationType[];
+		tank: TankContainerInformationType[];
+		bulk: BulkContainerInformationType[];
+	};
 }) {
-  const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
-  const router = useRouter();
+	const setBookingRequestStep = useSetRecoilState(BookingRequestStepState);
+	const router = useRouter();
 
-  function moveToContainerStep() {
-    setBookingRequestStep((prev) => ({
-      ...prev,
-      container: {
-        ...prev.container,
-        isSelected: true,
-      },
-    }));
-    router.push("/main/booking/request");
-  }
+	function moveToContainerStep() {
+		setBookingRequestStep((prev) => ({
+			...prev,
+			container: {
+				...prev.container,
+				isSelected: true,
+			},
+		}));
+		router.push("/main/booking/request");
+	}
 
-  return (
-    <Section
-      title="Container"
-      hasEdit={hasEdit}
-      editAction={() => {
-        moveToContainerStep();
-      }}
-    >
-      <div className="grid grid-cols-4 gap-4">
-        {data.dry.length !== 0 && <ContainerTypeItem containers={data.dry} />}
-        {data.reefer.length !== 0 && (
-          <ContainerTypeItem containers={data.reefer} />
-        )}
-        {data.flatrack.length !== 0 && (
-          <ContainerTypeItem containers={data.flatrack} />
-        )}
-        {data.opentop.length !== 0 && (
-          <ContainerTypeItem containers={data.opentop} />
-        )}
-        {data.tank.length !== 0 && <ContainerTypeItem containers={data.tank} />}
-        {data.bulk.length !== 0 && (
-          <div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
-            <div className="text-center px-4">
-              <BulkContainerImage />
-            </div>
-            <div>
-              <LabelChip
-                label="Bulk"
-                className="bg-surfaceContainerHigh mb-2"
-                size="medium"
-              />
-              <MdTypography
-                variant="body"
-                size="large"
-                prominent
-                className="flex gap-2"
-              >
-                <span>Bulk</span>
-                <span className="text-outlineVariant">X</span>
-                <span>{data.bulk.length}</span>
-              </MdTypography>
-            </div>
-          </div>
-        )}
+	return (
+		<Section
+			title="Container"
+			hasEdit={hasEdit}
+			editAction={() => {
+				moveToContainerStep();
+			}}
+		>
+			<div className="grid grid-cols-4 gap-4">
+				{data.dry.length !== 0 && <ContainerTypeItem containers={data.dry} />}
+				{data.reefer.length !== 0 && (
+					<ContainerTypeItem containers={data.reefer} />
+				)}
+				{data.flatrack.length !== 0 && (
+					<ContainerTypeItem containers={data.flatrack} />
+				)}
+				{data.opentop.length !== 0 && (
+					<ContainerTypeItem containers={data.opentop} />
+				)}
+				{data.tank.length !== 0 && <ContainerTypeItem containers={data.tank} />}
+				{data.bulk.length !== 0 && (
+					<div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
+						<div className="text-center px-4">
+							<BulkContainerImage />
+						</div>
+						<div>
+							<LabelChip
+								label="Bulk"
+								className="bg-surfaceContainerHigh mb-2"
+								size="medium"
+							/>
+							<MdTypography
+								variant="body"
+								size="large"
+								prominent
+								className="flex gap-2"
+							>
+								<span>Bulk</span>
+								<span className="text-outlineVariant">X</span>
+								<span>{data.bulk.length}</span>
+							</MdTypography>
+						</div>
+					</div>
+				)}
 
-        {/* {data.dry.map((container, index) => (
+				{/* {data.dry.map((container, index) => (
           <ContainerItem
             key={index}
             type="dry"
@@ -110,84 +108,84 @@ export default function ContainerSection({
             soc={container.soc}
           />
         ))} */}
-      </div>
-    </Section>
-  );
+			</div>
+		</Section>
+	);
 }
 
 const ContainerTypeItem = (props: {
-  containers: ContainerInformationType[];
+	containers: ContainerInformationType[];
 }) => {
-  const containerType = props.containers[0].type;
-  const socCount = props.containers.reduce((acc, cur) => acc + cur.soc, 0);
+	const containerType = props.containers[0].type;
+	const socCount = props.containers.reduce((acc, cur) => acc + cur.soc, 0);
 
-  return (
-    <div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
-      <div className="absolute top-2 right-2 flex gap-1">
-        {props.containers.some(
-          (container) => container.type === ContainerType.reefer
-        ) && (
-          <ReeferIndicator
-            containers={props.containers as ReeferContainerInformationType[]}
-          />
-        )}
-        {props.containers.some((container) => container.isDangerous) && (
-          <DangerIndicator containers={props.containers} />
-        )}
-        {props.containers.some((container) => {
-          if (
-            container.type === ContainerType.opentop ||
-            container.type === ContainerType.flatrack
-          ) {
-            return (container as OpenTopContainerInformationType).isAwkward;
-          }
-        }) && (
-          <AwkwardIndicator
-            containers={props.containers as OpenTopContainerInformationType[]}
-          />
-        )}
-      </div>
-      <div className="text-center px-4">
-        {
-          {
-            Dry: <DryContainerImage />,
-            Reefer: <ReeferContainerImage />,
-            OpenTop: <OpenTopContainerImage />,
-            FlatRack: <FlatRackContainerImage />,
-            Tank: <TankContainerImage />,
-            Bulk: <BulkContainerImage />,
-          }[containerType as ContainerType]
-        }
-        <MdTypography
-          variant="label"
-          size="large"
-          className="text-outline mt-1"
-        >
-          {`(SOC: ${socCount})`}
-        </MdTypography>
-      </div>
-      <div>
-        <LabelChip
-          label={containerType}
-          className="bg-surfaceContainerHigh text-onSurface mb-2"
-          size="medium"
-        />
-        {props.containers.map((container, index) => (
-          <MdTypography
-            key={containerType + `_` + index}
-            variant="body"
-            size="large"
-            prominent
-            className="flex gap-2"
-          >
-            <span>{container.size}</span>
-            <span className="text-outlineVariant">X</span>
-            <span>{container.quantity}</span>
-          </MdTypography>
-        ))}
-      </div>
-    </div>
-  );
+	return (
+		<div className="relative flex flex-1 items-center border border-outlineVariant rounded-lg p-4 gap-4">
+			<div className="absolute top-2 right-2 flex gap-1">
+				{props.containers.some(
+					(container) => container.type === ContainerType.reefer,
+				) && (
+					<ReeferIndicator
+						containers={props.containers as ReeferContainerInformationType[]}
+					/>
+				)}
+				{props.containers.some((container) => container.dgInfo.isDangerous) && (
+					<DangerIndicator containers={props.containers} />
+				)}
+				{props.containers.some((container) => {
+					if (
+						container.type === ContainerType.opentop ||
+						container.type === ContainerType.flatrack
+					) {
+						return (container as OpenTopContainerInformationType).isAwkward;
+					}
+				}) && (
+					<AwkwardIndicator
+						containers={props.containers as OpenTopContainerInformationType[]}
+					/>
+				)}
+			</div>
+			<div className="text-center px-4">
+				{
+					{
+						Dry: <DryContainerImage />,
+						Reefer: <ReeferContainerImage />,
+						OpenTop: <OpenTopContainerImage />,
+						FlatRack: <FlatRackContainerImage />,
+						Tank: <TankContainerImage />,
+						Bulk: <BulkContainerImage />,
+					}[containerType as ContainerType]
+				}
+				<MdTypography
+					variant="label"
+					size="large"
+					className="text-outline mt-1"
+				>
+					{`(SOC: ${socCount})`}
+				</MdTypography>
+			</div>
+			<div>
+				<LabelChip
+					label={containerType}
+					className="bg-surfaceContainerHigh text-onSurface mb-2"
+					size="medium"
+				/>
+				{props.containers.map((container, index) => (
+					<MdTypography
+						key={`${containerType}_${container.uuid}`}
+						variant="body"
+						size="large"
+						prominent
+						className="flex gap-2"
+					>
+						<span>{container.size}</span>
+						<span className="text-outlineVariant">X</span>
+						<span>{container.quantity}</span>
+					</MdTypography>
+				))}
+			</div>
+		</div>
+	);
 };
 
 //deprecated

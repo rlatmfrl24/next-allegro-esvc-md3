@@ -1,362 +1,601 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import NaToggleButton from "@/app/components/na-toggle-button";
+import { DividerComponent } from "@/app/components/divider";
+import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { ContainerState } from "@/app/store/booking.store";
+import { tinySwitchStyles } from "@/app/util/constants";
 import {
-  ContainerInformationType,
-  ContainerType,
-} from "@/app/util/typeDef/booking";
-import {
-  MdChipSet,
-  MdDialog,
-  MdFilledButton,
-  MdFilterChip,
-  MdIcon,
-  MdOutlinedButton,
-  MdOutlinedIconButton,
+	MdChipSet,
+	MdDialog,
+	MdFilledButton,
+	MdFilterChip,
+	MdIcon,
+	MdIconButton,
+	MdOutlinedButton,
+	MdSwitch,
 } from "@/app/util/md3";
-import { Add } from "@mui/icons-material";
+import {
+	type ContainerInformationType,
+	type DangerousContainerDataType,
+	ContainerType,
+} from "@/app/util/typeDef/booking";
 import { faker } from "@faker-js/faker";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
-import NAOutlinedListBox from "@/app/components/na-outline-listbox";
+import { AddBoxOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
+import {
+	createColumnHelper,
+	flexRender,
+	getCoreRowModel,
+	type Table,
+	useReactTable,
+} from "@tanstack/react-table";
+
+import {
+	GridSelectionComponent,
+	useSkipper,
+} from "../../status/components/dialog/table/util";
+import { MdTypography } from "@/app/components/typography";
+import specialCargoStyle from "@/app/styles/special-cargo.module.css";
 import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
-const DangerousCargoInput = ({
-  container,
-  type,
-  showRequired = true,
+export const DangerousCargoInput = ({
+	container,
+	type,
+	showRequired = true,
 }: {
-  container: ContainerInformationType;
-  type: ContainerType;
-  showRequired?: boolean;
+	container: ContainerInformationType;
+	type: ContainerType;
+	showRequired?: boolean;
 }) => {
-  const typeKey = type.toString().toLowerCase();
-  const setContainerInformation = useSetRecoilState(ContainerState);
-  const [selectedDangerousCargo, setSelectedDangerousCargo] = useState("");
-  const [isResetConfirmDialogOpen, setIsResetConfirmDialogOpen] =
-    useState(false);
+	const typeKey = type.toString().toLowerCase();
+	const setContainerInformation = useSetRecoilState(ContainerState);
 
-  useEffect(() => {
-    if (container.dangerousCargoInformation.length === 0) {
-      setSelectedDangerousCargo("");
-    }
-  }, [container.dangerousCargoInformation.length]);
+	const [selectedContainerIndex, setSelectedContainerIndex] = useState(0);
+	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
 
-  function AddDangerousCargo() {
-    const newDangerousCargo = {
-      uuid: faker.string.uuid(),
-      unNumber: "",
-      class: "",
-      flashPoint: "",
-      packingGroup: "None",
-      properShippingName: "",
-    };
+	const columnDefs = useMemo(() => {
+		function AddNewDGCargo() {
+			setContainerInformation((prev) => ({
+				...prev,
+				[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+					c.uuid === container.uuid && c.type !== ContainerType.bulk
+						? {
+								...c,
+								dgInfo: {
+									...c.dgInfo,
+									//add empty row in selected container index if separated
+									data: c.dgInfo.isSeparated
+										? c.dgInfo.data.map((d, i) =>
+												i === selectedContainerIndex
+													? [
+															...d,
+															{
+																uuid: faker.string.uuid(),
+																unNumber: undefined,
+																class: "",
+																flashPoint: "",
+																packingGroup: "",
+																properShippingName: "",
+															},
+														]
+													: d,
+											)
+										: //add empty row in all container if not separated
+											c.dgInfo.data.map((d) => [
+												...d,
+												{
+													uuid: faker.string.uuid(),
+													unNumber: "",
+													class: "",
+													flashPoint: "",
+													packingGroup: "",
+													properShippingName: "",
+												},
+											]),
+								},
+							}
+						: c,
+				),
+			}));
+		}
+		function RemoveDGCargo(rowIndex: number) {
+			setContainerInformation((prev) => ({
+				...prev,
+				[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+					c.uuid === container.uuid && c.type !== ContainerType.bulk
+						? {
+								...c,
+								dgInfo: {
+									...c.dgInfo,
+									data: c.dgInfo.isSeparated
+										? c.dgInfo.data.map((d, i) =>
+												i === selectedContainerIndex
+													? d.filter((_, index) => index !== rowIndex)
+													: d,
+											)
+										: c.dgInfo.data.map((d) =>
+												d.filter((_, index) => index !== rowIndex),
+											),
+								},
+							}
+						: c,
+				),
+			}));
+		}
+		const columnHelper = createColumnHelper<DangerousContainerDataType>();
 
-    setContainerInformation((prev) => ({
-      ...prev,
-      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-        c.uuid === container.uuid && c.type !== ContainerType.bulk
-          ? {
-              ...c,
-              dangerousCargoInformation: [
-                ...c.dangerousCargoInformation,
-                newDangerousCargo,
-              ],
-            }
-          : c
-      ),
-    }));
+		return [
+			columnHelper.display({
+				header: "No.",
+				size: 80,
+				cell: (cell) => (
+					<div className="p-2">{`DG #${cell.row.index + 1}`}</div>
+				),
+			}),
+			columnHelper.accessor("unNumber", {
+				header: "UN Number",
+				size: 150,
+				cell: (cell) => (
+					<NAOutlinedNumberField
+						sizeVariant="tiny"
+						className="p-2"
+						enableNumberSeparator={false}
+						required={showRequired}
+						value={cell.getValue()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value ?? "",
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.accessor("class", {
+				header: "Class",
+				size: 150,
+				cell: (cell) => (
+					<NAOutlinedNumberField
+						sizeVariant="tiny"
+						className="p-2"
+						enableNumberSeparator={false}
+						required={showRequired}
+						value={cell.getValue()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value ?? "",
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.accessor("flashPoint", {
+				header: "Flash Point",
+				size: 150,
+				cell: (cell) => (
+					<NAOutlinedNumberField
+						sizeVariant="tiny"
+						className="p-2"
+						suffixText="°C"
+						disabled
+						hideZeroPlaceholder
+						value={cell.getValue()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.accessor("packingGroup", {
+				header: "Packing Group",
+				size: 150,
+				cell: (cell) => (
+					<GridSelectionComponent
+						options={["None", "I", "II", "III"]}
+						value={cell.getValue()}
+						onSelectionChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.accessor("properShippingName", {
+				header: "Proper Shipping Name",
+				size: 400,
+				cell: (cell) => (
+					<NAOutlinedTextField
+						sizeVariant="tiny"
+						className="p-2"
+						value={cell.getValue()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.display({
+				header: "Edit",
+				size: 50,
+				cell: (cell) => (
+					<MdIconButton
+						className="m-2"
+						onClick={() => {
+							if (cell.row.index === 0) {
+								AddNewDGCargo();
+							} else {
+								RemoveDGCargo(cell.row.index);
+							}
+						}}
+					>
+						<MdIcon>
+							{cell.row.index === 0 ? (
+								<AddBoxOutlined />
+							) : (
+								<DeleteOutlineOutlined />
+							)}
+						</MdIcon>
+					</MdIconButton>
+				),
+			}),
+		];
+	}, [
+		container.uuid,
+		selectedContainerIndex,
+		setContainerInformation,
+		showRequired,
+		typeKey,
+	]);
 
-    setSelectedDangerousCargo(newDangerousCargo.uuid);
-  }
+	const table = useReactTable<DangerousContainerDataType>({
+		data: container.dgInfo.isSeparated
+			? container.dgInfo.data[selectedContainerIndex]
+			: container.dgInfo.data[0],
+		columns: columnDefs,
+		autoResetPageIndex,
+		getCoreRowModel: getCoreRowModel<DangerousContainerDataType>(),
+		meta: {
+			updateData: (rowIndex, columnId, value) => {
+				resetAutoRestPageIndex();
+				if (container.dgInfo.isSeparated) {
+					setContainerInformation((prev) => ({
+						...prev,
+						[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+							c.uuid === container.uuid && c.type !== ContainerType.bulk
+								? {
+										...c,
+										dgInfo: {
+											...c.dgInfo,
+											data: c.dgInfo.data.map((d, index) =>
+												index === selectedContainerIndex
+													? d.map((r, i) =>
+															i === rowIndex ? { ...r, [columnId]: value } : r,
+														)
+													: d,
+											),
+										},
+									}
+								: c,
+						),
+					}));
+				} else {
+					setContainerInformation((prev) => ({
+						...prev,
+						[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+							c.uuid === container.uuid && c.type !== ContainerType.bulk
+								? {
+										...c,
+										dgInfo: {
+											...c.dgInfo,
+											data: c.dgInfo.data.map((d) =>
+												d.map((r, i) =>
+													i === rowIndex ? { ...r, [columnId]: value } : r,
+												),
+											),
+										},
+									}
+								: c,
+						),
+					}));
+				}
+			},
+			updateRow: (rowIndex, data) => {},
+		},
+	});
 
-  function RemoveDangerousCargo(uuid: string) {
-    setContainerInformation((prev) => ({
-      ...prev,
-      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-        c.uuid === container.uuid && c.type !== ContainerType.bulk
-          ? {
-              ...c,
-              dangerousCargoInformation: c.dangerousCargoInformation.filter(
-                (dci) => dci.uuid !== uuid
-              ),
-            }
-          : c
-      ),
-    }));
+	const [prevDGCargoData, setPrevDGCargoData] = useState(container.dgInfo.data);
 
-    if (selectedDangerousCargo === uuid) {
-      setSelectedDangerousCargo("");
-    }
+	useEffect(() => {
+		// reset dg data when quantity changed
+		console.log("reset dg data");
 
-    if (container.dangerousCargoInformation.length === 1) {
-      setContainerInformation((prev) => ({
-        ...prev,
-        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-          c.uuid === container.uuid && c.type !== ContainerType.bulk
-            ? { ...c, isDangerous: false }
-            : c
-        ),
-      }));
-    }
-  }
+		// if container.dgInfo.quantity is changed, reset the dg data
+		// if not, do nothing
 
-  return (
-    <>
-      <MdDialog
-        open={isResetConfirmDialogOpen}
-        closed={() => setIsResetConfirmDialogOpen(false)}
-      >
-        <div slot="headline">
-          All input contents of the Cargo Manifest will be discarded.
-        </div>
-        <div slot="content">Are you sure you want to uncheck?</div>
-        <div slot="actions">
-          <MdOutlinedButton
-            onClick={() => {
-              setIsResetConfirmDialogOpen(false);
-            }}
-          >
-            Cancel
-          </MdOutlinedButton>
-          <MdFilledButton
-            onClick={() => {
-              setIsResetConfirmDialogOpen(false);
-              setContainerInformation((prev) => ({
-                ...prev,
-                [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                  c.uuid === container.uuid && c.type !== ContainerType.bulk
-                    ? {
-                        ...c,
-                        isDangerous: !c.isDangerous,
-                        dangerousCargoInformation: [],
-                      }
-                    : c
-                ),
-              }));
-            }}
-          >
-            Yes
-          </MdFilledButton>
-        </div>
-      </MdDialog>
-      <NaToggleButton
-        className="w-fit my-0"
-        label="Dangerous Cargo"
-        state={container.isDangerous ? "checked" : "unchecked"}
-        onClick={() => {
-          if (!container.isDangerous) {
-            AddDangerousCargo();
-            setContainerInformation((prev) => ({
-              ...prev,
-              [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                c.uuid === container.uuid && c.type !== ContainerType.bulk
-                  ? { ...c, isDangerous: !c.isDangerous }
-                  : c
-              ),
-            }));
-          } else {
-            setIsResetConfirmDialogOpen(true);
-          }
-        }}
-      />
-      {container.isDangerous && (
-        <div className="flex flex-col gap-3">
-          <div className="flex gap-2">
-            <MdOutlinedIconButton
-              className="w-8 h-8 min-w-8"
-              onClick={() => {
-                AddDangerousCargo();
-              }}
-            >
-              <MdIcon>
-                <Add />
-              </MdIcon>
-            </MdOutlinedIconButton>
+		if (container.dgInfo.quantity === prevDGCargoData.length) {
+			return;
+		}
 
-            <MdChipSet className="flex flex-row">
-              {container.dangerousCargoInformation.map((dci, index) => (
-                <MdFilterChip
-                  key={dci.uuid}
-                  removable
-                  label={`Dangerous Cargo #` + (index + 1)}
-                  selected={selectedDangerousCargo === dci.uuid}
-                  onClick={() =>
-                    selectedDangerousCargo === dci.uuid
-                      ? setSelectedDangerousCargo("")
-                      : setSelectedDangerousCargo(dci.uuid)
-                  }
-                  remove={() => RemoveDangerousCargo(dci.uuid)}
-                />
-              ))}
-            </MdChipSet>
-          </div>
-          <div className="flex gap-4">
-            {selectedDangerousCargo !== "" && (
-              <>
-                <div className="flex gap-2">
-                  <NAOutlinedNumberField
-                    label="UN No."
-                    required={showRequired}
-                    hideZeroPlaceholder
-                    enableNumberSeparator={false}
-                    maxInputLength={4}
-                    className="w-[136px]"
-                    value={
-                      container.dangerousCargoInformation.find(
-                        (dci) => dci.uuid === selectedDangerousCargo
-                      )?.unNumber
-                    }
-                    handleValueChange={(value) => {
-                      setContainerInformation((prev) => ({
-                        ...prev,
-                        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                          c.uuid === container.uuid &&
-                          c.type !== ContainerType.bulk
-                            ? {
-                                ...c,
-                                dangerousCargoInformation:
-                                  c.dangerousCargoInformation.map((dci) =>
-                                    dci.uuid === selectedDangerousCargo
-                                      ? { ...dci, unNumber: value }
-                                      : dci
-                                  ),
-                              }
-                            : c
-                        ),
-                      }));
-                    }}
-                  />
-                  <NAOutlinedNumberField
-                    label="Class"
-                    required={showRequired}
-                    maxInputLength={3}
-                    hideZeroPlaceholder
-                    className="w-[136px]"
-                    value={
-                      container.dangerousCargoInformation.find(
-                        (dci) => dci.uuid === selectedDangerousCargo
-                      )?.class
-                    }
-                    handleValueChange={(value) =>
-                      setContainerInformation((prev) => ({
-                        ...prev,
-                        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                          c.uuid === container.uuid &&
-                          c.type !== ContainerType.bulk
-                            ? {
-                                ...c,
-                                dangerousCargoInformation:
-                                  c.dangerousCargoInformation.map((dci) =>
-                                    dci.uuid === selectedDangerousCargo
-                                      ? { ...dci, class: value }
-                                      : dci
-                                  ),
-                              }
-                            : c
-                        ),
-                      }))
-                    }
-                  />
-                  <NAOutlinedTextField
-                    label="Flash Point"
-                    required={showRequired}
-                    disabled
-                    className="w-[136px]"
-                    suffixText="°C"
-                    enableClearButton={false}
-                    value={
-                      container.dangerousCargoInformation.find(
-                        (dci) => dci.uuid === selectedDangerousCargo
-                      )?.flashPoint
-                    }
-                    handleValueChange={(value) =>
-                      setContainerInformation((prev) => ({
-                        ...prev,
-                        [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                          c.uuid === container.uuid &&
-                          c.type !== ContainerType.bulk
-                            ? {
-                                ...c,
-                                dangerousCargoInformation:
-                                  c.dangerousCargoInformation.map((dci) =>
-                                    dci.uuid === selectedDangerousCargo
-                                      ? { ...dci, flashPoint: value }
-                                      : dci
-                                  ),
-                              }
-                            : c
-                        ),
-                      }))
-                    }
-                  />
-                </div>
-                <NAOutlinedListBox
-                  label="Packing Group"
-                  className="w-[232px]"
-                  options={["None", "I", "II", "III"]}
-                  initialValue={
-                    container.dangerousCargoInformation.find(
-                      (dci) => dci.uuid === selectedDangerousCargo
-                    )?.packingGroup
-                  }
-                  onSelection={(value) =>
-                    setContainerInformation((prev) => ({
-                      ...prev,
-                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                        c.uuid === container.uuid &&
-                        c.type !== ContainerType.bulk
-                          ? {
-                              ...c,
-                              dangerousCargoInformation:
-                                c.dangerousCargoInformation.map((dci) =>
-                                  dci.uuid === selectedDangerousCargo
-                                    ? { ...dci, packingGroup: value }
-                                    : dci
-                                ),
-                            }
-                          : c
-                      ),
-                    }))
-                  }
-                />
-                <NAOutlinedTextField
-                  label="Proper Shipping Name"
-                  className="flex-1"
-                  enableClearButton={false}
-                  value={
-                    container.dangerousCargoInformation.find(
-                      (dci) => dci.uuid === selectedDangerousCargo
-                    )?.properShippingName
-                  }
-                  handleValueChange={(value) =>
-                    setContainerInformation((prev) => ({
-                      ...prev,
-                      [typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-                        c.uuid === container.uuid &&
-                        c.type !== ContainerType.bulk
-                          ? {
-                              ...c,
-                              dangerousCargoInformation:
-                                c.dangerousCargoInformation.map((dci) =>
-                                  dci.uuid === selectedDangerousCargo
-                                    ? { ...dci, properShippingName: value }
-                                    : dci
-                                ),
-                            }
-                          : c
-                      ),
-                    }))
-                  }
-                />
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
+		setContainerInformation((prev) => ({
+			...prev,
+			[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+				c.uuid === container.uuid && c.type !== ContainerType.bulk
+					? {
+							...c,
+							dgInfo: {
+								...c.dgInfo,
+								data: Array.from({ length: container.dgInfo.quantity }, () => [
+									{
+										uuid: faker.string.uuid(),
+										unNumber: "",
+										class: "",
+										flashPoint: "",
+										packingGroup: "",
+										properShippingName: "",
+									},
+								]),
+							},
+						}
+					: c,
+			),
+		}));
+
+		setPrevDGCargoData(
+			Array.from({ length: container.dgInfo.quantity }, () => [
+				{
+					uuid: faker.string.uuid(),
+					unNumber: "",
+					class: "",
+					flashPoint: "",
+					packingGroup: "",
+					properShippingName: "",
+				},
+			]),
+		);
+	}, [
+		container.dgInfo.quantity,
+		container.uuid,
+		prevDGCargoData.length,
+		setContainerInformation,
+		typeKey,
+	]);
+
+	return (
+		<>
+			{container.dgInfo.isDangerous && (
+				<div className="flex flex-col border border-outlineVariant rounded-lg px-4 pt-3 pb-4 gap-3">
+					<div className="flex gap-4 items-center">
+						<MdTypography variant="title" size="small" className="text-primary">
+							Dangerous Cargo
+						</MdTypography>
+						<SimpleRadioGroup
+							groupName={`dangerous-cargo-separation-${container.uuid}`}
+							options={["Same per Container", "Different per Container"]}
+							selected={
+								container.dgInfo.isSeparated
+									? "Different per Container"
+									: "Same per Container"
+							}
+							onChange={(value) => {
+								setSelectedContainerIndex(0);
+								const newDGCargoData = prevDGCargoData;
+								setPrevDGCargoData(container.dgInfo.data);
+								setContainerInformation((prev) => ({
+									...prev,
+									[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+										c.uuid === container.uuid && c.type !== ContainerType.bulk
+											? {
+													...c,
+													dgInfo: {
+														...c.dgInfo,
+														isSeparated: value === "Different per Container",
+														data: newDGCargoData,
+													},
+												}
+											: c,
+									),
+								}));
+							}}
+						/>
+						<DividerComponent orientation="vertical" />
+						<MdChipSet>
+							{container.dgInfo.isSeparated ? (
+								Array.from({ length: container.dgInfo.data.length }).map(
+									(_, index) => (
+										<MdFilterChip
+											key={`container-${index + 1}`}
+											label={`Container #${index + 1}`}
+											selected={selectedContainerIndex === index}
+											onClick={(e) => {
+												if (selectedContainerIndex !== index) {
+													setSelectedContainerIndex(index);
+												} else {
+													e.preventDefault();
+													e.stopPropagation();
+												}
+											}}
+										/>
+									),
+								)
+							) : (
+								<MdFilterChip label="All Container" selected />
+							)}
+						</MdChipSet>
+					</div>
+					<DGCargoTable {...table} />
+				</div>
+			)}
+		</>
+	);
 };
 
-export default DangerousCargoInput;
+const DGCargoTable = (table: Table<DangerousContainerDataType>) => {
+	return (
+		<table className={specialCargoStyle.table}>
+			<thead>
+				{table.getHeaderGroups().map((headerGroup) => (
+					<tr key={headerGroup.id}>
+						{headerGroup.headers.map((header) => (
+							<th
+								key={header.id}
+								style={{
+									minWidth: header.column.columnDef.size,
+									width: header.column.columnDef.size,
+								}}
+							>
+								<div>
+									<span>
+										{header.isPlaceholder
+											? null
+											: flexRender(
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
+									</span>
+									{header.column.columnDef.header === "Edit" ? null : (
+										<DividerComponent
+											orientation="vertical"
+											className="h-5 translate-x-0.5"
+										/>
+									)}
+								</div>
+							</th>
+						))}
+					</tr>
+				))}
+			</thead>
+			<tbody>
+				{table.getRowModel().rows.map((row) => (
+					<tr key={row.id}>
+						{row.getVisibleCells().map((cell) => (
+							<td key={cell.id}>
+								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+							</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	);
+};
+
+export const DangerousCargoTrigger = ({
+	container,
+	type,
+}: {
+	container: ContainerInformationType;
+	type: ContainerType;
+}) => {
+	const typeKey = type.toString().toLowerCase();
+	const [isResetConfirmDialogOpen, setIsResetConfirmDialogOpen] =
+		useState(false);
+	const setContainerInformation = useSetRecoilState(ContainerState);
+
+	return (
+		<>
+			<MdDialog
+				open={isResetConfirmDialogOpen}
+				closed={() => setIsResetConfirmDialogOpen(false)}
+			>
+				<div slot="headline">
+					All input contents of the Cargo Manifest will be discarded.
+				</div>
+				<div slot="content">Are you sure you want to uncheck?</div>
+				<div slot="actions">
+					<MdOutlinedButton
+						onClick={() => {
+							setIsResetConfirmDialogOpen(false);
+						}}
+					>
+						Cancel
+					</MdOutlinedButton>
+					<MdFilledButton
+						onClick={() => {
+							setIsResetConfirmDialogOpen(false);
+							setContainerInformation((prev) => ({
+								...prev,
+								[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+									c.uuid === container.uuid && c.type !== ContainerType.bulk
+										? {
+												...c,
+												dgInfo: {
+													...c.dgInfo,
+													isDangerous: !c.dgInfo.isDangerous,
+													quantity: 0,
+													data: [[]],
+												},
+											}
+										: c,
+								),
+							}));
+						}}
+					>
+						Yes
+					</MdFilledButton>
+				</div>
+			</MdDialog>
+			<label
+				htmlFor={`${container.uuid}-${typeKey}-dangerous-cargo-switch`}
+				className="flex items-center gap-2 w-fit"
+				style={tinySwitchStyles}
+			>
+				<MdSwitch
+					id={`${container.uuid}-${typeKey}-dangerous-cargo-switch`}
+					selected={container.dgInfo.isDangerous}
+					onClick={(e) => {
+						e.preventDefault();
+						if (!container.dgInfo.isDangerous) {
+							setContainerInformation((prev) => ({
+								...prev,
+								[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+									c.uuid === container.uuid && c.type !== ContainerType.bulk
+										? {
+												...c,
+												dgInfo: {
+													...c.dgInfo,
+													isDangerous: !c.dgInfo.isDangerous,
+													quantity: 1,
+													data: [
+														[
+															{
+																uuid: faker.string.uuid(),
+																unNumber: "",
+																class: "",
+																flashPoint: "",
+																packingGroup: "",
+																properShippingName: "",
+															},
+														],
+													],
+												},
+											}
+										: c,
+								),
+							}));
+						} else {
+							setIsResetConfirmDialogOpen(true);
+						}
+					}}
+				/>
+				<MdTypography variant="body" size="small" prominent>
+					Dangerous Cargo
+				</MdTypography>
+			</label>
+		</>
+	);
+};
