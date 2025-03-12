@@ -54,6 +54,9 @@ export const NAOutlinedTextField = ({
 				className={`flex-1 resize-y ${
 					props.readOnly ? "bg-surfaceContainer" : ""
 				}`}
+				onClick={(e) => {
+					e.currentTarget.shadowRoot?.querySelector("input")?.select();
+				}}
 				onInput={(e) => {
 					if (maxInputLength && e.currentTarget.value.length > maxInputLength) {
 						e.currentTarget.value = e.currentTarget.value.slice(
