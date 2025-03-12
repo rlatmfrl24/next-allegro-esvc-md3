@@ -357,11 +357,12 @@ export default function SITable() {
 						<div className="flex flex-1 gap-2 items-center">
 							<MdChipSet>
 								<StatusFilterComponent
-									initialStatus={stateFilter}
+									initialStatus={
+										(table.getColumn("blState")?.getFilterValue() as []) ?? []
+									}
 									statusOptions={Object.values(SIState)}
 									onChange={(states) => {
 										table.resetRowSelection();
-										setStateFilter(states);
 										table.setColumnFilters([
 											{
 												id: "blState",

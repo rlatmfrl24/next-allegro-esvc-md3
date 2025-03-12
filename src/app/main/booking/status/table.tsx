@@ -100,9 +100,6 @@ function createDummyBookingStatus() {
 }
 
 export default function BookingStatusTable() {
-	const router = useRouter();
-	const columnHelper = createColumnHelper<BookingStatusTableProps>();
-
 	const tempData: BookingStatusTableProps[] = useMemo(() => {
 		return Array.from({ length: 200 }, (_, i) => createDummyBookingStatus());
 	}, []);
@@ -138,289 +135,585 @@ export default function BookingStatusTable() {
 		setTableData(tempData);
 	}, [tempData]);
 
-	const columns = [
-		columnHelper.accessor("requestNo", {
-			id: "requestNo",
-			header: "Request No",
-			cell: (info) => (
-				<div className="flex items-center relative -translate-y-1">
-					<MdCheckbox className="mr-2" checked={info.row.getIsSelected()} />
-					<Link href={"/main/booking/information/request"}>
+	const router = useRouter();
+	const memorizedColumns = useMemo(() => {
+		const columnHelper = createColumnHelper<BookingStatusTableProps>();
+		const columns = [
+			columnHelper.accessor("requestNo", {
+				id: "requestNo",
+				header: "Request No",
+				cell: (info) => (
+					<div className="flex items-center relative -translate-y-1">
+						<MdCheckbox className="mr-2" checked={info.row.getIsSelected()} />
+						<Link href={"/main/booking/information/request"}>
+							<MdTypography
+								tag="label"
+								variant="body"
+								size="medium"
+								className="text-onSurfaceVariant underline cursor-pointer"
+							>
+								{info.getValue()}
+							</MdTypography>
+						</Link>
+						<CodeCopyButton code={info.getValue()} />
+					</div>
+				),
+				size: 230,
+				minSize: 230,
+			}),
+			columnHelper.accessor("status", {
+				id: "status",
+				header: "Status",
+				cell: (info) => (
+					<div className="flex gap-2 items-center">
+						<BookingStatusChip status={info.getValue()} />
+						{info.row.original.hasShippingInstruction &&
+							info.getValue() === BookingStatus.Accepted && (
+								<HasShippingInstructionIcon />
+							)}
+					</div>
+				),
+				filterFn: (row, id, filterValue) => {
+					return filterValue.includes(row.original.status);
+				},
+				minSize: 140,
+			}),
+			columnHelper.accessor("bookingNo", {
+				id: "bookingNo",
+				header: "Booking No",
+				cell: (info) => (
+					<div className="flex items-center -translate-y-1">
 						<MdTypography
-							tag="label"
 							variant="body"
 							size="medium"
-							className="text-onSurfaceVariant underline cursor-pointer"
+							className="text-onSurfaceVariant underline cursor-pointer w-fit"
+							onClick={() => {
+								setCurrentBookingData(info.row.original);
+								router.push("/main/booking/information/confirmation");
+							}}
 						>
 							{info.getValue()}
 						</MdTypography>
-					</Link>
-					<CodeCopyButton code={info.getValue()} />
-				</div>
-			),
-			size: 230,
-			minSize: 230,
-		}),
-		columnHelper.accessor("status", {
-			id: "status",
-			header: "Status",
-			cell: (info) => (
-				<div className="flex gap-2 items-center">
-					<BookingStatusChip status={info.getValue()} />
-					{info.row.original.hasShippingInstruction &&
-						info.getValue() === BookingStatus.Accepted && (
-							<HasShippingInstructionIcon />
-						)}
-				</div>
-			),
-			filterFn: (row, id, filterValue) => {
-				return filterValue.includes(row.original.status);
-			},
-			minSize: 140,
-		}),
-		columnHelper.accessor("bookingNo", {
-			id: "bookingNo",
-			header: "Booking No",
-			cell: (info) => (
-				<div className="flex items-center -translate-y-1">
+						<CodeCopyButton code={info.getValue()} />
+					</div>
+				),
+				size: 180,
+				minSize: 180,
+			}),
+			columnHelper.accessor("requestDate", {
+				id: "requestDate",
+				header: "Request Date",
+				enableResizing: true,
+				cell: (info) => (
 					<MdTypography
 						variant="body"
 						size="medium"
-						className="text-onSurfaceVariant underline cursor-pointer w-fit"
-						onClick={() => {
-							setCurrentBookingData(info.row.original);
-							router.push("/main/booking/information/confirmation");
+						className="text-onSurfaceVariant"
+					>
+						{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+					</MdTypography>
+				),
+				size: 130,
+				minSize: 130,
+			}),
+
+			columnHelper.accessor("vessel", {
+				id: "vessel",
+				header: "Vessel",
+				// cell: (info) => <VesselInfoCell {...info.getValue()} />,
+				cell: (info) => {
+					return (
+						<MdTypography
+							variant="body"
+							size="medium"
+							className="underline cursor-pointer w-fit"
+							onClick={(e) => {
+								e.stopPropagation();
+								setCurrentVessel(info.getValue());
+								setIsVesselScheduleDialogOpen(true);
+							}}
+						>
+							{info.getValue().vesselName}
+						</MdTypography>
+					);
+				},
+				size: 300,
+			}),
+			columnHelper.accessor("requestDepartureTime", {
+				id: "requestDepartureTime",
+				header: "Request Departure Time",
+
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant"
+					>
+						{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+					</MdTypography>
+				),
+				size: 130,
+				minSize: 130,
+			}),
+			columnHelper.accessor("estimatedTimeofDeparture", {
+				id: "estimatedTimeofDeparture",
+				header: "Estimated Time of Departure",
+				cell: (info) => (
+					// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+					<div
+						className="flex"
+						onClick={(e) => {
+							e.stopPropagation();
+							setIsVesselStatusNotesDialogOpen(true);
+							setBookingData(info.row.original);
 						}}
+					>
+						<MdTypography
+							variant="body"
+							size="medium"
+							className={`text-onSurfaceVariant ${
+								info.getValue().status !== "normal"
+									? "underline cursor-pointer"
+									: ""
+							}`}
+						>
+							{info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
+						</MdTypography>
+						{info.getValue().status !== "normal" && (
+							<Info
+								className={`m-0.5 ${
+									info.getValue().status === "early"
+										? "text-[#325BDA]"
+										: "text-error"
+								}`}
+								sx={{ fontSize: "16px" }}
+							/>
+						)}
+					</div>
+				),
+				size: 130,
+				minSize: 130,
+			}),
+			columnHelper.accessor("origin", {
+				id: "origin",
+				header: "Origin",
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant"
 					>
 						{info.getValue()}
 					</MdTypography>
-					<CodeCopyButton code={info.getValue()} />
-				</div>
-			),
-			size: 180,
-			minSize: 180,
-		}),
-		columnHelper.accessor("requestDate", {
-			id: "requestDate",
-			header: "Request Date",
-			enableResizing: true,
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-				</MdTypography>
-			),
-			size: 130,
-			minSize: 130,
-		}),
-
-		columnHelper.accessor("vessel", {
-			id: "vessel",
-			header: "Vessel",
-			// cell: (info) => <VesselInfoCell {...info.getValue()} />,
-			cell: (info) => {
-				return (
+				),
+			}),
+			columnHelper.accessor("destination", {
+				id: "destination",
+				header: "Destination",
+				cell: (info) => (
 					<MdTypography
 						variant="body"
 						size="medium"
-						className="underline cursor-pointer w-fit"
-						onClick={(e) => {
-							e.stopPropagation();
-							setCurrentVessel(info.getValue());
-							setIsVesselScheduleDialogOpen(true);
-						}}
+						className="text-onSurfaceVariant"
 					>
-						{info.getValue().vesselName}
+						{info.getValue()}
 					</MdTypography>
-				);
-			},
-			size: 300,
-		}),
-		columnHelper.accessor("requestDepartureTime", {
-			id: "requestDepartureTime",
-			header: "Request Departure Time",
-
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-				</MdTypography>
-			),
-			size: 130,
-			minSize: 130,
-		}),
-		columnHelper.accessor("estimatedTimeofDeparture", {
-			id: "estimatedTimeofDeparture",
-			header: "Estimated Time of Departure",
-			cell: (info) => (
-				// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-				<div
-					className="flex"
-					onClick={(e) => {
-						e.stopPropagation();
-						setIsVesselStatusNotesDialogOpen(true);
-						setBookingData(info.row.original);
-					}}
-				>
+				),
+			}),
+			columnHelper.accessor("cargoClosingTime", {
+				id: "cargoClosingTime",
+				header: "Cargo Closing Time",
+				cell: (info) => (
 					<MdTypography
 						variant="body"
 						size="medium"
-						className={`text-onSurfaceVariant ${
-							info.getValue().status !== "normal"
-								? "underline cursor-pointer"
-								: ""
-						}`}
+						className="text-onSurfaceVariant"
 					>
-						{info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
+						{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
 					</MdTypography>
-					{info.getValue().status !== "normal" && (
-						<Info
-							className={`m-0.5 ${
-								info.getValue().status === "early"
-									? "text-[#325BDA]"
-									: "text-error"
-							}`}
-							sx={{ fontSize: "16px" }}
-						/>
-					)}
-				</div>
-			),
-			size: 130,
-			minSize: 130,
-		}),
-		columnHelper.accessor("origin", {
-			id: "origin",
-			header: "Origin",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue()}
-				</MdTypography>
-			),
-		}),
-		columnHelper.accessor("destination", {
-			id: "destination",
-			header: "Destination",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue()}
-				</MdTypography>
-			),
-		}),
-		columnHelper.accessor("cargoClosingTime", {
-			id: "cargoClosingTime",
-			header: "Cargo Closing Time",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-				</MdTypography>
-			),
-			size: 120,
-			minSize: 120,
-		}),
-		columnHelper.accessor("docClosingTime", {
-			id: "docClosingTime",
-			header: "Doc Closing Time",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-				</MdTypography>
-			),
-			size: 120,
-			minSize: 120,
-		}),
-		columnHelper.accessor("vgmCutOffTime", {
-			id: "vgmCutOffTime",
-			header: "VGM Cut Off Time",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
-				</MdTypography>
-			),
-			size: 120,
-			minSize: 120,
-		}),
-		columnHelper.accessor("actualShipper", {
-			id: "actualShipper",
-			header: "Actual Shipper",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{info.getValue()}
-				</MdTypography>
-			),
-			size: 150,
-			minSize: 150,
-		}),
-		columnHelper.accessor("via", {
-			id: "via",
-			header: "Via",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant"
-				>
-					{
+				),
+				size: 120,
+				minSize: 120,
+			}),
+			columnHelper.accessor("docClosingTime", {
+				id: "docClosingTime",
+				header: "Doc Closing Time",
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant"
+					>
+						{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+					</MdTypography>
+				),
+				size: 120,
+				minSize: 120,
+			}),
+			columnHelper.accessor("vgmCutOffTime", {
+				id: "vgmCutOffTime",
+				header: "VGM Cut Off Time",
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant"
+					>
+						{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+					</MdTypography>
+				),
+				size: 120,
+				minSize: 120,
+			}),
+			columnHelper.accessor("actualShipper", {
+				id: "actualShipper",
+				header: "Actual Shipper",
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant"
+					>
+						{info.getValue()}
+					</MdTypography>
+				),
+				size: 150,
+				minSize: 150,
+			}),
+			columnHelper.accessor("via", {
+				id: "via",
+				header: "Via",
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant"
+					>
 						{
-							web: "Web",
-							general: "General",
-							edi: "EDI",
-						}[info.getValue()]
-					}
-				</MdTypography>
-			),
-			minSize: 80,
-		}),
-		columnHelper.accessor("qty", {
-			id: "qty",
-			header: "Qty",
-			cell: (info) => (
-				<MdTypography
-					variant="body"
-					size="medium"
-					className="text-onSurfaceVariant flex flex-col gap-1"
-				>
-					{info
-						.getValue()
-						.split("\n")
-						.map((item, index) => (
-							<span key={`${item}-${faker.string.uuid()}`} className="block">
-								{item}
-							</span>
-						))}
-				</MdTypography>
-			),
-		}),
-	];
+							{
+								web: "Web",
+								general: "General",
+								edi: "EDI",
+							}[info.getValue()]
+						}
+					</MdTypography>
+				),
+				minSize: 80,
+			}),
+			columnHelper.accessor("qty", {
+				id: "qty",
+				header: "Qty",
+				cell: (info) => (
+					<MdTypography
+						variant="body"
+						size="medium"
+						className="text-onSurfaceVariant flex flex-col gap-1"
+					>
+						{info
+							.getValue()
+							.split("\n")
+							.map((item, index) => (
+								<span key={`${item}-${faker.string.uuid()}`} className="block">
+									{item}
+								</span>
+							))}
+					</MdTypography>
+				),
+			}),
+		];
+		return columns;
+	}, [
+		router,
+		setBookingData,
+		setCurrentBookingData,
+		setCurrentVessel,
+		setIsVesselScheduleDialogOpen,
+		setIsVesselStatusNotesDialogOpen,
+	]);
+
+	// const columns = [
+	// 	columnHelper.accessor("requestNo", {
+	// 		id: "requestNo",
+	// 		header: "Request No",
+	// 		cell: (info) => (
+	// 			<div className="flex items-center relative -translate-y-1">
+	// 				<MdCheckbox className="mr-2" checked={info.row.getIsSelected()} />
+	// 				<Link href={"/main/booking/information/request"}>
+	// 					<MdTypography
+	// 						tag="label"
+	// 						variant="body"
+	// 						size="medium"
+	// 						className="text-onSurfaceVariant underline cursor-pointer"
+	// 					>
+	// 						{info.getValue()}
+	// 					</MdTypography>
+	// 				</Link>
+	// 				<CodeCopyButton code={info.getValue()} />
+	// 			</div>
+	// 		),
+	// 		size: 230,
+	// 		minSize: 230,
+	// 	}),
+	// 	columnHelper.accessor("status", {
+	// 		id: "status",
+	// 		header: "Status",
+	// 		cell: (info) => (
+	// 			<div className="flex gap-2 items-center">
+	// 				<BookingStatusChip status={info.getValue()} />
+	// 				{info.row.original.hasShippingInstruction &&
+	// 					info.getValue() === BookingStatus.Accepted && (
+	// 						<HasShippingInstructionIcon />
+	// 					)}
+	// 			</div>
+	// 		),
+	// 		filterFn: (row, id, filterValue) => {
+	// 			return filterValue.includes(row.original.status);
+	// 		},
+	// 		minSize: 140,
+	// 	}),
+	// 	columnHelper.accessor("bookingNo", {
+	// 		id: "bookingNo",
+	// 		header: "Booking No",
+	// 		cell: (info) => (
+	// 			<div className="flex items-center -translate-y-1">
+	// 				<MdTypography
+	// 					variant="body"
+	// 					size="medium"
+	// 					className="text-onSurfaceVariant underline cursor-pointer w-fit"
+	// 					onClick={() => {
+	// 						setCurrentBookingData(info.row.original);
+	// 						router.push("/main/booking/information/confirmation");
+	// 					}}
+	// 				>
+	// 					{info.getValue()}
+	// 				</MdTypography>
+	// 				<CodeCopyButton code={info.getValue()} />
+	// 			</div>
+	// 		),
+	// 		size: 180,
+	// 		minSize: 180,
+	// 	}),
+	// 	columnHelper.accessor("requestDate", {
+	// 		id: "requestDate",
+	// 		header: "Request Date",
+	// 		enableResizing: true,
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+	// 			</MdTypography>
+	// 		),
+	// 		size: 130,
+	// 		minSize: 130,
+	// 	}),
+
+	// 	columnHelper.accessor("vessel", {
+	// 		id: "vessel",
+	// 		header: "Vessel",
+	// 		// cell: (info) => <VesselInfoCell {...info.getValue()} />,
+	// 		cell: (info) => {
+	// 			return (
+	// 				<MdTypography
+	// 					variant="body"
+	// 					size="medium"
+	// 					className="underline cursor-pointer w-fit"
+	// 					onClick={(e) => {
+	// 						e.stopPropagation();
+	// 						setCurrentVessel(info.getValue());
+	// 						setIsVesselScheduleDialogOpen(true);
+	// 					}}
+	// 				>
+	// 					{info.getValue().vesselName}
+	// 				</MdTypography>
+	// 			);
+	// 		},
+	// 		size: 300,
+	// 	}),
+	// 	columnHelper.accessor("requestDepartureTime", {
+	// 		id: "requestDepartureTime",
+	// 		header: "Request Departure Time",
+
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+	// 			</MdTypography>
+	// 		),
+	// 		size: 130,
+	// 		minSize: 130,
+	// 	}),
+	// 	columnHelper.accessor("estimatedTimeofDeparture", {
+	// 		id: "estimatedTimeofDeparture",
+	// 		header: "Estimated Time of Departure",
+	// 		cell: (info) => (
+	// 			// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+	// 			<div
+	// 				className="flex"
+	// 				onClick={(e) => {
+	// 					e.stopPropagation();
+	// 					setIsVesselStatusNotesDialogOpen(true);
+	// 					setBookingData(info.row.original);
+	// 				}}
+	// 			>
+	// 				<MdTypography
+	// 					variant="body"
+	// 					size="medium"
+	// 					className={`text-onSurfaceVariant ${
+	// 						info.getValue().status !== "normal"
+	// 							? "underline cursor-pointer"
+	// 							: ""
+	// 					}`}
+	// 				>
+	// 					{info.getValue().date.toFormat("yyyy-MM-dd HH:mm")}
+	// 				</MdTypography>
+	// 				{info.getValue().status !== "normal" && (
+	// 					<Info
+	// 						className={`m-0.5 ${
+	// 							info.getValue().status === "early"
+	// 								? "text-[#325BDA]"
+	// 								: "text-error"
+	// 						}`}
+	// 						sx={{ fontSize: "16px" }}
+	// 					/>
+	// 				)}
+	// 			</div>
+	// 		),
+	// 		size: 130,
+	// 		minSize: 130,
+	// 	}),
+	// 	columnHelper.accessor("origin", {
+	// 		id: "origin",
+	// 		header: "Origin",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue()}
+	// 			</MdTypography>
+	// 		),
+	// 	}),
+	// 	columnHelper.accessor("destination", {
+	// 		id: "destination",
+	// 		header: "Destination",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue()}
+	// 			</MdTypography>
+	// 		),
+	// 	}),
+	// 	columnHelper.accessor("cargoClosingTime", {
+	// 		id: "cargoClosingTime",
+	// 		header: "Cargo Closing Time",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+	// 			</MdTypography>
+	// 		),
+	// 		size: 120,
+	// 		minSize: 120,
+	// 	}),
+	// 	columnHelper.accessor("docClosingTime", {
+	// 		id: "docClosingTime",
+	// 		header: "Doc Closing Time",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+	// 			</MdTypography>
+	// 		),
+	// 		size: 120,
+	// 		minSize: 120,
+	// 	}),
+	// 	columnHelper.accessor("vgmCutOffTime", {
+	// 		id: "vgmCutOffTime",
+	// 		header: "VGM Cut Off Time",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue().toFormat("yyyy-MM-dd HH:mm")}
+	// 			</MdTypography>
+	// 		),
+	// 		size: 120,
+	// 		minSize: 120,
+	// 	}),
+	// 	columnHelper.accessor("actualShipper", {
+	// 		id: "actualShipper",
+	// 		header: "Actual Shipper",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{info.getValue()}
+	// 			</MdTypography>
+	// 		),
+	// 		size: 150,
+	// 		minSize: 150,
+	// 	}),
+	// 	columnHelper.accessor("via", {
+	// 		id: "via",
+	// 		header: "Via",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant"
+	// 			>
+	// 				{
+	// 					{
+	// 						web: "Web",
+	// 						general: "General",
+	// 						edi: "EDI",
+	// 					}[info.getValue()]
+	// 				}
+	// 			</MdTypography>
+	// 		),
+	// 		minSize: 80,
+	// 	}),
+	// 	columnHelper.accessor("qty", {
+	// 		id: "qty",
+	// 		header: "Qty",
+	// 		cell: (info) => (
+	// 			<MdTypography
+	// 				variant="body"
+	// 				size="medium"
+	// 				className="text-onSurfaceVariant flex flex-col gap-1"
+	// 			>
+	// 				{info
+	// 					.getValue()
+	// 					.split("\n")
+	// 					.map((item, index) => (
+	// 						<span key={`${item}-${faker.string.uuid()}`} className="block">
+	// 							{item}
+	// 						</span>
+	// 					))}
+	// 			</MdTypography>
+	// 		),
+	// 	}),
+	// ];
 
 	function getActivatedActionButton(status: BookingStatus) {
 		switch (status) {
@@ -468,6 +761,11 @@ export default function BookingStatusTable() {
 									<div className="flex items-center gap-2">
 										<MdChipSet>
 											<StatusFilterComponent
+												initialStatus={
+													(table
+														.getColumn("status")
+														?.getFilterValue() as BookingStatus[]) ?? []
+												}
 												statusOptions={Object.values(BookingStatus)}
 												onChange={(states) => {
 													table.setColumnFilters([
@@ -493,7 +791,7 @@ export default function BookingStatusTable() {
 						);
 					}}
 					data={tableData}
-					columns={columns}
+					columns={memorizedColumns}
 					isSingleSelect={true}
 					pinningColumns={["requestNo", "status"]}
 					getSelectionRows={(rows) => {

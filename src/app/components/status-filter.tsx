@@ -78,12 +78,12 @@ const StatusFilterComponent = ({
 				<Check fontSize="small" className="mx-2" />
 				<MdTypography variant="label" size="large" className="select-none">
 					{selectedStatus.length === 0
-						? "No " + unit
+						? `No ${unit}`
 						: selectedStatus.length === statusOptions.length
-							? "All " + unit
+							? `All ${unit}`
 							: selectedStatus[0] +
 								(selectedStatus.length > 1
-									? " +" + (selectedStatus.length - 1)
+									? ` +${selectedStatus.length - 1}`
 									: "")}
 				</MdTypography>
 				<ArrowDropDown fontSize="small" className="mx-2" />
