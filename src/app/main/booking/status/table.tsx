@@ -568,10 +568,7 @@ export default function BookingStatusTable() {
 													key={action}
 													onClick={() => {
 														router.push(
-															`/main/booking/request
-                                            ?requestNo=${currentSelections[0].requestNo}
-                                            &bookingNo=${currentSelections[0].bookingNo}
-                                            &status=${currentSelections[0].status}&type=edit`,
+															`/main/booking/request?requestNo=${currentSelections[0].requestNo}&bookingNo=${currentSelections[0].bookingNo}&status=${currentSelections[0].status}&type=edit`,
 														);
 													}}
 												>
@@ -586,11 +583,7 @@ export default function BookingStatusTable() {
 													key={action}
 													onClick={() => {
 														router.push(
-															`/main/documents/si${
-																!currentSelections[0].hasShippingInstruction
-																	? "/edit"
-																	: ""
-															}`,
+															`/main/documents/si${!currentSelections[0].hasShippingInstruction ? "/edit" : ""}`,
 														);
 													}}
 												>
