@@ -764,7 +764,8 @@ export default function BookingStatusTable() {
 												initialStatus={
 													(table
 														.getColumn("status")
-														?.getFilterValue() as BookingStatus[]) ?? []
+														?.getFilterValue() as BookingStatus[]) ??
+													Object.values(BookingStatus)
 												}
 												statusOptions={Object.values(BookingStatus)}
 												onChange={(states) => {

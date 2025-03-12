@@ -358,7 +358,8 @@ export default function SITable() {
 							<MdChipSet>
 								<StatusFilterComponent
 									initialStatus={
-										(table.getColumn("blState")?.getFilterValue() as []) ?? []
+										(table.getColumn("blState")?.getFilterValue() as []) ??
+										Object.values(SIState)
 									}
 									statusOptions={Object.values(SIState)}
 									onChange={(states) => {
