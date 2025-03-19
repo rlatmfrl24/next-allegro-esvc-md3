@@ -205,6 +205,7 @@ export const FlexibagCargoInput = ({
 		];
 	}, []);
 
+	//TODO: DGCargo Input 참조해서 updater 추가
 	const table = useReactTable<FlexibagContainerDataType>({
 		data: container.flexibag.data,
 		columns: columnDefs,
