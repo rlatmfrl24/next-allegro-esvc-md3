@@ -43,9 +43,6 @@ export const FlexibagCargoInput = ({
 	const [prevCargoData, setPrevCargoData] = useState(container.flexibag.data);
 
 	useEffect(() => {
-		console.log("FlexibagCargoInput useEffect");
-		console.log("container.quantity: ", container.quantity);
-
 		setContainerInformation((prev) => ({
 			...prev,
 			[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
