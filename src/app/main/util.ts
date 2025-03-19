@@ -120,6 +120,11 @@ export function getEmptyContainerData(
 					isSeparated: false,
 					data: [],
 				},
+				flexibag: {
+					isFlexibag: false,
+					isSeparated: false,
+					data: [],
+				},
 			} as DryContainerInformationType;
 		case ContainerType.reefer:
 			return {
