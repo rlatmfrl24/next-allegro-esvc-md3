@@ -276,12 +276,12 @@ export const FlexibagCargoInput = ({
 				cell: (cell) => (
 					<GridSelectionComponent
 						options={["Y", "N"]}
-						value={cell.getValue()?.toString() ?? ""}
+						value={cell.getValue() ? "Y" : "N"}
 						onSelectionChange={(value) => {
 							cell.table.options.meta?.updateData(
 								cell.row.index,
 								cell.column.id,
-								value,
+								value === "Y",
 							);
 						}}
 					/>
