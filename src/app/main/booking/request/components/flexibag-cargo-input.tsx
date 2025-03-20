@@ -43,39 +43,46 @@ export const FlexibagCargoInput = ({
 	const [prevCargoData, setPrevCargoData] = useState(container.flexibag.data);
 
 	useEffect(() => {
-		setContainerInformation((prev) => ({
-			...prev,
-			[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
-				c.uuid === container.uuid && "flexibag" in c
-					? {
-							...c,
-							flexibag: {
-								...(c as DryContainerInformationType).flexibag,
-								data: Array(
-									!container.flexibag.isSeparated ? 1 : container.quantity,
-								).fill({
-									uuid: faker.string.uuid(),
-									separatedNumber: 0,
-									grossWeight: 0,
-									commodity: "",
-									flexibag: {
-										actualWeight: 0,
-										maxCapacity: 0,
-										ratio: 0,
-									},
-									manufacturer: "",
-									valveSpecification: {
-										location: "",
-										type: "",
-									},
-									msds: false,
-								}),
-							},
-						}
-					: c,
-			),
-		}));
+		if (
+			container.quantity !== container.flexibag.data.length &&
+			container.flexibag.isSeparated
+		) {
+			console.log("Reset Flexibag Data");
+			setContainerInformation((prev) => ({
+				...prev,
+				[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+					c.uuid === container.uuid && "flexibag" in c
+						? {
+								...c,
+								flexibag: {
+									...(c as DryContainerInformationType).flexibag,
+									data: Array(
+										!container.flexibag.isSeparated ? 1 : container.quantity,
+									).fill({
+										uuid: faker.string.uuid(),
+										separatedNumber: 0,
+										grossWeight: 0,
+										commodity: "",
+										flexibag: {
+											actualWeight: 0,
+											maxCapacity: 0,
+											ratio: 0,
+										},
+										manufacturer: "",
+										valveSpecification: {
+											location: "",
+											type: "",
+										},
+										msds: false,
+									}),
+								},
+							}
+						: c,
+				),
+			}));
+		}
 	}, [
+		container.flexibag.data.length,
 		container.flexibag.isSeparated,
 		container.quantity,
 		container.uuid,
@@ -107,6 +114,7 @@ export const FlexibagCargoInput = ({
 						enableNumberSeparator
 						required
 						suffixText="KGS"
+						defaultValue={cell.getValue().toString()}
 						value={cell.getValue().toString()}
 						handleValueChange={(value) => {
 							cell.table.options.meta?.updateData(
@@ -292,8 +300,6 @@ export const FlexibagCargoInput = ({
 		meta: {
 			updateData: (rowIndex, columnId, value) => {
 				resetAutoRestPageIndex();
-				console.log(rowIndex, columnId, value);
-
 				if (columnId.includes("_")) {
 					// group column
 					const [columnId1, columnId2] = columnId.split("_");
@@ -350,6 +356,10 @@ export const FlexibagCargoInput = ({
 		},
 	});
 
+	useEffect(() => {
+		console.log("check", container.flexibag.data);
+	}, [container.flexibag.data]);
+
 	return (
 		<>
 			{container.flexibag.isFlexibag && (
@@ -367,7 +377,7 @@ export const FlexibagCargoInput = ({
 									: "Same per Container"
 							}
 							onChange={(value) => {
-								const newFlexibagData = prevCargoData;
+								const newFlexibagData = [...prevCargoData];
 								setPrevCargoData(container.flexibag.data);
 								setContainerInformation((prev) => ({
 									...prev,
