@@ -23,6 +23,10 @@ import {
 	DangerousCargoInput,
 	DangerousCargoTrigger,
 } from "./dangerous-cargo-input";
+import {
+	FlexibagCargoInput,
+	FlexibagCargoTrigger,
+} from "./flexibag-cargo-input";
 
 const DryContainerInput = ({
 	list,
@@ -209,14 +213,24 @@ const DryContainerInput = ({
 													/>
 												)}
 											</div>
-											<DangerousCargoTrigger
-												container={container}
-												type={ContainerType.dry}
-											/>
+											<div className="flex gap-2 items-start flex-1">
+												<DangerousCargoTrigger
+													container={container}
+													type={ContainerType.dry}
+												/>
+												<FlexibagCargoTrigger
+													container={container}
+													type={ContainerType.dry}
+												/>
+											</div>
 											<DangerousCargoInput
 												container={container}
 												type={ContainerType.dry}
 												showRequired={showRequired}
+											/>
+											<FlexibagCargoInput
+												container={container}
+												type={ContainerType.dry}
 											/>
 										</div>
 										<MdOutlinedIconButton

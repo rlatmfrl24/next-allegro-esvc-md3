@@ -1,4 +1,4 @@
-import type { DateTime } from "luxon";
+import type { DateTime, StringUnitLength } from "luxon";
 import type { VesselInfoType, PlaceInformationType } from "./schedule";
 
 export enum ContainerType {
@@ -134,6 +134,30 @@ export interface ContainerInformationType {
 	dgInfo: DangerousCargoInformationType;
 }
 
+export type FlexibagCargoInformationType = {
+	isFlexibag: boolean;
+	isSeparated: boolean;
+	data: FlexibagContainerDataType[];
+};
+
+export type FlexibagContainerDataType = {
+	uuid: string;
+	separatedNumber: number;
+	grossWeight: number;
+	commodity: string;
+	manufacturer: string;
+	flexibag: {
+		maxCapacity: number;
+		actualWeight: number;
+		ratio: number;
+	};
+	valveSpecification: {
+		type: string;
+		location: string;
+	};
+	msds: boolean;
+};
+
 export type DangerousCargoInformationType = {
 	isDangerous: boolean;
 	isSeparated: boolean;
@@ -152,6 +176,7 @@ export type DangerousContainerDataType = {
 
 export interface DryContainerInformationType extends ContainerInformationType {
 	type: ContainerType.dry;
+	flexibag: FlexibagCargoInformationType;
 }
 
 export interface ReeferContainerInformationType
