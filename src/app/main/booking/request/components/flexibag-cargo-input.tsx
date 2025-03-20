@@ -1,21 +1,15 @@
+import { useEffect, useMemo, useState } from "react";
+import { useSetRecoilState } from "recoil";
+
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { SimpleRadioGroup } from "@/app/components/simple-radio-group";
 import { MdTypography } from "@/app/components/typography";
 import { ContainerState } from "@/app/store/booking.store";
+import specialCargoStyle from "@/app/styles/special-cargo.module.css";
 import { tinySwitchStyles } from "@/app/util/constants";
 import { MdSwitch } from "@/app/util/md3";
-import type {
-	ContainerInformationType,
-	ContainerType,
-	DryContainerInformationType,
-	FlexibagContainerDataType,
-} from "@/app/util/typeDef/booking";
-import { faker, tr } from "@faker-js/faker";
-import { useEffect, useMemo, useState } from "react";
-import { useSetRecoilState } from "recoil";
-import {
-	GridSelectionComponent,
-	useSkipper,
-} from "../../status/components/dialog/table/util";
+import { faker } from "@faker-js/faker";
 import {
 	createColumnHelper,
 	flexRender,
@@ -23,12 +17,17 @@ import {
 	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
-import specialCargoStyle from "@/app/styles/special-cargo.module.css";
 
-import { DividerComponent } from "@/app/components/divider";
-import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
-import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import {
+	GridSelectionComponent,
+	useSkipper,
+} from "../../status/components/dialog/table/util";
 
+import type {
+	ContainerType,
+	DryContainerInformationType,
+	FlexibagContainerDataType,
+} from "@/app/util/typeDef/booking";
 export const FlexibagCargoInput = ({
 	container,
 	type,
