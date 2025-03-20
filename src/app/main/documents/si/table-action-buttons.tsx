@@ -1,7 +1,14 @@
-import Link from "next/link";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+	type Dispatch,
+	type SetStateAction,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 
 import { useVesselScheduleDialog } from "@/app/components/common-dialog-hooks";
+import { DividerComponent } from "@/app/components/divider";
 import NAOutlinedListBox from "@/app/components/na-outline-listbox";
 import Portal from "@/app/components/portal";
 import { useSimpleTable } from "@/app/components/table/simple-table";
@@ -14,20 +21,14 @@ import {
 	MdOutlinedButton,
 	MdTextButton,
 } from "@/app/util/md3";
-import { VesselInfoType } from "@/app/util/typeDef/schedule";
-import { SISearchTableProps, SIState } from "@/app/util/typeDef/si";
+import type { VesselInfoType } from "@/app/util/typeDef/schedule";
+import { type SISearchTableProps, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { FmdGood } from "@mui/icons-material";
-import {
-	createColumnHelper,
-	getCoreRowModel,
-	useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 
 import { SimpleItem } from "../../booking/request/components/base";
-import SIStateChip from "./si-state-chip";
-import { DividerComponent } from "@/app/components/divider";
-import { useRouter } from "next/navigation";
+import { SIStateChip } from "./si-state-chip";
 
 const ActionButtons = ({
 	selectionList,
@@ -68,10 +69,6 @@ const ActionButtons = ({
 
 					{(states.includes(SIState.ChangeRequested) ||
 						states.includes(SIState.ChangeRequestedRejected) ||
-						states.includes(SIState.BLIssueRequest) ||
-						states.includes(SIState.BLIssueRejected) ||
-						states.includes(SIState.BLIssuePending) ||
-						states.includes(SIState.BLIssueConfirm) ||
 						states.includes(SIState.BLIssueClosed) ||
 						states.includes(SIState.Confirmed)) &&
 						states.length === 1 && (
@@ -104,7 +101,6 @@ const ActionButtons = ({
 					{!(
 						states.includes(SIState.Rejected) ||
 						states.includes(SIState.Pending) ||
-						states.includes(SIState.BLIssuePending) ||
 						states.includes(SIState.BLIssueClosed)
 					) && (
 						<MdOutlinedButton
@@ -114,6 +110,9 @@ const ActionButtons = ({
 						>
 							B/L Issue Request
 						</MdOutlinedButton>
+					)}
+					{states.includes(SIState.BLIssueClosed) && (
+						<MdOutlinedButton onClick={() => {}}>C/N Issue</MdOutlinedButton>
 					)}
 				</div>
 			)}
