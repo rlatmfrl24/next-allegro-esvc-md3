@@ -66,7 +66,7 @@ export const FlexibagCargoInput = ({
 									manufacturer: "",
 									valveSpecification: {
 										location: "",
-										size: "",
+										type: "",
 									},
 									msds: false,
 								}),
@@ -89,8 +89,14 @@ export const FlexibagCargoInput = ({
 		return [
 			columnHelper.display({
 				header: "Sep.",
-				size: 80,
-				cell: (cell) => <div className="p-2">{`#${cell.row.index + 1}`}</div>,
+				size: container.flexibag.isSeparated ? 50 : 120,
+				cell: (cell) => (
+					<div className="p-2">{`${
+						container.flexibag.isSeparated
+							? `#${cell.row.index + 1}`
+							: "All Container"
+					}`}</div>
+				),
 			}),
 			columnHelper.accessor("grossWeight", {
 				header: "Gross Weight",
@@ -102,6 +108,13 @@ export const FlexibagCargoInput = ({
 						required
 						suffixText="KGS"
 						value={cell.getValue().toString()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
 					/>
 				),
 			}),
@@ -114,6 +127,13 @@ export const FlexibagCargoInput = ({
 						className="p-2"
 						required
 						value={cell.getValue().toString()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
 					/>
 				),
 			}),
@@ -126,6 +146,13 @@ export const FlexibagCargoInput = ({
 						className="p-2"
 						required
 						value={cell.getValue().toString()}
+						handleValueChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
 					/>
 				),
 			}),
@@ -142,6 +169,13 @@ export const FlexibagCargoInput = ({
 								required
 								suffixText="L"
 								value={cell.getValue().toString()}
+								handleValueChange={(value) => {
+									cell.table.options.meta?.updateData(
+										cell.row.index,
+										cell.column.id,
+										value,
+									);
+								}}
 							/>
 						),
 					}),
@@ -155,6 +189,13 @@ export const FlexibagCargoInput = ({
 								required
 								suffixText="L"
 								value={cell.getValue().toString()}
+								handleValueChange={(value) => {
+									cell.table.options.meta?.updateData(
+										cell.row.index,
+										cell.column.id,
+										value,
+									);
+								}}
 							/>
 						),
 					}),
@@ -168,6 +209,13 @@ export const FlexibagCargoInput = ({
 								required
 								suffixText="%"
 								value={cell.getValue().toString()}
+								handleValueChange={(value) => {
+									cell.table.options.meta?.updateData(
+										cell.row.index,
+										cell.column.id,
+										value,
+									);
+								}}
 							/>
 						),
 					}),
@@ -177,7 +225,7 @@ export const FlexibagCargoInput = ({
 				header: "Valve Specification",
 				columns: [
 					columnHelper.accessor("valveSpecification.type", {
-						header: "type",
+						header: "Type",
 						cell: (cell) => (
 							<GridSelectionComponent
 								options={[
@@ -186,13 +234,31 @@ export const FlexibagCargoInput = ({
 									"3″ Ball Valve",
 									"3″ Butterfly Valve",
 								]}
+								value={cell.getValue()?.toString() ?? ""}
+								onSelectionChange={(value) => {
+									cell.table.options.meta?.updateData(
+										cell.row.index,
+										cell.column.id,
+										value,
+									);
+								}}
 							/>
 						),
 					}),
 					columnHelper.accessor("valveSpecification.location", {
 						header: "Location",
 						cell: (cell) => (
-							<GridSelectionComponent options={["Top", "Bottom"]} />
+							<GridSelectionComponent
+								options={["Top", "Bottom"]}
+								value={cell.getValue()?.toString() ?? ""}
+								onSelectionChange={(value) => {
+									cell.table.options.meta?.updateData(
+										cell.row.index,
+										cell.column.id,
+										value,
+									);
+								}}
+							/>
 						),
 					}),
 				],
@@ -200,10 +266,22 @@ export const FlexibagCargoInput = ({
 			columnHelper.accessor("msds", {
 				header: "MSDS",
 				size: 80,
-				cell: (cell) => <GridSelectionComponent options={["Y", "N"]} />,
+				cell: (cell) => (
+					<GridSelectionComponent
+						options={["Y", "N"]}
+						value={cell.getValue()?.toString() ?? ""}
+						onSelectionChange={(value) => {
+							cell.table.options.meta?.updateData(
+								cell.row.index,
+								cell.column.id,
+								value,
+							);
+						}}
+					/>
+				),
 			}),
 		];
-	}, []);
+	}, [container.flexibag.isSeparated]);
 
 	//TODO: DGCargo Input 참조해서 updater 추가
 	const table = useReactTable<FlexibagContainerDataType>({
@@ -211,6 +289,65 @@ export const FlexibagCargoInput = ({
 		columns: columnDefs,
 		autoResetPageIndex,
 		getCoreRowModel: getCoreRowModel<FlexibagContainerDataType>(),
+		meta: {
+			updateData: (rowIndex, columnId, value) => {
+				resetAutoRestPageIndex();
+				console.log(rowIndex, columnId, value);
+
+				if (columnId.includes("_")) {
+					// group column
+					const [columnId1, columnId2] = columnId.split("_");
+					setContainerInformation((prev) => ({
+						...prev,
+						[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+							c.uuid === container.uuid
+								? {
+										...c,
+										flexibag: {
+											...(c as DryContainerInformationType).flexibag,
+											data: (
+												c as DryContainerInformationType
+											).flexibag.data.map((d, i) =>
+												i === rowIndex
+													? {
+															...d,
+															[columnId1]: {
+																...(d[
+																	columnId1 as keyof FlexibagContainerDataType
+																] as object),
+																[columnId2]: value,
+															},
+														}
+													: d,
+											),
+										},
+									}
+								: c,
+						),
+					}));
+				} else {
+					setContainerInformation((prev) => ({
+						...prev,
+						[typeKey]: prev[typeKey as keyof typeof prev].map((c) =>
+							c.uuid === container.uuid
+								? {
+										...c,
+										flexibag: {
+											...(c as DryContainerInformationType).flexibag,
+											data: (
+												c as DryContainerInformationType
+											).flexibag.data.map((d, i) =>
+												i === rowIndex ? { ...d, [columnId]: value } : d,
+											),
+										},
+									}
+								: c,
+						),
+					}));
+				}
+			},
+			updateRow: (rowIndex, data) => {},
+		},
 	});
 
 	return (
@@ -422,7 +559,7 @@ export const FlexibagCargoTrigger = ({
 														manufacturer: "",
 														valveSpecification: {
 															location: "",
-															size: "",
+															type: "",
 														},
 														msds: false,
 													},
