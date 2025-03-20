@@ -25,6 +25,7 @@ import ActionButtons from "./table-action-buttons";
 import { isEqual, set } from "lodash";
 import { AnimatePresence, motion } from "framer-motion";
 import { BLIssueStatusChip, CNStatusChip, SIStateChip } from "./si-state-chip";
+import CNHistoryDialog from "./cn-history-popup";
 
 function createDummySITableData(count = 10) {
 	return Array.from({ length: count }, (_, i) => {
@@ -85,6 +86,7 @@ export default function SITable() {
 	);
 	const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
 		useVesselScheduleDialog();
+	const [isCnHistoryDialogOpen, setIsCnHistoryDialogOpen] = useState(false);
 
 	useEffect(() => {
 		if (stateFilter.length > 0) {
@@ -235,6 +237,7 @@ export default function SITable() {
 							onClick={(e) => {
 								e.stopPropagation();
 								e.preventDefault();
+								setIsCnHistoryDialogOpen(true);
 							}}
 						>
 							<MdIcon>
@@ -402,6 +405,10 @@ export default function SITable() {
 
 	return (
 		<div>
+			<CNHistoryDialog
+				open={isCnHistoryDialogOpen}
+				handleOpen={setIsCnHistoryDialogOpen}
+			/>
 			{renderDialog()}
 			<BasicTable
 				ActionComponent={(table) => {
