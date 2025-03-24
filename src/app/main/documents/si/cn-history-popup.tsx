@@ -6,7 +6,7 @@ import {
 	createColumnHelper,
 	flexRender,
 	getCoreRowModel,
-	Table,
+	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
 import tableStyle from "@/app/styles/table.module.css";
