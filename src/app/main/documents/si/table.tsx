@@ -18,39 +18,59 @@ import {
 } from "@/app/util/md3";
 import { type SISearchTableProps, SIState } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { Download } from "@mui/icons-material";
+import { Download, History } from "@mui/icons-material";
 import { Row, createColumnHelper } from "@tanstack/react-table";
 
-import SIStateChip from "./si-state-chip";
 import ActionButtons from "./table-action-buttons";
 import { isEqual, set } from "lodash";
 import { AnimatePresence, motion } from "framer-motion";
+import { BLIssueStatusChip, CNStatusChip, SIStateChip } from "./si-state-chip";
+import CNHistoryDialog from "./cn-history-popup";
 
 function createDummySITableData(count = 10) {
-	return Array.from({ length: count }, (_, i) => ({
-		requestNumber: `R${faker.string.numeric(10)}`,
-		bookingNumber: faker.string.alphanumeric(12).toUpperCase(),
-		blState: faker.helpers.arrayElement(Object.values(SIState)),
-		blNumber: faker.string.alphanumeric(12).toUpperCase(),
-		requestBlType: faker.helpers.arrayElement([
-			"Original B/L",
-			"Sea Waybill",
-			"B/L Surrender",
-			"None",
-		]),
-		actualShipper: faker.person.fullName(),
-		SiCutOffTime: DateTime.local(),
-		requestUpdateDate: DateTime.local(),
-		vessel: createDummyVesselInformation(),
-		origin: faker.location.city(),
-		destination: faker.location.city(),
-		bookingVia: faker.helpers.arrayElement(["web", "edi", "general"]),
-		estimatedTimeofBerth: DateTime.local(),
-		estimatedTimeofDeparture: DateTime.local(),
-		estimatedTimeofArrival: DateTime.local(),
-		blType: faker.helpers.arrayElement(["", "FCL", "LCL"]),
-		remarks: faker.helpers.maybe(() => faker.lorem.sentence()),
-	}));
+	return Array.from({ length: count }, (_, i) => {
+		const blState = faker.helpers.arrayElement(Object.values(SIState));
+		const blIssueStatus =
+			blState === SIState.BLIssueClosed
+				? faker.helpers.arrayElement([
+						"B/L Issue Request",
+						"B/L Issue Confirm",
+						"B/L Issue Rejected",
+						"B/L Issue Pending",
+					])
+				: "";
+		const cnIssueStatus =
+			blState === SIState.BLIssueClosed
+				? faker.helpers.arrayElement(["Request", "Rejected", "Confirmed", ""])
+				: "";
+
+		return {
+			requestNumber: `R${faker.string.numeric(10)}`,
+			bookingNumber: faker.string.alphanumeric(12).toUpperCase(),
+			blState: blState,
+			blIssueStatus: blIssueStatus,
+			cnIssueStatus: cnIssueStatus,
+			blNumber: faker.string.alphanumeric(12).toUpperCase(),
+			requestBlType: faker.helpers.arrayElement([
+				"Original B/L",
+				"Sea Waybill",
+				"B/L Surrender",
+				"None",
+			]),
+			actualShipper: faker.person.fullName(),
+			SiCutOffTime: DateTime.local(),
+			requestUpdateDate: DateTime.local(),
+			vessel: createDummyVesselInformation(),
+			origin: faker.location.city(),
+			destination: faker.location.city(),
+			bookingVia: faker.helpers.arrayElement(["web", "edi", "general"]),
+			estimatedTimeofBerth: DateTime.local(),
+			estimatedTimeofDeparture: DateTime.local(),
+			estimatedTimeofArrival: DateTime.local(),
+			blType: faker.helpers.arrayElement(["", "FCL", "LCL"]),
+			remarks: faker.helpers.maybe(() => faker.lorem.sentence()),
+		};
+	});
 }
 
 export default function SITable() {
@@ -66,6 +86,7 @@ export default function SITable() {
 	);
 	const { renderDialog, setCurrentVessel, setIsVesselScheduleDialogOpen } =
 		useVesselScheduleDialog();
+	const [isCnHistoryDialogOpen, setIsCnHistoryDialogOpen] = useState(false);
 
 	useEffect(() => {
 		if (stateFilter.length > 0) {
@@ -92,7 +113,6 @@ export default function SITable() {
 									return !(
 										row.blState === SIState.Rejected ||
 										row.blState === SIState.Pending ||
-										row.blState === SIState.BLIssuePending ||
 										row.blState === SIState.BLIssueClosed
 									);
 								}).length
@@ -106,7 +126,6 @@ export default function SITable() {
 									return !(
 										row.blState === SIState.Rejected ||
 										row.blState === SIState.Pending ||
-										row.blState === SIState.BLIssuePending ||
 										row.blState === SIState.BLIssueClosed
 									);
 								}).length
@@ -123,7 +142,6 @@ export default function SITable() {
 									return !(
 										row.blState === SIState.Rejected ||
 										row.blState === SIState.Pending ||
-										row.blState === SIState.BLIssuePending ||
 										row.blState === SIState.BLIssueClosed
 									);
 								}),
@@ -187,7 +205,7 @@ export default function SITable() {
 		}),
 		columnHelper.accessor("blState", {
 			id: "blState",
-			header: "B/L Status",
+			header: "Status",
 			cell: (info) =>
 				info.getValue() === SIState.None ? (
 					<></>
@@ -199,6 +217,38 @@ export default function SITable() {
 			filterFn: (row, id, filterValue) => {
 				return filterValue.includes(row.getValue(id));
 			},
+		}),
+		columnHelper.accessor("blIssueStatus", {
+			id: "blIssueStatus",
+			header: "B/L Issue Status",
+			cell: (info) => <BLIssueStatusChip status={info.getValue()} />,
+			size: 200,
+			minSize: 200,
+		}),
+		columnHelper.accessor("cnIssueStatus", {
+			id: "cnIssueStatus",
+			header: "C/N Status",
+			cell: (info) => (
+				<div className="flex items-start gap-2">
+					<CNStatusChip status={info.getValue()} />
+					{info.getValue() === "Confirmed" && (
+						<MdIconButton
+							className="-translate-y-2"
+							onClick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+								setIsCnHistoryDialogOpen(true);
+							}}
+						>
+							<MdIcon>
+								<History />
+							</MdIcon>
+						</MdIconButton>
+					)}
+				</div>
+			),
+			size: 150,
+			minSize: 150,
 		}),
 		columnHelper.accessor("blNumber", {
 			header: "B/L No.",
@@ -212,6 +262,11 @@ export default function SITable() {
 		columnHelper.accessor("requestBlType", {
 			id: "requestBlType",
 			header: "Request B/L Type",
+			cell: (info) => (
+				<MdTypography variant="body" size="medium">
+					{info.getValue()}
+				</MdTypography>
+			),
 		}),
 		columnHelper.accessor("actualShipper", {
 			header: "Actual Shipper",
@@ -350,6 +405,10 @@ export default function SITable() {
 
 	return (
 		<div>
+			<CNHistoryDialog
+				open={isCnHistoryDialogOpen}
+				handleOpen={setIsCnHistoryDialogOpen}
+			/>
 			{renderDialog()}
 			<BasicTable
 				ActionComponent={(table) => {
@@ -387,7 +446,7 @@ export default function SITable() {
 				columns={columns}
 				data={tableData}
 				controlColumns={["select"]}
-				pinningColumns={["select", "requestNumber", "bookingNumber", "blState"]}
+				pinningColumns={["select", "requestNumber", "bookingNumber"]}
 				getSelectionRows={(rows, table) => {
 					// get last selected row
 
@@ -400,7 +459,6 @@ export default function SITable() {
 						if (
 							newSelectedRow.blState === SIState.Rejected ||
 							newSelectedRow.blState === SIState.Pending ||
-							newSelectedRow.blState === SIState.BLIssuePending ||
 							newSelectedRow.blState === SIState.BLIssueClosed
 						) {
 							setSelectedRows([newSelectedRow]);
@@ -416,7 +474,6 @@ export default function SITable() {
 								return !(
 									row.blState === SIState.Rejected ||
 									row.blState === SIState.Pending ||
-									row.blState === SIState.BLIssuePending ||
 									row.blState === SIState.BLIssueClosed
 								);
 							});
@@ -459,7 +516,6 @@ export default function SITable() {
 			if (
 				newRow.blState === SIState.Rejected ||
 				newRow.blState === SIState.Pending ||
-				newRow.blState === SIState.BLIssuePending ||
 				newRow.blState === SIState.BLIssueClosed
 			) {
 				setSelectedRows([newRow]);
@@ -468,7 +524,6 @@ export default function SITable() {
 					selectedRows.length > 0 &&
 					(selectedRows[0].blState === SIState.Rejected ||
 						selectedRows[0].blState === SIState.Pending ||
-						selectedRows[0].blState === SIState.BLIssuePending ||
 						selectedRows[0].blState === SIState.BLIssueClosed)
 				) {
 					setSelectedRows([newRow]);
