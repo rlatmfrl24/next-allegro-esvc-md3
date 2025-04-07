@@ -28,6 +28,7 @@ import type {
 	DryContainerInformationType,
 	FlexibagContainerDataType,
 } from "@/app/util/typeDef/booking";
+
 export const FlexibagCargoInput = ({
 	container,
 	type,
@@ -400,51 +401,6 @@ export const FlexibagCargoInput = ({
 
 const FlexiBagTable = (table: Table<FlexibagContainerDataType>) => {
 	return (
-		// <table className={specialCargoStyle.table}>
-		// 	<thead>
-		// 		{table.getHeaderGroups().map((headerGroup) => (
-		// 			<tr key={headerGroup.id}>
-		// 				{headerGroup.headers.map((header) => (
-		// 					<th
-		// 						key={header.id}
-		// 						style={{
-		// 							minWidth: header.column.columnDef.size,
-		// 							width: header.column.columnDef.size,
-		// 						}}
-		// 					>
-		// 						<div>
-		// 							<span>
-		// 								{header.isPlaceholder
-		// 									? null
-		// 									: flexRender(
-		// 											header.column.columnDef.header,
-		// 											header.getContext(),
-		// 										)}
-		// 							</span>
-		// 							{header.column.columnDef.header === "Edit" ? null : (
-		// 								<DividerComponent
-		// 									orientation="vertical"
-		// 									className="h-5 translate-x-0.5"
-		// 								/>
-		// 							)}
-		// 						</div>
-		// 					</th>
-		// 				))}
-		// 			</tr>
-		// 		))}
-		// 	</thead>
-		// 	<tbody>
-		// 		{table.getRowModel().rows.map((row) => (
-		// 			<tr key={row.id}>
-		// 				{row.getVisibleCells().map((cell) => (
-		// 					<td key={cell.id}>
-		// 						{flexRender(cell.column.columnDef.cell, cell.getContext())}
-		// 					</td>
-		// 				))}
-		// 			</tr>
-		// 		))}
-		// 	</tbody>
-		// </table>
 		<table className={specialCargoStyle.table}>
 			<thead>
 				{table.getHeaderGroups().map((headerGroup) => (

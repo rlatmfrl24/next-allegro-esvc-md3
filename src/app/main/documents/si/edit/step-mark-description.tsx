@@ -1,19 +1,20 @@
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { renderInputTable } from "@/app/components/table/simple-table";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
 import {
 	SIEditMarkDescriptionState,
 	SIEditStepState,
 } from "@/app/store/si.store";
-import {
-	MdChipSet,
-	MdFilledButton,
-	MdInputChip,
-	MdOutlinedButton,
-	MdOutlinedTextField,
-} from "@/app/util/md3";
+import { MdChipSet, MdFilledButton, MdInputChip } from "@/app/util/md3";
+import { ExportInformationProps } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { BackupOutlined, Upload } from "@mui/icons-material";
+import { BackupOutlined } from "@mui/icons-material";
+import {
+	createColumnHelper,
+	getCoreRowModel,
+	useReactTable,
+} from "@tanstack/react-table";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRecoilState } from "recoil";
@@ -24,25 +25,6 @@ export default function StepMarkDescription() {
 	);
 	// const setSIEditStep = useSetRecoilState(SIEditStepState);
 	const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
-	const fileRef = useRef<HTMLInputElement>(null);
-	const handleUploadClick = () => {
-		fileRef.current?.click();
-	};
-
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		// change attachment to selected single file
-		const file = e.target.files?.[0];
-
-		if (file) {
-			setMarkDescriptionStore((prev) => {
-				return {
-					...prev,
-					descriptionFile: file,
-				};
-			});
-		}
-		e.currentTarget.value = "";
-	};
 
 	useEffect(() => {
 		setSIEditStep((prev) => ({
@@ -149,6 +131,7 @@ export default function StepMarkDescription() {
 				</div>
 				<div>
 					<DetailTitle title="Export Information" />
+					<ExportInformationTable />
 				</div>
 				<div>
 					<DetailTitle title="Attachment" />
@@ -180,6 +163,61 @@ export default function StepMarkDescription() {
 		</div>
 	);
 }
+
+const ExportInformationTable = () => {
+	const columnHelper = createColumnHelper<ExportInformationProps>();
+
+	const columns = [
+		columnHelper.display({
+			id: "index",
+			header: "No.",
+			cell: (info) => info.row.index + 1,
+		}),
+		columnHelper.accessor("licenseNo", {
+			id: "licenseNo",
+			header: "License No.",
+			cell: (info) => (
+				<NAOutlinedTextField
+					value={info.getValue()}
+					handleValueChange={(value) => {
+						info.row.original.licenseNo = value;
+					}}
+				/>
+			),
+		}),
+		columnHelper.accessor("otherReferenceNo", {
+			id: "otherReferenceNo",
+			header: "Other Reference No.",
+			cell: (info) => (
+				<NAOutlinedTextField
+					value={info.getValue()}
+					handleValueChange={(value) => {
+						info.row.original.otherReferenceNo = value;
+					}}
+				/>
+			),
+		}),
+	];
+
+	const exportInformationTable = useReactTable({
+		data: [],
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		meta: {
+			updateData: (rowIndex: number, columnId: string, value: unknown) => {
+				const row = exportInformationTable.getRowModel().rows[rowIndex];
+				const column = row.getVisibleCells().find((c) => c.id === columnId);
+				if (column) {
+					// @ts-ignore
+					column.setValue(value);
+				}
+			},
+			updateRow: (rowIndex: number, value: unknown) => {},
+		},
+	});
+
+	return renderInputTable(exportInformationTable);
+};
 
 const DndFileUploadPlaceholder = ({
 	className,

@@ -1,19 +1,15 @@
 import Portal from "@/app/components/portal";
-import { useSimpleTable } from "@/app/components/table/simple-table";
-import { DetailTitle, SubTitle } from "@/app/components/title-components";
+import { renderDataTable } from "@/app/components/table/simple-table";
+import { DetailTitle } from "@/app/components/title-components";
 import { MdDialog, MdOutlinedButton } from "@/app/util/md3";
 import {
 	createColumnHelper,
-	flexRender,
 	getCoreRowModel,
-	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
-import tableStyle from "@/app/styles/table.module.css";
 import { faker } from "@faker-js/faker";
 import { MdTypography } from "@/app/components/typography";
 import { useMemo } from "react";
-import { DividerComponent } from "@/app/components/divider";
 
 type GeneralTableType = {
 	correctionGroup: string;
@@ -41,56 +37,6 @@ type CustomerInformationTableType = {
 	previous: string;
 	current: string;
 };
-
-function renderTable<TData>(table: Table<TData>) {
-	return (
-		<table className={`${tableStyle.table} w-full mt-4 mb-6`}>
-			<thead>
-				{table.getHeaderGroups().map((headerGroup) => (
-					<tr key={headerGroup.id}>
-						{headerGroup.headers.map((header) => (
-							<th key={header.id} style={{ width: header.getSize() }}>
-								<div className="flex items-center">
-									<MdTypography
-										variant="body"
-										size="medium"
-										className="p-2 font-semibold flex-1"
-									>
-										{flexRender(
-											header.column.columnDef.header,
-											header.getContext(),
-										)}
-									</MdTypography>
-									{
-										// detect is the last column
-										headerGroup.headers[headerGroup.headers.length - 1] ===
-										header ? null : (
-											<DividerComponent
-												orientation="vertical"
-												className="h-8"
-											/>
-										)
-									}
-								</div>
-							</th>
-						))}
-					</tr>
-				))}
-			</thead>
-			<tbody>
-				{table.getRowModel().rows.map((row) => (
-					<tr key={row.id}>
-						{row.getVisibleCells().map((cell) => (
-							<td key={cell.id} className="p-2 bg-white">
-								{flexRender(cell.column.columnDef.cell, cell.getContext())}
-							</td>
-						))}
-					</tr>
-				))}
-			</tbody>
-		</table>
-	);
-}
 
 const GeneralTable = () => {
 	const columnHelper = createColumnHelper<GeneralTableType>();
@@ -164,7 +110,7 @@ const GeneralTable = () => {
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return renderTable(table);
+	return renderDataTable(table);
 };
 
 const FreightChargeTable = () => {
@@ -305,7 +251,7 @@ const FreightChargeTable = () => {
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return renderTable(table);
+	return renderDataTable(table);
 };
 
 const CustomerInformationTable = () => {
@@ -356,7 +302,7 @@ const CustomerInformationTable = () => {
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return renderTable(table);
+	return renderDataTable(table);
 };
 
 export default function CNHistoryDialog({
