@@ -1,3 +1,4 @@
+import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
 import { renderInputTable } from "@/app/components/table/simple-table";
 import { DetailTitle } from "@/app/components/title-components";
@@ -7,7 +8,7 @@ import {
 	SIEditStepState,
 } from "@/app/store/si.store";
 import { MdChipSet, MdFilledButton, MdInputChip } from "@/app/util/md3";
-import { ExportInformationProps } from "@/app/util/typeDef/si";
+import type { ExportInformationProps } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
 import { BackupOutlined } from "@mui/icons-material";
 import {
@@ -195,6 +196,72 @@ const ExportInformationTable = () => {
 						info.row.original.otherReferenceNo = value;
 					}}
 				/>
+			),
+		}),
+		columnHelper.accessor("package", {
+			id: "package",
+			header: "Package Qty/Type",
+			cell: (info) => (
+				<div className="flex gap-2">
+					<NAOutlinedNumberField
+						value={info.getValue().quantity.toString()}
+						handleValueChange={(value) => {
+							info.row.original.package.quantity = value as number;
+						}}
+					/>
+					<NAOutlinedTextField value={info.getValue().type} />
+				</div>
+			),
+		}),
+		columnHelper.accessor("weight", {
+			id: "weight",
+			header: "Weight",
+			cell: (info) => (
+				<NAOutlinedNumberField
+					value={info.getValue().toString()}
+					handleValueChange={(value) => {
+						info.row.original.weight = value as number;
+					}}
+				/>
+			),
+		}),
+		columnHelper.accessor("division", {
+			id: "division",
+			header: "Division",
+			cell: (info) => (
+				<NAOutlinedTextField
+					value={info.getValue()}
+					handleValueChange={(value) => {
+						info.row.original.division = value;
+					}}
+				/>
+			),
+		}),
+		columnHelper.accessor("samePacking", {
+			id: "samePacking",
+			header: "Same Packing",
+			cell: (info) => (
+				<NAOutlinedTextField
+					value={info.getValue()}
+					handleValueChange={(value) => {
+						info.row.original.samePacking = value;
+					}}
+				/>
+			),
+		}),
+		columnHelper.accessor("samePackage", {
+			id: "samePackage",
+			header: "Same Package",
+			cell: (info) => (
+				<div className="flex gap-2">
+					<NAOutlinedNumberField
+						value={info.getValue().number.toString()}
+						handleValueChange={(value) => {
+							info.row.original.samePackage.number = value as number;
+						}}
+					/>
+					<NAOutlinedTextField value={info.getValue().name} />
+				</div>
 			),
 		}),
 	];

@@ -1,7 +1,8 @@
 import {
+	type ColumnDef,
+	type Table,
 	flexRender,
 	getCoreRowModel,
-	Table,
 	useReactTable,
 } from "@tanstack/react-table";
 import styles from "@/app/styles/table.module.css";
@@ -19,9 +20,9 @@ export const useSimpleTable = ({
 	getSelectionRows,
 	allowMultiRowSelection = false,
 }: {
-	data: any[];
-	columns: any[];
-	getSelectionRows?: (Rows: any[]) => void;
+	data: Array<Record<string, unknown>>;
+	columns: ColumnDef<Record<string, unknown>, unknown>[];
+	getSelectionRows?: (Rows: Array<Record<string, unknown>>) => void;
 	allowMultiRowSelection?: boolean;
 }) => {
 	const [selectedRows, setSelectedRows] = useState({});
@@ -38,7 +39,7 @@ export const useSimpleTable = ({
 
 	useEffect(() => {
 		getSelectionRows?.(
-			Object.keys(selectedRows).map((key) => data[parseInt(key)]),
+			Object.keys(selectedRows).map((key) => data[Number.parseInt(key)]),
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedRows]);
@@ -84,6 +85,13 @@ export const useSimpleTable = ({
 								onClick={() => {
 									row.toggleSelected();
 								}}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" || e.key === " ") {
+										e.preventDefault();
+										row.toggleSelected();
+									}
+								}}
+								tabIndex={0}
 								className={`cursor-pointer group ${
 									row.getIsSelected() ? "bg-outline-variant" : "bg-surface"
 								}`}
@@ -187,8 +195,8 @@ export function renderInputTable<TData>(table: Table<TData>) {
 								>
 									<div
 										className={`flex h-full items-center border-r border-r-outlineVariant ${
-											header.column.columnDef.header === "MSDS"
-												? "border-r-0"
+											header.column.getIsLastColumn()
+												? "border-r-transparent"
 												: ""
 										}`}
 									>
