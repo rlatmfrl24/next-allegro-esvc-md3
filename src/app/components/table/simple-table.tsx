@@ -169,6 +169,8 @@ export function renderDataTable<TData>(table: Table<TData>) {
 }
 
 export function renderInputTable<TData>(table: Table<TData>) {
+	console.log("renderInputTable", table.getRowModel().rows);
+
 	return (
 		<table className={specialCargoStyle.table} style={{ width: "100%" }}>
 			<thead>

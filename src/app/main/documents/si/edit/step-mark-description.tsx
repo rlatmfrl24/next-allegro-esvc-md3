@@ -1,22 +1,37 @@
+import { DividerComponent } from "@/app/components/divider";
+import NAOutlinedAutoComplete from "@/app/components/na-autocomplete";
 import { NAOutlinedNumberField } from "@/app/components/na-number-filed";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { GridSelectComponent } from "@/app/components/table/grid-select";
 import { renderInputTable } from "@/app/components/table/simple-table";
 import { DetailTitle } from "@/app/components/title-components";
 import { MdTypography } from "@/app/components/typography";
+import { useSkipper } from "@/app/main/booking/status/components/dialog/table/util";
 import {
 	SIEditMarkDescriptionState,
 	SIEditStepState,
 } from "@/app/store/si.store";
-import { MdChipSet, MdFilledButton, MdInputChip } from "@/app/util/md3";
+import {
+	MdChipSet,
+	MdFilledButton,
+	MdIcon,
+	MdIconButton,
+	MdInputChip,
+} from "@/app/util/md3";
 import type { ExportInformationProps } from "@/app/util/typeDef/si";
 import { faker } from "@faker-js/faker";
-import { BackupOutlined } from "@mui/icons-material";
+import {
+	AddBox,
+	AddBoxOutlined,
+	BackupOutlined,
+	DeleteOutline,
+} from "@mui/icons-material";
 import {
 	createColumnHelper,
 	getCoreRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRecoilState } from "recoil";
 
@@ -24,8 +39,372 @@ export default function StepMarkDescription() {
 	const [markDescriptionStore, setMarkDescriptionStore] = useRecoilState(
 		SIEditMarkDescriptionState,
 	);
-	// const setSIEditStep = useSetRecoilState(SIEditStepState);
 	const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
+	const columnHelper = createColumnHelper<ExportInformationProps>();
+	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	const columns = useMemo(() => {
+		return [
+			columnHelper.display({
+				id: "index",
+				header: "No.",
+				size: 50,
+				cell: (info) => (
+					<MdTypography variant="body" size="medium" className="p-2">
+						{info.row.index + 1}
+					</MdTypography>
+				),
+			}),
+			columnHelper.accessor("licenseNo", {
+				id: "licenseNo",
+				header: "License No.",
+				cell: (info) => (
+					<NAOutlinedTextField
+						required
+						sizeVariant="tiny"
+						className="p-2"
+						value={info.getValue()}
+						handleValueChange={(value) => {
+							info.table.options.meta?.updateData(
+								info.row.index,
+								info.column.id,
+								value,
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.accessor("otherReferenceNo", {
+				id: "otherReferenceNo",
+				header: "Other Reference No.",
+				cell: (info) => (
+					<NAOutlinedTextField
+						sizeVariant="tiny"
+						className="p-2"
+						value={info.getValue()}
+						handleValueChange={(value) => {
+							info.table.options.meta?.updateData(
+								info.row.index,
+								info.column.id,
+								value,
+							);
+						}}
+					/>
+				),
+			}),
+			columnHelper.accessor("package", {
+				id: "package",
+				header: "Package Qty/Type",
+				cell: (info) => (
+					<div className="flex">
+						<NAOutlinedNumberField
+							sizeVariant="tiny"
+							className="p-2 w-32"
+							required
+							value={info.getValue().quantity?.toString() || ""}
+							handleValueChange={(value) => {
+								setMarkDescriptionStore((prev) => ({
+									...prev,
+									exportInformation: prev.exportInformation.map(
+										(row, index) => {
+											if (index === info.row.index) {
+												return {
+													...row,
+													package: {
+														...row.package,
+														quantity: value || 0,
+													},
+												};
+											}
+											return row;
+										},
+									),
+								}));
+							}}
+						/>
+						<DividerComponent orientation="vertical" />
+						<NAOutlinedTextField
+							sizeVariant="tiny"
+							className="p-2"
+							value={info.getValue().type}
+							handleValueChange={(value) => {
+								setMarkDescriptionStore((prev) => ({
+									...prev,
+									exportInformation: prev.exportInformation.map(
+										(row, index) => {
+											if (index === info.row.index) {
+												return {
+													...row,
+													package: {
+														...row.package,
+														type: value,
+													},
+												};
+											}
+											return row;
+										},
+									),
+								}));
+							}}
+						/>
+					</div>
+				),
+			}),
+			columnHelper.accessor("weight", {
+				id: "weight",
+				header: "Weight",
+				size: 100,
+				cell: (info) => (
+					<div className="flex items-center">
+						<NAOutlinedNumberField
+							sizeVariant="tiny"
+							className="p-2"
+							required
+							value={info.getValue().toString()}
+							handleValueChange={(value) => {
+								setMarkDescriptionStore((prev) => ({
+									...prev,
+									exportInformation: prev.exportInformation.map(
+										(row, index) => {
+											if (index === info.row.index) {
+												return {
+													...row,
+													weight: value || 0,
+												};
+											}
+											return row;
+										},
+									),
+								}));
+							}}
+						/>
+						<GridSelectComponent
+							options={["KGS", "LBS"]}
+							onChange={(value) => {
+								setMarkDescriptionStore((prev) => ({
+									...prev,
+									exportInformation: prev.exportInformation.map(
+										(row, index) => {
+											if (index === info.row.index) {
+												return {
+													...row,
+													weightUnit: value,
+												};
+											}
+											return row;
+										},
+									),
+								}));
+							}}
+							initialSelection={
+								markDescriptionStore.exportInformation
+									? markDescriptionStore.exportInformation[info.row.index]
+											?.weightUnit
+									: "KGS"
+							}
+						/>
+					</div>
+				),
+			}),
+			columnHelper.accessor("division", {
+				id: "division",
+				header: "Division",
+				size: 50,
+				cell: (info) => (
+					<GridSelectComponent
+						options={["1", "2", "3", "4", "5"]}
+						onChange={(value) => {
+							info.table.options.meta?.updateData(
+								info.row.index,
+								info.column.id,
+								value,
+							);
+						}}
+						initialSelection={
+							markDescriptionStore.exportInformation
+								? markDescriptionStore.exportInformation[info.row.index]
+										?.division
+								: ""
+						}
+					/>
+				),
+			}),
+			columnHelper.accessor("samePacking", {
+				id: "samePacking",
+				header: "Same Packing",
+				size: 80,
+				cell: (info) => (
+					<GridSelectComponent
+						options={[
+							...Array.from({ length: 26 }, (_, i) =>
+								String.fromCharCode(i + 65),
+							),
+						]}
+						onChange={(value) => {
+							info.table.options.meta?.updateData(
+								info.row.index,
+								info.column.id,
+								value,
+							);
+						}}
+						initialSelection={
+							markDescriptionStore.exportInformation
+								? markDescriptionStore.exportInformation[info.row.index]
+										?.samePacking
+								: ""
+						}
+					/>
+				),
+			}),
+			columnHelper.accessor("samePackage", {
+				id: "samePackage",
+				header: "Same Package",
+				cell: (info) => (
+					<div className="flex">
+						<NAOutlinedNumberField
+							sizeVariant="tiny"
+							className="p-2 w-32"
+							value={info.getValue().number?.toString() || ""}
+							handleValueChange={(value) => {
+								setMarkDescriptionStore((prev) => ({
+									...prev,
+									exportInformation: prev.exportInformation.map(
+										(row, index) => {
+											if (index === info.row.index) {
+												return {
+													...row,
+													samePackage: {
+														...row.samePackage,
+														number: value || 0,
+													},
+												};
+											}
+											return row;
+										},
+									),
+								}));
+							}}
+						/>
+						<DividerComponent orientation="vertical" />
+						<NAOutlinedTextField
+							sizeVariant="tiny"
+							className="p-2"
+							value={info.getValue().name || ""}
+							handleValueChange={(value) => {
+								setMarkDescriptionStore((prev) => ({
+									...prev,
+									exportInformation: prev.exportInformation.map(
+										(row, index) => {
+											if (index === info.row.index) {
+												return {
+													...row,
+													samePackage: {
+														...row.samePackage,
+														name: value,
+													},
+												};
+											}
+											return row;
+										},
+									),
+								}));
+							}}
+						/>
+					</div>
+				),
+			}),
+			columnHelper.display({
+				id: "action",
+				header: "Edit",
+				size: 50,
+				cell: (info) => (
+					<div className="flex items-center justify-center">
+						{info.row.index === 0 ? (
+							<MdIconButton
+								onClick={() => {
+									setMarkDescriptionStore((prev) => ({
+										...prev,
+										exportInformation: [
+											...prev.exportInformation,
+											{
+												licenseNo: "",
+												otherReferenceNo: "",
+												package: {
+													quantity: 0,
+													type: "",
+												},
+												weight: 0,
+												weightUnit: "KGS",
+												division: "",
+												samePacking: "",
+												samePackage: {
+													number: 0,
+													name: "",
+												},
+											},
+										],
+									}));
+								}}
+							>
+								<MdIcon>
+									<AddBoxOutlined />
+								</MdIcon>
+							</MdIconButton>
+						) : (
+							<MdIconButton
+								onClick={() => {
+									setMarkDescriptionStore((prev) => ({
+										...prev,
+										exportInformation: prev.exportInformation.filter(
+											(_, index) => index !== info.row.index,
+										),
+									}));
+								}}
+							>
+								<MdIcon>
+									<DeleteOutline />
+								</MdIcon>
+							</MdIconButton>
+						)}
+					</div>
+				),
+			}),
+		];
+	}, []);
+
+	useEffect(() => {
+		if (
+			markDescriptionStore.exportInformation === undefined ||
+			markDescriptionStore.exportInformation.length === 0
+		) {
+			setMarkDescriptionStore((prev) => ({
+				...prev,
+				exportInformation: [
+					{
+						licenseNo: "",
+						otherReferenceNo: "",
+						package: {
+							quantity: 0,
+							type: "",
+						},
+						weight: 0,
+						weightUnit: "KGS",
+						division: "",
+						samePacking: "",
+						samePackage: {
+							number: 0,
+							name: "",
+						},
+					},
+				],
+			}));
+		}
+	}, [
+		markDescriptionStore.exportInformation,
+		markDescriptionStore.exportInformation?.length,
+		setMarkDescriptionStore,
+	]);
 
 	useEffect(() => {
 		setSIEditStep((prev) => ({
@@ -51,6 +430,31 @@ export default function StepMarkDescription() {
 			},
 		}));
 	}, [setSIEditStep]);
+
+	const exportInformationTable = useReactTable({
+		data: markDescriptionStore.exportInformation,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		autoResetPageIndex,
+		meta: {
+			updateData: (rowIndex: number, columnId: string, value: unknown) => {
+				resetAutoRestPageIndex();
+				setMarkDescriptionStore((prev) => ({
+					...prev,
+					exportInformation: prev.exportInformation.map((row, index) => {
+						if (index === rowIndex) {
+							return {
+								...row,
+								[columnId]: value,
+							};
+						}
+						return row;
+					}),
+				}));
+			},
+			updateRow: (rowIndex: number, value: unknown) => {},
+		},
+	});
 
 	return (
 		<div className="w-full flex flex-col">
@@ -132,7 +536,9 @@ export default function StepMarkDescription() {
 				</div>
 				<div>
 					<DetailTitle title="Export Information" className="mb-4" />
-					<ExportInformationTable />
+					{markDescriptionStore.exportInformation
+						? renderInputTable(exportInformationTable)
+						: null}
 				</div>
 				<div>
 					<DetailTitle title="Attachment" className="mb-4" />
@@ -164,127 +570,6 @@ export default function StepMarkDescription() {
 		</div>
 	);
 }
-
-const ExportInformationTable = () => {
-	const columnHelper = createColumnHelper<ExportInformationProps>();
-
-	const columns = [
-		columnHelper.display({
-			id: "index",
-			header: "No.",
-			cell: (info) => info.row.index + 1,
-		}),
-		columnHelper.accessor("licenseNo", {
-			id: "licenseNo",
-			header: "License No.",
-			cell: (info) => (
-				<NAOutlinedTextField
-					value={info.getValue()}
-					handleValueChange={(value) => {
-						info.row.original.licenseNo = value;
-					}}
-				/>
-			),
-		}),
-		columnHelper.accessor("otherReferenceNo", {
-			id: "otherReferenceNo",
-			header: "Other Reference No.",
-			cell: (info) => (
-				<NAOutlinedTextField
-					value={info.getValue()}
-					handleValueChange={(value) => {
-						info.row.original.otherReferenceNo = value;
-					}}
-				/>
-			),
-		}),
-		columnHelper.accessor("package", {
-			id: "package",
-			header: "Package Qty/Type",
-			cell: (info) => (
-				<div className="flex gap-2">
-					<NAOutlinedNumberField
-						value={info.getValue().quantity.toString()}
-						handleValueChange={(value) => {
-							info.row.original.package.quantity = value as number;
-						}}
-					/>
-					<NAOutlinedTextField value={info.getValue().type} />
-				</div>
-			),
-		}),
-		columnHelper.accessor("weight", {
-			id: "weight",
-			header: "Weight",
-			cell: (info) => (
-				<NAOutlinedNumberField
-					value={info.getValue().toString()}
-					handleValueChange={(value) => {
-						info.row.original.weight = value as number;
-					}}
-				/>
-			),
-		}),
-		columnHelper.accessor("division", {
-			id: "division",
-			header: "Division",
-			cell: (info) => (
-				<NAOutlinedTextField
-					value={info.getValue()}
-					handleValueChange={(value) => {
-						info.row.original.division = value;
-					}}
-				/>
-			),
-		}),
-		columnHelper.accessor("samePacking", {
-			id: "samePacking",
-			header: "Same Packing",
-			cell: (info) => (
-				<NAOutlinedTextField
-					value={info.getValue()}
-					handleValueChange={(value) => {
-						info.row.original.samePacking = value;
-					}}
-				/>
-			),
-		}),
-		columnHelper.accessor("samePackage", {
-			id: "samePackage",
-			header: "Same Package",
-			cell: (info) => (
-				<div className="flex gap-2">
-					<NAOutlinedNumberField
-						value={info.getValue().number.toString()}
-						handleValueChange={(value) => {
-							info.row.original.samePackage.number = value as number;
-						}}
-					/>
-					<NAOutlinedTextField value={info.getValue().name} />
-				</div>
-			),
-		}),
-	];
-
-	const exportInformationTable = useReactTable({
-		data: [],
-		columns,
-		getCoreRowModel: getCoreRowModel(),
-		meta: {
-			updateData: (rowIndex: number, columnId: string, value: unknown) => {
-				const row = exportInformationTable.getRowModel().rows[rowIndex];
-				const column = row.getVisibleCells().find((c) => c.id === columnId);
-				if (column) {
-					// @ts-ignore
-					column.setValue(value);
-				}
-			},
-			updateRow: (rowIndex: number, value: unknown) => {},
-		},
-	});
-
-	return renderInputTable(exportInformationTable);
-};
 
 const DndFileUploadPlaceholder = ({
 	className,

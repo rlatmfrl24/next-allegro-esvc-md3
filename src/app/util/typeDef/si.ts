@@ -126,6 +126,7 @@ export type ExportInformationProps = {
 		quantity: number;
 	};
 	weight: number;
+	weightUnit: string;
 	division: string;
 	samePacking: string;
 	samePackage: {

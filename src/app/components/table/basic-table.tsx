@@ -1,7 +1,8 @@
 import { getCookie, setCookie } from "cookies-next";
-import React, {
-	Dispatch,
-	SetStateAction,
+import type React from "react";
+import {
+	type Dispatch,
+	type SetStateAction,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -15,7 +16,7 @@ import { MdFilledIconButton, MdOutlinedIconButton } from "@/app/util/md3";
 import {
 	closestCenter,
 	DndContext,
-	DragEndEvent,
+	type DragEndEvent,
 	KeyboardSensor,
 	MouseSensor,
 	TouchSensor,
@@ -30,17 +31,17 @@ import {
 } from "@dnd-kit/sortable";
 import { Check, MoveDown } from "@mui/icons-material";
 import {
-	Cell,
-	ColumnFiltersState,
+	type Cell,
+	type ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	PaginationState,
-	RowData,
-	SortingState,
-	Table,
+	type PaginationState,
+	type RowData,
+	type SortingState,
+	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
 
