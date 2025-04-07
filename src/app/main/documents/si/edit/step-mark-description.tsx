@@ -131,11 +131,11 @@ export default function StepMarkDescription() {
 					</div>
 				</div>
 				<div>
-					<DetailTitle title="Export Information" />
+					<DetailTitle title="Export Information" className="mb-4" />
 					<ExportInformationTable />
 				</div>
 				<div>
-					<DetailTitle title="Attachment" />
+					<DetailTitle title="Attachment" className="mb-4" />
 					<DndFileUploadPlaceholder
 						initialFiles={
 							markDescriptionStore.descriptionFile
