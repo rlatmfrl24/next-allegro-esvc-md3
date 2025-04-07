@@ -1,7 +1,21 @@
+import { DateTime } from "luxon";
+import { type CSSProperties, useMemo, useState } from "react";
+
+import { DividerComponent } from "@/app/components/divider";
 import Portal from "@/app/components/portal";
-import { useSimpleTable } from "@/app/components/table/simple-table";
-import { DetailTitle, SubTitle } from "@/app/components/title-components";
-import { MdDialog, MdOutlinedButton } from "@/app/util/md3";
+import { DetailTitle } from "@/app/components/title-components";
+import { MdTypography } from "@/app/components/typography";
+import tableStyle from "@/app/styles/table.module.css";
+import {
+	MdDialog,
+	MdIcon,
+	MdOutlinedButton,
+	MdOutlinedTextField,
+	MdSelectOption,
+} from "@/app/util/md3";
+import { faker } from "@faker-js/faker";
+import { Listbox } from "@headlessui/react";
+import { ArrowDropDown } from "@mui/icons-material";
 import {
 	createColumnHelper,
 	flexRender,
@@ -9,11 +23,6 @@ import {
 	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
-import tableStyle from "@/app/styles/table.module.css";
-import { faker } from "@faker-js/faker";
-import { MdTypography } from "@/app/components/typography";
-import { useMemo } from "react";
-import { DividerComponent } from "@/app/components/divider";
 
 type GeneralTableType = {
 	correctionGroup: string;
@@ -40,6 +49,14 @@ type CustomerInformationTableType = {
 	correctionItems: string;
 	previous: string;
 	current: string;
+};
+
+type CNDataType = {
+	cnNo: string;
+	createdAt: Date;
+	generalTableData: GeneralTableType[];
+	freightChargeTableData: FreightChargeTableType[];
+	customerInformationTableData: CustomerInformationTableType[];
 };
 
 function renderTable<TData>(table: Table<TData>) {
@@ -92,7 +109,65 @@ function renderTable<TData>(table: Table<TData>) {
 	);
 }
 
-const GeneralTable = () => {
+function makeDummyData(): CNDataType {
+	const generalTableData = Array.from({ length: 10 }).map(() => ({
+		correctionGroup: faker.helpers.arrayElement([
+			"Freight & Charge",
+			"Customer Information",
+		]),
+		correctionItem: faker.helpers.arrayElement([
+			"Charge Detail",
+			"Freight Detail",
+			"Customer Detail",
+			"Notify Name",
+			"Consignee Name",
+		]),
+		previous: `${faker.location.county()} ${faker.location.city()} ${faker.location.streetAddress()}`,
+		current: `${faker.location.county()} ${faker.location.city()} ${faker.location.streetAddress()}`,
+	}));
+
+	const freightChargeTableData = Array.from({ length: 10 }).map(() => ({
+		correctionItems: faker.helpers.arrayElement([
+			"Previous",
+			"Current",
+			"Difference",
+		]),
+		freight: faker.helpers.arrayElement(["OFT"]),
+		perType: faker.number.int({ min: 1, max: 10 }),
+		ratedAs: faker.number.int({ min: 1, max: 10 }),
+		currency: faker.finance.currencyCode(),
+		rate: Number.parseFloat(faker.finance.amount()),
+		amount: Number.parseFloat(faker.finance.amount()),
+		term: faker.helpers.arrayElement(["Prepaid", "Collect", "Third"]),
+		prepaid: Number.parseFloat(faker.finance.amount()),
+		collect: Number.parseFloat(faker.finance.amount()),
+		third: Number.parseFloat(faker.finance.amount()),
+	}));
+
+	const customerInformationTableData = Array.from({ length: 10 }).map(() => ({
+		correctionItems: faker.helpers.arrayElement([
+			"Previous",
+			"Current",
+			"Difference",
+		]),
+		previous: faker.lorem.paragraph(),
+		current: faker.lorem.paragraph(),
+	}));
+
+	return {
+		cnNo: `CN0000${faker.string.numeric(10)}`,
+		createdAt: faker.date.past(),
+		generalTableData,
+		freightChargeTableData,
+		customerInformationTableData,
+	};
+}
+
+const GeneralTable = ({
+	data,
+}: {
+	data: GeneralTableType[];
+}) => {
 	const columnHelper = createColumnHelper<GeneralTableType>();
 	const columns = [
 		columnHelper.display({
@@ -140,34 +215,16 @@ const GeneralTable = () => {
 		}),
 	];
 
-	const dummyData = useMemo(() => {
-		return Array.from({ length: 10 }).map(() => ({
-			correctionGroup: faker.helpers.arrayElement([
-				"Freight & Charge",
-				"Customer Information",
-			]),
-			correctionItem: faker.helpers.arrayElement([
-				"Charge Detail",
-				"Freight Detail",
-				"Customer Detail",
-				"Notify Name",
-				"Consignee Name",
-			]),
-			previous: `${faker.location.county()} ${faker.location.city()} ${faker.location.streetAddress()}`,
-			current: `${faker.location.county()} ${faker.location.city()} ${faker.location.streetAddress()}`,
-		}));
-	}, []);
-
 	const table = useReactTable<GeneralTableType>({
 		columns,
-		data: dummyData,
+		data,
 		getCoreRowModel: getCoreRowModel(),
 	});
 
 	return renderTable(table);
 };
 
-const FreightChargeTable = () => {
+const FreightChargeTable = ({ data }: { data: FreightChargeTableType[] }) => {
 	const columnHelper = createColumnHelper<FreightChargeTableType>();
 	const columns = [
 		columnHelper.display({
@@ -279,36 +336,20 @@ const FreightChargeTable = () => {
 		}),
 	];
 
-	const dummyData = useMemo(() => {
-		return Array.from({ length: 10 }).map(() => ({
-			correctionItems: faker.helpers.arrayElement([
-				"Previous",
-				"Current",
-				"Difference",
-			]),
-			freight: faker.helpers.arrayElement(["OFT"]),
-			perType: faker.number.int({ min: 1, max: 10 }),
-			ratedAs: faker.number.int({ min: 1, max: 10 }),
-			currency: faker.finance.currencyCode(),
-			rate: Number.parseFloat(faker.finance.amount()),
-			amount: Number.parseFloat(faker.finance.amount()),
-			term: faker.helpers.arrayElement(["Prepaid", "Collect", "Third"]),
-			prepaid: Number.parseFloat(faker.finance.amount()),
-			collect: Number.parseFloat(faker.finance.amount()),
-			third: Number.parseFloat(faker.finance.amount()),
-		}));
-	}, []);
-
 	const table = useReactTable<FreightChargeTableType>({
 		columns,
-		data: dummyData,
+		data,
 		getCoreRowModel: getCoreRowModel(),
 	});
 
 	return renderTable(table);
 };
 
-const CustomerInformationTable = () => {
+const CustomerInformationTable = ({
+	data,
+}: {
+	data: CustomerInformationTableType[];
+}) => {
 	const columnHelper = createColumnHelper<CustomerInformationTableType>();
 	const columns = [
 		columnHelper.accessor("correctionItems", {
@@ -338,21 +379,9 @@ const CustomerInformationTable = () => {
 		}),
 	];
 
-	const dummyData = useMemo(() => {
-		return Array.from({ length: 10 }).map(() => ({
-			correctionItems: faker.helpers.arrayElement([
-				"Previous",
-				"Current",
-				"Difference",
-			]),
-			previous: faker.lorem.paragraph(),
-			current: faker.lorem.paragraph(),
-		}));
-	}, []);
-
 	const table = useReactTable<CustomerInformationTableType>({
 		columns,
-		data: dummyData,
+		data,
 		getCoreRowModel: getCoreRowModel(),
 	});
 
@@ -366,6 +395,12 @@ export default function CNHistoryDialog({
 	open: boolean;
 	handleOpen: (open: boolean) => void;
 }) {
+	const dataList = useMemo(() => {
+		return Array.from({ length: 10 }).map(() => makeDummyData());
+	}, []);
+
+	const [selectedData, setSelectedData] = useState<CNDataType>(dataList[0]);
+
 	return (
 		<Portal selector="#portal">
 			<MdDialog
@@ -377,12 +412,21 @@ export default function CNHistoryDialog({
 			>
 				<div slot="headline">C/N History</div>
 				<div slot="content">
-					<DetailTitle title="General" />
-					<GeneralTable />
+					<CNSelector
+						value={selectedData}
+						options={dataList}
+						onChange={(data) => {
+							setSelectedData(data);
+						}}
+					/>
+					<DetailTitle title="General" className="mt-4" />
+					<GeneralTable data={selectedData.generalTableData} />
 					<DetailTitle title="Freight & Charge" />
-					<FreightChargeTable />
+					<FreightChargeTable data={selectedData.freightChargeTableData} />
 					<DetailTitle title="Customer Information" />
-					<CustomerInformationTable />
+					<CustomerInformationTable
+						data={selectedData.customerInformationTableData}
+					/>
 				</div>
 				<div slot="actions">
 					<MdOutlinedButton
@@ -397,3 +441,73 @@ export default function CNHistoryDialog({
 		</Portal>
 	);
 }
+
+const CNSelector = ({
+	value,
+	options,
+	onChange,
+}: {
+	value: CNDataType;
+	options: CNDataType[];
+	onChange: (data: CNDataType) => void;
+}) => {
+	return (
+		<Listbox
+			value={value}
+			onChange={(cnNo) => {
+				const selectedData = options.find((data) => data.cnNo === cnNo.cnNo);
+				if (selectedData) {
+					onChange(selectedData);
+				}
+			}}
+		>
+			<Listbox.Button>
+				<MdOutlinedTextField
+					label="C/N No."
+					prefixText={DateTime.fromJSDate(value.createdAt).toFormat(
+						"yyyy-MM-dd HH:mm:ss",
+					)}
+					value={value.cnNo}
+					className="relative cursor-pointer"
+					readOnly
+					hasTrailingIcon
+					style={
+						{
+							"--md-outlined-text-field-input-text-prefix-trailing-space":
+								"8px",
+						} as CSSProperties
+					}
+				>
+					<MdIcon slot="trailing-icon">
+						<ArrowDropDown />
+					</MdIcon>
+				</MdOutlinedTextField>
+			</Listbox.Button>
+			<Listbox.Options
+				className="absolute z-10 bg-surfaceContainerLow rounded-md w-96 max-h-96 overflow-auto"
+				style={
+					{
+						boxShadow: "0px 2px 6px 2px rgba(0, 0, 0, 0.15)",
+					} as CSSProperties
+				}
+			>
+				{options.map((option) => (
+					<Listbox.Option key={option.cnNo} value={option}>
+						<MdSelectOption className="flex flex-col gap-2">
+							{option.cnNo}
+							<MdTypography
+								variant="body"
+								size="medium"
+								className="text-onSurfaceVariant"
+							>
+								{DateTime.fromJSDate(option.createdAt).toFormat(
+									"yyyy-MM-dd HH:mm:ss",
+								)}
+							</MdTypography>
+						</MdSelectOption>
+					</Listbox.Option>
+				))}
+			</Listbox.Options>
+		</Listbox>
+	);
+};
