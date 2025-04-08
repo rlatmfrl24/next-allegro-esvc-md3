@@ -182,11 +182,11 @@ function SIEdit() {
 										(item) => item.blNo === bookingNo,
 									);
 
-									console.log("bookingNo", bookingNo);
-									console.log(
-										"filteredData",
-										previousSIData.map((item) => item.blNo),
-									);
+									// console.log("bookingNo", bookingNo);
+									// console.log(
+									// 	"filteredData",
+									// 	previousSIData.map((item) => item.blNo),
+									// );
 
 									if (filteredData.length > 0) {
 										const data = filteredData[0];
