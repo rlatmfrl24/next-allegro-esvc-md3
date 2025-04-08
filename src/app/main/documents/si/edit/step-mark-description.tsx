@@ -434,11 +434,7 @@ export default function StepMarkDescription() {
 				],
 			}));
 		}
-	}, [
-		markDescriptionStore.exportInformation,
-		markDescriptionStore.exportInformation?.length,
-		setMarkDescriptionStore,
-	]);
+	}, [markDescriptionStore.exportInformation, setMarkDescriptionStore]);
 
 	useEffect(() => {
 		setSIEditStep((prev) => ({
