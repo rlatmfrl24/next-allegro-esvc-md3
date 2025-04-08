@@ -23,6 +23,7 @@ import {
 	type Table,
 	useReactTable,
 } from "@tanstack/react-table";
+import { renderDataTable } from "@/app/components/table/simple-table";
 
 type GeneralTableType = {
 	correctionGroup: string;
@@ -221,7 +222,7 @@ const GeneralTable = ({
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return renderTable(table);
+	return renderDataTable(table);
 };
 
 const FreightChargeTable = ({ data }: { data: FreightChargeTableType[] }) => {
@@ -342,7 +343,7 @@ const FreightChargeTable = ({ data }: { data: FreightChargeTableType[] }) => {
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return renderTable(table);
+	return renderDataTable(table);
 };
 
 const CustomerInformationTable = ({
@@ -385,7 +386,7 @@ const CustomerInformationTable = ({
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return renderTable(table);
+	return renderDataTable(table);
 };
 
 export default function CNHistoryDialog({

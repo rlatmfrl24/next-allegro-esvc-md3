@@ -118,12 +118,30 @@ export type SIEditContactInformationType = {
 	};
 };
 
+export type ExportInformationProps = {
+	licenseNo: string;
+	otherReferenceNo: string;
+	package: {
+		type: string;
+		quantity: number;
+	};
+	weight: number;
+	weightUnit: string;
+	division: string;
+	samePacking: string;
+	samePackage: {
+		number: number;
+		name: string;
+	};
+};
+
 export type SIEditMarkDescriptionType = {
 	mark: string;
 	description: string;
 	hsCode: string;
 	descriptionFile: File | null;
 	customsCommodity: string;
+	exportInformation: ExportInformationProps[];
 };
 
 export interface SealDataProps {
