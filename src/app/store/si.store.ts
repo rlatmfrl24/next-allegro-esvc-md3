@@ -138,6 +138,7 @@ export const SIEditMarkDescriptionState = atom<SIEditMarkDescriptionType>({
 		hsCode: "",
 		descriptionFile: null,
 		customsCommodity: "",
+		exportInformation: [],
 	},
 });
 

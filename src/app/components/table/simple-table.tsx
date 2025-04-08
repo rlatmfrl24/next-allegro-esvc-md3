@@ -20,9 +20,9 @@ export const useSimpleTable = ({
 	getSelectionRows,
 	allowMultiRowSelection = false,
 }: {
-	data: Array<Record<string, unknown>>;
-	columns: ColumnDef<Record<string, unknown>, unknown>[];
-	getSelectionRows?: (Rows: Array<Record<string, unknown>>) => void;
+	data: any[];
+	columns: any[];
+	getSelectionRows?: (selectedRows: any[]) => void | Promise<void>;
 	allowMultiRowSelection?: boolean;
 }) => {
 	const [selectedRows, setSelectedRows] = useState({});
