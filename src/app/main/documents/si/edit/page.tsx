@@ -30,16 +30,18 @@ import {
 	MdElevation,
 	MdFilledButton,
 	MdFilledTonalButton,
+	MdFilledTonalIconButton,
 	MdIcon,
 	MdOutlinedButton,
 } from "@/app/util/md3";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { SIEditDataType, SIState } from "@/app/util/typeDef/si";
-import { ChevronLeft } from "@mui/icons-material";
+import { ChevronLeft, ManageSearch } from "@mui/icons-material";
 
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
 import { SIStateChip } from "../si-state-chip";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
 
 export default function SIEditPage() {
 	return (
@@ -146,6 +148,19 @@ function SIEdit() {
 						Back
 					</MdOutlinedButton>
 					<PageTitle title="Shipping Instruction (Edit)" hasFavorite={false} />
+					<div className="flex items-center gap-2">
+						<NAOutlinedTextField
+							sizeVariant="tiny"
+							className="bg-white"
+							label="Copy Previous S/I"
+							placeholder="Booking No."
+						/>
+						<MdFilledTonalIconButton>
+							<MdIcon>
+								<ManageSearch />
+							</MdIcon>
+						</MdFilledTonalIconButton>
+					</div>
 				</div>
 				<div className="flex items-center">
 					<SIStateChip state={searchParams.get("status") as SIState} />
