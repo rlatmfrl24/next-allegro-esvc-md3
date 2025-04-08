@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import {
+import type {
 	ConsigneeProps,
 	NotifyPartyProps,
 	SIContainerInputProps,
@@ -25,7 +25,7 @@ export const SIEditStepState = atom({
 		},
 		routeBL: {
 			id: "routeBL",
-			title: `Route \n& B/L Information`,
+			title: "Route \n& B/L Information",
 			isSelected: false,
 			isCompleted: false,
 			visited: false,
@@ -77,16 +77,16 @@ export const SIEditPartiesState = atom<SIEditPartiesType>({
 
 const tempRouteSet = {
 	pod: createDummyPlaceInformation(
-		faker.location.city() + ", " + faker.location.country(),
+		`${faker.location.city()}, ${faker.location.country()}`,
 	),
 	pol: createDummyPlaceInformation(
-		faker.location.city() + ", " + faker.location.country(),
+		`${faker.location.city()}, ${faker.location.country()}`,
 	),
 	por: createDummyPlaceInformation(
-		faker.location.city() + ", " + faker.location.country(),
+		`${faker.location.city()}, ${faker.location.country()}`,
 	),
 	del: createDummyPlaceInformation(
-		faker.location.city() + ", " + faker.location.country(),
+		`${faker.location.city()}, ${faker.location.country()}`,
 	),
 };
 

@@ -42,6 +42,7 @@ import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
 import { SIStateChip } from "../si-state-chip";
 import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import { CopyPreviousSIDialog } from "./components/copy-previous-si-dialog";
 
 export default function SIEditPage() {
 	return (
@@ -67,6 +68,8 @@ function SIEdit() {
 
 	const [siEditStep, setSiEditStep] = useRecoilState(SIEditStepState);
 	const [currentStep, setCurrentStep] = useState("parties");
+	const [isCopyPreviousSIDialogOpen, setIsCopyPreviousSIDialogOpen] =
+		useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -154,12 +157,25 @@ function SIEdit() {
 							className="bg-white"
 							label="Copy Previous S/I"
 							placeholder="Booking No."
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									//TODO: implement apply SI Data by Booking No.
+								}
+							}}
 						/>
-						<MdFilledTonalIconButton>
+						<MdFilledTonalIconButton
+							onClick={() => {
+								setIsCopyPreviousSIDialogOpen(true);
+							}}
+						>
 							<MdIcon>
 								<ManageSearch />
 							</MdIcon>
 						</MdFilledTonalIconButton>
+						<CopyPreviousSIDialog
+							isOpen={isCopyPreviousSIDialogOpen}
+							handleOpen={setIsCopyPreviousSIDialogOpen}
+						/>
 					</div>
 				</div>
 				<div className="flex items-center">

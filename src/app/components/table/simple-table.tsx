@@ -13,6 +13,7 @@ import tableStyle from "@/app/styles/table.module.css";
 import specialCargoStyle from "@/app/styles/special-cargo.module.css";
 
 import { DividerComponent } from "../divider";
+import classNames from "classnames";
 
 export const useSimpleTable = ({
 	data,
@@ -25,6 +26,7 @@ export const useSimpleTable = ({
 	getSelectionRows?: (selectedRows: any[]) => void | Promise<void>;
 	allowMultiRowSelection?: boolean;
 }) => {
+	const cx = classNames.bind(styles);
 	const [selectedRows, setSelectedRows] = useState({});
 	const table = useReactTable({
 		data,
@@ -48,9 +50,9 @@ export const useSimpleTable = ({
 		setSelectedRows({});
 	}, []);
 
-	const renderTable = () => (
+	const renderTable = (fullWidth = false) => (
 		<OverlayScrollbarsComponent defer>
-			<table className={styles.table}>
+			<table className={cx(tableStyle.table, fullWidth ? "w-full" : "")}>
 				<thead>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
