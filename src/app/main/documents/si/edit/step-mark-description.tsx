@@ -405,7 +405,7 @@ export default function StepMarkDescription() {
 				),
 			}),
 		];
-	}, []);
+	}, [markDescriptionStore.exportInformation, setMarkDescriptionStore]);
 
 	useEffect(() => {
 		if (
