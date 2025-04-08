@@ -38,14 +38,16 @@ import { useSetRecoilState } from "recoil";
 export const CopyPreviousSIDialog = ({
 	isOpen,
 	handleOpen,
+	previousSIData,
 }: {
 	isOpen: boolean;
 	handleOpen: (open: boolean) => void;
+	previousSIData: SITableProps[];
 }) => {
-	const dummyData = useMemo(
-		() => Array.from({ length: 10 }).map(() => createDummySITableData()),
-		[],
-	);
+	// const dummyData = useMemo(
+	// 	() => Array.from({ length: 10 }).map(() => createDummySITableData()),
+	// 	[],
+	// );
 
 	const setSIEditParties = useSetRecoilState(SIEditPartiesState);
 	const setSIEditRouteBL = useSetRecoilState(SIEditRouteBLState);
@@ -63,7 +65,7 @@ export const CopyPreviousSIDialog = ({
 		},
 	});
 
-	const [tableData, setTableData] = useState(dummyData);
+	const [tableData, setTableData] = useState(previousSIData);
 	const [selectedRows, setSelectedRows] = useState<SITableProps[]>([]);
 
 	return (
@@ -81,7 +83,7 @@ export const CopyPreviousSIDialog = ({
 						onItemSelection={(value) =>
 							setSearchQuery((prev) => ({ ...prev, pol: value }))
 						}
-						itemList={dummyData.map((item) => item.pol)}
+						itemList={previousSIData.map((item) => item.pol)}
 					/>
 					<NAOutlinedAutoComplete
 						label="POD"
@@ -89,7 +91,7 @@ export const CopyPreviousSIDialog = ({
 						onItemSelection={(value) =>
 							setSearchQuery((prev) => ({ ...prev, pod: value }))
 						}
-						itemList={dummyData.map((item) => item.pod)}
+						itemList={previousSIData.map((item) => item.pod)}
 					/>
 					<NAOutlinedTextField
 						label="Shipper Name"
@@ -114,7 +116,7 @@ export const CopyPreviousSIDialog = ({
 					/>
 					<MdOutlinedButton
 						onClick={() => {
-							const filteredData = dummyData.filter((item) => {
+							const filteredData = previousSIData.filter((item) => {
 								return (
 									item.pol.includes(searchQuery.pol) &&
 									item.pod.includes(searchQuery.pod) &&
@@ -262,7 +264,7 @@ const SITable = ({
 	return renderTable(true);
 };
 
-function createDummySITableData(): SITableProps {
+export function createDummySITableData(): SITableProps {
 	const originData = {
 		parties: {
 			shipper: {
