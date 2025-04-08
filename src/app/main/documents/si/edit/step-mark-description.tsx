@@ -40,7 +40,6 @@ export default function StepMarkDescription() {
 		SIEditMarkDescriptionState,
 	);
 	const [SIEditStep, setSIEditStep] = useRecoilState(SIEditStepState);
-	const columnHelper = createColumnHelper<ExportInformationProps>();
 	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
 
 	function adjustLicenseNo(value: string) {
@@ -69,6 +68,8 @@ export default function StepMarkDescription() {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const columns = useMemo(() => {
+		const columnHelper = createColumnHelper<ExportInformationProps>();
+
 		return [
 			columnHelper.display({
 				id: "index",
