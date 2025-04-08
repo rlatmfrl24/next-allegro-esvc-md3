@@ -43,6 +43,30 @@ export default function StepMarkDescription() {
 	const columnHelper = createColumnHelper<ExportInformationProps>();
 	const [autoResetPageIndex, resetAutoRestPageIndex] = useSkipper();
 
+	function adjustLicenseNo(value: string) {
+		// licenseNo should be XXXXX-XX-XXXXXX-X
+
+		// where X is a digit or a letter
+		// and - is a hyphen
+
+		let moderatedValue = value.toUpperCase();
+
+		// first, put the hyphen in the right place
+		if (moderatedValue.length > 5 && moderatedValue[5] !== "-") {
+			moderatedValue = `${moderatedValue.slice(0, 5)}-${moderatedValue.slice(5, moderatedValue.length)}`;
+		}
+		if (moderatedValue.length > 8 && moderatedValue[8] !== "-") {
+			moderatedValue = `${moderatedValue.slice(0, 8)}-${moderatedValue.slice(8, moderatedValue.length)}`;
+		}
+		if (moderatedValue.length > 14 && moderatedValue[14] !== "-") {
+			moderatedValue = `${moderatedValue.slice(0, 14)}-${moderatedValue.slice(14, moderatedValue.length)}`;
+		}
+
+		moderatedValue = moderatedValue.slice(0, 16);
+
+		return moderatedValue;
+	}
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const columns = useMemo(() => {
 		return [
@@ -64,7 +88,7 @@ export default function StepMarkDescription() {
 						required
 						sizeVariant="tiny"
 						className="p-2"
-						value={info.getValue()}
+						value={adjustLicenseNo(info.getValue())}
 						handleValueChange={(value) => {
 							info.table.options.meta?.updateData(
 								info.row.index,
@@ -124,11 +148,13 @@ export default function StepMarkDescription() {
 							}}
 						/>
 						<DividerComponent orientation="vertical" />
-						<NAOutlinedTextField
+						<NAOutlinedAutoComplete
 							sizeVariant="tiny"
 							className="p-2"
+							required
+							initialValue={info.getValue().type}
 							value={info.getValue().type}
-							handleValueChange={(value) => {
+							onItemSelection={(value) => {
 								setMarkDescriptionStore((prev) => ({
 									...prev,
 									exportInformation: prev.exportInformation.map(
@@ -147,6 +173,9 @@ export default function StepMarkDescription() {
 									),
 								}));
 							}}
+							itemList={Array.from({ length: 100 }, (_, i) =>
+								faker.commerce.productName(),
+							)}
 						/>
 					</div>
 				),
@@ -287,11 +316,12 @@ export default function StepMarkDescription() {
 							}}
 						/>
 						<DividerComponent orientation="vertical" />
-						<NAOutlinedTextField
+						<NAOutlinedAutoComplete
 							sizeVariant="tiny"
 							className="p-2"
-							value={info.getValue().name || ""}
-							handleValueChange={(value) => {
+							value={info.getValue().name}
+							initialValue={info.getValue().name}
+							onItemSelection={(value) => {
 								setMarkDescriptionStore((prev) => ({
 									...prev,
 									exportInformation: prev.exportInformation.map(
@@ -310,6 +340,9 @@ export default function StepMarkDescription() {
 									),
 								}));
 							}}
+							itemList={Array.from({ length: 100 }, (_, i) =>
+								faker.commerce.productName(),
+							)}
 						/>
 					</div>
 				),
