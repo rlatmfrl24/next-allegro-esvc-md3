@@ -97,6 +97,7 @@ function SIEdit() {
 		}
 	}, [siEditStep]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		return () => {
 			// set all step to visited false
