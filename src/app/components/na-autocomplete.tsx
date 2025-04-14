@@ -1,8 +1,7 @@
 import {
-	CSSProperties,
+	type CSSProperties,
 	useCallback,
 	useEffect,
-	useMemo,
 	useRef,
 	useState,
 } from "react";
@@ -33,6 +32,7 @@ import { MdTypography } from "./typography";
 import RestoreIcon from "@mui/icons-material/Restore";
 import { getCookie, setCookie } from "cookies-next";
 import { flushSync } from "react-dom";
+import { tinyInputStyles } from "../util/constants";
 
 type MdOutlinedTextFieldProps = React.ComponentProps<
 	typeof MdOutlinedTextFieldBase
@@ -52,6 +52,7 @@ export default function NAOutlinedAutoComplete({
 	maxInputLength,
 	showAllonFocus = false,
 	maxListHeight = 600,
+	sizeVariant = "normal",
 	...props
 }: {
 	itemList: string[];
@@ -67,6 +68,7 @@ export default function NAOutlinedAutoComplete({
 	maxInputLength?: number;
 	showAllonFocus?: boolean;
 	className?: string;
+	sizeVariant?: "tiny" | "normal";
 } & MdOutlinedTextFieldProps) {
 	const [query, setQuery] = useState<string>("");
 	const [defaultValue, setDefaultValue] = useState(initialValue || "");
@@ -221,6 +223,7 @@ export default function NAOutlinedAutoComplete({
 			<MdOutlinedTextFieldBase
 				{...props}
 				ref={refs.setReference}
+				style={sizeVariant === "tiny" ? tinyInputStyles : {}}
 				{...getReferenceProps()}
 				value={query}
 				className={`w-full ${props.readOnly ? "bg-surfaceContainer" : ""}`}
@@ -241,13 +244,18 @@ export default function NAOutlinedAutoComplete({
 				}}
 			>
 				{icon && <MdIcon slot="leading-icon">{icon}</MdIcon>}
-				<div slot="trailing-icon" className="mr-2">
-					{query !== "" && !props.readOnly && (
+				{query !== "" && !props.readOnly && sizeVariant !== "tiny" && (
+					<div slot="trailing-icon" className="mr-2">
 						<div
 							className="cursor-pointer relative flex items-center justify-center w-10 h-10 rounded-full"
 							tabIndex={-1}
 							onClick={() => {
 								handleItemSelect("");
+							}}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									handleItemSelect("");
+								}
 							}}
 						>
 							<MdRippleEffect />
@@ -255,21 +263,8 @@ export default function NAOutlinedAutoComplete({
 								<CancelIcon />
 							</MdIcon>
 						</div>
-						// <MdIconButton
-						//   tabIndex={-1}
-						//   onFocus={(e) => {
-						//     console.log("focus");
-						//   }}
-						//   onClick={() => {
-						//     handleItemSelect("");
-						//   }}
-						// >
-						//   <MdIcon>
-						//     <CancelIcon />
-						//   </MdIcon>
-						// </MdIconButton>
-					)}
-				</div>
+					</div>
+				)}
 			</MdOutlinedTextFieldBase>
 			{showRecommand() && isListOpen && (
 				<div
@@ -301,11 +296,11 @@ export default function NAOutlinedAutoComplete({
 										const bIndex = b.toLowerCase().indexOf(query.toLowerCase());
 										if (aIndex < bIndex) {
 											return -1;
-										} else if (aIndex > bIndex) {
-											return 1;
-										} else {
-											return 0;
 										}
+										if (aIndex > bIndex) {
+											return 1;
+										}
+										return 0;
 									})
 									.map((item, index) => (
 										<MdListItem
@@ -329,7 +324,7 @@ export default function NAOutlinedAutoComplete({
 											<MdIcon slot="start">
 												<RestoreIcon />
 											</MdIcon>
-											{highlightText(item, query)}
+											{highlightText(item, query, sizeVariant === "tiny")}
 											<MdIconButton
 												slot="end"
 												className="ml-2"
@@ -355,7 +350,7 @@ export default function NAOutlinedAutoComplete({
 									<div
 										aria-label="recent-divider"
 										className="h-px w-full bg-outlineVariant"
-									></div>
+									/>
 								)}
 							{(showAllonFocus || query.length > 2) &&
 								itemList
@@ -368,11 +363,11 @@ export default function NAOutlinedAutoComplete({
 										const bIndex = b.toLowerCase().indexOf(query.toLowerCase());
 										if (aIndex < bIndex) {
 											return -1;
-										} else if (aIndex > bIndex) {
-											return 1;
-										} else {
-											return 0;
 										}
+										if (aIndex > bIndex) {
+											return 1;
+										}
+										return 0;
 									})
 									.map((item, index) => (
 										<MdListItem
@@ -398,7 +393,7 @@ export default function NAOutlinedAutoComplete({
 												handleItemSelect(item);
 											}}
 										>
-											{highlightText(item, query)}
+											{highlightText(item, query, sizeVariant === "tiny")}
 										</MdListItem>
 									))}
 						</OverlayScrollbarsComponent>
@@ -409,7 +404,9 @@ export default function NAOutlinedAutoComplete({
 				<MdTypography
 					variant="label"
 					size="large"
-					className="text-error absolute top-0.5 left-1.5"
+					className={`text-error absolute ${
+						sizeVariant === "tiny" ? "top-2 left-3" : "top-0.5 left-1.5"
+					}`}
 				>
 					*
 				</MdTypography>
@@ -418,16 +415,21 @@ export default function NAOutlinedAutoComplete({
 	);
 }
 
-function highlightText(text: string, highlight: string) {
+function highlightText(text: string, highlight: string, isTiny: boolean) {
 	const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 	const parts = text.split(new RegExp(`(${escapedHighlight})`, "gi"));
 
 	return (
-		<MdTypography variant="body" size="large" className="flex-1">
+		<MdTypography
+			variant="body"
+			size={isTiny ? "medium" : "large"}
+			style={{ whiteSpace: "pre-line" }}
+			className="flex-1"
+		>
 			<span>
-				{parts.map((part, i) => (
+				{parts.map((part) => (
 					<span
-						key={i}
+						key={part + Math.random()}
 						className={
 							part.toLowerCase() === highlight.toLowerCase()
 								? "text-error"
