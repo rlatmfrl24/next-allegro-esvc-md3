@@ -30,16 +30,23 @@ import {
 	MdElevation,
 	MdFilledButton,
 	MdFilledTonalButton,
+	MdFilledTonalIconButton,
 	MdIcon,
 	MdOutlinedButton,
 } from "@/app/util/md3";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { SIEditDataType, SIState } from "@/app/util/typeDef/si";
-import { ChevronLeft } from "@mui/icons-material";
+import { ChevronLeft, ManageSearch, Warning } from "@mui/icons-material";
 
 import { MdTypography } from "@/app/components/typography";
 import { DividerComponent } from "@/app/components/divider";
 import { SIStateChip } from "../si-state-chip";
+import { NAOutlinedTextField } from "@/app/components/na-textfield";
+import {
+	CopyPreviousSIDialog,
+	createDummySITableData,
+} from "./components/copy-previous-si-dialog";
+import { create, set } from "lodash";
 
 export default function SIEditPage() {
 	return (
@@ -63,8 +70,21 @@ function SIEdit() {
 		SIEditContactInformationState,
 	);
 
+	const setSIEditParties = useSetRecoilState(SIEditPartiesState);
+	const setSIEditRouteBL = useSetRecoilState(SIEditRouteBLState);
+	const setSIEditMarkDescription = useSetRecoilState(
+		SIEditMarkDescriptionState,
+	);
+
 	const [siEditStep, setSiEditStep] = useRecoilState(SIEditStepState);
 	const [currentStep, setCurrentStep] = useState("parties");
+	const [isCopyPreviousSIDialogOpen, setIsCopyPreviousSIDialogOpen] =
+		useState(false);
+	const [isPreviousSISearchError, setIsPreviousSISearchError] = useState(false);
+
+	const previousSIData = useMemo(() => {
+		return Array.from({ length: 10 }).map(() => createDummySITableData());
+	}, []);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -77,6 +97,7 @@ function SIEdit() {
 		}
 	}, [siEditStep]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		return () => {
 			// set all step to visited false
@@ -146,6 +167,77 @@ function SIEdit() {
 						Back
 					</MdOutlinedButton>
 					<PageTitle title="Shipping Instruction (Edit)" hasFavorite={false} />
+					<div className="flex items-center gap-2">
+						<NAOutlinedTextField
+							sizeVariant="tiny"
+							className="bg-white"
+							label="Copy Previous S/I"
+							placeholder="Booking No."
+							error={isPreviousSISearchError}
+							hasTrailingIcon={isPreviousSISearchError}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									const bookingNo = (e.target as HTMLInputElement).value;
+
+									const filteredData = previousSIData.filter(
+										(item) => item.blNo === bookingNo,
+									);
+
+									// console.log("bookingNo", bookingNo);
+									// console.log(
+									// 	"filteredData",
+									// 	previousSIData.map((item) => item.blNo),
+									// );
+
+									if (filteredData.length > 0) {
+										const data = filteredData[0];
+										setSIEditParties((prev) => ({
+											...prev,
+											shipper: {
+												...prev.shipper,
+												companyName: data.shipperName,
+											},
+										}));
+										setSIEditRouteBL((prev) => ({
+											...prev,
+											origin: data.pol,
+											destination: data.pod,
+										}));
+										setSIEditMarkDescription((prev) => ({
+											...prev,
+											customsCommodity:
+												data.originData.markDescription.customsCommodity,
+										}));
+
+										setIsPreviousSISearchError(false);
+									} else {
+										setIsPreviousSISearchError(true);
+									}
+								}
+							}}
+						>
+							{isPreviousSISearchError && (
+								<MdIcon slot="trailing-icon">
+									<Warning className="text-error" />
+								</MdIcon>
+							)}
+						</NAOutlinedTextField>
+						<MdFilledTonalIconButton
+							onClick={() => {
+								setIsPreviousSISearchError(false);
+								setIsCopyPreviousSIDialogOpen(true);
+							}}
+						>
+							<MdIcon>
+								<ManageSearch />
+							</MdIcon>
+						</MdFilledTonalIconButton>
+						<CopyPreviousSIDialog
+							isOpen={isCopyPreviousSIDialogOpen}
+							handleOpen={setIsCopyPreviousSIDialogOpen}
+							previousSIData={previousSIData}
+						/>
+					</div>
 				</div>
 				<div className="flex items-center">
 					<SIStateChip state={searchParams.get("status") as SIState} />
