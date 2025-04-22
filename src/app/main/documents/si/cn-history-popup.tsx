@@ -60,56 +60,6 @@ type CNDataType = {
 	customerInformationTableData: CustomerInformationTableType[];
 };
 
-function renderTable<TData>(table: Table<TData>) {
-	return (
-		<table className={`${tableStyle.table} w-full mt-4 mb-6`}>
-			<thead>
-				{table.getHeaderGroups().map((headerGroup) => (
-					<tr key={headerGroup.id}>
-						{headerGroup.headers.map((header) => (
-							<th key={header.id} style={{ width: header.getSize() }}>
-								<div className="flex items-center">
-									<MdTypography
-										variant="body"
-										size="medium"
-										className="p-2 font-semibold flex-1"
-									>
-										{flexRender(
-											header.column.columnDef.header,
-											header.getContext(),
-										)}
-									</MdTypography>
-									{
-										// detect is the last column
-										headerGroup.headers[headerGroup.headers.length - 1] ===
-										header ? null : (
-											<DividerComponent
-												orientation="vertical"
-												className="h-8"
-											/>
-										)
-									}
-								</div>
-							</th>
-						))}
-					</tr>
-				))}
-			</thead>
-			<tbody>
-				{table.getRowModel().rows.map((row) => (
-					<tr key={row.id}>
-						{row.getVisibleCells().map((cell) => (
-							<td key={cell.id} className="p-2 bg-white">
-								{flexRender(cell.column.columnDef.cell, cell.getContext())}
-							</td>
-						))}
-					</tr>
-				))}
-			</tbody>
-		</table>
-	);
-}
-
 function makeDummyData(): CNDataType {
 	const generalTableData = Array.from({ length: 10 }).map(() => ({
 		correctionGroup: faker.helpers.arrayElement([
